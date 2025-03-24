@@ -37,19 +37,19 @@ $biggest_source_handle = '';
 
 //CONFIG VARS
 foreach($this->Mench_ledger->fetch(array(
-    'x__following' => 4527,
-    'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+    'LinkUp' => 4527,
+    'LinkPrivacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+    'LinkType IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
     'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
-), array('x__follower'), 0, 0, array('e__id' => 'ASC')) as $en){
+), array('LinkDown'), 0, 0, array('e__id' => 'ASC')) as $en){
 
     //Now fetch all its followers:
     $down__e = $this->Mench_ledger->fetch(array(
-        'x__following' => $en['x__follower'],
-        'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'LinkUp' => $en['LinkDown'],
+        'LinkPrivacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+        'LinkType IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
         'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
-    ), array('x__follower'), 0, 0, sort__e());
+    ), array('LinkDown'), 0, 0, sort__e());
 
 
     $total_nodes += (1 + count($down__e));
@@ -69,24 +69,24 @@ foreach($this->Mench_ledger->fetch(array(
 
     $prefix_common_words = prefix_common_words($down_titles); //Clean Titles
     $memory_text .= "\n".'//'.$en['e__title'].':'."\n";
-    $memory_text .= '$config[\'n___'.$en['x__follower'].'\'] = array('.join(',',$down_ids).');'."\n";
-    $memory_text .= '$config[\'e___'.$en['x__follower'].'\'] = array('.( strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "'.trim($prefix_common_words).'"' : '' )."\n";
+    $memory_text .= '$config[\'n___'.$en['LinkDown'].'\'] = array('.join(',',$down_ids).');'."\n";
+    $memory_text .= '$config[\'e___'.$en['LinkDown'].'\'] = array('.( strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "'.trim($prefix_common_words).'"' : '' )."\n";
     foreach($down__e as $follower){
 
         //Does this have any Pins?
         foreach($this->Mench_ledger->fetch(array(
-            'x__following' => $follower['e__id'],
-            'x__type' => 41011, //PINNED FOLLOWER
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkUp' => $follower['e__id'],
+            'LinkType' => 41011, //PINNED FOLLOWER
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x_pinned) {
             if(!isset($pinned_down[$follower['e__id']])){
-                $pinned_down[$follower['e__id']] = array($x_pinned['x__follower']);
-            } elseif(!in_array($x_pinned['x__follower'], $pinned_down[$follower['e__id']])) {
-                array_push($pinned_down[$follower['e__id']], $x_pinned['x__follower']);
+                $pinned_down[$follower['e__id']] = array($x_pinned['LinkDown']);
+            } elseif(!in_array($x_pinned['LinkDown'], $pinned_down[$follower['e__id']])) {
+                array_push($pinned_down[$follower['e__id']], $x_pinned['LinkDown']);
             }
         }
 
-        if($follower['x__type']==41011){
+        if($follower['LinkType']==41011){
             if(!isset($pinned_up[$follower['e__id']])){
                 $pinned_up[$follower['e__id']] = array($en['e__id']);
             } elseif(!in_array($en['e__id'], $pinned_up[$follower['e__id']])) {
@@ -97,18 +97,18 @@ foreach($this->Mench_ledger->fetch(array(
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
         foreach($this->Mench_ledger->fetch(array(
-            'x__follower' => $follower['e__id'],
-            'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+            'LinkDown' => $follower['e__id'],
+            'LinkPrivacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+            'LinkType IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
             'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
-        ), array('x__following'), 0) as $cp_en){
+        ), array('LinkUp'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
 
         $memory_text .= '     '.$follower['e__id'].' => array('."\n";
         $memory_text .= '        \'m__handle\' => \''.$follower['e__handle'].'\','."\n";
         $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',str_replace($prefix_common_words,'',$follower['e__title']) )).'\','."\n";
-        $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['x__message'])).'\','."\n";
+        $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['LinkText'])).'\','."\n";
         $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view__cover($follower['e__cover'])).'\','."\n";
         $memory_text .= '        \'m__following\' => array('.join(',',$down_up_ids).'),'."\n";
         $memory_text .= '     ),'."\n";
@@ -124,18 +124,18 @@ foreach($this->Mench_ledger->fetch(array(
 //Append all App Handlers for quick checking:
 $memory_text .= "\n"."\n";
 foreach($this->Mench_ledger->fetch(array(
-    'x__following' => 42043, //Handle Cache
-    'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-), array('x__follower'), 0) as $handle){
+    'LinkUp' => 42043, //Handle Cache
+    'LinkPrivacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+    'LinkType IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+), array('LinkDown'), 0) as $handle){
 
     $memory_text .= '$config[\'handle___'.$handle['e__id'].'\'] = array('."\n";
     foreach($this->Mench_ledger->fetch(array(
-        'x__following' => $handle['e__id'],
-        'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'LinkUp' => $handle['e__id'],
+        'LinkPrivacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+        'LinkType IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
         'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
-    ), array('x__follower'), 0) as $app){
+    ), array('LinkDown'), 0) as $app){
         $memory_text .= '     \''.strtolower($app['e__handle']).'\' => '.$app['e__id'].','."\n";
     }
     $memory_text .= ');'."\n";
@@ -181,12 +181,12 @@ $routes_text .= "\n";
 $special_route_text = '';
 $routes_text .= '//APPS:'."\n\n";
 foreach($this->Mench_ledger->fetch(array(
-    'x__following' => 6287, //Apps
-    //'x__follower NOT IN (' . join(',', $this->config->item('n___42927')) . ')' => null, //Hide App
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'LinkUp' => 6287, //Apps
+    //'LinkDown NOT IN (' . join(',', $this->config->item('n___42927')) . ')' => null, //Hide App
+    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
+), array('LinkDown'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
     $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
 
@@ -238,7 +238,7 @@ fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached '.$total_nodes.' Sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.reset_cache($x__player).'.</div><div></div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached '.$total_nodes.' Sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.reset_cache($LinkPlayer).'.</div><div></div></div>';
 
 
 //Show:

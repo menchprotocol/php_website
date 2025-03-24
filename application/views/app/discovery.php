@@ -8,15 +8,15 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 }
 */
 
-$x__player = ( $player_e ? $player_e['e__id'] : 0 );
-$target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
+$LinkPlayer = ( $player_e ? $player_e['e__id'] : 0 );
+$target_i__hashtag = ( count($target_i) && $LinkPlayer ? $target_i['i__hashtag'] : null );
 
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
+if($LinkPlayer && $target_i__hashtag!=$focus_i['i__hashtag']){
 
-    $find_previous = $this->Mench_ledger->find_previous($x__player, $target_i__hashtag, $focus_i['i__id']);
+    $find_previous = $this->Mench_ledger->find_previous($LinkPlayer, $target_i__hashtag, $focus_i['i__id']);
     if(count($find_previous)){
 
         $nav_list = array();
@@ -33,11 +33,11 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
             //Does this have a follower list?
             $query_subset = $this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-                'x__previous' => $followings_i['i__id'],
-            ), array('x__next'), 0, 0, array('x__weight' => 'ASC'), '*', null, true);
+                'LinkType IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+                'LinkLeft' => $followings_i['i__id'],
+            ), array('LinkRight'), 0, 0, array('LinkNumber' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
             $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_i__hashtag.'/'.( $followings_i['i__hashtag']==$target_i__hashtag ? 'start' : $followings_i['i__hashtag'] ).'"><u>'.view__i_title($followings_i, true).'</u></a>';
@@ -53,10 +53,10 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
                 foreach ($query_subset as $i_subset) {
 
                     if(count($this->Mench_ledger->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__player' => $x__player,
-                        'x__previous' => $i_subset['i__id'],
+                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'LinkPlayer' => $LinkPlayer,
+                        'LinkLeft' => $i_subset['i__id'],
                     )))){
                         $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view__i_title($i_subset, true).'</a>';
                     } else {
@@ -89,7 +89,7 @@ if($breadcrum_content){
 
 //Progress?
 if($player_e){
-    $tree_progress = $this->Mench_ledger->tree_progress($x__player, $target_i);
+    $tree_progress = $this->Mench_ledger->tree_progress($LinkPlayer, $target_i);
     $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     if($target_completed) {
         echo '<div class="alert alert-success" role="alert" title="'.$tree_progress['fixed_total'].'/'.$tree_progress['fixed_discovered'].' '.$tree_progress['fixed_completed_percentage'].'% '.$tree_progress['fixed_discovered'].': '.join(',',$tree_progress['list_discovered']).'"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
@@ -103,12 +103,12 @@ if($player_e){
 $x_completes = array();
 if($player_e){
     $x_completes = $this->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__player' => $x__player,
-        'x__previous' => $focus_i['i__id'],
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        'LinkPlayer' => $LinkPlayer,
+        'LinkLeft' => $focus_i['i__id'],
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__next'));
+    ), array('LinkRight'));
 }
 
 

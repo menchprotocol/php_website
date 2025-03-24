@@ -11,11 +11,11 @@ $table_body = '';
 
 //Count total first:
 $totals_count = $this->Mench_ledger->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___6186')) . ')' => null, //ANY PRIVACY
-), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___6186')) . ')' => null, //ANY PRIVACY
+), array(), 0, 0, array(), 'COUNT(LinkId) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
-foreach($this->config->item('e___4593') as $x__type => $m) {
+foreach($this->config->item('e___4593') as $LinkType => $m) {
 
     $total_count++;
 
@@ -23,15 +23,15 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
     $table_body .= '<td style="text-align: left;"><a href="'.view__memory(42903,42902).$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
-    $table_body .= '<td style="text-align: left;">'.$x__type.'</td>';
+    $table_body .= '<td style="text-align: left;">'.$LinkType.'</td>';
 
     //List all statuses:
     $interactions_this = 0;
-    foreach($this->config->item('e___6186') as $x__type1 => $m1) {
+    foreach($this->config->item('e___6186') as $LinkType1 => $m1) {
         $list_e_count = $this->Mench_ledger->fetch(array(
-            'x__type' => $x__type,
-            'x__privacy' => $x__type1,
-        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+            'LinkType' => $LinkType,
+            'LinkPrivacy' => $LinkType1,
+        ), array(), 0, 0, array(), 'COUNT(LinkId) as totals');
 
         $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($list_e_count[0]['totals'], $pad_length, '0', STR_PAD_LEFT).'</td>';
         if(!isset($total_access[$m1['m__handle']])){
@@ -44,13 +44,6 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     $total_interactions += $interactions_this;
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad(number_format(($interactions_this/$totals_count[0]['totals']*100), 3), 6, '0', STR_PAD_LEFT).'%</th>';
-
-    //Points Total
-    $points = $this->Mench_ledger->fetch(array(
-        'x__type' => $x__type,
-    ), array(), 0, 0, array(), 'SUM(x__diamonds) as totals');
-    $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($points[0]['totals'], $pad_length, '0', STR_PAD_LEFT).'</td>';
-    $total_points += $points[0]['totals'];
 
     $table_body .= '</tr>';
 
@@ -66,9 +59,9 @@ echo '<th style="text-align: left;" id="th_primary">Interaction Type</th>';
 echo '<th style="text-align: left;">ID</th>'; //ID
 
 //List all statuses:
-foreach($this->config->item('e___6186') as $x__type1 => $m1) {
-    array_push($table_sortable, '#th_e_'.$x__type1);
-    echo '<th style="text-align: left;" id="th_e_'.$x__type1.'">'.$m1['m__cover'].' '.$m1['m__title'].'</th>';
+foreach($this->config->item('e___6186') as $LinkType1 => $m1) {
+    array_push($table_sortable, '#th_e_'.$LinkType1);
+    echo '<th style="text-align: left;" id="th_e_'.$LinkType1.'">'.$m1['m__cover'].' '.$m1['m__title'].'</th>';
 }
 
 echo '<th style="text-align: left;" id="th_total">Total Interactions</th>';
@@ -88,7 +81,7 @@ echo '<th style="text-align: left;"><b>TOTALS</b></th>';
 echo '<th style="text-align: left;" id="th_count">&nbsp;</th>'; //ID
 
 //List all statuses:
-foreach($this->config->item('e___6186') as $x__type1 => $m1) {
+foreach($this->config->item('e___6186') as $LinkType1 => $m1) {
     echo '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_access[$m1['m__handle']], $pad_length, '0', STR_PAD_LEFT).'</th>';
 }
 

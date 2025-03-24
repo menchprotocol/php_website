@@ -1,20 +1,20 @@
 <?php
 
 //Event Reminder App running once an hour to dispatch pending reminders
-if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time'])){
+if(isset($_GET['LinkId']) && isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time'])){
 
     //This is a request to cancel, do so and redirect:
     if(view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
         foreach($this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'x__id' => $_GET['x__id'],
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkType IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'LinkId' => $_GET['LinkId'],
             'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-        ), array('x__player'), 0) as $x){
+        ), array('LinkPlayer'), 0) as $x){
 
             //Show Header:
             foreach($this->Idea_cache->fetch(array(
-                'i__id' => $x['x__next'],
+                'i__id' => $x['LinkRight'],
             )) as $i_from){
                 echo '<h1><a href="'.view__memory(42903,33286).$i_from['i__hashtag'].'"><u>' . view__i_title($i_from, true) . '</u></a></h1>';
             }
@@ -22,14 +22,14 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             if(isset($_GET['submit'])){
 
                 //They have confirmed, remove:
-                $this->Mench_ledger->update($x['x__id'], array(
-                    'x__type' => 42333, //RSVP No
+                $this->Mench_ledger->update($x['LinkId'], array(
+                    'LinkType' => 42333, //RSVP No
                 ), $x['e__id'], 42251 /* Member Skipped Event */);
                 //TODO Copy th is elsewhere
 
                 //Notify and give option to go to starting point:
                 foreach($this->Idea_cache->fetch(array(
-                    'i__id' => $x['x__previous'],
+                    'i__id' => $x['LinkLeft'],
                 )) as $i_go){
                     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="'.view__memory(42903,33286).$i_go['i__hashtag'].'">'.view__i_title($i_go, true).'</a>.</div>';
                 }
@@ -39,7 +39,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 //Inform the user and give them option to confirm removal:
                 echo '<p>You can submit this form if you wish to cancel your attendance:</p>';
                 echo '<form action="" method="GET">';
-                echo '<textarea class="form-control border no-padding" name="x__message" data-lpignore="true" placeholder="Optional Note">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
+                echo '<textarea class="form-control border no-padding" name="LinkText" data-lpignore="true" placeholder="Optional Note">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
                 echo '<input type="submit" name="submit" class="btn" value="Cancel Event Attendance" />';
                 echo '</form>';
 
@@ -59,12 +59,12 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     $i_scanned = array();
 
     foreach ($this->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-        'x__following IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'LinkType IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+        'LinkUp IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
         'i__type' => 30874, //Events
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__next'), 0) as $i) {
+    ), array('LinkRight'), 0) as $i) {
 
         //Make sure not handled this idea with a different reminder:
         if(!in_array($i['i__id'], $i_scanned)){
@@ -74,12 +74,12 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             //Fetch Start time for this idea:
             $time_starts = 0;
             foreach($this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $i['i__id'],
-                'x__following' => 26556, //Time Starts
+                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                'LinkRight' => $i['i__id'],
+                'LinkUp' => 26556, //Time Starts
             )) as $time){
-                $time_starts = strtotime($time['x__message']);
+                $time_starts = strtotime($time['LinkText']);
                 break;
             }
 
@@ -87,24 +87,24 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             if($time_starts>time()){
 
                 //Let's see if this future event is less than X seconds away:
-                if(($time_starts - intval($e___42216[$i['x__following']]['m__message'])) < time()){
+                if(($time_starts - intval($e___42216[$i['LinkUp']]['m__message'])) < time()){
 
                     //End time?
                     $time_ends = $this->Mench_ledger->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                        'x__next' => $i['i__id'],
-                        'x__following' => 26557, //Time Ends
+                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                        'LinkRight' => $i['i__id'],
+                        'LinkUp' => 26557, //Time Ends
                     ), array(), 1);
 
                     //Navigation?
                     $must_follow = array();
                     foreach($this->Mench_ledger->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 32235, //Navigation
-                        'x__next' => $i['i__id'],
+                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'LinkType' => 32235, //Navigation
+                        'LinkRight' => $i['i__id'],
                     )) as $follow){
-                        array_push($must_follow, $follow['x__following']);
+                        array_push($must_follow, $follow['LinkUp']);
                     }
 
                     array_push($i_scanned, $i['i__id']);
@@ -113,17 +113,17 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                     //The time is here! Send event reminders to those who successfully discovered this:
                     foreach($this->Mench_ledger->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'x__previous' => $i['i__id'],
-                    ), array('x__player'), 0) as $x){
+                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'LinkType IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'LinkLeft' => $i['i__id'],
+                    ), array('LinkPlayer'), 0) as $x){
 
                         //Make sure this member qualified:
                         if(count($must_follow)>0 && count($must_follow)!=count($this->Mench_ledger->fetch(array(
-                                'x__follower' => $x['e__id'],
-                                'x__following IN (' . join(',', $must_follow) . ')' => null,
-                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'LinkDown' => $x['e__id'],
+                                'LinkUp IN (' . join(',', $must_follow) . ')' => null,
+                                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             )))){
                             //User does not have all navigation items, skip for now:
                             continue;
@@ -135,15 +135,15 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                             "\n".
                             "\n".$i['i__message'].
                             "\n".'Start Time: '.date("D M j G:i:s T", $time_starts).
-                            ( count($time_ends) && strtotime($time_ends[0]['x__message']) ? "\n".'End Time: '.date("D M j G:i:s T", strtotime($time_ends[0]['x__message'])) : '' ).
+                            ( count($time_ends) && strtotime($time_ends[0]['LinkText']) ? "\n".'End Time: '.date("D M j G:i:s T", strtotime($time_ends[0]['LinkText'])) : '' ).
                             "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view__memory(42903,33286).$i['i__hashtag'].
                             "\n".
                             "\n".'If you cannot attend this event please inform us by cancelling here:'.
-                            "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view__app_link(42216).'?x__id='.$x['x__id'].'&e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']);
+                            "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view__app_link(42216).'?LinkId='.$x['LinkId'].'&e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']);
 
                         //Send message:
                         $send_dm = $this->Mench_ledger->send_dm($x['e__id'], $subject, $html_message, array(
-                            'x__previous' => $i['i__id'],
+                            'LinkLeft' => $i['i__id'],
                         ), $i['i__id'], $user_website);
 
                         $total_sent += ( $send_dm['status'] ? 1 : 0 );
@@ -169,8 +169,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
         if($remind_status<0 || $remind_status>0){
             //We are done with this reminder request:
-            $this->Mench_ledger->update($i['x__id'], array(
-                'x__type' => ($remind_status>0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
+            $this->Mench_ledger->update($i['LinkId'], array(
+                'LinkType' => ($remind_status>0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }
 
@@ -179,23 +179,23 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     }
 
     foreach ($this->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-        'x__weight >' => time(), //Future event
-        'x__following' => 26556, //Time Starts
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        'LinkNumber >' => time(), //Future event
+        'LinkUp' => 26556, //Time Starts
         'i__type' => 30874, //Events
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__next'), 0) as $i) {
+    ), array('LinkRight'), 0) as $i) {
 
         //Determine if it's time to send this message:
         $time_starts = 0;
         foreach ($this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $i['i__id'],
-            'x__following' => 26556, //Time Starts
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'LinkRight' => $i['i__id'],
+            'LinkUp' => 26556, //Time Starts
         )) as $time) {
-            $time_starts = strtotime($time['x__message']);
+            $time_starts = strtotime($time['LinkText']);
             break;
         }
 
@@ -207,22 +207,22 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         //Does it have an end time?
         $end_sending = 0;
         foreach ($this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $i['i__id'],
-            'x__following' => 26557, //Time Ends
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'LinkRight' => $i['i__id'],
+            'LinkUp' => 26557, //Time Ends
         )) as $time) {
-            $end_sending = strtotime($time['x__message']);
+            $end_sending = strtotime($time['LinkText']);
             break;
         }
 
 
         $children = $this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-            'x__previous' => $i['i__id'],
-        ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
+            'LinkType IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+            'LinkLeft' => $i['i__id'],
+        ), array('LinkRight'), 0, 0, array('LinkNumber' => 'ASC'));
 
 
         //Now let's see who will receive this:
@@ -233,10 +233,10 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         foreach ($list_settings['query_string_filtered'] as $x) {
 
             if (count($this->Mench_ledger->fetch(array(
-                'x__previous' => $i['i__id'],
-                'x__player' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'LinkLeft' => $i['i__id'],
+                'LinkPlayer' => $x['e__id'],
+                'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))) {
                 //Skip since they already discovered this idea:
                 continue;
@@ -254,20 +254,20 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             foreach ($children as $down_or) {
 
                 $discoveries = $this->Mench_ledger->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__player' => $x['e__id'],
-                    'x__previous' => $down_or['i__id'],
+                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'LinkPlayer' => $x['e__id'],
+                    'LinkLeft' => $down_or['i__id'],
                 ));
                 //Has this user discovered this idea or no?
                 $html_message .= view__i_title($down_or, true) . ":\n";
-                $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . view__memory(42903,33286) . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view__hash(time().$x['e__handle']) : '') . "\n\n";
+                $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['LinkDomain']) . view__memory(42903,33286) . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view__hash(time().$x['e__handle']) : '') . "\n\n";
 
             }
 
             $send_dm = $this->Mench_ledger->send_dm($x['e__id'], $subject_line, $content_message . "\n" . trim($html_message), array(
-                'x__previous' => $i['i__id'],
-            ), $i['i__id'], $i['x__website'], true);
+                'LinkLeft' => $i['i__id'],
+            ), $i['i__id'], $i['LinkDomain'], true);
             $total_sent += ($send_dm['status'] ? 1 : 0);
 
 
@@ -276,8 +276,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         //Mark this as complete?
         if (!$end_sending || $end_sending < time()) {
             //Ready to be done:
-            $this->Mench_ledger->update($i['x__id'], array(
-                'x__type' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
+            $this->Mench_ledger->update($i['LinkId'], array(
+                'LinkType' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }
 

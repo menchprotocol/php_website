@@ -72,25 +72,25 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
         )) as $e_append){
             $completed = 0;
             foreach($this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__previous' => $is[0]['i__id'],
+                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'LinkLeft' => $is[0]['i__id'],
             ), array(), 0) as $x){
                 if(!count($this->Mench_ledger->fetch(array(
-                    'x__following' => $e_append['e__id'],
-                    'x__follower' => $x['x__player'],
-                    'x__message' => $x['x__message'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'LinkUp' => $e_append['e__id'],
+                    'LinkDown' => $x['LinkPlayer'],
+                    'LinkText' => $x['LinkText'],
+                    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                     //Increment source link:
                     $completed++;
                     $this->Mench_ledger->create(array(
-                        'x__player' => ($player_e ? $player_e['e__id'] : $x['x__player']),
-                        'x__following' => $e_append['e__id'],
-                        'x__follower' => $x['x__player'],
-                        'x__message' => $x['x__message'],
-                        'x__type' => 4251,
+                        'LinkPlayer' => ($player_e ? $player_e['e__id'] : $x['LinkPlayer']),
+                        'LinkUp' => $e_append['e__id'],
+                        'LinkDown' => $x['LinkPlayer'],
+                        'LinkText' => $x['LinkText'],
+                        'LinkType' => 4251,
                     ));
                 }
             }
@@ -104,13 +104,13 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
     $count = 0;
     foreach($this->Mench_ledger->fetch(array(
         //'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 42243,
-    ), array('x__previous'), 0) as $prev_i){
-        if($prev_i['i__privacy']!=42626 || $prev_i['x__type']!=4228){
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'LinkType' => 42243,
+    ), array('LinkLeft'), 0) as $prev_i){
+        if($prev_i['i__privacy']!=42626 || $prev_i['LinkType']!=4228){
             $count++;
-            $this->Mench_ledger->update($prev_i['x__id'], array(
-                'x__type' => 4228,
+            $this->Mench_ledger->update($prev_i['LinkId'], array(
+                'LinkType' => 4228,
             ));
             $this->Idea_cache->update($prev_i['i__id'], array(
                 'i__privacy' => 42626,

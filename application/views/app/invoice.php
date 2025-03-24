@@ -47,46 +47,46 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 
 //Fetch User Data:
 $fetch_emails = $this->Mench_ledger->fetch(array(
-    'x__following' => 3288, //Email
-    'x__follower' => $player_e['e__id'],
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkUp' => 3288, //Email
+    'LinkDown' => $player_e['e__id'],
+    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ));
 $fetch_phones = $this->Mench_ledger->fetch(array(
-    'x__following' => 4783, //Phone
-    'x__follower' => $player_e['e__id'],
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkUp' => 4783, //Phone
+    'LinkDown' => $player_e['e__id'],
+    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ));
 $fetch_first_names = $this->Mench_ledger->fetch(array(
-    'x__following' => 42584, //First Name
-    'x__follower' => $player_e['e__id'],
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkUp' => 42584, //First Name
+    'LinkDown' => $player_e['e__id'],
+    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ));
 $fetch_last_names = $this->Mench_ledger->fetch(array(
-    'x__following' => 30198, //Last Name
-    'x__follower' => $player_e['e__id'],
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkUp' => 30198, //Last Name
+    'LinkDown' => $player_e['e__id'],
+    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ));
 
 $set_email = false;
-if(count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)) {
-    $set_email = $fetch_emails[0]['x__message'];
+if(count($fetch_emails) && filter_var($fetch_emails[0]['LinkText'], FILTER_VALIDATE_EMAIL)) {
+    $set_email = $fetch_emails[0]['LinkText'];
 }
 $set_phone = false;
-if(count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=8) {
-    $set_phone = $fetch_phones[0]['x__message'];
+if(count($fetch_phones) && strlen($fetch_phones[0]['LinkText'])>=8) {
+    $set_phone = $fetch_phones[0]['LinkText'];
 }
 
 if(!$set_email){
     //No Valid email:
     $this->Mench_ledger->create(array(
-        'x__type' => 4246, //Platform Bug Reports
-        'x__player' => $player_e['e__id'],
-        'x__next' => $_POST['focus__id'],
-        'x__message' => 'No Valid email found for invoice',
+        'LinkType' => 4246, //Platform Bug Reports
+        'LinkPlayer' => $player_e['e__id'],
+        'LinkRight' => $_POST['focus__id'],
+        'LinkText' => 'No Valid email found for invoice',
     ));
     return view__json(array(
         'status' => 0,
@@ -106,18 +106,18 @@ foreach($this->Idea_cache->fetch(array(
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
         $invoice_due_dates = $this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $i['i__id'],
-            'x__following' => 44378, //Invoice Due Date
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'LinkRight' => $i['i__id'],
+            'LinkUp' => 44378, //Invoice Due Date
         ));
         $invoice_min_payments = $this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $i['i__id'],
-            'x__following' => 44379, //Invoice Min Payment
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'LinkRight' => $i['i__id'],
+            'LinkUp' => 44379, //Invoice Min Payment
         ));
-        $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
+        $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['LinkText'])>0 ? floatval($invoice_min_payments[0]['LinkText']) : 0 );
 
         // Usage example
         try {
@@ -133,12 +133,12 @@ foreach($this->Idea_cache->fetch(array(
                 'note' => $i['i__message'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $min_pay>0 && $_POST['total_price'] >= $min_pay ? $min_pay."" : "0" ),
-                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['x__message'])>time() ? strtotime($invoice_due_dates[0]['x__message']) : time() )),
+                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['LinkText'])>time() ? strtotime($invoice_due_dates[0]['LinkText']) : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
-                'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
+                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['LinkText']) ? $fetch_first_names[0]['LinkText'] : $player_e['e__title'],
+                'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['LinkText'] : '',
                 'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
@@ -162,40 +162,40 @@ foreach($this->Idea_cache->fetch(array(
 
         //Delete Old Parent Invoice:
         foreach($this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__previous' => $i['i__id'],
-            'x__player' => $player_e['e__id'],
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'LinkLeft' => $i['i__id'],
+            'LinkPlayer' => $player_e['e__id'],
         ), array(), 0) as $x_discovery){
-            $this->Mench_ledger->update($x_discovery['x__id'], array(
-                'x__privacy' => 6173, //Transaction Deleted
+            $this->Mench_ledger->update($x_discovery['LinkId'], array(
+                'LinkPrivacy' => 6173, //Transaction Deleted
             ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
         }
 
         //Delete Old Child Answers:
         foreach($this->Mench_ledger->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 7712, //Input Choice
-            'x__player' => $player_e['e__id'],
-            'x__previous' => $i['i__id'],
-        ), array('x__next')) as $x_selection){
+            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'LinkType' => 7712, //Input Choice
+            'LinkPlayer' => $player_e['e__id'],
+            'LinkLeft' => $i['i__id'],
+        ), array('LinkRight')) as $x_selection){
 
             //Remove Selection:
-            $this->Mench_ledger->update($x_selection['x__id'], array(
-                'x__privacy' => 6173, //Transaction Deleted
+            $this->Mench_ledger->update($x_selection['LinkId'], array(
+                'LinkPrivacy' => 6173, //Transaction Deleted
             ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
 
             //Remove discovery if we can:
             if(!in_array($x_selection['i__type'], $this->config->item('n___42905'))){
                 foreach($this->Mench_ledger->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__previous' => $x_selection['i__id'],
-                    'x__player' => $player_e['e__id'],
+                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'LinkLeft' => $x_selection['i__id'],
+                    'LinkPlayer' => $player_e['e__id'],
                 ), array(), 0) as $x_discovery){
-                    $this->Mench_ledger->update($x_discovery['x__id'], array(
-                        'x__privacy' => 6173, //Transaction Deleted
+                    $this->Mench_ledger->update($x_discovery['LinkId'], array(
+                        'LinkPrivacy' => 6173, //Transaction Deleted
                     ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
                 }
             }
@@ -214,16 +214,16 @@ foreach($this->Idea_cache->fetch(array(
 
                 //Complete this item:
                 $this->Mench_ledger->mark_complete(i__discovery_link($this_i), $player_e['e__id'], $i_target['i__id'], $this_i, array(), array(
-                    'x__weight' => $_POST['invoice_items'][$key]['quantity'],
+                    'LinkNumber' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
                 //Save Answer:
                 $this->Mench_ledger->create(array(
-                    'x__type' => 7712, //Input Choice
-                    'x__player' => $player_e['e__id'],
-                    'x__previous' => $_POST['focus__id'],
-                    'x__weight' => $_POST['invoice_items'][$key]['quantity'],
-                    'x__next' => $_POST['invoice_items'][$key]['i__id'],
+                    'LinkType' => 7712, //Input Choice
+                    'LinkPlayer' => $player_e['e__id'],
+                    'LinkLeft' => $_POST['focus__id'],
+                    'LinkNumber' => $_POST['invoice_items'][$key]['quantity'],
+                    'LinkRight' => $_POST['invoice_items'][$key]['i__id'],
                 ));
             }
         }

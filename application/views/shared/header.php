@@ -112,10 +112,10 @@ if(!$basic_header_footer){
     echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:public_index \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORY
-    foreach($this->config->item('e___11054') as $x__type => $m){
-        if(is_array($this->config->item('e___'.$x__type))){
-            echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
-            echo ' var js_n___'.$x__type.' = ' . json_encode($this->config->item('n___'.$x__type)) . ';';
+    foreach($this->config->item('e___11054') as $LinkType => $m){
+        if(is_array($this->config->item('e___'.$LinkType))){
+            echo ' var js_e___'.$LinkType.' = ' . json_encode($this->config->item('e___'.$LinkType)) . ';';
+            echo ' var js_n___'.$LinkType.' = ' . json_encode($this->config->item('n___'.$LinkType)) . ';';
         }
     }
     echo '</script>';
@@ -460,7 +460,7 @@ if(strlen($live_chat_page_id)>10){
                         echo '<span class="e_cover e_cover_mini menu-cover">' . $e___40904[$i_view]['m__cover'] .'</span>';
                         echo '</button>';
                         echo '<div class="dropdown-menu">';
-                        foreach($e___40904 as $x__type => $m) {
+                        foreach($e___40904 as $LinkType => $m) {
 
                             $superpowers_required = array_intersect($this->config->item('n___10957'), $m['m__following']);
                             if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
@@ -510,7 +510,7 @@ if(strlen($live_chat_page_id)>10){
                     echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_e && strlen($player_e['e__cover']) ? view__cover($player_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
-                    foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
+                    foreach($this->config->item('e___'.$menu_type) as $LinkType => $m) {
 
                         $superpowers_required = array_intersect($this->config->item('n___10957'), $m['m__following']);
                         if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
@@ -525,40 +525,40 @@ if(strlen($live_chat_page_id)>10){
                         $extra_class = null;
                         $text_class = null;
 
-                        if($x__type==26105 && $player_e) {
+                        if($LinkType==26105 && $player_e) {
 
                             //Profile View
                             $m['m__cover'] = view__cover($player_e['e__cover'], 1);
                             $m['m__title'] = '<div class="type_head main__title">'.$player_e['e__title'].'</div><div class="grey type_handle">@'.$player_e['e__handle'].'</div>';
                             $href = 'href="'.view__memory(42903,42902).$player_e['e__handle'].'" ';
 
-                        } elseif($x__type==42246 && $player_e) {
+                        } elseif($LinkType==42246 && $player_e) {
 
                             //Profile Edit
                             $href = 'href="javascript:void(0);" onclick="e_editor_load('.$player_e['e__id'].',0)" ';
 
-                        } elseif($x__type==28615){
+                        } elseif($LinkType==28615){
 
                             //Phone US
-                            $value = website_setting($x__type);
+                            $value = website_setting($LinkType);
                             if(!strlen($value)){
                                 continue;
                             }
                             $href = 'href="tel:'.preg_replace("/[^0-9]/", "", $value).'"';
 
-                        } elseif($x__type==28614){
+                        } elseif($LinkType==28614){
 
                             //Email US
-                            $value = website_setting($x__type);
+                            $value = website_setting($LinkType);
                             if(!strlen($value)){
                                 continue;
                             }
                             $href = 'href="mailto:'.$value.'"';
 
-                        } elseif(in_array($x__type, $this->config->item('n___6287'))){
+                        } elseif(in_array($LinkType, $this->config->item('n___6287'))){
 
                             //APP
-                            $href = 'href="'.view__app_link($x__type).( $x__type==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
+                            $href = 'href="'.view__app_link($LinkType).( $LinkType==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
 
                         } else {
 
@@ -568,7 +568,7 @@ if(strlen($live_chat_page_id)>10){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' x__type="'.$x__type.'" class="dropdown-item dropdown_type_'.$x__type.' main__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' LinkType="'.$LinkType.'" class="dropdown-item dropdown_type_'.$LinkType.' main__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 
@@ -635,7 +635,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $dynamic_edit = '';
     for ($p = 1; $p <= view__memory(6404,42206); $p++) {
-        $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_x__id="">';
+        $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_LinkId="">';
         $dynamic_edit .= '<div class="inner_dynamic">';
         $dynamic_edit .= '<div class="text_content">';
         $dynamic_edit .= '<h3 class="mini-font"></h3>';
@@ -717,16 +717,16 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Statuses</option>';
-                                    foreach($this->config->item('e___6177') /* Source Privacy */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Update Only If = '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('e___6177') /* Source Privacy */ as $LinkType3 => $m3){
+                                        $input_options .= '<option value="'.$LinkType3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status</option>';
-                                    foreach($this->config->item('e___6177') /* Source Privacy */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('e___6177') /* Source Privacy */ as $LinkType3 => $m3){
+                                        $input_options .= '<option value="'.$LinkType3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
@@ -738,16 +738,16 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All</option>';
-                                    foreach($this->config->item('e___6186') /* Interaction Privacy */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Update Only If = '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('e___6186') /* Interaction Privacy */ as $LinkType3 => $m3){
+                                        $input_options .= '<option value="'.$LinkType3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New</option>';
-                                    foreach($this->config->item('e___6186') /* Interaction Privacy */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('e___6186') /* Interaction Privacy */ as $LinkType3 => $m3){
+                                        $input_options .= '<option value="'.$LinkType3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
@@ -758,16 +758,16 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Interaction Types</option>';
-                                    foreach($this->config->item('e___32292') /* Source Links */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Update Only If = '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('e___32292') /* Source Links */ as $LinkType3 => $m3){
+                                        $input_options .= '<option value="'.$LinkType3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status</option>';
-                                    foreach($this->config->item('e___32292') /* Source Links */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('e___32292') /* Source Links */ as $LinkType3 => $m3){
+                                        $input_options .= '<option value="'.$LinkType3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
@@ -933,7 +933,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <input type="hidden" class="created_i__id" value="0" />
                         <input type="hidden" class="save_i__id" value="0" />
-                        <input type="hidden" class="save_x__id" value="0" />
+                        <input type="hidden" class="save_LinkId" value="0" />
                         <input type="hidden" class="next_i__id" value="0" />
                         <input type="hidden" class="previous_i__id" value="0" />
 
@@ -950,10 +950,10 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="creator_box">
                             <?php
                             foreach($this->Mench_ledger->fetch(array(
-                                'x__following' => $player_e['e__id'],
-                                'x__type' => 41011, //PINNED FOLLOWER
-                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
+                                'LinkUp' => $player_e['e__id'],
+                                'LinkType' => 41011, //PINNED FOLLOWER
+                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array('LinkDown'), 0, 0, array('LinkNumber' => 'ASC', 'LinkId' => 'DESC')) as $x_pinned) {
                                 echo '<div class="creator_headline"><span class="icon-block">'.view__cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }
@@ -1029,9 +1029,9 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
                             <!-- Link Note -->
-                            <div class="dynamic_editing_input save_x__frame hidden">
+                            <div class="dynamic_editing_input save_frame hidden">
                                 <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                                <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                                <textarea class="form-control border unsaved_warning save_LinkText" data-lpignore="true" placeholder="..."></textarea>
                             </div>
 
                         </div>
@@ -1063,7 +1063,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="save_results hideIfEmpty alert alert-danger" style="margin:8px 0;"></div>
 
                         <input type="hidden" class="save_e__id" value="0" />
-                        <input type="hidden" class="save_x__id" value="0" />
+                        <input type="hidden" class="save_LinkId" value="0" />
 
 
                         <!-- Source Title -->
@@ -1148,9 +1148,9 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Link Note -->
-                        <div class="dynamic_editing_input save_x__frame hidden">
+                        <div class="dynamic_editing_input save_frame hidden">
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                            <textarea class="form-control border unsaved_warning save_LinkText" data-lpignore="true" placeholder="..."></textarea>
                         </div>
 
 

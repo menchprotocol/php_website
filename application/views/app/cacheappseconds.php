@@ -12,13 +12,13 @@ foreach($this->config->item('e___14599') as $app_e__id => $cache_apps){
 
     //Fetch Last Cache
     $latest_cache = $this->Mench_ledger->fetch(array(
-        'x__type' => 14599, //Cache App
-        'x__following' => $app_e__id,
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    ), array(), 1, 0, array('x__time' => 'DESC'));
+        'LinkType' => 14599, //Cache App
+        'LinkUp' => $app_e__id,
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    ), array(), 1, 0, array('LinkTime' => 'DESC'));
 
     echo '<div class="col-8 main__title"><span class="icon-block">'.$cache_apps['m__cover'].'</span>'.$cache_apps['m__title'].'</div>';
-    echo '<div class="col-4"><i class="far fa-history"></i> '.( count($latest_cache) ? view__time_difference($latest_cache[0]['x__time']) : 'NEVER' ).'</div>';
+    echo '<div class="col-4"><i class="far fa-history"></i> '.( count($latest_cache) ? view__time_difference($latest_cache[0]['LinkTime']) : 'NEVER' ).'</div>';
 
     if(count($latest_cache)){
         $found_cache++;

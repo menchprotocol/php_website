@@ -16,28 +16,28 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             //echo $email.'<hr />';
 
             foreach($this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__following' => 3288, //Email
-                'x__message' => trim(strtolower($email)),
+                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'LinkUp' => 3288, //Email
+                'LinkText' => trim(strtolower($email)),
             )) as $e_data){
 
                 $found_emails++;
 
                 //Do we need to add?
                 if(isset($_POST['import_e__id']) && intval($_POST['import_e__id']) && !count($this->Mench_ledger->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__following' => $_POST['import_e__id'],
-                    'x__follower' => $e_data['x__follower'],
+                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'LinkUp' => $_POST['import_e__id'],
+                    'LinkDown' => $e_data['LinkDown'],
                 )))){
 
                     $added_emails++;
                     $this->Mench_ledger->create(array(
-                        'x__type' => 4251,
-                        'x__player' => $player_e['e__id'],
-                        'x__following' => $_POST['import_e__id'],
-                        'x__follower' => $e_data['x__follower'],
+                        'LinkType' => 4251,
+                        'LinkPlayer' => $player_e['e__id'],
+                        'LinkUp' => $_POST['import_e__id'],
+                        'LinkDown' => $e_data['LinkDown'],
                     ));
 
                 }

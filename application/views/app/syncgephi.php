@@ -38,19 +38,19 @@ foreach($is as $in){
 
     //Fetch Next Ideas:
     foreach($this->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-        'x__previous' => $in['i__id'],
-    ), array('x__next'), 0, 0) as $next_i){
+        'LinkType IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+        'LinkLeft' => $in['i__id'],
+    ), array('LinkRight'), 0, 0) as $next_i){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12273].$next_i['x__previous'],
-            'target' => $id_prefix[12273].$next_i['x__next'],
-            'label' => $e___4593[$next_i['x__type']]['m__title'], //TODO maybe give visibility to condition here?
+            'source' => $id_prefix[12273].$next_i['LinkLeft'],
+            'target' => $id_prefix[12273].$next_i['LinkRight'],
+            'label' => $e___4593[$next_i['LinkType']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_i['x__type'],
-            'edge_status' => $next_i['x__privacy'],
+            'edge_type' => $next_i['LinkType'],
+            'edge_status' => $next_i['LinkPrivacy'],
         ));
 
     }
@@ -74,19 +74,19 @@ foreach($es as $en){
 
     //Fetch followers:
     foreach($this->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__following' => $en['e__id'],
-    ), array('x__follower'), 0, 0) as $e_down){
+        'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'LinkUp' => $en['e__id'],
+    ), array('LinkDown'), 0, 0) as $e_down){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12274].$e_down['x__following'],
-            'target' => $id_prefix[12274].$e_down['x__follower'],
-            'label' => $e___4593[$e_down['x__type']]['m__title'].': '.$e_down['x__message'],
+            'source' => $id_prefix[12274].$e_down['LinkUp'],
+            'target' => $id_prefix[12274].$e_down['LinkDown'],
+            'label' => $e___4593[$e_down['LinkType']]['m__title'].': '.$e_down['LinkText'],
             'weight' => 1,
-            'edge_type' => $e_down['x__type'],
-            'edge_status' => $e_down['x__privacy'],
+            'edge_type' => $e_down['LinkType'],
+            'edge_status' => $e_down['LinkPrivacy'],
         ));
 
     }

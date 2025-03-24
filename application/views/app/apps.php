@@ -8,12 +8,12 @@ $e___6287 = $this->config->item('e___6287'); //APP
 //Start with Featured Apps
 echo '<div class="row">';
 foreach($this->Mench_ledger->fetch(array(
-    'x__following' => 30841, //Featured Apps
-    'x__follower NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkUp' => 30841, //Featured Apps
+    'LinkDown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
+    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__follower'), 0, 0, sort__e()) as $app) {
+), array('LinkDown'), 0, 0, sort__e()) as $app) {
 
     if(!in_array($app['e__id'], $this->config->item('n___6287')) || in_array($app['e__id'], $this->config->item('n___32141'))){ //Hidden Apps?
         continue;
@@ -36,12 +36,12 @@ echo '</div>';
 //List Regular Apps:
 echo '<div class="row">';
 foreach($this->Mench_ledger->fetch(array(
-    'x__following' => 6287, //Featured Apps
-    'x__follower NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkUp' => 6287, //Featured Apps
+    'LinkDown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
+    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__follower'), 0, 0, sort__e()) as $app) {
+), array('LinkDown'), 0, 0, sort__e()) as $app) {
 
     if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?
         continue;

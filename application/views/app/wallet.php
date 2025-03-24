@@ -59,10 +59,10 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                         //Search for sibling If Has Family:
                         if(in_array($e__id2, $this->config->item('n___42792'))){
                             foreach($this->Mench_ledger->fetch(array(
-                                'x__follower' => $headline_link,
-                                'x__type' => 42570, //Family
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            ), array('x__following'), 1) as $sibling){
+                                'LinkDown' => $headline_link,
+                                'LinkType' => 42570, //Family
+                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            ), array('LinkUp'), 1) as $sibling){
                                 echo '<a href="'.view__memory(42903,42902).$sibling['e__handle'].'"><span class="icon-block-sm grey">'.view__cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
                             }
                         }
@@ -99,8 +99,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 <script>
 
-    function x__refresh_gameplay(){
-        $.post("/app/x__refresh_gameplay", {
+    function refresh_gameplay(){
+        $.post("/app/refresh_gameplay", {
             e__handle: '<?= $e__handle ?>',
             i__hashtag: '<?= $i__hashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -124,7 +124,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     $(document).ready(function () {
 
         //Load initial stats:
-        x__refresh_gameplay();
+        refresh_gameplay();
 
         //Watch for click to expand:
         $(".card_frame").click(function (e) {
@@ -135,7 +135,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         //Update stats live:
         $(function () {
-            setInterval(x__refresh_gameplay, js_e___6404[33292]['m__message']);
+            setInterval(refresh_gameplay, js_e___6404[33292]['m__message']);
         });
 
     });

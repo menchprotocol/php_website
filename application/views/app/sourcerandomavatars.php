@@ -3,9 +3,9 @@
 if(isset($_GET['update_u_icons'])){
 
     $base_filters = array(
-        'x__following IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'LinkUp IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
+        'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     );
 
@@ -14,7 +14,7 @@ if(isset($_GET['update_u_icons'])){
     }
 
     $updated = 0;
-    foreach($this->Mench_ledger->fetch($base_filters, array('x__follower'), 0) as $x){
+    foreach($this->Mench_ledger->fetch($base_filters, array('LinkDown'), 0) as $x){
         $updated += $this->Source_cache->update($x['e__id'], array(
             'e__cover' => random_cover(12279),
         ));

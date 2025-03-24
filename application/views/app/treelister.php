@@ -16,11 +16,11 @@ if(!count($list_settings['list_config'][34513])){
 
 
 foreach($this->Mench_ledger->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-    'x__following IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+    'LinkUp IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes
     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $link_i){
+), array('LinkRight'), 0, 0, array('LinkNumber' => 'ASC')) as $link_i){
 
     $list_settings = list_settings($link_i['i__hashtag'], true);
     if(!count($list_settings['query_string_filtered'])){

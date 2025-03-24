@@ -4,19 +4,19 @@ die('Retired for now');
 
 $transaction__id = 0;
 
-foreach($this->Mench_ledger->fetch(array(), array(), 0, 0, array('x__id' => 'ASC')) as $x){
+foreach($this->Mench_ledger->fetch(array(), array(), 0, 0, array('LinkId' => 'ASC')) as $x){
 
     //Update ID
     $transaction__id++;
-    $this->db->where('x__id', $x['x__id']);
+    $this->db->where('LinkId', $x['LinkId']);
     $this->db->update('mench_ledger', array(
-        'x__id' => $transaction__id,
+        'LinkId' => $transaction__id,
     ));
 
     //Update ID Reference:
-    $this->db->where('x__reference', $x['x__id']);
+    $this->db->where('LinkReference', $x['LinkId']);
     $this->db->update('mench_ledger', array(
-        'x__reference' => $transaction__id,
+        'LinkReference' => $transaction__id,
     ));
 
 }

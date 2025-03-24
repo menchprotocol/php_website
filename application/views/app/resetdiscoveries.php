@@ -13,9 +13,9 @@ if(!isset($_GET['confirm'])){
 
     //Fetch their current progress transactions:
     $progress_x = $this->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
-        'x__player' => $focus_e['e__id'],
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'LinkType IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+        'LinkPlayer' => $focus_e['e__id'],
     ), array(), 0);
 
     if(count($progress_x) > 0){
@@ -25,16 +25,16 @@ if(!isset($_GET['confirm'])){
 
         //Log transaction:
         $clear_all_x = $this->Mench_ledger->create(array(
-            'x__message' => $message,
-            'x__type' => 6415,
-            'x__player' => $focus_e['e__id'],
+            'LinkText' => $message,
+            'LinkType' => 6415,
+            'LinkPlayer' => $focus_e['e__id'],
         ));
 
         //Delete all progressions:
         foreach($progress_x as $progress_x){
-            $this->Mench_ledger->update($progress_x['x__id'], array(
-                'x__privacy' => 6173, //Transaction Removed
-                'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
+            $this->Mench_ledger->update($progress_x['LinkId'], array(
+                'LinkPrivacy' => 6173, //Transaction Removed
+                'LinkReference' => $clear_all_x['LinkId'], //To indicate when it was deleted
             ), $focus_e['e__id'], 6415 /* Reset All discoveries */);
         }
 

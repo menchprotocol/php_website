@@ -17,11 +17,11 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 $primary_i = array();
 $secondary_i_list = array();
 foreach($this->Mench_ledger->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 34513, //Pinned
-    'x__following' => $website_id,
+    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'LinkType' => 34513, //Pinned
+    'LinkUp' => $website_id,
     'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
-), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $this_i){
+), array('LinkRight'), 0, 0, array('LinkNumber' => 'ASC', 'LinkId' => 'DESC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
     } else {
@@ -72,11 +72,11 @@ foreach($this->Source_cache->scissor_e($website_id, 14903) as $e_item) {
     //Any Followers?
     $info_item = null;
     foreach($this->Mench_ledger->fetch(array(
-        'x__following' => $e_item['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'LinkUp' => $e_item['e__id'],
+        'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    ), array('x__follower'), 0, 0, array('x__weight' => 'ASC')) as $info_element) {
+    ), array('LinkDown'), 0, 0, array('LinkNumber' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
@@ -86,8 +86,8 @@ foreach($this->Source_cache->scissor_e($website_id, 14903) as $e_item) {
             $info_item .= '<div class="info_box_cover">'.view__cover($info_element['e__cover']).'</div>';
             $info_item .= '<div class="info_box_title main__title">'.$info_element['e__title'].'</div>';
         }
-        if(strlen($info_element['x__message'])){
-            $info_item .= '<div class="info_box_message">'.$info_element['x__message'].'</div>';
+        if(strlen($info_element['LinkText'])){
+            $info_item .= '<div class="info_box_message">'.$info_element['LinkText'].'</div>';
         }
         $info_item .= '</div>';
         $info_item .= '</div>';
@@ -95,8 +95,8 @@ foreach($this->Source_cache->scissor_e($website_id, 14903) as $e_item) {
 
     if($info_item){
         $messages .= '<h2 class="info-head">'.$e_item['e__title'].'</h2>';
-        if(strlen($e_item['x__message'])){
-            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$e_item['x__message'].'</div>';
+        if(strlen($e_item['LinkText'])){
+            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$e_item['LinkText'].'</div>';
         }
         $messages .= '<div class="row justify-content" style="margin-bottom: 89px; padding: 34px 0;">'.$info_item.'</div>';
     }
@@ -135,21 +135,21 @@ $social_ui = null;
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 foreach($this->config->item('e___14036') as $e__id => $m){
     foreach($this->Mench_ledger->fetch(array(
-        'x__following' => $e__id,
-        'x__follower' => $website_id,
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'LinkUp' => $e__id,
+        'LinkDown' => $website_id,
+        'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0) as $social_link){
 
         //Determine link type:
-        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL) && view__url_clean($social_link['x__message'])!=view__url_clean($e___14870[$website_id]['m__message'])){
+        if(filter_var($social_link['LinkText'], FILTER_VALIDATE_URL) && view__url_clean($social_link['LinkText'])!=view__url_clean($e___14870[$website_id]['m__message'])){
             //We made sure not the current website:
-            $social_url = $social_link['x__message'];
-        } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
-            $social_url = 'mailto:'.$social_link['x__message'];
-        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
+            $social_url = $social_link['LinkText'];
+        } elseif(filter_var($social_link['LinkText'], FILTER_VALIDATE_EMAIL)){
+            $social_url = 'mailto:'.$social_link['LinkText'];
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['LinkText'])) > 5){
             //Phone
-            $social_url = phone_href($e__id, $social_link['x__message']);
+            $social_url = phone_href($e__id, $social_link['LinkText']);
         } else {
             //Unknown!
             continue;
