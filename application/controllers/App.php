@@ -3079,15 +3079,26 @@ class App extends CI_Controller
                     'i__id' => $next_i_data['i__id'],
                 )) as $i_next){
 
+                    continue; //TODO Reactivate
+
+                    $some_input_required = count($this->Mench_ledger->fetch(array(
+                        'link_void' => 0, //Not Void
+                        'link_type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                        'link_right' => $i_next['link_right'],
+                        'link_up IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
+                    )));
+
                     //Can we auto-complete?
-                    if(in_array($i_next['i__type'], $this->config->item('n___43039')) || (!strlen($next_i_data['i__text']) && !count($next_i_data['uploaded_media']) && count($this->Mench_ledger->fetch(array(
+                    if(in_array($i_next['i__type'], $this->config->item('n___43039')) || (!strlen($next_i_data['i__text']) && !count($next_i_data['uploaded_media']))){
+                        //Focus Discovery only, so must go to next level:
+                            foreach($this->Mench_ledger->fetch(array(
                                 'link_void' => 0, //Not Void
-                                'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
                                 'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                                 'link_left' => $i_next['i__id'],
-                            ), array('link_right'), 0, 0)))){
-                        //Focus Discovery only, so must go to next level:
-                        continue;
+                            ), array(), 0, 0) as $result){
+                                continue;
+                            }
+
                     }
 
                     //Analyze input:

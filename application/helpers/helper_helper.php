@@ -2906,7 +2906,7 @@ function view__number($number)
 }
 
 
-function view__card_x($x, $has_link_reference = false)
+function view__card_x($x)
 {
 
     $CI =& get_instance();
@@ -2932,14 +2932,8 @@ function view__card_x($x, $has_link_reference = false)
         } elseif(in_array(4367 , $m['m__following']) && isset($x[$e___32088[$e__id]['m__message']]) && intval($x[$e___32088[$e__id]['m__message']])>0){
 
             //TRANSACTION
-            if(!$has_link_reference){
-                foreach($CI->Mench_ledger->fetch(array('link_id' => $x[$e___32088[$e__id]['m__message']])) as $ref_x){
-                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover']. '</span><div class="x-ref hidden x_message_'.$x['link_id'].'">'.view__card_x($ref_x, true).'</div><a class="x_message_'.$x['link_id'].'" href="javascript:void(0);" onclick="$(\'.x_message_'.$x['link_id'].'\').toggleClass(\'hidden\');">View Referenced Transaction</a></div>';
-                }
-            } else {
-                //Simple Reference to avoid Loop:
-                $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['link_time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view__time_difference($x['link_time']) . ' Ago</span></div>';
-            }
+            //Simple Reference to avoid Loop:
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['link_time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view__time_difference($x['link_time']) . ' Ago</span></div>';
 
         } elseif($e__id==4367){
 

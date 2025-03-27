@@ -32,7 +32,6 @@ foreach($is as $in){
         'label' => $in['i__message'],
         'size' => 1,
         'node_type' => 1, //Idea
-        'node_status' => $in['i__type'],
     ));
 
     //Fetch Next Ideas:
