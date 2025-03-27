@@ -65,6 +65,10 @@ foreach($this->Mench_ledger->fetch(array(
     $memory_text .= '$config[\'e___'.$en['link_down'].'\'] = array('.( strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "'.trim($prefix_common_words).'"' : '' )."\n";
     foreach($down__e as $follower){
 
+        if($follower['e__id']<1){
+            continue;
+        }
+
         //Does this have any Pins?
         foreach($this->Mench_ledger->fetch(array(
             'link_up' => $follower['e__id'],
@@ -241,7 +245,6 @@ foreach($this->Mench_ledger->fetch(array(
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         }
     }
-
 
     //Always Have no Input option:
     if(!$special_routes){
