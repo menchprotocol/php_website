@@ -78,7 +78,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             */
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;" title="@'.$m3['m__handle'].'"><a href="'.view__memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
+            echo '<td style="text-align: left;" title="@'.$e__id3.' @'.$m3['m__handle'].'"><a href="'.view__memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
             echo '</tr>';
 
         }
