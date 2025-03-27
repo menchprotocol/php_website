@@ -302,7 +302,7 @@ class Mench_ledger extends CIdea_cache
         }
 
         //We are updating something:
-        $x = $this-Mench_ledger->create(array_merge($before_data[0], $update_columns));
+        $x = $this->Mench_ledger->create(array_merge($before_data[0], $update_columns));
 
         if(isset($x['link_id']) && $x['link_id']>0){
             //Void Old Link:
