@@ -82,24 +82,12 @@ class Source_cache extends CIdea_cache
 
 
 
-        if(!$update_session){
-
-            if(!$is_cookie){
-
-                //Create Cookie:
-                $cookie_time = time();
-                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.view__hash($e['e__id'].$cookie_time);
-                setcookie('auth_cookie', $cookie_val, ($cookie_time + ( 86400 * view__memory(6404,14031))), "/");
-
-            }
-
-            $this->Mench_ledger->create(array(
-                'link_player' => $e['e__id'],
-                'link_type' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* MEMBER SIGN */ ),
-            ));
-
+        if(!$update_session && !$is_cookie){
+            //Create Cookie:
+            $cookie_time = time();
+            $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.view__hash($e['e__id'].$cookie_time);
+            setcookie('auth_cookie', $cookie_val, ($cookie_time + ( 86400 * view__memory(6404,14031))), "/");
         }
-
 
 
 
@@ -443,15 +431,6 @@ class Source_cache extends CIdea_cache
                 ));
             }
 
-
-            //Log transaction new Idea hashtag:
-            $this->Mench_ledger->create(array(
-                'link_player' => $link_player,
-                'link_right' => $add_fields['e__id'],
-                'link_text' => $add_fields['e__handle'],
-                'link_type' => 42169, //Source Generated Handle
-            ));
-
             //Fetch to return the complete source data:
             $es = $this->Source_cache->fetch(array(
                 'e__id' => $add_fields['e__id'],
@@ -466,9 +445,10 @@ class Source_cache extends CIdea_cache
 
             //Ooopsi, something went wrong!
             $this->Mench_ledger->create(array(
-                'link_up' => $link_player,
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => $link_player,
                 'link_text' => 'create() failed to create a new source',
-                'link_type' => 4246, //Platform Bug Reports
                 'link_player' => $link_player,
             ));
             return false;
@@ -615,70 +595,6 @@ class Source_cache extends CIdea_cache
         $this->db->update('cache_sources', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
-        //Do we need to do any additional work?
-        if ($affected_rows > 0 && $link_player > 0) {
-
-            if($external_sync){
-                //Sync algolia:
-                flag_for_search_indexing(12274, $id);
-            }
-
-            //Log modification transaction for every field changed:
-            foreach($update_columns as $key => $value) {
-
-                if ($before_data[0][$key]==$value){
-                    //Nothing changed:
-                    continue;
-                }
-
-                if($link_type){
-
-                    $link_text = update_description($before_data[0][$key], $value);
-
-                } elseif($key=='e__handle') {
-
-                    $link_type = 41983; //Source Handle Update
-                    $link_text = update_description($before_data[0][$key], $value);
-
-                } elseif($key=='e__title') {
-
-                    $link_type = 10646; //Source Title Update
-                    $link_text = update_description($before_data[0][$key], $value);
-
-                } elseif($key=='e__cover') {
-
-                    $link_type = 10653; //Member Updated Cover
-                    $link_text = view__db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
-
-                } else {
-
-                    //Should not log updates since not specifically programmed:
-                    continue;
-
-                }
-
-                //Value has changed, log transaction:
-                $this->Mench_ledger->create(array(
-                    'link_player' => ($link_player > 0 ? $link_player : $id),
-                    'link_type' => $link_type,
-                    'link_down' => $id,
-                    'link_text' => $link_text,
-                ));
-
-            }
-
-        } elseif($affected_rows < 1){
-
-            //This should not happen:
-            $this->Mench_ledger->create(array(
-                'link_down' => $id,
-                'link_type' => 4246, //Platform Bug Reports
-                'link_player' => $link_player,
-                'link_text' => 'update() Failed to update',
-            ));
-
-        }
-
         return $affected_rows;
     }
 
@@ -818,13 +734,6 @@ class Source_cache extends CIdea_cache
             $duplicates_removed = $this->Source_cache->remove_duplicate_links($migrate_s__id);
             $x_adjusted += $duplicates_removed;
 
-            $player_e = superpower_unlocked();
-            $this->Mench_ledger->create(array(
-                'link_player' => ($link_player > 0 ? $link_player : $player_e['e__id'] ),
-                'link_type' => 31784,
-                'link_down' => $migrate_s__id,
-            ));
-
         } else {
 
             //REMOVE TRANSACTIONS
@@ -875,9 +784,6 @@ class Source_cache extends CIdea_cache
             );
 
         }
-
-
-
 
 
         //Basic input validation done, let's continue
@@ -1039,13 +945,6 @@ class Source_cache extends CIdea_cache
 
             }
         }
-
-        //Log mass source edit transaction:
-        $this->Mench_ledger->create(array(
-            'link_player' => $link_player,
-            'link_type' => $action_e__id,
-            'link_down' => $e__id,
-        ));
 
         //Return results:
         return array(

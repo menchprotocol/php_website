@@ -12,8 +12,10 @@ foreach($this->config->item('e___14599') as $app_e__id => $cache_apps){
 
     //Fetch Last Cache
     $latest_cache = $this->Mench_ledger->fetch(array(
-        'link_type' => 14599, //Cache App
-        'link_up' => $app_e__id,
+        'link_domain' => website_setting(0),
+        'link_type' => 44179, //Triggered
+        'link_up' => 14599, //Cache App
+        'link_down' => $app_e__id,
         'link_void' => 0, //Not Void
     ), array(), 1, 0, array('link_time' => 'DESC'));
 

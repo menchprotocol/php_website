@@ -249,16 +249,18 @@ class App extends CI_Controller
                     //Fetch Most Recent Cache:
                     foreach($this->Mench_ledger->fetch(array(
                         'link_domain' => website_setting(0),
-                        'link_type' => 14599, //Cache App
-                        'link_up' => $app_e__id,
-                        'link_down' => $link_down,
-                        'link_left' => $link_left,
-                        'link_right' => $link_right,
-                        'link_time >' => date("Y-m-d H:i:s", (time() - view__memory(6404,14599))),
+                        'link_type' => 44179, //Triggered
+                        'link_up' => 14599, //Cache App
+                        'link_down' => $app_e__id,
                         'link_void' => 0, //Not Void
                     ), array(), 1, 0, array('link_time' => 'DESC')) as $latest_cache){
-                        $ui = $latest_cache['link_text'];
-                        $cache_link_time = '<div class="texttransparent center main__title">Updated ' . view__time_difference($latest_cache['link_time']) . ' Ago</div>';
+                        if(strtotime($latest_cache['link_time']) <= (time() - view__memory(6404,14599))){
+                            //Its expired, void it:
+                            $this->Mench_ledger->update($latest_cache['link_id'], array());
+                        } else {
+                            $ui = $latest_cache['link_text'];
+                            $cache_link_time = '<div class="texttransparent center main__title">Updated ' . view__time_difference($latest_cache['link_time']) . ' Ago</div>';
+                        }
                     }
                 }
 
@@ -318,11 +320,13 @@ class App extends CI_Controller
 
         if($new_cache){
             $cache_x = $this->Mench_ledger->create(array(
+                'link_domain' => website_setting(0),
+                'link_type' => 44179, //Triggered
+                'link_up' => 14599, //Cache App
+                'link_down' => $app_e__id,
+
                 'link_player' => $link_player,
-                'link_type' => 14599, //Cache App
-                'link_up' => $app_e__id,
                 'link_text' => $ui,
-                'link_down' => $link_down,
                 'link_left' => $link_left,
                 'link_right' => $link_right,
             ));
@@ -349,18 +353,11 @@ class App extends CI_Controller
             } elseif(!$this->Mench_ledger->i_has_started($player_e['e__id'], $target_i['i__hashtag'])){
 
                 //Not yet started, add to their starting point:
-                $this->Mench_ledger->create(array(
-                    'link_player' => $player_e['e__id'],
-                    'link_type' => 4235, //Get started
-                    'link_right' => $target_i['i__id'],
-                    'link_left' => $target_i['i__id'],
-                ));
-
-                //Mark as complete:
-                $this->Mench_ledger->mark_complete(i__discovery_link($target_i), $player_e['e__id'], $target_i['i__id'], $target_i);
+                $completion_status = $this->Mench_ledger->mark_complete(4235, $player_e['e__id'], 0, $target_i);
 
                 //Now return next idea:
                 $next__url = $this->Mench_ledger->find_next($player_e['e__id'], $target_i['i__hashtag'], $target_i);
+
                 if($next__url){
                     //Go Next:
                     return redirect_message(view__memory(42903,30795).$target_i['i__hashtag'].'/'.$next__url );
@@ -534,9 +531,9 @@ class App extends CI_Controller
             if(count($data_types)!=1) {
                 //This is strange, we are expecting 1 match only report this:
                 $this->Mench_ledger->create(array(
-                    'link_type' => 4246, //Platform Bug Reports
+                    'link_type' => 44179, //Triggered
+                    'link_up' => 4246, //Platform Bug Reports
                     'link_player' => $player_e['e__id'],
-                    'link_up' => 42179, //Dynamic Input Fields
                     'link_down' => $dynamic_e__id,
                     'link_right' => $i__id,
                     'link_text' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong',
@@ -1419,7 +1416,6 @@ class App extends CI_Controller
                 $this->Mench_ledger->create(array(
                     'link_player' => $player_e['e__id'],
                     'link_number' => $x['link_number'],
-
                     'link_type' => $x['link_type'],
                     'link_up' => $focus_e['e__id'],
                     'link_down' => $x['link_down'],
@@ -1444,7 +1440,6 @@ class App extends CI_Controller
                 $this->Mench_ledger->create(array(
                     'link_player' => $player_e['e__id'],
                     'link_number' => $x['link_number'],
-
                     'link_type' => $x['link_type'],
                     'link_up' => $x['link_up'],
                     'link_down' => $focus_e['e__id'],
@@ -1470,7 +1465,6 @@ class App extends CI_Controller
                 $this->Mench_ledger->create(array(
                     'link_player' => $player_e['e__id'],
                     'link_number' => $x['link_number'],
-
                     'link_type' => $x['link_type'],
                     'link_up' => $focus_e['e__id'],
                     'link_down' => $x['link_down'],
@@ -1790,7 +1784,9 @@ class App extends CI_Controller
                 if(!is_array($this->config->item('e___'.$e_template['e__id']))){
                     //Report Error:
                     $this->Mench_ledger->create(array(
-                        'link_type' => 4246, //Platform Bug Reports
+                        'link_type' => 44179, //Triggered
+                        'link_up' => 4246, //Platform Bug Reports
+                        'link_down' => $e_template['e__id'],
                         'link_text' => 'e_editor_load() ERROR: @'.$e_template['e__id'].' is NOT in memory cache',
                     ));
                     continue;
@@ -1817,10 +1813,10 @@ class App extends CI_Controller
 
                         //This is strange, we are expecting 1 match only report this:
                         $this->Mench_ledger->create(array(
-                            'link_type' => 4246, //Platform Bug Reports
-                            'link_player' => $player_e['e__id'],
-                            'link_up' => 31912, //Edit Source
+                            'link_type' => 44179, //Triggered
+                            'link_up' => 4246, //Platform Bug Reports
                             'link_down' => $dynamic_e__id,
+                            'link_player' => $player_e['e__id'],
                             'link_text' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong',
                         ));
                         continue; //Go to the next dynamic data type
@@ -1828,10 +1824,10 @@ class App extends CI_Controller
                     } elseif ($input_pointer >= view__memory(6404, 42206)) {
                         //Monitor if we ever reach the maximum:
                         $this->Mench_ledger->create(array(
-                            'link_type' => 4246, //Platform Bug Reports
-                            'link_player' => $player_e['e__id'],
-                            'link_up' => 42179, //Dynamic Input Fields
+                            'link_type' => 44179, //Triggered
+                            'link_up' => 4246, //Platform Bug Reports
                             'link_down' => $dynamic_e__id,
+                            'link_player' => $player_e['e__id'],
                             'link_right' => $_POST['e__id'],
                             'link_text' => 'Dynamic Fields Reach their maximum limit of ' . view__memory(6404, 42206) . '  which may require field expansion',
                         ));
@@ -2223,20 +2219,6 @@ class App extends CI_Controller
                     }
                 }
             }
-
-
-            if($_POST['focus__id']==28904){
-
-                //Add special transaction to monitor unsubscribes:
-                if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
-                    $this->Mench_ledger->create(array(
-                        'link_player' => $player_e['e__id'],
-                        'link_type' => 29648, //Communication Downgraded
-                        'link_up' => $_POST['focus__id'],
-                        'link_down' => $_POST['selected_e__id'],
-                    ));
-                }
-            }
         }
 
         $is_required = in_array($_POST['focus__id'], $this->config->item('n___28239')); //Required Settings
@@ -2380,7 +2362,6 @@ class App extends CI_Controller
 
         } else {
 
-
             $_POST['new_account_email'] = trim(strtolower($_POST['new_account_email']));
             if(!filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) && !filter_var($_POST['new_account_email'], FILTER_VALIDATE_EMAIL)){
                 return view__json(array(
@@ -2396,10 +2377,16 @@ class App extends CI_Controller
         //Auth Code:
         $is_authenticated = false;
         foreach($this->Mench_ledger->fetch(array(
-            'link_type' => 32078, //Sign In Key
+            'link_type' => 44179, //Triggered
+            'link_up' => 32078, //Sign In Key
             'link_void' => 0, //Not Void
             'LOWER(link_text) LIKE \''.strtolower($_POST['account_email_phone']).'%\'' => null,
-        ), array(), 1, 0, array('link_id' => 'DESC')) as $sent_key){
+        ), array(), 1, 0, array('link_time' => 'DESC')) as $sent_key){
+            if(strtotime($sent_key['link_time']) <= (time() - 86400)) {
+                //Expired
+                $this->Mench_ledger->update($sent_key['link_id'], array(), $_POST['account_id']); //Code Verified
+                break;
+            }
             $session_key = $this->session->userdata('session_key');
             $key_parts = explode('/', $sent_key, 2);
             if(strlen($session_key) && $key_parts[1]==md5($session_key.$_POST['input_code'])){
@@ -2628,28 +2615,23 @@ class App extends CI_Controller
             dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $link_player, array(), 0, 0, false);
 
 
-            //Log new key:
-            $this->Mench_ledger->create(array(
-                'link_player' => $link_player, //Member making request
-                'link_left' => intval($_POST['sign_i__id']),
-                'link_type' => 32078, //Sign In Key
-                'link_text' => $_POST['account_email_phone'].'/'.md5($session_key.$passcode),
-            ));
 
         } elseif($possible_phone) {
 
             //SMS:
             dispatch_sms($_POST['account_email_phone'], $html_message, 0, array(), 0, 0, false);
 
-            //Log new key:
-            $this->Mench_ledger->create(array(
-                'link_player' => $link_player, //Member making request
-                'link_left' => intval($_POST['sign_i__id']),
-                'link_type' => 32078, //Sign In Key
-                'link_text' => $_POST['account_email_phone'].'/'.md5($session_key.$passcode),
-            ));
-
         }
+
+        //Log new key:
+        $this->Mench_ledger->create(array(
+            'link_type' => 44179, //Triggered
+            'link_up' => 32078, //Sign In Key
+            'link_down' => $link_player, //Member making request
+            'link_player' => $link_player, //Member making request
+            'link_left' => intval($_POST['sign_i__id']),
+            'link_text' => $_POST['account_email_phone'].'/'.md5($session_key.$passcode),
+        ));
 
         return view__json(array(
             'status' => 1,
@@ -3197,66 +3179,6 @@ class App extends CI_Controller
 
     }
 
-    function x_link_toggle(){
-
-        //Authenticate Member:
-        $player_e = superpower_unlocked(null, 0, $this->player_e);
-        if (!$player_e) {
-
-            return view__json(array(
-                'status' => 0,
-                'message' => view__unauthorized_message(),
-            ));
-
-        } elseif (!isset($_POST['i__id'])) {
-
-            return view__json(array(
-                'status' => 0,
-                'message' => 'Missing Idea ID',
-            ));
-
-        } elseif (!isset($_POST['link_type'])) {
-
-            return view__json(array(
-                'status' => 0,
-                'message' => 'Missing Type',
-            ));
-
-        } elseif (!isset($_POST['target_i__id'])) {
-
-            return view__json(array(
-                'status' => 0,
-                'message' => 'Missing Top Idea ID',
-            ));
-
-        }
-
-        $is = $this->Idea_cache->fetch(array(
-            'i__id' => $_POST['i__id'],
-        ));
-        if (!count($is)) {
-            return view__json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea ID',
-            ));
-        }
-
-        //Save IDEA:
-        $x = $this->Mench_ledger->create(array(
-            'link_player' => $player_e['e__id'],
-            'link_up' => $player_e['e__id'],
-            'link_left' => $_POST['target_i__id'],
-            'link_right' => $_POST['i__id'],
-            'link_type' => $_POST['link_type'],
-        ));
-
-        //All Good:
-        return view__json(array(
-            'status' => 1,
-            'link_id' => $x['link_id'],
-        ));
-
-    }
 
     function x_remove(){
 

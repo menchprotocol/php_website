@@ -18,11 +18,6 @@ class Idea_cache extends CIdea_cache
     function create($add_fields, $link_player = 14068)
     {
 
-        if(!isset($add_fields['i__type']) || !in_array($add_fields['i__type'], $this->config->item('n___4737'))){
-            //Statement is the default Source Reference:
-            $add_fields['i__type'] = 6677;
-        }
-
         //Auto generate a Hashtag if needed:
         if(!isset($add_fields['i__hashtag'])){
             $add_fields['i__hashtag'] = random_string(13);
@@ -39,20 +34,14 @@ class Idea_cache extends CIdea_cache
         if (!$add_fields['i__id']) {
             //Ooopsi, something went wrong!
             $this->Mench_ledger->create(array(
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => $link_player,
                 'link_text' => 'i->create() failed to create a new idea',
-                'link_type' => 4246, //Platform Bug Reports
                 'link_player' => $link_player,
             ));
             return false;
         }
-
-        //Log transaction new Idea hashtag:
-        $this->Mench_ledger->create(array(
-            'link_player' => $link_player,
-            'link_right' => $add_fields['i__id'],
-            'link_text' => $add_fields['i__hashtag'],
-            'link_type' => 42168, //Idea Generated Hashtag
-        ));
 
         //Sync messages:
         $view_sync_links = view__sync_links($add_fields['i__message'], true, $add_fields['i__id']);
@@ -73,34 +62,26 @@ class Idea_cache extends CIdea_cache
             'link_type' => 41011, //PINNED FOLLOWER
             'link_void' => 0, //Not Void
         ), array('link_down'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC'));
-        $link_type = ( count($pinned_followers) ? 4250 /* 4983 */ : 4250 ); //If it has pinned, they would be primary author...
 
         //Add if not added as the author:
-        if(!count($this->Mench_ledger->fetch(array(
-            'link_type' => $link_type,
+        $this->Mench_ledger->create(array(
+            'link_type' => 4250,
+            'link_player' => $link_player,
             'link_up' => $link_player,
             'link_right' => $add_fields['i__id'],
-            'link_void' => 0, //Not Void
-        )))){
-            $this->Mench_ledger->create(array(
-                'link_type' => $link_type,
-                'link_player' => $link_player,
-                'link_up' => $link_player,
-                'link_right' => $add_fields['i__id'],
-            ));
-        }
+        ));
 
         //Also append all pinned followers:
         $link_number = 0;
         foreach($pinned_followers as $x_pinned) {
             if(!in_array($x_pinned['e__id'], $e_appended) && !count($this->Mench_ledger->fetch(array(
-                    'link_type' => 4250, //Lead Author
+                    'link_type' => 4983, //Idea Created
                     'link_up' => $x_pinned['e__id'],
                     'link_right' => $add_fields['i__id'],
                     'link_void' => 0, //Not Void
                 )))){
                 $this->Mench_ledger->create(array(
-                    'link_type' => 4250, //Lead Author
+                    'link_type' => 4983, //Idea Created
                     'link_up' => $x_pinned['e__id'],
                     'link_right' => $add_fields['i__id'],
                     'link_player' => $link_player,
@@ -152,101 +133,25 @@ class Idea_cache extends CIdea_cache
 
         return $results;
 
-
     }
 
 
-    function update($id, $update_columns, $external_sync = false, $link_player = 0, $link_type = 0)
+    function update($id, $update_columns, $external_sync = false)
     {
 
-        $id = intval($id);
         if (count($update_columns)==0) {
+            //Delete from cache:
             return false;
         }
 
-        //Fetch current Idea filed values so we can compare later on after we've updated it:
-        if($link_player > 0){
-            $before_data = $this->Idea_cache->fetch(array('i__id' => $id));
-        }
-
         //Update:
-        $this->db->where('i__id', $id);
+        $this->db->where('i__id', intval($id));
         $this->db->update('cache_ideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
-        //Do we need to do any additional work?
-        if ($affected_rows > 0 && $link_player > 0) {
-
-            //Unlike source modification, we require a member source ID to log the modification transaction:
-            //Log modification transaction for every field changed:
-            foreach($update_columns as $key => $value) {
-
-                if ($before_data[0][$key]==$value){
-                    //Nothing changed:
-                    continue;
-                }
-
-                //Assume no SOURCE LINKS unless specifically defined:
-                $link_down = 0;
-                $link_up = 0;
-
-
-                if($link_type) {
-
-                    $link_text = update_description($before_data[0][$key], $value);
-
-                } elseif($key=='i__hashtag') {
-
-                    $link_type = 41982; //Idea updated Handle
-                    $link_text = update_description($before_data[0][$key], $value);
-
-                } elseif($key=='i__message') {
-
-                    $link_type = 10644; //Idea updated Outcome
-                    $link_text = update_description($before_data[0][$key], $value);
-
-                } elseif($key=='i__type'){
-
-                    $link_type = 10648; //Idea updated Status
-                    $e___4737 = $this->config->item('e___4737'); //Source References
-                    $link_text = view__db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m__title'] . '] to [' . $e___4737[$value]['m__title'] . ']';
-                    $link_up = $value;
-                    $link_down = $before_data[0][$key];
-
-                } else {
-
-                    //Should not log updates since not specifically programmed:
-                    continue;
-
-                }
-
-                //Value has changed, log transaction:
-                $this->Mench_ledger->create(array(
-                    'link_player' => $link_player,
-                    'link_type' => $link_type,
-                    'link_right' => $id,
-                    'link_down' => $link_down,
-                    'link_up' => $link_up,
-                    'link_text' => $link_text,
-                ));
-
-            }
-
-            if($external_sync){
-                //Sync algolia:
-                flag_for_search_indexing(12273, $id);
-            }
-
-        } elseif($affected_rows < 1){
-
-            //This should not happen:
-            $this->Mench_ledger->create(array(
-                'link_right' => $id,
-                'link_type' => 4246, //Platform Bug Reports
-                'link_player' => $link_player,
-                'link_text' => 'update() Failed to update',
-            ));
-
+        if($affected_rows && $external_sync){
+            //Sync algolia:
+            flag_for_search_indexing(12273, $id);
         }
 
         return $affected_rows;
@@ -328,11 +233,6 @@ class Idea_cache extends CIdea_cache
             $x_adjusted += $affected_link_left;
 
             $player_e = superpower_unlocked();
-            $this->Mench_ledger->create(array(
-                'link_player' => ($link_player > 0 ? $link_player : $player_e['e__id'] ),
-                'link_type' => 26785, //idea Link Migrated
-                'link_left' => $migrate_s__id,
-            ));
 
         } else {
 
@@ -348,7 +248,7 @@ class Idea_cache extends CIdea_cache
         }
 
         //Delete Idea:
-        $this->Idea_cache->update($i__id, array(), true, $link_player);
+        $this->Idea_cache->update($i__id, array(), $link_player);
 
         //Update Search Index?
         if(0){
@@ -672,7 +572,7 @@ class Idea_cache extends CIdea_cache
                     if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
 
                         $e_mapper = array(
-                            12591 => 4983,  //Sources
+                            12591 => 4983,  //Co-Author
                             27985 => 27984, //Include If Has ANY
                             27082 => 26600, //Exclude If Has ALL
                             27084 => 7545,  //Following Add
@@ -762,8 +662,10 @@ class Idea_cache extends CIdea_cache
 
         //Log mass source edit transaction:
         $this->Mench_ledger->create(array(
+            'link_type' => 44179, //Triggered
+            'link_up' => $action_e__id,
+            'link_down' => $link_player,
             'link_player' => $link_player,
-            'link_type' => $action_e__id,
             'link_right' => $i__id,
             'link_text' => array(
                 'payload' => $_POST,

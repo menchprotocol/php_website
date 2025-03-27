@@ -13,7 +13,6 @@ class Mench_ledger extends CIdea_cache
         parent::__construct();
     }
 
-
     function create($add_fields, $external_sync = false)
     {
 
@@ -29,8 +28,10 @@ class Mench_ledger extends CIdea_cache
 
         if(!in_array($add_fields['link_type'], $this->config->item('n___4593'))){
             $this->Mench_ledger->create(array(
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => $add_fields['link_type'],
                 'link_text' => 'x->create() failed to create because of invalid transaction type @'.$add_fields['link_type'],
-                'link_type' => 4246, //Platform Bug Reports
                 'link_player' => $add_fields['link_player'],
             ));
             return false;
@@ -79,7 +80,9 @@ class Mench_ledger extends CIdea_cache
 
             //This should not happen:
             $this->Mench_ledger->create(array(
-                'link_type' => 4246, //Platform Bug Reports
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => $add_fields['link_player'],
                 'link_player' => $add_fields['link_player'],
                 'link_text' => 'create() Failed to create',
             ));
@@ -299,7 +302,7 @@ class Mench_ledger extends CIdea_cache
         }
 
         //We are updating something:
-        $x = $this->Mench_ledger->create(array_merge($before_data[0], $update_columns));
+        $x = $this-Mench_ledger->create(array_merge($before_data[0], $update_columns));
 
         if(isset($x['link_id']) && $x['link_id']>0){
             //Void Old Link:
@@ -370,7 +373,6 @@ class Mench_ledger extends CIdea_cache
             $status = $this->Mench_ledger->update($link_id, array(
                 'link_type' => $new_e__id,
             ), $player_e['e__id']);
-
 
         } elseif($element_id==42795 && $o__id > 0 && $new_e__id && $player_e){
 
@@ -555,9 +557,10 @@ class Mench_ledger extends CIdea_cache
 
             //Log Report:
             $this->Mench_ledger->create(array(
-                'link_type' => 4246, //Platform Bug Reports
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => 29399,
                 'link_player' => $e__id,
-                'link_up' => 29399,
                 'link_text' => 'User was recently contacted less than '.$minutes_limit.' minutes ago.',
             ));
 
@@ -659,7 +662,9 @@ class Mench_ledger extends CIdea_cache
             if(in_array($x['e__handle'], $wacth_repeat_handles)){
                 //This should not happen! Report bug:
                 $this->Mench_ledger->create(array(
-                    'link_type' => 4246, //Platform Bug Reports
+                    'link_type' => 44179, //Triggered
+                    'link_up' => 4246, //Platform Bug Reports
+                    'link_down' => $x['e__id'],
                     'link_text' => 'send_i_mass_dm() Detected duplicate Source Handle Bug: '.$x['e__handle'],
                 ));
                 break; //Stop sending more messages!
@@ -672,7 +677,9 @@ class Mench_ledger extends CIdea_cache
             if(!isset($x['e__id'])){
                 //Invalid input for sending:
                 $this->Mench_ledger->create(array(
-                    'link_type' => 4246, //Platform Bug Reports
+                    'link_type' => 44179, //Triggered
+                    'link_up' => 4246, //Platform Bug Reports
+                    'link_down' => 26582, //Messener
                     'link_text' => 'send_i_mass_dm() Invalid user row',
                 ));
                 continue;
@@ -906,8 +913,10 @@ class Mench_ledger extends CIdea_cache
 
         if(!$link_player || !in_array($link_type, $this->config->item('n___31777'))){
             $this->Mench_ledger->create(array(
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => $link_player,
                 'link_player' => $link_player,
-                'link_type' => 4246, //Platform Bug Reports
                 'link_text' => 'mark_complete() Invalid link_type @'.$link_type.' missing in @31777 OR Missing $link_player',
             ));
             return array(
@@ -979,7 +988,6 @@ class Mench_ledger extends CIdea_cache
                     //Create a new response:
                     $i_new = $this->Idea_cache->create(array(
                         'i__message' => $focus_i_data['i__text'],
-                        'i__type' => 6677, //Statement
                     ), $link_player);
 
                     $this_i__id = $i_new['i__id'];

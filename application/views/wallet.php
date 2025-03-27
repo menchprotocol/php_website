@@ -49,34 +49,6 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         }
         foreach($this->config->item('e___'.$e_pinned) as $e__id3 => $m3) {
 
-            /*
-            foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $headline_link){
-                if ($headline_link > 0){
-                    if(!$focus_link_group || $focus_link_group!=$headline_link){
-
-                        echo '<tr class="mobile-shrink">';
-                        echo '<td class="center" colspan="2" title="@'.$e___42263[$headline_link]['m__handle'].'">';
-                        //Search for sibling If Has Family:
-                        if(in_array($e__id2, $this->config->item('n___42792'))){
-                            foreach($this->Mench_ledger->fetch(array(
-                                'link_down' => $headline_link,
-                                'link_type' => 42570, //Family
-                                'link_void' => 0, //Not Void
-                            ), array('link_up'), 1) as $sibling){
-                                echo '<a href="'.view__memory(42903,42902).$sibling['e__handle'].'"><span class="icon-block-sm grey">'.view__cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
-                            }
-                        }
-
-                        echo '<a href="'.view__memory(42903,42902).$e___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$e___42263[$headline_link]['m__cover'].'</span><b class="main__title grey"><u>'.$e___42263[$headline_link]['m__title'].'</u></a>:</b>';
-
-                        echo '</td>';
-                        echo '</tr>';
-                        $focus_link_group = $headline_link;
-                    }
-                }
-            }
-            */
-
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
             echo '<td style="text-align: left;" title="@'.$e__id3.' @'.$m3['m__handle'].'"><a href="'.view__memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
             echo '</tr>';

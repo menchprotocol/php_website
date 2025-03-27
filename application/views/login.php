@@ -54,10 +54,7 @@ if(superpower_unlocked()) {
     $e___4269 = $this->config->item('e___4269');
     $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
-    $this_attempt = array(
-        'link_type' => ( count($sign_i) ? 7560 : 7561 ),
-        'link_left' => ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ),
-    );
+
 
     $current_sign_i_attempt = array(); //Will try to find this
     $current_sign_i_attempts = $this->session->userdata('sign_i_attempts');
@@ -65,11 +62,9 @@ if(superpower_unlocked()) {
         //See if any of the current sign-in attempts match this:
         foreach($current_sign_i_attempts as $sign_i_attempt){
             $all_match = true;
-            foreach(array('link_left') as $sign_i_attempt_field){
-                if(intval($this_attempt[$sign_i_attempt_field]) != intval($sign_i_attempt[$sign_i_attempt_field])){
-                    $all_match = false;
-                    break;
-                }
+            if(count($sign_i) && $sign_i[0]['i__id'] != intval($sign_i_attempt['link_left'])){
+                $all_match = false;
+                break;
             }
             if($all_match){
                 //We found a match!
@@ -84,9 +79,6 @@ if(superpower_unlocked()) {
 
     //See what to do based on current matches:
     if(count($current_sign_i_attempt)==0){
-
-        //Log transaction:
-        $current_sign_i_attempt = $this->Mench_ledger->create($this_attempt);
 
         //Grow the array:
         array_push($current_sign_i_attempts, $current_sign_i_attempt);

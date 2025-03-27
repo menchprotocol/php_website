@@ -2664,49 +2664,6 @@ function e_delete(link_id, link_type) {
 
 
 
-
-function x_link_toggle(link_type, i__id){
-
-    $('.btn_toggle_'+link_type).toggleClass('hidden');
-    var link_id = parseInt($('.btn_control_'+link_type).attr('current_link_id'));
-
-    if(!link_id){
-        //Add:
-        $.post("/app/x_link_toggle", {
-            link_type:link_type,
-            i__id:i__id,
-            target_i__id:$('#target_i__id').val(),
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-        }, function (data) {
-            if (!data.status) {
-                alert(data.message);
-                $('.btn_toggle_'+link_type).toggleClass('hidden');
-            } else {
-                //Update new link ID:
-                $('.btn_control_'+link_type).attr('current_link_id', data.link_id);
-            }
-        });
-    } else {
-        //REMOVE
-        $.post("/app/x_remove", {
-            link_id:link_id,
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-        }, function (data) {
-            //Update UI to confirm with member:
-            if (!data.status) {
-                //There was some sort of an error returned!
-                alert(data.message);
-                $('.btn_toggle_'+link_type).toggleClass('hidden');
-            } else {
-                //Update new link ID:
-                $('.btn_control_'+link_type).attr('current_link_id', 0);
-            }
-        });
-    }
-}
-
-
-
 function validURL(str) {
     return str && str.length && str.substring(0, 4)=='http';
 }

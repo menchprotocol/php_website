@@ -83,7 +83,9 @@ if(count($fetch_phones) && strlen($fetch_phones[0]['link_text'])>=8) {
 if(!$set_email){
     //No Valid email:
     $this->Mench_ledger->create(array(
-        'link_type' => 4246, //Platform Bug Reports
+        'link_type' => 44179, //Triggered
+        'link_up' => 4246, //Platform Bug Reports
+        'link_down' => $player_e['e__id'],
         'link_player' => $player_e['e__id'],
         'link_right' => $_POST['focus__id'],
         'link_text' => 'No Valid email found for invoice',

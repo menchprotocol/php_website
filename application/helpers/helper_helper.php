@@ -263,12 +263,12 @@ function reset_cache($link_player){
     $CI =& get_instance();
     $count = 0;
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type' => 14599, //Cache App
-        'link_up IN (' . join(',', $CI->config->item('n___14599')) . ')' => null, //Cache Apps
-        'link_time >' => date("Y-m-d H:i:s", (time() - view__memory(6404,14599))),
+        'link_type' => 44179, //Triggered
+        'link_up' => 14599, //Cache App
+        'link_down >' => 0,
         'link_void' => 0, //Not Void
     )) as $delete_cahce){
-        //Delete email:
+        //Void:
         $count += $CI->Mench_ledger->update($delete_cahce['link_id'], array(), $link_player);
     }
     return $count;
@@ -444,11 +444,14 @@ function redirect_message($url, $message = null, $log_error = false)
     }
 
     if($log_error){
+        $player_id = ( $player_e ? $player_e['e__id'] : 14068 );
         //Log thie error:
         $CI->Mench_ledger->create(array(
+            'link_type' => 44179, //Triggered
+            'link_up' => 4246, //Platform Bug Reports
+            'link_down' => $player_id,
             'link_text' => $url.' '.stripslashes($message),
-            'link_type' => 4246, //Platform Bug Reports
-            'link_player' => ( $player_e ? $player_e['e__id'] : 0 ),
+            'link_player' => $player_id,
         ));
     }
 
@@ -898,11 +901,11 @@ function i_startable($i, $link_player = 0){
         'link_void' => 0, //Not Void
         'link_player' => $link_player,
         'link_type' => 4235, //Get started
-        'link_right' => $i['i__id'],
+        'link_left' => $i['i__id'],
     ))) : count($CI->Mench_ledger->fetch(array(
         'link_void' => 0, //Not Void
         'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-        'link_right' => $i['i__id'],
+        'link_left' => $i['i__id'],
         'link_up' => 4235,
     ))) );
 }
@@ -1147,7 +1150,9 @@ function process_media($i__id, $uploaded_media){
                     $added_e = $CI->Source_cache->verify_create($upload_media['e__title'], $player_e['e__id'], ( $upload_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover'] ), true);
                     if(!$added_e['status']){
                         $CI->Mench_ledger->create(array(
-                            'link_type' => 4246, //Platform Bug Reports
+                            'link_type' => 44179, //Triggered
+                            'link_up' => 4246, //Platform Bug Reports
+                            'link_down' => $upload_media['e__id'],
                             'link_text' => 'Failed to create a new source for ['.$upload_media['e__title'].'] with cover ['.$upload_media['e__cover'].']',
                         ));
                         continue;
@@ -1200,14 +1205,16 @@ function process_media($i__id, $uploaded_media){
                                 $added_child = $CI->Source_cache->verify_create($target_variable, 14068);
                                 if(!$added_child['status']){
                                     $CI->Mench_ledger->create(array(
-                                        'link_type' => 4246, //Platform Bug Reports
+                                        'link_type' => 44179, //Triggered
+                                        'link_up' => 4246, //Platform Bug Reports
+                                        'link_down' => $link_type,
                                         'link_text' => 'Failed to create a new source for ['.$target_variable.']',
                                     ));
                                     continue;
                                 }
 
                                 //Add links for this new source:
-                                $CI->Mench_ledger->create(array(
+                                $CI-Mench_ledger->create(array(
                                     'link_player' => $player_e['e__id'],
                                     'link_up' => $link_type,
                                     'link_down' => $added_child['new_e']['e__id'],
@@ -1221,7 +1228,7 @@ function process_media($i__id, $uploaded_media){
 
                             if($child_id){
                                 //Child source found, simply link:
-                                $CI->Mench_ledger->create(array(
+                                $CI-Mench_ledger->create(array(
                                     'link_player' => $player_e['e__id'],
                                     'link_up' => $child_id,
                                     'link_down' => $upload_media['e__id'],
@@ -1232,7 +1239,7 @@ function process_media($i__id, $uploaded_media){
                         } else {
 
                             //Save variable as is:
-                            $CI->Mench_ledger->create(array(
+                            $CI-Mench_ledger->create(array(
                                 'link_player' => $player_e['e__id'],
                                 'link_up' => $link_type,
                                 'link_down' => $upload_media['e__id'],
@@ -1255,7 +1262,7 @@ function process_media($i__id, $uploaded_media){
                         'link_type' => $upload_media['media_e__id'],
                         'link_void' => 0, //Not Void
                     )))){
-                        $CI->Mench_ledger->create(array(
+                        $CI-Mench_ledger->create(array(
                             'link_player' => $player_e['e__id'],
                             'link_right' => $i__id,
                             'link_up' => $upload_media['e__id'],
@@ -1273,7 +1280,7 @@ function process_media($i__id, $uploaded_media){
                         'link_type IN (' . join(',', $CI->config->item('n___42657')) . ')' => null, //Uploads
                         'link_void' => 0, //Not Void
                     )))){
-                        $CI->Mench_ledger->create(array(
+                        $CI-Mench_ledger->create(array(
                             'link_player' => $player_e['e__id'],
                             'link_up' => $player_e['e__id'],
                             'link_down' => $upload_media['e__id'],
@@ -1290,7 +1297,7 @@ function process_media($i__id, $uploaded_media){
                         'link_type' => 4251,
                         'link_void' => 0, //Not Void
                     )))){
-                        $CI->Mench_ledger->create(array(
+                        $CI-Mench_ledger->create(array(
                             'link_player' => $player_e['e__id'],
                             'link_up' => $upload_media['media_e__id'],
                             'link_down' => $upload_media['e__id'],
@@ -1366,7 +1373,7 @@ function append_source($link_up, $link_player, $link_text, $i__id){
     } else {
 
         //Create transaction:
-        $CI->Mench_ledger->create(array(
+        $CI-Mench_ledger->create(array(
             'link_type' => 4251, //Follow Source
             'link_text' => $link_text,
             'link_player' => $link_player,
@@ -1430,7 +1437,9 @@ function data_type_validate($data_type, $data_value, $data_title = null){
     } elseif(in_array($data_type, $CI->config->item('n___42188'))){
         //Single Choice of Multi Choice source types should not be validated here
         $CI->Mench_ledger->create(array(
-            'link_type' => 4246, //Platform Bug Reports
+            'link_type' => 44179, //Triggered
+            'link_up' => 4246, //Platform Bug Reports
+            'link_down' => $data_type,
             'link_text' => 'data_type_validate() was asked to validate choice options for @'.$data_type.' ['.$data_value.'] ['.$data_title.']',
         ));
     }
@@ -1718,8 +1727,10 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
         //No way to send an SMS:
         if($log_tr){
             $CI->Mench_ledger->create(array(
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => $e__id,
                 'link_text' => 'dispatch_sms() missing either: '.$twilio_account_sid.' / '.$twilio_auth_token.' / '.$twilio_from_number,
-                'link_type' => 4246, //Platform Bug Reports
                 'link_player' => $e__id,
                 'link_domain' => $link_domain,
             ));
@@ -1757,12 +1768,34 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
 
     //Log transaction:
     if($log_tr){
-        $CI->Mench_ledger->create(array_merge($x_data, array(
-            'link_type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
-            'link_player' => $e__id,
-            'link_text' => $single_message,
-            'link_right' => $template_i__id,
-        )));
+
+        $target_source = ( $sms_success ? 27676 : 27678 );
+        $player_e = superpower_unlocked();
+        $e__id = ( $e__id>0 ? $e__id : ( $player_e ? $player_e['e__id'] : 14068 ) );
+        if($template_i__id && count($CI->Idea_cache->fetch(array(
+                'i__id' => $template_i__id,
+            )))){
+            foreach($CI->Idea_cache->fetch(array(
+                'i__id' => $template_i__id,
+            )) as $i_template){
+                $CI->Mench_ledger->mark_complete($target_source, $e__id, 0, $i_template, array(), array(
+                    'link_text' => $single_message,
+                ));
+            }
+        } elseif($e__id>0) {
+
+            $CI->Mench_ledger->create(array_merge($x_data, array(
+                'link_type' => 44179, //Triggered
+                'link_up' => $target_source,
+                'link_down' => $e__id,
+                'link_player' => $e__id,
+                'link_text' => $single_message,
+                'link_right' => $template_i__id,
+            )));
+        }
+
+
+
     }
 
     return true;
@@ -1779,7 +1812,9 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
         $domain_name = 'MENCH';
         $domain_name = 'support@mench.com';
         $CI->Mench_ledger->create(array(
-            'link_type' => 4246, //Platform Bug Reports
+            'link_type' => 44179, //Triggered
+            'link_up' => 4246, //Platform Bug Reports
+            'link_down' => $e__id,
             'link_text' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
         ));
     }
@@ -1895,14 +1930,30 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     //Log transaction:
     if($log_tr){
 
-        //Let's log a system email as the last resort way to record this transaction:
-        $CI->Mench_ledger->create(array_merge($x_data, array(
-            'link_type' => 29399,
-            'link_right' => $template_i__id,
-            'link_player' => $e__id,
-            'link_text' => $subject."\n\n".$email_message,
-        )));
+        $player_e = superpower_unlocked();
+        $e__id = ( $e__id>0 ? $e__id : ( $player_e ? $player_e['e__id'] : 14068 ) );
+        if($template_i__id && count($CI->Idea_cache->fetch(array(
+                'i__id' => $template_i__id,
+            )))){
+            foreach($CI->Idea_cache->fetch(array(
+                'i__id' => $template_i__id,
+            )) as $i_template){
+                $CI->Mench_ledger->mark_complete(29399, $e__id, 0, $i_template, array(), array(
+                    'link_text' => $subject."\n".$email_message,
+                ));
+            }
+        } elseif($e__id>0) {
 
+            $CI->Mench_ledger->create(array_merge($x_data, array(
+                'link_type' => 44179, //Triggered
+                'link_up' => 29399,
+                'link_down' => $e__id,
+                'link_player' => $e__id,
+                'link_text' => $subject."\n".$email_message,
+                'link_right' => $template_i__id,
+            )));
+        }
+        
         //Can we also mark the discovery as complete?
         if($e__id && isset($x_data['link_left']) && $x_data['link_left']>0 && isset($x_data['link_right'])) {
             foreach ($CI->Idea_cache->fetch(array(
@@ -2774,10 +2825,8 @@ function one_two_explode($one, $two, $str)
 function idea_author($i__id){
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-        'link_right' => $i__id,
-        'link_void' => 0, //Not Void
-    ), array(), 0, 0, array('link_type = \'4250\' DESC' => null)) as $x){
+        'link_id' => $i__id,
+    ), array()) as $x){
         return $x['link_up'];
     }
     $player_e = superpower_unlocked();
@@ -2787,10 +2836,8 @@ function idea_author($i__id){
 function idea_creation_time($i__id){
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-        'link_right' => $i__id,
-        'link_void' => 0, //Not Void
-    ), array(), 0, 0, array('link_type = \'4250\' DESC' => null)) as $x){
+        'link_id' => $i__id,
+    )) as $x){
         return $x['link_time'];
     }
     //Now:
@@ -3025,7 +3072,9 @@ function view__memory($following, $follower, $filed = 'm__message'){
     } else {
         return null;
         $CI->Mench_ledger->create(array(
-            'link_type' => 4246, //Platform Bug Reports
+            'link_type' => 44179, //Triggered
+            'link_up' => 4246, //Platform Bug Reports
+            'link_down' => $following,
             'link_text' => 'view__memory() Failed to load ['.$filed.'] @'.$following.' for @'.$follower,
         ));
     }
@@ -3314,8 +3363,8 @@ function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = t
         $e___11035 = $CI->config->item('e___11035');
         if(!isset($e___11035[$link_type]['m__title'])){
             $CI->Mench_ledger->create(array(
-                'link_type' => 4246, //Platform Bug Reports
-                'link_up' => 11035,
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
                 'link_down' => $link_type,
                 'link_text' => '@'.$link_type.' Missing from Nav @11035',
             ));
@@ -3510,10 +3559,10 @@ function view__instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
     if(!$single_select && !$multi_select){
         //Must be either:
         $CI->Mench_ledger->create(array(
-            'link_type' => 4246, //Platform Bug Reports
+            'link_type' => 44179, //Triggered
+            'link_up' => 4246, //Platform Bug Reports
+            'link_down' => $focus__id,
             'link_text' => 'view__instant_select() @'.$focus__id.' not in single select @33331 or multi select 33332',
-            'link_up' => $focus__id,
-            'link_down' => $down_e__id,
             'link_right' => $right_i__id,
         ));
         return false;
@@ -4581,7 +4630,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
     //Show Creator if any:
     $headline_authors = array();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type' => 4250,
+        'link_type' => 4250, //Idea Created
         'link_right' => $i['i__id'],
         'link_void' => 0, //Not Void
     ), array('link_up')) as $creator){
@@ -5379,7 +5428,9 @@ function view__card_e($link_type, $e, $extra_class = null)
 
     if(!isset($e['e__id']) || !isset($e['e__title'])){
         $CI->Mench_ledger->create(array(
-            'link_type' => 4246, //Platform Bug Reports
+            'link_type' => 44179, //Triggered
+            'link_up' => 4246, //Platform Bug Reports
+            'link_down' => $link_type,
             'link_text' => 'view__card_e() Missing core variables',
         ));
         return 'Missing core variables';
