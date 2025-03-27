@@ -18,6 +18,7 @@ class Idea_cache extends CIdea_cache
     function create($add_fields, $link_player = 14068)
     {
 
+        return false;
         //Auto generate a Hashtag if needed:
         if(!isset($add_fields['i__hashtag'])){
             $add_fields['i__hashtag'] = random_string(13);
@@ -138,6 +139,8 @@ class Idea_cache extends CIdea_cache
 
     function update($id, $update_columns, $external_sync = false)
     {
+
+        return false;
 
         if (count($update_columns)==0) {
             //Delete from cache:

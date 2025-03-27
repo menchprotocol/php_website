@@ -397,6 +397,8 @@ class Source_cache extends CIdea_cache
     function create($add_fields, $link_player = 14068, $skip_creator_link = false)
     {
 
+        return false;
+
         //What is required to create a new Idea?
         if (detect_missing_columns($add_fields, array('e__title'), $link_player)) {
             return false;
@@ -579,6 +581,8 @@ class Source_cache extends CIdea_cache
 
     function update($id, $update_columns, $external_sync = false, $link_player = 0, $link_type = 0)
     {
+
+        return false;
 
         $id = intval($id);
         if (count($update_columns)==0) {
