@@ -25,7 +25,7 @@ class App extends CI_Controller
 
     function load($app_e__id = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 
-        if($_SERVER['REMOTE_ADDR']!='23124124'){
+        if($_SERVER['REMOTE_ADDR']!='73.15.62.97'){
             die('We will be back up shortly... IP '.$_SERVER['REMOTE_ADDR']);
         }
 
