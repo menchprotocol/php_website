@@ -43,6 +43,10 @@ foreach($this->Mench_ledger->fetch(array(
         'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
         ), array('link_down'), 0, 0, sort__e());
 
+    if(!count($down__e)){
+        continue;
+    }
+
 
     $total_nodes += (1 + count($down__e));
     if(count($down__e)>$biggest_source_count){
@@ -54,8 +58,10 @@ foreach($this->Mench_ledger->fetch(array(
     $down_ids = array();
     $down_titles = array();
     foreach($down__e as $follower){
-        array_push($down_ids , $follower['e__id']);
-        array_push($down_titles , $follower['e__title']);
+        if($follower['e__id']>0){
+            array_push($down_ids , $follower['e__id']);
+            array_push($down_titles , $follower['e__title']);
+        }
     }
 
 
