@@ -1214,7 +1214,7 @@ function process_media($i__id, $uploaded_media){
                                 }
 
                                 //Add links for this new source:
-                                $CI-Mench_ledger->create(array(
+                                $CI->Mench_ledger->create(array(
                                     'link_player' => $player_e['e__id'],
                                     'link_up' => $link_type,
                                     'link_down' => $added_child['new_e']['e__id'],
@@ -1228,7 +1228,7 @@ function process_media($i__id, $uploaded_media){
 
                             if($child_id){
                                 //Child source found, simply link:
-                                $CI-Mench_ledger->create(array(
+                                $CI->Mench_ledger->create(array(
                                     'link_player' => $player_e['e__id'],
                                     'link_up' => $child_id,
                                     'link_down' => $upload_media['e__id'],
@@ -1239,7 +1239,7 @@ function process_media($i__id, $uploaded_media){
                         } else {
 
                             //Save variable as is:
-                            $CI-Mench_ledger->create(array(
+                            $CI->Mench_ledger->create(array(
                                 'link_player' => $player_e['e__id'],
                                 'link_up' => $link_type,
                                 'link_down' => $upload_media['e__id'],
@@ -1262,7 +1262,7 @@ function process_media($i__id, $uploaded_media){
                         'link_type' => $upload_media['media_e__id'],
                         'link_void' => 0, //Not Void
                     )))){
-                        $CI-Mench_ledger->create(array(
+                        $CI->Mench_ledger->create(array(
                             'link_player' => $player_e['e__id'],
                             'link_right' => $i__id,
                             'link_up' => $upload_media['e__id'],
@@ -1280,7 +1280,7 @@ function process_media($i__id, $uploaded_media){
                         'link_type IN (' . join(',', $CI->config->item('n___42657')) . ')' => null, //Uploads
                         'link_void' => 0, //Not Void
                     )))){
-                        $CI-Mench_ledger->create(array(
+                        $CI->Mench_ledger->create(array(
                             'link_player' => $player_e['e__id'],
                             'link_up' => $player_e['e__id'],
                             'link_down' => $upload_media['e__id'],
@@ -1297,7 +1297,7 @@ function process_media($i__id, $uploaded_media){
                         'link_type' => 4251,
                         'link_void' => 0, //Not Void
                     )))){
-                        $CI-Mench_ledger->create(array(
+                        $CI->Mench_ledger->create(array(
                             'link_player' => $player_e['e__id'],
                             'link_up' => $upload_media['media_e__id'],
                             'link_down' => $upload_media['e__id'],
@@ -1373,7 +1373,7 @@ function append_source($link_up, $link_player, $link_text, $i__id){
     } else {
 
         //Create transaction:
-        $CI-Mench_ledger->create(array(
+        $CI->Mench_ledger->create(array(
             'link_type' => 4251, //Follow Source
             'link_text' => $link_text,
             'link_player' => $link_player,
