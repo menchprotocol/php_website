@@ -282,7 +282,7 @@ class App extends CI_Controller
             $title .= $e___6287[$app_e__id]['m__title'].' | ';
         }
         //Always Append Website at the end:
-        $title .= get_domain('m__title');
+        $title .= ( $memory_detected ? get_domain('m__title') : 'Loading Memory' ) ;
 
 
 
