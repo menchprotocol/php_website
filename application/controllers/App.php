@@ -200,13 +200,13 @@ class App extends CI_Controller
         $new_cache = false;
         $cache_link_time = null;
         $link_player = ( $player_http_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
-        $skip_i_privacy_check = in_array($app_e__id, $this->config->item('n___43388'));
+        $skip_i_privacy_check = !$memory_detected || in_array($app_e__id, $this->config->item('n___43388'));
         $access_level_e = access_level_e(null, $focus_e['e__id'], $focus_e);
         $access_level_i = access_level_i(null, $focus_i['i__id'], $focus_i);
         $target_access_level_i = access_level_i(null, $target_i['i__id'], $target_i);
 
         //MEMBER REDIRECT?
-        if($player_http_request){
+        if($player_http_request && $memory_detected){
 
             //Missing App, Source or Idea Access?
             $missing_access = false; //Assume they have access
