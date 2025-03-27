@@ -25,7 +25,9 @@ class App extends CI_Controller
 
     function load($app_e__id = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 
-        //die('We will be back up shortly...');
+        if($_SERVER['REMOTE_ADDR']!='23124124'){
+            die('We will be back up shortly... IP '.$_SERVER['REMOTE_ADDR']);
+        }
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
@@ -320,7 +322,6 @@ class App extends CI_Controller
                 'link_type' => 14599, //Cache App
                 'link_up' => $app_e__id,
                 'link_text' => $ui,
-
                 'link_down' => $link_down,
                 'link_left' => $link_left,
                 'link_right' => $link_right,
