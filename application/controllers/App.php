@@ -330,7 +330,7 @@ class App extends CI_Controller
 
 
         //App title?
-        if(in_array($app_e__id, $this->config->item('n___42928'))){
+        if($memory_detected && in_array($app_e__id, $this->config->item('n___42928'))){
             $ui = '<h1>'.$e___6287[$app_e__id]['m__title'].'</h1>'.$ui;
         }
 
