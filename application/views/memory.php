@@ -171,50 +171,83 @@ $routes_text .= "\n";
 $special_route_text = '';
 $routes_text .= '//APPS:'."\n\n";
 
-if($memory_detected){
-    foreach($this->Mench_ledger->fetch(array(
-        'link_up' => 6287, //Apps
-        'link_type IN (' . join(',', ( $memory_detected ? $this->config->item('n___32292') : array() )) . ')' => null, //SOURCE LINKS
-        'link_void' => 0, //Not Void
-    ), array('link_down'), 0, 0, array('e__title' => 'ASC')) as $app) {
+foreach($this->Mench_ledger->fetch(array(
+    'link_up' => 6287, //Apps
+    'link_type IN (' . join(',', ( $memory_detected ? $this->config->item('n___32292') : $n___33337 )) . ')' => null, //SOURCE LINKS
+    'link_void' => 0, //Not Void
+), array('link_down'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
-        $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
-
-        if(in_array($app['e__id'], $this->config->item('n___44330'))){
-            //Source AND Idea Input
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
-        } elseif(in_array($app['e__id'], $this->config->item('n___42905'))){
-            //Source Input
-            if($special_routes){
-                $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
-            } else {
-                $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
-            }
-        } elseif(in_array($app['e__id'], $this->config->item('n___42911'))){
-            //Idea Input
-            if($special_routes){
-                $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
-            } else {
-                $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
-            }
-        } elseif(in_array($app['e__id'], $this->config->item('n___44329'))){
-            //Discoveries Input
-            if($special_routes){
-                $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
-            } else {
-                $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+    if(!$memory_detected){
+        $special_routes = false;
+        foreach($this->Mench_ledger->fetch(array(
+            'link_void' => 0, //Not Void
+            'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+            'link_up' => 42921,
+            'link_down' => $app['e__id'], //Required
+        )) as $route){
+            if(strlen($route['link_text'])>0){
+                $special_routes = $route['link_text'];
             }
         }
-
-
-        //Always Have no Input option:
-        if(!$special_routes){
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
-        }
-
+    } else {
+        $special_routes = ( in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']) ? $e___42921[$app['e__id']]['m__message'] : false );
     }
+
+
+    if(count($this->Mench_ledger->fetch(array(
+            'link_void' => 0, //Not Void
+            'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+            'link_up' => 44330,
+            'link_down' => $app['e__id'], //Required
+        )))){
+        //Source AND Idea Input
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
+    } elseif(count($this->Mench_ledger->fetch(array(
+        'link_void' => 0, //Not Void
+        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'link_up' => 42905,
+        'link_down' => $app['e__id'], //Required
+    )))){
+        //Source Input
+        if($special_routes){
+            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+        }
+    } elseif(count($this->Mench_ledger->fetch(array(
+        'link_void' => 0, //Not Void
+        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'link_up' => 42911,
+        'link_down' => $app['e__id'], //Required
+    )))){
+        //Idea Input
+        if($special_routes){
+            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+        }
+    } elseif(count($this->Mench_ledger->fetch(array(
+        'link_void' => 0, //Not Void
+        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'link_up' => 44329,
+        'link_down' => $app['e__id'], //Required
+    )))){
+        //Discoveries Input
+        if($special_routes){
+            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+        }
+    }
+
+
+    //Always Have no Input option:
+    if(!$special_routes){
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+    }
+
 }
 
 $routes_text .= "\n\n";
