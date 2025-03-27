@@ -17,8 +17,6 @@ class Mench_ledger extends CIdea_cache
     function create($add_fields, $external_sync = false)
     {
 
-        return false; //TODO REMOVE LATER
-
         //Set some defaults:
         if (!isset($add_fields['link_player']) || intval($add_fields['link_player']) < 1) {
             $add_fields['link_player'] = 14068; //GUEST MEMBER
@@ -256,8 +254,6 @@ class Mench_ledger extends CIdea_cache
     }
 
     function update($id, $update_columns, $link_player = 0){
-
-        return false; //TODO REMOVE LATER
 
         //Fetch transaction before updating:
         $before_data = $this->Mench_ledger->fetch(array(
