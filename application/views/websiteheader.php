@@ -306,75 +306,8 @@ if(!$basic_header_footer){
 
 <?php
 
-
-
-
-$i_view = 0;
-$quick_id = 0;
-$discovery_i__hashtag = ( strlen($first_segment) ? ( strlen($second_segment) ? $second_segment : $first_segment ) : 0 );
-if(strlen($discovery_i__hashtag) && superpower_unlocked(12700)) {
-
-    //Ideation Mode:
-    $_GET['i__hashtag'] = $discovery_i__hashtag;
-    $i_view = 30795;
-    $quick_href = view__memory(42903, 33286);
-
-} elseif(!strlen($first_segment) && superpower_unlocked(12700)) {
-
-    //Edit Website Home Page:
-    $quick_href = view__memory(42903, 42902);
-    $quick_id = 33287;
-
-} elseif($e_segment && $e_segment==$e___14870[$website_id]['m__handle']) {
-
-    //Edit Website Home Page:
-    $quick_href = '/?reset_cache=1';
-    $quick_id = 6287;
-
-} elseif(substr($first_segment, 0, 1)=='~') {
-
-    //Ideation Mode:
-    $_GET['i__hashtag'] = substr($first_segment, 1);
-    $i_view = 33286;
-    $quick_href = view__memory(42903, 33286);
-
-} elseif(array_key_exists(strtolower($first_segment), $this->config->item('handle___6287'))) {
-
-    //Source Mode:
-    if(array_key_exists(strtolower($first_segment), $handle___40904) && isset($_GET['i__hashtag'])){
-        $i_view = $handle___40904[strtolower($first_segment)];
-    } else {
-        $quick_id = 33287;
-    }
-    $quick_href = view__memory(42903, 42902);
-
-} elseif($e_segment && array_key_exists(strtolower($e_segment), $this->config->item('handle___6287'))) {
-
-    //App Store:
-    if(array_key_exists(strtolower($e_segment), $handle___40904) && isset($_GET['i__hashtag'])){
-        $i_view = $handle___40904[strtolower($e_segment)];
-    } else {
-        $quick_id = 6287;
-    }
-    $quick_href = view__memory(42903, 6287);
-
-} elseif(isset($_GET['e__handle']) && strlen($_GET['e__handle'])) {
-
-    //Source Mode:
-    $quick_href = view__memory(42903, 42902);
-    $quick_id = 33287;
-
-} elseif(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])) {
-
-    //Ideation Mode:
-    $quick_href = view__memory(42903, 33286);
-    $quick_id = 33286;
-
-}
-
 echo '<body class="'.$body_class.'" id="main_body">';
 echo $bgVideo;
-
 
 //JS Variables for this app on page...
 if ($focus_i){
@@ -390,44 +323,6 @@ if ($focus_i){
 <input type="hidden" id="focus_handle" value="'.$focus_e['e__handle'].'" />
 <input type="hidden" id="focus__id" value="'.$focus_e['e__id'].'" />';
 }
-
-
-
-
-//Load live chat?
-$live_chat_page_id = website_setting(12899);
-if(strlen($live_chat_page_id)>10){
-    ?>
-    <!-- Messenger Chat Plugin Code -->
-    <div id="fb-root"></div>
-    <!-- Your Chat Plugin code -->
-    <div id="fb-customer-chat" class="fb-customerchat" ref="<?= ( $player_e ? $player_e['e__id'] : '' ) ?>">
-    </div>
-    <script>
-        var chatbox = document.getElementById('fb-customer-chat');
-        chatbox.setAttribute("page_id", "<?= $live_chat_page_id ?>");
-    </script>
-    <!-- Your SDK code -->
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                xfbml            : true,
-                version          : 'v15.0'
-            });
-        };
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-    <?php
-}
-
-
-
 
     //Do not show for /sign view
     ?>
@@ -449,43 +344,6 @@ if(strlen($live_chat_page_id)>10){
 
                     echo '</div>';
                     echo '</td>';
-
-
-                    /*
-                    if($i_view > 0){
-                        $e___40904 = $this->config->item('e___40904'); //Idea Views
-                        echo '<td class="block-menu">';
-                        echo '<div class="dropdown inline-block">';
-                        echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                        echo '<span class="e_cover e_cover_mini menu-cover">' . $e___40904[$i_view]['m__cover'] .'</span>';
-                        echo '</button>';
-                        echo '<div class="dropdown-menu">';
-                        foreach($e___40904 as $link_type => $m) {
-
-                            $superpowers_required = array_intersect($this->config->item('n___10957'), $m['m__following']);
-                            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-                                continue;
-                            }
-
-                            $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__following']);
-                            if(count($hosted_domains) && !in_array($website_id, $hosted_domains)){
-                                continue;
-                            }
-
-                            echo '<a href="'.$m['m__message'].$_GET['i__hashtag'].'" class="dropdown-item main__title"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
-
-                        }
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</td>';
-                    }
-
-                    if($quick_id > 0){
-                        echo '<td class="block-x icon_finder"><a href="'.$quick_href.'" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
-                    }
-
-                    */
-
 
                     if(search_enabled() && $player_e){
                         echo '<td class="block-x icon_finder enlarge '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()">'.$e___11035[7256]['m__cover'].'</a></td>';

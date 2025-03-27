@@ -260,8 +260,6 @@ class Mench_ledger extends CIdea_cache
 
     function update($id, $update_columns, $link_player = 0){
 
-        return false;
-
         //Fetch transaction before updating:
         $before_data = $this->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void

@@ -140,10 +140,7 @@ class Idea_cache extends CIdea_cache
     function update($id, $update_columns, $external_sync = false)
     {
 
-        return false;
-
         if (count($update_columns)==0) {
-            //Delete from cache:
             return false;
         }
 

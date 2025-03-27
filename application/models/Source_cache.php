@@ -579,26 +579,19 @@ class Source_cache extends CIdea_cache
         return $flat_items;
     }
 
-    function update($id, $update_columns, $external_sync = false, $link_player = 0, $link_type = 0)
+    function update($id, $update_columns, $external_sync = false)
     {
-
-        return false;
-
-        $id = intval($id);
         if (count($update_columns)==0) {
             return false;
         }
-
-        //Fetch current source filed values so we can compare later on after we've updated it:
-        if($link_player > 0){
-            $before_data = $this->Source_cache->fetch(array('e__id' => $id));
-        }
-
         //Update:
-        $this->db->where('e__id', $id);
+        $this->db->where('e__id', intval($id));
         $this->db->update('cache_sources', $update_columns);
         $affected_rows = $this->db->affected_rows();
-
+        if($affected_rows && $external_sync){
+            //Sync algolia:
+            flag_for_search_indexing(12274, intval($id));
+        }
         return $affected_rows;
     }
 

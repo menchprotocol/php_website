@@ -2,12 +2,22 @@
 
 //view__json($this->Mench_ledger->tree_full_history($focus_i, $focus_e['e__id']));
 
+
+$count = 0;
+foreach($this->Source_cache->fetch(array(
+    'e__id >' => 0,
+), 0) as $e){
+    $count++;
+    echo $count.') @'.$e['e__id']."<hr />";
+}
+
+
 $count = 0;
 foreach($this->Idea_cache->fetch(array(
     'i__id >' => 0,
 ), 0) as $i){
     $count++;
-    echo $count.') '.$i['i__id']."<hr />";
+    echo $count.') #'.$i['i__id']."<hr />";
 }
 
 
@@ -18,3 +28,6 @@ foreach($this->Mench_ledger->fetch(array(
     echo $x['link_id']."<hr />";
 }
 */
+
+//Relations
+
