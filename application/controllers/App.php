@@ -307,7 +307,8 @@ class App extends CI_Controller
 
         if(!$ui){
             //Prep view:
-            $raw_app = $this->load->view(strtolower($e___6287[$app_e__id]['m__handle']), $view_input, true);
+            $app_handler = ( $memory_detected ? strtolower($e___6287[$app_e__id]['m__handle']) : 'memory' );
+            $raw_app = $this->load->view($app_handler, $view_input, true);
             $ui .= $raw_app;
         }
 
