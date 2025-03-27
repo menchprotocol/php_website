@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 $start_time = date("Y-m-d H:i:s");
 $memory_text = '';
 $memory_text .= "<?php\n\n";
@@ -11,18 +9,15 @@ $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed
 $routes_text = $memory_text;
 
 
-if(is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'))){
+if($memory_detected){
 
     //EASY:
-    $n___7357 = $this->config->item('n___7357'); //LIMITED ACCESS
-    $n___7359 = $this->config->item('n___7359');
     $n___33337 = $this->config->item('n___33337');
     $e___42921 = $this->config->item('e___42921');
 
 } else {
 
     //Define Manually (Might need to be updated)
-    $n___7357 = array(41980, 6181, 4755);
     $n___33337 = array(42897, 42849, 42791, 42659, 4251, 42581, 42580, 42579, 42570, 42567, 42554, 42518, 42516, 42440, 42427, 42335, 41011, 32489, 32486, 4230);
 
 }
@@ -175,50 +170,51 @@ $routes_text .= "\n";
 
 $special_route_text = '';
 $routes_text .= '//APPS:'."\n\n";
-foreach($this->Mench_ledger->fetch(array(
-    'link_up' => 6287, //Apps
-    //'link_down NOT IN (' . join(',', $this->config->item('n___42927')) . ')' => null, //Hide App
-    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'link_void' => 0, //Not Void
-), array('link_down'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
-    $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
+if($memory_detected){
+    foreach($this->Mench_ledger->fetch(array(
+        'link_up' => 6287, //Apps
+        'link_type IN (' . join(',', ( $memory_detected ? $this->config->item('n___32292') : array() )) . ')' => null, //SOURCE LINKS
+        'link_void' => 0, //Not Void
+    ), array('link_down'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
-    if(in_array($app['e__id'], $this->config->item('n___44330'))){
-        //Source AND Idea Input
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
-    } elseif(in_array($app['e__id'], $this->config->item('n___42905'))){
-        //Source Input
-        if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
-        } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+        $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
+
+        if(in_array($app['e__id'], $this->config->item('n___44330'))){
+            //Source AND Idea Input
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
+        } elseif(in_array($app['e__id'], $this->config->item('n___42905'))){
+            //Source Input
+            if($special_routes){
+                $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+            } else {
+                $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+            }
+        } elseif(in_array($app['e__id'], $this->config->item('n___42911'))){
+            //Idea Input
+            if($special_routes){
+                $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            } else {
+                $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            }
+        } elseif(in_array($app['e__id'], $this->config->item('n___44329'))){
+            //Discoveries Input
+            if($special_routes){
+                $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            } else {
+                $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            }
         }
-    } elseif(in_array($app['e__id'], $this->config->item('n___42911'))){
-        //Idea Input
-        if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
-        } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+
+
+        //Always Have no Input option:
+        if(!$special_routes){
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
         }
-    } elseif(in_array($app['e__id'], $this->config->item('n___44329'))){
-        //Discoveries Input
-        if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
-        } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
-        }
+
     }
-
-
-    //Always Have no Input option:
-    if(!$special_routes){
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
-    }
-
-
 }
 
 $routes_text .= "\n\n";
