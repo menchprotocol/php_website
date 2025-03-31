@@ -21,16 +21,26 @@ class Idea_cache extends CIdea_cache
         return false;
 
         //Auto generate a Hashtag if needed:
-        if(!isset($add_fields['i__hashtag'])){
-            $add_fields['i__hashtag'] = random_string(13);
+        if(!isset($add_fields['ideahashtag'])){
+            $add_fields['ideahashtag'] = random_string(13);
         }
 
+
+        //Add if not added as the author:
+        $this->Mench_ledger->create(array(
+            'link_type' => 4250,
+            'link_player' => $link_player,
+            'link_up' => $link_player,
+            'link_right' => $add_fields['i__id'],
+        ));
+
+
         //Lets now add:
-        $this->db->insert('cache_ideas', $add_fields);
+        $this->db->insert('cacheideas', $add_fields);
 
         //Fetch inserted id:
-        if (!isset($add_fields['i__id'])) {
-            $add_fields['i__id'] = $this->db->insert_id();
+        if (!isset($add_fields['ideaid'])) {
+            $add_fields['ideaid'] = $this->db->insert_id();
         }
 
         if (!$add_fields['i__id']) {
@@ -64,13 +74,7 @@ class Idea_cache extends CIdea_cache
             'link_void' => 0, //Not Void
         ), array('link_down'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC'));
 
-        //Add if not added as the author:
-        $this->Mench_ledger->create(array(
-            'link_type' => 4250,
-            'link_player' => $link_player,
-            'link_up' => $link_player,
-            'link_right' => $add_fields['i__id'],
-        ));
+
 
         //Also append all pinned followers:
         $link_number = 0;

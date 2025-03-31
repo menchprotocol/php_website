@@ -889,6 +889,8 @@ class Source_cache extends CIdea_cache
 
     function create($e__title, $link_player = 0, $e__cover = null){
 
+        return false;
+
         //Validate Title
         $validate_e__title = validate_e__title($e__title);
         if(!$validate_e__title['status']){
@@ -930,11 +932,11 @@ class Source_cache extends CIdea_cache
         }
 
         //Add to cache:
-        $this->db->insert('cache_sources', array(
-            'e__id' => $x['link_id'],
-            'e__handle' => generate_handle(12274, $validate_e__title['e__title_clean']),
-            'e__cover' => $e__cover,
-            'e__title' => $validate_e__title['e__title_clean'],
+        $this->db->insert('cacheplayers', array(
+            'playerid' => $x['link_id'],
+            'playerhandle' => generate_handle(12274, $validate_e__title['e__title_clean']),
+            'playercover' => $e__cover,
+            'playertext' => $validate_e__title['e__title_clean'],
         ));
 
         //Update Search Index:

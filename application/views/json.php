@@ -18,12 +18,28 @@ foreach($this->Source_cache->fetch(array(
         'link_void' => 0, //Not Void
     ));
 
-    $found += count($creators) ? 1 : 0;
+    //Lets log:
+    $this->db->insert('menchledger', array(
+        'linkid' => $e['e__id'],
+        'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
+        'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", now()) ),
+        'linktext' => $e['e__title'],
+        'linktype' => 4251, //New Source Created
+    ));
 
+    //Add to cache:
+    $this->db->insert('cacheplayers', array(
+        'playerid' => $e['e__id'],
+        'playerexternal' => $e['e__external'],
+        'playernumber' => $e['e__weight'],
+        'playerhandle' => $e['e__handle'],
+        'playercover' => $e['e__cover'],
+        'playertext' => $e['e__title'],
+    ));
 
 }
 
-echo $found.'/'.$count.' Found';
+echo $found.'Updated Found';
 
 /*
 $count = 0;
