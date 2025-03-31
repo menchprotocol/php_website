@@ -63,7 +63,7 @@ foreach($this->Idea_cache->fetch(array(
     //echo $count.') #'.$i['i__id']."<hr />";
 
     $creators = $this->Mench_ledger->fetch(array(
-        'link_right' => $i['i__id'],
+        '(link_right='.$i['i__id'].' OR link_left='.$i['i__id'].')' => null,
         'link_type' => 4250, //Idea References
         'link_void' => 0, //Not Void
     ));
