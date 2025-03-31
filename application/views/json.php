@@ -12,7 +12,7 @@ foreach($this->Source_cache->fetch(array(
     $count++;
     //echo $count.') @'.$e['e__handle'].' @'.$e['e__id'].'<hr />';
 
-    if(count($this->Mench_ledger->fetch(array(
+    if(count($this->Mench_ledger->read(array(
         'linkid' => $e['e__id'],
         'linktype' => 4251, //New Source Created
     )))){
