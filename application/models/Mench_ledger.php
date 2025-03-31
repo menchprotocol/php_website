@@ -312,6 +312,79 @@ class Mench_ledger extends CIdea_cache
 
     }
 
+
+    function read($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null)
+    {
+
+        $this->db->select($select);
+        $this->db->from('menchledger');
+
+        //IDEA JOIN?
+        if (in_array('linkleft', $joins_objects)) {
+            $this->db->join('cacheideas', 'linkleft=ideaid','left');
+        } elseif (in_array('linkright', $joins_objects)) {
+            $this->db->join('cacheideas', 'linkright=ideaid','left');
+        }
+
+        //SOURCE JOIN?
+        if (in_array('linkup', $joins_objects)) {
+            $this->db->join('cacheplayers', 'linkup=playerid','left');
+        } elseif (in_array('linkdown', $joins_objects)) {
+            $this->db->join('cacheplayers', 'linkdown=playerid','left');
+        } elseif (in_array('linktype', $joins_objects)) {
+            $this->db->join('cacheplayers', 'linktype=playerid','left');
+        } elseif (in_array('linkplayer', $joins_objects)) {
+            $this->db->join('cacheplayers', 'linkplayer=playerid','left');
+        }
+
+        foreach($query_filters as $key => $value) {
+            if (!is_null($value)) {
+                $this->db->where($key, $value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+
+        if ($group_by) {
+            $this->db->group_by($group_by);
+        }
+
+        foreach($order_columns as $key => $value) {
+            $this->db->order_by($key, $value);
+        }
+
+        if ($limit > 0) {
+            $this->db->limit($limit, $limit_offset);
+        }
+        $q = $this->db->get();
+        $results = $q->result_array();
+
+
+        //Verify Access to each item:
+        if($select=='*' && isset($_SERVER['SERVER_NAME'])){
+            if(array_intersect(array('linkleft','linkright'), $joins_objects)){
+                //Idea results:
+                $player_e = superpower_unlocked();
+                foreach($results as $key => $value){
+                    if(!access_level_i(null, $value['ideaid'], $value)){
+                        unset($results[$key]); //Remove this option
+                    }
+                }
+            } elseif(array_intersect(array('linkup','linkdown'), $joins_objects)){
+                //Source results:
+                foreach($results as $key => $value){
+                    if(!access_level_e(null, $value['playerid'], $value)){
+                        unset($results[$key]); //Remove this option
+                    }
+                }
+            }
+        }
+
+        return $results;
+
+    }
+
+
     function update($id, $update_columns, $link_player = 0){
 
         //Fetch transaction before updating:

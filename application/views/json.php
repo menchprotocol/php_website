@@ -12,6 +12,13 @@ foreach($this->Source_cache->fetch(array(
     $count++;
     //echo $count.') @'.$e['e__handle'].' @'.$e['e__id'].'<hr />';
 
+    if(count($this->Mench_ledger->fetch(array(
+        'linkid' => $e['e__id'],
+        'linktype' => 4251, //New Source Created
+    )))){
+       continue;
+    }
+
     $creators = $this->Mench_ledger->fetch(array(
         'link_down' => $e['e__id'],
         'link_type IN (4230,4251)' => null, //Idea References
