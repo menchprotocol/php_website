@@ -38,8 +38,8 @@ foreach($this->Source_cache->fetch(array(
     //Add to cache:
     $this->db->insert('cacheplayers', array(
         'playerid' => $e['e__id'],
-        'playerexternal' => $e['e__external'],
-        'playernumber' => $e['e__weight'],
+        'playerexternal' => intval($e['e__external']),
+        'playernumber' => intval($e['e__weight']),
         'playerhandle' => $e['e__handle'],
         'playercover' => $e['e__cover'],
         'playertext' => $e['e__title'],
