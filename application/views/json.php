@@ -23,6 +23,7 @@ foreach($this->Source_cache->fetch(array(
         'linkid' => $e['e__id'],
         'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
         'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", now()) ),
+        'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
         'linktext' => $e['e__title'],
         'linktype' => 4251, //New Source Created
     ));
