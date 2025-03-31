@@ -232,7 +232,7 @@ if(isset($_GET['link_id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'
             if (count($this->Mench_ledger->fetch(array(
                 'link_left' => $i['i__id'],
                 'link_player' => $x['e__id'],
-                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'link_void' => 0, //Not Void
             )))) {
                 //Skip since they already discovered this idea:
@@ -252,7 +252,7 @@ if(isset($_GET['link_id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'
 
                 $discoveries = $this->Mench_ledger->fetch(array(
                     'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'link_player' => $x['e__id'],
                     'link_left' => $down_or['i__id'],
                 ));

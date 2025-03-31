@@ -21,7 +21,7 @@ foreach($this->config->item('e___28917') as $link_type => $m) {
 
                 //Add to subscribers:
                 $this->Mench_ledger->create(array(
-                    'link_type' => 4251,
+                    'link_type' => 4230,
                     'link_player' => $x['link_player'],
                     'link_up' => 4430, //Active Member
                     'link_down' => $x['link_player'],

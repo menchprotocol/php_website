@@ -44,8 +44,6 @@ class Mench_ledger extends CIdea_cache
             $add_fields['link_text'] = null;
         } elseif(is_array($add_fields['link_text'])){
             $add_fields['link_text'] = serialize($add_fields['link_text']);
-        } else {
-            $add_fields['link_text'] = $add_fields['link_text'];
         }
 
         //Set some defaults:
@@ -59,7 +57,7 @@ class Mench_ledger extends CIdea_cache
             $t = microtime(true);
             $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
             $d = new DateTime(date('Y-m-d H:i:s.' . $micro, $t));
-            $add_fields['link_time'] = $d->format("Y-m-d H:i:s.u");
+            $add_fields['link_time'] = $d->format("Y-m-d H:i:s");
         }
 
         //Set some zero defaults if not set:
@@ -181,6 +179,62 @@ class Mench_ledger extends CIdea_cache
                 }
             }
         }
+
+        //Return:
+        return $add_fields;
+
+    }
+
+    function make($add_fields, $external_sync = false)
+    {
+
+        //Set some defaults:
+        if (!isset($add_fields['linkplayer']) || intval($add_fields['linkplayer']) < 1) {
+            $add_fields['linkplayer'] = 14068; //GUEST MEMBER
+        }
+
+        //Only require transaction type:
+        if (detect_missing_columns($add_fields, array('linktype'), $add_fields['linkplayer'])) {
+            return false;
+        }
+
+        if(!in_array($add_fields['linktype'], $this->config->item('n___4593'))){
+            return false;
+        }
+
+        //Set some defaults:
+        if (!isset($add_fields['linktext'])) {
+            $add_fields['linktext'] = null;
+        } elseif(is_array($add_fields['linktext'])){
+            $add_fields['linktext'] = serialize($add_fields['linktext']);
+        }
+
+        //Set some defaults:
+        if (!isset($add_fields['linkdomain']) || $add_fields['linkdomain']<1) {
+            $add_fields['linkdomain'] = website_setting(0, $add_fields['linkplayer']);
+        }
+
+
+        if (!isset($add_fields['linktime']) || is_null($add_fields['linktime'])) {
+            //Time with milliseconds:
+            $t = microtime(true);
+            $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
+            $d = new DateTime(date('Y-m-d H:i:s.' . $micro, $t));
+            $add_fields['linktime'] = $d->format("Y-m-d H:i:s");
+        }
+
+        //Set some zero defaults if not set:
+        foreach(array('linkright', 'linkleft', 'linkdown', 'linkup', 'linknumber') as $dz) {
+            if (!isset($add_fields[$dz])) {
+                $add_fields[$dz] = 0;
+            }
+        }
+
+        //Lets log:
+        $this->db->insert('menchledger', $add_fields);
+
+        //Fetch inserted id:
+        $add_fields['linkid'] = $this->db->insert_id();
 
         //Return:
         return $add_fields;
@@ -688,7 +742,7 @@ class Mench_ledger extends CIdea_cache
             } elseif($ensure_undiscovered && count($this->Mench_ledger->fetch(array(
                 'link_left' => $i['i__id'],
                 'link_player' => $x['e__id'],
-                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'link_void' => 0, //Not Void
             )))){
                 //Already discovered:
@@ -811,7 +865,7 @@ class Mench_ledger extends CIdea_cache
 
             foreach($this->Mench_ledger->fetch(array(
                 'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'link_player' => $link_player,
                 'link_left' => $prev_i['i__id'],
             ), array('link_right')) as $x){
@@ -873,7 +927,7 @@ class Mench_ledger extends CIdea_cache
             //Return this if everything is completed, or if this is incomplete:
             if($target_completed || !count($this->Mench_ledger->fetch(array(
                     'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'link_player' => $e__id,
                     'link_left' => $next_i['i__id'],
                 )))){
@@ -913,10 +967,10 @@ class Mench_ledger extends CIdea_cache
 
     function mark_complete($link_type, $link_player, $target_i__id = 0, $i, $focus_i_data = array(), $x_data = array()) {
 
-        if(!$link_player || !in_array($link_type, $this->config->item('n___31777'))){
+        if(!$link_player || !in_array($link_type, $this->config->item('n___31777' /* DISCOVERIES */ ))){
             $this->Mench_ledger->create(array(
                 'link_type' => 44179, //Triggered
-                'link_up' => 4246, //Platform Bug Reports
+                'link_up' => 4246, //Platform Bug Reports8
                 'link_down' => $link_player,
                 'link_player' => $link_player,
                 'link_text' => 'mark_complete() Invalid link_type @'.$link_type.' missing in @31777 OR Missing $link_player',
@@ -1036,7 +1090,7 @@ class Mench_ledger extends CIdea_cache
         //Make sure not duplicate:
         foreach($this->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             //'link_type NOT IN (' . join(',', $this->config->item('n___31776')) . ')' => null, //Unremovable Discoveries
             'link_left' => ( isset($x_data['link_left']) ? $x_data['link_left'] : 0 ),
             'link_right' => ( isset($x_data['link_right']) ? $x_data['link_right'] : 0 ),
@@ -1108,7 +1162,7 @@ class Mench_ledger extends CIdea_cache
                     //Discovery Forget: Remove all Discoveries made by this user:
                     foreach($this->Mench_ledger->fetch(array(
                         'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+                        'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //DISCOVERIES
                         'link_left' => $i['i__id'],
                         'link_player' => $x_data['link_player'],
                     )) as $remove_x){
@@ -1335,7 +1389,7 @@ class Mench_ledger extends CIdea_cache
         foreach($this->Mench_ledger->fetch(array(
             'link_left' => $i['i__id'],
             'link_player' => $e__id,
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_void' => 0, //Not Void
         ), array(), 1) as $x){
 
@@ -1396,7 +1450,7 @@ class Mench_ledger extends CIdea_cache
         foreach($this->Mench_ledger->fetch(array(
             'link_left' => $i['i__id'],
             'link_player' => $e__id,
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_void' => 0, //Not Void
         ), array(), 1) as $x){
             $i['user_discovered'] = $x;
@@ -1463,7 +1517,7 @@ class Mench_ledger extends CIdea_cache
         //Append Total Discoveries if any:
         $sub_counter = $this->Mench_ledger->fetch(array(
             'link_left' => $i['i__id'],
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_void' => 0, //Not Void
         ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
         $i['i__count_discovery'] = $sub_counter[0]['totals'];
@@ -1510,7 +1564,7 @@ class Mench_ledger extends CIdea_cache
         //Count completed:
         $list_discovered = array();
         foreach($this->Mench_ledger->fetch(array(
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_player' => $e__id, //Belongs to this Member
             'link_left IN (' . join(',', $recursive_down_ids['recursive_i_ids'] ) . ')' => null,
             'link_void' => 0, //Not Void
@@ -1542,7 +1596,7 @@ class Mench_ledger extends CIdea_cache
                 $tree_progress = $this->Mench_ledger->tree_progress($e__id, $expansion_in, $i__level, $loop_breaker_ids);
 
                 if(!$tree_progress && !count($this->Mench_ledger->fetch(array(
-                        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'link_player' => $e__id, //Belongs to this Member
                         'link_left' => $expansion_in['i__id'],
                         'link_void' => 0, //Not Void
@@ -1615,7 +1669,7 @@ class Mench_ledger extends CIdea_cache
             'link_left = link_right' => NULL,
             'LOWER(i__hashtag)' => strtolower($i__hashtag),
             'link_player' => $e__id,
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_void' => 0, //Not Void
         ), array('link_right')));
     }

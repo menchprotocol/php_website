@@ -14,7 +14,7 @@ if(!isset($_GET['confirm'])){
     //Fetch their current progress transactions:
     $progress_x = $this->Mench_ledger->fetch(array(
         'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+        'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //DISCOVERIES
         'link_player' => $focus_e['e__id'],
     ), array(), 0);
 

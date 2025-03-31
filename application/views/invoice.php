@@ -165,7 +165,7 @@ foreach($this->Idea_cache->fetch(array(
         //Delete Old Parent Invoice:
         foreach($this->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_left' => $i['i__id'],
             'link_player' => $player_e['e__id'],
         ), array(), 0) as $x_discovery){
@@ -187,7 +187,7 @@ foreach($this->Idea_cache->fetch(array(
             if(!in_array($x_selection['i__type'], $this->config->item('n___42905'))){
                 foreach($this->Mench_ledger->fetch(array(
                     'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'link_left' => $x_selection['i__id'],
                     'link_player' => $player_e['e__id'],
                 ), array(), 0) as $x_discovery){

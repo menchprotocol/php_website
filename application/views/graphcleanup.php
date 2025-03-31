@@ -72,7 +72,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
             $completed = 0;
             foreach($this->Mench_ledger->fetch(array(
                 'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'link_left' => $is[0]['i__id'],
             ), array(), 0) as $x){
                 if(!count($this->Mench_ledger->fetch(array(
@@ -89,7 +89,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
                         'link_up' => $e_append['e__id'],
                         'link_down' => $x['link_player'],
                         'link_text' => $x['link_text'],
-                        'link_type' => 4251,
+                        'link_type' => 4230,
                     ));
                 }
             }

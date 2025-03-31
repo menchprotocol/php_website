@@ -1390,7 +1390,7 @@ class App extends CI_Controller
 
 
         //Create:
-        $added_e = $this->Source_cache->verify_create($_POST['copy_source_title'], $player_e['e__id'], $fetch_o[0]['e__cover']);
+        $added_e = $this->Source_cache->create($_POST['copy_source_title'], $player_e['e__id'], $fetch_o[0]['e__cover']);
         if(!$added_e['status']){
             //We had an error, return it:
             return view__json($added_e);
@@ -1534,7 +1534,6 @@ class App extends CI_Controller
             //Fetch transaction idea to determine idea type:
             $x_i = $this->Idea_cache->fetch(array(
                 'i__id' => intval($_POST['link_i__id']),
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
             if(count($x_i)==0){
                 //validate Idea:
@@ -1646,7 +1645,7 @@ class App extends CI_Controller
         } else {
 
             //We are creating a new source:
-            $added_e = $this->Source_cache->verify_create($_POST['e_new_string'], $player_e['e__id']);
+            $added_e = $this->Source_cache->create($_POST['e_new_string'], $player_e['e__id']);
             if(!$added_e['status']){
                 //We had an error, return it:
                 return view__json($added_e);
@@ -1698,7 +1697,7 @@ class App extends CI_Controller
             //Create transaction:
             $ur2 = $this->Mench_ledger->create(array(
                 'link_player' => $player_e['e__id'],
-                'link_type' => 4251,
+                'link_type' => 4230,
                 'link_text' => $link_text,
                 'link_down' => $link_down,
                 'link_up' => $link_up,
@@ -2062,7 +2061,7 @@ class App extends CI_Controller
                 //Create Link:
                 $this->Mench_ledger->create(array(
                     'link_player' => $player_e['e__id'],
-                    'link_type' => 4251,
+                    'link_type' => 4230,
                     'link_up' => $dynamic_e__id,
                     'link_down' => $es[0]['e__id'],
                     'link_text' => $dynamic_value,
@@ -2278,7 +2277,7 @@ class App extends CI_Controller
                 $this->Mench_ledger->create(array(
                     'link_player' => $player_e['e__id'],
                     'link_up' => $_POST['selected_e__id'],
-                    'link_type' => 4251,
+                    'link_type' => 4230,
                     'link_down' => $_POST['down_e__id'],
                 ));
             } elseif($_POST['right_i__id']){
@@ -2530,7 +2529,7 @@ class App extends CI_Controller
                             'link_down' => $_POST['link_player'],
                             'link_player' => $player_e['e__id'],
                             'link_text' => $_POST['written_answer'],
-                            'link_type' => 4251,
+                            'link_type' => 4230,
                         ));
 
                         return view__json(array(
@@ -3008,7 +3007,7 @@ class App extends CI_Controller
                     if(!in_array($x_selection['i__type'], $this->config->item('n___42905'))){
                         foreach($this->Mench_ledger->fetch(array(
                             'link_void' => 0, //Not Void
-                            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                             'link_left' => $x_selection['i__id'],
                             'link_player' => $player_e['e__id'],
                         ), array(), 0) as $x_discovery){

@@ -19,6 +19,7 @@ class Idea_cache extends CIdea_cache
     {
 
         return false;
+
         //Auto generate a Hashtag if needed:
         if(!isset($add_fields['i__hashtag'])){
             $add_fields['i__hashtag'] = random_string(13);
@@ -54,7 +55,6 @@ class Idea_cache extends CIdea_cache
 
         //Update Search Index:
         flag_for_search_indexing(12273, $add_fields['i__id']);
-
 
         //Additional sources to be added? Start with creator
         $e_appended = array($link_player);

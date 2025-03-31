@@ -34,7 +34,7 @@ foreach($this->Mench_ledger->fetch($filters, array('link_right'), 0) as $expires
         //Now see if the answer is completed:
         $answer_completed = $this->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //DISCOVERIES
             'link_left' => $x_progress['link_right'],
             'link_player' => $x_progress['e__id'],
         ));
@@ -46,7 +46,7 @@ foreach($this->Mench_ledger->fetch($filters, array('link_right'), 0) as $expires
             $deleted = false;
             foreach($this->Mench_ledger->fetch(array(
                 'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //DISCOVERIES
                 'link_left' => $expires['i__id'],
                 'link_player' => $x_progress['e__id'],
             ), array(), 0) as $delete){

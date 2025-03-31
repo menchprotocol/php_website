@@ -120,7 +120,7 @@ foreach($this->Idea_cache->fetch(array(
 
         foreach($this->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'LENGTH(link_text)>0' => null,
             'link_left' => $i['i__id'],
         ), array(), 0) as $x) {

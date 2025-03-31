@@ -3095,14 +3095,6 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, link_id = 0, 
     var main_object_type = 0;
     var main_object_update = false;
     var migrate_s__handle = null;
-    if(element_id==4737 && !(new_e__id in js_e___7358)){
-
-        main_object_type = 12273;
-        main_object_update = 'i__type';
-
-    }
-
-
 
     //Show Loading
     var data_object = eval('js_e___'+element_id);

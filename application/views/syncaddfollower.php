@@ -12,7 +12,7 @@ foreach ($this->Mench_ledger->fetch(array(
     //Fetch everyone who has discovered this idea:
     foreach ($this->Mench_ledger->fetch(array(
         'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'link_left' => $addition_sync['link_right'],
     ), array('link_player'), 0, 0, array('link_id' => 'DESC')) as $dicovered) {
 

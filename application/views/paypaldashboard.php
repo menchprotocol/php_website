@@ -59,7 +59,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
 
         foreach($this->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_left' => $i['i__id'],
         ), array(), 0, 0, array('link_player' => 'ASC')) as $x){
 

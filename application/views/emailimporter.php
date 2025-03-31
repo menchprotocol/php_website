@@ -34,7 +34,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 
                     $added_emails++;
                     $this->Mench_ledger->create(array(
-                        'link_type' => 4251,
+                        'link_type' => 4230,
                         'link_player' => $player_e['e__id'],
                         'link_up' => $_POST['import_e__id'],
                         'link_down' => $e_data['link_down'],

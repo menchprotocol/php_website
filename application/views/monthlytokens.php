@@ -32,10 +32,9 @@ foreach($this->config->item('e___14874') as $link_type => $m) {
 
     } elseif($link_type==6255){
 
-        //DISCOVERY
         $unique = $this->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
 
     } else {
@@ -80,10 +79,9 @@ foreach($this->config->item('e___14874') as $link_type => $m) {
 
         } elseif($link_type==6255){
 
-            //DISCOVERY
             $query = $this->Mench_ledger->fetch(array(
                 'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'link_time >=' => $time_start,
                 'link_time <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(link_id) as totals');

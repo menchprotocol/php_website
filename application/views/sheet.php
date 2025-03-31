@@ -36,7 +36,7 @@ foreach($list_settings['query_string_filtered'] as $x){
         $discoveries = $this->Mench_ledger->fetch(array(
             'link_left' => $i_var['i__id'],
             'link_player' => $x['e__id'],
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_void' => 0, //Not Void
         ), array(), 1);
 

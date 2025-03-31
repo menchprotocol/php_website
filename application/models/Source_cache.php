@@ -35,7 +35,7 @@ class Source_cache extends CIdea_cache
         //Add to Subscriber:
         $this->Mench_ledger->create(array(
             'link_up' => 4430, //Subscriber
-            'link_type' => 4251,
+            'link_type' => 4230,
             'link_player' => $e__id,
             'link_down' => $e__id,
             'link_domain' => $link_domain,
@@ -73,7 +73,7 @@ class Source_cache extends CIdea_cache
         if($resubscribed > 0){
             //Add Back to Subscribers:
             $this->Mench_ledger->create(array(
-                'link_type' => 4251,
+                'link_type' => 4230,
                 'link_up' => 4430, //Active Member
                 'link_player' => $e['e__id'],
                 'link_down' => $e['e__id'],
@@ -198,7 +198,7 @@ class Source_cache extends CIdea_cache
         if($unsubscribed_time){
             //Add to subscribed again:
             $this->Mench_ledger->create(array(
-                'link_type' => 4251,
+                'link_type' => 4230,
                 'link_up' => 4430, //Active Member
                 'link_player' => $e['e__id'],
                 'link_down' => $e['e__id'],
@@ -223,7 +223,7 @@ class Source_cache extends CIdea_cache
         )))){
             $this->Mench_ledger->create(array(
                 'link_player' => $link_down, //Belongs to this Member
-                'link_type' => 4251,
+                'link_type' => 4230,
                 'link_text' => $link_text,
                 'link_up' => $link_up,
                 'link_down' => $link_down,
@@ -292,7 +292,7 @@ class Source_cache extends CIdea_cache
 
         //All good, create new source:
         $new_private_users = in_array($link_domain, $this->config->item('n___44011'));
-        $added_e = $this->Source_cache->verify_create($full_name, 0, ( $image_url ? $image_url : random_cover(12279) ), false);
+        $added_e = $this->Source_cache->create($full_name, 0, ( $image_url ? $image_url : random_cover(12279) ));
         if(!$added_e['status']){
             //We had an error, return it:
             return $added_e;
@@ -311,7 +311,7 @@ class Source_cache extends CIdea_cache
         //Add email?
         if($email){
             $this->Mench_ledger->create(array(
-                'link_type' => 4251,
+                'link_type' => 4230,
                 'link_text' => trim(strtolower($email)),
                 'link_up' => 3288, //Email
                 'link_player' => $added_e['new_e']['e__id'],
@@ -324,7 +324,7 @@ class Source_cache extends CIdea_cache
         if($phone_number){
             $this->Mench_ledger->create(array(
                 'link_up' => 4783, //Phone
-                'link_type' => 4251,
+                'link_type' => 4230,
                 'link_text' => $phone_number,
                 'link_player' => $added_e['new_e']['e__id'],
                 'link_down' => $added_e['new_e']['e__id'],
@@ -341,7 +341,7 @@ class Source_cache extends CIdea_cache
             //Add to anonymous:
             $this->Mench_ledger->create(array(
                 'link_up' => 14938, //Guest Login
-                'link_type' => 4251,
+                'link_type' => 4230,
                 'link_player' => $added_e['new_e']['e__id'],
                 'link_down' => $added_e['new_e']['e__id'],
                 'link_domain' => $link_domain,
@@ -391,71 +391,6 @@ class Source_cache extends CIdea_cache
             'e' => $added_e['new_e'],
         );
 
-    }
-
-
-    function create($add_fields, $link_player = 14068, $skip_creator_link = false)
-    {
-
-        return false;
-
-        //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('e__title'), $link_player)) {
-            return false;
-        }
-
-        //Generate Handle:
-        $add_fields['e__handle'] = generate_handle(12274, $add_fields['e__title']);
-
-        //Lets now add:
-        $this->db->insert('cache_sources', $add_fields);
-
-        //Fetch inserted id:
-        if (!isset($add_fields['e__id'])) {
-            $add_fields['e__id'] = $this->db->insert_id();
-        }
-
-        if ($add_fields['e__id'] > 0) {
-
-            //Log transaction new source:
-            $creator = ($link_player > 0 ? $link_player : $add_fields['e__id']);
-            if(!$skip_creator_link && $creator!=$add_fields['e__id'] && !count($this->Mench_ledger->fetch(array(
-                    'link_up' => $creator,
-                    'link_down' => $add_fields['e__id'],
-                    'link_type' => 4251, //New Source Created
-                    'link_void' => 0, //Not Void
-                )))){
-                $this->Mench_ledger->create(array(
-                    'link_player' => $creator,
-                    'link_up' => $creator,
-                    'link_down' => $add_fields['e__id'],
-                    'link_type' => 4251, //New Source Created
-                ));
-            }
-
-            //Fetch to return the complete source data:
-            $es = $this->Source_cache->fetch(array(
-                'e__id' => $add_fields['e__id'],
-            ));
-
-            //Update Search Index:
-            flag_for_search_indexing(12274, $add_fields['e__id']);
-
-            return $es[0];
-
-        } else {
-
-            //Ooopsi, something went wrong!
-            $this->Mench_ledger->create(array(
-                'link_type' => 44179, //Triggered
-                'link_up' => 4246, //Platform Bug Reports
-                'link_down' => $link_player,
-                'link_text' => 'create() failed to create a new source',
-                'link_player' => $link_player,
-            ));
-            return false;
-
-        }
     }
 
     function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('e__id' => 'DESC'), $select = '*', $group_by = null)
@@ -650,7 +585,7 @@ class Source_cache extends CIdea_cache
                 'link_player' => $link_player,
                 'link_down' => $link_player,
                 'link_up' => $set_e_down_id,
-                'link_type' => 4251,
+                'link_type' => 4230,
             ));
         }
 
@@ -835,7 +770,7 @@ class Source_cache extends CIdea_cache
 
                         $add_fields = array(
                             'link_player' => $link_player,
-                            'link_type' => 4251,
+                            'link_type' => 4230,
                             'link_down' => $x['e__id'], //This follower source
                             'link_up' => $e['e__id'],
                         );
@@ -873,7 +808,7 @@ class Source_cache extends CIdea_cache
                                 //Add as a followings because it meets the condition
                                 $this->Mench_ledger->create(array(
                                     'link_player' => $link_player,
-                                    'link_type' => 4251,
+                                    'link_type' => 4230,
                                     'link_down' => $x['e__id'], //This follower source
                                     'link_up' => $e['e__id'],
                                 ));
@@ -952,7 +887,7 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function verify_create($e__title, $link_player = 0, $e__cover = null, $skip_creator_link = false){
+    function create($e__title, $link_player = 0, $e__cover = null){
 
         //Validate Title
         $validate_e__title = validate_e__title($e__title);
@@ -960,16 +895,60 @@ class Source_cache extends CIdea_cache
             return $validate_e__title;
         }
 
-        //Create
-        $focus_e = $this->Source_cache->create(array(
-            'e__title' => $validate_e__title['e__title_clean'],
+        //Log transaction new source:
+        $player_e = superpower_unlocked();
+        $creator = ($link_player > 0 ? $link_player : ( $player_e ? $player_e['e__id'] : 0));
+        if (!$creator) {
+            return array(
+                'status' => 1,
+                'message' => 'Missing Creator Player',
+            );
+        }
+
+        //Create New Source:
+        $x = $this->Mench_ledger->create(array(
+            'link_player' => $creator,
+            'link_message' => $validate_e__title['e__title_clean'],
+            'link_type' => 4251, //New Source Created
+        ));
+
+        if(!isset($x['link_id'])){
+
+            //Ooopsi, something went wrong!
+            $this->Mench_ledger->create(array(
+                'link_type' => 44179, //Triggered
+                'link_up' => 4246, //Platform Bug Reports
+                'link_down' => $creator,
+                'link_text' => 'create() failed to create a new source',
+                'link_player' => $creator,
+            ));
+
+            return array(
+                'status' => 1,
+                'message' => 'Error trying to create Player',
+            );
+        }
+
+        //Add to cache:
+        $this->db->insert('cache_sources', array(
+            'e__id' => $x['link_id'],
+            'e__handle' => generate_handle(12274, $validate_e__title['e__title_clean']),
             'e__cover' => $e__cover,
-        ), $link_player, $skip_creator_link);
+            'e__title' => $validate_e__title['e__title_clean'],
+        ));
+
+        //Update Search Index:
+        flag_for_search_indexing(12274, $x['link_id']);
+
+        //Fetch to return the complete source data:
+        $es = $this->Source_cache->fetch(array(
+            'e__id' => $x['link_id'],
+        ));
 
         //Return success:
         return array(
             'status' => 1,
-            'new_e' => $focus_e,
+            'new_e' => $es[0],
         );
 
     }

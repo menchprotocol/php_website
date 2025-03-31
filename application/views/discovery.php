@@ -53,7 +53,7 @@ if($link_player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
                     if(count($this->Mench_ledger->fetch(array(
                         'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'link_player' => $link_player,
                         'link_left' => $i_subset['i__id'],
                     )))){
@@ -105,7 +105,7 @@ $x_completes = array();
 if($player_e){
     $x_completes = $this->Mench_ledger->fetch(array(
         'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'link_player' => $link_player,
         'link_left' => $focus_i['i__id'],
     ), array('link_right'));

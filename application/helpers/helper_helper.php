@@ -672,7 +672,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
            //If Discovered Any
            $query_string_all = $CI->Mench_ledger->fetch(array(
                'link_left IN (' . join(',', $list_config[40791]) . ')' => null,
-               'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+               'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                'link_void' => 0, //Not Void
            ), array('link_player'), 0, 0, array('link_id' => 'DESC'));
 
@@ -700,7 +700,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
            $query_string_all = $CI->Mench_ledger->fetch(array(
                'link_left' => $i['i__id'],
                'link_void' => 0, //Not Void
-               'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+               'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
            ), array('link_player'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC'));
 
        }
@@ -742,7 +742,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                (count($list_config[40793]) && !count($CI->Mench_ledger->fetch(array(
                        'link_player' => $x['e__id'],
                        'link_left IN (' . join(',', $list_config[40793]) . ')' => null,
-                       'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                       'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                        'link_void' => 0, //Not Void
                    ))))
 
@@ -1147,7 +1147,7 @@ function process_media($i__id, $uploaded_media){
                     $media_stats['media_e__cover'] = $upload_media['e__cover'];
 
                     //Create Source for this new media:
-                    $added_e = $CI->Source_cache->verify_create($upload_media['e__title'], $player_e['e__id'], ( $upload_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover'] ), true);
+                    $added_e = $CI->Source_cache->create($upload_media['e__title'], $player_e['e__id'], ( $upload_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover'] ));
                     if(!$added_e['status']){
                         $CI->Mench_ledger->create(array(
                             'link_type' => 44179, //Triggered
@@ -1202,7 +1202,7 @@ function process_media($i__id, $uploaded_media){
 
                             //If not found create the child:
                             if(!$child_id){
-                                $added_child = $CI->Source_cache->verify_create($target_variable, 14068);
+                                $added_child = $CI->Source_cache->create($target_variable, 14068);
                                 if(!$added_child['status']){
                                     $CI->Mench_ledger->create(array(
                                         'link_type' => 44179, //Triggered
@@ -1218,7 +1218,7 @@ function process_media($i__id, $uploaded_media){
                                     'link_player' => $player_e['e__id'],
                                     'link_up' => $link_type,
                                     'link_down' => $added_child['new_e']['e__id'],
-                                    'link_type' => 4251,
+                                    'link_type' => 4230,
                                 ));
 
                                 //Assign child source:
@@ -1232,7 +1232,7 @@ function process_media($i__id, $uploaded_media){
                                     'link_player' => $player_e['e__id'],
                                     'link_up' => $child_id,
                                     'link_down' => $upload_media['e__id'],
-                                    'link_type' => 4251,
+                                    'link_type' => 4230,
                                 ));
                             }
 
@@ -1244,7 +1244,7 @@ function process_media($i__id, $uploaded_media){
                                 'link_up' => $link_type,
                                 'link_down' => $upload_media['e__id'],
                                 'link_text' => $target_variable,
-                                'link_type' => 4251,
+                                'link_type' => 4230,
                             ));
 
                         }
@@ -1294,14 +1294,14 @@ function process_media($i__id, $uploaded_media){
                     if(!count($CI->Mench_ledger->fetch(array(
                         'link_up' => $upload_media['media_e__id'],
                         'link_down' => $upload_media['e__id'],
-                        'link_type' => 4251,
+                        'link_type' => 4230,
                         'link_void' => 0, //Not Void
                     )))){
                         $CI->Mench_ledger->create(array(
                             'link_player' => $player_e['e__id'],
                             'link_up' => $upload_media['media_e__id'],
                             'link_down' => $upload_media['e__id'],
-                            'link_type' => 4251,
+                            'link_type' => 4230,
                             'link_text' => $upload_media,
                         ));
                     }
@@ -1352,7 +1352,7 @@ function append_source($link_up, $link_player, $link_text, $i__id){
     //Now check existing links:
     $existing_x = $CI->Mench_ledger->fetch(array(
         'link_void' => 0, //Not Void
-        'link_type' => 4251, //SOURCE LINKS
+        'link_type' => 4230, //SOURCE LINKS
         'link_up' => $link_up,
         'link_down' => $link_player,
     ));
@@ -1374,7 +1374,7 @@ function append_source($link_up, $link_player, $link_text, $i__id){
 
         //Create transaction:
         $CI->Mench_ledger->create(array(
-            'link_type' => 4251, //Follow Source
+            'link_type' => 4230, //Follow Source
             'link_text' => $link_text,
             'link_player' => $link_player,
             'link_up' => $link_up,
@@ -1686,7 +1686,7 @@ function user_website($link_player){
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
         'link_down' => $link_player,
-        'link_type' => 4251, //New Source Created
+        'link_type' => 4230, //New Source Created
     ), array(), 1) as $e_created){
         return $e_created['link_domain'];
     }
@@ -2193,7 +2193,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
                     if(count($CI->Mench_ledger->fetch(array(
                         'link_player' => $player_e['e__id'],
                         'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'link_void' => 0, //Not Void
                     )))){
                         $the_counter++;
@@ -2218,7 +2218,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
                     if(count($CI->Mench_ledger->fetch(array(
                         'link_player' => $player_e['e__id'],
                         'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'link_void' => 0, //Not Void
                     )))){
                         $the_counter++;
@@ -2245,7 +2245,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
                     if(count($CI->Mench_ledger->fetch(array(
                         'link_player' => $player_e['e__id'],
                         'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'link_void' => 0, //Not Void
                     )))){
                         $the_counter++;
@@ -2273,7 +2273,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
                     if(count($CI->Mench_ledger->fetch(array(
                         'link_player' => $player_e['e__id'],
                         'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'link_void' => 0, //Not Void
                     )))){
                         $the_counter++;
@@ -3276,7 +3276,6 @@ function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = t
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $privacy_privacy = ( superpower_unlocked(12700) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
 
     if(in_array($link_type, $CI->config->item('n___42377'))){
 
@@ -4217,7 +4216,7 @@ function view__i_nav($discovery_mode, $focus_i, $x_completes = false){
     if($player_e && !is_array($x_completes)){
         $x_completes = $CI->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_player' => $player_e['e__id'],
             'link_left' => $focus_i['i__id'],
         ), array('link_right'));
@@ -4523,7 +4522,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
         //Fetch discovery
         $x_completes = $CI->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_player' => $link_player,
             'link_left' => $i['i__id'],
         ), array('link_right'));
@@ -4544,7 +4543,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
     if(!$is_cache && $link_player){
         $discoveries = $CI->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_player' => $link_player,
             'link_left' => $i['i__id'],
         ));
@@ -4557,7 +4556,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
     if($has_discovered && !$target_i__hashtag){
         foreach($CI->Mench_ledger->fetch(array(
             'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'link_player' => $link_player,
             'link_left' => $i['i__id'],
             'link_right > 0' => null,
