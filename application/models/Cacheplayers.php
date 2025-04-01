@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Cacheplayers extends CCacheideas
+class Cacheplayers extends CIdea_cache
 {
 
     /*

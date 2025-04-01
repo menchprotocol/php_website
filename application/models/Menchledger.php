@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Menchledger extends CCacheideas
+class Menchledger extends CIdea_cache
 {
 
     /*
