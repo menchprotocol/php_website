@@ -18,8 +18,6 @@ class Cacheideas extends CIdea_cache
     function create($add_fields, $linkplayer = 14068)
     {
 
-        return false;
-
         //Auto generate a Hashtag if needed:
         if(!isset($add_fields['ideahashtag'])){
             $add_fields['ideahashtag'] = random_string(13);
@@ -31,19 +29,12 @@ class Cacheideas extends CIdea_cache
             'linktype' => 4250,
             'linkplayer' => $linkplayer,
             'linkup' => $linkplayer,
-            'linkright' => $add_fields['ideaid'],
         ));
 
 
-        //Lets now add:
-        $this->db->insert('cacheideas', $add_fields);
+        $add_fields['ideaid'] = $this->db->insert_id();
 
-        //Fetch inserted id:
-        if (!isset($add_fields['ideaid'])) {
-            $add_fields['ideaid'] = $this->db->insert_id();
-        }
-
-        if (!$add_fields['ideaid']) {
+        if(!$add_fields['ideaid']){
             //Ooopsi, something went wrong!
             $this->Menchledger->create(array(
                 'linktype' => 44179, //Triggered
@@ -54,6 +45,9 @@ class Cacheideas extends CIdea_cache
             ));
             return false;
         }
+
+        //Lets now add:
+        $this->db->insert('cacheideas', $add_fields);
 
         //Sync messages:
         $view_sync_links = view__sync_links($add_fields['ideatext'], true, $add_fields['ideaid']);
@@ -73,7 +67,6 @@ class Cacheideas extends CIdea_cache
             'linktype' => 41011, //PINNED FOLLOWER
             'linkvoid' => 0, //Not Void
         ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
-
 
 
         //Also append all pinned followers:
@@ -130,6 +123,45 @@ class Cacheideas extends CIdea_cache
         if($select=='*' && 0){
             foreach($results as $key => $value){
                 if(!access_level_i($value['ideahashtag'], 0, $value)){
+                    unset($results[$key]); //Remove this option
+                }
+            }
+        }
+
+
+        return $results;
+
+    }
+
+    function fetchold($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    {
+
+        //The basic fetcher for Ideas
+        $this->db->select($select);
+        $this->db->from('cache_ideas');
+
+        foreach($query_filters as $key => $value) {
+            $this->db->where($key, $value);
+        }
+
+        if ($group_by) {
+            $this->db->group_by($group_by);
+        }
+        if (count($order_columns) > 0) {
+            foreach($order_columns as $key => $value) {
+                $this->db->order_by($key, $value);
+            }
+        }
+        if ($limit > 0) {
+            $this->db->limit($limit, $limit_offset);
+        }
+        $q = $this->db->get();
+        $results = $q->result_array();
+
+        //Make sure user has access to each item:
+        if($select=='*' && 0){
+            foreach($results as $key => $value){
+                if(!access_level_i($value['i__hashtag'], 0, $value)){
                     unset($results[$key]); //Remove this option
                 }
             }

@@ -16,8 +16,6 @@ class Menchledger extends CIdea_cache
     function create($add_fields, $external_sync = false)
     {
 
-        return false;
-
         //Set some defaults:
         if (!isset($add_fields['linkplayer']) || intval($add_fields['linkplayer']) < 1) {
             $add_fields['linkplayer'] = 14068; //GUEST MEMBER
