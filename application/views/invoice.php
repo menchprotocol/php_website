@@ -50,25 +50,21 @@ $fetch_emails = $this->Menchledger->fetch(array(
     'linkup' => 3288, //Email
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-    'linkvoid' => 0, //Not Void
 ));
 $fetch_phones = $this->Menchledger->fetch(array(
     'linkup' => 4783, //Phone
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-    'linkvoid' => 0, //Not Void
 ));
 $fetch_first_names = $this->Menchledger->fetch(array(
     'linkup' => 42584, //First Name
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-    'linkvoid' => 0, //Not Void
 ));
 $fetch_last_names = $this->Menchledger->fetch(array(
     'linkup' => 30198, //Last Name
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-    'linkvoid' => 0, //Not Void
 ));
 
 $set_email = false;
@@ -108,13 +104,11 @@ foreach($this->Cacheideas->fetch(array(
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
         $invoice_due_dates = $this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 44378, //Invoice Due Date
         ));
         $invoice_min_payments = $this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 44379, //Invoice Min Payment
@@ -164,7 +158,6 @@ foreach($this->Cacheideas->fetch(array(
 
         //Delete Old Parent Invoice:
         foreach($this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkleft' => $i['ideaid'],
             'linkplayer' => $player_e['playerid'],
@@ -174,7 +167,6 @@ foreach($this->Cacheideas->fetch(array(
 
         //Delete Old Child Answers:
         foreach($this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
             'linktype' => 7712, //Input Choice
             'linkplayer' => $player_e['playerid'],
             'linkleft' => $i['ideaid'],
@@ -186,8 +178,7 @@ foreach($this->Cacheideas->fetch(array(
             //Remove discovery if we can:
             if(!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))){
                 foreach($this->Menchledger->fetch(array(
-                    'linkvoid' => 0, //Not Void
-                    'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'linkleft' => $x_selection['ideaid'],
                     'linkplayer' => $player_e['playerid'],
                 ), array(), 0) as $x_discovery){

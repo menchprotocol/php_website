@@ -17,7 +17,6 @@ if(in_array($website_id, $this->config->item('playerids___30984'))){
 $primary_i = array();
 $secondary_idea_list = array();
 foreach($this->Menchledger->fetch(array(
-    'linkvoid' => 0, //Not Void
     'linktype' => 34513, //Pinned
     'linkup' => $website_id,
 ), array('linkright'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $this_i){
@@ -73,8 +72,7 @@ foreach($this->Cacheplayers->scissor_player($website_id, 14903) as $player_item)
     foreach($this->Menchledger->fetch(array(
         'linkup' => $player_item['playerid'],
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        'linkvoid' => 0, //Not Void
-    ), array('linkdown'), 0, 0, array('linknumber' => 'ASC')) as $info_element) {
+        ), array('linkdown'), 0, 0, array('linknumber' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['playercover'], FILTER_VALIDATE_URL)){
@@ -136,8 +134,7 @@ foreach($this->config->item('players___14036') as $playerid => $m){
         'linkup' => $playerid,
         'linkdown' => $website_id,
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        'linkvoid' => 0, //Not Void
-    ), array(), 0, 0) as $social_link){
+        ), array(), 0, 0) as $social_link){
 
         //Determine link type:
         if(filter_var($social_link['linktext'], FILTER_VALIDATE_URL) && view__url_clean($social_link['linktext'])!=view__url_clean($players___14870[$website_id]['m__message'])){

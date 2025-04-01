@@ -1,7 +1,6 @@
 <?php
 
 foreach($this->Menchledger->fetch(array(
-    'linkvoid' => 0, //Not Void
     'linktype' => 33600, //Draft
     'linkup' => 26582,
 ), array('linkright')) as $i){
@@ -9,8 +8,7 @@ foreach($this->Menchledger->fetch(array(
     //Determine if it's time to send this message:
     $time_starts = 0;
     foreach($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
         'linkup' => 43743, //Sending Starts
     )) as $time){
@@ -26,8 +24,7 @@ foreach($this->Menchledger->fetch(array(
     //Does it have an end time?
     $end_sending = 0;
     foreach($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
         'linkup' => 43744, //Sending Ends
     )) as $time){

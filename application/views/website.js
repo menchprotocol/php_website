@@ -1429,7 +1429,7 @@ function display_media(mediaframe_id, uploader_id, ideaid){
 function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
 
 
-    $(".idea_link_direction, .idea_link_unlink, .idea_linktype").addClass('hidden');
+    $(".idea_link_direction, .link_idea_unlink, .idea_linktype").addClass('hidden');
     var focus_idea_id = ( parseInt($('#focus__node').val())==12273 ? parseInt($('#focus__id').val()) : 0 );
     $("#modal31911 .save_results").html('');
 
@@ -1514,12 +1514,11 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
 
         }
 
-        $('.idea_link_unlink, .idea_linktype').removeClass('hidden');
+        $('.link_idea_unlink, .idea_linktype').removeClass('hidden');
         if(!passon_ideaid){
             update_form_select(4486, link_linktype, 1, false);
         }
     }
-
 
     //Assign updates:
     $('#modal31911 .next_ideaid').val(next_ideaid);
@@ -2635,11 +2634,11 @@ function new_idea(linktype, link_ideaid) {
 }
 
 
-function e_delete(linkid, linktype) {
+function link_unlink(linkid, linktype) {
 
-    var r = confirm("Unlink this Player?");
+    var r = confirm("Unlink?");
     if (r==true) {
-        $.post("/app/e_delete", {
+        $.post("/app/link_unlink", {
 
             linkid: linkid,
             js_request_uri: js_request_uri, //Always append to AJAX Calls

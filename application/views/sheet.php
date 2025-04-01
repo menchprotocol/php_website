@@ -37,8 +37,7 @@ foreach($list_settings['query_string_filtered'] as $x){
             'linkleft' => $idea_var['ideaid'],
             'linkplayer' => $x['playerid'],
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'linkvoid' => 0, //Not Void
-        ), array(), 1);
+                ), array(), 1);
 
         $idea_content .= '<td title="'.$x['playertext'].' x '.view__idea_title($idea_var, true).'">';
 
@@ -50,7 +49,6 @@ foreach($list_settings['query_string_filtered'] as $x){
 
             $set_linktext = '';
             foreach($this->Menchledger->fetch(array(
-                'linkvoid' => 0, //Not Void
                 'linktype' => 33532, //Private Reply
                 'linkleft' => $idea_var['ideaid'],
                 'linkplayer' => $x['playerid'],
@@ -79,8 +77,7 @@ foreach($list_settings['query_string_filtered'] as $x){
                     'linkdown' => $x['playerid'],
                     'linkup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-                    'linkvoid' => 0, //Not Void
-                ))))){
+                    ))))){
             if(!isset($count_totals['i'][$idea_var['ideaid']])){
                 $count_totals['i'][$idea_var['ideaid']] = 0;
             }
@@ -104,11 +101,9 @@ foreach($list_settings['query_string_filtered'] as $x){
             'linkup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
             'linkdown' => $e['playerid'],
             'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-            'linkvoid' => 0, //Not Void
         )));
 
         $fetch_data = $this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
             'linkdown' => $x['playerid'],
             'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkup' => $e['playerid'],
@@ -139,7 +134,6 @@ foreach($list_settings['query_string_filtered'] as $x){
             foreach($this->Menchledger->fetch(array(
                 'linkright' => $focus_i['ideaid'],
                 'linktype IN (' . join(',', $this->config->item('playerids___44344')) . ')' => null, //Idea Filter Additions
-                'linkvoid' => 0, //Not Void
             ), array('linkleft'), 1) as $target_i){
                 //See History for this user:
                 $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['ideahashtag'].'@'.$x['playerhandle'].'" target="_blank" title="'.$players___11035[44328]['m__title'].'"><span class="icon-block-sm">'.$players___11035[44328]['m__cover'].'</span></a>';
@@ -155,8 +149,7 @@ foreach($list_settings['query_string_filtered'] as $x){
             }
 
             $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + ( count($this->Menchledger->fetch(array(
-                    'linkvoid' => 0, //Not Void
-                    'linkdown' => $e['playerid'],
+                        'linkdown' => $e['playerid'],
                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1 );
@@ -186,7 +179,6 @@ foreach($list_settings['column_e'] as $e){
 foreach($list_settings['column_i'] as $idea_var){
 
     $max_available = $this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $idea_var['ideaid'],
         'linkup' => 26189,

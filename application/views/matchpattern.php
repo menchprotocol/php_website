@@ -8,8 +8,7 @@ if(isset($_GET['ideahashtag'])){
         echo '<h2>' . view__idea_title($i) . '</h2>';
 
         $preg_query = $this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                    'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 26611,
         ));
@@ -22,8 +21,7 @@ if(isset($_GET['ideahashtag'])){
             echo '<p>Mismatches against ['.$preg_query[0]['linktext'].'] are:</p>';
 
             foreach($this->Menchledger->fetch(array(
-                'linkvoid' => 0, //Not Void
-                'linktype' => 6144, //Written Response
+                            'linktype' => 6144, //Written Response
                 'linkleft' => $i['ideaid'],
             ), array(), 0) as $x) {
                 $responses++;

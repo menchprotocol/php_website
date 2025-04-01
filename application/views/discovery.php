@@ -33,8 +33,7 @@ if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
 
             //Does this have a follower list?
             $query_subset = $this->Menchledger->fetch(array(
-                'linkvoid' => 0, //Not Void
-                'linktype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
+                            'linktype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
                 'linkleft' => $followings_i['ideaid'],
             ), array('linkright'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
 
@@ -52,8 +51,7 @@ if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
                 foreach ($query_subset as $idea_subset) {
 
                     if(count($this->Menchledger->fetch(array(
-                        'linkvoid' => 0, //Not Void
-                        'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                                            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkplayer' => $linkplayer,
                         'linkleft' => $idea_subset['ideaid'],
                     )))){
@@ -104,8 +102,7 @@ if($player_e){
 $x_completes = array();
 if($player_e){
     $x_completes = $this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkplayer' => $linkplayer,
         'linkleft' => $focus_i['ideaid'],
     ), array('linkright'));

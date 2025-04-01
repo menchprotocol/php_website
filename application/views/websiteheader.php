@@ -724,7 +724,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
                             <!-- Unlink -->
-                            <div class="dynamic_editing_input no_padded idea_link_unlink hidden">
+                            <div class="dynamic_editing_input no_padded link_idea_unlink hidden">
                                 <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
                             </div>
 
@@ -763,8 +763,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             foreach($this->Menchledger->fetch(array(
                                 'linkup' => $player_e['playerid'],
                                 'linktype' => 41011, //PINNED FOLLOWER
-                                'linkvoid' => 0, //Not Void
-                            ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {
+                                            ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {
                                 echo '<div class="creator_headline"><span class="icon-block">'.view__cover($x_pinned['playercover']).'</span><b>'.$x_pinned['playertext'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['playerhandle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }

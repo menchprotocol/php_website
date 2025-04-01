@@ -71,7 +71,6 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
         )) as $player_append){
             $completed = 0;
             foreach($this->Menchledger->fetch(array(
-                'linkvoid' => 0, //Not Void
                 'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linkleft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
@@ -80,8 +79,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
                     'linkdown' => $x['linkplayer'],
                     'linktext' => $x['linktext'],
                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-                    'linkvoid' => 0, //Not Void
-                )))){
+                    )))){
                     //Increment Player link:
                     $completed++;
                     $this->Menchledger->create(array(

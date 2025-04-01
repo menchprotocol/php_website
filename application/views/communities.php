@@ -7,8 +7,7 @@ foreach(( isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
     foreach($this->Menchledger->fetch(array(
         'linkup' => $player_item['playerid'],
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        'linkvoid' => 0, //Not Void
-    ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
+        ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
 
         $total_count = view_player_covers(12274, $x['playerid'], 0, false);
 

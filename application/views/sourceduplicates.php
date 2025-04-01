@@ -10,8 +10,7 @@ if(isset($_GET['playerhandle'])){
     foreach($this->Menchledger->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        'linkvoid' => 0, //Not Void
-    ), array('linkup'), 0) as $x) {
+        ), array('linkup'), 0) as $x) {
         $linktext_md5 = substr(md5($x['linktext']), 0, 16);
         if(!isset($main_index[$linktext_md5])){
             $main_index[$linktext_md5] = array();

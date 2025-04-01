@@ -47,8 +47,7 @@ if($player_http_request && !isset($_GET['email_trigger'])){
     $subscriber_filters = array(
         'linkup' => 12114,
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        'linkvoid' => 0, //Not Void
-        );
+            );
 
     //Should we limit the scope?
     if($player_http_request){

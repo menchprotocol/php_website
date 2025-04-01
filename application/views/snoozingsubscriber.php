@@ -11,7 +11,6 @@ foreach($this->config->item('players___28917') as $linktype => $m) {
         foreach($this->Menchledger->fetch(array(
             'linkup' => $linktype,
             'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-            'linkvoid' => 0, //Not Void
         ), array('linkdown'), 0) as $x) {
             $total_members++;
             if((time()-strtotime($x['linktime']))>(86400*intval($m['m__message']))){

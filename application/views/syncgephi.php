@@ -36,7 +36,6 @@ foreach($is as $in){
 
     //Fetch Next Ideas:
     foreach($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
         'linkleft' => $in['ideaid'],
     ), array('linkright'), 0, 0) as $next_i){
@@ -68,7 +67,6 @@ foreach($es as $en){
 
     //Fetch followers:
     foreach($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         'linkup' => $en['playerid'],
     ), array('linkdown'), 0, 0) as $player_down){

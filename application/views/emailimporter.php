@@ -16,8 +16,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             //echo $email.'<hr />';
 
             foreach($this->Menchledger->fetch(array(
-                'linkvoid' => 0, //Not Void
-                'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                 'linkup' => 3288, //Email
                 'linktext' => trim(strtolower($email)),
             )) as $player_data){
@@ -26,8 +25,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 
                 //Do we need to add?
                 if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Menchledger->fetch(array(
-                    'linkvoid' => 0, //Not Void
-                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkup' => $_POST['import_playerid'],
                     'linkdown' => $player_data['linkdown'],
                 )))){

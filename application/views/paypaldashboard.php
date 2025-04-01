@@ -35,8 +35,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     echo '<h2>'.$es[0]['playertext'].' @'.$es[0]['playerhandle'].'</h2>';
 
     $idea_query = $this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+            'linktype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
         'ideatype IN (' . join(',', $this->config->item('playerids___41055')) . ')' => null, //Payment Ideas
         'linkup' => $es[0]['playerid'],
     ), array('linkright'), 0, 0, array('linknumber' => 'ASC'));
@@ -58,8 +57,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $currencies = array();
 
         foreach($this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkleft' => $i['ideaid'],
         ), array(), 0, 0, array('linkplayer' => 'ASC')) as $x){
 
@@ -169,8 +167,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $gross_payout += $payout;
 
         $max_available = $this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                    'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 26189,
         ), array(), 1);
@@ -214,8 +211,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e){
         $filters = array(
-            'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkup' => $e['playerid'], //Member
         );
         if(count($all_e)){
@@ -353,8 +349,7 @@ if(count($idea_query)){
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->Menchledger->fetch(array(
-                            'linkvoid' => 0, //Not Void
-                            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                                                    'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'linkright' => $origin,
                             'linkup' => 30564, //None Promoter
                         )))){

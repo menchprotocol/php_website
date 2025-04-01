@@ -32,15 +32,13 @@ $biggest_player_handle = '';
 //CONFIG VARS
 foreach($this->Menchledger->fetch(array(
     'linkup' => 4527,
-    'linkvoid' => 0, //Not Void
     'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
 ), array('linkdown'), 0, 0, array('playerid' => 'ASC')) as $en){
 
     //Now fetch all its followers:
     $down__e = $this->Menchledger->fetch(array(
         'linkup' => $en['linkdown'],
-        'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         ), array('linkdown'), 0, 0, sort__player());
 
     if(!count($down__e)){
@@ -79,8 +77,7 @@ foreach($this->Menchledger->fetch(array(
         foreach($this->Menchledger->fetch(array(
             'linkup' => $follower['playerid'],
             'linktype' => 41011, //PINNED FOLLOWER
-            'linkvoid' => 0, //Not Void
-        ), array(), 0) as $x_pinned) {
+                ), array(), 0) as $x_pinned) {
             if(!isset($pinned_down[$follower['playerid']])){
                 $pinned_down[$follower['playerid']] = array($x_pinned['linkdown']);
             } elseif(!in_array($x_pinned['linkdown'], $pinned_down[$follower['playerid']])) {
@@ -100,7 +97,6 @@ foreach($this->Menchledger->fetch(array(
         $down_up_ids = array(); //To be populated soon
         foreach($this->Menchledger->fetch(array(
             'linkdown' => $follower['playerid'],
-            'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
                 ), array('linkup'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['playerid']));
@@ -126,14 +122,12 @@ foreach($this->Menchledger->fetch(array(
 $memory_text .= "\n"."\n";
 foreach($this->Menchledger->fetch(array(
     'linkup' => 42043, //Handle Cache
-    'linkvoid' => 0, //Not Void
     'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
 ), array('linkdown'), 0) as $handle){
 
     $memory_text .= '$config[\'handlplayers___'.$handle['playerid'].'\'] = array('."\n";
     foreach($this->Menchledger->fetch(array(
         'linkup' => $handle['playerid'],
-        'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         ), array('linkdown'), 0) as $app){
         $memory_text .= '     \''.strtolower($app['playerhandle']).'\' => '.$app['playerid'].','."\n";
@@ -184,13 +178,11 @@ $routes_text .= '//APPS:'."\n\n";
 foreach($this->Menchledger->fetch(array(
     'linkup' => 6287, //Apps
     'linktype IN (' . join(',', ( $memory_detected ? $this->config->item('playerids___32292') : $playerids___33337 )) . ')' => null, //SOURCE LINKS
-    'linkvoid' => 0, //Not Void
 ), array('linkdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if(!$memory_detected){
         $special_routes = false;
         foreach($this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
             'linkup' => 42921,
             'linkdown' => $app['playerid'], //Required
@@ -205,7 +197,6 @@ foreach($this->Menchledger->fetch(array(
 
 
     if(count($this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
             'linkup' => 44330,
             'linkdown' => $app['playerid'], //Required
@@ -215,7 +206,6 @@ foreach($this->Menchledger->fetch(array(
         $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/0/$1'.'";'."\n"; //Should give error
         $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/$1/0'.'";'."\n"; //Should give error
     } elseif(count($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         'linkup' => 42905,
         'linkdown' => $app['playerid'], //Required
@@ -227,7 +217,6 @@ foreach($this->Menchledger->fetch(array(
             $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/$1'.'";'."\n";
         }
     } elseif(count($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         'linkup' => 42911,
         'linkdown' => $app['playerid'], //Required
@@ -239,7 +228,6 @@ foreach($this->Menchledger->fetch(array(
             $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/0/$1'.'";'."\n";
         }
     } elseif(count($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         'linkup' => 44329,
         'linkdown' => $app['playerid'], //Required

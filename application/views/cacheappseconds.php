@@ -16,8 +16,7 @@ foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
         'linktype' => 44179, //Triggered
         'linkup' => 14599, //Cache App
         'linkdown' => $app_playerid,
-        'linkvoid' => 0, //Not Void
-    ), array(), 1, 0, array('linktime' => 'DESC'));
+        ), array(), 1, 0, array('linktime' => 'DESC'));
 
     echo '<div class="col-8 main__title"><span class="icon-block">'.$cache_apps['m__cover'].'</span>'.$cache_apps['m__title'].'</div>';
     echo '<div class="col-4"><i class="far fa-history"></i> '.( count($latest_cache) ? view__time_difference($latest_cache[0]['linktime']) : 'NEVER' ).'</div>';

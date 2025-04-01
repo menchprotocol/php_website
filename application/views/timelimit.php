@@ -1,7 +1,6 @@
 <?php
 
 $filters = array(
-    'linkvoid' => 0, //Not Void
     'linktype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
     'linkup' => 28199,
 );
@@ -26,15 +25,13 @@ foreach($this->Menchledger->fetch($filters, array('linkright'), 0) as $expires){
 
     //Now go through everyone who discovered this selection:
     foreach($this->Menchledger->fetch(array(
-        'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
+            'linktype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
         'linkleft' => $expires['ideaid'],
     ), array('linkplayer'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->Menchledger->fetch(array(
-            'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+                    'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
             'linkleft' => $x_progress['linkright'],
             'linkplayer' => $x_progress['playerid'],
         ));
@@ -45,8 +42,7 @@ foreach($this->Menchledger->fetch($filters, array('linkright'), 0) as $expires){
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
             foreach($this->Menchledger->fetch(array(
-                'linkvoid' => 0, //Not Void
-                'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+                            'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
                 'linkleft' => $expires['ideaid'],
                 'linkplayer' => $x_progress['playerid'],
             ), array(), 0) as $delete){

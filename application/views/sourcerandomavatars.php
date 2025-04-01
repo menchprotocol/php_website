@@ -5,7 +5,6 @@ if(isset($_GET['update_u_icons'])){
     $base_filters = array(
         'linkup IN (' . join(',', $this->config->item('playerids___30820')) . ')' => null, //Active Member
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        'linkvoid' => 0, //Not Void
         );
 
     if(!isset($_GET['force'])) {
