@@ -19,48 +19,51 @@ if(1){
             'link_void' => 0, //Not Void
         ));
 
-        //Lets log:
         $this->db->insert('menchledger', array(
-            'linkid' => $e['e__id'],
             'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
             'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
             'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-            'linktext' => $e['e__title'],
-            'linktype' => 4251, //New Source Created
+            'linkup' => 32338, //Player Handle
+            'linktext' => $e['e__handle'],
+            'linkdown' => $e['e__id'],
+            'linktype' => 4230, //Follow
         ));
 
-        //Add to cache:
-        $this->db->insert('cacheplayers', array(
-            'playerid' => $e['e__id'],
-            'playerexternal' => intval($e['e__external']),
-            'playernumber' => intval($e['e__weight']),
-            'playerhandle' => $e['e__handle'],
-            'playercover' => $e['e__cover'],
-            'playertext' => $e['e__title'],
-        ));
-
-        if(0){
+        if(strlen($e['e__cover'])){
             $this->db->insert('menchledger', array(
                 'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
                 'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
                 'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-                'linkup' => 32338, //Player Handle
-                'linktext' => $e['e__handle'],
+                'linkup' => 6198, //Player Cover
+                'linktext' => $e['e__cover'],
                 'linkdown' => $e['e__id'],
                 'linktype' => 4230, //Follow
             ));
+        }
 
-            if(strlen($e['e__cover'])){
-                $this->db->insert('menchledger', array(
-                    'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
-                    'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
-                    'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-                    'linkup' => 6198, //Player Cover
-                    'linktext' => $e['e__cover'],
-                    'linkdown' => $e['e__id'],
-                    'linktype' => 4230, //Follow
-                ));
-            }
+
+
+
+        if(0){
+            //Lets log:
+            $this->db->insert('menchledger', array(
+                'linkid' => $e['e__id'],
+                'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
+                'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
+                'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
+                'linktext' => $e['e__title'],
+                'linktype' => 4251, //New Source Created
+            ));
+
+            //Add to cache:
+            $this->db->insert('cacheplayers', array(
+                'playerid' => $e['e__id'],
+                'playerexternal' => intval($e['e__external']),
+                'playernumber' => intval($e['e__weight']),
+                'playerhandle' => $e['e__handle'],
+                'playercover' => $e['e__cover'],
+                'playertext' => $e['e__title'],
+            ));
         }
 
     }
@@ -90,6 +93,18 @@ foreach($this->Idea_cache->fetch(array(
     $new_i_id = intval($i['i__id'])+100000;
 
     $this->db->insert('menchledger', array(
+        'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
+        'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
+        'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
+        'linkup' => 32337, //Idea Hashtag
+        'linkright' => $new_i_id,
+        'linktext' => $i['i__hashtag'],
+        'linktype' => 4983, //CO-author
+    ));
+
+    continue;
+
+    $this->db->insert('menchledger', array(
         'linkid' => $new_i_id,
         'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : 1 ),
         'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
@@ -108,17 +123,6 @@ foreach($this->Idea_cache->fetch(array(
         'ideacache' => $i['i__cache'],
     ));
 
-    continue;
-
-    $this->db->insert('menchledger', array(
-        'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
-        'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
-        'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-        'linkup' => 32337, //Idea Hashtag
-        'linkright' => $new_i_id,
-        'linktext' => $i['i__hashtag'],
-        'linktype' => 4983, //CO-author
-    ));
 
 }
 echo $found.'/'.$count.' Found';
