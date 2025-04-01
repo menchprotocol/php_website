@@ -2484,22 +2484,22 @@ function toggle_max_view(css_class){
 
 //Adds OR transactions Players to Players
 var e_is_adding = false;
-function new_player(linktype, e_existing_id) {
+function new_player(linktype, player_existing_id) {
 
     if(e_is_adding){
         return false;
     }
 
-    //if e_existing_id>0 it means we're adding an existing Player, in which case e_new_string should be null
-    //If e_existing_id=0 it means we are creating a new Player and then adding it, in which case e_new_string is required
+    //if player_existing_id>0 it means we're adding an existing Player, in which case e_new_string should be null
+    //If player_existing_id=0 it means we are creating a new Player and then adding it, in which case e_new_string is required
     e_is_adding = true;
 
     var input = $('.new-list-'+linktype+' .add-input');
 
-    var original_photo = $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html();
-    $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    var original_photo = $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html();
+    $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
     var e_new_string = null;
-    if (e_existing_id==0) {
+    if (player_existing_id==0) {
         e_new_string = input.val();
         if (e_new_string.length < 1) {
             alert('Missing Player name or URL, try again');
@@ -2514,7 +2514,7 @@ function new_player(linktype, e_existing_id) {
         focus__node: parseInt($('#focus__node').val()),
         linktype: linktype,
         focus__id: parseInt($('#focus__id').val()),
-        e_existing_id: e_existing_id,
+        player_existing_id: player_existing_id,
         e_new_string: e_new_string,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
 
@@ -2548,7 +2548,7 @@ function new_player(linktype, e_existing_id) {
             }, 987);
 
             //Hide Coin:
-            $('.mini-cover.card-12274.card-id-'+e_existing_id).fadeOut();
+            $('.mini-cover.card-12274.card-id-'+player_existing_id).fadeOut();
 
         } else {
             //We had an error:
