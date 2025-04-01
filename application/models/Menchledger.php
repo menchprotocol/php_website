@@ -186,18 +186,6 @@ class Menchledger extends CIdea_cache
     function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        $link_void_found = false;
-        foreach ($query_filters as $key => $value) {
-            if (substr_count($key, 'linkvoid')) {
-                $link_void_found = true;
-                break;
-            }
-        }
-        if (!$link_void_found) {
-            //Auto add:
-            $select['linkvoid'] = 0; //Not Void
-        }
-
         $this->db->select($select);
         $this->db->from('menchledger');
 
@@ -219,13 +207,24 @@ class Menchledger extends CIdea_cache
             $this->db->join('cacheplayers', 'linkplayer=playerid', 'left');
         }
 
+        $link_void_found = false;
         foreach ($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
             } else {
                 $this->db->where($key);
             }
+
+            if (substr_count($key, 'linkvoid')) {
+                $link_void_found = true;
+                break;
+            }
         }
+        if (!$link_void_found) {
+            //Auto add:
+            $this->db->where('linkvoid', 0); //Not Void
+        }
+
 
         if ($group_by) {
             $this->db->group_by($group_by);
