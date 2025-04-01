@@ -3295,7 +3295,7 @@ class App extends CI_Controller
 
     }
 
-    function refresh_gameplay(){
+    function refresh_wallet(){
 
         $miscstats = '';
 
@@ -3358,22 +3358,19 @@ class App extends CI_Controller
                                 'linkvoid' => 0, //Not Void
                                 'linktype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
                                 'linkup' => $es[0]['playerid'],
-                                'ideatype' => $linktype3,
-                                            ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
+                            ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
 
                         } elseif($has_hashtag && count($recursive_down_ids['recursive_idea_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->Cacheideas->fetch(array(
-                                'ideatype' => $linktype3,
-                                                'ideaid IN (' . join(',', $recursive_down_ids['recursive_idea_ids']) . ')' => null,
+                                'ideaid IN (' . join(',', $recursive_down_ids['recursive_idea_ids']) . ')' => null,
                             ), 0, 0, array(), 'COUNT(ideaid) as totals');
 
                         } else {
 
                             $sub_counter = $this->Cacheideas->fetch(array(
-                                'ideatype' => $linktype3,
-                                            ), 0, 0, array(), 'COUNT(ideaid) as totals');
+                            ), 0, 0, array(), 'COUNT(ideaid) as totals');
 
                         }
 
@@ -3433,6 +3430,10 @@ class App extends CI_Controller
 
                     $level2_total += $sub_counter[0]['totals'];
                     $return_array[$linktype3] = intval($sub_counter[0]['totals']);
+
+                    if($linktype2==12273 || $linktype2==12274){
+                        break;
+                    }
 
                 }
 

@@ -72,8 +72,8 @@ foreach($this->config->item('players___33292') as $playerid1 => $m1) {
 
 <script>
 
-    function refresh_gameplay(){
-        $.post("/app/refresh_gameplay", {
+    function refresh_wallet(){
+        $.post("/app/refresh_wallet", {
             playerhandle: '<?= $playerhandle ?>',
             ideahashtag: '<?= $ideahashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -97,7 +97,7 @@ foreach($this->config->item('players___33292') as $playerid1 => $m1) {
     $(document).ready(function () {
 
         //Load initial stats:
-        refresh_gameplay();
+        refresh_wallet();
 
         //Watch for click to expand:
         $(".card_frame").click(function (e) {
@@ -108,7 +108,7 @@ foreach($this->config->item('players___33292') as $playerid1 => $m1) {
 
         //Update stats live:
         $(function () {
-            setInterval(refresh_gameplay, js_players___6404[33292]['m__message']);
+            setInterval(refresh_wallet, js_players___6404[33292]['m__message']);
         });
 
     });
