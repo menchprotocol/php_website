@@ -126,7 +126,7 @@ echo $found.'/'.$count.' Found';
 }
 
 
-if(1){
+if(0){
 
     $link_count = 0;
     $link_full_duplicate = 0;
