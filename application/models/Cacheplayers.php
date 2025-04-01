@@ -889,8 +889,6 @@ class Cacheplayers extends CIdea_cache
 
     function create($playertext, $linkplayer = 0, $playercover = null){
 
-        return false;
-
         //Validate Title
         $validate_playertext = validate_playertext($playertext);
         if(!$validate_playertext['status']){
@@ -908,14 +906,13 @@ class Cacheplayers extends CIdea_cache
         }
 
         //Create New Player:
-        $x = $this->Menchledger->create(array(
+        $new_x = $this->Menchledger->create(array(
             'linkplayer' => $creator,
-            'linktext' => $validate_playertext['playertext_clean'],
             'linktype' => 4251, //New Player Created
+            'linktext' => $validate_playertext['playertext_clean'],
         ));
 
-        if(!isset($x['linkid'])){
-
+        if(!$new_x['linkid']){
             //Ooopsi, something went wrong!
             $this->Menchledger->create(array(
                 'linktype' => 44179, //Triggered
@@ -924,27 +921,47 @@ class Cacheplayers extends CIdea_cache
                 'linktext' => 'create() failed to create a new Player',
                 'linkplayer' => $creator,
             ));
-
             return array(
                 'status' => 1,
                 'message' => 'Error trying to create Player',
             );
         }
 
+        //Handle Generation
+        $new_handle = generate_handle(12274, $validate_playertext['playertext_clean']);
+        $this->Menchledger->create(array(
+            'linkplayer' => $creator,
+            'linktype' => 4230, //Follow
+            'linkup' => 32338, //Player Handle
+            'linktext' => $new_handle,
+            'linkdown' => $new_x['linkid'],
+        ));
+
+        //Cover saving if any
+        if(strlen($playercover)){
+            $this->Menchledger->create(array(
+                'linkplayer' => $creator,
+                'linktype' => 4230, //Follow
+                'linkup' => 6198, //Player Cover
+                'linktext' => $playercover,
+                'linkdown' => $new_x['linkid'],
+            ));
+        }
+
         //Add to cache:
         $this->db->insert('cacheplayers', array(
-            'playerid' => $x['linkid'],
-            'playerhandle' => generate_handle(12274, $validate_playertext['playertext_clean']),
+            'playerid' => $new_x['linkid'],
+            'playerhandle' => $new_handle,
             'playercover' => $playercover,
             'playertext' => $validate_playertext['playertext_clean'],
         ));
 
         //Update Search Index:
-        flag_for_search_indexing(12274, $x['linkid']);
+        flag_for_search_indexing(12274, $new_x['linkid']);
 
         //Fetch to return the complete Player data:
         $es = $this->Cacheplayers->fetch(array(
-            'playerid' => $x['linkid'],
+            'playerid' => $new_x['linkid'],
         ));
 
         //Return success:

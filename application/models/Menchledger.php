@@ -49,7 +49,6 @@ class Menchledger extends CIdea_cache
             $add_fields['linkdomain'] = website_setting(0, $add_fields['linkplayer']);
         }
 
-
         if (!isset($add_fields['linktime']) || is_null($add_fields['linktime'])) {
             //Time with milliseconds:
             $t = microtime(true);
