@@ -25,7 +25,7 @@ class App extends CI_Controller
 
     function load($app_playerid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 
-        if($_SERVER['REMOTE_ADDR']!='73.15.62.97'){ die('We will be back up shortly... IP '.$_SERVER['REMOTE_ADDR']); }
+        if(!isset($_SERVER['REMOTE_ADDR']) || $_SERVER['REMOTE_ADDR']!='73.15.62.97'){ die('We will be back up shortly... IP '.$_SERVER['REMOTE_ADDR']); }
 
         $memory_detected = is_array($this->config->item('playerids___6287')) && count($this->config->item('playerids___6287'));
         if(!$memory_detected){
@@ -167,6 +167,12 @@ class App extends CI_Controller
 
             //Needs superpowers?
             $player_e = superpower_unlocked();
+
+            if($player_e && isset($player_e['e__id'])){
+                //Old player, must log out:
+                header("Location: /logout", true, 301);
+                return false;
+            }
 
             //Auto Login?
             if(isset($_GET['hash']) && isset($_GET['time']) && $focus_e){
