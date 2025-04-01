@@ -224,15 +224,17 @@ class Cacheideas extends CIdea_cache
 
 
         $x_adjusted = 0;
-        if($migrate_s__id){
+        if($migrate_s__id && 0){
 
             //Migrate Transactions:
-            $this->db->query("UPDATE menchledger SET linkright=".$migrate_s__id." WHERE linkright=".$ideaid.";");
+            /*
+             * $this->db->query("UPDATE menchledger SET linkright=".$migrate_s__id." WHERE linkright=".$ideaid.";");
             $affected_linkright = $this->db->affected_rows();
             $x_adjusted += $affected_linkright;
             $this->db->query("UPDATE menchledger SET linkleft=".$migrate_s__id." WHERE linkleft=".$ideaid.";");
             $affected_linkleft = $this->db->affected_rows();
             $x_adjusted += $affected_linkleft;
+             * */
 
             $player_e = superpower_unlocked();
 

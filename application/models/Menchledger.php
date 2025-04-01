@@ -182,61 +182,6 @@ class Menchledger extends CIdea_cache
 
     }
 
-    function make($add_fields, $external_sync = false)
-    {
-
-        //Set some defaults:
-        if (!isset($add_fields['linkplayer']) || intval($add_fields['linkplayer']) < 1) {
-            $add_fields['linkplayer'] = 14068; //GUEST MEMBER
-        }
-
-        //Only require transaction type:
-        if (detect_missing_columns($add_fields, array('linktype'), $add_fields['linkplayer'])) {
-            return false;
-        }
-
-        if(!in_array($add_fields['linktype'], $this->config->item('playerids___4593'))){
-            return false;
-        }
-
-        //Set some defaults:
-        if (!isset($add_fields['linktext'])) {
-            $add_fields['linktext'] = null;
-        } elseif(is_array($add_fields['linktext'])){
-            $add_fields['linktext'] = serialize($add_fields['linktext']);
-        }
-
-        //Set some defaults:
-        if (!isset($add_fields['linkdomain']) || $add_fields['linkdomain']<1) {
-            $add_fields['linkdomain'] = website_setting(0, $add_fields['linkplayer']);
-        }
-
-
-        if (!isset($add_fields['linktime']) || is_null($add_fields['linktime'])) {
-            //Time with milliseconds:
-            $t = microtime(true);
-            $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
-            $d = new DateTime(date('Y-m-d H:i:s.' . $micro, $t));
-            $add_fields['linktime'] = $d->format("Y-m-d H:i:s");
-        }
-
-        //Set some zero defaults if not set:
-        foreach(array('linkright', 'linkleft', 'linkdown', 'linkup', 'linknumber') as $dz) {
-            if (!isset($add_fields[$dz])) {
-                $add_fields[$dz] = 0;
-            }
-        }
-
-        //Lets log:
-        $this->db->insert('menchledger', $add_fields);
-
-        //Fetch inserted id:
-        $add_fields['linkid'] = $this->db->insert_id();
-
-        //Return:
-        return $add_fields;
-
-    }
 
     function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null)
     {
@@ -309,77 +254,6 @@ class Menchledger extends CIdea_cache
 
     }
 
-
-    function read($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null)
-    {
-
-        $this->db->select($select);
-        $this->db->from('menchledger');
-
-        //IDEA JOIN?
-        if (in_array('linkleft', $joins_objects)) {
-            $this->db->join('cacheideas', 'linkleft=ideaid','left');
-        } elseif (in_array('linkright', $joins_objects)) {
-            $this->db->join('cacheideas', 'linkright=ideaid','left');
-        }
-
-        //SOURCE JOIN?
-        if (in_array('linkup', $joins_objects)) {
-            $this->db->join('cacheplayers', 'linkup=playerid','left');
-        } elseif (in_array('linkdown', $joins_objects)) {
-            $this->db->join('cacheplayers', 'linkdown=playerid','left');
-        } elseif (in_array('linktype', $joins_objects)) {
-            $this->db->join('cacheplayers', 'linktype=playerid','left');
-        } elseif (in_array('linkplayer', $joins_objects)) {
-            $this->db->join('cacheplayers', 'linkplayer=playerid','left');
-        }
-
-        foreach($query_filters as $key => $value) {
-            if (!is_null($value)) {
-                $this->db->where($key, $value);
-            } else {
-                $this->db->where($key);
-            }
-        }
-
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-
-        foreach($order_columns as $key => $value) {
-            $this->db->order_by($key, $value);
-        }
-
-        if ($limit > 0) {
-            $this->db->limit($limit, $limit_offset);
-        }
-        $q = $this->db->get();
-        $results = $q->result_array();
-
-
-        //Verify Access to each item:
-        if($select=='*' && isset($_SERVER['SERVER_NAME'])){
-            if(array_intersect(array('linkleft','linkright'), $joins_objects)){
-                //Idea results:
-                $player_e = superpower_unlocked();
-                foreach($results as $key => $value){
-                    if(!access_level_i(null, $value['ideaid'], $value)){
-                        unset($results[$key]); //Remove this option
-                    }
-                }
-            } elseif(array_intersect(array('linkup','linkdown'), $joins_objects)){
-                //Player results:
-                foreach($results as $key => $value){
-                    if(!access_level_player(null, $value['playerid'], $value)){
-                        unset($results[$key]); //Remove this option
-                    }
-                }
-            }
-        }
-
-        return $results;
-
-    }
 
 
     function update($id, $update_columns, $linkplayer = 0){

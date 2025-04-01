@@ -643,9 +643,10 @@ class Cacheplayers extends CIdea_cache
         //Fetch all SOURCE LINKS:
         $x_adjusted = 0;
 
-        if($migrate_s__id){
+        if($migrate_s__id && 0){
 
             //Migrate Transactions:
+            /*
             $this->db->query("UPDATE menchledger SET linkup=".$migrate_s__id." WHERE linkup=".$playerid.";");
             $affected_linkup = $this->db->affected_rows();
             $x_adjusted += $affected_linkup;
@@ -661,6 +662,7 @@ class Cacheplayers extends CIdea_cache
             $this->db->query("UPDATE menchledger SET linkdomain=".$migrate_s__id." WHERE linkdomain=".$playerid.";");
             $affected_linkdomain = $this->db->affected_rows();
             $x_adjusted += $affected_linkdomain;
+            */
 
             //Clean Duplicates:
             $duplicates_removed = $this->Cacheplayers->remove_duplicate_links($migrate_s__id);
