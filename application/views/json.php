@@ -10,8 +10,8 @@ $previous_x = array();
 echo '<table width="100%" border="1px">';
 foreach($this->Mench_ledger->fetch(array(
     'link_id >' => '0',
-    'link_type NOT IN (4250,4251)' => null,
-), array(), 100000, 0, array(
+    'link_type IN (4983,4230,4559,4251,7545)' => null,
+), array(), 0, 0, array(
     'link_type' => 'ASC',
     'link_up' => 'ASC',
     'link_down' => 'ASC',
