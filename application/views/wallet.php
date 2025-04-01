@@ -43,7 +43,7 @@ foreach($this->config->item('players___33292') as $playerid1 => $m1) {
         echo '<table class="table table-striped card_subcat card_subcat_'.$playerid2.' hidden" style="width:100%; margin-top:13px;">';
 
         $focus_link_group = 0;
-        $player_pinned = e_pinned($playerid2, true);
+        $player_pinned = ( $playerid2!=12273 && $playerid2!=12274 ? e_pinned($playerid2, true) : false );
         if(!$player_pinned || !is_array($this->config->item('players___'.$player_pinned)) || !count($this->config->item('players___'.$player_pinned)) ){
             continue;
         }
