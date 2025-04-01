@@ -3,27 +3,27 @@
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
 /*
-if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view__memory(42903,33286).$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
+if(access_level_i($focus_i['ideahashtag'], 0, $focus_i)){
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view__memory(42903,33286).$focus_i['ideahashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 */
 
-$link_player = ( $player_e ? $player_e['e__id'] : 0 );
-$target_i__hashtag = ( count($target_i) && $link_player ? $target_i['i__hashtag'] : null );
+$linkplayer = ( $player_e ? $player_e['playerid'] : 0 );
+$target_ideahashtag = ( count($target_i) && $linkplayer ? $target_i['ideahashtag'] : null );
 
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-if($link_player && $target_i__hashtag!=$focus_i['i__hashtag']){
+if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
 
-    $find_previous = $this->Mench_ledger->find_previous($link_player, $target_i__hashtag, $focus_i['i__id']);
+    $find_previous = $this->Mench_ledger->find_previous($linkplayer, $target_ideahashtag, $focus_i['ideaid']);
     if(count($find_previous)){
 
         $nav_list = array();
-        $main_branch = array(intval($focus_i['i__id']));
+        $main_branch = array(intval($focus_i['ideaid']));
         foreach($find_previous as $followings_i){
             //First add-up the main branch:
-            array_push($main_branch, intval($followings_i['i__id']));
+            array_push($main_branch, intval($followings_i['ideaid']));
         }
 
         $level = 0;
@@ -33,34 +33,34 @@ if($link_player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
             //Does this have a follower list?
             $query_subset = $this->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-                'link_left' => $followings_i['i__id'],
-            ), array('link_right'), 0, 0, array('link_number' => 'ASC'), '*', null, true);
+                'linkvoid' => 0, //Not Void
+                'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+                'linkleft' => $followings_i['ideaid'],
+            ), array('linkright'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_i__hashtag.'/'.( $followings_i['i__hashtag']==$target_i__hashtag ? 'start' : $followings_i['i__hashtag'] ).'"><u>'.view__i_title($followings_i, true).'</u></a>';
+            $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.( $followings_i['ideahashtag']==$target_ideahashtag ? 'start' : $followings_i['ideahashtag'] ).'"><u>'.view__i_title($followings_i, true).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
-                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdown_instant_'.$followings_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdown_instant_'.$followings_i['ideaid'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 $breadcrum_content .= '<span style="padding-left:5px;"><i class="far fa-sharp fa-chevron-square-up rotate180"></i></span>';
                 $breadcrum_content .= '</button>';
-                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_'.$followings_i['i__id'].'">';
+                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_'.$followings_i['ideaid'].'">';
                 foreach ($query_subset as $i_subset) {
 
                     if(count($this->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'link_player' => $link_player,
-                        'link_left' => $i_subset['i__id'],
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'linkplayer' => $linkplayer,
+                        'linkleft' => $i_subset['ideaid'],
                     )))){
-                        $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view__i_title($i_subset, true).'</a>';
+                        $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.$i_subset['ideahashtag'].'" class="dropdown-item '.( in_array($i_subset['ideaid'], $main_branch) ? ' active ' : '' ).'">'.view__i_title($i_subset, true).'</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'" title="'.$e___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>'.view__i_title($i_subset, true).'</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($i_subset['ideaid'], $main_branch) ? ' active ' : '' ).'" title="'.$e___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>'.view__i_title($i_subset, true).'</div>';
                     }
 
                 }
@@ -88,7 +88,7 @@ if($breadcrum_content){
 
 //Progress?
 if($player_e){
-    $tree_progress = $this->Mench_ledger->tree_progress($link_player, $target_i);
+    $tree_progress = $this->Mench_ledger->tree_progress($linkplayer, $target_i);
     $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     if($target_completed) {
         echo '<div class="alert alert-success" role="alert" title="'.$tree_progress['fixed_total'].'/'.$tree_progress['fixed_discovered'].' '.$tree_progress['fixed_completed_percentage'].'% '.$tree_progress['fixed_discovered'].': '.join(',',$tree_progress['list_discovered']).'"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
@@ -104,11 +104,11 @@ if($player_e){
 $x_completes = array();
 if($player_e){
     $x_completes = $this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        'link_player' => $link_player,
-        'link_left' => $focus_i['i__id'],
-    ), array('link_right'));
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'linkplayer' => $linkplayer,
+        'linkleft' => $focus_i['ideaid'],
+    ), array('linkright'));
 }
 
 

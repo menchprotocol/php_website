@@ -28,25 +28,25 @@ foreach($is as $in){
 
     //Add Idea node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix[12273].$in['i__id'],
-        'label' => $in['i__message'],
+        'id' => $id_prefix[12273].$in['ideaid'],
+        'label' => $in['ideatext'],
         'size' => 1,
         'node_type' => 1, //Idea
     ));
 
     //Fetch Next Ideas:
     foreach($this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-        'link_left' => $in['i__id'],
-    ), array('link_right'), 0, 0) as $next_i){
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+        'linkleft' => $in['ideaid'],
+    ), array('linkright'), 0, 0) as $next_i){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12273].$next_i['link_left'],
-            'target' => $id_prefix[12273].$next_i['link_right'],
-            'label' => $e___4593[$next_i['link_type']]['m__title'], //TODO maybe give visibility to condition here?
+            'source' => $id_prefix[12273].$next_i['linkleft'],
+            'target' => $id_prefix[12273].$next_i['linkright'],
+            'label' => $e___4593[$next_i['linktype']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_i['link_type'],
+            'edge_type' => $next_i['linktype'],
         ));
 
     }
@@ -60,25 +60,25 @@ foreach($es as $en){
 
     //Transfer source node:
     $this->db->insert('gephi_nodes', array(
-        'id' => $id_prefix[12274].$en['e__id'],
-        'label' => $en['e__title'],
+        'id' => $id_prefix[12274].$en['playerid'],
+        'label' => $en['playertext'],
         'size' => 1,
         'node_type' => 2, //Member
     ));
 
     //Fetch followers:
     foreach($this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'link_up' => $en['e__id'],
-    ), array('link_down'), 0, 0) as $e_down){
+        'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkup' => $en['playerid'],
+    ), array('linkdown'), 0, 0) as $e_down){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12274].$e_down['link_up'],
-            'target' => $id_prefix[12274].$e_down['link_down'],
-            'label' => $e___4593[$e_down['link_type']]['m__title'].': '.$e_down['link_text'],
+            'source' => $id_prefix[12274].$e_down['linkup'],
+            'target' => $id_prefix[12274].$e_down['linkdown'],
+            'label' => $e___4593[$e_down['linktype']]['m__title'].': '.$e_down['linktext'],
             'weight' => 1,
-            'edge_type' => $e_down['link_type'],
+            'edge_type' => $e_down['linktype'],
         ));
 
     }

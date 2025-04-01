@@ -31,17 +31,17 @@ $biggest_source_handle = '';
 
 //CONFIG VARS
 foreach($this->Mench_ledger->fetch(array(
-    'link_up' => 4527,
-    'link_void' => 0, //Not Void
-    'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-), array('link_down'), 0, 0, array('e__id' => 'ASC')) as $en){
+    'linkup' => 4527,
+    'linkvoid' => 0, //Not Void
+    'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+), array('linkdown'), 0, 0, array('playerid' => 'ASC')) as $en){
 
     //Now fetch all its followers:
     $down__e = $this->Mench_ledger->fetch(array(
-        'link_up' => $en['link_down'],
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        ), array('link_down'), 0, 0, sort__e());
+        'linkup' => $en['linkdown'],
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        ), array('linkdown'), 0, 0, sort__e());
 
     if(!count($down__e)){
         continue;
@@ -51,66 +51,66 @@ foreach($this->Mench_ledger->fetch(array(
     $total_nodes += (1 + count($down__e));
     if(count($down__e)>$biggest_source_count){
         $biggest_source_count = count($down__e);
-        $biggest_source_handle = '@'.$en['e__handle'];
+        $biggest_source_handle = '@'.$en['playerhandle'];
     }
 
     //Generate raw IDs:
     $down_ids = array();
     $down_titles = array();
     foreach($down__e as $follower){
-        if($follower['e__id']>0){
-            array_push($down_ids , $follower['e__id']);
-            array_push($down_titles , $follower['e__title']);
+        if($follower['playerid']>0){
+            array_push($down_ids , $follower['playerid']);
+            array_push($down_titles , $follower['playertext']);
         }
     }
 
 
     $prefix_common_words = prefix_common_words($down_titles); //Clean Titles
-    $memory_text .= "\n".'//'.$en['e__title'].':'."\n";
-    $memory_text .= '$config[\'n___'.$en['link_down'].'\'] = array('.join(',',$down_ids).');'."\n";
-    $memory_text .= '$config[\'e___'.$en['link_down'].'\'] = array('.( strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "'.trim($prefix_common_words).'"' : '' )."\n";
+    $memory_text .= "\n".'//'.$en['playertext'].':'."\n";
+    $memory_text .= '$config[\'n___'.$en['linkdown'].'\'] = array('.join(',',$down_ids).');'."\n";
+    $memory_text .= '$config[\'e___'.$en['linkdown'].'\'] = array('.( strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "'.trim($prefix_common_words).'"' : '' )."\n";
     foreach($down__e as $follower){
 
-        if($follower['e__id']<1){
+        if($follower['playerid']<1){
             continue;
         }
 
         //Does this have any Pins?
         foreach($this->Mench_ledger->fetch(array(
-            'link_up' => $follower['e__id'],
-            'link_type' => 41011, //PINNED FOLLOWER
-            'link_void' => 0, //Not Void
+            'linkup' => $follower['playerid'],
+            'linktype' => 41011, //PINNED FOLLOWER
+            'linkvoid' => 0, //Not Void
         ), array(), 0) as $x_pinned) {
-            if(!isset($pinned_down[$follower['e__id']])){
-                $pinned_down[$follower['e__id']] = array($x_pinned['link_down']);
-            } elseif(!in_array($x_pinned['link_down'], $pinned_down[$follower['e__id']])) {
-                array_push($pinned_down[$follower['e__id']], $x_pinned['link_down']);
+            if(!isset($pinned_down[$follower['playerid']])){
+                $pinned_down[$follower['playerid']] = array($x_pinned['linkdown']);
+            } elseif(!in_array($x_pinned['linkdown'], $pinned_down[$follower['playerid']])) {
+                array_push($pinned_down[$follower['playerid']], $x_pinned['linkdown']);
             }
         }
 
-        if($follower['link_type']==41011){
-            if(!isset($pinned_up[$follower['e__id']])){
-                $pinned_up[$follower['e__id']] = array($en['e__id']);
-            } elseif(!in_array($en['e__id'], $pinned_up[$follower['e__id']])) {
-                array_push($pinned_up[$follower['e__id']], $en['e__id']);
+        if($follower['linktype']==41011){
+            if(!isset($pinned_up[$follower['playerid']])){
+                $pinned_up[$follower['playerid']] = array($en['playerid']);
+            } elseif(!in_array($en['playerid'], $pinned_up[$follower['playerid']])) {
+                array_push($pinned_up[$follower['playerid']], $en['playerid']);
             }
         }
 
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
         foreach($this->Mench_ledger->fetch(array(
-            'link_down' => $follower['e__id'],
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-                ), array('link_up'), 0) as $cp_en){
-            array_push($down_up_ids, intval($cp_en['e__id']));
+            'linkdown' => $follower['playerid'],
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+                ), array('linkup'), 0) as $cp_en){
+            array_push($down_up_ids, intval($cp_en['playerid']));
         }
 
-        $memory_text .= '     '.$follower['e__id'].' => array('."\n";
-        $memory_text .= '        \'m__handle\' => \''.$follower['e__handle'].'\','."\n";
-        $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',str_replace($prefix_common_words,'',$follower['e__title']) )).'\','."\n";
-        $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['link_text'])).'\','."\n";
-        $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view__cover($follower['e__cover'])).'\','."\n";
+        $memory_text .= '     '.$follower['playerid'].' => array('."\n";
+        $memory_text .= '        \'m__handle\' => \''.$follower['playerhandle'].'\','."\n";
+        $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',str_replace($prefix_common_words,'',$follower['playertext']) )).'\','."\n";
+        $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['linktext'])).'\','."\n";
+        $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view__cover($follower['playercover'])).'\','."\n";
         $memory_text .= '        \'m__following\' => array('.join(',',$down_up_ids).'),'."\n";
         $memory_text .= '     ),'."\n";
 
@@ -125,18 +125,18 @@ foreach($this->Mench_ledger->fetch(array(
 //Append all App Handlers for quick checking:
 $memory_text .= "\n"."\n";
 foreach($this->Mench_ledger->fetch(array(
-    'link_up' => 42043, //Handle Cache
-    'link_void' => 0, //Not Void
-    'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-), array('link_down'), 0) as $handle){
+    'linkup' => 42043, //Handle Cache
+    'linkvoid' => 0, //Not Void
+    'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+), array('linkdown'), 0) as $handle){
 
-    $memory_text .= '$config[\'handle___'.$handle['e__id'].'\'] = array('."\n";
+    $memory_text .= '$config[\'handle___'.$handle['playerid'].'\'] = array('."\n";
     foreach($this->Mench_ledger->fetch(array(
-        'link_up' => $handle['e__id'],
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        ), array('link_down'), 0) as $app){
-        $memory_text .= '     \''.strtolower($app['e__handle']).'\' => '.$app['e__id'].','."\n";
+        'linkup' => $handle['playerid'],
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        ), array('linkdown'), 0) as $app){
+        $memory_text .= '     \''.strtolower($app['playerhandle']).'\' => '.$app['playerid'].','."\n";
     }
     $memory_text .= ');'."\n";
 }
@@ -182,79 +182,79 @@ $special_route_text = '';
 $routes_text .= '//APPS:'."\n\n";
 
 foreach($this->Mench_ledger->fetch(array(
-    'link_up' => 6287, //Apps
-    'link_type IN (' . join(',', ( $memory_detected ? $this->config->item('n___32292') : $n___33337 )) . ')' => null, //SOURCE LINKS
-    'link_void' => 0, //Not Void
-), array('link_down'), 0, 0, array('e__title' => 'ASC')) as $app) {
+    'linkup' => 6287, //Apps
+    'linktype IN (' . join(',', ( $memory_detected ? $this->config->item('n___32292') : $n___33337 )) . ')' => null, //SOURCE LINKS
+    'linkvoid' => 0, //Not Void
+), array('linkdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if(!$memory_detected){
         $special_routes = false;
         foreach($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-            'link_up' => 42921,
-            'link_down' => $app['e__id'], //Required
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+            'linkup' => 42921,
+            'linkdown' => $app['playerid'], //Required
         )) as $route){
-            if(strlen($route['link_text'])>0){
-                $special_routes = $route['link_text'];
+            if(strlen($route['linktext'])>0){
+                $special_routes = $route['linktext'];
             }
         }
     } else {
-        $special_routes = ( in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']) ? $e___42921[$app['e__id']]['m__message'] : false );
+        $special_routes = ( in_array($app['playerid'], $this->config->item('n___42921')) && isset($e___42921[$app['playerid']]['m__message']) && strlen($e___42921[$app['playerid']]['m__message']) ? $e___42921[$app['playerid']]['m__message'] : false );
     }
 
 
     if(count($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-            'link_up' => 44330,
-            'link_down' => $app['e__id'], //Required
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+            'linkup' => 44330,
+            'linkdown' => $app['playerid'], //Required
         )))){
         //Source AND Idea Input
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
+        $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/$2/$1'.'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/0/$1'.'";'."\n"; //Should give error
+        $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/$1/0'.'";'."\n"; //Should give error
     } elseif(count($this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'link_up' => 42905,
-        'link_down' => $app['e__id'], //Required
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'linkup' => 42905,
+        'linkdown' => $app['playerid'], //Required
     )))){
         //Source Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['playerid'].'/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/$1'.'";'."\n";
         }
     } elseif(count($this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'link_up' => 42911,
-        'link_down' => $app['e__id'], //Required
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'linkup' => 42911,
+        'linkdown' => $app['playerid'], //Required
     )))){
         //Idea Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['playerid'].'/0/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/0/$1'.'";'."\n";
         }
     } elseif(count($this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'link_up' => 44329,
-        'link_down' => $app['e__id'], //Required
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'linkup' => 44329,
+        'linkdown' => $app['playerid'], //Required
     )))){
         //Discoveries Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$special_routes.'\'] = "app/load/'.$app['playerid'].'/0/$2/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['playerid'].'/0/$2/$1'.'";'."\n";
         }
     }
 
     //Always Have no Input option:
     if(!$special_routes){
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['playerhandle'].'\'] = "app/load/'.$app['playerid'].'";'."\n";
     }
 
 }
@@ -270,7 +270,7 @@ fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached '.$total_nodes.' Sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.( $memory_detected ? reset_cache($link_player) : 'NONE' ).'.</div><div></div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached '.$total_nodes.' Sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.( $memory_detected ? reset_cache($linkplayer) : 'NONE' ).'.</div><div></div></div>';
 
 
 //Show:

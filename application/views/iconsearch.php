@@ -6,31 +6,31 @@ if(isset($_GET['search_for'])){
 
     $icon_keyword = $_GET['search_for'];
 
-} elseif(isset($_GET['e__handle']) && $_GET['e__handle']){
+} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']){
 
     $es = $this->Source_cache->fetch(array(
-        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
     if(!count($es)){
         return view__json(array(
             'status' => 0,
             'message' => 'Invalid Source ID #1'
         ));
-    } elseif(!strlen($es[0]['e__cover'])) {
+    } elseif(!strlen($es[0]['playercover'])) {
         return view__json(array(
             'status' => 0,
             'message' => 'Source Missing Cover'
         ));
     }
 
-    if(string_is_icon($es[0]['e__cover'])){
+    if(string_is_icon($es[0]['playercover'])){
 
         //Exclude Cover settings:
-        $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['e__cover']);
+        $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['playercover']);
 
     } else {
 
-        $icon_keyword = $es[0]['e__cover'];
+        $icon_keyword = $es[0]['playercover'];
 
     }
 }
@@ -47,7 +47,7 @@ echo '<input type="submit" class="btn" value="Search">';
 if($icon_keyword){
 
     $matching_results = $this->Source_cache->fetch(array(
-        'LOWER(e__cover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
+        'LOWER(playercover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 
     //List the matching search:
@@ -70,15 +70,15 @@ if($icon_keyword){
         foreach($matching_results as $count=>$en){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
-                $replaced += $this->Source_cache->update($en['e__id'], array(
-                    'e__cover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['e__cover']),
-                ), false, $player_e['e__id']);
+                $replaced += $this->Source_cache->update($en['playerid'], array(
+                    'playercover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['playercover']),
+                ), false, $player_e['playerid']);
 
             }
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.view__cover($en['e__cover']).'</span><a href="'.view__memory(42903,42902).$en['e__handle'].'">'.$en['e__title'].'</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.view__cover($en['playercover']).'</span><a href="'.view__memory(42903,42902).$en['playerhandle'].'">'.$en['playertext'].'</a></td>';
             echo '</tr>';
 
         }

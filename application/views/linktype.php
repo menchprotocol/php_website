@@ -10,10 +10,10 @@ $total_points = 0;
 $table_body = '';
 
 //Count total first:
-$totals_count = $this->Mench_ledger->fetch(array(), array(), 0, 0, array(), 'COUNT(link_id) as totals');
+$totals_count = $this->Mench_ledger->fetch(array(), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
-foreach($this->config->item('e___4593') as $link_type => $m) {
+foreach($this->config->item('e___4593') as $linktype => $m) {
 
     $total_count++;
 
@@ -21,12 +21,12 @@ foreach($this->config->item('e___4593') as $link_type => $m) {
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
     $table_body .= '<td style="text-align: left;"><a href="'.view__memory(42903,42902).$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
-    $table_body .= '<td style="text-align: left;">'.$link_type.'</td>';
+    $table_body .= '<td style="text-align: left;">'.$linktype.'</td>';
 
     //List all statuses:
     $list_e_count = $this->Mench_ledger->fetch(array(
-        'link_type' => $link_type,
-    ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
+        'linktype' => $linktype,
+    ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
     $interactions_this = $list_e_count[0]['totals'];
     $total_interactions += $interactions_this;
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';

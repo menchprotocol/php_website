@@ -63,11 +63,11 @@ body {
     max-width:610px !important;
     margin: 0 auto !important;
 }
-.link_text video {
+.linktext video {
     max-width:610px;
 
 }
-.link_text img, .content-image {
+.linktext img, .content-image {
     max-width: 100%;
     max-height: 610px;
 
@@ -251,7 +251,7 @@ h3{
 .modal-header .dynamic_selector{
     margin-left: 0px !important;
 }
-.dynamic_editing_input input.form-control.save_i__hashtag,
+.dynamic_editing_input input.form-control.save_ideahashtag,
 .left_padded .dynamic_editing_input input.form-control,
 .left_padded .dynamic_editing_input textarea.form-control{
     margin-left: 40px !important;
@@ -1228,7 +1228,7 @@ a.headline {
     left: 0;
     top: 34px;
 }
-.link_text {
+.linktext {
     display:inline-block;
     overflow: hidden;
     width: 100%;
@@ -1787,7 +1787,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 }
 
 
-.dynamic_editing_input textarea.form-control.save_i__message{
+.dynamic_editing_input textarea.form-control.save_ideatext{
     padding-top: px !important;
     margin-left: 40px !important;
 }
@@ -3387,7 +3387,7 @@ h4.main__title{
 
     .content-image{ max-height:144px; }
 
-    .media-content, .link_text img, .link_text video { max-width: 100%; }
+    .media-content, .linktext img, .linktext video { max-width: 100%; }
     .content-image {
         max-height: 100%;
     }
@@ -4458,10 +4458,10 @@ main {
 }
 
 
-.media-content, .link_text video {
+.media-content, .linktext video {
     max-width:610px;
 }
-.link_text img, .content-image {
+.linktext img, .content-image {
     margin: 0;
     max-width: 100%;
     border-radius: 0px;
@@ -4542,7 +4542,7 @@ main {
     padding-top: 3px !important;
 }
 
-.link_text_headline{
+.linktext_headline{
     display: block;
     line-height: 108%;
     padding: 0 2px;

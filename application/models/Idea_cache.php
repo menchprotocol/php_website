@@ -15,7 +15,7 @@ class Idea_cache extends CIdea_cache
     }
 
 
-    function create($add_fields, $link_player = 14068)
+    function create($add_fields, $linkplayer = 14068)
     {
 
         return false;
@@ -28,10 +28,10 @@ class Idea_cache extends CIdea_cache
 
         //Add if not added as the author:
         $this->Mench_ledger->create(array(
-            'link_type' => 4250,
-            'link_player' => $link_player,
-            'link_up' => $link_player,
-            'link_right' => $add_fields['i__id'],
+            'linktype' => 4250,
+            'linkplayer' => $linkplayer,
+            'linkup' => $linkplayer,
+            'linkright' => $add_fields['ideaid'],
         ));
 
 
@@ -43,57 +43,57 @@ class Idea_cache extends CIdea_cache
             $add_fields['ideaid'] = $this->db->insert_id();
         }
 
-        if (!$add_fields['i__id']) {
+        if (!$add_fields['ideaid']) {
             //Ooopsi, something went wrong!
             $this->Mench_ledger->create(array(
-                'link_type' => 44179, //Triggered
-                'link_up' => 4246, //Platform Bug Reports
-                'link_down' => $link_player,
-                'link_text' => 'i->create() failed to create a new idea',
-                'link_player' => $link_player,
+                'linktype' => 44179, //Triggered
+                'linkup' => 4246, //Platform Bug Reports
+                'linkdown' => $linkplayer,
+                'linktext' => 'i->create() failed to create a new idea',
+                'linkplayer' => $linkplayer,
             ));
             return false;
         }
 
         //Sync messages:
-        $view_sync_links = view__sync_links($add_fields['i__message'], true, $add_fields['i__id']);
+        $view_sync_links = view__sync_links($add_fields['ideatext'], true, $add_fields['ideaid']);
 
         //Fetch to return the complete source data:
         $is = $this->Idea_cache->fetch(array(
-            'i__id' => $add_fields['i__id'],
+            'ideaid' => $add_fields['ideaid'],
         ));
 
         //Update Search Index:
-        flag_for_search_indexing(12273, $add_fields['i__id']);
+        flag_for_search_indexing(12273, $add_fields['ideaid']);
 
         //Additional sources to be added? Start with creator
-        $e_appended = array($link_player);
+        $e_appended = array($linkplayer);
         $pinned_followers = $this->Mench_ledger->fetch(array(
-            'link_up' => $link_player,
-            'link_type' => 41011, //PINNED FOLLOWER
-            'link_void' => 0, //Not Void
-        ), array('link_down'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC'));
+            'linkup' => $linkplayer,
+            'linktype' => 41011, //PINNED FOLLOWER
+            'linkvoid' => 0, //Not Void
+        ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
 
 
         //Also append all pinned followers:
-        $link_number = 0;
+        $linknumber = 0;
         foreach($pinned_followers as $x_pinned) {
-            if(!in_array($x_pinned['e__id'], $e_appended) && !count($this->Mench_ledger->fetch(array(
-                    'link_type' => 4983, //Idea Created
-                    'link_up' => $x_pinned['e__id'],
-                    'link_right' => $add_fields['i__id'],
-                    'link_void' => 0, //Not Void
+            if(!in_array($x_pinned['playerid'], $e_appended) && !count($this->Mench_ledger->fetch(array(
+                    'linktype' => 4983, //Idea Created
+                    'linkup' => $x_pinned['playerid'],
+                    'linkright' => $add_fields['ideaid'],
+                    'linkvoid' => 0, //Not Void
                 )))){
                 $this->Mench_ledger->create(array(
-                    'link_type' => 4983, //Idea Created
-                    'link_up' => $x_pinned['e__id'],
-                    'link_right' => $add_fields['i__id'],
-                    'link_player' => $link_player,
-                    'link_number' => $link_number,
+                    'linktype' => 4983, //Idea Created
+                    'linkup' => $x_pinned['playerid'],
+                    'linkright' => $add_fields['ideaid'],
+                    'linkplayer' => $linkplayer,
+                    'linknumber' => $linknumber,
                 ));
-                array_push($e_appended, $x_pinned['e__id']);
-                $link_number++;
+                array_push($e_appended, $x_pinned['playerid']);
+                $linknumber++;
             }
         }
 
@@ -129,7 +129,7 @@ class Idea_cache extends CIdea_cache
         //Make sure user has access to each item:
         if($select=='*' && 0){
             foreach($results as $key => $value){
-                if(!access_level_i($value['i__hashtag'], 0, $value)){
+                if(!access_level_i($value['ideahashtag'], 0, $value)){
                     unset($results[$key]); //Remove this option
                 }
             }
@@ -149,7 +149,7 @@ class Idea_cache extends CIdea_cache
         }
 
         //Update:
-        $this->db->where('i__id', intval($id));
+        $this->db->where('ideaid', intval($id));
         $this->db->update('cache_ideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
@@ -161,27 +161,27 @@ class Idea_cache extends CIdea_cache
         return $affected_rows;
     }
 
-    function remove($i__id, $link_player = 0, $migrate_s__id = 0){
+    function remove($ideaid, $linkplayer = 0, $migrate_s__id = 0){
 
         //TODO Needs work
         return false;
 
         if($migrate_s__id>0){
             $valid_hashtag = $this->Idea_cache->fetch(array(
-                'LOWER(i__hashtag)' => $migrate_s__id,
+                'LOWER(ideahashtag)' => $migrate_s__id,
             ));
             if(!count($valid_hashtag)){
                 return array(
                     'status' => 0,
                     'message' => '#'.$migrate_s__handle.' is an Invalid Idea hashtag!',
                 );
-            } elseif($valid_hashtag[0]['i__id']==$o__id){
+            } elseif($valid_hashtag[0]['ideaid']==$o__id){
                 return array(
                     'status' => 0,
                     'message' => 'You cannot migrate this idea to itself! Choose a different idea to migrate.',
                 );
             }
-            $migrate_s__id = $valid_hashtag[0]['i__id'];
+            $migrate_s__id = $valid_hashtag[0]['ideaid'];
         }
 
         //Determine what to do after deleted:
@@ -189,30 +189,30 @@ class Idea_cache extends CIdea_cache
 
             //Find Published Followings:
             foreach($this->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
-                'link_right' => $o__id,
-            ), array('link_left'), 1) as $previous_i) {
-                $deletion_redirect = view__memory(42903,33286).$previous_i['i__hashtag'];
+                'linkvoid' => 0, //Not Void
+                'linktype IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
+                'linkright' => $o__id,
+            ), array('linkleft'), 1) as $previous_i) {
+                $deletion_redirect = view__memory(42903,33286).$previous_i['ideahashtag'];
             }
 
             //If not found, find active followings:
             if(!$deletion_redirect){
                 foreach($this->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
-                    'link_right' => $o__id,
-                ), array('link_left'), 1) as $previous_i) {
-                    $deletion_redirect = view__memory(42903,33286).$previous_i['i__hashtag'];
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
+                    'linkright' => $o__id,
+                ), array('linkleft'), 1) as $previous_i) {
+                    $deletion_redirect = view__memory(42903,33286).$previous_i['ideahashtag'];
                 }
             }
 
             //If still not found, go to main page if no followings found:
             if(!$deletion_redirect){
                 foreach($this->Idea_cache->fetch(array(
-                    'i__id' => $o__id,
+                    'ideaid' => $o__id,
                 )) as $i){
-                    $deletion_redirect = view__memory(42903,33286).$i['i__hashtag'];
+                    $deletion_redirect = view__memory(42903,33286).$i['ideahashtag'];
                 }
             }
 
@@ -229,12 +229,12 @@ class Idea_cache extends CIdea_cache
         if($migrate_s__id){
 
             //Migrate Transactions:
-            $this->db->query("UPDATE mench_ledger SET link_right=".$migrate_s__id." WHERE link_right=".$i__id.";");
-            $affected_link_right = $this->db->affected_rows();
-            $x_adjusted += $affected_link_right;
-            $this->db->query("UPDATE mench_ledger SET link_left=".$migrate_s__id." WHERE link_left=".$i__id.";");
-            $affected_link_left = $this->db->affected_rows();
-            $x_adjusted += $affected_link_left;
+            $this->db->query("UPDATE mench_ledger SET linkright=".$migrate_s__id." WHERE linkright=".$ideaid.";");
+            $affected_linkright = $this->db->affected_rows();
+            $x_adjusted += $affected_linkright;
+            $this->db->query("UPDATE mench_ledger SET linkleft=".$migrate_s__id." WHERE linkleft=".$ideaid.";");
+            $affected_linkleft = $this->db->affected_rows();
+            $x_adjusted += $affected_linkleft;
 
             $player_e = superpower_unlocked();
 
@@ -242,17 +242,17 @@ class Idea_cache extends CIdea_cache
 
             //REMOVE TRANSACTIONS
             foreach($this->Mench_ledger->fetch(array( //Idea Transactions
-                'link_void' => 0, //Not Void
-                '(link_right = '.$i__id.' OR link_left = '.$i__id.')' => null,
+                'linkvoid' => 0, //Not Void
+                '(linkright = '.$ideaid.' OR linkleft = '.$ideaid.')' => null,
             ), array(), 0) as $x){
                 //Delete this transaction:
-                $x_adjusted += $this->Mench_ledger->update($x['link_id'], array(), $link_player);
+                $x_adjusted += $this->Mench_ledger->update($x['linkid'], array(), $linkplayer);
             }
 
         }
 
         //Delete Idea:
-        $this->Idea_cache->update($i__id, array(), $link_player);
+        $this->Idea_cache->update($ideaid, array(), $linkplayer);
 
         //Update Search Index?
         if(0){
@@ -268,43 +268,43 @@ class Idea_cache extends CIdea_cache
 
 
 
-    function duplicate($i, $copy_to__id, $link_player)
+    function duplicate($i, $copy_to__id, $linkplayer)
     {
 
         $i_new = $this->Idea_cache->create(array(
-            'i__message' => $i['i__message'],
+            'ideatext' => $i['ideatext'],
             'i__type' => $i['i__type'],
-        ), $link_player);
+        ), $linkplayer);
 
         //Copy related transactions:
         $links = 0;
         foreach($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___27240')) . ')' => null, //COPY Transactions
-            '(link_right='.$i['i__id'].' OR link_left='.$i['i__id'].')' => null,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___27240')) . ')' => null, //COPY Transactions
+            '(linkright='.$i['ideaid'].' OR linkleft='.$i['ideaid'].')' => null,
         ), array(), 0) as $x){
 
             //Duplicate transaction, with new idea
             if(!count($this->Mench_ledger->fetch(array(
-                'link_type' => $x['link_type'],
-                'link_text' => $x['link_text'],
-                'link_up' => $x['link_up'],
-                'link_down' => $x['link_down'],
-                'link_left' => ( $i['i__id']==$x['link_left'] ? $i_new['i__id'] : $x['link_left'] ),
-                'link_right' => ( $i['i__id']==$x['link_right'] ? $i_new['i__id'] : $x['link_right'] ),
+                'linktype' => $x['linktype'],
+                'linktext' => $x['linktext'],
+                'linkup' => $x['linkup'],
+                'linkdown' => $x['linkdown'],
+                'linkleft' => ( $i['ideaid']==$x['linkleft'] ? $i_new['ideaid'] : $x['linkleft'] ),
+                'linkright' => ( $i['ideaid']==$x['linkright'] ? $i_new['ideaid'] : $x['linkright'] ),
             )))){
                 $links++;
                 $this->Mench_ledger->create(array(
                     //Copy:
-                    'link_type' => $x['link_type'],
-                    'link_number' => $x['link_number'],
-                    'link_text' => $x['link_text'],
-                    'link_up' => $x['link_up'],
-                    'link_down' => $x['link_down'],
+                    'linktype' => $x['linktype'],
+                    'linknumber' => $x['linknumber'],
+                    'linktext' => $x['linktext'],
+                    'linkup' => $x['linkup'],
+                    'linkdown' => $x['linkdown'],
                     //Change:
-                    'link_player' => $link_player,
-                    'link_left' => ( $i['i__id']==$x['link_left'] ? $i_new['i__id'] : $x['link_left'] ),
-                    'link_right' => ( $i['i__id']==$x['link_right'] ? $i_new['i__id'] : $x['link_right'] ),
+                    'linkplayer' => $linkplayer,
+                    'linkleft' => ( $i['ideaid']==$x['linkleft'] ? $i_new['ideaid'] : $x['linkleft'] ),
+                    'linkright' => ( $i['ideaid']==$x['linkright'] ? $i_new['ideaid'] : $x['linkright'] ),
                 ));
             }
 
@@ -315,19 +315,19 @@ class Idea_cache extends CIdea_cache
     }
 
 
-    function i_link($i, $link_type, $next_i, $link_player){
+    function i_link($i, $linktype, $next_i, $linkplayer){
 
         //Links ideas with the causality link ensuring not a duplicate:
-        if(0 && $link_type==4228 && count($this->Mench_ledger->find_previous(0, $next_i['i__hashtag'], $i['i__id']))){
+        if(0 && $linktype==4228 && count($this->Mench_ledger->find_previous(0, $next_i['ideahashtag'], $i['ideaid']))){
             return array(
                 'status' => 0,
                 'message' => 'Idea already added in the inverse direction, so it cannot be added here',
             );
         } elseif(count($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_left' => $i['i__id'],
-            'link_type' => $link_type,
-            'link_right' => $next_i['i__id'],
+            'linkvoid' => 0, //Not Void
+            'linkleft' => $i['ideaid'],
+            'linktype' => $linktype,
+            'linkright' => $next_i['ideaid'],
         )))){
             //Make sure not a duplicate link:
             return array(
@@ -338,10 +338,10 @@ class Idea_cache extends CIdea_cache
 
         //Adding PREVIOUS or NEXT Idea from Idea
         $this->Mench_ledger->create(array(
-            'link_player' => $link_player,
-            'link_left' => $i['i__id'],
-            'link_type' => $link_type,
-            'link_right' => $next_i['i__id'],
+            'linkplayer' => $linkplayer,
+            'linkleft' => $i['ideaid'],
+            'linktype' => $linktype,
+            'linkright' => $next_i['ideaid'],
         ), true);
 
         //Return result:
@@ -366,7 +366,7 @@ class Idea_cache extends CIdea_cache
             return false;
         }
 
-        if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && in_array($i['ideaid'], $loop_breaker_ids)){
             return array();
         }
 
@@ -377,18 +377,18 @@ class Idea_cache extends CIdea_cache
         }
 
         $recursive_i_ids = array();
-        array_push($loop_breaker_ids, intval($i['i__id']));
+        array_push($loop_breaker_ids, intval($i['ideaid']));
 
         foreach($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
-            'link_left' => $i['i__id'],
-        ), array('link_right'), 0, 0, array('link_number' => 'ASC')) as $next_i){
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
+            'linkleft' => $i['ideaid'],
+        ), array('linkright'), 0, 0, array('linknumber' => 'ASC')) as $next_i){
 
-            if(!in_array(intval($next_i['i__id']), $recursive_i_ids)){
+            if(!in_array(intval($next_i['ideaid']), $recursive_i_ids)){
                 if(!($scope=='OR' && !$input__selection)){
                     //We add it at all times unless scope is OR and node is not OR
-                    array_push($recursive_i_ids, intval($next_i['i__id']));
+                    array_push($recursive_i_ids, intval($next_i['ideaid']));
                 }
             }
 
@@ -411,97 +411,97 @@ class Idea_cache extends CIdea_cache
 
     }
 
-    function recursive_clone($i__id, $do_recursive, $link_player, $previous_i = null, $clone_title = null) {
+    function recursive_clone($ideaid, $do_recursive, $linkplayer, $previous_i = null, $clone_title = null) {
 
         //Create Clone -or- Link & move-on?
         //Validate Idea:
         $this_i = $this->Idea_cache->fetch(array(
-            'i__id' => $i__id,
+            'ideaid' => $ideaid,
         ));
         if (count($this_i) < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid idea ID',
-                'new_i__id' => 0,
-                'new_i__hashtag' => '',
+                'new_ideaid' => 0,
+                'new_ideahashtag' => '',
             );
         }
 
         $i_new = $this->Idea_cache->create(array(
-            'i__message' => ( $clone_title ? $clone_title : "Copy Of ".$this_i[0]['i__message'] ),
+            'ideatext' => ( $clone_title ? $clone_title : "Copy Of ".$this_i[0]['ideatext'] ),
             'i__type' => $this_i[0]['i__type'],
-        ), $link_player);
+        ), $linkplayer);
 
         //Always Link Sources:
         $filters = array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
-            'link_right' => $i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
+            'linkright' => $ideaid,
         );
 
         foreach($this->Mench_ledger->fetch($filters, array(), 0) as $x){
             $this->Mench_ledger->create(array(
-                'link_player' => $link_player,
-                'link_type' => $x['link_type'],
-                'link_right' => $i_new['i__id'],
-                'link_up' => $x['link_up'],
-                'link_down' => $x['link_down'],
-                'link_left' => $x['link_left'],
-                'link_text' => $x['link_text'],
-                'link_number' => $x['link_number'],
+                'linkplayer' => $linkplayer,
+                'linktype' => $x['linktype'],
+                'linkright' => $i_new['ideaid'],
+                'linkup' => $x['linkup'],
+                'linkdown' => $x['linkdown'],
+                'linkleft' => $x['linkleft'],
+                'linktext' => $x['linktext'],
+                'linknumber' => $x['linknumber'],
             ));
         }
 
 
         //Always Link Followings:
         foreach($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
-            'link_right' => $i__id,
-        ), array('link_left'), 0) as $x){
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
+            'linkright' => $ideaid,
+        ), array('linkleft'), 0) as $x){
             $this->Mench_ledger->create(array(
-                'link_player' => $link_player,
-                'link_type' => $x['link_type'],
-                'link_right' => $i_new['i__id'],
-                'link_left' => $x['i__id'],
-                'link_text' => $x['link_text'],
-                'link_number' => $x['link_number'],
+                'linkplayer' => $linkplayer,
+                'linktype' => $x['linktype'],
+                'linkright' => $i_new['ideaid'],
+                'linkleft' => $x['ideaid'],
+                'linktext' => $x['linktext'],
+                'linknumber' => $x['linknumber'],
             ));
         }
 
 
         //Fetch followers:
         foreach($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
-            'link_left' => $i__id,
-        ), array('link_right'), 0) as $x){
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
+            'linkleft' => $ideaid,
+        ), array('linkright'), 0) as $x){
 
             if($do_recursive && !count($this->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'link_right' => $i__id,
-                    'link_up' => 42208, //No-Clone Idea
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'linkright' => $ideaid,
+                    'linkup' => 42208, //No-Clone Idea
                 )))){
                 //Clone Followers Recursively:
-                $this->Idea_cache->recursive_clone($x['i__id'], $do_recursive, $link_player, $this_i[0]);
+                $this->Idea_cache->recursive_clone($x['ideaid'], $do_recursive, $linkplayer, $this_i[0]);
             } else {
                 //Link Followers:
                 $this->Mench_ledger->create(array(
-                    'link_player' => $link_player,
-                    'link_type' => $x['link_type'],
-                    'link_left' => $i_new['i__id'],
-                    'link_right' => $x['i__id'],
-                    'link_text' => $x['link_text'],
-                    'link_number' => $x['link_number'],
+                    'linkplayer' => $linkplayer,
+                    'linktype' => $x['linktype'],
+                    'linkleft' => $i_new['ideaid'],
+                    'linkright' => $x['ideaid'],
+                    'linktext' => $x['linktext'],
+                    'linknumber' => $x['linknumber'],
                 ));
             }
         }
 
         return array(
             'status' => 1,
-            'new_i__id' => $i_new['i__id'],
-            'new_i__hashtag' => $i_new['i__hashtag'],
+            'new_ideaid' => $i_new['ideaid'],
+            'new_ideahashtag' => $i_new['ideahashtag'],
         );
 
     }
@@ -509,28 +509,28 @@ class Idea_cache extends CIdea_cache
 
 
 
-   function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $link_player)
+   function mass_update($ideaid, $action_playerid, $action_command1, $action_command2, $linkplayer)
     {
 
         //Alert: Has a twin function called e_mass_update()
 
         boost_power();
 
-        if(!in_array($action_e__id, $this->config->item('n___12589'))) {
+        if(!in_array($action_playerid, $this->config->item('n___12589'))) {
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && !view__valid_handle_e($action_command1)){
+        } elseif(in_array($action_playerid , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && !view__valid_handle_e($action_command1)){
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown Source. Format must be: @SourceHandle',
             );
 
-        } elseif(in_array($action_e__id , array(12611,12612,27240,28801)) && !view__valid_handle_i($action_command1)){
+        } elseif(in_array($action_playerid , array(12611,12612,27240,28801)) && !view__valid_handle_i($action_command1)){
 
             return array(
                 'status' => 0,
@@ -548,10 +548,10 @@ class Idea_cache extends CIdea_cache
         $applied_success = 0; //To be populated
 
         $is_next = $this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
-            'link_left' => $i__id,
-        ), array('link_right'), 0, 0, array('link_number' => 'ASC'));
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
+            'linkleft' => $ideaid,
+        ), array('linkright'), 0, 0, array('linknumber' => 'ASC'));
 
 
         //Process request:
@@ -559,21 +559,21 @@ class Idea_cache extends CIdea_cache
 
             //Logic here must match items in e_mass_actions config variable
 
-            if(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && view__valid_handle_e($action_command1)){
+            if(in_array($action_playerid , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && view__valid_handle_e($action_command1)){
 
                 //Check if it has this item:
                 foreach($this->Source_cache->fetch(array(
-                    'LOWER(e__handle)' => strtolower(view__valid_handle_e($action_command1)),
+                    'LOWER(playerhandle)' => strtolower(view__valid_handle_e($action_command1)),
                 )) as $e){
 
                     $i_has_e = $this->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                        'link_right' => $next_i['i__id'],
-                        'link_up' => $e['e__id'],
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                        'linkright' => $next_i['ideaid'],
+                        'linkup' => $e['playerid'],
                     ));
 
-                    if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
+                    if(in_array($action_playerid , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
 
                         $e_mapper = array(
                             12591 => 4983,  //Co-Author
@@ -585,35 +585,35 @@ class Idea_cache extends CIdea_cache
 
                         //Missing & Must be Added:
                         $this->Mench_ledger->create(array(
-                            'link_player' => $link_player,
-                            'link_up' => $e['e__id'],
-                            'link_type' => $e_mapper[$action_e__id],
-                            'link_right' => $next_i['i__id'],
-                            'link_text' => trim($action_command2),
+                            'linkplayer' => $linkplayer,
+                            'linkup' => $e['playerid'],
+                            'linktype' => $e_mapper[$action_playerid],
+                            'linkright' => $next_i['ideaid'],
+                            'linktext' => trim($action_command2),
                         ), true);
 
                         $applied_success++;
 
-                    } elseif(in_array($action_e__id , array(12592,27081,27986,27083,27085,27087)) && count($i_has_e)){
+                    } elseif(in_array($action_playerid , array(12592,27081,27986,27083,27085,27087)) && count($i_has_e)){
 
                         //Has and must be deleted:
-                        $this->Mench_ledger->update($i_has_e[0]['link_id'], array(), $link_player);
+                        $this->Mench_ledger->update($i_has_e[0]['linkid'], array(), $linkplayer);
 
                         $applied_success++;
 
                     }
                 }
 
-            } elseif(in_array($action_e__id , array(12611,12612,27240,28801)) && view__valid_handle_i($action_command1)){
+            } elseif(in_array($action_playerid , array(12611,12612,27240,28801)) && view__valid_handle_i($action_command1)){
 
                 foreach($this->Idea_cache->fetch(array(
-                    'LOWER(i__hashtag)' => strtolower(view__valid_handle_i($action_command1)),
+                    'LOWER(ideahashtag)' => strtolower(view__valid_handle_i($action_command1)),
                 )) as $i){
 
-                    if($action_e__id==27240){
+                    if($action_playerid==27240){
 
                         //Copy
-                        $link_count = $this->Idea_cache->duplicate($next_i, $i['i__id'], $link_player);
+                        $link_count = $this->Idea_cache->duplicate($next_i, $i['ideaid'], $linkplayer);
 
                         if($link_count > 0){
                             //Increment Source since not there:
@@ -623,24 +623,24 @@ class Idea_cache extends CIdea_cache
                     } else {
 
                         $is_previous = $this->Mench_ledger->fetch(array(
-                            'link_void' => 0, //Not Void
-                            'link_type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-                            'link_left' => $i['i__id'],
-                            'link_right' => $next_i['i__id'],
+                            'linkvoid' => 0, //Not Void
+                            'linktype IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
+                            'linkleft' => $i['ideaid'],
+                            'linkright' => $next_i['ideaid'],
                         ), array(), 0);
 
 
                         //See how to adjust:
-                        if(in_array($action_e__id, array(12611, 28801)) && !count($is_previous)){
+                        if(in_array($action_playerid, array(12611, 28801)) && !count($is_previous)){
 
                             //Link
-                            $status = $this->Idea_cache->i_link($i, 4228, $next_i, $link_player);
+                            $status = $this->Idea_cache->i_link($i, 4228, $next_i, $linkplayer);
 
                             if($status['status']){
 
-                                if($action_e__id==28801){
+                                if($action_playerid==28801){
                                     //Also remove old link:
-                                    $this->Mench_ledger->update($next_i['link_id'], array(), $link_player);
+                                    $this->Mench_ledger->update($next_i['linkid'], array(), $linkplayer);
                                 }
 
                                 //Increment Source since not there:
@@ -649,9 +649,9 @@ class Idea_cache extends CIdea_cache
                         }
 
 
-                        if($action_e__id==12612 && count($is_previous)){
+                        if($action_playerid==12612 && count($is_previous)){
                             //Unlink
-                            $this->Mench_ledger->update($is_previous[0]['link_id'], array(), $link_player);
+                            $this->Mench_ledger->update($is_previous[0]['linkid'], array(), $linkplayer);
 
                             $applied_success++;
                         }
@@ -666,12 +666,12 @@ class Idea_cache extends CIdea_cache
 
         //Log mass source edit transaction:
         $this->Mench_ledger->create(array(
-            'link_type' => 44179, //Triggered
-            'link_up' => $action_e__id,
-            'link_down' => $link_player,
-            'link_player' => $link_player,
-            'link_right' => $i__id,
-            'link_text' => array(
+            'linktype' => 44179, //Triggered
+            'linkup' => $action_playerid,
+            'linkdown' => $linkplayer,
+            'linkplayer' => $linkplayer,
+            'linkright' => $ideaid,
+            'linktext' => array(
                 'payload' => $_POST,
                 'i_total' => count($is_next),
                 'i_updated' => $applied_success,

@@ -16,28 +16,28 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             //echo $email.'<hr />';
 
             foreach($this->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'link_up' => 3288, //Email
-                'link_text' => trim(strtolower($email)),
+                'linkvoid' => 0, //Not Void
+                'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'linkup' => 3288, //Email
+                'linktext' => trim(strtolower($email)),
             )) as $e_data){
 
                 $found_emails++;
 
                 //Do we need to add?
-                if(isset($_POST['import_e__id']) && intval($_POST['import_e__id']) && !count($this->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'link_up' => $_POST['import_e__id'],
-                    'link_down' => $e_data['link_down'],
+                if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Mench_ledger->fetch(array(
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkup' => $_POST['import_playerid'],
+                    'linkdown' => $e_data['linkdown'],
                 )))){
 
                     $added_emails++;
                     $this->Mench_ledger->create(array(
-                        'link_type' => 4230,
-                        'link_player' => $player_e['e__id'],
-                        'link_up' => $_POST['import_e__id'],
-                        'link_down' => $e_data['link_down'],
+                        'linktype' => 4230,
+                        'linkplayer' => $player_e['playerid'],
+                        'linkup' => $_POST['import_playerid'],
+                        'linkdown' => $e_data['linkdown'],
                     ));
 
                 }
@@ -61,7 +61,7 @@ echo '<form method="POST" action="">';
 echo '<textarea class="form-control border no-padding" style="height:200px;" name="list_emails" data-lpignore="true" placeholder="Paste Emails (One per line)">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
 
 
-echo '<input type="number" class="form-control input_border border maxout" name="import_e__id" value="'.( isset($_POST['import_e__id']) ? $_POST['import_e__id'] : '' ).'" placeholder="Import Source ID"><br />';
+echo '<input type="number" class="form-control input_border border maxout" name="import_playerid" value="'.( isset($_POST['import_playerid']) ? $_POST['import_playerid'] : '' ).'" placeholder="Import Source ID"><br />';
 
 //Apply
 echo '<button type="submit" class="btn btn-lrg go-next top-margin">Map Emails</button>';

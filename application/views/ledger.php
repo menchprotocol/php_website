@@ -4,18 +4,18 @@
 $query_filters = array();
 $joined_by = array();
 
-//We have a special OR filter when combined with e__handle & i__hashtag
-$input_e = ( isset($_GET['e__handle']) && strlen($_GET['e__handle']) > 0 );
+//We have a special OR filter when combined with playerhandle & ideahashtag
+$input_e = ( isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) > 0 );
 $focus_e = false;
-$input_i = ( isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag']) > 0 );
+$input_i = ( isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) > 0 );
 $focus_i = false;
 
 if($input_e){
     foreach($this->Source_cache->fetch(array(
-        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e_found){
         $focus_e = $e_found;
-        $_GET['e__handle'] = $e_found['e__handle'];
+        $_GET['playerhandle'] = $e_found['playerhandle'];
     }
     if(!$focus_e){
         //Invalid input!
@@ -25,10 +25,10 @@ if($input_e){
 
 if($input_i){
     foreach($this->Idea_cache->fetch(array(
-        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
+        'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $i_found){
         $focus_i = $i_found;
-        $_GET['i__hashtag'] = $i_found['i__hashtag'];
+        $_GET['ideahashtag'] = $i_found['ideahashtag'];
     }
     if(!$focus_i){
         //Invalid input!
@@ -39,93 +39,93 @@ if($input_i){
 $any_i_e_set = $input_i || $input_e;
 
 
-if(isset($_GET['link_player']) && strlen($_GET['link_player']) > 0){
-    if (substr_count($_GET['link_player'], ',') > 0) {
+if(isset($_GET['linkplayer']) && strlen($_GET['linkplayer']) > 0){
+    if (substr_count($_GET['linkplayer'], ',') > 0) {
         //This is multiple:
-        $query_filters['( link_player IN (' . $_GET['link_player'] . '))'] = null;
-    } elseif (intval($_GET['link_player']) > 0) {
-        $query_filters['link_player'] = $_GET['link_player'];
+        $query_filters['( linkplayer IN (' . $_GET['linkplayer'] . '))'] = null;
+    } elseif (intval($_GET['linkplayer']) > 0) {
+        $query_filters['linkplayer'] = $_GET['linkplayer'];
     }
 }
 
 
-if(isset($_GET['link_up']) && strlen($_GET['link_up']) > 0){
-    if (substr_count($_GET['link_up'], ',') > 0) {
+if(isset($_GET['linkup']) && strlen($_GET['linkup']) > 0){
+    if (substr_count($_GET['linkup'], ',') > 0) {
         //This is multiple:
-        $query_filters['( link_up IN (' . $_GET['link_up'] . '))'] = null;
-    } elseif (intval($_GET['link_up']) > 0) {
-        $query_filters['link_up'] = $_GET['link_up'];
+        $query_filters['( linkup IN (' . $_GET['linkup'] . '))'] = null;
+    } elseif (intval($_GET['linkup']) > 0) {
+        $query_filters['linkup'] = $_GET['linkup'];
     }
 }
 
-if(isset($_GET['link_down']) && strlen($_GET['link_down']) > 0){
-    if (substr_count($_GET['link_down'], ',') > 0) {
+if(isset($_GET['linkdown']) && strlen($_GET['linkdown']) > 0){
+    if (substr_count($_GET['linkdown'], ',') > 0) {
         //This is multiple:
-        $query_filters['( link_down IN (' . $_GET['link_down'] . '))'] = null;
-    } elseif (intval($_GET['link_down']) > 0) {
-        $query_filters['link_down'] = $_GET['link_down'];
+        $query_filters['( linkdown IN (' . $_GET['linkdown'] . '))'] = null;
+    } elseif (intval($_GET['linkdown']) > 0) {
+        $query_filters['linkdown'] = $_GET['linkdown'];
     }
 }
 
-if(isset($_GET['link_left']) && strlen($_GET['link_left']) > 0){
-    if (substr_count($_GET['link_left'], ',') > 0) {
+if(isset($_GET['linkleft']) && strlen($_GET['linkleft']) > 0){
+    if (substr_count($_GET['linkleft'], ',') > 0) {
         //This is multiple:
-        $query_filters['( link_left IN (' . $_GET['link_left'] . '))'] = null;
-    } elseif (intval($_GET['link_left']) > 0) {
-        $query_filters['link_left'] = $_GET['link_left'];
+        $query_filters['( linkleft IN (' . $_GET['linkleft'] . '))'] = null;
+    } elseif (intval($_GET['linkleft']) > 0) {
+        $query_filters['linkleft'] = $_GET['linkleft'];
     }
 }
 
-if(isset($_GET['link_right']) && strlen($_GET['link_right']) > 0){
-    if (substr_count($_GET['link_right'], ',') > 0) {
+if(isset($_GET['linkright']) && strlen($_GET['linkright']) > 0){
+    if (substr_count($_GET['linkright'], ',') > 0) {
         //This is multiple:
-        $query_filters['( link_right IN (' . $_GET['link_right'] . '))'] = null;
-    } elseif (intval($_GET['link_right']) > 0) {
-        $query_filters['link_right'] = $_GET['link_right'];
+        $query_filters['( linkright IN (' . $_GET['linkright'] . '))'] = null;
+    } elseif (intval($_GET['linkright']) > 0) {
+        $query_filters['linkright'] = $_GET['linkright'];
     }
 }
 
-if(isset($_GET['link_id']) && strlen($_GET['link_id']) > 0){
-    if (substr_count($_GET['link_id'], ',') > 0) {
+if(isset($_GET['linkid']) && strlen($_GET['linkid']) > 0){
+    if (substr_count($_GET['linkid'], ',') > 0) {
         //This is multiple:
-        $query_filters['( link_id IN (' . $_GET['link_id'] . '))'] = null;
-    } elseif (intval($_GET['link_id']) > 0) {
-        $query_filters['link_id'] = $_GET['link_id'];
+        $query_filters['( linkid IN (' . $_GET['linkid'] . '))'] = null;
+    } elseif (intval($_GET['linkid']) > 0) {
+        $query_filters['linkid'] = $_GET['linkid'];
     }
 }
 
 if($input_e){
     //We need to look for both following/follower
-    $query_filters['( link_down = ' . $focus_e['e__id'] . ' OR link_up = ' . $focus_e['e__id'] . ' OR link_player = ' . $focus_e['e__id'] . ' )'] = null;
+    $query_filters['( linkdown = ' . $focus_e['playerid'] . ' OR linkup = ' . $focus_e['playerid'] . ' OR linkplayer = ' . $focus_e['playerid'] . ' )'] = null;
 }
 
 
 if($input_i){
     //We need to look for both following/follower
-    $query_filters['( link_right = ' . $focus_i['i__id'] . ' OR link_left = ' . $focus_i['i__id'] . ')'] = null;
+    $query_filters['( linkright = ' . $focus_i['ideaid'] . ' OR linkleft = ' . $focus_i['ideaid'] . ')'] = null;
 
 }
 
-if(isset($_GET['any_link_id']) && strlen($_GET['any_link_id']) > 0){
+if(isset($_GET['any_linkid']) && strlen($_GET['any_linkid']) > 0){
     //We need to look for both following/follower
-    if (substr_count($_GET['any_link_id'], ',') > 0) {
+    if (substr_count($_GET['any_linkid'], ',') > 0) {
         //This is multiple:
-        $query_filters['link_id IN (' . $_GET['any_link_id'] . ')'] = null;
-    } elseif (intval($_GET['any_link_id']) > 0) {
-        $query_filters['link_id'] = $_GET['any_link_id'];
+        $query_filters['linkid IN (' . $_GET['any_linkid'] . ')'] = null;
+    } elseif (intval($_GET['any_linkid']) > 0) {
+        $query_filters['linkid'] = $_GET['any_linkid'];
     }
 }
 
-if(isset($_GET['link_text_find']) && strlen($_GET['link_text_find']) > 0){
-    $query_filters['LOWER(link_text) LIKE'] = '%'.$_GET['link_text_find'].'%';
+if(isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0){
+    $query_filters['LOWER(linktext) LIKE'] = '%'.$_GET['linktext_find'].'%';
 }
 
 
 if(isset($_GET['start_range']) && is_valid_date($_GET['start_range'])){
-    $query_filters['link_time >='] = $_GET['start_range'].( strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '' );
+    $query_filters['linktime >='] = $_GET['start_range'].( strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '' );
 }
 if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
-    $query_filters['link_time <='] = $_GET['end_range'].( strlen($_GET['end_range']) <= 10 ? ' 23:59:59' : '' );
+    $query_filters['linktime <='] = $_GET['end_range'].( strlen($_GET['end_range']) <= 10 ? ' 23:59:59' : '' );
 }
 
 
@@ -144,13 +144,13 @@ foreach($query_filters as $key => $value){
 
 
 //Make sure its a valid type considering other filters:
-if(isset($_GET['link_type'])){
+if(isset($_GET['linktype'])){
 
-    if (substr_count($_GET['link_type'], ',') > 0) {
+    if (substr_count($_GET['linktype'], ',') > 0) {
         //This is multiple:
-        $query_filters['link_type IN (' . $_GET['link_type'] . ')'] = null;
-    } elseif (intval($_GET['link_type']) > 0) {
-        $query_filters['link_type'] = intval($_GET['link_type']);
+        $query_filters['linktype IN (' . $_GET['linktype'] . ')'] = null;
+    } elseif (intval($_GET['linktype']) > 0) {
+        $query_filters['linktype'] = intval($_GET['linktype']);
     }
 
 }
@@ -165,8 +165,8 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
     var x_filters = '<?= serialize(count($query_filters) > 0 ? $query_filters : array()) ?>';
     var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
-    var link_text_find = '<?= ( isset($_GET['link_text_find']) && strlen($_GET['link_text_find']) > 0 ? $_GET['link_text_find'] : '' ) ?>';
-    var link_text_replace = '<?= ( isset($_GET['link_text_replace']) && strlen($_GET['link_text_replace']) > 0 ? $_GET['link_text_replace'] : '' ) ?>';
+    var linktext_find = '<?= ( isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 ? $_GET['linktext_find'] : '' ) ?>';
+    var linktext_replace = '<?= ( isset($_GET['linktext_replace']) && strlen($_GET['linktext_replace']) > 0 ? $_GET['linktext_replace'] : '' ) ?>';
 
     $(document).ready(function () {
 
@@ -185,8 +185,8 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
         $.post("/app/x_4341", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
-            link_text_find:link_text_find,
-            link_text_replace:link_text_replace,
+            linktext_find:linktext_find,
+            linktext_replace:linktext_replace,
             page_num: page_num,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -225,12 +225,12 @@ echo '<table class="table table-sm maxout"><tr>';
 //ANY IDEA
 echo '<td><div>';
 echo '<span class="mini-header">ANY IDEA:</span>';
-echo '<input type="text" name="i__hashtag" value="' . ( $input_i ? $_GET['i__hashtag'] : '' ) . '" class="form-control border">';
+echo '<input type="text" name="ideahashtag" value="' . ( $input_i ? $_GET['ideahashtag'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="link_left" value="' . ((isset($_GET['link_left'])) ? $_GET['link_left'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="linkleft" value="' . ((isset($_GET['linkleft'])) ? $_GET['linkleft'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="link_right" value="' . ((isset($_GET['link_right'])) ? $_GET['link_right'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="linkright" value="' . ((isset($_GET['linkright'])) ? $_GET['linkright'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -245,14 +245,14 @@ echo '<table class="table table-sm maxout"><tr>';
 //ANY SOURCE
 echo '<td><div>';
 echo '<span class="mini-header">ANY SOURCE:</span>';
-echo '<input type="text" name="e__handle" value="' . ( $input_e ? $_GET['e__handle'] : '' ) . '" class="form-control border">';
+echo '<input type="text" name="playerhandle" value="' . ( $input_e ? $_GET['playerhandle'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="link_player" value="' . ((isset($_GET['link_player'])) ? $_GET['link_player'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="linkplayer" value="' . ((isset($_GET['linkplayer'])) ? $_GET['linkplayer'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="link_up" value="' . ((isset($_GET['link_up'])) ? $_GET['link_up'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="linkup" value="' . ((isset($_GET['linkup'])) ? $_GET['linkup'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="link_down" value="' . ((isset($_GET['link_down'])) ? $_GET['link_down'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="linkdown" value="' . ((isset($_GET['linkdown'])) ? $_GET['linkdown'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -265,10 +265,10 @@ echo '<table class="table table-sm maxout"><tr>';
 //ANY DISCOVERY
 echo '<td><div>';
 echo '<span class="mini-header">ANY TRANSACTION:</span>';
-echo '<input type="text" name="any_link_id" value="' . ((isset($_GET['any_link_id'])) ? $_GET['any_link_id'] : '') . '" class="form-control border">';
+echo '<input type="text" name="any_linkid" value="' . ((isset($_GET['any_linkid'])) ? $_GET['any_linkid'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" name="link_id" value="' . ((isset($_GET['link_id'])) ? $_GET['link_id'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" name="linkid" value="' . ((isset($_GET['linkid'])) ? $_GET['linkid'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -283,14 +283,14 @@ echo '<table class="table table-sm maxout"><tr>';
 //Search
 echo '<td><div>';
 echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
-echo '<input type="text" name="link_text_find" value="' . ((isset($_GET['link_text_find'])) ? $_GET['link_text_find'] : '') . '" class="form-control border">';
+echo '<input type="text" name="linktext_find" value="' . ((isset($_GET['linktext_find'])) ? $_GET['linktext_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if(isset($_GET['link_text_find']) && strlen($_GET['link_text_find']) > 0 && superpower_unlocked(12701)){
+if(isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 && superpower_unlocked(12701)){
     //Give Option to Replace:
     echo '<td><div>';
     echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
-    echo '<input type="text" name="link_text_replace" value="' . ((isset($_GET['link_text_replace'])) ? $_GET['link_text_replace'] : '') . '" class="form-control border">';
+    echo '<input type="text" name="linktext_replace" value="' . ((isset($_GET['linktext_replace'])) ? $_GET['linktext_replace'] : '') . '" class="form-control border">';
     echo '</div></td>';
 }
 
@@ -321,23 +321,23 @@ echo '<td>';
 echo '<div>';
 echo '<span class="mini-header">TRANSACTION TYPE:</span>';
 
-if(isset($_GET['link_type']) && substr_count($_GET['link_type'], ',')>0){
+if(isset($_GET['linktype']) && substr_count($_GET['linktype'], ',')>0){
 
     //We have multiple predefined transaction types, so we must use a text input:
-    echo '<input type="text" name="link_type" value="' . $_GET['link_type'] . '" class="form-control border">';
+    echo '<input type="text" name="linktype" value="' . $_GET['linktype'] . '" class="form-control border">';
 
 } else {
 
-    echo '<select class="form-control border" name="link_type" id="link_type" class="border" style="width: 100% !important;">';
+    echo '<select class="form-control border" name="linktype" id="linktype" class="border" style="width: 100% !important;">';
 
-    if(isset($_GET['link_player'])) {
+    if(isset($_GET['linkplayer'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->Mench_ledger->fetch($ini_filter, array('link_type'), 0, 0, sort__e(), 'COUNT(link_type) as total_count, e__title, link_type', 'link_type, e__title') as $x) {
+        foreach($this->Mench_ledger->fetch($ini_filter, array('linktype'), 0, 0, sort__e(), 'COUNT(linktype) as total_count, playertext, linktype', 'linktype, playertext') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['link_type'] . '" ' . ((isset($_GET['link_type']) && $_GET['link_type']==$x['link_type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['linktype'] . '" ' . ((isset($_GET['linktype']) && $_GET['linktype']==$x['linktype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 
@@ -349,9 +349,9 @@ if(isset($_GET['link_type']) && substr_count($_GET['link_type'], ',')>0){
 
         //Load all fast:
         echo '<option value="0">ALL TRANSACTION TYPES</option>';
-        foreach($this->config->item('e___4593') /* DISCOVERY Types */ as $e__id => $m){
+        foreach($this->config->item('e___4593') /* DISCOVERY Types */ as $playerid => $m){
             //Echo drop down:
-            echo '<option value="' . $e__id . '" ' . ((isset($_GET['link_type']) && $_GET['link_type']==$e__id) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+            echo '<option value="' . $playerid . '" ' . ((isset($_GET['linktype']) && $_GET['linktype']==$playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
 
     }

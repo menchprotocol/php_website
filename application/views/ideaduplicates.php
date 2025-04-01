@@ -4,7 +4,7 @@
 
 
 //Do a query to detect Ideas with the exact same title:
-$q = $this->db->query('select in1.* from cache_ideas in1 where (select count(*) from cache_ideas in2 where in2.i__message = in1.i__message ORDER BY in1.i__message ASC');
+$q = $this->db->query('select in1.* from cache_ideas in1 where (select count(*) from cache_ideas in2 where in2.ideatext = in1.ideatext ORDER BY in1.ideatext ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
@@ -12,12 +12,12 @@ if(count($duplicates) > 0){
     $prev_title = null;
 
     foreach($duplicates as $in) {
-        if ($prev_title != $in['i__message']) {
+        if ($prev_title != $in['ideatext']) {
             echo '<hr />';
-            $prev_title = $in['i__message'];
+            $prev_title = $in['ideatext'];
         }
 
-        echo '<div><a href="' . view__memory(42903,33286). $in['i__hashtag'] . '"><b>' . $in['i__message'] . '</b></a> #' . $in['i__id'] . '</div>';
+        echo '<div><a href="' . view__memory(42903,33286). $in['ideahashtag'] . '"><b>' . $in['ideatext'] . '</b></a> #' . $in['ideaid'] . '</div>';
     }
 
 } else {

@@ -2,7 +2,7 @@
 
 
 //Various Ledger cleanup functions
-echo @$_GET['e__handle'];
+echo @$_GET['playerhandle'];
 
 
 if(isset($_GET['action']) && $_GET['action']=='i_messages'){
@@ -22,16 +22,16 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
     foreach($this->Idea_cache->fetch(array(
     ), 0) as $i_fix){
 
-        $view_sync_links = view__sync_links($i_fix['i__message'], true, $i_fix['i__id']);
+        $view_sync_links = view__sync_links($i_fix['ideatext'], true, $i_fix['ideaid']);
 
         /*
-        echo '<a href="'.view__memory(42903,33286).$i_fix['i__hashtag'].'">#'.$i_fix['i__hashtag'].'</a><br />';
-        echo nl2br(htmlentities($i_fix['i__message'])).'<br />';
+        echo '<a href="'.view__memory(42903,33286).$i_fix['ideahashtag'].'">#'.$i_fix['ideahashtag'].'</a><br />';
+        echo nl2br(htmlentities($i_fix['ideatext'])).'<br />';
 
         if(count($view_sync_links['replace_from'])){
 
             //Show all:
-            $starting_message = $i_fix['i__message'];
+            $starting_message = $i_fix['ideatext'];
 
             foreach($view_sync_links['replace_from'] as $index=>$val){
                 $edited_sources++;
@@ -44,8 +44,8 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
                 }
             }
 
-            if($starting_message!=$i_fix['i__message']){
-                //view__sync_links($starting_message, true, $i_fix['i__id']);
+            if($starting_message!=$i_fix['ideatext']){
+                //view__sync_links($starting_message, true, $i_fix['ideaid']);
                 $edited++;
             }
 
@@ -65,36 +65,36 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
 
     //Import Discoveries?
     $flash_message = '';
-    if(isset($_GET['e__handle'])){
+    if(isset($_GET['playerhandle'])){
         foreach($this->Source_cache->fetch(array(
-            'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+            'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         )) as $e_append){
             $completed = 0;
             foreach($this->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                'link_left' => $is[0]['i__id'],
+                'linkvoid' => 0, //Not Void
+                'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'linkleft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
                 if(!count($this->Mench_ledger->fetch(array(
-                    'link_up' => $e_append['e__id'],
-                    'link_down' => $x['link_player'],
-                    'link_text' => $x['link_text'],
-                    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'link_void' => 0, //Not Void
+                    'linkup' => $e_append['playerid'],
+                    'linkdown' => $x['linkplayer'],
+                    'linktext' => $x['linktext'],
+                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkvoid' => 0, //Not Void
                 )))){
                     //Increment source link:
                     $completed++;
                     $this->Mench_ledger->create(array(
-                        'link_player' => ($player_e ? $player_e['e__id'] : $x['link_player']),
-                        'link_up' => $e_append['e__id'],
-                        'link_down' => $x['link_player'],
-                        'link_text' => $x['link_text'],
-                        'link_type' => 4230,
+                        'linkplayer' => ($player_e ? $player_e['playerid'] : $x['linkplayer']),
+                        'linkup' => $e_append['playerid'],
+                        'linkdown' => $x['linkplayer'],
+                        'linktext' => $x['linktext'],
+                        'linktype' => 4230,
                     ));
                 }
             }
 
-            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$e_append['e__handle'].'</div>';
+            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$e_append['playerhandle'].'</div>';
         }
     }
 

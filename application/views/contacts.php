@@ -1,7 +1,7 @@
 <?php
 
 //Generate list & settings:
-$list_settings = list_settings($_GET['i__hashtag'], true);
+$list_settings = list_settings($_GET['ideahashtag'], true);
 echo '<h1>' . view__i_title($list_settings['i']) . '</h1>';
 echo count($list_settings['query_string_filtered']) . ' Contacts<br />';
 echo $list_settings['contact_details']['email_count'] . ' Emails<br />';

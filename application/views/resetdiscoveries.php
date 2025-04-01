@@ -4,18 +4,18 @@
 if(!isset($_GET['confirm'])){
 
     //Asl user to confirm:
-    echo '<div class="alert alert-warning" role="alert">You are about to delete all discoveries for @'.$focus_e['e__handle'].'... Are you sure you want to continue?</div>';
-    echo '<a href="'.view__app_link(6415).view__memory(42903,42902).$focus_e['e__handle'].'?confirm=1" class="btn btn-default">Confirm</a>';
+    echo '<div class="alert alert-warning" role="alert">You are about to delete all discoveries for @'.$focus_e['playerhandle'].'... Are you sure you want to continue?</div>';
+    echo '<a href="'.view__app_link(6415).view__memory(42903,42902).$focus_e['playerhandle'].'?confirm=1" class="btn btn-default">Confirm</a>';
     echo ' - OR - ';
-    echo '<a href="'.view__memory(42903,42902).$focus_e['e__handle'].'" class="btn btn-default">Cancel & Return to @'.$focus_e['e__handle'].'</a>';
+    echo '<a href="'.view__memory(42903,42902).$focus_e['playerhandle'].'" class="btn btn-default">Cancel & Return to @'.$focus_e['playerhandle'].'</a>';
 
 } else {
 
     //Fetch their current progress transactions:
     $progress_x = $this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //DISCOVERIES
-        'link_player' => $focus_e['e__id'],
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //DISCOVERIES
+        'linkplayer' => $focus_e['playerid'],
     ), array(), 0);
 
     if(count($progress_x) > 0){
@@ -25,7 +25,7 @@ if(!isset($_GET['confirm'])){
 
         //Delete all progressions:
         foreach($progress_x as $progress_x){
-            $this->Mench_ledger->update($progress_x['link_id'], array(), $focus_e['e__id']);
+            $this->Mench_ledger->update($progress_x['linkid'], array(), $focus_e['playerid']);
         }
 
     } else {
@@ -38,7 +38,7 @@ if(!isset($_GET['confirm'])){
     //Show basic UI for now:
     echo $message;
 
-    //return redirect_message(view__memory(42903,42902).$focus_e['e__handle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
+    //return redirect_message(view__memory(42903,42902).$focus_e['playerhandle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
 
 
 }

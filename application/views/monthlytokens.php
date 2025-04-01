@@ -5,37 +5,37 @@ $start_month = 01;
 
 echo '<table>';
 
-foreach($this->config->item('e___14874') as $link_type => $m) {
+foreach($this->config->item('e___14874') as $linktype => $m) {
 
-    if($link_type==12273){
+    if($linktype==12273){
 
         //IDEAS
         $unique = $this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
-        ), array('link_right'), 0, 0, array(), 'COUNT(link_id) as totals');
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+        ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-    } elseif($link_type==12274){
+    } elseif($linktype==12274){
 
         //SOURCE
         $unique = $this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
-        ), array('link_down'), 0, 0, array(), 'COUNT(link_id) as totals');
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
+        ), array('linkdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-    } elseif(in_array($link_type, $this->config->item('n___42284'))){
-
-        $unique = $this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___'.$link_type)) . ')' => null,
-        ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
-
-    } elseif($link_type==6255){
+    } elseif(in_array($linktype, $this->config->item('n___42284'))){
 
         $unique = $this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___'.$linktype)) . ')' => null,
+        ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+
+    } elseif($linktype==6255){
+
+        $unique = $this->Mench_ledger->fetch(array(
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } else {
 
@@ -57,34 +57,34 @@ foreach($this->config->item('e___14874') as $link_type => $m) {
         $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i, 1, $start_year));
         $time_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month+$i+1, 1, $start_year));
 
-        if($link_type==12273){
+        if($linktype==12273){
 
             //IDEAS
             $query = $this->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
-                'link_time >=' => $time_start,
-                'link_time <' => $time_end,
-            ), array('link_right'), 0, 0, array(), 'COUNT(link_id) as totals');
+                'linkvoid' => 0, //Not Void
+                'linktype IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+                'linktime >=' => $time_start,
+                'linktime <' => $time_end,
+            ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-        } elseif($link_type==12274){
+        } elseif($linktype==12274){
 
             //SOURCE
             $query = $this->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
-                'link_time >=' => $time_start,
-                'link_time <' => $time_end,
-            ), array('link_down'), 0, 0, array(), 'COUNT(link_id) as totals');
+                'linkvoid' => 0, //Not Void
+                'linktype IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
+                'linktime >=' => $time_start,
+                'linktime <' => $time_end,
+            ), array('linkdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-        } elseif($link_type==6255){
+        } elseif($linktype==6255){
 
             $query = $this->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                'link_time >=' => $time_start,
-                'link_time <' => $time_end,
-            ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
+                'linkvoid' => 0, //Not Void
+                'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'linktime >=' => $time_start,
+                'linktime <' => $time_end,
+            ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
         }
 

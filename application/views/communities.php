@@ -2,29 +2,29 @@
 
 $community_pills = '';
 
-foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->Source_cache->fetch(array('LOWER(e__handle)' => strtolower($_GET['e__handle']))) : $this->Source_cache->scissor_e(website_setting(0), 13207) ) as $e_item) {
+foreach(( isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Source_cache->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Source_cache->scissor_e(website_setting(0), 13207) ) as $e_item) {
 
     foreach($this->Mench_ledger->fetch(array(
-        'link_up' => $e_item['e__id'],
-        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'link_void' => 0, //Not Void
-    ), array('link_down'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC')) as $x) {
+        'linkup' => $e_item['playerid'],
+        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkvoid' => 0, //Not Void
+    ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
 
-        $total_count = view__e_covers(12274, $x['e__id'], 0, false);
+        $total_count = view__e_covers(12274, $x['playerid'], 0, false);
 
         if($total_count){
 
             $ui = '<div class="row justify-content">';
-            foreach(view__e_covers(12274, $x['e__id'], 1, false) as $count=>$e) {
+            foreach(view__e_covers(12274, $x['playerid'], 1, false) as $count=>$e) {
                 $ui .= view__card_e(13207, $e, null);
             }
             $ui .= '</div>';
 
-            $community_pills .= view__pill(12274, $x['e__id'], $total_count, array(
-                'm__cover' => view__cover($x['e__cover'], true),
-                'm__title' => $x['e__title'],
-                'm__message' => $x['link_text'],
-                'm__handle' => $x['e__handle'],
+            $community_pills .= view__pill(12274, $x['playerid'], $total_count, array(
+                'm__cover' => view__cover($x['playercover'], true),
+                'm__title' => $x['playertext'],
+                'm__message' => $x['linktext'],
+                'm__handle' => $x['playerhandle'],
             ), $ui);
 
         }
@@ -35,7 +35,7 @@ foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->Sourc
 if(strlen($community_pills)){
 
     //Community
-    echo '<h2 class="center">'.$e_item['e__title'].'</h2>';
+    echo '<h2 class="center">'.$e_item['playertext'].'</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 

@@ -9,7 +9,7 @@ if($player_e){
     foreach($this->Idea_cache->fetch(array(
     )) as $deleted_i){
         $deleted_i++;
-        $links_removed += $this->Idea_cache->remove($deleted_i['i__id'], $player_e['e__id']);
+        $links_removed += $this->Idea_cache->remove($deleted_i['ideaid'], $player_e['playerid']);
     }
 }
 

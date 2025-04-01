@@ -92,17 +92,17 @@ function watch_cover_change(new_cover){
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
         $('#modal31912 .fa_search a').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(split_cover_2arr2[0])+'&o=r&s=solid&f=classic%2Cbrands');
-        $('#modal31912 .save_e__cover,  #modal31912 .fa_search').removeClass('hidden');
+        $('#modal31912 .save_playercover,  #modal31912 .fa_search').removeClass('hidden');
         console.log('updated');
     } else {
-        $('#modal31912 .save_e__cover, #modal31912 .fa_search').addClass('hidden');
+        $('#modal31912 .save_playercover, #modal31912 .fa_search').addClass('hidden');
     }
     //Reactivate:
     //activate_cover_watch();
 }
 
 function activate_cover_watch(){
-    $('#modal31912 .save_e__cover').change(function () {
+    $('#modal31912 .save_playercover').change(function () {
 
         console.log('change detexted:'+$(this).val());
         watch_cover_change($(this).val());
@@ -146,17 +146,17 @@ function gather_media(target_el, uploader_id){
     var uploaded_media = [];
     $(target_el).each(function () {
 
-        var current_e_id = parseInt($(this).attr('e__id'));
+        var current_e_id = parseInt($(this).attr('playerid'));
 
         if(current_e_id > 0){
 
             //Already there...
             uploaded_media[sort_rank] = {
-                media_e__id:  parseInt($(this).attr('media_e__id')),
+                media_playerid:  parseInt($(this).attr('media_playerid')),
                 playback_code: $(this).attr('playback_code'),
-                e__id:        current_e_id,
-                e__cover:     $(this).attr('e__cover'),
-                e__title:     $('#'+$(this).attr('id')+' input').val(),
+                playerid:        current_e_id,
+                playercover:     $(this).attr('playercover'),
+                playertext:     $('#'+$(this).attr('id')+' input').val(),
             }
             sort_rank++;
 
@@ -164,11 +164,11 @@ function gather_media(target_el, uploader_id){
 
             //Fetch variables for this media:
             uploaded_media[sort_rank] = {
-                media_e__id:  parseInt($(this).attr('media_e__id')),
+                media_playerid:  parseInt($(this).attr('media_playerid')),
                 playback_code: $(this).attr('playback_code'),
-                e__id:        0,
-                e__cover:     $(this).attr('e__cover'),
-                e__title:     $('#'+$(this).attr('id')+' input').val(),
+                playerid:        0,
+                playercover:     $(this).attr('playercover'),
+                playertext:     $('#'+$(this).attr('id')+' input').val(),
                 media_cache:  media_cache[uploader_id][$(this).attr('id')],
             }
             sort_rank++;
@@ -308,37 +308,37 @@ function view__s_js_line(suggestion, default_handle = '@'){
     }
 }
 
-function e_load_finder(link_type) {
-    console.log(link_type + " e_load_finder()");
+function e_load_finder(linktype) {
+    console.log(linktype + " e_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-'+link_type + ' .add-input').keypress(function (e) {
+    $('.new-list-'+linktype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            e__add(link_type, 0);
+            e__add(linktype, 0);
             return true;
         }
     });
 }
 
-function i_load_finder(link_type) {
-    console.log(link_type + " i_load_finder()");
+function i_load_finder(linktype) {
+    console.log(linktype + " i_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-'+link_type + ' .add-input').keypress(function (e) {
+    $('.new-list-'+linktype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            i__add(link_type, 0);
+            i__add(linktype, 0);
             return true;
         }
     });
 }
 
-function view__s_js_cover(link_type, suggestion, action_id){
+function view__s_js_cover(linktype, suggestion, action_id){
 
-    if(!js_n___26010.includes(link_type)){
+    if(!js_n___26010.includes(linktype)){
         alert('Missing type in JS UI');
         return false;
     }
@@ -355,12 +355,12 @@ function view__s_js_cover(link_type, suggestion, action_id){
     }
 
     //Return appropriate UI:
-    if(link_type==26011){
+    if(linktype==26011){
         //Mini Coin
         var search_only_app = $("#website_finder").val().charAt(0)=='-';
         var target_url = ( search_only_app ? suggestion.s__url.replace('/@','/') : suggestion.s__url );
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' '+( search_only_app ? ' card-6287 ' : '' )+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+target_url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+target_url+'" class="main__title">'+(suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">'+suggestion.s__title+'</span>' )+'</a></div></div></div>';
-    } else if(link_type==26013){
+    } else if(linktype==26013){
         //Link Source
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
     }
@@ -371,26 +371,26 @@ function view__s_mini_js(s__cover,s__title){
 }
 
 
-function toggle_headline(link_type){
+function toggle_headline(linktype){
 
-    var link_down = 0;
-    var link_right = 0;
+    var linkdown = 0;
+    var linkright = 0;
     var focus__node = parseInt($('#focus__node').val());
     if(focus__node==12273){
-        link_right = parseInt($('#focus__id').val());
+        linkright = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        link_down = parseInt($('#focus__id').val());
+        linkdown = parseInt($('#focus__id').val());
     }
 
-    if($('.headline_title_' + link_type+' .icon_26008').hasClass('hidden')){
+    if($('.headline_title_' + linktype+' .icon_26008').hasClass('hidden')){
 
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-        $('.headline_title_' + link_type+ ' .icon_26008').removeClass('hidden');
-        $('.headline_title_' + link_type+ ' .icon_26007').addClass('hidden');
-        $('.headline_body_' + link_type).addClass('hidden');
+        $('.headline_title_' + linktype+ ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + linktype+ ' .icon_26007').addClass('hidden');
+        $('.headline_body_' + linktype).addClass('hidden');
 
-        if (link_type==6255){
+        if (linktype==6255){
             $('.navigate_12273').removeClass('active');
         }
 
@@ -403,17 +403,17 @@ function toggle_headline(link_type){
 
         //Currently closed, must now be opened
         var action_id = 26007; //Open
-        $('.headline_title_' + link_type+ ' .icon_26007').removeClass('hidden');
-        $('.headline_title_' + link_type+ ' .icon_26008').addClass('hidden');
-        $('.headline_body_' + link_type).removeClass('hidden');
+        $('.headline_title_' + linktype+ ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + linktype+ ' .icon_26008').addClass('hidden');
+        $('.headline_body_' + linktype).removeClass('hidden');
 
-        if (link_type==6255){
+        if (linktype==6255){
             $('.navigate_12273').addClass('active');
         }
 
         //Scroll To:
         $('html, body').animate({
-            scrollTop: $('.headline_body_' + link_type).offset().top
+            scrollTop: $('.headline_body_' + linktype).offset().top
         }, 13);
 
     }
@@ -421,24 +421,24 @@ function toggle_headline(link_type){
 }
 
 
-function e_sort_load(link_type) {
+function e_sort_load(linktype) {
 
     load_covers();
 
-    console.log('Tring to load Source Sort for @'+link_type);
+    console.log('Tring to load Source Sort for @'+linktype);
 
-    var sort_item_count = parseInt($('.headline_body_' + link_type).attr('read-counter'));
+    var sort_item_count = parseInt($('.headline_body_' + linktype).attr('read-counter'));
 
-    if(!js_n___13911.includes(link_type)){
+    if(!js_n___13911.includes(linktype)){
         //Does not support sorting:
-        console.log(link_type+' is not sortable');
+        console.log(linktype+' is not sortable');
         return false;
     } else if(sort_item_count<1 || sort_item_count>parseInt(js_e___6404[11064]['m__message'])){
         return false;
     }
 
     setTimeout(function () {
-        var theobject = document.getElementById("list-in-"+link_type);
+        var theobject = document.getElementById("list-in-"+linktype);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
             console.log('No object');
@@ -446,15 +446,15 @@ function e_sort_load(link_type) {
         }
 
         //Show sort icon:
-        console.log('Completed Loading Sorting for @'+link_type)
+        console.log('Completed Loading Sorting for @'+linktype)
         $('.sort_e_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-"+link_type+" .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+link_type+" .sort_e_grab", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-"+linktype+" .sort_draggable", // Specifies which items inside the element should be sortable
+            handle: "#list-in-"+linktype+" .sort_e_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                e_sort_save(link_type);
+                e_sort_save(linktype);
             }
         });
     }, 377);
@@ -486,47 +486,47 @@ function load_hashtag_menu(load_hashtag = null, is_first_load = true){
 var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
-function toggle_pills(link_type_hash, is_first_load){
+function toggle_pills(linktype_hash, is_first_load){
 
-    console.log('Toggle Pill: '+link_type_hash);
+    console.log('Toggle Pill: '+linktype_hash);
 
-    if(pills_loading && !loaded_pills.includes(link_type_hash)){
+    if(pills_loading && !loaded_pills.includes(linktype_hash)){
         return false;
     } else if (loading_in_progress){
         return false;
     }
 
-    console.log('Toggle Pill Active: '+link_type_hash);
+    console.log('Toggle Pill Active: '+linktype_hash);
 
-    if($('.handle_nav_'+link_type_hash).attr('link_type') && $('.handle_nav_'+link_type_hash).attr('link_type').length){
-        link_type = parseInt($('.handle_nav_'+link_type_hash).attr('link_type'));
+    if($('.handle_nav_'+linktype_hash).attr('linktype') && $('.handle_nav_'+linktype_hash).attr('linktype').length){
+        linktype = parseInt($('.handle_nav_'+linktype_hash).attr('linktype'));
     } else {
-        console.log('ERROR: #'+link_type_hash+' is not a valid menu.');
+        console.log('ERROR: #'+linktype_hash+' is not a valid menu.');
         return false;
     }
 
     loading_in_progress = true;
 
-    if(!loaded_pills.includes(link_type_hash)){
-        pills_loading = link_type_hash;
+    if(!loaded_pills.includes(linktype_hash)){
+        pills_loading = linktype_hash;
     }
 
-    var link_down = 0;
-    var link_right = 0;
+    var linkdown = 0;
+    var linkright = 0;
     var focus__node = parseInt($('#focus__node').val());
 
     if(focus__node==12273){
-        link_right = parseInt($('#focus__id').val());
+        linkright = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        link_down = parseInt($('#focus__id').val());
+        linkdown = parseInt($('#focus__id').val());
     }
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
-    $('.xtypetitle_'+link_type).removeClass('hidden');
+    $('.xtypetitle_'+linktype).removeClass('hidden');
 
 
-    if(!$('.thepill' + link_type+' .nav-link').hasClass('active')){
+    if(!$('.thepill' + linktype+' .nav-link').hasClass('active')){
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
@@ -534,32 +534,32 @@ function toggle_pills(link_type_hash, is_first_load){
         //Hide all elements
         $('.nav-link').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + link_type+ ' .nav-link').addClass('active');
-        $('.headline_body_' + link_type).removeClass('hidden');
+        $('.thepill' + linktype+ ' .nav-link').addClass('active');
+        $('.headline_body_' + linktype).removeClass('hidden');
 
         //Set focus tab:
-        console.log('focus_group Updated from '+focus_group+' to '+link_type);
-        focus_group = link_type;
-        if(!is_first_load && (!window.location.hash || window.location.hash!=$('.thepill' + link_type+' .nav-link').attr('href'))) {
-            window.location.hash = $('.thepill' + link_type+' .nav-link').attr('href');
+        console.log('focus_group Updated from '+focus_group+' to '+linktype);
+        focus_group = linktype;
+        if(!is_first_load && (!window.location.hash || window.location.hash!=$('.thepill' + linktype+' .nav-link').attr('href'))) {
+            window.location.hash = $('.thepill' + linktype+' .nav-link').attr('href');
         }
 
         //Do we need to load data via ajax?
-        if( !loaded_pills.includes(link_type_hash) ){
+        if( !loaded_pills.includes(linktype_hash) ){
 
-            $('.headline_body_' + link_type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + linktype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
             var focus__node = parseInt($('#focus__node').val());
-            console.log('Tab loading from @'+focus__node+' for @'+link_type);
+            console.log('Tab loading from @'+focus__node+' for @'+linktype);
 
             if(focus__node==12273){
 
                 var loading_url = "/app/view__i_body";
                 var loading_data = {
                     focus__node:focus__node,
-                    link_type:link_type,
-                    counter:$('.headline_body_' + link_type).attr('read-counter'),
-                    i__id:parseInt($('#focus__id').val()),
+                    linktype:linktype,
+                    counter:$('.headline_body_' + linktype).attr('read-counter'),
+                    ideaid:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
@@ -568,9 +568,9 @@ function toggle_pills(link_type_hash, is_first_load){
                 var loading_url = "/app/view__e_body";
                 var loading_data = {
                     focus__node:focus__node,
-                    link_type:link_type,
-                    counter:$('.headline_body_'+link_type).attr('read-counter'),
-                    e__id:parseInt($('#focus__id').val()),
+                    linktype:linktype,
+                    counter:$('.headline_body_'+linktype).attr('read-counter'),
+                    playerid:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
@@ -587,9 +587,9 @@ function toggle_pills(link_type_hash, is_first_load){
             $.post(loading_url, loading_data, function (data) {
 
                 //Add data to the page:
-                $('.headline_body_' + link_type + ' .tab_content').html(data);
+                $('.headline_body_' + linktype + ' .tab_content').html(data);
 
-                loaded_pills.push(link_type_hash);
+                loaded_pills.push(linktype_hash);
 
                 load_card_clickers();
                 initiate_algolia();
@@ -609,10 +609,10 @@ function toggle_pills(link_type_hash, is_first_load){
 
                 setTimeout(function () {
 
-                    if(js_n___11020.includes(link_type) || (focus__node==12274 && (js_n___42261.includes(link_type) || js_n___42284.includes(link_type)))){
-                        i_sort_load(link_type);
-                    } else if(js_n___11028.includes(link_type) || (focus__node==12273 && (js_n___42261.includes(link_type) || js_n___42284.includes(link_type)))) {
-                        e_sort_load(link_type);
+                    if(js_n___11020.includes(linktype) || (focus__node==12274 && (js_n___42261.includes(linktype) || js_n___42284.includes(linktype)))){
+                        i_sort_load(linktype);
+                    } else if(js_n___11028.includes(linktype) || (focus__node==12273 && (js_n___42261.includes(linktype) || js_n___42284.includes(linktype)))) {
+                        e_sort_load(linktype);
                     }
 
                     activate_popover();
@@ -636,36 +636,36 @@ function toggle_pills(link_type_hash, is_first_load){
 
 
 
-function i_copy(i__id, do_recursive){
+function i_copy(ideaid, do_recursive){
 
     //Go ahead and delete:
     $.post("/app/i_copy", {
-        i__id:i__id,
+        ideaid:ideaid,
         do_recursive:do_recursive,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
-            js_redirect(js_e___42903[33286]['m__message']+data.new_i__hashtag);
+            js_redirect(js_e___42903[33286]['m__message']+data.new_ideahashtag);
         } else {
             alert('ERROR:' + data.message);
         }
     });
 }
 
-function source_title(e__id){
+function source_title(playerid){
     //Load Instant Fields:
     var return_title = '';
-    if($('.text__6197_'+e__id+':first').text().length){
-        return_title = $('.text__6197_'+e__id+':first').text();
-    } else if($('.text__6197_'+e__id+':first').val().length){
-        return_title = $('.text__6197_'+e__id+':first').val();
+    if($('.text__6197_'+playerid+':first').text().length){
+        return_title = $('.text__6197_'+playerid+':first').text();
+    } else if($('.text__6197_'+playerid+':first').val().length){
+        return_title = $('.text__6197_'+playerid+':first').val();
     }
     return return_title;
 }
 
-function e_copy(e__id){
+function e_copy(playerid){
 
-    var copy_source_title = prompt("What would be the title of the new source?", source_title(e__id));
+    var copy_source_title = prompt("What would be the title of the new source?", source_title(playerid));
     if (!copy_source_title.length) {
         alert('You must enter a title to copy.');
         return false;
@@ -673,12 +673,12 @@ function e_copy(e__id){
 
     //Go ahead and delete:
     $.post("/app/e_copy", {
-        e__id:e__id,
+        playerid:playerid,
         copy_source_title:copy_source_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
-            js_redirect(js_e___42903[42902]['m__message']+data.new_e__handle);
+            js_redirect(js_e___42903[42902]['m__message']+data.new_playerhandle);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -691,8 +691,8 @@ function e_copy(e__id){
 
 
 
-function js_view__shuffle_message(e__id){
-    var messages = js_e___12687[e__id]['m__message'].split("\n");
+function js_view__shuffle_message(playerid){
+    var messages = js_e___12687[playerid]['m__message'].split("\n");
     if(messages.length==1){
         //Return message:
         return messages[0];
@@ -703,35 +703,35 @@ function js_view__shuffle_message(e__id){
 }
 
 
-function loadtab(link_type, tab_data_id){
+function loadtab(linktype, tab_data_id){
 
     //Hide all tabs:
-    $('.tab-group-'+link_type).addClass('hidden');
-    $('.tab-nav-'+link_type).removeClass('active');
+    $('.tab-group-'+linktype).addClass('hidden');
+    $('.tab-nav-'+linktype).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-'+link_type+'.tab-data-'+tab_data_id).removeClass('hidden');
-    $('.tab-nav-'+link_type+'.tab-head-'+tab_data_id).addClass('active');
+    $('.tab-group-'+linktype+'.tab-data-'+tab_data_id).removeClass('hidden');
+    $('.tab-nav-'+linktype+'.tab-head-'+tab_data_id).addClass('active');
 
 }
 
 
 var init_in_process = 0;
-function x_remove(link_id, link_type, i__hashtag){
+function x_remove(linkid, linktype, ideahashtag){
 
-    if(init_in_process==link_id){
+    if(init_in_process==linkid){
         return false;
     }
-    init_in_process = link_id;
+    init_in_process = linkid;
 
-    var r = confirm("Remove idea #"+i__hashtag+"?");
+    var r = confirm("Remove idea #"+ideahashtag+"?");
     if (!(r==true)) {
         return false;
     }
 
     //Save changes:
     $.post("/app/x_remove", {
-        link_id:link_id,
+        linkid:linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         //Update UI to confirm with member:
@@ -742,15 +742,15 @@ function x_remove(link_id, link_type, i__hashtag){
 
         } else {
 
-            adjust_counter(link_type, -1);
+            adjust_counter(linktype, -1);
 
             //REMOVE BOOKMARK from UI:
-            $('.cover_x_'+link_id).fadeOut();
+            $('.cover_x_'+linkid).fadeOut();
 
             setTimeout(function () {
 
                 //Delete from body:
-                $('.cover_x_'+link_id).remove();
+                $('.cover_x_'+linkid).remove();
 
             }, 233);
         }
@@ -762,8 +762,8 @@ function x_remove(link_id, link_type, i__hashtag){
 
 
 
-function update__cover(new_cover, changed = true){
-    $('#modal31912 .save_e__cover').val( new_cover );
+function updatplayercover(new_cover, changed = true){
+    $('#modal31912 .save_playercover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
     watch_cover_change(new_cover);
     if(changed){
@@ -771,7 +771,7 @@ function update__cover(new_cover, changed = true){
     }
 }
 function image_cover(cover_preview, cover_apply, new_title){
-    return '<a href="javascript:void(0);" onclick="update__cover(\''+cover_apply+'\')">' + view__s_mini_js(cover_preview, new_title) + '</a>';
+    return '<a href="javascript:void(0);" onclick="updatplayercover(\''+cover_apply+'\')">' + view__s_mini_js(cover_preview, new_title) + '</a>';
 }
 
 
@@ -786,44 +786,44 @@ function initiate_algolia(){
     });
 }
 
-function e_load_cover(link_type, e__id, counter, first_segment){
+function e_load_cover(linktype, playerid, counter, first_segment){
 
-    if($('.coins_e_'+e__id+'_'+link_type).html().length){
+    if($('.coins_e_'+playerid+'_'+linktype).html().length){
         //Already loaded:
        return false;
     }
 
-    $('.coins_e_'+e__id+'_'+link_type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_e_'+playerid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/e_load_cover", {
-        link_type:link_type,
-        e__id:e__id,
+        linktype:linktype,
+        playerid:playerid,
         counter:counter,
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_e_'+e__id+'_'+link_type).html(data);
+        $('.coins_e_'+playerid+'_'+linktype).html(data);
     });
 
 }
 
-function i_load_cover(link_type, i__id, counter, first_segment, current_e){
+function i_load_cover(linktype, ideaid, counter, first_segment, current_e){
 
-    if($('.coins_i_'+i__id+'_'+link_type).html().length){
+    if($('.coins_i_'+ideaid+'_'+linktype).html().length){
         //Already loaded:
         return false;
     }
 
-    $('.coins_i_'+i__id+'_'+link_type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_i_'+ideaid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/i_load_cover", {
-        link_type:link_type,
-        i__id:i__id,
+        linktype:linktype,
+        ideaid:ideaid,
         counter:counter,
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_i_'+i__id+'_'+link_type).html(data);
+        $('.coins_i_'+ideaid+'_'+linktype).html(data);
     });
 
 }
@@ -868,10 +868,10 @@ function load_covers(){
     $(".load_e_covers, .load_i_covers").unbind();
 
     $(".load_e_covers").click(function(event) {
-        e_load_cover($(this).attr('load_link_type'),$(this).attr('load_e__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        e_load_cover($(this).attr('load_linktype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
     $(".load_i_covers").click(function(event) {
-        i_load_cover($(this).attr('load_link_type'),$(this).attr('load_i__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        i_load_cover($(this).attr('load_linktype'),$(this).attr('load_ideaid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
 
@@ -894,7 +894,7 @@ function add_media(result_info){
 function load_card_clickers(){
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .link_text, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
+    var ignore_clicks = 'a, .btn, textarea, .linktext, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
     $( ".card_click" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length){
             js_redirect($(this).attr('href'));
@@ -920,10 +920,10 @@ function load_card_clickers(){
         }
 
         $(".this_selector").click(function (e) {
-            if($('.this_selector_'+$(this).attr('selection_i__id')+' i').hasClass('fa-square-check')){
+            if($('.this_selector_'+$(this).attr('selection_ideaid')+' i').hasClass('fa-square-check')){
 
                 //Already selected, so unselect:
-                $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
+                $('.this_selector_'+$(this).attr('selection_ideaid')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
 
             } else {
 
@@ -933,11 +933,11 @@ function load_card_clickers(){
                     console.log('Single Choice');
 
                     //Unselect the previously selected:
-                    $('.this_selector:not(.this_selector_'+$(this).attr('selection_i__id')+') i.fa-square-check').each(function () {
+                    $('.this_selector:not(.this_selector_'+$(this).attr('selection_ideaid')+') i.fa-square-check').each(function () {
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
                     });
                     //Go Next:
-                    if(!$('.input_ui_'+$(this).attr('selection_i__id'))[0]){
+                    if(!$('.input_ui_'+$(this).attr('selection_ideaid'))[0]){
                         //Since there is no input for this single select, we can instantly go next:
                         setTimeout(function () {
                             go_next(0);
@@ -952,10 +952,10 @@ function load_card_clickers(){
                     $(".fixed-bottom").removeClass('hidden');
                 }
 
-                if($('.input_ui_'+$(this).attr('selection_i__id'))[0]){
-                    $('.input_ui_'+$(this).attr('selection_i__id')+' .x_write').focus();
+                if($('.input_ui_'+$(this).attr('selection_ideaid'))[0]){
+                    $('.input_ui_'+$(this).attr('selection_ideaid')+' .x_write').focus();
                 }
-                $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
+                $('.this_selector_'+$(this).attr('selection_ideaid')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
 
             }
         });
@@ -965,9 +965,9 @@ function load_card_clickers(){
 
 
 var busy_processing = false;
-function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, unit_fee){
+function sale_increment(increment, ideaid, max_allowed, min_allowed, unit_total, unit_fee){
 
-    var current_quentity = parseInt($('.input_ui_'+i__id+' .current_count').text());
+    var current_quentity = parseInt($('.input_ui_'+ideaid+' .current_count').text());
     var new_quantity = current_quentity + increment;
 
     if (new_quantity<min_allowed || new_quantity>max_allowed){
@@ -977,14 +977,14 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
     }
 
     if(new_quantity>min_allowed){
-        $(".sale_controller_"+i__id+" .sale_down>i").removeClass('hidden');
+        $(".sale_controller_"+ideaid+" .sale_down>i").removeClass('hidden');
     } else {
-        $(".sale_controller_"+i__id+" .sale_down>i").addClass('hidden');
+        $(".sale_controller_"+ideaid+" .sale_down>i").addClass('hidden');
     }
     if(new_quantity<max_allowed){
-        $(".sale_controller_"+i__id+" .sale_up>i").removeClass('hidden');
+        $(".sale_controller_"+ideaid+" .sale_up>i").removeClass('hidden');
     } else {
-        $(".sale_controller_"+i__id+" .sale_up>i").addClass('hidden');
+        $(".sale_controller_"+ideaid+" .sale_up>i").addClass('hidden');
     }
 
     busy_processing = true;
@@ -994,9 +994,9 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
     var new_total = ( unit_total * new_quantity );
 
     //Update UI:
-    $(".input_ui_"+i__id+" .i__quantity").val(new_quantity);
-    $(".input_ui_"+i__id+" .current_count").text(new_quantity);
-    $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
+    $(".input_ui_"+ideaid+" .i__quantity").val(new_quantity);
+    $(".input_ui_"+ideaid+" .current_count").text(new_quantity);
+    $(".input_ui_"+ideaid+" .paypal_handling").val(handling_total);
 
     invoice_update(); //to show new numbers
 
@@ -1013,9 +1013,9 @@ function invoice_update(){
 
     $(".sale_controller").each(function () {
 
-        var item_i__id = parseInt($(this).attr('i__id'));
-        var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
-        var current_count = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
+        var item_ideaid = parseInt($(this).attr('ideaid'));
+        var item_i__title = $('.cache_frame_'+item_ideaid+' .first_line').text();
+        var current_count = parseFloat($('.input_ui_'+item_ideaid+' .current_count').text());
         var current_price = parseFloat($(this).attr('unitprice'));
         var current_currency = $(this).attr('unitcurrency');
 
@@ -1151,7 +1151,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#modal31912 .save_e__cover').keyup(function() {
+    $('#modal31912 .save_playercover').keyup(function() {
         update_cover_main($(this).val(), '.demo_cover');
     });
 
@@ -1159,8 +1159,8 @@ $(document).ready(function () {
     set_autosize($('.texttype__lg'));
 
     $('.trigger_modal').click(function (e) {
-        var link_type = parseInt($(this).attr('link_type'));
-        $('#modal'+link_type).modal('show');
+        var linktype = parseInt($(this).attr('linktype'));
+        $('#modal'+linktype).modal('show');
     });
 
 
@@ -1217,11 +1217,11 @@ $(document).ready(function () {
                 replace: function (suggestion) {
                     setTimeout(function () {
                         //One more time to make sure it also works in mobile:
-                        set_autosize($('.save_i__message'));
+                        set_autosize($('.save_ideatext'));
                     }, 144);
                     setTimeout(function () {
                         //One more time to make sure it also works in mobile:
-                        set_autosize($('.save_i__message'));
+                        set_autosize($('.save_ideatext'));
                     }, 144);
                     return ' #' + suggestion.s__handle + ' ';                }
             }
@@ -1400,12 +1400,12 @@ function update_cover_mini(cover_code, target_css){
 
 
 
-function i_editor_switch(link_link_type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 0){
+function i_editor_switch(link_linktype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0){
 
-    console.log('SWITCHING TO '+link_link_type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks+'/'+$('#modal31911 .save_i__message').val()+'/'+parseInt($('#modal31911 .created_i__id').val()));
+    console.log('SWITCHING TO '+link_linktype+'/'+next_ideaid+'/'+previous_ideaid+'/'+do_checks+'/'+$('#modal31911 .save_ideatext').val()+'/'+parseInt($('#modal31911 .created_ideaid').val()));
 
     /*
-    if(!next_i__id && !previous_i__id && !link_link_type && !do_checks){
+    if(!next_ideaid && !previous_ideaid && !link_linktype && !do_checks){
         var r = confirm("Are you sure you want to unlink this idea?");
         if (!(r==true)) {
             return false;
@@ -1414,56 +1414,56 @@ function i_editor_switch(link_link_type = 0, next_i__id = 0, previous_i__id = 0,
     */
 
     //Will switch the nature/direction of the link:
-    return i_editor_load(0, 0, link_link_type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .created_i__id').val()));
+    return i_editor_load(0, 0, link_linktype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
 }
 
-function display_media(mediaframe_id, uploader_id, i__id){
-    console.log('display_media: '+mediaframe_id+'/'+uploader_id+'/'+i__id);
-    $(".ui_i__cache_"+i__id+" .media_display").each(function () {
-        $('#'+mediaframe_id).append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
-        cloudinary_preview__source(uploader_id, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
+function display_media(mediaframe_id, uploader_id, ideaid){
+    console.log('display_media: '+mediaframe_id+'/'+uploader_id+'/'+ideaid);
+    $(".ui_ideacache_"+ideaid+" .media_display").each(function () {
+        $('#'+mediaframe_id).append('<div id="'+$(this).attr('id')+'" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""></div>');
+        cloudinary_preview__source(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
     });
     sort_media(mediaframe_id);
 }
 
-function i_editor_load(i__id = 0, link_id = 0, link_link_type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
+function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
 
 
-    $(".idea_link_direction, .idea_link_unlink, .idea_link_type").addClass('hidden');
+    $(".idea_link_direction, .idea_link_unlink, .idea_linktype").addClass('hidden');
     var focus_i_id = ( parseInt($('#focus__node').val())==12273 ? parseInt($('#focus__id').val()) : 0 );
     $("#modal31911 .save_results").html('');
 
-    if(!passon_i__id){
+    if(!passon_ideaid){
 
         //Reset Fields:
         has_unsaved_changes = false;
         $('#modal31911 .media_frame').html('');
-        $("#modal31911 .dynamic_item").attr('d__id','').attr('d_link_id','');
+        $("#modal31911 .dynamic_item").attr('d__id','').attr('d_linkid','');
         $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
-        $('#modal31911 .created_i__id').val(0);
+        $('#modal31911 .created_ideaid').val(0);
         $("#modal31911 .unsaved_warning").val('');
         $("#modal31911 .save_frame").addClass('hidden');
-        $('#modal31911 .save_i__id, #modal31911 .save_link_id').val(0);
+        $('#modal31911 .save_ideaid, #modal31911 .save_linkid').val(0);
 
         //Are we adding an idea for a target action tab?
         console.log('i Modal loaded for '+focus_group);
-        if(focus_i_id && do_checks && focus_group>0 && !next_i__id && !previous_i__id && !i__id && !link_id && !link_link_type){
+        if(focus_i_id && do_checks && focus_group>0 && !next_ideaid && !previous_ideaid && !ideaid && !linkid && !link_linktype){
             if(js_n___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)){
                 //Next idea group:
-                next_i__id = focus_i_id;
-                link_link_type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                next_ideaid = focus_i_id;
+                link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             } else if(js_n___42380.includes(focus_group)) {
                 //Previous idea group:
-                previous_i__id = focus_i_id;
-                link_link_type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                previous_ideaid = focus_i_id;
+                link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             }
         }
 
 
-        if(!link_link_type && do_checks && !i__id && !next_i__id && !previous_i__id && focus_i_id){
+        if(!link_linktype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_i_id){
             console.log('MATCH');
-            next_i__id = focus_i_id;
-            link_link_type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
+            next_ideaid = focus_i_id;
+            link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
         }
     }
 
@@ -1474,74 +1474,74 @@ function i_editor_load(i__id = 0, link_id = 0, link_link_type = 0, next_i__id = 
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    var is_next = next_i__id && js_n___4486.includes(link_link_type);
-    var is_prev = previous_i__id && js_n___4486.includes(link_link_type);
+    var is_next = next_ideaid && js_n___4486.includes(link_linktype);
+    var is_prev = previous_ideaid && js_n___4486.includes(link_linktype);
 
     if(is_next || is_prev){
 
-        i__id = 0;
-        link_id = 0;
+        ideaid = 0;
+        linkid = 0;
         var force_next_simplify = is_prev && !js_session_superpowers_unlocked.includes(42817);
 
         if(is_next || force_next_simplify){
 
             if(force_next_simplify){
-                next_i__id = previous_i__id;
-                previous_i__id = 0;
+                next_ideaid = previous_ideaid;
+                previous_ideaid = 0;
             }
 
             //Generate content:
             $("#modal31911 .idea_list_next").html('<div class="creator_box"></div>');
-            $('.creator_frame_'+next_i__id+' .creator_headline>a').each(function () {
+            $('.creator_frame_'+next_ideaid+' .creator_headline>a').each(function () {
                 $("#modal31911 .idea_list_next .creator_box").append('<div class="creator_headline">'+$(this).html()+'</div>');
             });
-            $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
+            $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_ideacache_'+next_ideaid).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_link_type+',0,'+next_i__id+',1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_linktype+',0,'+next_ideaid+',1)');
 
         } else if(is_prev){
 
             //Generate content:
             $("#modal31911 .idea_list_previous").html('<div class="creator_box"></div>');
-            $('.creator_frame_'+previous_i__id+' .creator_headline>a').each(function () {
+            $('.creator_frame_'+previous_ideaid+' .creator_headline>a').each(function () {
                 $("#modal31911 .idea_list_previous .creator_box").append('<div class="creator_headline">'+$(this).html()+'</div>');
             });
-            $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
+            $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_ideacache_'+previous_ideaid).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_link_type+','+previous_i__id+',0,1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_linktype+','+previous_ideaid+',0,1)');
 
         }
 
-        $('.idea_link_unlink, .idea_link_type').removeClass('hidden');
-        if(!passon_i__id){
-            update_form_select(4486, link_link_type, 1, false);
+        $('.idea_link_unlink, .idea_linktype').removeClass('hidden');
+        if(!passon_ideaid){
+            update_form_select(4486, link_linktype, 1, false);
         }
     }
 
 
     //Assign updates:
-    $('#modal31911 .next_i__id').val(next_i__id);
-    $('#modal31911 .previous_i__id').val(previous_i__id);
+    $('#modal31911 .next_ideaid').val(next_ideaid);
+    $('#modal31911 .previous_ideaid').val(previous_ideaid);
 
 
-    if(i__id){
+    if(ideaid){
 
-        var current_i__type = $('.s__12273_'+i__id).attr('i__type');
+        var current_i__type = $('.s__12273_'+ideaid).attr('i__type');
 
         //Editig an existing idea:
-        $('#modal31911 .save_i__id').val(i__id);
+        $('#modal31911 .save_ideaid').val(ideaid);
         $('#modal31911 .hash_group').removeClass('hidden');
-        $('#modal31911 .save_i__hashtag').val($('.ui_i__hashtag_'+i__id+':first').text());
-        $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id+':first').text());
+        $('#modal31911 .save_ideahashtag').val($('.ui_ideahashtag_'+ideaid+':first').text());
+        $('#modal31911 .save_ideatext').val($('.ui_ideatext_'+ideaid+':first').text());
 
         //Display Current Media:
-        display_media('media_editor_frame', 13572, i__id);
+        display_media('media_editor_frame', 13572, ideaid);
 
-    } else if(passon_i__id) {
+    } else if(passon_ideaid) {
 
-        $("#modal31911 .save_i__message").val(load_message);
+        $("#modal31911 .save_ideatext").val(load_message);
 
     } else {
 
@@ -1553,7 +1553,7 @@ function i_editor_load(i__id = 0, link_id = 0, link_link_type = 0, next_i__id = 
 
         //See where we are at and append anything needed to the idea:
         var insert_message = '';
-        if(!next_i__id && !previous_i__id){
+        if(!next_ideaid && !previous_ideaid){
             var focus__node = parseInt($('#focus__node').val());
             if(focus__node==12273){
                 //insert_message = '#'+$('#focus_handle').val()+' ';
@@ -1567,23 +1567,23 @@ function i_editor_load(i__id = 0, link_id = 0, link_link_type = 0, next_i__id = 
         }
 
         if(insert_message.length){
-            $("#modal31911 .save_i__message").val(insert_message);
+            $("#modal31911 .save_ideatext").val(insert_message);
         }
 
     }
 
-    if(link_id){
-        $('#modal31911 .save_link_id').val(link_id);
+    if(linkid){
+        $('#modal31911 .save_linkid').val(linkid);
 
         //Idea<>Idea links do not have an interaction message
-        if(parseInt($('#focus__node').val())!=12273 || ($('.ui_link_text_'+link_id+':first') && $('.ui_link_text_'+link_id+':first').text().length>0)){
-            $('#modal31911 .save_link_text').val($('.ui_link_text_'+link_id+':first').text());
+        if(parseInt($('#focus__node').val())!=12273 || ($('.ui_linktext_'+linkid+':first') && $('.ui_linktext_'+linkid+':first').text().length>0)){
+            $('#modal31911 .save_linktext').val($('.ui_linktext_'+linkid+':first').text());
             $('#modal31911 .save_frame').removeClass('hidden');
         }
     }
 
 
-    if(!passon_i__id){
+    if(!passon_ideaid){
 
         //Source Reference:
         update_form_select(4737, current_i__type, 1, false);
@@ -1593,30 +1593,30 @@ function i_editor_load(i__id = 0, link_id = 0, link_link_type = 0, next_i__id = 
 
         setTimeout(function () {
             //Adjust sizes:
-            set_autosize($('#modal31911 .save_i__message'));
-            set_autosize($('#modal31911 .save_link_text'));
+            set_autosize($('#modal31911 .save_ideatext'));
+            set_autosize($('#modal31911 .save_linktext'));
         }, 233);
 
-        var created_i__id = load_i_dynamic(i__id, link_id, current_i__type, true);
+        var created_ideaid = load_i_dynamic(ideaid, linkid, current_i__type, true);
 
     }
 
     setTimeout(function () {
         //Focus on writing a message:
-        $('#modal31911 .save_i__message').focus();
+        $('#modal31911 .save_ideatext').focus();
     }, 611);
 
 }
 
-function load_i_dynamic(i__id, link_id, current_i__type, initial_loading){
+function load_i_dynamic(ideaid, linkid, current_i__type, initial_loading){
 
     $(".dynamic_item").addClass('hidden'); //Hide all current items...
     $(".dynamic_editing_loading").removeClass('hidden');
-    var created_i__id = 0;
+    var created_ideaid = 0;
 
     $.post("/app/i_editor_load", {
-        i__id: i__id,
-        link_id: link_id,
+        ideaid: ideaid,
+        linkid: linkid,
         current_i__type: current_i__type,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -1625,17 +1625,17 @@ function load_i_dynamic(i__id, link_id, current_i__type, initial_loading){
 
         if (data.status) {
 
-            if(!i__id && data.created_i__id>0){
-                console.log('NEW IDEA #'+data.created_i__id+' has been created');
-                created_i__id = data.created_i__id;
-                $('#modal31911 .created_i__id').val(created_i__id);
-                i__id = created_i__id;
+            if(!ideaid && data.created_ideaid>0){
+                console.log('NEW IDEA #'+data.created_ideaid+' has been created');
+                created_ideaid = data.created_ideaid;
+                $('#modal31911 .created_ideaid').val(created_ideaid);
+                ideaid = created_ideaid;
             }
 
             if(initial_loading){
 
                 //Initiate Idea  Uploader:
-                load_cloudinary(13572, i__id, ['#'+i__id], '.uploader_13572', '#modal31911');
+                load_cloudinary(13572, ideaid, ['#'+ideaid], '.uploader_13572', '#modal31911');
 
                 //Track unsaved changes to prevent unwated modal closure:
                 $("#modal31911 .unsaved_warning").change(function() {
@@ -1654,7 +1654,7 @@ function load_i_dynamic(i__id, link_id, current_i__type, initial_loading){
                 if(data.return_inputs[index_i] == undefined){
                     data.return_inputs[index_i] = [];
                     data.return_inputs[index_i]["d__id"] = 0;
-                    data.return_inputs[index_i]["d_link_id"] = 0;
+                    data.return_inputs[index_i]["d_linkid"] = 0;
                     data.return_inputs[index_i]["d__html"] = '';
                     data.return_inputs[index_i]["d__value"] = '';
                     data.return_inputs[index_i]["d__type_name"] = '';
@@ -1682,7 +1682,7 @@ function load_i_dynamic(i__id, link_id, current_i__type, initial_loading){
                 }
 
                 $("#modal31911 .dynamic_"+i+" .radio_frame").remove();
-                $("#modal31911 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_link_id',data.return_inputs[index_i]["d_link_id"]);
+                $("#modal31911 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_linkid',data.return_inputs[index_i]["d_linkid"]);
 
                 if(data.return_inputs[index_i]["d__is_radio"]){
                     $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
@@ -1693,9 +1693,9 @@ function load_i_dynamic(i__id, link_id, current_i__type, initial_loading){
                     $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(link_id && parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())){
+                    if(linkid && parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        //$("#modal31911 .save_link_text").val('IGNORE_INPUT');
+                        //$("#modal31911 .save_linktext").val('IGNORE_INPUT');
                         //$("#modal31911 .save_frame").addClass('hidden');
                     }
                 }
@@ -1715,7 +1715,7 @@ function load_i_dynamic(i__id, link_id, current_i__type, initial_loading){
 
         }
     });
-    return created_i__id;
+    return created_ideaid;
 }
 
 
@@ -1731,8 +1731,8 @@ function i_editor_save(){
     $(".i_editor_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
-    var current_i__id = parseInt($('#modal31911 .save_i__id').val());
-    var created_i__id = parseInt($('#modal31911 .created_i__id').val());
+    var current_ideaid = parseInt($('#modal31911 .save_ideaid').val());
+    var created_ideaid = parseInt($('#modal31911 .created_ideaid').val());
 
     //Fetch Media
     var gather_media_result = gather_media('#modal31911 .media_frame .media_item', 13572);
@@ -1746,15 +1746,15 @@ function i_editor_save(){
     var modify_data = {
         focus__node:         parseInt($('#focus__node').val()),
         focus__id:           parseInt($('#focus__id').val()),
-        save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
-        save_link_id:         $('#modal31911 .save_link_id').val(),
-        next_i__id:         $('#modal31911 .next_i__id').val(),
-        previous_i__id:     $('#modal31911 .previous_i__id').val(),
-        save_link_type:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
+        save_ideaid:         ( current_ideaid>0 ? current_ideaid : created_ideaid ),
+        save_linkid:         $('#modal31911 .save_linkid').val(),
+        next_ideaid:         $('#modal31911 .next_ideaid').val(),
+        previous_ideaid:     $('#modal31911 .previous_ideaid').val(),
+        save_linktype:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
         focus_group:     focus_group,
-        save_link_text:    $('#modal31911 .save_link_text').val().trim(),
-        save_i__message:    $('#modal31911 .save_i__message').val().trim(),
-        save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
+        save_linktext:    $('#modal31911 .save_linktext').val().trim(),
+        save_ideatext:    $('#modal31911 .save_ideatext').val().trim(),
+        save_ideahashtag:    $('#modal31911 .save_ideahashtag').val().trim(),
         save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
         uploaded_media:     gather_media_result['uploaded_media'],
         js_request_uri:     js_request_uri, //Always append to AJAX Calls
@@ -1763,7 +1763,7 @@ function i_editor_save(){
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31911 .dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31911 .dynamic_'+i).attr('d_link_id').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_'+i).val().trim();
+            modify_data['save_dynamic_'+i] = $('#modal31911 .dynamic_'+i).attr('d_linkid').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;
@@ -1795,13 +1795,13 @@ function i_editor_save(){
             }
 
             //Update Handle & Href links if needed:
-            var old_handle = $(".ui_i__hashtag_"+modify_data['save_i__id']+':first').text();
-            var new_handle = modify_data['save_i__hashtag'];
-            var on_focus__idea = parseInt($('#focus__node').val())==12273 && modify_data['save_i__id']==parseInt($('#focus__id').val());
+            var old_handle = $(".ui_ideahashtag_"+modify_data['save_ideaid']+':first').text();
+            var new_handle = modify_data['save_ideahashtag'];
+            var on_focus__idea = parseInt($('#focus__node').val())==12273 && modify_data['save_ideaid']==parseInt($('#focus__id').val());
 
             //Update Source Reference:
-            $('.s__12273_'+modify_data['save_i__id']).attr('i__type', modify_data['save_i__type']);
-            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_link_id'], false);
+            $('.s__12273_'+modify_data['save_ideaid']).attr('i__type', modify_data['save_i__type']);
+            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_ideaid'], modify_data['save_linkid'], false);
 
             //Update Handle & Href links if needed:
             if(old_handle!=new_handle){
@@ -1810,8 +1810,8 @@ function i_editor_save(){
                     js_redirect(js_e___42903[33286]['m__message']+new_handle);
                 } else {
                     //Update Hashtag & Link:
-                    $('.s__12273_'+modify_data['save_i__id']).attr('i__hashtag', new_handle);
-                    $(".ui_i__hashtag_"+modify_data['save_i__id']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+                    $('.s__12273_'+modify_data['save_ideaid']).attr('ideahashtag', new_handle);
+                    $(".ui_ideahashtag_"+modify_data['save_ideaid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
                 }
             }
 
@@ -1820,15 +1820,15 @@ function i_editor_save(){
             $('#modal31911').modal('hide');
 
             //Update Idea Message:
-            $('.ui_i__message_'+modify_data['save_i__id']).text(modify_data['save_i__message']);
+            $('.ui_ideatext_'+modify_data['save_ideaid']).text(modify_data['save_ideatext']);
 
             //Insert idea into the page if new:
             console.log('START INSERTING');
-            if(!current_i__id && created_i__id>0 && focus_group>0){
+            if(!current_ideaid && created_ideaid>0 && focus_group>0){
 
-                console.log('ADD NEW '+modify_data['save_link_type']+' & x GROUP: '+focus_group);
+                console.log('ADD NEW '+modify_data['save_linktype']+' & x GROUP: '+focus_group);
 
-                $("#list-in-" + focus_group).append(data.return_i__cache_full);
+                $("#list-in-" + focus_group).append(data.return_ideacache_full);
 
                 adjust_counter(focus_group, 1);
 
@@ -1838,20 +1838,20 @@ function i_editor_save(){
 
             } else {
 
-                console.log('UPDATE  '+modify_data['save_link_type']+' & x GROUP: '+focus_group);
+                console.log('UPDATE  '+modify_data['save_linktype']+' & x GROUP: '+focus_group);
 
                 //Update Cache otherwise:
-                $('.ui_i__cache_'+modify_data['save_i__id']).html(data.return_i__cache_links);
+                $('.ui_ideacache_'+modify_data['save_ideaid']).html(data.return_ideacache_links);
 
             }
 
             //Show more if on focus idea:
             if(on_focus__idea){
-                show_more(modify_data['save_i__id']);
+                show_more(modify_data['save_ideaid']);
             }
 
-            if(modify_data['save_link_id'] && modify_data['save_link_text']!='IGNORE_INPUT'){
-                $('.ui_link_text_'+modify_data['save_link_id']).text(modify_data['save_link_text']);
+            if(modify_data['save_linkid'] && modify_data['save_linktext']!='IGNORE_INPUT'){
+                $('.ui_linktext_'+modify_data['save_linkid']).text(modify_data['save_linktext']);
             }
 
             //Tooltips:
@@ -2019,18 +2019,18 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             if(uploader_id==42359){
 
                 //Source Cover Uploader:
-                update__cover('fas fa-yin-yang fa-spin');
+                updatplayercover('fas fa-yin-yang fa-spin');
 
             } else if(uploader_id==13572){
 
                 //Ideator Uploader
                 has_unsaved_changes = true;
-                $('#media_editor_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_editor_frame').append('<div id="'+result.info.id+'" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             } else if(uploader_id==43004){
 
                 //Discovery Uploader
-                $('#media_outer_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_outer_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
@@ -2043,33 +2043,33 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             if(uploader_id==42359){
 
                 //Source Cover Uploader:
-                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+                updatplayercover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
 
             } else if(uploader_id==13572 || uploader_id==43004){
 
                 //Idea Uploader
                 var playback_code = '';
-                var media_e__id = 0;
+                var media_playerid = 0;
                 if(result.info.format && result.info.format.length>0){
                     if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio){
                         //Audio
-                        media_e__id = 4259;
+                        media_playerid = 4259;
                         playback_code = result.info.secure_url;
                     } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
                         //Image
-                        media_e__id = 4260;
+                        media_playerid = 4260;
                         playback_code = ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','w_1597,h_1597,c_fit') : result.info.secure_url );
                     } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
-                        media_e__id = 4258;
+                        media_playerid = 4258;
                         playback_code = result.info.public_id;
                     }
                 }
 
                 //Append this to the main source:
-                if(media_e__id) {
+                if(media_playerid) {
 
-                    cloudinary_preview__source(uploader_id, result.info.id, media_e__id, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
+                    cloudinary_preview__source(uploader_id, result.info.id, media_playerid, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_playerid]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_playerid]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log('MEDIA CACHE:');
@@ -2135,32 +2135,32 @@ function play_video(public_id){
     cld.source(public_id);
 }
 
-function cloudinary_preview__source(uploader_id, info_id, media_e__id, playback_code, e__cover, e__title, e__id = 0){
+function cloudinary_preview__source(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0){
 
     //Update meta variables:
-    $('#'+info_id).attr('media_e__id',media_e__id).attr('playback_code',playback_code).attr('e__id',e__id).attr('e__cover',e__cover);
+    $('#'+info_id).attr('media_playerid',media_playerid).attr('playback_code',playback_code).attr('playerid',playerid).attr('playercover',playercover);
 
-    if(media_e__id == 4258){
+    if(media_playerid == 4258){
 
         //Video
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
-        //<video id="video_player_'+playback_code+'" controls class="cld-video-player vjs-fade-out cld-fluid cld-video-player-skin-light" poster="'+e__cover+'"></video>
+        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_playerid]['m__title']+'">'+js_e___42294[media_playerid]['m__cover']+'</span><img src="'+playercover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        //<video id="video_player_'+playback_code+'" controls class="cld-video-player vjs-fade-out cld-fluid cld-video-player-skin-light" poster="'+playercover+'"></video>
         //play_video(playback_code);
 
-    } else if(media_e__id == 4260){
+    } else if(media_playerid == 4260){
 
         //Image
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__10939" /><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Source Title" class="hidden_superpower__10939" /><img src="'+playercover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
 
-    } else if(media_e__id == 4259){
+    } else if(media_playerid == 4259){
 
         //Audio
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><audio controls src="'+playback_code+'"></audio><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_playerid]['m__title']+'">'+js_e___42294[media_playerid]['m__cover']+'</span><audio controls src="'+playback_code+'"></audio><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
-        alert('Upload Error: Uploaded File '+e__title+' is not a valid Video, Image or Audio file.');
+        alert('Upload Error: Uploaded File '+playertext+' is not a valid Video, Image or Audio file.');
         delete_media(uploader_id, info_id, true);
 
     }
@@ -2170,7 +2170,7 @@ function cloudinary_preview__source(uploader_id, info_id, media_e__id, playback_
 }
 
 
-function e_editor_load(e__id = 0, link_id = 0, bar_title = null, link_text = null){
+function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = null){
 
     //Activate Modal:
     $('#modal31912').modal('show');
@@ -2182,7 +2182,7 @@ function e_editor_load(e__id = 0, link_id = 0, bar_title = null, link_text = nul
 
     $('#modal31912 .save_results').html('');
     $("#modal31912 .save_frame").addClass('hidden');
-    $("#modal31912 .dynamic_item").attr('d__id','').attr('d_link_id','');
+    $("#modal31912 .dynamic_item").attr('d__id','').attr('d_linkid','');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
     //Source resets:
@@ -2191,42 +2191,42 @@ function e_editor_load(e__id = 0, link_id = 0, bar_title = null, link_text = nul
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
-    var current_title = source_title(e__id);
-    var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
+    var current_title = source_title(playerid);
+    var current_cover = $('.ui_playercover_'+playerid+':first').attr('raw_cover');
 
-    $('#modal31912 .save_e__id').val(e__id);
-    $('#modal31912 .save_link_id').val(link_id);
-    $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
-    $('#modal31912 .save_e__title').val(current_title);
+    $('#modal31912 .save_playerid').val(playerid);
+    $('#modal31912 .save_linkid').val(linkid);
+    $('#modal31912 .save_playerhandle').val($('.ui_playerhandle_'+playerid+':first').text());
+    $('#modal31912 .save_playertext').val(current_title);
 
 
     $('#modal31912 .random_animal').html('<i class="'+random_animal(true)+'"></i>');
-    update__cover(current_cover, false);
+    updatplayercover(current_cover, false);
 
 
-    if(link_id){
-        $('#modal31912 .save_link_text').val($('.ui_link_text_'+link_id).text());
+    if(linkid){
+        $('#modal31912 .save_linktext').val($('.ui_linktext_'+linkid).text());
         $('#modal31912 .save_frame').removeClass('hidden');
         setTimeout(function () {
-            set_autosize($('#modal31912 .save_link_text'));
+            set_autosize($('#modal31912 .save_linktext'));
         }, 377);
     }
     setTimeout(function () {
-        set_autosize($('#modal31912 .save_e__title'));
+        set_autosize($('#modal31912 .save_playertext'));
     }, 377);
 
 
 
     $.post("/app/e_editor_load", {
-        e__id: e__id,
-        link_id: link_id,
+        playerid: playerid,
+        linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
         if (data.status) {
 
             //Initiate Source Cover Uploader:
-            load_cloudinary(42359, e__id, ['@'+e__id], '.uploader_42359', '#modal31912');
+            load_cloudinary(42359, playerid, ['@'+playerid], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
             var index_i_content = 0;
@@ -2238,7 +2238,7 @@ function e_editor_load(e__id = 0, link_id = 0, bar_title = null, link_text = nul
                 if(data.return_inputs[index_i] == undefined){
                     data.return_inputs[index_i] = [];
                     data.return_inputs[index_i]["d__id"] = 0;
-                    data.return_inputs[index_i]["d_link_id"] = 0;
+                    data.return_inputs[index_i]["d_linkid"] = 0;
                     data.return_inputs[index_i]["d__html"] = '';
                     data.return_inputs[index_i]["d__value"] = '';
                     data.return_inputs[index_i]["d__type_name"] = '';
@@ -2258,7 +2258,7 @@ function e_editor_load(e__id = 0, link_id = 0, bar_title = null, link_text = nul
                 }
 
                 $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
-                $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_link_id',data.return_inputs[index_i]["d_link_id"]);
+                $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_linkid',data.return_inputs[index_i]["d_linkid"]);
 
                 var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if(is_locked && !data.return_inputs[index_i]["d__value"].length){
@@ -2277,9 +2277,9 @@ function e_editor_load(e__id = 0, link_id = 0, bar_title = null, link_text = nul
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(link_id && ( (parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"]==e__id )){
+                    if(linkid && ( (parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"]==playerid )){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        //$("#modal31912 .save_link_text").val('IGNORE_INPUT');
+                        //$("#modal31912 .save_linktext").val('IGNORE_INPUT');
                         //$("#modal31912 .save_frame").addClass('hidden');
                     }
                 }
@@ -2324,19 +2324,19 @@ function e_editor_save(){
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
-        save_e__id:         $('#modal31912 .save_e__id').val(),
-        save_e__title:      $('#modal31912 .save_e__title').val().trim(),
-        save_e__cover:      $('#modal31912 .save_e__cover').val().trim(),
-        save_e__handle:     $('#modal31912 .save_e__handle').val().trim(),
-        save_link_id:         $('#modal31912 .save_link_id').val(),
-        save_link_text:    $('#modal31912 .save_link_text').val().trim(),
+        save_playerid:         $('#modal31912 .save_playerid').val(),
+        save_playertext:      $('#modal31912 .save_playertext').val().trim(),
+        save_playercover:      $('#modal31912 .save_playercover').val().trim(),
+        save_playerhandle:     $('#modal31912 .save_playerhandle').val().trim(),
+        save_linkid:         $('#modal31912 .save_linkid').val(),
+        save_linktext:    $('#modal31912 .save_linktext').val().trim(),
         js_request_uri:     js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31912 .dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31912 .dynamic_'+i).attr('d_link_id').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_'+i).val().trim();
+            modify_data['save_dynamic_'+i] = $('#modal31912 .dynamic_'+i).attr('d_linkid').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;
@@ -2356,31 +2356,31 @@ function e_editor_save(){
         } else {
 
             //Update Handle & Href links if needed:
-            var old_handle = $(".ui_e__handle_"+modify_data['save_e__id']+':first').text();
-            var new_handle = modify_data['save_e__handle'];
+            var old_handle = $(".ui_playerhandle_"+modify_data['save_playerid']+':first').text();
+            var new_handle = modify_data['save_playerhandle'];
             if(old_handle!=new_handle){
-                if(parseInt($('#focus__node').val())==12274 && modify_data['save_e__id']==parseInt($('#focus__id').val())){
+                if(parseInt($('#focus__node').val())==12274 && modify_data['save_playerid']==parseInt($('#focus__id').val())){
                     //Refresh page since focus item handle changed:
                     return js_redirect(js_e___42903[42902]['m__message']+new_handle);
                 } else {
                     //Make adjustments to current page:
-                    $('.s__12274_'+modify_data['save_e__id']).attr('e__handle', new_handle);
-                    $('.ui_e__handle_'+modify_data['save_e__id']).text(new_handle);
-                    $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']+':first').attr('href').replaceAll(old_handle, new_handle));
+                    $('.s__12274_'+modify_data['save_playerid']).attr('playerhandle', new_handle);
+                    $('.ui_playerhandle_'+modify_data['save_playerid']).text(new_handle);
+                    $(".handle_href_e_"+modify_data['save_playerid']).attr('href', $(".handle_href_e_"+modify_data['save_playerid']+':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
 
             //Update Title:
-            update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
+            update_text_name(6197, modify_data['save_playerid'], modify_data['save_playertext']);
 
             //Update Raw Cover:
-            $('.ui_e__cover_'+modify_data['save_e__id']+':first').attr('raw_cover', modify_data['save_e__cover']);
+            $('.ui_playercover_'+modify_data['save_playerid']+':first').attr('raw_cover', modify_data['save_playercover']);
 
             //Update Main Cover:
-            update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
+            update_cover_main(modify_data['save_playercover'], '.s__12274_'+modify_data['save_playerid']);
 
-            if( modify_data['save_link_id'] && modify_data['save_link_text']!='IGNORE_INPUT'){
-                $('.ui_link_text_'+ modify_data['save_link_id']).text(modify_data['save_link_text']);
+            if( modify_data['save_linkid'] && modify_data['save_linktext']!='IGNORE_INPUT'){
+                $('.ui_linktext_'+ modify_data['save_linkid']).text(modify_data['save_linktext']);
             }
 
             //Tooltips:
@@ -2393,7 +2393,7 @@ function e_editor_save(){
             $('#modal31912').modal('hide');
 
             //Do we need to refresh the page?
-            if(parseInt($('#focus__node').val())==12274 && parseInt($('#focus__id').val())==modify_data['save_e__id']){
+            if(parseInt($('#focus__node').val())==12274 && parseInt($('#focus__id').val())==modify_data['save_playerid']){
                 //Refresh page since source edited their own profile:
                 js_redirect(js_e___42903[42902]['m__message']+$('#focus_handle').val());
             }
@@ -2447,7 +2447,7 @@ function x_view__load_page() {
     $.post("/app/x_view__load_page", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        link_type: focus_group,
+        linktype: focus_group,
         current_page: current_page[focus_group],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -2484,7 +2484,7 @@ function toggle_max_view(css_class){
 
 //Adds OR transactions sources to sources
 var e_is_adding = false;
-function e__add(link_type, e_existing_id) {
+function e__add(linktype, e_existing_id) {
 
     if(e_is_adding){
         return false;
@@ -2494,7 +2494,7 @@ function e__add(link_type, e_existing_id) {
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
     e_is_adding = true;
 
-    var input = $('.new-list-'+link_type+' .add-input');
+    var input = $('.new-list-'+linktype+' .add-input');
 
     var original_photo = $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html();
     $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
@@ -2512,7 +2512,7 @@ function e__add(link_type, e_existing_id) {
     $.post("/app/e__add", {
 
         focus__node: parseInt($('#focus__node').val()),
-        link_type: link_type,
+        linktype: linktype,
         focus__id: parseInt($('#focus__id').val()),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
@@ -2528,15 +2528,15 @@ function e__add(link_type, e_existing_id) {
             //input.focus();
 
             //Add new object to list:
-            adjust_counter(link_type, 1);
+            adjust_counter(linktype, 1);
 
             //See if we previously have a list in place?
-            if ($("#list-in-" + link_type + " .card-12274").length > 0) {
+            if ($("#list-in-" + linktype + " .card-12274").length > 0) {
                 //Downwards add to start"
-                $("#list-in-" + link_type + " .card-12274:first").before(data.e_new_echo);
+                $("#list-in-" + linktype + " .card-12274:first").before(data.e_new_echo);
             } else {
                 //Raw list, add before input filed:
-                $("#list-in-" + link_type).prepend(data.e_new_echo);
+                $("#list-in-" + linktype).prepend(data.e_new_echo);
             }
 
             //Allow inline editing if enabled:
@@ -2544,7 +2544,7 @@ function e__add(link_type, e_existing_id) {
 
             setTimeout(function () {
                 activate_popover();
-                e_sort_load(link_type);
+                e_sort_load(linktype);
             }, 987);
 
             //Hide Coin:
@@ -2561,16 +2561,16 @@ function e__add(link_type, e_existing_id) {
 
 
 var i_is_adding = false;
-function i__add(link_type, link_i__id) {
+function i__add(linktype, link_ideaid) {
 
     alert('not up yet');
     return false;
 
     /*
      *
-     * Either creates an IDEA transaction between focus_id & link_i__id
+     * Either creates an IDEA transaction between focus_id & link_ideaid
      * OR will create a new idea based on input text and then transaction it
-     * to #focus_id (In this case link_i__id=0)
+     * to #focus_id (In this case link_ideaid=0)
      *
      * */
 
@@ -2581,12 +2581,12 @@ function i__add(link_type, link_i__id) {
     //Remove results:
     i_is_adding = true;
     var sort_i_grabr = ".card_cover";
-    var input_field = $('.new-list-'+link_type+' .add-input');
-    var new_i__message = input_field.val();
+    var input_field = $('.new-list-'+linktype+' .add-input');
+    var new_ideatext = input_field.val();
 
 
-    //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
-    if (!link_i__id && new_i__message.length < 1) {
+    //We either need the idea name (to create a new idea) or the link_ideaid>0 to create an IDEA transaction:
+    if (!link_ideaid && new_ideatext.length < 1) {
         alert('Missing Idea');
         input_field.focus();
         return false;
@@ -2594,15 +2594,15 @@ function i__add(link_type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(link_type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(linktype, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
     $.post("/app/i__add", {
-        link_type: link_type,
+        linktype: linktype,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        new_i__message: new_i__message,
-        link_i__id: link_i__id
+        new_ideatext: new_ideatext,
+        link_ideaid: link_ideaid
     }, function (data) {
 
         //Delete loader:
@@ -2613,7 +2613,7 @@ function i__add(link_type, link_i__id) {
         if (data.status) {
 
             //Add new
-            add_to_list(link_type, sort_i_grabr, data.new_i_html, 1);
+            add_to_list(linktype, sort_i_grabr, data.new_i_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -2621,7 +2621,7 @@ function i__add(link_type, link_i__id) {
             set_autosize($('.texttype__lg'));
 
             //Hide Coin:
-            $('.mini-cover.card-12273.card-id-'+link_i__id).fadeOut();
+            $('.mini-cover.card-12273.card-id-'+link_ideaid).fadeOut();
 
         } else {
             //Show errors:
@@ -2636,22 +2636,22 @@ function i__add(link_type, link_i__id) {
 }
 
 
-function e_delete(link_id, link_type) {
+function e_delete(linkid, linktype) {
 
     var r = confirm("Unlink this source?");
     if (r==true) {
         $.post("/app/e_delete", {
 
-            link_id: link_id,
+            linkid: linkid,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
 
         }, function (data) {
             if (data.status) {
 
-                adjust_counter(link_type, -1);
-                $(".cover_x_" + link_id).fadeOut();
+                adjust_counter(linktype, -1);
+                $(".cover_x_" + linkid).fadeOut();
                 setTimeout(function () {
-                    $(".cover_x_" + link_id).remove();
+                    $(".cover_x_" + linkid).remove();
                 }, 610);
 
             } else {
@@ -2711,9 +2711,9 @@ function x_set_start_text(){
     });
 }
 
-function update_text_name(cache_e__id, e__id, e__title){
-    var target_element = ".text__"+cache_e__id+"_" + e__id;
-    $(target_element).text(e__title).attr('old-value', e__title); //.val(e__title)
+function update_text_name(cache_playerid, playerid, playertext){
+    var target_element = ".text__"+cache_playerid+"_" + playerid;
+    $(target_element).text(playertext).attr('old-value', playertext); //.val(playertext)
     set_autosize($(target_element));
 }
 
@@ -2721,19 +2721,19 @@ function x_set_text(this_grabr){
 
     var modify_data = {
         s__id: parseInt($(this_grabr).attr('s__id')),
-        cache_e__id: parseInt($(this_grabr).attr('cache_e__id')),
-        new_i__message: $(this_grabr).val().trim(),
+        cache_playerid: parseInt($(this_grabr).attr('cache_playerid')),
+        new_ideatext: $(this_grabr).val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //See if anything changes:
-    if( $(this_grabr).attr('old-value')==modify_data['new_i__message'] ){
+    if( $(this_grabr).attr('old-value')==modify_data['new_ideatext'] ){
         //Nothing changed:
         return false;
     }
 
     //Grey background to indicate saving
-    var target_element = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
+    var target_element = '.text__'+modify_data['cache_playerid']+'_'+modify_data['s__id'];
     $.post("/app/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
@@ -2747,7 +2747,7 @@ function x_set_text(this_grabr){
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['new_i__message']);
+            update_text_name(modify_data['cache_playerid'], modify_data['s__id'], modify_data['new_ideatext']);
 
         }
 
@@ -2757,8 +2757,8 @@ function x_set_text(this_grabr){
 
 
 
-function adjust_counter(link_type, adjustment_count){
-    $('.xtypecounter'+link_type).text((parseInt($('.headline_body_' + link_type).attr('read-counter')) + adjustment_count));
+function adjust_counter(linktype, adjustment_count){
+    $('.xtypecounter'+linktype).text((parseInt($('.headline_body_' + linktype).attr('read-counter')) + adjustment_count));
 }
 
 
@@ -2767,9 +2767,9 @@ function search_enabled(){
 }
 
 
-function show_more(i__id){
-    $('.cache_frame_'+i__id+' .line, .cache_frame_'+i__id+' .inner_line').removeClass('hidden');
-    $('.cache_frame_'+i__id+' .show_more_line').addClass('hidden');
+function show_more(ideaid){
+    $('.cache_frame_'+ideaid+' .line, .cache_frame_'+ideaid+' .inner_line').removeClass('hidden');
+    $('.cache_frame_'+ideaid+' .show_more_line').addClass('hidden');
 }
 
 function set_autosize(theobject){
@@ -2781,51 +2781,51 @@ function set_autosize(theobject){
 
 
 
-function i_sort_load(link_type){
+function i_sort_load(linktype){
 
     load_covers();
 
-    console.log('Tring to load Idea Sort for @'+link_type);
-    if(!js_n___4603.includes(link_type)){
-        console.log(link_type+' is not sortable');
+    console.log('Tring to load Idea Sort for @'+linktype);
+    if(!js_n___4603.includes(linktype)){
+        console.log(linktype+' is not sortable');
         return false;
     }
 
     setTimeout(function () {
 
-        var theobject = document.getElementById("list-in-" + link_type);
+        var theobject = document.getElementById("list-in-" + linktype);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
-            console.log(link_type+' failed to find sortable object');
+            console.log(linktype+' failed to find sortable object');
             return false;
         }
 
         //Make sure beow minimum sorting requirement:
-        if($("#list-in-"+link_type+" .sort_draggable").length>=parseInt(js_e___6404[11064]['m__message'])){
-            console.log(link_type+' has '+$("#list-in-"+link_type+" .sort_draggable").length+' items which is more than the page limit of '+js_e___6404[11064]['m__message']);
+        if($("#list-in-"+linktype+" .sort_draggable").length>=parseInt(js_e___6404[11064]['m__message'])){
+            console.log(linktype+' has '+$("#list-in-"+linktype+" .sort_draggable").length+' items which is more than the page limit of '+js_e___6404[11064]['m__message']);
             return false;
-        } else if($("#list-in-"+link_type+" .sort_draggable").length<2){
-            console.log('Less than 2 items to sort '+link_type);
+        } else if($("#list-in-"+linktype+" .sort_draggable").length<2){
+            console.log('Less than 2 items to sort '+linktype);
             return false;
         } else {
 
-            console.log(link_type+' sorting load success');
+            console.log(linktype+' sorting load success');
             $('.sort_i_frame').removeClass('hidden');
 
             //Load sorter:
             var sort = Sortable.create(theobject, {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: "#list-in-"+link_type+" .sort_draggable", // Specifies which items inside the element should be sortable
-                handle: "#list-in-"+link_type+" .sort_i_grab", // Restricts sort start click/touch to the specified element
+                draggable: "#list-in-"+linktype+" .sort_draggable", // Specifies which items inside the element should be sortable
+                handle: "#list-in-"+linktype+" .sort_i_grab", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
 
                     var sort_rank = 0;
                     var new_x_order = [];
-                    $("#list-in-"+link_type+" .sort_draggable").each(function () {
-                        var link_id = parseInt($(this).attr('link_id'));
-                        if(link_id > 0){
+                    $("#list-in-"+linktype+" .sort_draggable").each(function () {
+                        var linkid = parseInt($(this).attr('linkid'));
+                        if(linkid > 0){
                             sort_rank++;
-                            new_x_order[sort_rank] = link_id;
+                            new_x_order[sort_rank] = linkid;
                         }
                     });
 
@@ -2833,7 +2833,7 @@ function i_sort_load(link_type){
                     if(sort_rank > 0){
                         $.post("/app/i_sort_load", {
                             new_x_order:new_x_order,
-                            link_type:link_type,
+                            linktype:linktype,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
                         }, function (data) {
                             //Update UI to confirm with member:
@@ -2859,15 +2859,15 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function e_select_apply(focus__id, selected_e__id, enable_mulitiselect, down_e__id, right_i__id){
+function e_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_playerid, right_ideaid){
 
     //Any warning needed?
-    if(js_n___31780.includes(selected_e__id) && !confirm(js_e___31780[selected_e__id]['m__message'])){
+    if(js_n___31780.includes(selected_playerid) && !confirm(js_e___31780[selected_playerid]['m__message'])){
         return false;
     }
 
     var field_required = js_n___28239.includes(focus__id);
-    var was_previously_selected = ( $('.radio-'+focus__id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
+    var was_previously_selected = ( $('.radio-'+focus__id+' .item-'+selected_playerid).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
     if(!enable_mulitiselect && field_required && was_previously_selected){
@@ -2880,11 +2880,11 @@ function e_select_apply(focus__id, selected_e__id, enable_mulitiselect, down_e__
         current_focus = focus__id;
         $('body').removeClass('custom_ui_'+focus__id+'_');
         window['js_n___'+focus__id].forEach(remove_ui_class); //Removes all Classes
-        $('body').addClass('custom_ui_'+focus__id+'_'+selected_e__id);
+        $('body').addClass('custom_ui_'+focus__id+'_'+selected_playerid);
     }
 
     //Show spinner on the notification element:
-    var notify_el = '.radio-'+focus__id+' .item-'+selected_e__id+' .change-results';
+    var notify_el = '.radio-'+focus__id+' .item-'+selected_playerid+' .change-results';
     var initial_icon = $(notify_el).html();
     $(notify_el).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
@@ -2897,18 +2897,18 @@ function e_select_apply(focus__id, selected_e__id, enable_mulitiselect, down_e__
 
     //Enable currently selected:
     if((enable_mulitiselect || !field_required) && was_previously_selected){
-        $('.radio-'+focus__id+' .item-'+selected_e__id).removeClass('active');
-        $('.radio-'+focus__id+' .item-'+selected_e__id+' .checked_icon').remove();
+        $('.radio-'+focus__id+' .item-'+selected_playerid).removeClass('active');
+        $('.radio-'+focus__id+' .item-'+selected_playerid+' .checked_icon').remove();
     } else {
-        $('.radio-'+focus__id+' .item-'+selected_e__id).addClass('active');
-        $('.radio-'+focus__id+' .item-'+selected_e__id+' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
+        $('.radio-'+focus__id+' .item-'+selected_playerid).addClass('active');
+        $('.radio-'+focus__id+' .item-'+selected_playerid+' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
     }
 
     $.post("/app/e_select_apply", {
         focus__id: focus__id,
-        down_e__id: down_e__id,
-        right_i__id: right_i__id,
-        selected_e__id: selected_e__id,
+        down_playerid: down_playerid,
+        right_ideaid: right_ideaid,
+        selected_playerid: selected_playerid,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2935,43 +2935,43 @@ function isNormalInteger(str) {
 }
 
 
-function update_form_select(element_id, new_e__id, initial_loading, show_title){
-    console.log('update_form_select: '+element_id+'/'+new_e__id);
+function update_form_select(element_id, new_playerid, initial_loading, show_title){
+    console.log('update_form_select: '+element_id+'/'+new_playerid);
 
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
-    $('.dropd_form_' + element_id + ' .optiond_'+new_e__id).addClass('active');
-    $('.dropd_form_' + element_id).attr('selected_value', new_e__id);
+    $('.dropd_form_' + element_id + ' .optiond_'+new_playerid).addClass('active');
+    $('.dropd_form_' + element_id).attr('selected_value', new_playerid);
     if(show_title){
-        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+new_e__id).html());
+        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+new_playerid).html());
     } else {
         //Just replace icon:
-        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_'+new_e__id+' span').html());
+        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_'+new_playerid+' span').html());
     }
     if(!initial_loading){
         if(element_id==4737){
             //Changing Source Reference would re-load dynamic fields based on type:
             has_unsaved_changes = true;
-            console.log('Reloading: '+element_id+' with value: '+' NEW ID '+new_e__id+' / '+$('#modal31911 .created_i__id').val());
-            load_i_dynamic($('#modal31911 .created_i__id').val(), 0, new_e__id, false);
+            console.log('Reloading: '+element_id+' with value: '+' NEW ID '+new_playerid+' / '+$('#modal31911 .created_ideaid').val());
+            load_i_dynamic($('#modal31911 .created_ideaid').val(), 0, new_playerid, false);
             //Add handle to text:
-            insertText($(".save_i__message"), '@'+new_e__id);
+            insertText($(".save_ideatext"), '@'+new_playerid);
         }
     }
 }
 
-function ui_instant_select(element_id, new_e__id, o__id, link_id, show_full_name){
+function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_name){
 
     //Update x:
-    console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .btn' + new_e__id);
+    console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn' + new_playerid);
     var data_object = eval('js_e___'+element_id);
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .btn').html('<span class="icon-block-sm">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm">'+data_object[new_playerid]['m__cover']+'</span>' + ( show_full_name ? data_object[new_playerid]['m__title'] : '' ));
 
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + link_id).removeClass('active');
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .optiond_' + new_e__id+'_'+o__id+ '_' + link_id).addClass('active');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + linkid).removeClass('active');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .optiond_' + new_playerid+'_'+o__id+ '_' + linkid).addClass('active');
 
-    var selected_e__id = $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id).attr('selected_value');
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id).attr('selected_value' , new_e__id);
+    var selected_playerid = $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid).attr('selected_value');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid).attr('selected_value' , new_playerid);
 
 
     var main_object_type = 0;
@@ -2979,13 +2979,13 @@ function ui_instant_select(element_id, new_e__id, o__id, link_id, show_full_name
 
     if(element_id==4737){
         //Source Reference:
-        $('.s__12273_'+o__id).attr('i__type', new_e__id);
+        $('.s__12273_'+o__id).attr('i__type', new_playerid);
         main_object_type = 12273;
         main_object_update = 'i__type';
     }
 
     if(main_object_type>0 && main_object_update){
-        $('.s__'+main_object_type+'_'+o__id).attr(main_object_update, new_e__id);
+        $('.s__'+main_object_type+'_'+o__id).attr(main_object_update, new_playerid);
     }
 
 }
@@ -3023,15 +3023,15 @@ function i_void(){
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
-        new_e__id: new_e__id,
+        new_playerid: new_playerid,
         migrate_s__handle: migrate_s__handle,
-        link_id: link_id,
+        linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
             //Update on page:
-            ui_instant_select(element_id, new_e__id, o__id, link_id, show_full_name);
+            ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_name);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
 
@@ -3054,7 +3054,7 @@ function i_void(){
 
             if( data.auto_open_i_editor_modal ){
                 //We need to show idea modal:
-                i_editor_load(o__id, $('.s__12273_'+o__id).attr('link_id'));
+                i_editor_load(o__id, $('.s__12273_'+o__id).attr('linkid'));
             }
 
         } else {
@@ -3067,7 +3067,7 @@ function i_void(){
 
 }
 
-function x_update_instant_select(element_id, new_e__id, o__id = 0, link_id = 0, show_full_name = false){
+function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0, show_full_name = false){
 
     /*
     *
@@ -3084,12 +3084,12 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, link_id = 0, 
 
     if($('.dropmenu_instant_'+element_id).length && !o__id){
         o__id = $('.dropmenu_instant_'+element_id+':first').attr('o__id');
-        link_id = $('.dropmenu_instant_'+element_id+':first').attr('link_id');
+        linkid = $('.dropmenu_instant_'+element_id+':first').attr('linkid');
     }
 
-    console.log('Attempt to update dropdown @'+element_id+' to @'+new_e__id);
+    console.log('Attempt to update dropdown @'+element_id+' to @'+new_playerid);
 
-    new_e__id = parseInt(new_e__id);
+    new_playerid = parseInt(new_playerid);
 
     //Deleting Anything?
     var main_object_type = 0;
@@ -3098,25 +3098,25 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, link_id = 0, 
 
     //Show Loading
     var data_object = eval('js_e___'+element_id);
-    if(!data_object[new_e__id]){
-        alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ link_id +'/'+ show_full_name);
+    if(!data_object[new_playerid]){
+        alert('Invalid element ID: '+element_id +'/'+ new_playerid +'/'+ o__id +'/'+ linkid +'/'+ show_full_name);
         return false;
     }
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/x_update_instant_select", {
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
-        new_e__id: new_e__id,
+        new_playerid: new_playerid,
         migrate_s__handle: migrate_s__handle,
-        link_id: link_id,
+        linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
             //Update on page:
-            ui_instant_select(element_id, new_e__id, o__id, link_id, show_full_name);
+            ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_name);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
 
@@ -3139,7 +3139,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, link_id = 0, 
 
             if( data.auto_open_i_editor_modal ){
                 //We need to show idea modal:
-                i_editor_load(o__id, $('.s__12273_'+o__id).attr('link_id'));
+                i_editor_load(o__id, $('.s__12273_'+o__id).attr('linkid'));
             }
 
         } else {
@@ -3158,29 +3158,29 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, link_id = 0, 
 
 
 
-function e_sort_save(link_type) {
+function e_sort_save(linktype) {
 
-    var new_link_number = [];
+    var new_linknumber = [];
     var sort_rank = 0;
 
-    $("#list-in-"+link_type+" .card-12274").each(function () {
+    $("#list-in-"+linktype+" .card-12274").each(function () {
         //Fetch variables for this idea:
-        var e__id = parseInt($(this).attr('e__id'));
-        var link_id = parseInt($(this).attr('link_id'));
+        var playerid = parseInt($(this).attr('playerid'));
+        var linkid = parseInt($(this).attr('linkid'));
 
         sort_rank++;
 
         //Store in DB:
-        new_link_number[sort_rank] = link_id;
+        new_linknumber[sort_rank] = linkid;
     });
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
         $.post("/app/e_sort_save", {
-            e__id: parseInt($('#focus__id').val()),
-            link_type:link_type,
-            new_link_number: new_link_number,
+            playerid: parseInt($('#focus__id').val()),
+            linktype:linktype,
+            new_linknumber: new_linknumber,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             //Update UI to confirm with member:
@@ -3233,8 +3233,8 @@ function x_reset_sorting(){
 
 
 
-function link_clicked(i__id){
-    $(".link_click_"+i__id).addClass('was_clicked');
+function link_clicked(ideaid){
+    $(".link_click_"+ideaid).addClass('was_clicked');
 }
 
 
@@ -3246,7 +3246,7 @@ function go_next(do_skip){
     }
     next_processing = true;
 
-    var selection_i__id = [];
+    var selection_ideaid = [];
 
     if($(".link_click")[0] && !$(".was_clicked")[0]){
         next_processing = false;
@@ -3257,9 +3257,9 @@ function go_next(do_skip){
     if (js_n___7712.includes(focus_i__type)){
         //Choose
         $(".this_selector").each(function () {
-            var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-            if ($('.this_selector_'+selection_i__id_this+' i').hasClass('fa-square-check') || $(".this_selector").length==1 ) {
-                selection_i__id.push(selection_i__id_this);
+            var selection_ideaid_this = parseInt($(this).attr('selection_ideaid'));
+            if ($('.this_selector_'+selection_ideaid_this+' i').hasClass('fa-square-check') || $(".this_selector").length==1 ) {
+                selection_ideaid.push(selection_ideaid_this);
             }
         });
     }
@@ -3269,7 +3269,7 @@ function go_next(do_skip){
     $("#list-in-12840 .edge-cover").each(function () {
 
         //Fetch Media
-        var gather_media_result = gather_media('.media_frame_'+$(this).attr('i__id')+' .media_item', 43004);
+        var gather_media_result = gather_media('.media_frame_'+$(this).attr('ideaid')+' .media_item', 43004);
         if(!gather_media_result['upload_completed']){
             next_processing = false;
             alert('MEDIA ERROR: '+gather_media_result['error_message']);
@@ -3277,9 +3277,9 @@ function go_next(do_skip){
         }
 
         next_i_data.push({
-            i__id: parseInt($(this).attr('i__id')),
-            i__text: ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null ),
-            i__quantity: ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 ),
+            ideaid: parseInt($(this).attr('ideaid')),
+            i__text: ( $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() ? $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() : null ),
+            i__quantity: ( $('.input_ui_'+$(this).attr('ideaid')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('ideaid')+' .i__quantity').val() : 0 ),
             uploaded_media: gather_media_result['uploaded_media'],
         });
 
@@ -3310,15 +3310,15 @@ function go_next(do_skip){
         $(".sale_controller").each(function (i, e) {
 
             currency_code = $(this).attr('unitcurrency');
-            var item_i__id = parseInt($(this).attr('i__id'));
-            var item_title = $('.cache_frame_'+item_i__id+' .first_line').text();
-            var quantity = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
+            var item_ideaid = parseInt($(this).attr('ideaid'));
+            var item_title = $('.cache_frame_'+item_ideaid+' .first_line').text();
+            var quantity = parseFloat($('.input_ui_'+item_ideaid+' .current_count').text());
 
             if(quantity>0){
                 var this_item= {
-                    i__id: item_i__id,
+                    ideaid: item_ideaid,
                     name: item_title,
-                    description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
+                    description: $('.cache_frame_'+item_ideaid).text().replace(item_title, ''),
                     quantity: quantity,
                     currency_code: currency_code,
                     currency_value: parseFloat($(this).attr('unitprice')),
@@ -3338,8 +3338,8 @@ function go_next(do_skip){
 
             //Submit to go next:
             $.post("/invoice", {
-                target_i__hashtag: $('#target_i__hashtag').val(),
-                target_i__id: parseInt($('#target_i__id').val()),
+                target_ideahashtag: $('#target_ideahashtag').val(),
+                target_ideaid: parseInt($('#target_ideaid').val()),
                 focus__id: parseInt($('#focus__id').val()),
                 invoice_items: invoice_items,
                 currency_code: currency_code,
@@ -3374,16 +3374,16 @@ function go_next(do_skip){
 
     //Submit to go next:
     $.post("/app/go_next", {
-        target_i__hashtag: $('#target_i__hashtag').val(),
-        target_i__id: parseInt($('#target_i__id').val()),
+        target_ideahashtag: $('#target_ideahashtag').val(),
+        target_ideaid: parseInt($('#target_ideaid').val()),
         focus_i_data: {
-            i__id: parseInt($('#focus__id').val()),
+            ideaid: parseInt($('#focus__id').val()),
             i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
             i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
             uploaded_media: gather_media_result['uploaded_media'],
         },
         do_skip: do_skip,
-        selection_i__id: selection_i__id,
+        selection_ideaid: selection_ideaid,
         next_i_data: next_i_data,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {

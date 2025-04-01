@@ -17,10 +17,10 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 $primary_i = array();
 $secondary_i_list = array();
 foreach($this->Mench_ledger->fetch(array(
-    'link_void' => 0, //Not Void
-    'link_type' => 34513, //Pinned
-    'link_up' => $website_id,
-), array('link_right'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC')) as $this_i){
+    'linkvoid' => 0, //Not Void
+    'linktype' => 34513, //Pinned
+    'linkup' => $website_id,
+), array('linkright'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
     } else {
@@ -30,7 +30,7 @@ foreach($this->Mench_ledger->fetch(array(
 }
 
 if(count($primary_i)){
-    echo ' <script> $(document).ready(function () { show_more('.$primary_i['i__id'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view__i_title($primary_i, true)).'\'); }); </script> ';
+    echo ' <script> $(document).ready(function () { show_more('.$primary_i['ideaid'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view__i_title($primary_i, true)).'\'); }); </script> ';
 }
 
 echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view__i_title($primary_i, true) . '</h1>';
@@ -71,30 +71,30 @@ foreach($this->Source_cache->scissor_e($website_id, 14903) as $e_item) {
     //Any Followers?
     $info_item = null;
     foreach($this->Mench_ledger->fetch(array(
-        'link_up' => $e_item['e__id'],
-        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'link_void' => 0, //Not Void
-    ), array('link_down'), 0, 0, array('link_number' => 'ASC')) as $info_element) {
+        'linkup' => $e_item['playerid'],
+        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkvoid' => 0, //Not Void
+    ), array('linkdown'), 0, 0, array('linknumber' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
-        if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
-            $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['e__title'].'</div>';
+        if(filter_var($info_element['playercover'], FILTER_VALIDATE_URL)){
+            $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['playercover'].'\');"></div>'.'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['playertext'].'</div>';
         } else {
-            $info_item .= '<div class="info_box_cover">'.view__cover($info_element['e__cover']).'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['e__title'].'</div>';
+            $info_item .= '<div class="info_box_cover">'.view__cover($info_element['playercover']).'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['playertext'].'</div>';
         }
-        if(strlen($info_element['link_text'])){
-            $info_item .= '<div class="info_box_message">'.$info_element['link_text'].'</div>';
+        if(strlen($info_element['linktext'])){
+            $info_item .= '<div class="info_box_message">'.$info_element['linktext'].'</div>';
         }
         $info_item .= '</div>';
         $info_item .= '</div>';
     }
 
     if($info_item){
-        $messages .= '<h2 class="info-head">'.$e_item['e__title'].'</h2>';
-        if(strlen($e_item['link_text'])){
-            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$e_item['link_text'].'</div>';
+        $messages .= '<h2 class="info-head">'.$e_item['playertext'].'</h2>';
+        if(strlen($e_item['linktext'])){
+            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$e_item['linktext'].'</div>';
         }
         $messages .= '<div class="row justify-content" style="margin-bottom: 89px; padding: 34px 0;">'.$info_item.'</div>';
     }
@@ -131,23 +131,23 @@ if(strlen($secondary_i)){
 
 $social_ui = null;
 $e___14870 = $this->config->item('e___14870'); //Website Partner
-foreach($this->config->item('e___14036') as $e__id => $m){
+foreach($this->config->item('e___14036') as $playerid => $m){
     foreach($this->Mench_ledger->fetch(array(
-        'link_up' => $e__id,
-        'link_down' => $website_id,
-        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'link_void' => 0, //Not Void
+        'linkup' => $playerid,
+        'linkdown' => $website_id,
+        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkvoid' => 0, //Not Void
     ), array(), 0, 0) as $social_link){
 
         //Determine link type:
-        if(filter_var($social_link['link_text'], FILTER_VALIDATE_URL) && view__url_clean($social_link['link_text'])!=view__url_clean($e___14870[$website_id]['m__message'])){
+        if(filter_var($social_link['linktext'], FILTER_VALIDATE_URL) && view__url_clean($social_link['linktext'])!=view__url_clean($e___14870[$website_id]['m__message'])){
             //We made sure not the current website:
-            $social_url = $social_link['link_text'];
-        } elseif(filter_var($social_link['link_text'], FILTER_VALIDATE_EMAIL)){
-            $social_url = 'mailto:'.$social_link['link_text'];
-        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['link_text'])) > 5){
+            $social_url = $social_link['linktext'];
+        } elseif(filter_var($social_link['linktext'], FILTER_VALIDATE_EMAIL)){
+            $social_url = 'mailto:'.$social_link['linktext'];
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['linktext'])) > 5){
             //Phone
-            $social_url = phone_href($e__id, $social_link['link_text']);
+            $social_url = phone_href($playerid, $social_link['linktext']);
         } else {
             //Unknown!
             continue;

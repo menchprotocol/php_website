@@ -1,9 +1,9 @@
 <?php
 
 //See if we need to redirect to starting point?
-if($player_e && !superpower_unlocked(10939) && i_startable($focus_i, $player_e['e__id']) ){
+if($player_e && !superpower_unlocked(10939) && i_startable($focus_i, $player_e['playerid']) ){
     //Player without editing superpowers has viewed an idea they have discovered already, so get them there:
-    js_php_redirect('/'.$focus_i['i__hashtag'].'/start', 13);
+    js_php_redirect('/'.$focus_i['ideahashtag'].'/start', 13);
 }
 
 //Focus Idea:
@@ -20,6 +20,6 @@ if(superpower_unlocked(10939) || isset($_GET['open'])){
 <script>
     $(document).ready(function () {
         load_hashtag_menu();
-        show_more(<?= $focus_i['i__id'] ?>);
+        show_more(<?= $focus_i['ideaid'] ?>);
     });
 </script>

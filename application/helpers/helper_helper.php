@@ -21,7 +21,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $link_player)
+function detect_missing_columns($add_fields, $required_columns, $linkplayer)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -70,20 +70,20 @@ function is_valid_date($str)
 function target_disccovery(){
     return ( isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1)=='/' && substr_count($_POST['js_request_uri'], '/')==2 ? '/'.strtok(substr($_POST['js_request_uri'], 1), '/') : null );
 }
-function e_pinned($e__id, $return_itself = false, $first_pin_only = true){
+function e_pinned($playerid, $return_itself = false, $first_pin_only = true){
 
     $CI =& get_instance();
     $pinned_down = $CI->config->item('pinned_down');
-    if(isset($pinned_down[$e__id])){
-        return ( $first_pin_only ? reset($pinned_down[$e__id]) : $pinned_down[$e__id] );
+    if(isset($pinned_down[$playerid])){
+        return ( $first_pin_only ? reset($pinned_down[$playerid]) : $pinned_down[$playerid] );
     }
 
     $pinned_up = $CI->config->item('pinned_up');
-    if(isset($pinned_up[$e__id])){
-        return ( $first_pin_only ? reset($pinned_up[$e__id]) : $pinned_up[$e__id] );
+    if(isset($pinned_up[$playerid])){
+        return ( $first_pin_only ? reset($pinned_up[$playerid]) : $pinned_up[$playerid] );
     }
 
-    return ( $first_pin_only ? ( $return_itself ? $e__id : 0 ) : array() );
+    return ( $first_pin_only ? ( $return_itself ? $playerid : 0 ) : array() );
 
 }
 
@@ -96,18 +96,18 @@ function i__discovery_link($i, $trying_to_skip = false){
     $CI =& get_instance();
     if($i['i__type']==26560){
         $currency_types = $CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-            'link_right' => $i['i__id'],
-            'link_up IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'linkright' => $i['ideaid'],
+            'linkup IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
         ));
         $total_dues = $CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-            'link_right' => $i['i__id'],
-            'link_up' => 26562, //Total Due
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'linkright' => $i['ideaid'],
+            'linkup' => 26562, //Total Due
         ));
-        return ( count($total_dues) && doubleval($total_dues[0]['link_text']) && count($currency_types) ? 26595 : 42332 );
+        return ( count($total_dues) && doubleval($total_dues[0]['linktext']) && count($currency_types) ? 26595 : 42332 );
     } else {
         return e_pinned($i['i__type']);
     }
@@ -124,19 +124,19 @@ function string_is_emoji($string){
 }
 
 
-function i__weight_calculator($i){
+function ideanumber_calculator($i){
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
     $count_x = $CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        '(link_left='.$i['i__id'].' OR link_right='.$i['i__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
+        'linkvoid' => 0, //Not Void
+        '(linkleft='.$i['ideaid'].' OR linkright='.$i['ideaid'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
     //Should we update?
-    if($count_x[0]['totals'] != $i['i__weight']){
-        return $CI->Idea_cache->update($i['i__id'], array(
-            'i__weight' => $count_x[0]['totals'],
+    if($count_x[0]['totals'] != $i['ideanumber']){
+        return $CI->Idea_cache->update($i['ideaid'], array(
+            'ideanumber' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -144,19 +144,19 @@ function i__weight_calculator($i){
 
 }
 
-function e__weight_calculator($e){
+function playernumber_calculator($e){
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
     $count_x = $CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        '(link_down='.$e['e__id'].' OR link_up='.$e['e__id'].' OR link_player='.$e['e__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
+        'linkvoid' => 0, //Not Void
+        '(linkdown='.$e['playerid'].' OR linkup='.$e['playerid'].' OR linkplayer='.$e['playerid'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
     //Should we update?
-    if($count_x[0]['totals'] != $e['e__weight']){
-        return $CI->Source_cache->update($e['e__id'], array(
-            'e__weight' => $count_x[0]['totals'],
+    if($count_x[0]['totals'] != $e['playernumber']){
+        return $CI->Source_cache->update($e['playerid'], array(
+            'playernumber' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -179,14 +179,14 @@ function update_description($before_string, $after_string){
     return 'Updated from ['.$before_string.'] to ['.$after_string.']';
 }
 
-function phone_href($link_type, $number){
+function phone_href($linktype, $number){
 
     $number = preg_replace("/[^0-9]/", "", $number);
 
-    if($link_type==13815){
+    if($linktype==13815){
         //WhatsApp
         return 'https://wa.me/'.$number;
-    } elseif($link_type==20337){
+    } elseif($linktype==20337){
         //Telegram
         return 'https://t.me/'.$number;
     } else {
@@ -195,9 +195,9 @@ function phone_href($link_type, $number){
     }
 }
 
-function random_cover($e__id){
+function random_cover($playerid){
     $CI =& get_instance();
-    $fetch = $CI->config->item('e___'.$e__id);
+    $fetch = $CI->config->item('e___'.$playerid);
     return trim(one_two_explode('class="','"',$fetch[array_rand($fetch)]['m__cover']));
 }
 
@@ -206,10 +206,10 @@ function format_percentage($percent){
 }
 
 
-function new_player_redirect($e__id, $sign_i__hashtag){
+function new_player_redirect($playerid, $sign_ideahashtag){
     //Is there a redirect app?
-    if(strlen($sign_i__hashtag)) {
-        return view__memory(42903,33286) . $sign_i__hashtag;
+    if(strlen($sign_ideahashtag)) {
+        return view__memory(42903,33286) . $sign_ideahashtag;
     } elseif(isset($_GET['url'])) {
         return $_GET['url'];
     } else {
@@ -259,17 +259,17 @@ function prefix_common_words($strs) {
 }
 
 
-function reset_cache($link_player){
+function reset_cache($linkplayer){
     $CI =& get_instance();
     $count = 0;
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type' => 44179, //Triggered
-        'link_up' => 14599, //Cache App
-        'link_down >' => 0,
-        'link_void' => 0, //Not Void
+        'linktype' => 44179, //Triggered
+        'linkup' => 14599, //Cache App
+        'linkdown >' => 0,
+        'linkvoid' => 0, //Not Void
     )) as $delete_cahce){
         //Void:
-        $count += $CI->Mench_ledger->update($delete_cahce['link_id'], array(), $link_player);
+        $count += $CI->Mench_ledger->update($delete_cahce['linkid'], array(), $linkplayer);
     }
     return $count;
 }
@@ -305,7 +305,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 }
 
 
-function i_spots_remaining($i__id){
+function i_spots_remaining($ideaid){
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
@@ -313,32 +313,32 @@ function i_spots_remaining($i__id){
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
     $max_available = $CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-        'link_right' => $i__id,
-        'link_up' => 26189,
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'linkright' => $ideaid,
+        'linkup' => 26189,
     ), array(), 1);
-    if(count($max_available) && is_numeric($max_available[0]['link_text'])){
+    if(count($max_available) && is_numeric($max_available[0]['linktext'])){
 
         //We have a limit! See if we've met it already:
         $query_filters = array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'link_left' => $i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkleft' => $ideaid,
         );
         if($player_e){
             //Do not count current user to give them option to edit & resubmit:
-            $query_filters['link_player !='] = $player_e['e__id'];
+            $query_filters['linkplayer !='] = $player_e['playerid'];
         }
 
         //Navigation?
         $must_follow = array();
         foreach($CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type' => 32235, //Navigation
-            'link_right' => $i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype' => 32235, //Navigation
+            'linkright' => $ideaid,
         )) as $follow){
-            array_push($must_follow, $follow['link_up']);
+            array_push($must_follow, $follow['linkup']);
         }
 
         $current_discoveries = 0;
@@ -346,21 +346,21 @@ function i_spots_remaining($i__id){
             //We must qualify each discovery individually:
             foreach($CI->Mench_ledger->fetch($query_filters) as $e){
                 if(count($must_follow)==count($CI->Mench_ledger->fetch(array(
-                        'link_down' => $e['link_player'],
-                        'link_up IN (' . join(',', $must_follow) . ')' => null,
-                        'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'link_void' => 0, //Not Void
+                        'linkdown' => $e['linkplayer'],
+                        'linkup IN (' . join(',', $must_follow) . ')' => null,
+                        'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'linkvoid' => 0, //Not Void
                     )))){
                     $current_discoveries++;
                 }
             }
         } else {
-            $query = $CI->Mench_ledger->fetch($query_filters, array(), 1, 0, array(), 'COUNT(link_id) as totals');
+            $query = $CI->Mench_ledger->fetch($query_filters, array(), 1, 0, array(), 'COUNT(linkid) as totals');
             $current_discoveries = $query[0]['totals'];
         }
 
 
-        $spots_remaining = intval($max_available[0]['link_text'])-$current_discoveries;
+        $spots_remaining = intval($max_available[0]['linktext'])-$current_discoveries;
         if($spots_remaining < 0){
             $spots_remaining = 0;
         }
@@ -387,13 +387,13 @@ function object_to_array($obj) {
 
 function i_redirect_url($i){
     $CI =& get_instance();
-    if(strlen($i['i__message']) && count($CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-            'link_right' => $i['i__id'],
-            'link_up' => 43871, //Redirect URL
+    if(strlen($i['ideatext']) && count($CI->Mench_ledger->fetch(array(
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'linkright' => $i['ideaid'],
+            'linkup' => 43871, //Redirect URL
         )))){
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['i__message'], $match);
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['ideatext'], $match);
         foreach($match[0] as $url){
             if(filter_var($url, FILTER_VALIDATE_URL)){
                 return $url;
@@ -410,13 +410,13 @@ function i_popup_url($i){
     }
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-        'link_right' => $i['i__id'],
-        'link_up' => 44266, //Popup URL
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'linkright' => $i['ideaid'],
+        'linkup' => 44266, //Popup URL
     )) as $popup_url){
-        if(filter_var($popup_url['link_text'], FILTER_VALIDATE_URL)){
-            return $popup_url['link_text'];
+        if(filter_var($popup_url['linktext'], FILTER_VALIDATE_URL)){
+            return $popup_url['linktext'];
         }
     }
     return false;
@@ -425,10 +425,10 @@ function i_popup_url($i){
 function i_required($i){
     $CI =& get_instance();
     return in_array($i['i__type'], $CI->config->item('n___43009')) || count($CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-            'link_right' => $i['i__id'],
-            'link_up' => 28239, //Required
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'linkright' => $i['ideaid'],
+            'linkup' => 28239, //Required
         )));
 }
 
@@ -444,14 +444,14 @@ function redirect_message($url, $message = null, $log_error = false)
     }
 
     if($log_error){
-        $player_id = ( $player_e ? $player_e['e__id'] : 14068 );
+        $player_id = ( $player_e ? $player_e['playerid'] : 14068 );
         //Log thie error:
         $CI->Mench_ledger->create(array(
-            'link_type' => 44179, //Triggered
-            'link_up' => 4246, //Platform Bug Reports
-            'link_down' => $player_id,
-            'link_text' => $url.' '.stripslashes($message),
-            'link_player' => $player_id,
+            'linktype' => 44179, //Triggered
+            'linkup' => 4246, //Platform Bug Reports
+            'linkdown' => $player_id,
+            'linktext' => $url.' '.stripslashes($message),
+            'linkplayer' => $player_id,
         ));
     }
 
@@ -483,7 +483,7 @@ function verify_cookie(){
     $CI =& get_instance();
 
     $es = $CI->Source_cache->fetch(array(
-        'e__id' => $cookie_parts[0],
+        'playerid' => $cookie_parts[0],
     ));
 
     if(count($es) && $cookie_parts[2]==view__hash($cookie_parts[0].$cookie_parts[1])){
@@ -514,7 +514,7 @@ function auto_login_player($is_ajax) {
     $_SERVER['REQUEST_URI'] = ( isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI'] );
     $_SERVER['REQUEST_URI'] = ( strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view__app_link(4269) );
     $player_e = superpower_unlocked();
-    $is_login_verified = isset($_GET['e__handle']) && $_GET['e__handle']!='SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
+    $is_login_verified = isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['playerhandle']) && view__hash($_GET['e__time'].$_GET['playerhandle'])==$_GET['e__hash'];
 
     if(
         !$player_e //User must not be logged in
@@ -526,7 +526,7 @@ function auto_login_player($is_ajax) {
         if($is_login_verified){
 
             foreach($CI->Source_cache->fetch(array(
-                'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+                'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
             )) as $player_e){
 
                 //Login:
@@ -579,14 +579,14 @@ function view_tree($i){
     echo '<div>';
 
     if(count($i['i__next'])){
-        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_'.$i['i__id'].'\').toggleClass(\'hidden\')"><span class="icon-block-sm hidden frame_id_'.$i['i__id'].'"><i class="far fa-circle-plus"></i></span></a>';
-        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_'.$i['i__id'].'\').toggleClass(\'hidden\')"><span class="icon-block-sm frame_id_'.$i['i__id'].'"><i class="far fa-circle-minus"></i></span></a>';
+        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_'.$i['ideaid'].'\').toggleClass(\'hidden\')"><span class="icon-block-sm hidden frame_id_'.$i['ideaid'].'"><i class="far fa-circle-plus"></i></span></a>';
+        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_'.$i['ideaid'].'\').toggleClass(\'hidden\')"><span class="icon-block-sm frame_id_'.$i['ideaid'].'"><i class="far fa-circle-minus"></i></span></a>';
     }
 
 
-    echo '<a href="/'.$i['i__hashtag'].'" target="_blank" class="'.( !isset($i['user_discovered']) || count($i['user_discovered']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</a>';
-    echo ( isset($i['user_discovered']['link_number']) && intval($i['user_discovered']['link_number'])>1 ? $i['user_discovered']['link_number'].'x ' : '' );
-    echo ( isset($i['user_written_response']['i__message']) && strlen($i['user_written_response']['i__message']) ? ' '.$i['user_written_response']['i__message'] : '' );
+    echo '<a href="/'.$i['ideahashtag'].'" target="_blank" class="'.( !isset($i['user_discovered']) || count($i['user_discovered']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</a>';
+    echo ( isset($i['user_discovered']['linknumber']) && intval($i['user_discovered']['linknumber'])>1 ? $i['user_discovered']['linknumber'].'x ' : '' );
+    echo ( isset($i['user_written_response']['ideatext']) && strlen($i['user_written_response']['ideatext']) ? ' '.$i['user_written_response']['ideatext'] : '' );
 
 
     if(isset($i['i__count_discovery']) && intval($i['i__count_discovery'])>0){
@@ -610,12 +610,12 @@ function view_tree($i){
         }
     }
 
-    echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">'. view__i__links($i).'</div><script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>' : '' );
+    echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">'. view__i__links($i).'</div><script> $(document).ready(function () {show_more('.$i['ideaid'].'); }); </script>' : '' );
     echo '</div>';
 
 
     foreach($i['i__next'] as $next_i){
-        echo '<div class="sub_frame frame_id_'.$i['i__id'].'">';
+        echo '<div class="sub_frame frame_id_'.$i['ideaid'].'">';
         view_tree($next_i);
         echo '</div>';
     }
@@ -624,7 +624,7 @@ function view_tree($i){
 }
 
 
-function list_settings($i__hashtag, $fetch_contact = false){
+function list_settings($ideahashtag, $fetch_contact = false){
 
     $CI =& get_instance();
     $e___6287 = $CI->config->item('e___6287'); //APP
@@ -641,27 +641,27 @@ function list_settings($i__hashtag, $fetch_contact = false){
     );
 
    foreach($CI->Idea_cache->fetch(array(
-       'LOWER(i__hashtag)' => strtolower($i__hashtag),
+       'LOWER(ideahashtag)' => strtolower($ideahashtag),
    )) as $i){
 
-       foreach($e___40946 as $link_type => $m) {
-           $list_config[intval($link_type)] = array(); //Assume no links for this type
+       foreach($e___40946 as $linktype => $m) {
+           $list_config[intval($linktype)] = array(); //Assume no links for this type
        }
        //Now search for these settings across sources:
        foreach($CI->Mench_ledger->fetch(array(
-           'link_right' => $i['i__id'],
-           'link_type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
-           'link_void' => 0, //Not Void
-       ), array('link_up'), 0) as $setting_link){
-           array_push($list_config[intval($setting_link['link_type'])], intval($setting_link['e__id']));
+           'linkright' => $i['ideaid'],
+           'linktype IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
+           'linkvoid' => 0, //Not Void
+       ), array('linkup'), 0) as $setting_link){
+           array_push($list_config[intval($setting_link['linktype'])], intval($setting_link['playerid']));
        }
        //Now search for these settings across ideas:
        foreach($CI->Mench_ledger->fetch(array(
-           'link_right' => $i['i__id'],
-           'link_type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
-           'link_void' => 0, //Not Void
-       ), array('link_left'), 0) as $setting_link){
-           array_push($list_config[intval($setting_link['link_type'])], intval($setting_link['i__id']));
+           'linkright' => $i['ideaid'],
+           'linktype IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
+           'linkvoid' => 0, //Not Void
+       ), array('linkleft'), 0) as $setting_link){
+           array_push($list_config[intval($setting_link['linktype'])], intval($setting_link['ideaid']));
        }
 
 
@@ -671,37 +671,37 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
            //If Discovered Any
            $query_string_all = $CI->Mench_ledger->fetch(array(
-               'link_left IN (' . join(',', $list_config[40791]) . ')' => null,
-               'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-               'link_void' => 0, //Not Void
-           ), array('link_player'), 0, 0, array('link_id' => 'DESC'));
+               'linkleft IN (' . join(',', $list_config[40791]) . ')' => null,
+               'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+               'linkvoid' => 0, //Not Void
+           ), array('linkplayer'), 0, 0, array('linkid' => 'DESC'));
 
        } elseif(count($list_config[27984])){
 
            //Include If Has ANY
            $query_string_all = $CI->Mench_ledger->fetch(array(
-               'link_up IN (' . join(',', $list_config[27984]) . ')' => null,
-               'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-               'link_void' => 0, //Not Void
-           ), array('link_down'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC'));
+               'linkup IN (' . join(',', $list_config[27984]) . ')' => null,
+               'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+               'linkvoid' => 0, //Not Void
+           ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
        } elseif(count($list_config[43513])){
 
            //Include If Has ALL
            $query_string_all = $CI->Mench_ledger->fetch(array(
-               'link_up IN (' . join(',', $list_config[43513]) . ')' => null,
-               'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-               'link_void' => 0, //Not Void
-           ), array('link_down'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC'));
+               'linkup IN (' . join(',', $list_config[43513]) . ')' => null,
+               'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+               'linkvoid' => 0, //Not Void
+           ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
        } else {
 
            //All Discoveries:
            $query_string_all = $CI->Mench_ledger->fetch(array(
-               'link_left' => $i['i__id'],
-               'link_void' => 0, //Not Void
-               'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-           ), array('link_player'), 0, 0, array('link_number' => 'ASC', 'link_id' => 'DESC'));
+               'linkleft' => $i['ideaid'],
+               'linkvoid' => 0, //Not Void
+               'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+           ), array('linkplayer'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
        }
 
@@ -712,38 +712,38 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
            if(
 
-               (in_array(intval($x['e__id']), $unique_users_count)) ||
+               (in_array(intval($x['playerid']), $unique_users_count)) ||
 
                //Include If Has ANY
                (count($list_config[27984]) && !count($CI->Mench_ledger->fetch(array(
-                       'link_down' => $x['e__id'],
-                       'link_up IN (' . join(',', $list_config[27984]) . ')' => null,
-                       'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'link_void' => 0, //Not Void
+                       'linkdown' => $x['playerid'],
+                       'linkup IN (' . join(',', $list_config[27984]) . ')' => null,
+                       'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                       'linkvoid' => 0, //Not Void
                    )))) ||
 
                //Exclude If Has ALL
                (count($list_config[26600]) && count($CI->Mench_ledger->fetch(array(
-                       'link_down' => $x['e__id'],
-                       'link_up IN (' . join(',', $list_config[26600]) . ')' => null,
-                       'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'link_void' => 0, //Not Void
+                       'linkdown' => $x['playerid'],
+                       'linkup IN (' . join(',', $list_config[26600]) . ')' => null,
+                       'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                       'linkvoid' => 0, //Not Void
                    )))==count($list_config[26600])) ||
 
                //Exclude If Has ANY
                (count($list_config[43514]) && count($CI->Mench_ledger->fetch(array(
-                       'link_down' => $x['e__id'],
-                       'link_up IN (' . join(',', $list_config[43514]) . ')' => null,
-                       'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'link_void' => 0, //Not Void
+                       'linkdown' => $x['playerid'],
+                       'linkup IN (' . join(',', $list_config[43514]) . ')' => null,
+                       'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                       'linkvoid' => 0, //Not Void
                    )))>0) ||
 
                //If Not Discovered Any
                (count($list_config[40793]) && !count($CI->Mench_ledger->fetch(array(
-                       'link_player' => $x['e__id'],
-                       'link_left IN (' . join(',', $list_config[40793]) . ')' => null,
-                       'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                       'link_void' => 0, //Not Void
+                       'linkplayer' => $x['playerid'],
+                       'linkleft IN (' . join(',', $list_config[40793]) . ')' => null,
+                       'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                       'linkvoid' => 0, //Not Void
                    ))))
 
            ){
@@ -755,10 +755,10 @@ function list_settings($i__hashtag, $fetch_contact = false){
                $total_found_43513 = 0;
                foreach($list_config[43513] as $CI_filter){
                    $total_found_43513 += ( count($CI->Mench_ledger->fetch(array(
-                       'link_down' => $x['e__id'],
-                       'link_up' => $CI_filter,
-                       'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'link_void' => 0, //Not Void
+                       'linkdown' => $x['playerid'],
+                       'linkup' => $CI_filter,
+                       'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                       'linkvoid' => 0, //Not Void
                    ))) ? 1 : 0 );
                }
                if($total_found_43513<count($list_config[43513])){
@@ -768,7 +768,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
            //Passed all filters:
            array_push($query_string_filtered, $x);
-           array_push($unique_users_count, intval($x['e__id']));
+           array_push($unique_users_count, intval($x['playerid']));
 
        }
 
@@ -779,17 +779,17 @@ function list_settings($i__hashtag, $fetch_contact = false){
        if(count($list_config[34513])){
 
            $column_e = $CI->Mench_ledger->fetch(array(
-               'link_up IN (' . join(',', $list_config[34513]) . ')' => null,
-               'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-               'link_void' => 0, //Not Void
-               ), array('link_down'), 0, 0, sort__e());
+               'linkup IN (' . join(',', $list_config[34513]) . ')' => null,
+               'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+               'linkvoid' => 0, //Not Void
+               ), array('linkdown'), 0, 0, sort__e());
 
            foreach($CI->Mench_ledger->fetch(array(
-               'link_void' => 0, //Not Void
-               'link_type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-               'link_up IN (' . join(',', $list_config[34513]) . ')' => null,
-               'link_right !=' => $i['i__id'],
-              ), array('link_right'), 0, 0, array('link_number' => 'ASC', 'i__message' => 'ASC')) as $link_i){
+               'linkvoid' => 0, //Not Void
+               'linktype IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+               'linkup IN (' . join(',', $list_config[34513]) . ')' => null,
+               'linkright !=' => $i['ideaid'],
+              ), array('linkright'), 0, 0, array('linknumber' => 'ASC', 'ideatext' => 'ASC')) as $link_i){
                array_push($column_i, $link_i);
            }
 
@@ -801,27 +801,27 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
                //Fetch email & phone:
                $fetch_names = $CI->Mench_ledger->fetch(array(
-                   'link_up' => 42584, //First Name
-                   'link_down' => $x['e__id'],
-                   'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                   'link_void' => 0, //Not Void
+                   'linkup' => 42584, //First Name
+                   'linkdown' => $x['playerid'],
+                   'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'linkvoid' => 0, //Not Void
                ));
                $fetch_emails = $CI->Mench_ledger->fetch(array(
-                   'link_up' => 3288, //Email
-                   'link_down' => $x['e__id'],
-                   'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                   'link_void' => 0, //Not Void
+                   'linkup' => 3288, //Email
+                   'linkdown' => $x['playerid'],
+                   'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'linkvoid' => 0, //Not Void
                ));
                $fetch_phones = $CI->Mench_ledger->fetch(array(
-                   'link_up' => 4783, //Phone
-                   'link_down' => $x['e__id'],
-                   'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                   'link_void' => 0, //Not Void
+                   'linkup' => 4783, //Phone
+                   'linkdown' => $x['playerid'],
+                   'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'linkvoid' => 0, //Not Void
                ));
 
-               $query_string_filtered[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['link_text']) ? $fetch_names[0]['link_text'] : $x['e__title'] );
-               $query_string_filtered[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['link_text'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['link_text'] : false );
-               $query_string_filtered[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['link_text'])>=10 ? $fetch_phones[0]['link_text'] : false );
+               $query_string_filtered[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['linktext']) ? $fetch_names[0]['linktext'] : $x['playertext'] );
+               $query_string_filtered[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['linktext'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['linktext'] : false );
+               $query_string_filtered[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['linktext'])>=10 ? $fetch_phones[0]['linktext'] : false );
 
                $contact_details['full_list'] .= $query_string_filtered[$count]['extension_name']."\t".$query_string_filtered[$count]['extension_email']."\t".$query_string_filtered[$count]['extension_phone']."\n";
 
@@ -841,11 +841,11 @@ function list_settings($i__hashtag, $fetch_contact = false){
        foreach($column_i as $key => $i_var){
            $must_follow = array();
            foreach($CI->Mench_ledger->fetch(array(
-               'link_void' => 0, //Not Void
-               'link_type' => 32235, //Navigation
-               'link_right' => $i_var['i__id'],
+               'linkvoid' => 0, //Not Void
+               'linktype' => 32235, //Navigation
+               'linkright' => $i_var['ideaid'],
            )) as $follow){
-               array_push($must_follow, $follow['link_up']);
+               array_push($must_follow, $follow['linkup']);
            }
            $column_i[$key]['must_follow'] = $must_follow;
        }
@@ -862,26 +862,26 @@ function list_settings($i__hashtag, $fetch_contact = false){
 }
 
 
-function count_link_groups($link_type, $link_time_start = null, $link_time_end = null){
+function count_link_groups($linktype, $linktime_start = null, $linktime_end = null){
 
     $CI =& get_instance();
-    if(!is_array($CI->config->item('n___'.$link_type))){
+    if(!is_array($CI->config->item('n___'.$linktype))){
         return 0;
     }
     $query_filters = array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null,
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null,
     );
 
-    if(strtotime($link_time_start) > 0){
-        $query_filters['link_time >='] = $link_time_start;
+    if(strtotime($linktime_start) > 0){
+        $query_filters['linktime >='] = $linktime_start;
     }
-    if(strtotime($link_time_end) > 0){
-        $query_filters['link_time <='] = $link_time_end;
+    if(strtotime($linktime_end) > 0){
+        $query_filters['linktime <='] = $linktime_end;
     }
 
     //Fetch Results:
-    $query = $CI->Mench_ledger->fetch($query_filters, array(), 1, 0, array(), 'COUNT(link_id) as totals');
+    $query = $CI->Mench_ledger->fetch($query_filters, array(), 1, 0, array(), 'COUNT(linkid) as totals');
     return intval($query[0]['totals']);
 
 }
@@ -892,21 +892,21 @@ function count_link_groups($link_type, $link_time_start = null, $link_time_end =
 function home_url(){
     $CI =& get_instance();
     $player_e = superpower_unlocked();
-    return ( $player_e ? view__memory(42903,42902).$player_e['e__handle'] : view__memory(42903,14565) );
+    return ( $player_e ? view__memory(42903,42902).$player_e['playerhandle'] : view__memory(42903,14565) );
 }
 
-function i_startable($i, $link_player = 0){
+function i_startable($i, $linkplayer = 0){
     $CI =& get_instance();
-    return ( $link_player>0 ? count($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_player' => $link_player,
-        'link_type' => 4235, //Get started
-        'link_left' => $i['i__id'],
+    return ( $linkplayer>0 ? count($CI->Mench_ledger->fetch(array(
+        'linkvoid' => 0, //Not Void
+        'linkplayer' => $linkplayer,
+        'linktype' => 4235, //Get started
+        'linkleft' => $i['ideaid'],
     ))) : count($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-        'link_left' => $i['i__id'],
-        'link_up' => 4235,
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'linkleft' => $i['ideaid'],
+        'linkup' => 4235,
     ))) );
 }
 
@@ -916,10 +916,10 @@ function remove_none_utf8($string){
 }
 
 
-function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $session_player_e = false)
+function superpower_unlocked($superpower_playerid = null, $force_redirect = 0, $session_player_e = false)
 {
 
-    if(isset($session_player_e['e__id'])){
+    if(isset($session_player_e['playerid'])){
         //We have the player!
         return $session_player_e;
     }
@@ -929,12 +929,12 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $ses
     $has_session = ( is_array($player_e) && count($player_e) > 0 && $player_e );
 
     //Let's start checking various ways we can give member access:
-    if ($has_session && !$superpower_e__id) {
+    if ($has_session && !$superpower_playerid) {
 
         //No minimum level required, grant access IF member is logged in:
         return $player_e;
 
-    } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'))) {
+    } elseif ($has_session && in_array($superpower_playerid, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
         return $player_e;
@@ -951,21 +951,21 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $ses
 
         //Block access:
         if($has_session){
-            $goto_url = view__memory(42903,42902).$player_e['e__handle'];
+            $goto_url = view__memory(42903,42902).$player_e['playerhandle'];
         } else {
             $goto_url = view__app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' );
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>'.view__unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>'.view__unauthorized_message($superpower_playerid).'</div>');
     }
 
 }
 
 function sort__e(){
     return array(
-        'link_number' => 'ASC', //Applies if sources have been manually sorted
-        'link_time' => 'DESC' //Always applies
+        'linknumber' => 'ASC', //Applies if sources have been manually sorted
+        'linktime' => 'DESC' //Always applies
     );
 }
 
@@ -1033,11 +1033,11 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 
     //Make sure no duplicates:
     if($focus__node==12273 && count($CI->Idea_cache->fetch(array(
-            'LOWER(i__hashtag)' => strtolower($suggestion),
+            'LOWER(ideahashtag)' => strtolower($suggestion),
         )))){
         return generate_handle(12273, $str, $suggestion, $increment);
     } elseif($focus__node==12274 && count($CI->Source_cache->fetch(array(
-            'LOWER(e__handle)' => strtolower($suggestion),
+            'LOWER(playerhandle)' => strtolower($suggestion),
         )))){
         return generate_handle(12274, $str, $suggestion, $increment);
     } else {
@@ -1048,14 +1048,14 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 }
 
 
-function process_media($i__id, $uploaded_media){
+function process_media($ideaid, $uploaded_media){
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
 
     //Update Media...
     $media_stats = array(
-        'media_e__cover' => null,
+        'media_playercover' => null,
         'total_current' => 0,
         'total_submitted' => 0,
         'adjust_created' => 0,
@@ -1071,52 +1071,52 @@ function process_media($i__id, $uploaded_media){
     }
 
     $full_media = array();
-    $current_media_e__ids = array();
+    $current_media_playerids = array();
     $sort_count = 0;
 
     //Fetch current media:
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
-        'link_right' => $i__id,
-        'link_void' => 0, //Not Void
-    ), array('link_up'), 0, 0, array('link_number' => 'ASC')) as $media){
+        'linktype IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
+        'linkright' => $ideaid,
+        'linkvoid' => 0, //Not Void
+    ), array('linkup'), 0, 0, array('linknumber' => 'ASC')) as $media){
         $media_stats['total_current']++;
-        $current_media_e__ids[$sort_count] = intval($media['link_up']);
-        $full_media[$media['link_up']] = $media;
+        $current_media_playerids[$sort_count] = intval($media['linkup']);
+        $full_media[$media['linkup']] = $media;
         $sort_count++;
     }
 
     //Fetch submitted media:
-    $upload_media_e__ids = array();
+    $upload_media_playerids = array();
     if(count($uploaded_media)>0){
 
         //We have media to process:
         $sort_count = 0; //Reset sorting to compare to submitted media...
         foreach($uploaded_media as $upload_media){
 
-            if($upload_media['e__id']>0){
+            if($upload_media['playerid']>0){
 
                 $adjust_updated = false;
 
                 //Update media order?
-                if($current_media_e__ids[$sort_count]!=$upload_media['e__id']){
+                if($current_media_playerids[$sort_count]!=$upload_media['playerid']){
                     //Order has changed, update it:
                     $adjust_updated = true;
-                    $CI->Mench_ledger->update($full_media[$upload_media['e__id']]['link_id'], array(
-                        'link_number' => $sort_count,
-                    ), $player_e['e__id']);
+                    $CI->Mench_ledger->update($full_media[$upload_media['playerid']]['linkid'], array(
+                        'linknumber' => $sort_count,
+                    ), $player_e['playerid']);
                 }
 
                 //Update the source title?
-                $validate_e__title = validate_e__title($upload_media['e__title']);
-                if($validate_e__title['status'] && $full_media[$upload_media['e__id']]['e__title']!=$upload_media['e__title']){
+                $validate_playertext = validate_playertext($upload_media['playertext']);
+                if($validate_playertext['status'] && $full_media[$upload_media['playerid']]['playertext']!=$upload_media['playertext']){
                     $adjust_updated = true;
-                    $CI->Source_cache->update($upload_media['e__id'], array(
-                        'e__title' => trim($upload_media['e__title']),
-                    ), true, $player_e['e__id']);
+                    $CI->Source_cache->update($upload_media['playerid'], array(
+                        'playertext' => trim($upload_media['playertext']),
+                    ), true, $player_e['playerid']);
                 }
 
-                $media_stats['media_e__cover'] = $upload_media['e__cover'];
+                $media_stats['media_playercover'] = $upload_media['playercover'];
 
                 if($adjust_updated){
                     $media_stats['adjust_updated']++;
@@ -1131,54 +1131,54 @@ function process_media($i__id, $uploaded_media){
                     //We we already have this asset, link to that source without giving this new source the authority over it...
                     //First person to upload a source will get authority over its created source...
                     foreach($CI->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'link_up' => 42662, //etag
-                        'link_text' => $upload_media['media_cache']['etag'],
-                    ), array('link_down'), 1) as $existing_media){
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'linkup' => 42662, //etag
+                        'linktext' => $upload_media['media_cache']['etag'],
+                    ), array('linkdown'), 1) as $existing_media){
                         $media_stats['adjust_duplicated']++;
-                        $upload_media['e__id'] = $existing_media['e__id'];
+                        $upload_media['playerid'] = $existing_media['playerid'];
                         $etag_detected = true;
                     }
                 }
 
-                if(!$upload_media['e__id']){
+                if(!$upload_media['playerid']){
 
-                    $media_stats['media_e__cover'] = $upload_media['e__cover'];
+                    $media_stats['media_playercover'] = $upload_media['playercover'];
 
                     //Create Source for this new media:
-                    $added_e = $CI->Source_cache->create($upload_media['e__title'], $player_e['e__id'], ( $upload_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover'] ));
+                    $added_e = $CI->Source_cache->create($upload_media['playertext'], $player_e['playerid'], ( $upload_media['media_playerid']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['playercover'] ));
                     if(!$added_e['status']){
                         $CI->Mench_ledger->create(array(
-                            'link_type' => 44179, //Triggered
-                            'link_up' => 4246, //Platform Bug Reports
-                            'link_down' => $upload_media['e__id'],
-                            'link_text' => 'Failed to create a new source for ['.$upload_media['e__title'].'] with cover ['.$upload_media['e__cover'].']',
+                            'linktype' => 44179, //Triggered
+                            'linkup' => 4246, //Platform Bug Reports
+                            'linkdown' => $upload_media['playerid'],
+                            'linktext' => 'Failed to create a new source for ['.$upload_media['playertext'].'] with cover ['.$upload_media['playercover'].']',
                         ));
                         continue;
                     }
 
                     //Create new media and assign ID:
                     $media_stats['adjust_created']++;
-                    $upload_media['e__id'] = $added_e['new_e']['e__id'];
+                    $upload_media['playerid'] = $added_e['new_e']['playerid'];
 
                     //new asset, create new source and insert tags...
                     $e___32088 = $CI->config->item('e___32088'); //Platform Variables
-                    foreach($CI->config->item('e___42679') as $link_type => $m) {
+                    foreach($CI->config->item('e___42679') as $linktype => $m) {
 
                         //Ensure variable name exists so we can check the API call:
                         $target_variable = false;
-                        if(isset($e___32088[$link_type]['m__message'])){
+                        if(isset($e___32088[$linktype]['m__message'])){
                             //Determine if variable exists...
-                            if(in_array($link_type, $CI->config->item('n___42763')) && isset($upload_media['media_cache']['video'][$e___32088[$link_type]['m__message']])){
+                            if(in_array($linktype, $CI->config->item('n___42763')) && isset($upload_media['media_cache']['video'][$e___32088[$linktype]['m__message']])){
                                 //Video info:
-                                $target_variable = $upload_media['media_cache']['video'][$e___32088[$link_type]['m__message']];
-                            } elseif(in_array($link_type, $CI->config->item('n___42675')) && isset($upload_media['media_cache']['audio'][$e___32088[$link_type]['m__message']])){
+                                $target_variable = $upload_media['media_cache']['video'][$e___32088[$linktype]['m__message']];
+                            } elseif(in_array($linktype, $CI->config->item('n___42675')) && isset($upload_media['media_cache']['audio'][$e___32088[$linktype]['m__message']])){
                                 //Audio info:
-                                $target_variable = $upload_media['media_cache']['audio'][$e___32088[$link_type]['m__message']];
-                            } elseif(isset($upload_media['media_cache'][$e___32088[$link_type]['m__message']])) {
+                                $target_variable = $upload_media['media_cache']['audio'][$e___32088[$linktype]['m__message']];
+                            } elseif(isset($upload_media['media_cache'][$e___32088[$linktype]['m__message']])) {
                                 //Media info:
-                                $target_variable = $upload_media['media_cache'][$e___32088[$link_type]['m__message']];
+                                $target_variable = $upload_media['media_cache'][$e___32088[$linktype]['m__message']];
                             }
                         }
                         if(!strlen($target_variable) || $target_variable=='0'){
@@ -1187,17 +1187,17 @@ function process_media($i__id, $uploaded_media){
                         }
 
                         //We have a variable, see what it is...
-                        if(in_array($link_type, $CI->config->item('n___33331'))){
+                        if(in_array($linktype, $CI->config->item('n___33331'))){
 
                             //Single select that needs auto creation of sources if missing:
                             $child_id = 0;
                             foreach($CI->Mench_ledger->fetch(array(
-                                'link_void' => 0, //Not Void
-                                'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'link_up' => $link_type,
-                                'e__title' => $target_variable,
-                            ), array('link_down'), 1, 0, array('link_id' => 'ASC')) as $child_source){
-                                $child_id = $child_source['e__id'];
+                                'linkvoid' => 0, //Not Void
+                                'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'linkup' => $linktype,
+                                'playertext' => $target_variable,
+                            ), array('linkdown'), 1, 0, array('linkid' => 'ASC')) as $child_source){
+                                $child_id = $child_source['playerid'];
                             }
 
                             //If not found create the child:
@@ -1205,34 +1205,34 @@ function process_media($i__id, $uploaded_media){
                                 $added_child = $CI->Source_cache->create($target_variable, 14068);
                                 if(!$added_child['status']){
                                     $CI->Mench_ledger->create(array(
-                                        'link_type' => 44179, //Triggered
-                                        'link_up' => 4246, //Platform Bug Reports
-                                        'link_down' => $link_type,
-                                        'link_text' => 'Failed to create a new source for ['.$target_variable.']',
+                                        'linktype' => 44179, //Triggered
+                                        'linkup' => 4246, //Platform Bug Reports
+                                        'linkdown' => $linktype,
+                                        'linktext' => 'Failed to create a new source for ['.$target_variable.']',
                                     ));
                                     continue;
                                 }
 
                                 //Add links for this new source:
                                 $CI->Mench_ledger->create(array(
-                                    'link_player' => $player_e['e__id'],
-                                    'link_up' => $link_type,
-                                    'link_down' => $added_child['new_e']['e__id'],
-                                    'link_type' => 4230,
+                                    'linkplayer' => $player_e['playerid'],
+                                    'linkup' => $linktype,
+                                    'linkdown' => $added_child['new_e']['playerid'],
+                                    'linktype' => 4230,
                                 ));
 
                                 //Assign child source:
-                                $child_id = $added_child['new_e']['e__id'];
+                                $child_id = $added_child['new_e']['playerid'];
 
                             }
 
                             if($child_id){
                                 //Child source found, simply link:
                                 $CI->Mench_ledger->create(array(
-                                    'link_player' => $player_e['e__id'],
-                                    'link_up' => $child_id,
-                                    'link_down' => $upload_media['e__id'],
-                                    'link_type' => 4230,
+                                    'linkplayer' => $player_e['playerid'],
+                                    'linkup' => $child_id,
+                                    'linkdown' => $upload_media['playerid'],
+                                    'linktype' => 4230,
                                 ));
                             }
 
@@ -1240,11 +1240,11 @@ function process_media($i__id, $uploaded_media){
 
                             //Save variable as is:
                             $CI->Mench_ledger->create(array(
-                                'link_player' => $player_e['e__id'],
-                                'link_up' => $link_type,
-                                'link_down' => $upload_media['e__id'],
-                                'link_text' => $target_variable,
-                                'link_type' => 4230,
+                                'linkplayer' => $player_e['playerid'],
+                                'linkup' => $linktype,
+                                'linkdown' => $upload_media['playerid'],
+                                'linktext' => $target_variable,
+                                'linktype' => 4230,
                             ));
 
                         }
@@ -1253,56 +1253,56 @@ function process_media($i__id, $uploaded_media){
 
 
                 //By now have the media source, create necessary links:
-                if($upload_media['e__id'] && $upload_media['media_e__id']){
+                if($upload_media['playerid'] && $upload_media['media_playerid']){
 
                     //Link to Idea:
                     if(!count($CI->Mench_ledger->fetch(array(
-                        'link_right' => $i__id,
-                        'link_up' => $upload_media['e__id'],
-                        'link_type' => $upload_media['media_e__id'],
-                        'link_void' => 0, //Not Void
+                        'linkright' => $ideaid,
+                        'linkup' => $upload_media['playerid'],
+                        'linktype' => $upload_media['media_playerid'],
+                        'linkvoid' => 0, //Not Void
                     )))){
                         $CI->Mench_ledger->create(array(
-                            'link_player' => $player_e['e__id'],
-                            'link_right' => $i__id,
-                            'link_up' => $upload_media['e__id'],
-                            'link_type' => $upload_media['media_e__id'],
-                            'link_text' => $upload_media['playback_code'],
-                            'link_number' => $sort_count,
+                            'linkplayer' => $player_e['playerid'],
+                            'linkright' => $ideaid,
+                            'linkup' => $upload_media['playerid'],
+                            'linktype' => $upload_media['media_playerid'],
+                            'linktext' => $upload_media['playback_code'],
+                            'linknumber' => $sort_count,
                         ));
                     }
 
 
                     //Link to Source as Uploader:
                     if(!count($CI->Mench_ledger->fetch(array(
-                        'link_up' => $player_e['e__id'],
-                        'link_down' => $upload_media['e__id'],
-                        'link_type IN (' . join(',', $CI->config->item('n___42657')) . ')' => null, //Uploads
-                        'link_void' => 0, //Not Void
+                        'linkup' => $player_e['playerid'],
+                        'linkdown' => $upload_media['playerid'],
+                        'linktype IN (' . join(',', $CI->config->item('n___42657')) . ')' => null, //Uploads
+                        'linkvoid' => 0, //Not Void
                     )))){
                         $CI->Mench_ledger->create(array(
-                            'link_player' => $player_e['e__id'],
-                            'link_up' => $player_e['e__id'],
-                            'link_down' => $upload_media['e__id'],
-                            'link_type' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
-                            'link_text' => $upload_media['playback_code'],
+                            'linkplayer' => $player_e['playerid'],
+                            'linkup' => $player_e['playerid'],
+                            'linkdown' => $upload_media['playerid'],
+                            'linktype' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
+                            'linktext' => $upload_media['playback_code'],
                         ));
                     }
 
 
                     //Link to Media Type:
                     if(!count($CI->Mench_ledger->fetch(array(
-                        'link_up' => $upload_media['media_e__id'],
-                        'link_down' => $upload_media['e__id'],
-                        'link_type' => 4230,
-                        'link_void' => 0, //Not Void
+                        'linkup' => $upload_media['media_playerid'],
+                        'linkdown' => $upload_media['playerid'],
+                        'linktype' => 4230,
+                        'linkvoid' => 0, //Not Void
                     )))){
                         $CI->Mench_ledger->create(array(
-                            'link_player' => $player_e['e__id'],
-                            'link_up' => $upload_media['media_e__id'],
-                            'link_down' => $upload_media['e__id'],
-                            'link_type' => 4230,
-                            'link_text' => $upload_media,
+                            'linkplayer' => $player_e['playerid'],
+                            'linkup' => $upload_media['media_playerid'],
+                            'linkdown' => $upload_media['playerid'],
+                            'linktype' => 4230,
+                            'linktext' => $upload_media,
                         ));
                     }
 
@@ -1310,7 +1310,7 @@ function process_media($i__id, $uploaded_media){
             }
 
             //Add this to the submitted ones:
-            $upload_media_e__ids[$sort_count] = $upload_media['e__id'];
+            $upload_media_playerids[$sort_count] = $upload_media['playerid'];
             $media_stats['total_submitted']++;
             $sort_count++;
 
@@ -1318,9 +1318,9 @@ function process_media($i__id, $uploaded_media){
     }
 
     //Remove current media missing from submitted (Removed during editing):
-    foreach(array_diff($current_media_e__ids, $upload_media_e__ids) as $deleted_media_e__id){
+    foreach(array_diff($current_media_playerids, $upload_media_playerids) as $deleted_media_playerid){
         $media_stats['adjust_removed']++;
-        $CI->Mench_ledger->update($full_media[$deleted_media_e__id]['link_id'], array(), $player_e['e__id']); //Media Removed
+        $CI->Mench_ledger->update($full_media[$deleted_media_playerid]['linkid'], array(), $player_e['playerid']); //Media Removed
     }
 
     //Calculate total media:
@@ -1331,18 +1331,18 @@ function process_media($i__id, $uploaded_media){
 }
 
 
-function append_source($link_up, $link_player, $link_text, $i__id){
+function append_source($linkup, $linkplayer, $linktext, $ideaid){
 
     $CI =& get_instance();
 
     //First validate data type to ensure it matches:
     foreach($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'link_up IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //Data Types
-        'link_down' => $link_up,
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkup IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //Data Types
+        'linkdown' => $linkup,
     )) as $data_type) {
-        $data_type_validate = data_type_validate($data_type['link_up'], $link_text);
+        $data_type_validate = data_type_validate($data_type['linkup'], $linktext);
         if (!$data_type_validate['status']) {
             //It's not the data type needed:
             return false;
@@ -1351,34 +1351,34 @@ function append_source($link_up, $link_player, $link_text, $i__id){
 
     //Now check existing links:
     $existing_x = $CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type' => 4230, //SOURCE LINKS
-        'link_up' => $link_up,
-        'link_down' => $link_player,
+        'linkvoid' => 0, //Not Void
+        'linktype' => 4230, //SOURCE LINKS
+        'linkup' => $linkup,
+        'linkdown' => $linkplayer,
     ));
 
     if(count($existing_x)){
 
         //Transaction previously exists, see if content value is the same:
-        if(strtolower($existing_x[0]['link_text'])==strtolower($link_text)){
+        if(strtolower($existing_x[0]['linktext'])==strtolower($linktext)){
             //Everything is the same, nothing to do here:
             return false;
         }
 
         //Content value has changed, update the transaction:
-        $CI->Mench_ledger->update($existing_x[0]['link_id'], array(
-            'link_text' => $link_text,
-        ), $link_player);
+        $CI->Mench_ledger->update($existing_x[0]['linkid'], array(
+            'linktext' => $linktext,
+        ), $linkplayer);
 
     } else {
 
         //Create transaction:
         $CI->Mench_ledger->create(array(
-            'link_type' => 4230, //Follow Source
-            'link_text' => $link_text,
-            'link_player' => $link_player,
-            'link_up' => $link_up,
-            'link_down' => $link_player,
+            'linktype' => 4230, //Follow Source
+            'linktext' => $linktext,
+            'linkplayer' => $linkplayer,
+            'linkup' => $linkup,
+            'linkdown' => $linkplayer,
         ));
 
     }
@@ -1437,10 +1437,10 @@ function data_type_validate($data_type, $data_value, $data_title = null){
     } elseif(in_array($data_type, $CI->config->item('n___42188'))){
         //Single Choice of Multi Choice source types should not be validated here
         $CI->Mench_ledger->create(array(
-            'link_type' => 44179, //Triggered
-            'link_up' => 4246, //Platform Bug Reports
-            'link_down' => $data_type,
-            'link_text' => 'data_type_validate() was asked to validate choice options for @'.$data_type.' ['.$data_value.'] ['.$data_title.']',
+            'linktype' => 44179, //Triggered
+            'linkup' => 4246, //Platform Bug Reports
+            'linkdown' => $data_type,
+            'linktext' => 'data_type_validate() was asked to validate choice options for @'.$data_type.' ['.$data_value.'] ['.$data_title.']',
         ));
     }
 
@@ -1478,12 +1478,12 @@ function change_handle($old_handle){
     }
 }
 
-function sort_by($e__id, $custom_sort = array()){
+function sort_by($playerid, $custom_sort = array()){
 
     $CI =& get_instance();
     $order_by = array();
-    foreach($CI->config->item('e___'.$e__id) as $sort_id => $sort) {
-        $order_by['link_up = \''.$sort_id.'\' DESC'] = null;
+    foreach($CI->config->item('e___'.$playerid) as $sort_id => $sort) {
+        $order_by['linkup = \''.$sort_id.'\' DESC'] = null;
     }
 
     if(is_array($custom_sort)){
@@ -1495,29 +1495,29 @@ function sort_by($e__id, $custom_sort = array()){
 
 function sync_handle_references($e, $new_handle_string){
 
-    if($e['e__handle']==$new_handle_string){
+    if($e['playerhandle']==$new_handle_string){
         return false; //Nothing changed...
     }
 
     //Update Handles everywhere they are referenced:
     $CI =& get_instance();
     foreach ($CI->Mench_ledger->fetch(array(
-        'link_up' => $e['e__id'],
-        'link_type' => 31835, //Source Mention
-        'link_void' => 0, //Not Void
-    ), array('link_right')) as $ref) {
-        view__sync_links(str_replace('@'.$e['e__handle'], '@'.$new_handle_string, $ref['i__message']), true, $ref['i__id']);
+        'linkup' => $e['playerid'],
+        'linktype' => 31835, //Source Mention
+        'linkvoid' => 0, //Not Void
+    ), array('linkright')) as $ref) {
+        view__sync_links(str_replace('@'.$e['playerhandle'], '@'.$new_handle_string, $ref['ideatext']), true, $ref['ideaid']);
     }
     return $new_handle_string;
 }
 
-function validate_update_handle($str, $i__id = null, $e__id = null){
+function validate_update_handle($str, $ideaid = null, $playerid = null){
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
 
     //Validate:
-    if(($i__id && $e__id) || (!$i__id && !$e__id)){
+    if(($ideaid && $playerid) || (!$ideaid && !$playerid)){
 
         return array(
             'status' => 0,
@@ -1557,7 +1557,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
             'message' => 'Hashtag Must be '.view__memory(6404,41985).' characters or less',
         );
 
-    } elseif ($i__id && array_key_exists(strtolower($str), $CI->config->item('handle___6287'))) {
+    } elseif ($ideaid && array_key_exists(strtolower($str), $CI->config->item('handle___6287'))) {
 
         return array(
             'status' => 0,
@@ -1568,11 +1568,11 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
     }
 
     //Syntax good! Now let's check the DB for duplicates
-    if($i__id > 0){
+    if($ideaid > 0){
 
         foreach($CI->Idea_cache->fetch(array(
-            'i__id !=' => $i__id,
-            'LOWER(i__hashtag)' => strtolower($str),
+            'ideaid !=' => $ideaid,
+            'LOWER(ideahashtag)' => strtolower($str),
         ), 0) as $matched){
             return array(
                 'status' => 0,
@@ -1582,15 +1582,15 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
         }
 
         //Since not found we can replace this:
-        $CI->Idea_cache->update($i__id, array(
-            'i__hashtag' => change_handle($str),
-        ), true, $player_e['e__id']);
+        $CI->Idea_cache->update($ideaid, array(
+            'ideahashtag' => change_handle($str),
+        ), true, $player_e['playerid']);
 
-    } elseif($e__id>0){
+    } elseif($playerid>0){
 
         foreach($CI->Source_cache->fetch(array(
-            'e__id !=' => $e__id,
-            'LOWER(e__handle)' => strtolower($str),
+            'playerid !=' => $playerid,
+            'LOWER(playerhandle)' => strtolower($str),
         ), 0) as $matched){
             //Is it active?
             return array(
@@ -1601,9 +1601,9 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
         }
 
         //Since not active we can replace this:
-        $CI->Source_cache->update($e__id, array(
-            'e__handle' => change_handle($str),
-        ), true, $player_e['e__id']);
+        $CI->Source_cache->update($playerid, array(
+            'playerhandle' => change_handle($str),
+        ), true, $player_e['playerid']);
 
     }
 
@@ -1618,7 +1618,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
 }
 
 
-function validate_e__title($str){
+function validate_playertext($str){
 
     //Validate:
     $title_clean = trim($str);
@@ -1652,13 +1652,13 @@ function validate_e__title($str){
     //All good, return success:
     return array(
         'status' => 1,
-        'e__title_clean' => trim($title_clean),
+        'playertext_clean' => trim($title_clean),
     );
 
 }
 
-function number_link_number($str){
-    //Set link_number for caching purposes if message value is numerical:
+function number_linknumber($str){
+    //Set linknumber for caching purposes if message value is numerical:
     if($str!=0 && is_numeric($str)){
         return intval($str);
     } elseif($str!=0 && is_double($str)){
@@ -1682,18 +1682,18 @@ function delete_all_between($beginning, $end, $string) {
     return delete_all_between($beginning, $end, str_replace($textToDelete, '', $string)); // recursion to ensure all occurrences are replaced
 }
 
-function user_website($link_player){
+function user_website($linkplayer){
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_down' => $link_player,
-        'link_type' => 4230, //New Source Created
+        'linkdown' => $linkplayer,
+        'linktype' => 4230, //New Source Created
     ), array(), 1) as $e_created){
-        return $e_created['link_domain'];
+        return $e_created['linkdomain'];
     }
     foreach($CI->Mench_ledger->fetch(array(
-        'link_player' => $link_player,
+        'linkplayer' => $linkplayer,
     ), array(), 1) as $e_created){
-        return $e_created['link_domain'];
+        return $e_created['linkdomain'];
     }
     return 0;
 }
@@ -1716,7 +1716,7 @@ function random_adjective(){
 
 
 
-function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $link_domain = 0, $log_tr = true, $demo_only = false){
+function dispatch_sms($to_phone, $single_message, $playerid = 0, $x_data = array(), $template_ideaid = 0, $linkdomain = 0, $log_tr = true, $demo_only = false){
 
     $CI =& get_instance();
     $twilio_account_sid = website_setting(30859);
@@ -1727,12 +1727,12 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
         //No way to send an SMS:
         if($log_tr){
             $CI->Mench_ledger->create(array(
-                'link_type' => 44179, //Triggered
-                'link_up' => 4246, //Platform Bug Reports
-                'link_down' => $e__id,
-                'link_text' => 'dispatch_sms() missing either: '.$twilio_account_sid.' / '.$twilio_auth_token.' / '.$twilio_from_number,
-                'link_player' => $e__id,
-                'link_domain' => $link_domain,
+                'linktype' => 44179, //Triggered
+                'linkup' => 4246, //Platform Bug Reports
+                'linkdown' => $playerid,
+                'linktext' => 'dispatch_sms() missing either: '.$twilio_account_sid.' / '.$twilio_auth_token.' / '.$twilio_from_number,
+                'linkplayer' => $playerid,
+                'linkdomain' => $linkdomain,
             ));
         }
 
@@ -1771,26 +1771,26 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
 
         $target_source = ( $sms_success ? 27676 : 27678 );
         $player_e = superpower_unlocked();
-        $e__id = ( $e__id>0 ? $e__id : ( $player_e ? $player_e['e__id'] : 14068 ) );
-        if($template_i__id && count($CI->Idea_cache->fetch(array(
-                'i__id' => $template_i__id,
+        $playerid = ( $playerid>0 ? $playerid : ( $player_e ? $player_e['playerid'] : 14068 ) );
+        if($template_ideaid && count($CI->Idea_cache->fetch(array(
+                'ideaid' => $template_ideaid,
             )))){
             foreach($CI->Idea_cache->fetch(array(
-                'i__id' => $template_i__id,
+                'ideaid' => $template_ideaid,
             )) as $i_template){
-                $CI->Mench_ledger->mark_complete($target_source, $e__id, 0, $i_template, array(), array(
-                    'link_text' => $single_message,
+                $CI->Mench_ledger->mark_complete($target_source, $playerid, 0, $i_template, array(), array(
+                    'linktext' => $single_message,
                 ));
             }
-        } elseif($e__id>0) {
+        } elseif($playerid>0) {
 
             $CI->Mench_ledger->create(array_merge($x_data, array(
-                'link_type' => 44179, //Triggered
-                'link_up' => $target_source,
-                'link_down' => $e__id,
-                'link_player' => $e__id,
-                'link_text' => $single_message,
-                'link_right' => $template_i__id,
+                'linktype' => 44179, //Triggered
+                'linkup' => $target_source,
+                'linkdown' => $playerid,
+                'linkplayer' => $playerid,
+                'linktext' => $single_message,
+                'linkright' => $template_ideaid,
             )));
         }
 
@@ -1802,20 +1802,20 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
 
 }
 
-function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $link_domain = 0, $log_tr = true, $demo_only = false){
+function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_data = array(), $template_ideaid = 0, $linkdomain = 0, $log_tr = true, $demo_only = false){
 
     $CI =& get_instance();
-    $domain_name = get_domain('m__title', $e__id, $link_domain);
-    $domain_email = website_setting(28614, $e__id, $link_domain);
+    $domain_name = get_domain('m__title', $playerid, $linkdomain);
+    $domain_email = website_setting(28614, $playerid, $linkdomain);
 
     if(!strlen($domain_email)){
         $domain_name = 'MENCH';
         $domain_name = 'support@mench.com';
         $CI->Mench_ledger->create(array(
-            'link_type' => 44179, //Triggered
-            'link_up' => 4246, //Platform Bug Reports
-            'link_down' => $e__id,
-            'link_text' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
+            'linktype' => 44179, //Triggered
+            'linkup' => 4246, //Platform Bug Reports
+            'linkdown' => $playerid,
+            'linktext' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
         ));
     }
 
@@ -1823,46 +1823,46 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     $name = 'New User';
     $ReplyToAddresses = array($email_domain);
 
-    if($e__id > 0){
+    if($playerid > 0){
 
         $es = $CI->Source_cache->fetch(array(
-            'e__id' => $e__id,
+            'playerid' => $playerid,
         ));
         if(count($es)){
 
-            $name = $es[0]['e__title'];
+            $name = $es[0]['playertext'];
 
             //Also fetch email for this user to populate the reply to:
             $fetch_emails = $CI->Mench_ledger->fetch(array(
-                'link_up' => 3288, //Email
-                'link_down' => $e__id,
-                'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'link_void' => 0, //Not Void
+                'linkup' => 3288, //Email
+                'linkdown' => $playerid,
+                'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'linkvoid' => 0, //Not Void
             ));
-            if(count($fetch_emails) && filter_var($fetch_emails[0]['link_text'], FILTER_VALIDATE_EMAIL)){
-                array_push($ReplyToAddresses, trim($fetch_emails[0]['link_text']));
+            if(count($fetch_emails) && filter_var($fetch_emails[0]['linktext'], FILTER_VALIDATE_EMAIL)){
+                array_push($ReplyToAddresses, trim($fetch_emails[0]['linktext']));
             }
         }
     }
 
     //Email has no word limit to add header & footer:
     $e___6287 = $CI->config->item('e___6287'); //APP
-    $base_domain = 'https://'.get_domain('m__message', $e__id, $link_domain);
+    $base_domain = 'https://'.get_domain('m__message', $playerid, $linkdomain);
 
     $email_message = '<div class="line">'.view__shuffle_message(29749).' '.$name.' '.view__shuffle_message(29750).'</div>';
     $email_message .= $email_body."\n";
     $email_message .= '<div class="line">'.view__shuffle_message(12691).'</div>';
-    $email_message .= '<div class="line">'.get_domain('m__title', $e__id, $link_domain).'</div>';
+    $email_message .= '<div class="line">'.get_domain('m__title', $playerid, $linkdomain).'</div>';
 
 
-    if($e__id > 0 && count($es) && (!$template_i__id || !count($CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___42256')) . ')' => null, //Writes
-            'link_up' => 31779, //Mandatory Emails
-            'link_right' => $template_i__id,
+    if($playerid > 0 && count($es) && (!$template_ideaid || !count($CI->Mench_ledger->fetch(array(
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___42256')) . ')' => null, //Writes
+            'linkup' => 31779, //Mandatory Emails
+            'linkright' => $template_ideaid,
         ))))){
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="'.$base_domain.view__app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$es[0]['e__handle']).'" style="font-size:13px;">'.$e___6287[28904]['m__title'].'</a></div>';
+        $email_message .= '<div class="line"><a href="'.$base_domain.view__app_link(28904).'?playerhandle='.$es[0]['playerhandle'].'&e__time='.time().'&e__hash='.view__hash(time().$es[0]['playerhandle']).'" style="font-size:13px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
 
 
@@ -1931,35 +1931,35 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     if($log_tr){
 
         $player_e = superpower_unlocked();
-        $e__id = ( $e__id>0 ? $e__id : ( $player_e ? $player_e['e__id'] : 14068 ) );
-        if($template_i__id && count($CI->Idea_cache->fetch(array(
-                'i__id' => $template_i__id,
+        $playerid = ( $playerid>0 ? $playerid : ( $player_e ? $player_e['playerid'] : 14068 ) );
+        if($template_ideaid && count($CI->Idea_cache->fetch(array(
+                'ideaid' => $template_ideaid,
             )))){
             foreach($CI->Idea_cache->fetch(array(
-                'i__id' => $template_i__id,
+                'ideaid' => $template_ideaid,
             )) as $i_template){
-                $CI->Mench_ledger->mark_complete(29399, $e__id, 0, $i_template, array(), array(
-                    'link_text' => $subject."\n".$email_message,
+                $CI->Mench_ledger->mark_complete(29399, $playerid, 0, $i_template, array(), array(
+                    'linktext' => $subject."\n".$email_message,
                 ));
             }
-        } elseif($e__id>0) {
+        } elseif($playerid>0) {
 
             $CI->Mench_ledger->create(array_merge($x_data, array(
-                'link_type' => 44179, //Triggered
-                'link_up' => 29399,
-                'link_down' => $e__id,
-                'link_player' => $e__id,
-                'link_text' => $subject."\n".$email_message,
-                'link_right' => $template_i__id,
+                'linktype' => 44179, //Triggered
+                'linkup' => 29399,
+                'linkdown' => $playerid,
+                'linkplayer' => $playerid,
+                'linktext' => $subject."\n".$email_message,
+                'linkright' => $template_ideaid,
             )));
         }
         
         //Can we also mark the discovery as complete?
-        if($e__id && isset($x_data['link_left']) && $x_data['link_left']>0 && isset($x_data['link_right'])) {
+        if($playerid && isset($x_data['linkleft']) && $x_data['linkleft']>0 && isset($x_data['linkright'])) {
             foreach ($CI->Idea_cache->fetch(array(
-                'i__id' => $x_data['link_left'],
+                'ideaid' => $x_data['linkleft'],
             )) as $email_i) {
-                $CI->Mench_ledger->mark_complete(i__discovery_link($email_i), $e__id, $x_data['link_right'], $email_i, $x_data);
+                $CI->Mench_ledger->mark_complete(i__discovery_link($email_i), $playerid, $x_data['linkright'], $email_i, $x_data);
             }
         }
 
@@ -1972,52 +1972,52 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
 
 
 
-function fetch_next($player_e, $i__id, $i, $target_i__hashtag){
+function fetch_next($player_e, $ideaid, $i, $target_ideahashtag){
 
     //Find Next:
     $CI =& get_instance();
     $i_redirect_url = false;
     foreach($CI->Idea_cache->fetch(array(
-        'i__id' => $i__id,
+        'ideaid' => $ideaid,
     )) as $primary_i){
         return i_redirect_url($primary_i);
     }
 
     //Still here? Find the next URL
-    $find_next = $CI->Mench_ledger->find_next($player_e['e__id'], $target_i__hashtag, $i);
+    $find_next = $CI->Mench_ledger->find_next($player_e['playerid'], $target_ideahashtag, $i);
     return $find_next;
 
 }
 
-function website_setting($setting_id = 0, $initiator_e__id = 0, $link_domain = 0, $force_website = true){
+function website_setting($setting_id = 0, $initiator_playerid = 0, $linkdomain = 0, $force_website = true){
 
     $CI =& get_instance();
     $e_id = 0; //Assume no domain unless found below
 
-    if(!$initiator_e__id){
+    if(!$initiator_playerid){
         $player_e = superpower_unlocked();
-        if($player_e && $player_e['e__id']>0){
-            $initiator_e__id = $player_e['e__id'];
+        if($player_e && $player_e['playerid']>0){
+            $initiator_playerid = $player_e['playerid'];
         }
     }
 
-    if($link_domain && $force_website){
+    if($linkdomain && $force_website){
 
-        $e_id = $link_domain;
+        $e_id = $linkdomain;
 
     } else {
 
         $server_name = get_server('SERVER_NAME');
         if(strlen($server_name)){
-            foreach($CI->config->item('e___14870') as $link_type => $m) {
+            foreach($CI->config->item('e___14870') as $linktype => $m) {
                 if (substr_count($m['m__message'], $server_name)==1){
-                    $e_id = $link_type;
+                    $e_id = $linktype;
                     break;
                 }
             }
         }
 
-        $e_id = ( $e_id ? $e_id : ( $link_domain > 0 ? $link_domain : 2738 /* Mench */ ) );
+        $e_id = ( $e_id ? $e_id : ( $linkdomain > 0 ? $linkdomain : 2738 /* Mench */ ) );
 
     }
 
@@ -2041,16 +2041,16 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $link_domain = 0
 
 
 
-function get_domain($var_field, $initiator_e__id = 0, $link_domain = 0, $force_website = true){
+function get_domain($var_field, $initiator_playerid = 0, $linkdomain = 0, $force_website = true){
     $CI =& get_instance();
-    $domain_e = website_setting(0, $initiator_e__id, $link_domain, $force_website);
+    $domain_e = website_setting(0, $initiator_playerid, $linkdomain, $force_website);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
     return $e___14870[$domain_e][$var_field];
 }
 
 
 
-function access_level_e($e__handle = null, $e__id = 0, $e = false){
+function access_level_e($playerhandle = null, $playerid = 0, $e = false){
 
     /*
      *
@@ -2067,14 +2067,14 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
     $player_e = superpower_unlocked();
     if(superpower_unlocked(10939)){
         return 3;
-    } elseif($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id'])){
+    } elseif($player_e && ($playerhandle==$player_e['playerhandle'] || $playerid==$player_e['playerid'])){
         return 3;
     }
 
-    if(strlen($e__handle)){
-        $filters['LOWER(e__handle)'] = strtolower($e__handle);
-    } elseif(intval($e__id)){
-        $filters['e__id'] = $e__id;
+    if(strlen($playerhandle)){
+        $filters['LOWER(playerhandle)'] = strtolower($playerhandle);
+    } elseif(intval($playerid)){
+        $filters['playerid'] = $playerid;
     } elseif(!$e || !$player_e){
         return 0;
     }
@@ -2088,7 +2088,7 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
     }
 
     //Source or its status is system locked?
-    if(in_array($e['e__id'], $CI->config->item('n___32145'))){
+    if(in_array($e['playerid'], $CI->config->item('n___32145'))){
         //Read Only
         return 0;
     }
@@ -2097,10 +2097,10 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
     $is_author = false;
     if($player_e){
         $is_author = count($CI->Mench_ledger->fetch(array(
-            'link_type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
-            'link_void' => 0, //Not Void
-            'link_up' => $player_e['e__id'],
-            'link_down' => $e['e__id'],
+            'linktype IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
+            'linkvoid' => 0, //Not Void
+            'linkup' => $player_e['playerid'],
+            'linkdown' => $e['playerid'],
         )));
     }
 
@@ -2108,7 +2108,7 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
 
 }
 
-function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = false){
+function access_level_i($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = false){
 
     /*
      *
@@ -2132,10 +2132,10 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
 
-    if(strlen($i__hashtag)){
-        $filters['LOWER(i__hashtag)'] = strtolower($i__hashtag);
-    } elseif(intval($i__id)){
-        $filters['i__id'] = $i__id;
+    if(strlen($ideahashtag)){
+        $filters['LOWER(ideahashtag)'] = strtolower($ideahashtag);
+    } elseif(intval($ideaid)){
+        $filters['ideaid'] = $ideaid;
     } elseif(!$i){
         return 0;
     }
@@ -2151,10 +2151,10 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
     $is_author = false;
     if($player_e){
         $is_author = count($CI->Mench_ledger->fetch(array( //IDEA SOURCE
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-            'link_up' => $player_e['e__id'],
-            'link_right' => $i['i__id'],
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+            'linkup' => $player_e['playerid'],
+            'linkright' => $i['ideaid'],
         )));
     }
 
@@ -2162,17 +2162,17 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
         //Authors can always edit:
         return 3;
     } elseif(count($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___42953')) . ')' => null, //Mentioned Sources
-        'link_up' => $player_e['e__id'],
-        'link_right' => $i['i__id'],
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___42953')) . ')' => null, //Mentioned Sources
+        'linkup' => $player_e['playerid'],
+        'linkright' => $i['ideaid'],
     )))){
         //Mentioned can always reply:
         return 2;
     } else {
 
         //Inventory Limits:
-        if(i_spots_remaining($i['i__id'])==0){
+        if(i_spots_remaining($i['ideaid'])==0){
             return 0;
         }
 
@@ -2182,19 +2182,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //If Discovered All
         $fetch_44161 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 44161, //If Discovered All
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 44161, //If Discovered All
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_44161)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_44161 as $e_pre){
                     if(count($CI->Mench_ledger->fetch(array(
-                        'link_player' => $player_e['e__id'],
-                        'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'link_void' => 0, //Not Void
+                        'linkplayer' => $player_e['playerid'],
+                        'linkleft' => $e_pre['linkleft'],
+                        'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'linkvoid' => 0, //Not Void
                     )))){
                         $the_counter++;
                     }
@@ -2207,19 +2207,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //If Discovered Any
         $fetch_40791 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 40791, //If Discovered Any
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 40791, //If Discovered Any
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_40791)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_40791 as $e_pre){
                     if(count($CI->Mench_ledger->fetch(array(
-                        'link_player' => $player_e['e__id'],
-                        'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'link_void' => 0, //Not Void
+                        'linkplayer' => $player_e['playerid'],
+                        'linkleft' => $e_pre['linkleft'],
+                        'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'linkvoid' => 0, //Not Void
                     )))){
                         $the_counter++;
                         break;
@@ -2234,19 +2234,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //If Not Discovered All
         $fetch_44162 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 44162, //If Not Discovered All
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 44162, //If Not Discovered All
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_44162)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_44162 as $e_pre){
                     if(count($CI->Mench_ledger->fetch(array(
-                        'link_player' => $player_e['e__id'],
-                        'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'link_void' => 0, //Not Void
+                        'linkplayer' => $player_e['playerid'],
+                        'linkleft' => $e_pre['linkleft'],
+                        'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'linkvoid' => 0, //Not Void
                     )))){
                         $the_counter++;
                     }
@@ -2262,19 +2262,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //If Not Discovered Any
         $fetch_40793 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 40793, //If Not Discovered Any
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 40793, //If Not Discovered Any
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_40793)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_40793 as $e_pre){
                     if(count($CI->Mench_ledger->fetch(array(
-                        'link_player' => $player_e['e__id'],
-                        'link_left' => $e_pre['link_left'],
-                        'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'link_void' => 0, //Not Void
+                        'linkplayer' => $player_e['playerid'],
+                        'linkleft' => $e_pre['linkleft'],
+                        'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'linkvoid' => 0, //Not Void
                     )))){
                         $the_counter++;
                         break;
@@ -2294,19 +2294,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //Include If Has ANY
         $fetch_27984 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 27984, //Include If Has Any
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 27984, //Include If Has Any
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_27984)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_27984 as $e_pre){
-                    if((( $player_e && $player_e['e__id']==$e_pre['link_up'] ) || count($CI->Mench_ledger->fetch(array(
-                            'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'link_void' => 0, //Not Void
-                            'link_up' => $e_pre['link_up'],
-                            'link_down' => $player_e['e__id'],
+                    if((( $player_e && $player_e['playerid']==$e_pre['linkup'] ) || count($CI->Mench_ledger->fetch(array(
+                            'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'linkvoid' => 0, //Not Void
+                            'linkup' => $e_pre['linkup'],
+                            'linkdown' => $player_e['playerid'],
                         ))))){
                         $the_counter++;
                         break;
@@ -2321,19 +2321,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //Include If Has ALL
         $fetch_43513 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 43513, //Must Include All
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 43513, //Must Include All
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_43513)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_43513 as $e_pre){
-                    if((( $player_e && $player_e['e__id']==$e_pre['link_up'] ) || count($CI->Mench_ledger->fetch(array(
-                            'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'link_void' => 0, //Not Void
-                            'link_up' => $e_pre['link_up'],
-                            'link_down' => $player_e['e__id'],
+                    if((( $player_e && $player_e['playerid']==$e_pre['linkup'] ) || count($CI->Mench_ledger->fetch(array(
+                            'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'linkvoid' => 0, //Not Void
+                            'linkup' => $e_pre['linkup'],
+                            'linkdown' => $player_e['playerid'],
                         ))))){
                         $the_counter++;
                     }
@@ -2347,19 +2347,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //Exclude If Has ANY
         $fetch_43514 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 43514, //Must Exclude All
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 43514, //Must Exclude All
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_43514)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_43514 as $e_pre){
-                    if(( $player_e['e__id']==$e_pre['link_up'] ) || count($CI->Mench_ledger->fetch(array(
-                            'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'link_void' => 0, //Not Void
-                            'link_up' => $e_pre['link_up'],
-                            'link_down' => $player_e['e__id'],
+                    if(( $player_e['playerid']==$e_pre['linkup'] ) || count($CI->Mench_ledger->fetch(array(
+                            'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'linkvoid' => 0, //Not Void
+                            'linkup' => $e_pre['linkup'],
+                            'linkdown' => $player_e['playerid'],
                         )))){
                         //Found an exclusion, so skip this:
                         $the_counter++;
@@ -2374,19 +2374,19 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //Exclude If Has ALL
         $fetch_26600 = $CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_type' => 26600, //Must Exclude All
-            'link_void' => 0, //Not Void
+            'linkright' => $i['ideaid'],
+            'linktype' => 26600, //Must Exclude All
+            'linkvoid' => 0, //Not Void
         ), array(), 0);
         if(count($fetch_26600)){
             $the_counter = 0;
             if($player_e){
                 foreach($fetch_26600 as $e_pre){
-                    if(( $player_e['e__id']==$e_pre['link_up'] ) || count($CI->Mench_ledger->fetch(array(
-                            'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'link_void' => 0, //Not Void
-                            'link_up' => $e_pre['link_up'],
-                            'link_down' => $player_e['e__id'],
+                    if(( $player_e['playerid']==$e_pre['linkup'] ) || count($CI->Mench_ledger->fetch(array(
+                            'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'linkvoid' => 0, //Not Void
+                            'linkup' => $e_pre['linkup'],
+                            'linkdown' => $player_e['playerid'],
                         )))){
                         //Found an exclusion, so skip this:
                         $the_counter++;
@@ -2476,9 +2476,9 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
 
     if($focus__node==12273){
-        $focus_field_id = 'i__id';
+        $focus_field_id = 'ideaid';
     } elseif($focus__node==12274){
-        $focus_field_id = 'e__id';
+        $focus_field_id = 'playerid';
     }
 
 
@@ -2520,7 +2520,7 @@ function update_algolia($focus__node = null, $s__id = 0) {
         if ($loop_obj==12273) {
 
             if($s__id){
-                $filters['i__id'] = $s__id;
+                $filters['ideaid'] = $s__id;
             }
 
             $db_rows[$loop_obj] = $CI->Idea_cache->fetch($filters, 0);
@@ -2529,7 +2529,7 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
             //SOURCES
             if($s__id){
-                $filters['e__id'] = $s__id;
+                $filters['playerid'] = $s__id;
             }
 
             $db_rows[$loop_obj] = $CI->Source_cache->fetch($filters, 0);
@@ -2551,9 +2551,9 @@ function update_algolia($focus__node = null, $s__id = 0) {
             if($s__id){
                 //Update weight before updating this object:
                 if($focus__node==12273){
-                    i__weight_calculator($s);
+                    ideanumber_calculator($s);
                 } elseif($focus__node==12274){
-                    e__weight_calculator($s);
+                    playernumber_calculator($s);
                 }
             }
 
@@ -2561,7 +2561,7 @@ function update_algolia($focus__node = null, $s__id = 0) {
             //Attempt to fetch Algolia object ID from object Metadata:
             if($focus__node){
 
-                $external_name = ( $focus__node==12273 ? 'i__external' : 'e__external' );
+                $external_name = ( $focus__node==12273 ? 'ideaexternal' : 'playerexternal' );
 
                 if (intval($s[$external_name]) > 0) {
                     //We found it! Let's just update existing algolia record
@@ -2572,12 +2572,12 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
                 //Clear possible metadata algolia ID's that have been cached:
                 if ($loop_obj==12273) {
-                    $CI->Idea_cache->update($s['i__id'], array(
-                        'i__external' => null,
+                    $CI->Idea_cache->update($s['ideaid'], array(
+                        'ideaexternal' => null,
                     ));
                 } elseif ($loop_obj==12274) {
-                    $CI->Source_cache->update($s['e__id'], array(
-                        'e__external' => null,
+                    $CI->Source_cache->update($s['playerid'], array(
+                        'playerexternal' => null,
                     ));
                 }
 
@@ -2593,51 +2593,51 @@ function update_algolia($focus__node = null, $s__id = 0) {
                 //IDEAS
                 //See if this idea has a time-range:
                 $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['i__id']);
-                $export_row['s__handle'] = $s['i__hashtag'];
-                $export_row['s__url'] = view__memory(42903,33286) . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
+                $export_row['s__id'] = intval($s['ideaid']);
+                $export_row['s__handle'] = $s['ideahashtag'];
+                $export_row['s__url'] = view__memory(42903,33286) . $s['ideahashtag']; //Default to idea, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['i__message'];
-                $export_row['s__cache'] = $s['i__cache'];
-                $export_row['s__weight'] = intval($s['i__weight']);
+                $export_row['s__title'] = $s['ideatext'];
+                $export_row['s__cache'] = $s['ideacache'];
+                $export_row['s__weight'] = intval($s['ideanumber']);
 
                 //Top/Bottom Idea Keywords
                 foreach ($CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-                    'link_left' => $s['i__id'],
-                ), array('link_right'), 0, 0, array('link_number' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['i__message'] . ' ';
+                    'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
+                    'linkleft' => $s['ideaid'],
+                ), array('linkright'), 0, 0, array('linknumber' => 'ASC')) as $i) {
+                    $export_row['s__keywords'] .= $i['ideatext'] . ' ';
                 }
                 foreach ($CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-                    'link_right' => $s['i__id'],
-                ), array('link_left'), 0, 0, array('link_number' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['i__message'] . ' ';
+                    'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
+                    'linkright' => $s['ideaid'],
+                ), array('linkleft'), 0, 0, array('linknumber' => 'ASC')) as $i) {
+                    $export_row['s__keywords'] .= $i['ideatext'] . ' ';
                 }
 
                 //Idea Sources Keywords
                 foreach($CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'link_right' => $s['i__id'],
-                ), array('link_up'), 0) as $x){
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'linkright' => $s['ideaid'],
+                ), array('linkup'), 0) as $x){
 
                     //Featured?
-                    if(in_array($x['e__id'], $CI->config->item('n___41804'))){
+                    if(in_array($x['playerid'], $CI->config->item('n___41804'))){
                         array_push($export_row['_tags'], 'public_index');
                     }
 
                     //Authored?
-                    $is_author = in_array($x['link_type'], $CI->config->item('n___31919'));
+                    $is_author = in_array($x['linktype'], $CI->config->item('n___31919'));
                     if($is_author){
-                        array_push($export_row['_tags'], 'z_' . $x['e__id']);
+                        array_push($export_row['_tags'], 'z_' . $x['playerid']);
                     }
 
                     //Keywords?
-                    if($is_author || strlen($x['link_text'])){
-                        $export_row['s__keywords'] .= $x['e__title'].' '.( strlen($x['link_text']) ? $x['link_text'] . ' '  : '' );
+                    if($is_author || strlen($x['linktext'])){
+                        $export_row['s__keywords'] .= $x['playertext'].' '.( strlen($x['linktext']) ? $x['linktext'] . ' '  : '' );
                     }
 
                 }
@@ -2646,16 +2646,16 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
                 //SOURCES
                 $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['e__id']);
-                $export_row['s__handle'] = $s['e__handle'];
-                $export_row['s__url'] = view__memory(42903,42902). $s['e__handle'];
-                $export_row['s__cover'] = $s['e__cover'];
-                $export_row['s__title'] = $s['e__title'];
+                $export_row['s__id'] = intval($s['playerid']);
+                $export_row['s__handle'] = $s['playerhandle'];
+                $export_row['s__url'] = view__memory(42903,42902). $s['playerhandle'];
+                $export_row['s__cover'] = $s['playercover'];
+                $export_row['s__title'] = $s['playertext'];
                 $export_row['s__cache'] = '';
-                $export_row['s__weight'] = intval($s['e__weight']);
+                $export_row['s__weight'] = intval($s['playernumber']);
 
                 //Is this an image?
-                if(strlen($s['e__cover'])){
+                if(strlen($s['playercover'])){
                     array_push($export_row['_tags'], 'has_image');
                 }
 
@@ -2663,26 +2663,26 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
                 //Fetch Following:
                 foreach($CI->Mench_ledger->fetch(array(
-                    'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'link_down' => $s['e__id'], //This follower source
-                    'link_void' => 0, //Not Void
-                ), array('link_up'), 0, 0, array('e__title' => 'DESC')) as $x) {
+                    'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkdown' => $s['playerid'], //This follower source
+                    'linkvoid' => 0, //Not Void
+                ), array('linkup'), 0, 0, array('playertext' => 'DESC')) as $x) {
 
                     //Add tags:
-                    array_push($export_row['_tags'], 'z_' . $x['e__id']);
+                    array_push($export_row['_tags'], 'z_' . $x['playerid']);
 
                     //Add Keywords:
-                    $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['link_text']) ? ' '.$x['link_text'] : '' ) . ' ';
+                    $export_row['s__keywords'] .= $x['playertext']. ( strlen($x['linktext']) ? ' '.$x['linktext'] : '' ) . ' ';
 
                 }
 
                 //Append Discovery Written Responses to Keywords
                 foreach($CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $CI->config->item('n___29133')) . ')' => null, //Written Responses
-                    'link_player' => $s['e__id'], //This follower source
-                ), array('link_player'), 0, 0, array('link_time' => 'DESC')) as $x){
-                    $export_row['s__keywords'] .= $x['link_text'] . ' ';
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $CI->config->item('n___29133')) . ')' => null, //Written Responses
+                    'linkplayer' => $s['playerid'], //This follower source
+                ), array('linkplayer'), 0, 0, array('linktime' => 'DESC')) as $x){
+                    $export_row['s__keywords'] .= $x['linktext'] . ' ';
                 }
 
             }
@@ -2737,11 +2737,11 @@ function update_algolia($focus__node = null, $s__id = 0) {
                 foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
                     if ($focus__node==12273) {
                         $CI->Idea_cache->update($all_db_rows[$key][$focus_field_id], array(
-                            'i__external' => $algolia_id,
+                            'ideaexternal' => $algolia_id,
                         ));
                     } elseif ($focus__node==12274) {
                         $CI->Source_cache->update($all_db_rows[$key][$focus_field_id], array(
-                            'e__external' => $algolia_id,
+                            'playerexternal' => $algolia_id,
                         ));
                     }
                 }
@@ -2773,13 +2773,13 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                if (isset($all_db_rows[$key]['i__id'])) {
-                    $CI->Idea_cache->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
-                        'i__external' => intval($algolia_id),
+                if (isset($all_db_rows[$key]['ideaid'])) {
+                    $CI->Idea_cache->update($all_db_rows[$key][( isset($all_db_rows[$key]['ideaid']) ? 'ideaid' : 'playerid')], array(
+                        'ideaexternal' => intval($algolia_id),
                     ));
                 } else {
-                    $CI->Source_cache->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
-                        'e__external' => intval($algolia_id),
+                    $CI->Source_cache->update($all_db_rows[$key][( isset($all_db_rows[$key]['ideaid']) ? 'ideaid' : 'playerid')], array(
+                        'playerexternal' => intval($algolia_id),
                     ));
                 }
 
@@ -2822,23 +2822,23 @@ function one_two_explode($one, $two, $str)
 }
 
 
-function idea_author($i__id){
+function idea_author($ideaid){
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_id' => $i__id,
+        'linkid' => $ideaid,
     ), array()) as $x){
-        return $x['link_up'];
+        return $x['linkup'];
     }
     $player_e = superpower_unlocked();
-    return ( $player_e ? $player_e['e__id'] : 14068 );
+    return ( $player_e ? $player_e['playerid'] : 14068 );
 }
 
-function idea_creation_time($i__id){
+function idea_creation_time($ideaid){
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_id' => $i__id,
+        'linkid' => $ideaid,
     )) as $x){
-        return $x['link_time'];
+        return $x['linktime'];
     }
     //Now:
     return date("Y-m-d H:i:s");
@@ -2959,48 +2959,48 @@ function view__card_x($x)
     $CI =& get_instance();
     $e___32088 = $CI->config->item('e___32088'); //Platform Variables
     $ui = '<div class="x-list">';
-    foreach($CI->config->item('e___4341') as $e__id => $m) {
+    foreach($CI->config->item('e___4341') as $playerid => $m) {
 
-        if(in_array(6160 , $m['m__following']) && isset($x[$e___32088[$e__id]['m__message']]) && intval($x[$e___32088[$e__id]['m__message']])>0){
+        if(in_array(6160 , $m['m__following']) && isset($x[$e___32088[$playerid]['m__message']]) && intval($x[$e___32088[$playerid]['m__message']])>0){
 
             //SOURCE
-            foreach($CI->Source_cache->fetch(array('e__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_e){
-                $ui .= '<div class="simple-line"><a href="'.view__memory(42903,42902).$focus_e['e__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view__cover($focus_e['e__cover'], true). '</span>'.$focus_e['e__title'].'</a></div>';
+            foreach($CI->Source_cache->fetch(array('playerid' => $x[$e___32088[$playerid]['m__message']])) as $focus_e){
+                $ui .= '<div class="simple-line"><a href="'.view__memory(42903,42902).$focus_e['playerhandle'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view__cover($focus_e['playercover'], true). '</span>'.$focus_e['playertext'].'</a></div>';
             }
 
-        } elseif(in_array(6202 , $m['m__following']) && isset($x[$e___32088[$e__id]['m__message']]) && intval($x[$e___32088[$e__id]['m__message']])>0){
+        } elseif(in_array(6202 , $m['m__following']) && isset($x[$e___32088[$playerid]['m__message']]) && intval($x[$e___32088[$playerid]['m__message']])>0){
 
             //IDEA
-            foreach($CI->Idea_cache->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_i){
-                $ui .= '<div class="simple-line"><a href="'.view__memory(42903,33286).$focus_i['i__hashtag'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view__cache(4737 /* Source Reference */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view__i_title($focus_i).'</a></div>';
+            foreach($CI->Idea_cache->fetch(array('ideaid' => $x[$e___32088[$playerid]['m__message']])) as $focus_i){
+                $ui .= '<div class="simple-line"><a href="'.view__memory(42903,33286).$focus_i['ideahashtag'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view__cache(4737 /* Source Reference */, $focus_i['i__type'], true, 'right', $focus_i['ideaid']).'</span>'.view__i_title($focus_i).'</a></div>';
             }
 
 
-        } elseif(in_array(4367 , $m['m__following']) && isset($x[$e___32088[$e__id]['m__message']]) && intval($x[$e___32088[$e__id]['m__message']])>0){
+        } elseif(in_array(4367 , $m['m__following']) && isset($x[$e___32088[$playerid]['m__message']]) && intval($x[$e___32088[$playerid]['m__message']])>0){
 
             //TRANSACTION
             //Simple Reference to avoid Loop:
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['link_time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view__time_difference($x['link_time']) . ' Ago</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['linktime'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view__time_difference($x['linktime']) . ' Ago</span></div>';
 
-        } elseif($e__id==4367){
+        } elseif($playerid==4367){
 
             //ID
-            $ui .= '<div class="simple-line"><a href="'.view__app_link(4341).'?link_id='.$x['link_id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="mono-space"><span class="icon-block">'.$m['m__cover']. '</span>'.$x['link_id'].'</a></div>';
+            $ui .= '<div class="simple-line"><a href="'.view__app_link(4341).'?linkid='.$x['linkid'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="mono-space"><span class="icon-block">'.$m['m__cover']. '</span>'.$x['linkid'].'</a></div>';
 
-        } elseif($e__id==4362){
+        } elseif($playerid==4362){
 
             //TIME
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['link_time'] . ' PST | ID '.$x['link_id'].'"><span class="icon-block">'.$m['m__cover']. '</span>' . view__time_difference($x['link_time']) . ' Ago</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['linktime'] . ' PST | ID '.$x['linkid'].'"><span class="icon-block">'.$m['m__cover']. '</span>' . view__time_difference($x['linktime']) . ' Ago</span></div>';
 
-        } elseif($e__id==4370 && $x['link_number'] > 0){
+        } elseif($playerid==4370 && $x['linknumber'] > 0){
 
             //Order
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. '"><span class="icon-block">'.$m['m__cover']. '</span>'.view__ordinal($x['link_number']).'</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. '"><span class="icon-block">'.$m['m__cover']. '</span>'.view__ordinal($x['linknumber']).'</span></div>';
 
-        } elseif($e__id==4372 && strlen($x['link_text']) > 0){
+        } elseif($playerid==4372 && strlen($x['linktext']) > 0){
 
             //Message
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'"><span class="icon-block">'.$m['m__cover'].'</span><div class="title-block">'.( strip_tags($x['link_text'])==$x['link_text'] || strlen(strip_tags($x['link_text']))<view__memory(6404,6197) ? $x['link_text'] : '<span class="hidden html_message_'.$x['link_id'].'">'.$x['link_text'].'</span><a class="html_message_'.$x['link_id'].'" href="javascript:void(0);" onclick="$(\'.html_message_'.$x['link_id'].'\').toggleClass(\'hidden\');"><u>View HTML Message</u></a>' ).'</div></div>';
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'"><span class="icon-block">'.$m['m__cover'].'</span><div class="title-block">'.( strip_tags($x['linktext'])==$x['linktext'] || strlen(strip_tags($x['linktext']))<view__memory(6404,6197) ? $x['linktext'] : '<span class="hidden html_message_'.$x['linkid'].'">'.$x['linktext'].'</span><a class="html_message_'.$x['linkid'].'" href="javascript:void(0);" onclick="$(\'.html_message_'.$x['linkid'].'\').toggleClass(\'hidden\');"><u>View HTML Message</u></a>' ).'</div></div>';
 
         }
     }
@@ -3072,16 +3072,16 @@ function view__memory($following, $follower, $filed = 'm__message'){
     } else {
         return null;
         $CI->Mench_ledger->create(array(
-            'link_type' => 44179, //Triggered
-            'link_up' => 4246, //Platform Bug Reports
-            'link_down' => $following,
-            'link_text' => 'view__memory() Failed to load ['.$filed.'] @'.$following.' for @'.$follower,
+            'linktype' => 44179, //Triggered
+            'linkup' => 4246, //Platform Bug Reports
+            'linkdown' => $following,
+            'linktext' => 'view__memory() Failed to load ['.$filed.'] @'.$following.' for @'.$follower,
         ));
     }
 }
 
 
-function view__cache($following, $e__id, $micro_status = true, $data_placement = 'top', $i__id = 0)
+function view__cache($following, $playerid, $micro_status = true, $data_placement = 'top', $ideaid = 0)
 {
 
     /*
@@ -3092,10 +3092,10 @@ function view__cache($following, $e__id, $micro_status = true, $data_placement =
 
     $CI =& get_instance();
     $config_array = $CI->config->item('e___'.$following);
-    if(!isset($config_array[$e__id])){
+    if(!isset($config_array[$playerid])){
         return false;
     }
-    $cache = $config_array[$e__id];
+    $cache = $config_array[$playerid];
     if (!$cache) {
         //Could not find matching item
         return false;
@@ -3111,37 +3111,37 @@ function view__cache($following, $e__id, $micro_status = true, $data_placement =
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="'.( $micro_status ? 'cache_micro_'.$following.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
+        return '<span class="'.( $micro_status ? 'cache_micro_'.$following.'_'.$ideaid : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
     }
 }
 
 
 
 
-function view__card($href, $is_current, $link_type, $o__type, $o__title, $link_text = null){
+function view__card($href, $is_current, $linktype, $o__type, $o__title, $linktext = null){
     $CI =& get_instance();
     $e___4593 = $CI->config->item('e___4593');
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item '.( $is_current ? ' active ' : '' ).'">'.
-        ( in_array($link_type, $CI->config->item('n___32172')) ? '<span class="icon-block-xs">'.$e___4593[$link_type]['m__cover'].'</span>' : '' ).
+        ( in_array($linktype, $CI->config->item('n___32172')) ? '<span class="icon-block-xs">'.$e___4593[$linktype]['m__cover'].'</span>' : '' ).
         ( strlen($o__type) ? '<span class="icon-block-xs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
         $o__title.
-        ( strlen($link_text) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($link_text).'</div>' : '' ).
+        ( strlen($linktext) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($linktext).'</div>' : '' ).
         '</a>';
 }
 
-function view__more($href, $is_current, $link_type, $o__type, $o__title, $link_text = null){
+function view__more($href, $is_current, $linktype, $o__type, $o__title, $linktext = null){
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item '.( $is_current ? ' active ' : '' ).'">'.
-        ( $link_type ? '<span class="icon-block-xs">'.$link_type.'</span>' : '' ).
+        ( $linktype ? '<span class="icon-block-xs">'.$linktype.'</span>' : '' ).
         ( strlen($o__type) ? '<span class="icon-block-xs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
         $o__title.
-        ( strlen($link_text) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($link_text).'</div>' : '' ).
+        ( strlen($linktext) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($linktext).'</div>' : '' ).
         '</a>';
 }
 
 
 
 
-function view__e_body($link_type, $counter, $e__id, $js_request_uri){
+function view__e_body($linktype, $counter, $playerid, $js_request_uri){
 
 
     $CI =& get_instance();
@@ -3149,44 +3149,44 @@ function view__e_body($link_type, $counter, $e__id, $js_request_uri){
     $player_e = superpower_unlocked();
 
     //Check Permission:
-    if(in_array($link_type, $CI->config->item('n___42376')) && !access_level_e(null, $e__id)){
+    if(in_array($linktype, $CI->config->item('n___42376')) && !access_level_e(null, $playerid)){
         return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
     }
 
-    $list_results = view__e_covers($link_type, $e__id, 1);
-    $focus_e__id = ( $e__id>0 ? $e__id : ( $player_e ? $player_e['e__id'] : 0 ) );
+    $list_results = view__e_covers($linktype, $playerid, 1);
+    $focus_playerid = ( $playerid>0 ? $playerid : ( $player_e ? $player_e['playerid'] : 0 ) );
     $es = $CI->Source_cache->fetch(array(
-        'e__id' => $e__id,
+        'playerid' => $playerid,
     ));
     if(!count($es)){
         return false;
     }
     $ui = '';
 
-    if(in_array($link_type, $CI->config->item('n___42261'))){
+    if(in_array($linktype, $CI->config->item('n___42261'))){
 
         //Ideas:
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$link_type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$linktype.'">';
         foreach($list_results as $i){
-            $ui .= view__card_i($link_type, $i, null, null, $focus_e__id);
+            $ui .= view__card_i($linktype, $i, null, null, $focus_playerid);
         }
         $ui .= '</div>';
 
-    } elseif(in_array($link_type, $CI->config->item('n___11028'))){
+    } elseif(in_array($linktype, $CI->config->item('n___11028'))){
 
         //Sources:
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$link_type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$linktype.'">';
         foreach($list_results as $e) {
-            $ui .= view__card_e($link_type, $e, null);
+            $ui .= view__card_e($linktype, $e, null);
         }
         $ui .= '</div>';
 
-    } elseif(in_array($link_type, $CI->config->item('n___12144'))){
+    } elseif(in_array($linktype, $CI->config->item('n___12144'))){
 
         //Discoveries:
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$link_type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$linktype.'">';
         foreach ($list_results as $i) {
-            $ui .= view__card_i($link_type,  $i, null, null, $focus_e__id);
+            $ui .= view__card_i($linktype,  $i, null, null, $focus_playerid);
         }
         $ui .= '</div>';
 
@@ -3207,56 +3207,56 @@ function view__google_tag($google_analytics_code){
 </script>';
 }
 
-function view__i_body($link_type, $counter, $i__id){
+function view__i_body($linktype, $counter, $ideaid){
 
     $CI =& get_instance();
 
 
-    $list_results = view__i_covers($link_type, $i__id, 1);
+    $list_results = view__i_covers($linktype, $ideaid, 1);
     $ui = '';
     $is = $CI->Idea_cache->fetch(array(
-        'i__id' => $i__id,
+        'ideaid' => $ideaid,
     ));
     if(!count($is)){
         return false;
     }
 
-    if(in_array($link_type, $CI->config->item('n___42376')) && !access_level_i(null, $is[0]['i__id'], $is[0])){
+    if(in_array($linktype, $CI->config->item('n___42376')) && !access_level_i(null, $is[0]['ideaid'], $is[0])){
         return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
     }
 
-    if(in_array($link_type, $CI->config->item('n___42380'))){
+    if(in_array($linktype, $CI->config->item('n___42380'))){
 
         //IDEA Link Groups Previous
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$link_type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$linktype.'">';
         foreach($list_results as $previous_i) {
             $ui .= view__card_i(11019, $previous_i);
         }
         $ui .= '</div>';
 
-    } elseif(in_array($link_type, $CI->config->item('n___42265'))){
+    } elseif(in_array($linktype, $CI->config->item('n___42265'))){
 
         //IDEA Link Groups Next
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$link_type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$linktype.'">';
         foreach($list_results as $next_i) {
-            $ui .= view__card_i($link_type, $next_i, $is[0]);
+            $ui .= view__card_i($linktype, $next_i, $is[0]);
         }
         $ui .= '</div>';
 
-    } elseif(in_array($link_type, $CI->config->item('n___42284'))) {
+    } elseif(in_array($linktype, $CI->config->item('n___42284'))) {
 
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$link_type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$linktype.'">';
         foreach($list_results as $item){
             $ui .= view__card_e(6255, $item);
         }
         $ui .= '</div>';
 
-    } elseif(in_array($link_type, $CI->config->item('n___42261'))){
+    } elseif(in_array($linktype, $CI->config->item('n___42261'))){
 
         //Sources
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$link_type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$linktype.'">';
         foreach($list_results as $e_ref){
-            $ui .= view__card_e($link_type, $e_ref, null);
+            $ui .= view__card_e($linktype, $e_ref, null);
         }
         $ui .= '</div>';
 
@@ -3266,7 +3266,7 @@ function view__i_body($link_type, $counter, $i__id){
 
 }
 
-function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = true){
+function view__e_covers($linktype, $playerid, $page_num = 0, $append_card_icon = true){
 
     /*
      *
@@ -3277,52 +3277,52 @@ function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = t
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if(in_array($link_type, $CI->config->item('n___42377'))){
+    if(in_array($linktype, $CI->config->item('n___42377'))){
 
         //Down Source Link Groups:
-        $order_columns = array('link_type = \'41011\' DESC' => null, 'link_number' => 'ASC', 'link_time' => 'DESC');
-        $joins_objects = array('link_down');
+        $order_columns = array('linktype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+        $joins_objects = array('linkdown');
         $query_filters = array(
-            'link_up' => $e__id,
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null, //SOURCE LINKS
-            'link_void' => 0, //Not Void
+            'linkup' => $playerid,
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null, //SOURCE LINKS
+            'linkvoid' => 0, //Not Void
         );
 
-    } elseif(in_array($link_type, $CI->config->item('n___42276'))){
+    } elseif(in_array($linktype, $CI->config->item('n___42276'))){
 
         //Up Source Link Groups:
-        $order_columns = array('link_type = \'41011\' DESC' => null, 'link_number' => 'ASC', 'link_time' => 'DESC');
-        $joins_objects = array('link_up');
+        $order_columns = array('linktype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+        $joins_objects = array('linkup');
         $query_filters = array(
-            'link_down' => $e__id,
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null, //SOURCE LINKS
-            'link_void' => 0, //Not Void
+            'linkdown' => $playerid,
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null, //SOURCE LINKS
+            'linkvoid' => 0, //Not Void
         );
 
-    } elseif(in_array($link_type, $CI->config->item('n___11028'))){
+    } elseif(in_array($linktype, $CI->config->item('n___11028'))){
 
         //Source Tree
-        $order_columns = array('link_number' => 'ASC', 'link_time' => 'DESC');
-        $joins_objects = array('link_down');
+        $order_columns = array('linknumber' => 'ASC', 'linktime' => 'DESC');
+        $joins_objects = array('linkdown');
         $query_filters = array(
-            'link_up' => $e__id,
-            'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'link_void' => 0, //Not Void
+            'linkup' => $playerid,
+            'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linkvoid' => 0, //Not Void
         );
 
-    } elseif(in_array($link_type, $CI->config->item('n___42261'))){
+    } elseif(in_array($linktype, $CI->config->item('n___42261'))){
 
         //IDEAS
         $query_filters = array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null,
-            'link_up' => $e__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null,
+            'linkup' => $playerid,
         );
 
-        $joins_objects = array('link_right');
-        $order_columns = array('link_type = \'34513\' DESC' => null, 'link_number' => 'ASC', 'link_time' => 'DESC');
+        $joins_objects = array('linkright');
+        $order_columns = array('linktype = \'34513\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
 
-    } elseif(in_array($link_type, $CI->config->item('n___12144'))){
+    } elseif(in_array($linktype, $CI->config->item('n___12144'))){
 
         //Discoveries
 
@@ -3330,17 +3330,17 @@ function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = t
         $order_columns = array();
         /*
         foreach($CI->config->item('e___6255') as $sort_id => $sort) {
-            $order_columns['link_type = \''.$sort_id.'\' DESC'] = null;
+            $order_columns['linktype = \''.$sort_id.'\' DESC'] = null;
         }
         */
-        $order_columns['link_id'] = 'DESC';
+        $order_columns['linkid'] = 'DESC';
 
         //DISCOVERIES
-        $joins_objects = array('link_left');
+        $joins_objects = array('linkleft');
         $query_filters = array(
-            'link_player' => $e__id,
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null, //DISCOVERY GROUP
-            'link_void' => 0, //Not Void
+            'linkplayer' => $playerid,
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null, //DISCOVERY GROUP
+            'linkvoid' => 0, //Not Void
         );
 
     } else {
@@ -3360,22 +3360,22 @@ function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = t
     } else {
 
         $e___11035 = $CI->config->item('e___11035');
-        if(!isset($e___11035[$link_type]['m__title'])){
+        if(!isset($e___11035[$linktype]['m__title'])){
             $CI->Mench_ledger->create(array(
-                'link_type' => 44179, //Triggered
-                'link_up' => 4246, //Platform Bug Reports
-                'link_down' => $link_type,
-                'link_text' => '@'.$link_type.' Missing from Nav @11035',
+                'linktype' => 44179, //Triggered
+                'linkup' => 4246, //Platform Bug Reports
+                'linkdown' => $linktype,
+                'linktext' => '@'.$linktype.' Missing from Nav @11035',
             ));
-            $e___11035[$link_type] = array(
+            $e___11035[$linktype] = array(
                 'm__title' => '',
                 'm__cover' => '',
             );
         }
-        $query = $CI->Mench_ledger->fetch($query_filters, $joins_objects, 1, 0, array(), 'COUNT(link_id) as totals');
+        $query = $CI->Mench_ledger->fetch($query_filters, $joins_objects, 1, 0, array(), 'COUNT(linkid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">'.view__number($count_query).'<span>';
-        $title_desc = number_format($count_query, 0).' '.$e___11035[$link_type]['m__title'];
+        $title_desc = number_format($count_query, 0).' '.$e___11035[$linktype]['m__title'];
 
         if($append_card_icon){
 
@@ -3383,11 +3383,11 @@ function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = t
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-xs">'.$e___11035[$link_type]['m__cover'].'</span>';
+            $card_icon = '<span class="icon-block-xs">'.$e___11035[$linktype]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_e_covers button_of_'.$e__id.'_'.$link_type.'" id="card_e_group_'.$link_type.'_'.$e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_link_type="'.$link_type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
-            $ui .= '<div class="dropdown-menu dropdown_'.$link_type.' coins_e_'.$e__id.'_'.$link_type.'" aria-labelledby="card_e_group_'.$link_type.'_'.$e__id.'">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_e_covers button_of_'.$playerid.'_'.$linktype.'" id="card_e_group_'.$linktype.'_'.$playerid.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_linktype="'.$linktype.'" load_playerid="'.$playerid.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
+            $ui .= '<div class="dropdown-menu dropdown_'.$linktype.' coins_e_'.$playerid.'_'.$linktype.'" aria-labelledby="card_e_group_'.$linktype.'_'.$playerid.'">';
             //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
             $ui .= '</div>';
@@ -3402,7 +3402,7 @@ function view__e_covers($link_type, $e__id, $page_num = 0, $append_card_icon = t
 }
 
 
-function view__i_covers($link_type, $i__id, $page_num = 0, $append_card_icon = true, $headline_authors = array()){
+function view__i_covers($linktype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array()){
 
     /*
      *
@@ -3413,61 +3413,61 @@ function view__i_covers($link_type, $i__id, $page_num = 0, $append_card_icon = t
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if(in_array($link_type, $CI->config->item('n___42261'))){
+    if(in_array($linktype, $CI->config->item('n___42261'))){
 
         //SOURCES
-        $joins_objects = array('link_up');
+        $joins_objects = array('linkup');
         $query_filters = array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null,
-            'link_right' => $i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null,
+            'linkright' => $ideaid,
         );
-        if($link_type==42256 && count($headline_authors)){
+        if($linktype==42256 && count($headline_authors)){
             //Exclude Headline Authors since they have already been listed:
-            $query_filters['link_up NOT IN (' . join(',', $headline_authors) . ')'] = null;
+            $query_filters['linkup NOT IN (' . join(',', $headline_authors) . ')'] = null;
         }
 
-        $order_columns = array('link_type = \'34513\' DESC' => null, 'link_number' => 'ASC', 'link_time' => 'DESC');
+        $order_columns = array('linktype = \'34513\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
 
-    } elseif(in_array($link_type, $CI->config->item('n___42380'))){
+    } elseif(in_array($linktype, $CI->config->item('n___42380'))){
 
         //IDEA Link Groups Previous
-        $order_columns = array('link_id' => 'DESC');
-        $joins_objects = array('link_left');
+        $order_columns = array('linkid' => 'DESC');
+        $joins_objects = array('linkleft');
         $query_filters = array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null, //IDEA LINKS
-            'link_right' => $i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null, //IDEA LINKS
+            'linkright' => $ideaid,
         );
 
-    } elseif(in_array($link_type, $CI->config->item('n___42265'))){
+    } elseif(in_array($linktype, $CI->config->item('n___42265'))){
 
         //IDEA Link Groups Next
-        $order_columns = array('link_number' => 'ASC');
-        $joins_objects = array('link_right');
+        $order_columns = array('linknumber' => 'ASC');
+        $joins_objects = array('linkright');
         $query_filters = array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null,
-            'link_left' => $i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null,
+            'linkleft' => $ideaid,
         );
 
         //HACK:
-        if(0 && $link_type==42997){
+        if(0 && $linktype==42997){
             $player_e = superpower_unlocked();
             if($player_e){
-                $query_filters['link_player !='] = $player_e['e__id'];
+                $query_filters['linkplayer !='] = $player_e['playerid'];
             }
         }
 
-    } elseif(in_array($link_type, $CI->config->item('n___12144'))){
+    } elseif(in_array($linktype, $CI->config->item('n___12144'))){
 
         //DISCOVERIES
-        $order_columns = array('link_id' => 'DESC');
-        $joins_objects = array('link_player');
+        $order_columns = array('linkid' => 'DESC');
+        $joins_objects = array('linkplayer');
         $query_filters = array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___'.$link_type)) . ')' => null, //DISCOVERIES
-            'link_left' => $i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___'.$linktype)) . ')' => null, //DISCOVERIES
+            'linkleft' => $ideaid,
         );
 
     } else {
@@ -3486,10 +3486,10 @@ function view__i_covers($link_type, $i__id, $page_num = 0, $append_card_icon = t
     } else {
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
-        $query = $CI->Mench_ledger->fetch($query_filters, $joins_objects, 1, 0, array(), 'COUNT(link_id) as totals');
+        $query = $CI->Mench_ledger->fetch($query_filters, $joins_objects, 1, 0, array(), 'COUNT(linkid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">'.view__number($count_query).'<span>';
-        $title_desc = number_format($count_query, 0).( isset($e___11035[$link_type]['m__title']) ? ' '.$e___11035[$link_type]['m__title'] : '' );
+        $title_desc = number_format($count_query, 0).( isset($e___11035[$linktype]['m__title']) ? ' '.$e___11035[$linktype]['m__title'] : '' );
 
         if($append_card_icon){
 
@@ -3497,13 +3497,13 @@ function view__i_covers($link_type, $i__id, $page_num = 0, $append_card_icon = t
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-sm">'.$e___11035[$link_type]['m__cover'].'</span>';
+            $card_icon = '<span class="icon-block-sm">'.$e___11035[$linktype]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_i_covers button_of_'.$i__id.'_'.$link_type.'" id="card_group_i_'.$link_type.'_'.$i__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_link_type="'.$link_type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_i_covers button_of_'.$ideaid.'_'.$linktype.'" id="card_group_i_'.$linktype.'_'.$ideaid.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_linktype="'.$linktype.'" load_ideaid="'.$ideaid.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
 
             //Menu To be loaded dynamically via AJAX:
-            $ui .= '<div class="dropdown-menu dropdown_'.$link_type.' coins_i_'.$i__id.'_'.$link_type.'" aria-labelledby="card_group_i_'.$link_type.'_'.$i__id.'"></div>';
+            $ui .= '<div class="dropdown-menu dropdown_'.$linktype.' coins_i_'.$ideaid.'_'.$linktype.'" aria-labelledby="card_group_i_'.$linktype.'_'.$ideaid.'"></div>';
 
             $ui .= '</div>';
 
@@ -3517,29 +3517,29 @@ function view__i_covers($link_type, $i__id, $page_num = 0, $append_card_icon = t
 
 }
 
-function view__dynamic_headline($dynamic_e__id, $m, $selected_e = null){
+function view__dynamic_headline($dynamic_playerid, $m, $selected_e = null){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
 
     $headline = '<span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].': ';
 
-    if(in_array($dynamic_e__id, $CI->config->item('n___28239'))){
+    if(in_array($dynamic_playerid, $CI->config->item('n___28239'))){
         $headline .= '<span class="icon-block-sm" title="'.$e___11035[28239]['m__message'].'" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">'.$e___11035[28239]['m__cover'].'</span>';
     }
-    if(in_array($dynamic_e__id, $CI->config->item('n___32145'))){
+    if(in_array($dynamic_playerid, $CI->config->item('n___32145'))){
         $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
     }
 
-    if(isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message'])){
-        $headline .= '<span class="doregular info_blob '.( strlen($e___11035[$dynamic_e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$dynamic_e__id]['m__message'].'</span></span>';
+    if(isset($e___11035[$dynamic_playerid]) && strlen($e___11035[$dynamic_playerid]['m__message'])){
+        $headline .= '<span class="doregular info_blob '.( strlen($e___11035[$dynamic_playerid]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$dynamic_playerid]['m__message'].'</span></span>';
     }
 
     return $headline;
 }
 
 
-function view__instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
+function view__instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0){
 
     /*
      * Either single or multi select UI elements...
@@ -3558,11 +3558,11 @@ function view__instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
     if(!$single_select && !$multi_select){
         //Must be either:
         $CI->Mench_ledger->create(array(
-            'link_type' => 44179, //Triggered
-            'link_up' => 4246, //Platform Bug Reports
-            'link_down' => $focus__id,
-            'link_text' => 'view__instant_select() @'.$focus__id.' not in single select @33331 or multi select 33332',
-            'link_right' => $right_i__id,
+            'linktype' => 44179, //Triggered
+            'linkup' => 4246, //Platform Bug Reports
+            'linkdown' => $focus__id,
+            'linktext' => 'view__instant_select() @'.$focus__id.' not in single select @33331 or multi select 33332',
+            'linkright' => $right_ideaid,
         ));
         return false;
     }
@@ -3570,12 +3570,12 @@ function view__instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
     $already_selected = array();
     $selection_ids = array();
     $selection_options = $CI->Mench_ledger->fetch(array(
-        'link_up' => $focus__id,
-        'link_type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
-        'link_void' => 0, //Not Void
-    ), array('link_down'), 0, 0, array('link_number' => 'ASC'));
+        'linkup' => $focus__id,
+        'linktype IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
+        'linkvoid' => 0, //Not Void
+    ), array('linkdown'), 0, 0, array('linknumber' => 'ASC'));
     foreach($selection_options as $list_item){
-        array_push($selection_ids, $list_item['e__id']);
+        array_push($selection_ids, $list_item['playerid']);
     }
 
     //UI for Single select or multi?
@@ -3585,41 +3585,41 @@ function view__instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
     }
     $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus__id.( $is_compact ? ' is_compact ' : ''  ).'">';
 
-    if($down_e__id > 0){
+    if($down_playerid > 0){
 
         //Source Focus:
         if(count($selection_ids)){
             foreach($CI->Mench_ledger->fetch(array(
-                'link_up IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-                'link_down' => $down_e__id,
-                'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'link_void' => 0, //Not Void
+                'linkup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+                'linkdown' => $down_playerid,
+                'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'linkvoid' => 0, //Not Void
             )) as $sel){
-                array_push($already_selected, $sel['link_up']);
+                array_push($already_selected, $sel['linkup']);
             }
         }
 
         if(!count($already_selected) && $single_select && superpower_unlocked()){
             //FIND DEFAULT if set in session of this user:
             $var_id = @$CI->session->userdata('session_custom_ui_'.$focus__id);
-            foreach($selection_ids as $e__id2){
-                if($var_id==$e__id2){
-                    $already_selected = array($e__id2);
+            foreach($selection_ids as $playerid2){
+                if($var_id==$playerid2){
+                    $already_selected = array($playerid2);
                     break;
                 }
             }
         }
 
-    } elseif($right_i__id>0) {
+    } elseif($right_ideaid>0) {
 
         //Idea focus:
         foreach($CI->Mench_ledger->fetch(array(
-            'link_up IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-            'link_right' => $right_i__id,
-            'link_type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'link_void' => 0, //Not Void
+            'linkup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+            'linkright' => $right_ideaid,
+            'linktype IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'linkvoid' => 0, //Not Void
         )) as $sel){
-            array_push($already_selected, $sel['link_up']);
+            array_push($already_selected, $sel['linkup']);
         }
 
     }
@@ -3635,40 +3635,40 @@ function view__instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
     foreach($selection_options as $list_item){
 
         //Has superpower?
-        if(isset($e___42179[$list_item['e__id']]['m__following']) && count($e___42179[$list_item['e__id']]['m__following'])){
-            $superpowers_required = array_intersect($CI->config->item('n___10957'), $e___42179[$list_item['e__id']]['m__following']);
+        if(isset($e___42179[$list_item['playerid']]['m__following']) && count($e___42179[$list_item['playerid']]['m__following'])){
+            $superpowers_required = array_intersect($CI->config->item('n___10957'), $e___42179[$list_item['playerid']]['m__following']);
             if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 continue;
             }
         }
 
-        $selected = in_array($list_item['e__id'], $already_selected);
+        $selected = in_array($list_item['playerid'], $already_selected);
         if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected && !$is_compact){
             $overflow_reached = true;
         }
 
-        $headline = '<span class="inner_headline">'.( strlen($list_item['e__cover']) ? '<span class="icon-block-sm change-results">'.view__cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'].'</span>';
-        if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
+        $headline = '<span class="inner_headline">'.( strlen($list_item['playercover']) ? '<span class="icon-block-sm change-results">'.view__cover($list_item['playercover']).'</span>' : '' ).$list_item['playertext'].'</span>';
+        if(in_array($list_item['playerid'], $CI->config->item('n___32145'))){
             $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
         if($selected){
             $headline .= '<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>';
         }
-        if(in_array($list_item['e__id'], $CI->config->item('n___11035')) && strlen($e___11035[$list_item['e__id']]['m__message'])>0){
-            $headline .= '<span class="doregular info_blob '.( strlen($e___11035[$list_item['e__id']]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$list_item['e__id']]['m__message'].'</span></span>';
+        if(in_array($list_item['playerid'], $CI->config->item('n___11035')) && strlen($e___11035[$list_item['playerid']]['m__message'])>0){
+            $headline .= '<span class="doregular info_blob '.( strlen($e___11035[$list_item['playerid']]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$list_item['playerid']]['m__message'].'</span></span>';
         }
 
 
         if($selected){
             if($access_locked){
-                $ui .= '<span class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview__'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
+                $ui .= '<span class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['playerid'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview__'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['playertext']).'">'.$headline.'</span>';
             } elseif($has_multiple) {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview__'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview__'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview__'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['playerid'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview__'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['playertext']).'">'.$headline.'<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
             }
         }
 
         if(!$access_locked){
-            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus__id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus__id.' selection_item_'.$focus__id.( ( $has_selected && $has_multiple ) || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus__id.','.$list_item['playerid'].','.( $multi_select ? 1 : 0 ).','.$down_playerid.','.$right_ideaid.')" class="list-group-item itemsetting custom_ui_'.$focus__id.'_'.$list_item['playerid'].' '.$exclude_fonts.' item-'.$list_item['playerid'].' itemsetting_'.$focus__id.' selection_item_'.$focus__id.( ( $has_selected && $has_multiple ) || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['playertext']).'">'.$headline.'</a>';
         }
 
 
@@ -3689,35 +3689,35 @@ function view__instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
 
 
 
-function view__single_select_form($cache_e__id, $selected_e__id, $show_dropdown_arrow = false, $show_title = false){
+function view__single_select_form($cache_playerid, $selected_playerid, $show_dropdown_arrow = false, $show_title = false){
 
     $CI =& get_instance();
-    $e___this = $CI->config->item('e___'.$cache_e__id);
+    $e___this = $CI->config->item('e___'.$cache_playerid);
     $e___4527 = $CI->config->item('e___4527'); //Memory
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
 
-    if(!$selected_e__id || !isset($e___this[$selected_e__id])){
+    if(!$selected_playerid || !isset($e___this[$selected_playerid])){
         return false;
     }
 
     //Make sure it's not locked:
-    $ui = '<div class="dropdown inline-block dropd_form_'.$cache_e__id.'" selected_value="'.$selected_e__id.'">';
+    $ui = '<div class="dropdown inline-block dropd_form_'.$cache_playerid.'" selected_value="'.$selected_playerid.'">';
 
-    $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+    $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_'.$cache_playerid.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ? $e___this[$selected_e__id]['m__title'] : '' ).'</span>'.( $show_dropdown_arrow ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' );
+    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_playerid]['m__cover'].'</span>'.( $show_title ? $e___this[$selected_playerid]['m__title'] : '' ).'</span>'.( $show_dropdown_arrow ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' );
 
     $ui .= '</button>';
 
-    $ui .= '<div class="dropdown-menu dropmenu_form_'.$cache_e__id.'" aria-labelledby="dropdown_form_'.$cache_e__id.'">';
+    $ui .= '<div class="dropdown-menu dropmenu_form_'.$cache_playerid.'" aria-labelledby="dropdown_form_'.$cache_playerid.'">';
 
     if(!$show_title){
-        $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">'.$e___4527[$cache_e__id]['m__cover'].'</span>'.$e___4527[$cache_e__id]['m__title'].':'.( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$cache_e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$cache_e__id]['m__message'].'</span></span>' : '' ).'</div>';
+        $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">'.$e___4527[$cache_playerid]['m__cover'].'</span>'.$e___4527[$cache_playerid]['m__title'].':'.( isset($e___11035[$cache_playerid]) && strlen($e___11035[$cache_playerid]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$cache_playerid]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$cache_playerid]['m__message'].'</span></span>' : '' ).'</div>';
     }
 
-    foreach($e___this as $e__id => $m) {
+    foreach($e___this as $playerid => $m) {
 
-        if(in_array($e__id, $CI->config->item('n___32145'))){
+        if(in_array($playerid, $CI->config->item('n___32145'))){
             continue; //Locked Dropdown
         }
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
@@ -3725,7 +3725,7 @@ function view__single_select_form($cache_e__id, $selected_e__id, $show_dropdown_
             continue;
         }
 
-        $ui .= '<a class="dropdown-item main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.', 0, '.intval($show_title).')"><span class="content_'.$e__id.'"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$e__id]['m__message'].'</span></span>' : '' ).'</a>';
+        $ui .= '<a class="dropdown-item main__title optiond_'.$playerid.' '.( $playerid==$selected_playerid ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$playerid.'" onclick="update_form_select('.$cache_playerid.', '.$playerid.', 0, '.intval($show_title).')"><span class="content_'.$playerid.'"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$playerid]) && strlen($e___11035[$playerid]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$playerid]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$playerid]['m__message'].'</span></span>' : '' ).'</a>';
 
     }
 
@@ -3736,58 +3736,58 @@ function view__single_select_form($cache_e__id, $selected_e__id, $show_dropdown_
 }
 
 
-function view__single_select_instant($cache_e__id, $selected_e__id, $access_level_i = 0, $show_title = true, $o__id = 0, $link_id = 0){
+function view__single_select_instant($cache_playerid, $selected_playerid, $access_level_i = 0, $show_title = true, $o__id = 0, $linkid = 0){
 
     $CI =& get_instance();
-    $e___this = $CI->config->item('e___'.$cache_e__id);
+    $e___this = $CI->config->item('e___'.$cache_playerid);
     $player_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
-    $unselected_radio = in_array($cache_e__id, $CI->config->item('n___33331')) && !$selected_e__id;
+    $unselected_radio = in_array($cache_playerid, $CI->config->item('n___33331')) && !$selected_playerid;
     $e___4527 = $CI->config->item('e___4527'); //Memory
 
-    if($selected_e__id && !isset($e___this[$selected_e__id])){
+    if($selected_playerid && !isset($e___this[$selected_playerid])){
 
         return false;
 
         /*
-    } elseif(!$selected_e__id && $access_level_i && $player_e){
+    } elseif(!$selected_playerid && $access_level_i && $player_e){
 
         //See if this user has any of these options:
         foreach($CI->Mench_ledger->fetch(array(
-            'link_up IN (' . join(',', $CI->config->item('n___'.$cache_e__id)) . ')' => null, //SOURCE LINKS
-            'link_down' => $player_e['e__id'],
-            'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'link_void' => 0, //Not Void
+            'linkup IN (' . join(',', $CI->config->item('n___'.$cache_playerid)) . ')' => null, //SOURCE LINKS
+            'linkdown' => $player_e['playerid'],
+            'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linkvoid' => 0, //Not Void
         )) as $x) {
             //Supports one for now
-            $selected_e__id = $x['link_up'];
+            $selected_playerid = $x['linkup'];
             break;
         }
     */
     }
 
     //Make sure it's not locked:
-    $access_level_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $access_level_i : 0 );
+    $access_level_i = ( !in_array($cache_playerid, $CI->config->item('n___32145')) && !in_array($selected_playerid, $CI->config->item('n___32145')) ? $access_level_i : 0 );
 
-    $ui = '<div class="dropdown '.( $show_title ? 'dropdown_type_'.$cache_e__id : '' ).' inline-block dropd_instant_'.$cache_e__id.'_'.$o__id.'_'.$link_id.'" selected_value="'.$selected_e__id.'">';
+    $ui = '<div class="dropdown '.( $show_title ? 'dropdown_type_'.$cache_playerid : '' ).' inline-block dropd_instant_'.$cache_playerid.'_'.$o__id.'_'.$linkid.'" selected_value="'.$selected_playerid.'">';
 
-    $ui .= '<button type="button" '.( $access_level_i>=3 ? 'class="btn no-left-padding '.( $show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$link_id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_title ? 'no-padding' : '' ).' edit-locked" ' ).'>';
+    $ui .= '<button type="button" '.( $access_level_i>=3 ? 'class="btn no-left-padding '.( $show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_playerid.'_'.$o__id.'_'.$linkid.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_title ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
-    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ?  $e___this[$selected_e__id]['m__title'] : '' ) : '<span class="icon-block-sm">'.$e___11035[$cache_e__id]['m__cover'].'</span>'.( $show_title ?  $e___11035[$cache_e__id]['m__title'] : '' ) ).'</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
+    $ui .= '<span class="current_content">'.( isset($e___this[$selected_playerid]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_playerid]['m__cover'].'</span>'.( $show_title ?  $e___this[$selected_playerid]['m__title'] : '' ) : '<span class="icon-block-sm">'.$e___11035[$cache_playerid]['m__cover'].'</span>'.( $show_title ?  $e___11035[$cache_playerid]['m__title'] : '' ) ).'</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
 
     $ui .= '</button>';
 
     if($access_level_i>=3){
 
-        $ui .= '<div class="dropdown-menu dropmenu_instant_'.$cache_e__id.'" o__id="'.$o__id.'" link_id="'.$link_id.'" aria-labelledby="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$link_id.'">';
+        $ui .= '<div class="dropdown-menu dropmenu_instant_'.$cache_playerid.'" o__id="'.$o__id.'" linkid="'.$linkid.'" aria-labelledby="dropdown_instant_'.$cache_playerid.'_'.$o__id.'_'.$linkid.'">';
 
         if(!$show_title){
-            $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">'.$e___4527[$cache_e__id]['m__cover'].'</span>'.$e___4527[$cache_e__id]['m__title'].':'.( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$cache_e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$cache_e__id]['m__message'].'</span></span>' : '' ).'</div>';
+            $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">'.$e___4527[$cache_playerid]['m__cover'].'</span>'.$e___4527[$cache_playerid]['m__title'].':'.( isset($e___11035[$cache_playerid]) && strlen($e___11035[$cache_playerid]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$cache_playerid]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$cache_playerid]['m__message'].'</span></span>' : '' ).'</div>';
         }
 
-        foreach($e___this as $e__id => $m) {
+        foreach($e___this as $playerid => $m) {
 
-            if(in_array($e__id, $CI->config->item('n___32145'))){
+            if(in_array($playerid, $CI->config->item('n___32145'))){
                 continue; //Locked Dropdown
             }
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
@@ -3796,9 +3796,9 @@ function view__single_select_instant($cache_e__id, $selected_e__id, $access_leve
             }
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            $removal_option = in_array($e__id, $CI->config->item('n___42850'));
+            $removal_option = in_array($playerid, $CI->config->item('n___42850'));
 
-            $ui .= '<a class="dropdown-item drop_item_instant_'.$e__id.'_'.$o__id.'_'.$link_id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$link_id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$link_id.', '.intval($show_title).')"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$e__id]['m__message'].'</span></span>' : '' ).'</a>';
+            $ui .= '<a class="dropdown-item drop_item_instant_'.$playerid.'_'.$o__id.'_'.$linkid.' main__title optiond_'.$playerid.'_'.$o__id.'_'.$linkid.' '.( $playerid==$selected_playerid ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$playerid.'" onclick="x_update_instant_select('.$cache_playerid.', '.$playerid.', '.$o__id.', '.$linkid.', '.intval($show_title).')"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$playerid]) && strlen($e___11035[$playerid]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$playerid]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$playerid]['m__message'].'</span></span>' : '' ).'</a>';
 
 
         }
@@ -3814,24 +3814,24 @@ function view__single_select_instant($cache_e__id, $selected_e__id, $access_leve
 
 
 
-function view__shuffle_message($e__id){
+function view__shuffle_message($playerid){
     $CI =& get_instance();
     $e___12687 = $CI->config->item('e___12687');
-    $line_messages = explode("\n", $e___12687[$e__id]['m__message']);
+    $line_messages = explode("\n", $e___12687[$playerid]['m__message']);
     return $line_messages[rand(0, (count($line_messages) - 1))];
 }
 
-function view__unauthorized_message($superpower_e__id = 0){
+function view__unauthorized_message($superpower_playerid = 0){
 
     if(!superpower_unlocked()){
 
         return 'Sign-in to continue';
 
-    } elseif($superpower_e__id && !superpower_unlocked($superpower_e__id)){
+    } elseif($superpower_playerid && !superpower_unlocked($superpower_playerid)){
 
         $CI =& get_instance();
         $e___10957 = $CI->config->item('e___10957');
-        return 'Error: You are missing access to '.$e___10957[$superpower_e__id]['m__title'];
+        return 'Error: You are missing access to '.$e___10957[$superpower_playerid]['m__title'];
 
     } else {
 
@@ -3861,47 +3861,47 @@ function view__hash($string){
 
 function view__i_title($i, $string_only = false){
 
-    if(!isset($i['i__message'])){
+    if(!isset($i['ideatext'])){
         return null;
     }
 
     //Break down by lines:
-    foreach(explode("\n", $i['i__message']) as $line){
+    foreach(explode("\n", $i['ideatext']) as $line){
         if(strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)){
             return ( $string_only ? $line : '<span class="main__title">'.$line.'</span>' );
         }
     }
 
     //If not yet found we need to use other data to generate title:
-    return ( isset($i['i__hashtag']) && strlen($i['i__hashtag']) ? $i['i__hashtag'] : ( isset($i['i__id']) && intval($i['i__id']) ? 'Idea Number '.$i['i__id'] : 'Idea'.rand(100000000000,999999999999) ) );
+    return ( isset($i['ideahashtag']) && strlen($i['ideahashtag']) ? $i['ideahashtag'] : ( isset($i['ideaid']) && intval($i['ideaid']) ? 'Idea Number '.$i['ideaid'] : 'Idea'.rand(100000000000,999999999999) ) );
 
 }
 
 function view__valid_handle_e($string, $check_db = false){
     $CI =& get_instance();
     return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Source_cache->fetch(array(
-            'LOWER(e__handle)' => strtolower(substr($string, 1)),
+            'LOWER(playerhandle)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false );
 }
 
 function view__valid_handle_i($string, $check_db = false){
     $CI =& get_instance();
     return ( substr($string, 0, 1)=='#' && ctype_alnum(substr($string, 1)) && ( !$check_db || count($CI->Idea_cache->fetch(array(
-            'LOWER(i__hashtag)' => strtolower(substr($string, 1)),
+            'LOWER(ideahashtag)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false );
 }
 
 function view__valid_handle_reverse_i($string, $check_db = false){
     $CI =& get_instance();
     return ( substr($string, 0, 2)=='!#' && ctype_alnum(substr($string, 2)) && ( !$check_db || count($CI->Idea_cache->fetch(array(
-            'LOWER(i__hashtag)' => strtolower(substr($string, 2)),
+            'LOWER(ideahashtag)' => strtolower(substr($string, 2)),
         )))) ? substr($string, 2) : false );
 }
 
 
-function view__i__links($i, $e__id = 0, $replace_links = true, $focus__node = false){
+function view__i__links($i, $playerid = 0, $replace_links = true, $focus__node = false){
 
-    if(!isset($i['i__id'])){
+    if(!isset($i['ideaid'])){
         return null;
     }
 
@@ -3909,37 +3909,37 @@ function view__i__links($i, $e__id = 0, $replace_links = true, $focus__node = fa
     $CI =& get_instance();
 
     if($replace_links){
-        $i['i__cache'] = str_replace('spanaa','a',$i['i__cache']);
-        //$i['i__cache'] = str_replace('class="ref_idea">#','class="ref_idea">',$i['i__cache']);
-        $i['i__cache'] = str_replace('class="ref_source">@','class="ref_source">',$i['i__cache']);
+        $i['ideacache'] = str_replace('spanaa','a',$i['ideacache']);
+        //$i['ideacache'] = str_replace('class="ref_idea">#','class="ref_idea">',$i['ideacache']);
+        $i['ideacache'] = str_replace('class="ref_source">@','class="ref_source">',$i['ideacache']);
     }
 
-    if($e__id>0){
+    if($playerid>0){
         foreach($CI->Mench_ledger->fetch(array(
-            'link_right' => $i['i__id'],
-            'link_up > 0' => null,
-            'link_type' => 31835, //References
-            'link_void' => 0, //Not Void
-        ), array('link_up'), 0) as $message_references){
-            if(!substr_count(strtolower($i['i__cache']), '>@'.strtolower($message_references['e__handle']))){
+            'linkright' => $i['ideaid'],
+            'linkup > 0' => null,
+            'linktype' => 31835, //References
+            'linkvoid' => 0, //Not Void
+        ), array('linkup'), 0) as $message_references){
+            if(!substr_count(strtolower($i['ideacache']), '>@'.strtolower($message_references['playerhandle']))){
                 //Maybe because it was duplicated, etc... REMOVE IT:
-                $CI->Mench_ledger->update($message_references['link_id'], array());
+                $CI->Mench_ledger->update($message_references['linkid'], array());
                 continue;
             }
             foreach($CI->Mench_ledger->fetch(array(
-                'link_down' => $e__id,
-                'link_up' => $message_references['e__id'],
-                'link_type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
-                'link_void' => 0, //Not Void
-                'LENGTH(link_text) > 0' => null,
+                'linkdown' => $playerid,
+                'linkup' => $message_references['playerid'],
+                'linktype IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
+                'linkvoid' => 0, //Not Void
+                'LENGTH(linktext) > 0' => null,
             ), array(), 1) as $reference_profile){
-                if(strlen($reference_profile['link_text'])){
+                if(strlen($reference_profile['linktext'])){
 
-                    if(filter_var($reference_profile['link_text'], FILTER_VALIDATE_URL)){
-                        $i['i__cache'] = str_ireplace('@'.$message_references['e__handle'].'</a>','</a>'.'<a href="'.$reference_profile['link_text'].'" target="_blank">'.$reference_profile['link_text'].'</a>', $i['i__cache']);
+                    if(filter_var($reference_profile['linktext'], FILTER_VALIDATE_URL)){
+                        $i['ideacache'] = str_ireplace('@'.$message_references['playerhandle'].'</a>','</a>'.'<a href="'.$reference_profile['linktext'].'" target="_blank">'.$reference_profile['linktext'].'</a>', $i['ideacache']);
 
                     } else {
-                        $i['i__cache'] = str_ireplace('@'.$message_references['e__handle'], ( filter_var($reference_profile['link_text'], FILTER_VALIDATE_URL) ? '' : '@'.$message_references['e__handle'].' ' ).$reference_profile['link_text'], $i['i__cache']);
+                        $i['ideacache'] = str_ireplace('@'.$message_references['playerhandle'], ( filter_var($reference_profile['linktext'], FILTER_VALIDATE_URL) ? '' : '@'.$message_references['playerhandle'].' ' ).$reference_profile['linktext'], $i['ideacache']);
                     }
                 }
             }
@@ -3947,14 +3947,14 @@ function view__i__links($i, $e__id = 0, $replace_links = true, $focus__node = fa
     }
 
     return
-        $i['i__cache']. view__i_media($i). ( $focus__node || !substr_count($i['i__cache'], 'show_more_line') ? view__list_e($i, !$replace_links) : '' );
+        $i['ideacache']. view__i_media($i). ( $focus__node || !substr_count($i['ideacache'], 'show_more_line') ? view__list_e($i, !$replace_links) : '' );
 }
 
 
 
 
 
-function view__sync_links($str, $return_array = false, $save_i__id = 0) {
+function view__sync_links($str, $return_array = false, $save_ideaid = 0) {
 
     /*
      *
@@ -3997,7 +3997,7 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
     $line_inwards = 3;
     $link_words = 13; //The number of words a link is counted as
 
-    $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
+    $ideacache = '<div class="i_cache cache_frame_'.$save_ideaid.'">';
     $line_count = 0;
     $hidden_started = false;
     $hidden_closed = false;
@@ -4007,23 +4007,23 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
         if(strlen($line)){
             $line_count++;
         }
-        $i__cache_line = '';
+        $ideacache_line = '';
 
         foreach(explode(' ', $line) as $word_index => $word) {
 
             $reference_type = 0;
             if($word_count>=$word_limit && !$hidden_started && (!$line_inwards || $word_index>=$line_inwards)){
-                $i__cache_line .= '<span class="hidden inner_line">';
+                $ideacache_line .= '<span class="hidden inner_line">';
                 $hidden_started = true;
             }
-            $i__cache_line .= ( $word_index>0 ? ' ' : '' );
+            $ideacache_line .= ( $word_index>0 ? ' ' : '' );
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
                 //Generic URL:
                 $reference_type = 4256;
                 array_push($i__references[$reference_type], $word);
-                $i__cache_line .=  @sprintf($ui_template[$reference_type], $word, $word);
+                $ideacache_line .=  @sprintf($ui_template[$reference_type], $word, $word);
                 $word_count += $link_words;
 
             } elseif (view__valid_handle_e($word, true)) {
@@ -4031,7 +4031,7 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
                 //Idea Synonym
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
-                $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $ideacache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } elseif (view__valid_handle_reverse_i($word, true)) {
@@ -4039,7 +4039,7 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
                 //Idea Antonym
                 $reference_type = 42337;
                 array_push($i__references[$reference_type], $word);
-                $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
+                $ideacache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
                 $word_count++;
 
             } elseif (view__valid_handle_i($word, true)) {
@@ -4047,13 +4047,13 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
                 //Source Mention
                 $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
-                $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $ideacache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } else {
 
                 //This word is not referencing anything!
-                $i__cache_line .= htmlentities($word);
+                $ideacache_line .= htmlentities($word);
                 $word_count++;
 
             }
@@ -4061,24 +4061,24 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
 
 
 
-        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').(($save_i__id && $word_count>=$word_limit && $line_count>2) ? ' hidden ' : '' ).'">';
-        $i__cache .= $i__cache_line;
+        $ideacache .= '<div class="line '.(!$line_index ? 'first_line' : '').(($save_ideaid && $word_count>=$word_limit && $line_count>2) ? ' hidden ' : '' ).'">';
+        $ideacache .= $ideacache_line;
         if($hidden_started && !$hidden_closed){
-            $i__cache .= '</span>';
+            $ideacache .= '</span>';
             $hidden_closed = true;
         }
-        $i__cache .= '</div>';
+        $ideacache .= '</div>';
 
     }
 
 
-    if($save_i__id && ($hidden_started || ($word_count>=$word_limit && $line_count>2))){
+    if($save_ideaid && ($hidden_started || ($word_count>=$word_limit && $line_count>2))){
         //Add show more button:
-        $i__cache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
+        $ideacache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
     }
 
 
-    $i__cache .= '</div>';
+    $ideacache .= '</div>';
 
 
     $sync_stats = array(
@@ -4086,22 +4086,22 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
         'old_links_kept' => 0,
         'new_links_added' => 0,
     );
-    if(intval($save_i__id) > 0){
+    if(intval($save_ideaid) > 0){
 
         //Save Found references to remove the ones who exist in DB:
         $references_add_to_db = $i__references;
         $player_e = superpower_unlocked();
         foreach($CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___4736')) . ')' => null, //Idea Message Links 3x
-            'link_right' => $save_i__id,
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___4736')) . ')' => null, //Idea Message Links 3x
+            'linkright' => $save_ideaid,
         )) as $x){
 
             //Is this still valid?
-            if(!in_array($x['link_text'], $i__references[$x['link_type']])){
+            if(!in_array($x['linktext'], $i__references[$x['linktype']])){
 
                 //Not valid, must be removed:
-                $CI->Mench_ledger->update($x['link_id'], array(), $player_e['e__id']);
+                $CI->Mench_ledger->update($x['linkid'], array(), $player_e['playerid']);
 
                 $sync_stats['old_links_removed']++;
 
@@ -4111,9 +4111,9 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
                 $sync_stats['old_links_kept']++;
 
                 //Remove from add new to DB list (Since we dont need to add this):
-                foreach($references_add_to_db[$x['link_type']] as $key=>$val){
-                    if($val==$x['link_text']){
-                        unset($references_add_to_db[$x['link_type']][$key]);
+                foreach($references_add_to_db[$x['linktype']] as $key=>$val){
+                    if($val==$x['linktext']){
+                        unset($references_add_to_db[$x['linktype']][$key]);
                         break;
                     }
                 }
@@ -4125,46 +4125,46 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
             foreach($db_vals as $db_val){
 
                 //Additional source/idea reference?
-                $link_left = 0;
-                $link_up = 0;
-                $link_text = '';
+                $linkleft = 0;
+                $linkup = 0;
+                $linktext = '';
 
                 if($db_type==31834){
-                    $link_type = 31834;
+                    $linktype = 31834;
                     foreach($CI->Idea_cache->fetch(array(
-                        'LOWER(i__hashtag)' => strtolower(substr($db_val, 1)),
+                        'LOWER(ideahashtag)' => strtolower(substr($db_val, 1)),
                     )) as $target){
-                        $link_left = $target['i__id'];
+                        $linkleft = $target['ideaid'];
                     }
                 } elseif($db_type==42337){
-                    $link_type = 42337;
+                    $linktype = 42337;
                     foreach($CI->Idea_cache->fetch(array(
-                        'LOWER(i__hashtag)' => strtolower(substr($db_val, 2)),
+                        'LOWER(ideahashtag)' => strtolower(substr($db_val, 2)),
                     )) as $target){
-                        $link_left = $target['i__id'];
+                        $linkleft = $target['ideaid'];
                     }
                 } elseif($db_type==31835) {
-                    $link_type = 31835;
+                    $linktype = 31835;
                     foreach($CI->Source_cache->fetch(array(
-                        'LOWER(e__handle)' => strtolower(substr($db_val, 1)),
+                        'LOWER(playerhandle)' => strtolower(substr($db_val, 1)),
                     )) as $target){
-                        $str = str_replace('@'.$target['e__id'],'@'.$target['e__handle'], $str); //TODO Remove!
-                        $link_up = $target['e__id'];
+                        $str = str_replace('@'.$target['playerid'],'@'.$target['playerhandle'], $str); //TODO Remove!
+                        $linkup = $target['playerid'];
                     }
                 } else {
-                    $link_type = $db_type; //Message URLs
-                    $link_up = idea_author($save_i__id);
-                    $link_text = $db_val;
+                    $linktype = $db_type; //Message URLs
+                    $linkup = idea_author($save_ideaid);
+                    $linktext = $db_val;
                 }
 
                 $CI->Mench_ledger->create(array(
-                    'link_time' => idea_creation_time($save_i__id),
-                    'link_type' => $link_type,
-                    'link_player' => $player_e['e__id'],
-                    'link_text' => $link_text,
-                    'link_right' => $save_i__id,
-                    'link_left' => $link_left,
-                    'link_up' => $link_up,
+                    'linktime' => idea_creation_time($save_ideaid),
+                    'linktype' => $linktype,
+                    'linkplayer' => $player_e['playerid'],
+                    'linktext' => $linktext,
+                    'linkright' => $save_ideaid,
+                    'linkleft' => $linkleft,
+                    'linkup' => $linkup,
                 ));
 
                 $sync_stats['new_links_added']++;
@@ -4173,34 +4173,34 @@ function view__sync_links($str, $return_array = false, $save_i__id = 0) {
         }
 
         //Save/update message & its cache:
-        $CI->Idea_cache->update($save_i__id, array(
-            'i__message' => trim($str),
-            'i__cache' => $i__cache,
-        ), true, $player_e['e__id']);
+        $CI->Idea_cache->update($save_ideaid, array(
+            'ideatext' => trim($str),
+            'ideacache' => $ideacache,
+        ), true, $player_e['playerid']);
 
     }
 
     if($return_array){
         return array(
             'i__references' => $i__references,
-            'i__cache' => $i__cache,
+            'ideacache' => $ideacache,
             'sync_stats' => $sync_stats,
             'replace_from' => $replace_from,
             'replace_to' => $replace_to,
         );
     } else {
         //Return formatted message:
-        return $i__cache;
+        return $ideacache;
     }
 
 }
 
 
 
-function view__featured_links($link_type, $location, $m = null, $focus__node){
+function view__featured_links($linktype, $location, $m = null, $focus__node){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
-    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['link_text']) ? ': '.$location['link_text'] : '' ).'" ' : '' ).'>'.( $focus__node ? '<a href="'.view__memory(42903,42902).$location['e__handle'].'">' : '' ).'<span class="grey '.( $link_type==41949 ? 'icon-block' : 'icon-block-xs' ).'">'.$e___11035[$link_type]['m__cover'].'</span><span class="grey mini-frame '.( $link_type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus__node ? '</a>' : '' ).'</div>';
+    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['playerhandle'] ).( strlen($location['linktext']) ? ': '.$location['linktext'] : '' ).'" ' : '' ).'>'.( $focus__node ? '<a href="'.view__memory(42903,42902).$location['playerhandle'].'">' : '' ).'<span class="grey '.( $linktype==41949 ? 'icon-block' : 'icon-block-xs' ).'">'.$e___11035[$linktype]['m__cover'].'</span><span class="grey mini-frame '.( $linktype==41949 ? 'mini-font' : '' ).'">'.$location['playertext'].'</span>'.( $focus__node ? '</a>' : '' ).'</div>';
 }
 
 
@@ -4215,72 +4215,72 @@ function view__i_nav($discovery_mode, $focus_i, $x_completes = false){
 
     if($player_e && !is_array($x_completes)){
         $x_completes = $CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'link_player' => $player_e['e__id'],
-            'link_left' => $focus_i['i__id'],
-        ), array('link_right'));
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkplayer' => $player_e['playerid'],
+            'linkleft' => $focus_i['ideaid'],
+        ), array('linkright'));
     }
 
     $discovery_next_hide = $player_e && $discovery_mode && !count($x_completes) && count($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-        'link_right' => $focus_i['i__id'],
-        'link_up' => 44250, //Hide Next Ideas
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'linkright' => $focus_i['ideaid'],
+        'linkup' => 44250, //Hide Next Ideas
     )));
 
     $ui = '';
-    $ui .= '<ul class="nav nav-tabs nav12273 nav__'.$focus_i['i__id'].' hideIfEmpty">';
-    foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $link_type => $m) {
+    $ui .= '<ul class="nav nav-tabs nav12273 nav__'.$focus_i['ideaid'].' hideIfEmpty">';
+    foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $linktype => $m) {
 
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
         if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
             continue;
         }
-        if(in_array($link_type, $CI->config->item('n___42376')) && !$player_e){
+        if(in_array($linktype, $CI->config->item('n___42376')) && !$player_e){
             //Private content without being a member, so dont even show the counters:
             continue;
         }
 
 
-        $coins_count[$link_type] = view__i_covers($link_type, $focus_i['i__id'], 0, false);
-        if(!$coins_count[$link_type] && ($discovery_mode || in_array($link_type, $CI->config->item('n___12144')))){ continue; }
+        $coins_count[$linktype] = view__i_covers($linktype, $focus_i['ideaid'], 0, false);
+        if(!$coins_count[$linktype] && ($discovery_mode || in_array($linktype, $CI->config->item('n___12144')))){ continue; }
 
         $input_content = '';
         if(!$discovery_mode && $ideation_pen){
 
-            if(in_array($link_type, $CI->config->item('n___42261'))){
+            if(in_array($linktype, $CI->config->item('n___42261'))){
 
-                $input_content .= '<div class="new_list new-list-'.$link_type.'"><div class="col-12 container-center"><div class="dropdown_'.$link_type.' list-adder">
+                $input_content .= '<div class="new_list new-list-'.$linktype.'"><div class="col-12 container-center"><div class="dropdown_'.$linktype.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view__memory(6404,6197) . '"
                                placeholder="Search or Link @sources">
                     </div></div></div></div>';
-                $body_content .= '<script> $(document).ready(function () { e_load_finder('.$link_type.'); }); </script>';
+                $body_content .= '<script> $(document).ready(function () { e_load_finder('.$linktype.'); }); </script>';
 
-            } elseif(in_array($link_type, $CI->config->item('n___11020'))){
+            } elseif(in_array($linktype, $CI->config->item('n___11020'))){
 
                 //ADD IDEAS
-                $input_content .= '<div class="new_list new-list-'.$link_type.'"><div class="col-12 container-center"><div class="dropdown_'.$link_type.' list-adder">
+                $input_content .= '<div class="new_list new-list-'.$linktype.'"><div class="col-12 container-center"><div class="dropdown_'.$linktype.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
                                maxlength="' . view__memory(6404,6197) . '"
                                placeholder="Search or Link #ideas">
                     </div></div></div></div>';
-                $body_content .= '<script> $(document).ready(function () { i_load_finder('.$link_type.'); }); </script>';
+                $body_content .= '<script> $(document).ready(function () { i_load_finder('.$linktype.'); }); </script>';
             }
 
         }
 
-        if(in_array($link_type, $CI->config->item('n___42945')) || $coins_count[$link_type]>0){
-            $body_content .= '<div class="headlinebody pillbody headline_body_'.$link_type.' hidden" read-counter="'.$coins_count[$link_type].'">'.$input_content.'<div class="tab_content"></div></div>';
+        if(in_array($linktype, $CI->config->item('n___42945')) || $coins_count[$linktype]>0){
+            $body_content .= '<div class="headlinebody pillbody headline_body_'.$linktype.' hidden" read-counter="'.$coins_count[$linktype].'">'.$input_content.'<div class="tab_content"></div></div>';
 
 
-            if($link_type!=12840 || !$discovery_next_hide){
-                $ui .= '<li class="nav-item thepill'.$link_type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" link_type="'.$link_type.'" href="#'.$m['m__handle'].'" title="'.$m['m__title'].'"><span class="icon-block">'.$m['m__cover'].'</span><span class="hideIfEmpty xtypecounter'.$link_type.'">'.view__number($coins_count[$link_type]) . '</span><span class="hidden xtypetitle xtypetitle_'.$link_type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+            if($linktype!=12840 || !$discovery_next_hide){
+                $ui .= '<li class="nav-item thepill'.$linktype.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" linktype="'.$linktype.'" href="#'.$m['m__handle'].'" title="'.$m['m__title'].'"><span class="icon-block">'.$m['m__cover'].'</span><span class="hideIfEmpty xtypecounter'.$linktype.'">'.view__number($coins_count[$linktype]) . '</span><span class="hidden xtypetitle xtypetitle_'.$linktype.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
             }
 
         }
@@ -4296,13 +4296,13 @@ function view__i_nav($discovery_mode, $focus_i, $x_completes = false){
 
     if(in_array($focus_i['i__type'], $CI->config->item('n___34826')) && $player_e && $discovery_mode && !count($x_completes)){
         foreach($CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-            'link_right' => $focus_i['i__id'],
-            'link_up' => 44262, //Skip Next If Undiscovered
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'linkright' => $focus_i['ideaid'],
+            'linkup' => 44262, //Skip Next If Undiscovered
         )) as $skip){
             //Not yet discovered, lets go next automatically:
-            $ui .= '<script> $(document).ready(function () { setTimeout(function () { go_next(0); }, '.( is_numeric($skip['link_text']) && intval($skip['link_text'])>0 ? intval($skip['link_text']) : '2584' ).'); }); </script>';
+            $ui .= '<script> $(document).ready(function () { setTimeout(function () { go_next(0); }, '.( is_numeric($skip['linktext']) && intval($skip['linktext'])>0 ? intval($skip['linktext']) : '2584' ).'); }); </script>';
             break;
         }
     }
@@ -4488,64 +4488,64 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 
 
 
-function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = null, $focus_e__id = 0, $x_completes = false){
+function view__card_i($linktype, $i, $previous_i = null, $target_ideahashtag = null, $focus_playerid = 0, $x_completes = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
 
-    $link_id = ( isset($i['link_id']) && $i['link_id']>0 ? $i['link_id'] : 0 );
+    $linkid = ( isset($i['linkid']) && $i['linkid']>0 ? $i['linkid'] : 0 );
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
-    $is_cache = in_array($link_type, $CI->config->item('n___14599'));
-    $goto_start = in_array($link_type, $CI->config->item('n___42988'));
+    $is_cache = in_array($linktype, $CI->config->item('n___14599'));
+    $goto_start = in_array($linktype, $CI->config->item('n___42988'));
     $player_e = superpower_unlocked();
     $superpower_10939 = !$is_cache && superpower_unlocked(10939);
-    $access_level_i = access_level_i($i['i__hashtag'], 0, $i, $is_cache);
+    $access_level_i = access_level_i($i['ideahashtag'], 0, $i, $is_cache);
     $i_startable = i_startable($i);
-    $link_player = ( $focus_e__id>0 ? $focus_e__id : ( $player_e ? $player_e['e__id'] : 0 ) );
-    $link_creator = isset($i['link_player']) && $i['link_player']==$link_player;
-    $focus__node = in_array($link_type, $CI->config->item('n___12149')); //NODE COIN
+    $linkplayer = ( $focus_playerid>0 ? $focus_playerid : ( $player_e ? $player_e['playerid'] : 0 ) );
+    $link_creator = isset($i['linkplayer']) && $i['linkplayer']==$linkplayer;
+    $focus__node = in_array($linktype, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );
     $discovery_seg = ( strtolower($CI->uri->segment(1))!='ajax' && strtolower($CI->uri->segment(1))!='app' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false );
-    $discovery_mode = $link_player && ( $discovery_uri || $discovery_seg );
+    $discovery_mode = $linkplayer && ( $discovery_uri || $discovery_seg );
     $focus_i_uri = ( $discovery_uri ? one_two_explode('/','',substr($_POST['js_request_uri'], 1)) : false );
     $focus_i_seg = ( $discovery_seg ? $CI->uri->segment(2) : false );
-    $focus_i__hashtag = ( $focus_i_uri ? $focus_i_uri : ( $focus_i_seg ? $focus_i_seg : false ) );
+    $focus_ideahashtag = ( $focus_i_uri ? $focus_i_uri : ( $focus_i_seg ? $focus_i_seg : false ) );
 
-    if($discovery_mode && !$target_i__hashtag && ($discovery_uri || $discovery_seg)){
-        $target_i__hashtag = ( $discovery_uri ? $discovery_uri : $discovery_seg );
+    if($discovery_mode && !$target_ideahashtag && ($discovery_uri || $discovery_seg)){
+        $target_ideahashtag = ( $discovery_uri ? $discovery_uri : $discovery_seg );
     }
-    if($target_i__hashtag && $focus_i__hashtag && $focus_i__hashtag==$i['i__hashtag']){
-        $focus_i__hashtag = false;
+    if($target_ideahashtag && $focus_ideahashtag && $focus_ideahashtag==$i['ideahashtag']){
+        $focus_ideahashtag = false;
     }
 
-    if($link_player && !is_array($x_completes)){
+    if($linkplayer && !is_array($x_completes)){
         //Fetch discovery
         $x_completes = $CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'link_player' => $link_player,
-            'link_left' => $i['i__id'],
-        ), array('link_right'));
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkplayer' => $linkplayer,
+            'linkleft' => $i['ideaid'],
+        ), array('linkright'));
     }
 
     $focus_i__or = false;
-    if($discovery_mode && $focus_i__hashtag && !$focus__node && $link_player && $previous_i['i__type']!=43758){
+    if($discovery_mode && $focus_ideahashtag && !$focus__node && $linkplayer && $previous_i['i__type']!=43758){
         foreach($CI->Idea_cache->fetch(array(
-            'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
+            'LOWER(ideahashtag)' => strtolower($focus_ideahashtag),
             'i__type IN (' . join(',', $CI->config->item('n___7712')) . ')' => null, //Input Choice
         )) as $focus_i){
             $focus_i__or = $focus_i;
         }
     }
 
-    $has_sortable = $link_id > 0 && !$focus__node && $access_level_i>=3 && in_array($link_type, $CI->config->item('n___4603')) && ($link_type!=42256 || $i['link_type']==34513);
+    $has_sortable = $linkid > 0 && !$focus__node && $access_level_i>=3 && in_array($linktype, $CI->config->item('n___4603')) && ($linktype!=42256 || $i['linktype']==34513);
     $has_discovered = 0;
-    if(!$is_cache && $link_player){
+    if(!$is_cache && $linkplayer){
         $discoveries = $CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'link_player' => $link_player,
-            'link_left' => $i['i__id'],
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkplayer' => $linkplayer,
+            'linkleft' => $i['ideaid'],
         ));
         $has_discovered = count($discoveries);
     }
@@ -4553,69 +4553,69 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
         $i = array_merge($i, $discoveries[0]);
     }
 
-    if($has_discovered && !$target_i__hashtag){
+    if($has_discovered && !$target_ideahashtag){
         foreach($CI->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'link_player' => $link_player,
-            'link_left' => $i['i__id'],
-            'link_right > 0' => null,
-        ), array('link_right')) as $CI_dis){
-            $target_i__hashtag = $CI_dis['i__hashtag'];
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkplayer' => $linkplayer,
+            'linkleft' => $i['ideaid'],
+            'linkright > 0' => null,
+        ), array('linkright')) as $CI_dis){
+            $target_ideahashtag = $CI_dis['ideahashtag'];
         }
     }
 
     $is_locked = ($discovery_mode && !$has_discovered && !$focus__node);
 
     if(($goto_start || !$superpower_10939) && $i_startable){
-        $href = view__memory(42903,30795).$i['i__hashtag'].'/'.view__memory(6404,4235);
+        $href = view__memory(42903,30795).$i['ideahashtag'].'/'.view__memory(6404,4235);
     } elseif($is_locked) {
         $href = null;
-    } elseif($discovery_mode && $target_i__hashtag){
-        $href = view__memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
+    } elseif($discovery_mode && $target_ideahashtag){
+        $href = view__memory(42903,30795).$target_ideahashtag.'/'.$i['ideahashtag'];
     } elseif($discovery_mode) {
-        $href = view__memory(42903,33286).$i['i__hashtag'];
+        $href = view__memory(42903,33286).$i['ideahashtag'];
     } else {
-        $href = view__memory(42903,33286).$i['i__hashtag'];
+        $href = view__memory(42903,33286).$i['ideahashtag'];
     }
 
 
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__type="' . $i['i__type'] . '" link_id="'.$link_id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( !$focus_i__or && $is_locked ? ' is_locked' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $link_id ? ' cover_x_'.$link_id.' ' : '' ).'">';
+    $ui = '<div ideaid="'.$i['ideaid'].'" ideahashtag="'.$i['ideahashtag'].'" i__type="' . $i['i__type'] . '" linkid="'.$linkid.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).' no-padding card-12273 s__12273_'.$i['ideaid'].' '.( strlen($href) ? ' card_click ' : '' ).( !$focus_i__or && $is_locked ? ' is_locked' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $linkid ? ' cover_x_'.$linkid.' ' : '' ).'">';
 
-    if($discovery_mode && $link_player && $focus__node){
+    if($discovery_mode && $linkplayer && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
     if(1 || ($discovery_mode && ($is_locked || $focus_i__or))){
-        $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
+        $ui .= '<script> $(document).ready(function () {show_more('.$i['ideaid'].'); }); </script>';
     }
 
     $is_required = count($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-        'link_right' => $i['i__id'],
-        'link_up' => 28239, //Required
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'linkright' => $i['ideaid'],
+        'linkup' => 28239, //Required
     )));
 
     if($is_locked){
-        //$ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').prepend(\''.$e___11035[43010]['m__cover'].' \'); }); </script>';
+        //$ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['ideaid'].' .first_line\').prepend(\''.$e___11035[43010]['m__cover'].' \'); }); </script>';
     }
 
     if($is_required){
         //Add required icon:
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\'<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).' asterisk" title="Required">*</span>\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['ideaid'].' .first_line\').append(\'<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).' asterisk" title="Required">*</span>\'); }); </script>';
     }
 
     if($focus_i__or){
-        $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( count($CI->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type' => 7712, //Input Choice
-                'link_player' => $link_player,
-                'link_left' => $focus_i__or['i__id'],
-                'link_right' => $i['i__id'],
+        $ui .= '<div class="this_selector this_selector_'.$i['ideaid'].'" selection_ideaid="'.$i['ideaid'].'"><span class="icon-block-sm">'.( count($CI->Mench_ledger->fetch(array(
+                'linkvoid' => 0, //Not Void
+                'linktype' => 7712, //Input Choice
+                'linkplayer' => $linkplayer,
+                'linkleft' => $focus_i__or['ideaid'],
+                'linkright' => $i['ideaid'],
             ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
     }
 
@@ -4624,64 +4624,64 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
     $ui .= '<div class="cover-text">';
 
     //Show Link User:
-    $ui .= '<div class="creator_frame creator_frame_'.$i['i__id'].'">';
+    $ui .= '<div class="creator_frame creator_frame_'.$i['ideaid'].'">';
 
     //Show Creator if any:
     $headline_authors = array();
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type' => 4250, //Idea Created
-        'link_right' => $i['i__id'],
-        'link_void' => 0, //Not Void
-    ), array('link_up')) as $creator){
+        'linktype' => 4250, //Idea Created
+        'linkright' => $i['ideaid'],
+        'linkvoid' => 0, //Not Void
+    ), array('linkup')) as $creator){
 
-        array_push($headline_authors, $creator['e__id']);
+        array_push($headline_authors, $creator['playerid']);
         $follow_btn = null;
-        if($focus__node && $link_player && $link_player!=$creator['e__id']){
+        if($focus__node && $linkplayer && $linkplayer!=$creator['playerid']){
             $followings = $CI->Mench_ledger->fetch(array(
-                'link_up' => $creator['e__id'],
-                'link_down' => $link_player,
-                'link_type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
-                'link_void' => 0, //Not Void
-            ), array(), 1, 0, array('link_number' => 'ASC'));
-            $follow_btn = view__single_select_instant(42795, ( count($followings) ? $followings[0]['link_type'] : 0 ), $access_level_i, false, $creator['e__id'], ( count($followings) ? $followings[0]['link_id'] : 0 ));
+                'linkup' => $creator['playerid'],
+                'linkdown' => $linkplayer,
+                'linktype IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
+                'linkvoid' => 0, //Not Void
+            ), array(), 1, 0, array('linknumber' => 'ASC'));
+            $follow_btn = view__single_select_instant(42795, ( count($followings) ? $followings[0]['linktype'] : 0 ), $access_level_i, false, $creator['playerid'], ( count($followings) ? $followings[0]['linkid'] : 0 ));
         }
 
-        $ui .= '<div class="creator_headline"><a href="'.view__memory(42903,42902).$creator['e__handle'].'"><span class="icon-block">'.view__cover($creator['e__cover']).'</span><b class="hidden">'.$creator['e__title'].'</b><span class="grey mini-font mini-frame">@'.$creator['e__handle'].'</span></a>'.( !in_array($creator['e__id'], $CI->config->item('n___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['link_time'])).' PST">'.view__time_difference($creator['link_time'], true).'</span>' : '' ).$follow_btn.'</div>';
+        $ui .= '<div class="creator_headline"><a href="'.view__memory(42903,42902).$creator['playerhandle'].'"><span class="icon-block">'.view__cover($creator['playercover']).'</span><b class="hidden">'.$creator['playertext'].'</b><span class="grey mini-font mini-frame">@'.$creator['playerhandle'].'</span></a>'.( !in_array($creator['playerid'], $CI->config->item('n___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['linktime'])).' PST">'.view__time_difference($creator['linktime'], true).'</span>' : '' ).$follow_btn.'</div>';
 
     }
 
 
-    $ui .= ( $href ? '<a href="'.$href.'"' : '<div' ).' class="sub__handle space-content grey '.( !$superpower_10939 && ($discovery_mode || !$focus__node || !$link_player) ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span>'.( $href ? '</a>' : '</div>' );
+    $ui .= ( $href ? '<a href="'.$href.'"' : '<div' ).' class="sub__handle space-content grey '.( !$superpower_10939 && ($discovery_mode || !$focus__node || !$linkplayer) ? ' hidden ' : '' ).'">#<span class="ui_ideahashtag_'.$i['ideaid'].'">'.$i['ideahashtag'].'</span>'.( $href ? '</a>' : '</div>' );
 
     //Right menu push here:
     //Bottom Bar
     $bottom_bar_ui = '';
 
     //Determine Link Group
-    $link_type_id = 4593; //Transaction Type
-    $link_type_ui = '';
-    if(!$focus__node && $link_id && !$is_cache){
-        foreach($CI->config->item('e___31770') as $link_type1 => $m1){
-            if(in_array($i['link_type'], $CI->config->item('n___'.$link_type1))){
+    $linktype_id = 4593; //Transaction Type
+    $linktype_ui = '';
+    if(!$focus__node && $linkid && !$is_cache){
+        foreach($CI->config->item('e___31770') as $linktype1 => $m1){
+            if(in_array($i['linktype'], $CI->config->item('n___'.$linktype1))){
                 foreach($CI->Mench_ledger->fetch(array(
-                    'link_id' => $link_id,
-                ), array('link_player')) as $linker){
-                    $link_type_ui .= '<span class="icon-block-sm">';
-                    $link_type_ui .= view__single_select_instant($link_type1, $i['link_type'], $access_level_i, false, $i['i__id'], $link_id);
-                    $link_type_ui .= '</span>';
+                    'linkid' => $linkid,
+                ), array('linkplayer')) as $linker){
+                    $linktype_ui .= '<span class="icon-block-sm">';
+                    $linktype_ui .= view__single_select_instant($linktype1, $i['linktype'], $access_level_i, false, $i['ideaid'], $linkid);
+                    $linktype_ui .= '</span>';
                 }
-                $link_type_id = $link_type1;
+                $linktype_id = $linktype1;
                 break;
             }
         }
-        if(!$link_type_ui){
-            $link_type_ui .= '<span class="icon-block-sm">';
-            $link_type_ui .= view__single_select_instant(4593, $i['link_type'], false, false, $i['i__id'], $link_id);
-            $link_type_ui .= '</span>';
+        if(!$linktype_ui){
+            $linktype_ui .= '<span class="icon-block-sm">';
+            $linktype_ui .= view__single_select_instant(4593, $i['linktype'], false, false, $i['ideaid'], $linkid);
+            $linktype_ui .= '</span>';
         }
     }
 
-    foreach($CI->config->item('e___31904') as $link_type_target_bar => $m_target_bar) {
+    foreach($CI->config->item('e___31904') as $linktype_target_bar => $m_target_bar) {
 
         //See if missing superpower?
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_target_bar['m__following']);
@@ -4690,55 +4690,55 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
         }
 
         //Determine hover state:
-        if($link_type_target_bar==31770 && !$discovery_mode && $link_type_ui && $superpower_10939){
+        if($linktype_target_bar==31770 && !$discovery_mode && $linktype_ui && $superpower_10939){
 
             //Links
-            $bottom_bar_ui .= $link_type_ui;
+            $bottom_bar_ui .= $linktype_ui;
 
-        } elseif($link_type_target_bar==4362 && !$is_cache && !$discovery_mode && $player_e && isset($i['link_time']) && strtotime($i['link_time']) > 0 && $link_type_ui && ($access_level_i>=3 || ($player_e && $link_player==$i['link_player']))){
+        } elseif($linktype_target_bar==4362 && !$is_cache && !$discovery_mode && $player_e && isset($i['linktime']) && strtotime($i['linktime']) > 0 && $linktype_ui && ($access_level_i>=3 || ($player_e && $linkplayer==$i['linkplayer']))){
 
             //Link Time / Creator
             $creator_details = '';
-            $time_diff = view__time_difference($i['link_time'], true);
+            $time_diff = view__time_difference($i['linktime'], true);
             $creator_name = '';
-            if($i['link_player'] > 0){
+            if($i['linkplayer'] > 0){
                 foreach($CI->Source_cache->fetch(array(
-                    'e__id' => $i['link_player'],
+                    'playerid' => $i['linkplayer'],
                          )) as $creator){
-                    $creator_name = 'Linked by '.$creator['e__title'].' @'.$creator['e__handle'].' on ';
-                    $creator_details = '<a href="'.view__memory(42903,33286).$i['i__hashtag'].'"><span class="icon-block-sm">'.view__cover($creator['e__cover']).'</span></a>';
+                    $creator_name = 'Linked by '.$creator['playertext'].' @'.$creator['playerhandle'].' on ';
+                    $creator_details = '<a href="'.view__memory(42903,33286).$i['ideahashtag'].'"><span class="icon-block-sm">'.view__cover($creator['playercover']).'</span></a>';
                 }
             }
 
-            $bottom_bar_ui .= '<span class="icon-block-sm"><div class="grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['link_time'])).' which is '.$time_diff.' ago | ID '.$i['link_id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
+            $bottom_bar_ui .= '<span class="icon-block-sm"><div class="grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['linktime'])).' which is '.$time_diff.' ago | ID '.$i['linkid'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
 
-        } elseif($link_type_target_bar==4737 && !$discovery_mode && $superpower_10939){
+        } elseif($linktype_target_bar==4737 && !$discovery_mode && $superpower_10939){
 
             //Source Reference
             $bottom_bar_ui .= '<span>';
-            $bottom_bar_ui .= view__single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['i__id'], $link_id);
+            $bottom_bar_ui .= view__single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['ideaid'], $linkid);
             $bottom_bar_ui .= '</span>';
 
-        } elseif(0 && $link_type_target_bar==41037 && $focus_i__or && !$is_cache){
+        } elseif(0 && $linktype_target_bar==41037 && $focus_i__or && !$is_cache){
 
             //Selector
 
-        } elseif($link_type_target_bar==13909 && $access_level_i>=3 && $has_sortable && !$discovery_mode){
+        } elseif($linktype_target_bar==13909 && $access_level_i>=3 && $has_sortable && !$discovery_mode){
 
             //Sort Idea
             $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-sm">';
             $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" class="sort_i_grab">'.$m_target_bar['m__cover'].'</span>';
             $bottom_bar_ui .= '</span>';
 
-        } elseif($link_type_target_bar==14980 && !$is_cache && $access_level_i>=1 && !$discovery_mode){
+        } elseif($linktype_target_bar==14980 && !$is_cache && $access_level_i>=1 && !$discovery_mode){
 
             //Drop Down
             $action_buttons = null;
-            if(!$link_id){
+            if(!$linkid){
                 $focus_dropdown = 11047; //Idea Dropdown
-            } elseif($link_type_id==4486){ //Idea/Idea Links
+            } elseif($linktype_id==4486){ //Idea/Idea Links
                 $focus_dropdown = 14955; //Idea/Idea Dropdown
-            } elseif($link_type_id==13550){ //Idea/Source Links
+            } elseif($linktype_id==13550){ //Idea/Source Links
                 $focus_dropdown = 28787; //Idea/Source Dropdown
             } else {
                 //Discoveries
@@ -4746,7 +4746,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
             }
 
             if(is_array($CI->config->item('e___'.$focus_dropdown))){
-                foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
+                foreach($CI->config->item('e___'.$focus_dropdown) as $playerid_dropdown => $m_dropdown) {
 
                     //Skip if missing superpower:
                     $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
@@ -4756,74 +4756,74 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
                     $anchor = '<span class="icon-block-sm">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
-                    if($e__id_dropdown==12589 && $access_level_i>=3){
+                    if($playerid_dropdown==12589 && $access_level_i>=3){
 
                         //Mass Apply
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(12589,'.$i['ideaid'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==33286 && $discovery_mode && $access_level_i>=3){
+                    } elseif($playerid_dropdown==33286 && $discovery_mode && $access_level_i>=3){
 
                         //Ideation Mode
-                        $action_buttons .= '<a href="'.view__memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="'.view__memory(42903,33286).$i['ideahashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==31911 && $access_level_i>=3){
+                    } elseif($playerid_dropdown==31911 && $access_level_i>=3){
 
                         //Idea Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$link_id.')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['ideaid'].','.$linkid.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==13007 && $access_level_i>=3){
+                    } elseif($playerid_dropdown==13007 && $access_level_i>=3){
 
                         //Reset Alphabetic order
                         $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==31911 && $access_level_i>=3 && $discovery_mode){
+                    } elseif($playerid_dropdown==31911 && $access_level_i>=3 && $discovery_mode){
 
                         //Idea Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$link_id.')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['ideaid'].','.$linkid.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==10673 && $link_id && $access_level_i>=3){
+                    } elseif($playerid_dropdown==10673 && $linkid && $access_level_i>=3){
 
                         //Unlink
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$link_id.', '.$link_type.',\''.$i['i__hashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$linkid.', '.$linktype.',\''.$i['ideahashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==30873 && $access_level_i>=3){
+                    } elseif($playerid_dropdown==30873 && $access_level_i>=3){
 
                         //Clone Idea Tree:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['ideaid'].', 1)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==33292 && $player_e){
+                    } elseif($playerid_dropdown==33292 && $player_e){
 
                         //Stats
-                        $action_buttons .= '<a href="'.view__app_link(33292).view__memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="'.view__app_link(33292).view__memory(42903,33286).$i['ideahashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==29771 && $access_level_i>=3){
+                    } elseif($playerid_dropdown==29771 && $access_level_i>=3){
 
                         //Clone Single Idea:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['ideaid'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==28636 && $access_level_i>=3 && $link_id){
+                    } elseif($playerid_dropdown==28636 && $access_level_i>=3 && $linkid){
 
                         //Transaction Details
-                        $action_buttons .= '<a href="'.view__app_link(4341).'?link_id='.$link_id.'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="'.view__app_link(4341).'?linkid='.$linkid.'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==42648 && $access_level_i>=3){
+                    } elseif($playerid_dropdown==42648 && $access_level_i>=3){
 
                         //Delete Permanently
                         $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                        $action_buttons .= '<a href="javascript:void();" onclick="i_void('.$i['i__id'].', '.$link_id.', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void();" onclick="i_void('.$i['ideaid'].', '.$linkid.', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==28637 && isset($i['link_type']) && superpower_unlocked(12700)){
+                    } elseif($playerid_dropdown==28637 && isset($i['linktype']) && superpower_unlocked(12700)){
 
                         //Paypal Details
-                        $link_text = @unserialize($i['link_text']);
-                        if(isset($link_text['txn_id'])){
-                            $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$link_text['txn_id'].'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
+                        $linktext = @unserialize($i['linktext']);
+                        if(isset($linktext['txn_id'])){
+                            $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$linktext['txn_id'].'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
                         }
 
-                    } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287')) && $access_level_i>=3){
+                    } elseif(in_array($playerid_dropdown, $CI->config->item('n___6287')) && $access_level_i>=3){
 
                         //Standard button
-                        $action_buttons .= '<a href="'.view__app_link($e__id_dropdown).view__memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="'.view__app_link($playerid_dropdown).view__memory(42903,33286).$i['ideahashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                     }
                 }
@@ -4836,8 +4836,8 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
                 $bottom_bar_ui .= '<span>';
                 $bottom_bar_ui .= '<div class="dropdown inline-block">';
-                $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
-                $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
+                $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="action_menu_i_'.$i['ideaid'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
+                $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['ideaid'].'">';
                 $bottom_bar_ui .= $action_buttons;
                 $bottom_bar_ui .= '</div>';
                 $bottom_bar_ui .= '</div>';
@@ -4856,16 +4856,16 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
     //Idea Location if any:
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type' => 41949, //Locate
-        'link_right' => $i['i__id'],
-        'link_void' => 0, //Not Void
-    ), array('link_up')) as $location){
+        'linktype' => 41949, //Locate
+        'linkright' => $i['ideaid'],
+        'linkvoid' => 0, //Not Void
+    ), array('linkup')) as $location){
         $ui .= view__featured_links(41949, $location, null, $focus__node);
     }
 
     //Link Message if any:
-    if($link_id && $player_e){
-        $ui .= '<div class="link_text_headline grey hideIfEmpty ignore-click ui_link_text_' . $link_id . ( in_array($i['link_type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '" style="padding-left:40px;">'.htmlentities($i['link_text']).'</div>';
+    if($linkid && $player_e){
+        $ui .= '<div class="linktext_headline grey hideIfEmpty ignore-click ui_linktext_' . $linkid . ( in_array($i['linktype'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '" style="padding-left:40px;">'.htmlentities($i['linktext']).'</div>';
     }
 
 
@@ -4873,17 +4873,17 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view__i__links($i, $link_player, ($focus__node || 1), $focus__node).'</div>';
+    $ui .= '<div class="ui_ideacache_' . $i['ideaid'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view__i__links($i, $linkplayer, ($focus__node || 1), $focus__node).'</div>';
 
     $i_popup_url = i_popup_url($i);
     if($i_popup_url){
-        $ui .= '<div class="ignore-click link_click link_click_'.$i['i__id'].' hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked('.$i['i__id'].')">'.$i_popup_url.'</a></div>';
+        $ui .= '<div class="ignore-click link_click link_click_'.$i['ideaid'].' hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked('.$i['ideaid'].')">'.$i_popup_url.'</a></div>';
     }
 
 
     //Raw Data:
-    $ui .= '<div class="ui_i__message_' . $i['i__id'] . '
-     hidden">'.$i['i__message'].'</div>';
+    $ui .= '<div class="ui_ideatext_' . $i['ideaid'] . '
+     hidden">'.$i['ideatext'].'</div>';
 
 
 
@@ -4894,7 +4894,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
 
 
-    if($link_player){
+    if($linkplayer){
 
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
@@ -4913,23 +4913,23 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
                 $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
                 //Referesh soon so we can check if completed or not
-                js_php_redirect(view__memory(42903, 30795) . $target_i__hashtag .'/'.$i['i__hashtag'].'?process_pay=1', 987);
+                js_php_redirect(view__memory(42903, 30795) . $target_ideahashtag .'/'.$i['ideahashtag'].'?process_pay=1', 987);
 
             } elseif($previous_i['i__type']!=43758 && count($x_completes)){
 
                 foreach($x_completes as $x_complete){
 
-                    $link_text = unserialize($x_complete['link_text']);
-                    $quantity = ( $x_complete['link_number'] >= 2 ? $x_complete['link_number'] : ( isset($link_text['quantity']) && $link_text['quantity']>=2 ? $link_text['quantity'] : 1 ) );
+                    $linktext = unserialize($x_complete['linktext']);
+                    $quantity = ( $x_complete['linknumber'] >= 2 ? $x_complete['linknumber'] : ( isset($linktext['quantity']) && $linktext['quantity']>=2 ? $linktext['quantity'] : 1 ) );
 
-                    if($link_text['mc_gross']!=0){
-                        $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.( $link_text['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).str_replace('.00','',$link_text['mc_gross']).' '.$link_text['mc_currency'].( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).' & should receive a <u>Paypal Email Receipt</u> shortly.</div>';
+                    if($linktext['mc_gross']!=0){
+                        $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.( $linktext['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).str_replace('.00','',$linktext['mc_gross']).' '.$linktext['mc_currency'].( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).' & should receive a <u>Paypal Email Receipt</u> shortly.</div>';
                     }
 
                 }
 
-                $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$link_text['mc_gross'].'">';
-                $input_ui .= '<input type="hidden" class="i__quantity" name="quantity" value="'.$link_text['quantity'].'">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$linktext['mc_gross'].'">';
+                $input_ui .= '<input type="hidden" class="i__quantity" name="quantity" value="'.$linktext['quantity'].'">'; //Dynamic Variable that JS will update
 
             } else {
 
@@ -4938,28 +4938,28 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
                 $paypal_email =  website_setting(30882);
 
                 $currency_types = $CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                    'link_right' => ( $previous_i['i__type']==43758 ? $previous_i['i__id'] : $i['i__id']  ),
-                    'link_up IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'linkright' => ( $previous_i['i__type']==43758 ? $previous_i['ideaid'] : $i['ideaid']  ),
+                    'linkup IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
                 ));
                 $total_dues = $CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                    'link_right' => $i['i__id'],
-                    'link_up' => 26562, //Total Due
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'linkright' => $i['ideaid'],
+                    'linkup' => 26562, //Total Due
                 ));
                 $cart_max = $CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                    'link_right' => $i['i__id'],
-                    'link_up' => 29651, //Cart Max Quantity
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'linkright' => $i['ideaid'],
+                    'linkup' => 29651, //Cart Max Quantity
                 ));
                 $cart_min = $CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                    'link_right' => $i['i__id'],
-                    'link_up' => 31008, //Cart Min Quantity
+                    'linkvoid' => 0, //Not Void
+                    'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'linkright' => $i['ideaid'],
+                    'linkup' => 31008, //Cart Min Quantity
                 ));
 
 
@@ -4969,60 +4969,60 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
                 $unit_currency = '';
                 $unit_price = 0;
                 $unit_fee = 0;
-                $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['link_text']) && $cart_max[0]['link_text']>0 ? intval($cart_max[0]['link_text']) : view__memory(6404,29651) );
-                $spots_remaining = i_spots_remaining($i['i__id']);
+                $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['linktext']) && $cart_max[0]['linktext']>0 ? intval($cart_max[0]['linktext']) : view__memory(6404,29651) );
+                $spots_remaining = i_spots_remaining($i['ideaid']);
                 $starting_point = ( $is_required ? 1 : 0  );
                 $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
 
-                $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['link_text']) && intval($cart_min[0]['link_text'])>$starting_point ? intval($cart_min[0]['link_text']) : $starting_point );
+                $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['linktext']) && intval($cart_min[0]['linktext'])>$starting_point ? intval($cart_min[0]['linktext']) : $starting_point );
                 $e___26661 = $CI->config->item('e___26661'); //Currency
                 if(count($currency_types)){
-                    $unit_currency = $e___26661[$currency_types[0]['link_up']]['m__message'];
+                    $unit_currency = $e___26661[$currency_types[0]['linkup']]['m__message'];
                 }
 
 
-                if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $previous_i['i__type']!=43758 && $total_dues[0]['link_text']>0 && count($currency_types)==1){
+                if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $previous_i['i__type']!=43758 && $total_dues[0]['linktext']>0 && count($currency_types)==1){
 
                     $valid_instant_pay = true;
 
                     $digest_fees = count($CI->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                        'link_right' => $i['i__id'],
-                        'link_up' => 30589, //Digest Fees
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'linkright' => $i['ideaid'],
+                        'linkup' => 30589, //Digest Fees
                     )));
 
                     //Break down amount & currency
-                    $unit_price = doubleval($total_dues[0]['link_text']);
-                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $link_player)) + doubleval(website_setting(27017, $link_player)))/100 ), 2, ".", "");
+                    $unit_price = doubleval($total_dues[0]['linktext']);
+                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $linkplayer)) + doubleval(website_setting(27017, $linkplayer)))/100 ), 2, ".", "");
 
                     //Append information to cart about Paypal:
                     $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view__app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.</div>';
 
-                } elseif(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $previous_i['i__type']==43758 && count($total_dues) && $total_dues[0]['link_text']>0){
+                } elseif(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $previous_i['i__type']==43758 && count($total_dues) && $total_dues[0]['linktext']>0){
 
                     $digest_fees = count($CI->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                        'link_right' => $previous_i['i__id'],
-                        'link_up' => 30589, //Digest Fees
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'linkright' => $previous_i['ideaid'],
+                        'linkup' => 30589, //Digest Fees
                     )));
 
                     //Break down amount & currency
-                    $unit_price = doubleval($total_dues[0]['link_text']);
-                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $link_player)) + doubleval(website_setting(27017, $link_player)))/100 ), 2, ".", "");
+                    $unit_price = doubleval($total_dues[0]['linktext']);
+                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $linkplayer)) + doubleval(website_setting(27017, $linkplayer)))/100 ), 2, ".", "");
 
                 }
 
 
                 $current_value = $min_allowed;
                 foreach($CI->Mench_ledger->fetch(array(
-                    'link_void' => 0, //Not Void
-                    'link_type' => 7712, //Input Choice
-                    'link_player' => $player_e['e__id'],
-                    'link_right' => $i['i__id'],
+                    'linkvoid' => 0, //Not Void
+                    'linktype' => 7712, //Input Choice
+                    'linkplayer' => $player_e['playerid'],
+                    'linkright' => $i['ideaid'],
                 ), array(), 1) as $x_selection){
-                    $current_value = $x_selection['link_number'];
+                    $current_value = $x_selection['linknumber'];
                 }
 
 
@@ -5032,10 +5032,10 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
                     . '<div class="source_info_box">';
 
                 if($max_allowed > 0 || $min_allowed > 0){
-                    $input_ui .= '<div class="sale_controller sale_controller_'.$i['i__id'].'" unitprice="'.$unit_price.'" unitcurrency="'.$unit_currency.'" i__id="'.$i['i__id'].'">';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_down"><i class="fas fa-minus '.( $current_value==$min_allowed ? ' hidden ' : '' ).'"></i></a>';
+                    $input_ui .= '<div class="sale_controller sale_controller_'.$i['ideaid'].'" unitprice="'.$unit_price.'" unitcurrency="'.$unit_currency.'" ideaid="'.$i['ideaid'].'">';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['ideaid'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_down"><i class="fas fa-minus '.( $current_value==$min_allowed ? ' hidden ' : '' ).'"></i></a>';
                     $input_ui .= '<span class="main__title current_count">'.$current_value.'</span>';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_up">'.( $max_allowed==$min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>' ).'</a>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['ideaid'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_up">'.( $max_allowed==$min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>' ).'</a>';
                     $input_ui .= '</div>';
                 } else {
                     $input_ui .= '<span class="current_count" style="display: none;">'.$min_allowed.'</span>';
@@ -5057,14 +5057,14 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$unit_fee.'">';
                     $input_ui .= '<input type="hidden" class="i__quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
                     $input_ui .= '<input type="hidden" name="item_name" value="'.remove_none_utf8(view__i_title($i, true)).'">';
-                    $input_ui .= '<input type="hidden" name="item_number" value="'.( $target_i__hashtag ? $target_i__hashtag.' #' : '' ).$i['i__hashtag'].' @'.get_domain('m__handle').' @'.$player_e['e__handle'].'">';
+                    $input_ui .= '<input type="hidden" name="item_number" value="'.( $target_ideahashtag ? $target_ideahashtag.' #' : '' ).$i['ideahashtag'].' @'.get_domain('m__handle').' @'.$player_e['playerhandle'].'">';
 
                     $input_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                     $input_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
                     $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
                     $input_ui .= '<input type="hidden" name="notify_url" value="https://'.$e___14870[2738]['m__message'].view__app_link(26595).'">';
-                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').view__memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?cancel_pay=1">';
-                    $input_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').view__memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?process_pay=1">';
+                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').view__memory(42903,30795).$target_ideahashtag.'/'.$i['ideahashtag'].'?cancel_pay=1">';
+                    $input_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').view__memory(42903,30795).$target_ideahashtag.'/'.$i['ideahashtag'].'?process_pay=1">';
                     $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                     $input_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
@@ -5087,14 +5087,14 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
             //Find the created idea if any:
             $x_responses = $CI->Mench_ledger->fetch(array(
-                'link_void' => 0, //Not Void
-                'link_type' => 33532, //Private Reply
-                'link_left' => $i['i__id'],
-                'link_player' => $link_player,
-            ), array('link_right'), 0, 1, array('link_id' => 'DESC'));
+                'linkvoid' => 0, //Not Void
+                'linktype' => 33532, //Private Reply
+                'linkleft' => $i['ideaid'],
+                'linkplayer' => $linkplayer,
+            ), array('linkright'), 0, 1, array('linkid' => 'DESC'));
 
             $input_attributes = '';
-            $previous_response = ( isset($x_responses[0]['i__message']) ? $x_responses[0]['i__message'] : '' );
+            $previous_response = ( isset($x_responses[0]['ideatext']) ? $x_responses[0]['ideatext'] : '' );
 
             if (in_array($i['i__type'], $CI->config->item('n___43002'))) {
 
@@ -5114,47 +5114,47 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
                     //Steps
                     foreach($CI->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                        'link_right' => $i['i__id'],
-                        'link_up' => 31813, //Steps
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'linkright' => $i['ideaid'],
+                        'linkup' => 31813, //Steps
                     )) as $num_steps){
-                        if(strlen($num_steps['link_text']) && is_numeric($num_steps['link_text'])){
-                            $input_attributes .= ' step="'.$num_steps['link_text'].'" ';
+                        if(strlen($num_steps['linktext']) && is_numeric($num_steps['linktext'])){
+                            $input_attributes .= ' step="'.$num_steps['linktext'].'" ';
                         }
                     }
 
                     //Min Value
                     foreach($CI->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                        'link_right' => $i['i__id'],
-                        'link_up' => 31800, //Min Value
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'linkright' => $i['ideaid'],
+                        'linkup' => 31800, //Min Value
                     )) as $num_steps){
-                        if(strlen($num_steps['link_text']) && is_numeric($num_steps['link_text'])){
-                            $input_attributes .= ' min="'.$num_steps['link_text'].'" ';
+                        if(strlen($num_steps['linktext']) && is_numeric($num_steps['linktext'])){
+                            $input_attributes .= ' min="'.$num_steps['linktext'].'" ';
                         }
                     }
 
                     //Max Value
                     foreach($CI->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                        'link_right' => $i['i__id'],
-                        'link_up' => 31801, //Max Value
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'linkright' => $i['ideaid'],
+                        'linkup' => 31801, //Max Value
                     )) as $num_steps){
-                        if(strlen($num_steps['link_text']) && is_numeric($num_steps['link_text'])){
-                            $input_attributes .= ' max="'.$num_steps['link_text'].'" ';
+                        if(strlen($num_steps['linktext']) && is_numeric($num_steps['linktext'])){
+                            $input_attributes .= ' max="'.$num_steps['linktext'].'" ';
                         }
                     }
 
                 } elseif($i['i__type']==30350){
 
                     $has_time = count($CI->Mench_ledger->fetch(array(
-                        'link_void' => 0, //Not Void
-                        'link_type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                        'link_right' => $i['i__id'],
-                        'link_up' => 32442, //Select Time
+                        'linkvoid' => 0, //Not Void
+                        'linktype IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'linkright' => $i['ideaid'],
+                        'linkup' => 32442, //Select Time
                     )));
 
                     $input_type = ( $has_time ? 'datetime-local'  : 'date' );
@@ -5181,22 +5181,22 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
             //Uploader
             if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
 
-                if($i['i__hashtag']=='ProfilePicture' && $player_e){
+                if($i['ideahashtag']=='ProfilePicture' && $player_e){
 
                     //TODO REMOVE HACK: This is a profile picture hack:
-                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="e_editor_load('.$link_player.',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</a></div>';
+                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="e_editor_load('.$linkplayer.',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_'.$i['ideaid'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</a></div>';
 
                 } else {
                     $input_ui .= '<div class="media_outer_frame hideIfEmpty">
-                        <div id="media_outer_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
+                        <div id="media_outer_'.$i['ideaid'].'" class="media_frame media_frame_'.$i['ideaid'].' hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>';
-                    $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
-                    $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['i__id'].', [\'#'.$i['i__id'].'\'], \'.inner_uploader_'.$i['i__id'].'\'); setTimeout(function () { display_media(\'media_outer_'.$i['i__id'].'\', 43004, '.$i['i__id'].'); }, 144); }); </script>';
+                    $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_'.$i['ideaid'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
+                    $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['ideaid'].', [\'#'.$i['ideaid'].'\'], \'.inner_uploader_'.$i['ideaid'].'\'); setTimeout(function () { display_media(\'media_outer_'.$i['ideaid'].'\', 43004, '.$i['ideaid'].'); }, 144); }); </script>';
 
                     foreach($x_responses as $x_response){
                         $input_ui .= '<div class="hidden">'.view__card_i(6255, $x_response).'</div>';
-                        $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_'.$i['i__id'].'\', 43004, '.$x_response['i__id'].'); }, 144); }); </script>';
+                        $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_'.$i['ideaid'].'\', 43004, '.$x_response['ideaid'].'); }, 144); }); </script>';
                     }
                 }
 
@@ -5205,7 +5205,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
         }
 
         if(strlen($input_ui)){
-            $ui .= '<div class="ignore-click input_ui input_ui_'.$i['i__id'].'">'.$input_ui.'</div>';
+            $ui .= '<div class="ignore-click input_ui input_ui_'.$i['ideaid'].'">'.$input_ui.'</div>';
         }
 
         //End of Discovery input
@@ -5217,7 +5217,7 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
     $bottom_menu_ui = '';
 
 
-    foreach($CI->config->item('e___44257') as $link_type_target_bar => $m_target_bar) {
+    foreach($CI->config->item('e___44257') as $linktype_target_bar => $m_target_bar) {
 
         //See if missing superpower?
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_target_bar['m__following']);
@@ -5226,46 +5226,46 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
         }
 
         //Determine hover state:
-        if($link_type_target_bar==33532 && !$is_cache && $player_e && $access_level_i>=2 && !$is_locked){
+        if($linktype_target_bar==33532 && !$is_cache && $player_e && $access_level_i>=2 && !$is_locked){
 
             //Private Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node && 0 ? $m_target_bar['m__title'] : '' ).'</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['ideaid'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node && 0 ? $m_target_bar['m__title'] : '' ).'</a>';
             $bottom_menu_ui .= '</span>';
 
-        } elseif(0 && $link_type_target_bar==42819 && !$is_cache && superpower_unlocked(10939) && $access_level_i>=3 && !$is_locked){
+        } elseif(0 && $linktype_target_bar==42819 && !$is_cache && superpower_unlocked(10939) && $access_level_i>=3 && !$is_locked){
 
             //New Source
             $bottom_menu_ui .= '<span class="mini_button main__title">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['ideaid'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
             $bottom_menu_ui .= '</span>';
 
-        } elseif($link_type_target_bar==42260 && $player_e && !$is_locked && !$is_cache && 0){
+        } elseif($linktype_target_bar==42260 && $player_e && !$is_locked && !$is_cache && 0){
 
             //Reactions... Check to see if they have any?
             $reactions = $CI->Mench_ledger->fetch(array(
-                'link_up' => $link_player,
-                'link_right' => $i['i__id'],
-                'link_type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
-                'link_void' => 0, //Not Void
+                'linkup' => $linkplayer,
+                'linkright' => $i['ideaid'],
+                'linktype IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
+                'linkvoid' => 0, //Not Void
             ), array(), 1);
             $bottom_menu_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
-            $bottom_menu_ui .= view__single_select_instant(42260, ( count($reactions) ? $reactions[0]['link_type'] : 0 ), $player_e, 0 && $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['link_id'] : 0 ));
+            $bottom_menu_ui .= view__single_select_instant(42260, ( count($reactions) ? $reactions[0]['linktype'] : 0 ), $player_e, 0 && $focus__node, $i['ideaid'], ( count($reactions) ? $reactions[0]['linkid'] : 0 ));
             $bottom_menu_ui .= '</div></span>';
 
-        } elseif($link_type_target_bar==4235 && (!$discovery_mode && $i_startable && $access_level_i>=1)){
+        } elseif($linktype_target_bar==4235 && (!$discovery_mode && $i_startable && $access_level_i>=1)){
 
             //Start
-            $bottom_menu_ui .= '<span><a href="'.view__memory(42903,30795).$i['i__hashtag'].'/'.view__memory(6404,4235).'" class="btn btn-sm btn-black"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+            $bottom_menu_ui .= '<span><a href="'.view__memory(42903,30795).$i['ideahashtag'].'/'.view__memory(6404,4235).'" class="btn btn-sm btn-black"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
-        } elseif($link_type_target_bar==42924 && $discovery_mode && $focus__node){
+        } elseif($linktype_target_bar==42924 && $discovery_mode && $focus__node){
 
             //Next
             $e___6255 = $CI->config->item('e___6255');
             $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[i__discovery_link($i)] );
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
 
-        } elseif($link_type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !i_required($i)){
+        } elseif($linktype_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !i_required($i)){
 
             //Skip
             $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
@@ -5277,19 +5277,19 @@ function view__card_i($link_type, $i, $previous_i = null, $target_i__hashtag = n
 
     //Bottom Bar menu
     if(!$focus__node && !$is_locked && !$is_cache ){
-        foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
+        foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $playerid_bottom_bar => $m_bottom_bar) {
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
             if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 continue;
             }
 
-            if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$player_e){
+            if(in_array($playerid_bottom_bar, $CI->config->item('n___42376')) && !$player_e){
                 //Private content without being a member, so dont even show the counters:
                 continue;
             }
 
-            $coins_ui = view__i_covers($e__id_bottom_bar,  $i['i__id'], 0, true, $headline_authors);
+            $coins_ui = view__i_covers($playerid_bottom_bar,  $i['ideaid'], 0, true, $headline_authors);
             if(strlen($coins_ui)){
                 $bottom_menu_ui .= '<span class="hideIfEmpty">';
                 $bottom_menu_ui .= $coins_ui;
@@ -5332,23 +5332,23 @@ function view__list_e($i, $plain_no_html = false){
     $e___42421 = $CI->config->item('e___42421');
     $order_columns = array();
     foreach($e___42421 as $sort_id => $sort) {
-        $order_columns['link_up = \''.$sort_id.'\' DESC'] = null;
+        $order_columns['linkup = \''.$sort_id.'\' DESC'] = null;
     }
 
     //Query Relevant Sources:
     foreach($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Writer Links Active
-        'link_right' => $i['i__id'],
-        'link_up IN (' . join(',', $CI->config->item('n___42421')) . ')' => null, //Featured Inputs
-    ), array('link_up'), 0, 0, $order_columns) as $x){
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Writer Links Active
+        'linkright' => $i['ideaid'],
+        'linkup IN (' . join(',', $CI->config->item('n___42421')) . ')' => null, //Featured Inputs
+    ), array('linkup'), 0, 0, $order_columns) as $x){
 
         //Format data if needed:
-        $x['link_text'] = data_type_format($x['link_up'], $x['link_text']);
+        $x['linktext'] = data_type_format($x['linkup'], $x['linktext']);
 
         $message_append .= '<div class="source-info">'
-            . '<span class="icon-block">'. $e___42421[$x['link_up']]['m__cover'] . '</span>' . $e___42421[$x['link_up']]['m__title'] . ( strlen($x['link_text']) ? ':' : '' )
-            . ( strlen($x['link_text']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view__url($x['link_text'])) : $x['link_text'] ).'</div></div>' : '' )
+            . '<span class="icon-block">'. $e___42421[$x['linkup']]['m__cover'] . '</span>' . $e___42421[$x['linkup']]['m__title'] . ( strlen($x['linktext']) ? ':' : '' )
+            . ( strlen($x['linktext']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view__url($x['linktext'])) : $x['linktext'] ).'</div></div>' : '' )
             . '</div>';
 
     }
@@ -5365,32 +5365,32 @@ function view__i_media($i){
 
     //Query Relevant Sources:
     foreach($CI->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
-        'link_right' => $i['i__id'],
-    ), array('link_up'), 0, 0, array('link_number' => 'ASC')) as $x){
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
+        'linkright' => $i['ideaid'],
+    ), array('linkup'), 0, 0, array('linknumber' => 'ASC')) as $x){
 
-        if($x['link_type']==4258){
+        if($x['linktype']==4258){
 
             //Video
-            $template = '<video id="video_player_'.$x['link_text'].'" controls class="cld-video-player cld-fluid cld-video-player-skin-light" poster="'.$x['e__cover'].'"></video><script> play_video(\''.$x['link_text'].'\'); </script>';
+            $template = '<video id="video_player_'.$x['linktext'].'" controls class="cld-video-player cld-fluid cld-video-player-skin-light" poster="'.$x['playercover'].'"></video><script> play_video(\''.$x['linktext'].'\'); </script>';
 
-        } elseif($x['link_type']==4259){
+        } elseif($x['linktype']==4259){
 
             //Audio
-            $template = '<audio controls src="'.$x['link_text'].'"></audio>';
+            $template = '<audio controls src="'.$x['linktext'].'"></audio>';
 
-        } elseif($x['link_type']==4260){
+        } elseif($x['linktype']==4260){
 
             //Image
-            $template = '<img src="'.$x['link_text'].'"></video>';
+            $template = '<img src="'.$x['linktext'].'"></video>';
 
         } else {
             continue; //Should not happen!
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_'.$x['link_type'].( $x['link_type']==4258 ? ' ignore-click ' : '' ).'" id="loaded_media_'.$x['link_id'].'" class="media_item" media_e__id="'.$x['link_type'].'" e__id="'.$x['e__id'].'"  e__cover="'.$x['e__cover'].'" playback_code="'.$x['link_text'].'" e__title="'.$x['e__title'].'">'.$template.'</div>';
+        $message_append .= '<div class="media_display media_display_'.$x['linktype'].( $x['linktype']==4258 ? ' ignore-click ' : '' ).'" id="loaded_media_'.$x['linkid'].'" class="media_item" media_playerid="'.$x['linktype'].'" playerid="'.$x['playerid'].'"  playercover="'.$x['playercover'].'" playback_code="'.$x['linktext'].'" playertext="'.$x['playertext'].'">'.$template.'</div>';
 
     }
 
@@ -5400,19 +5400,19 @@ function view__i_media($i){
 
 
 
-function view__pill($focus__node, $link_type, $counter, $m, $ui = null, $is_open = true){
+function view__pill($focus__node, $linktype, $counter, $m, $ui = null, $is_open = true){
 
-    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$link_type.'"><a class="nav-link" link_type="'.$link_type.'" href="#'.$m['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$link_type.'">'.view__number($counter) . '</span></a></li>\') </script>' .
-        '<div class="headlinebody pillbody hidden headline_body_'.$link_type.'" read-counter="'.$counter.'">'.$ui.'</div>';
+    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$linktype.'"><a class="nav-link" linktype="'.$linktype.'" href="#'.$m['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$linktype.'">'.view__number($counter) . '</span></a></li>\') </script>' .
+        '<div class="headlinebody pillbody hidden headline_body_'.$linktype.'" read-counter="'.$counter.'">'.$ui.'</div>';
 
 }
 
 function view__e_line($e)
 {
 
-    $ui = '<a href="'.view__memory(42903,42902).$e['e__handle'].'" class="doblock">';
-    $ui .= '<span class="icon-block">'.view__cover($e['e__cover'], true).'</span>';
-    $ui .= '<span class="main__title">'.$e['e__title'].'<span class="grey" style="padding-left:8px;">' . view__time_difference($e['link_time']) . ' Ago</span></span>';
+    $ui = '<a href="'.view__memory(42903,42902).$e['playerhandle'].'" class="doblock">';
+    $ui .= '<span class="icon-block">'.view__cover($e['playercover'], true).'</span>';
+    $ui .= '<span class="main__title">'.$e['playertext'].'<span class="grey" style="padding-left:8px;">' . view__time_difference($e['linktime']) . ' Ago</span></span>';
     $ui .= '</a>';
     return $ui;
 
@@ -5420,42 +5420,42 @@ function view__e_line($e)
 
 
 
-function view__card_e($link_type, $e, $extra_class = null)
+function view__card_e($linktype, $e, $extra_class = null)
 {
 
     $CI =& get_instance();
 
-    if(!isset($e['e__id']) || !isset($e['e__title'])){
+    if(!isset($e['playerid']) || !isset($e['playertext'])){
         $CI->Mench_ledger->create(array(
-            'link_type' => 44179, //Triggered
-            'link_up' => 4246, //Platform Bug Reports
-            'link_down' => $link_type,
-            'link_text' => 'view__card_e() Missing core variables',
+            'linktype' => 44179, //Triggered
+            'linkup' => 4246, //Platform Bug Reports
+            'linkdown' => $linktype,
+            'linktext' => 'view__card_e() Missing core variables',
         ));
         return 'Missing core variables';
     }
 
 
-    $link_id = ( isset($e['link_id']) ? $e['link_id'] : 0);
-    $access_level_e = access_level_e($e['e__handle'], 0, $e);
+    $linkid = ( isset($e['linkid']) ? $e['linkid'] : 0);
+    $access_level_e = access_level_e($e['playerhandle'], 0, $e);
     $superpower_10939 = superpower_unlocked(10939);
     $player_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
-    $focus__node = in_array($link_type, $CI->config->item('n___12149')); //NODE COIN
-    $is_app = $link_type==6287;
-    $href = ( $is_app ? view__app_link($e['e__id']) : view__memory(42903,42902).$e['e__handle'] );
-    $cover_is_image = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
-    $has_sortable = $link_id > 0 && $access_level_e>=3 && in_array($link_type, $CI->config->item('n___13911'));
+    $focus__node = in_array($linktype, $CI->config->item('n___12149')); //NODE COIN
+    $is_app = $linktype==6287;
+    $href = ( $is_app ? view__app_link($e['playerid']) : view__memory(42903,42902).$e['playerhandle'] );
+    $cover_is_image = filter_var($e['playercover'], FILTER_VALIDATE_URL);
+    $has_sortable = $linkid > 0 && $access_level_e>=3 && in_array($linktype, $CI->config->item('n___13911'));
 
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" '.( isset($e['link_id']) ? ' link_id="'.$e['link_id'].'" ' : '' ).' href="'.$href.'" class="card_cover card_e_cover no-padding card-12274 s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' card-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 '.( strlen($href) ? ' card_click ' : '' ) ).( isset($e['link_id']) ? ' cover_x_'.$e['link_id'].' ' : '' ).'">';
+    $ui  = '<div playerid="' . $e['playerid'] . '" playerhandle="' . $e['playerhandle'] . '" '.( isset($e['linkid']) ? ' linkid="'.$e['linkid'].'" ' : '' ).' href="'.$href.'" class="card_cover card_e_cover no-padding card-12274 s__12274_'.$e['playerid'].' '.$extra_class.( $is_app ? ' card-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 '.( strlen($href) ? ' card_click ' : '' ) ).( isset($e['linkid']) ? ' cover_x_'.$e['linkid'].' ' : '' ).'">';
 
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= ( !$focus__node ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['e__id'].' coinType12274 '.( $access_level_e>=3 ? '' : ' ready-only ' ).' black-background-obs cover-link" '.( $cover_is_image ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
-    $ui .= '<div class="cover-btn ui_e__cover_'.$e['e__id'].'" raw_cover="'.$e['e__cover'].'">'.( !$cover_is_image && $e['e__cover'] ? view__cover($e['e__cover'], true) : '' ).'</div>';
+    $ui .= ( !$focus__node ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['playerid'].' coinType12274 '.( $access_level_e>=3 ? '' : ' ready-only ' ).' black-background-obs cover-link" '.( $cover_is_image ? 'style="background-image:url(\''.$e['playercover'].'\');"' : '' ).'>';
+    $ui .= '<div class="cover-btn ui_playercover_'.$e['playerid'].'" raw_cover="'.$e['playercover'].'">'.( !$cover_is_image && $e['playercover'] ? view__cover($e['playercover'], true) : '' ).'</div>';
     $ui .= ( !$focus__node ? '</a>' : '</div>' );
 
     $ui .= '</div>';
@@ -5470,13 +5470,13 @@ function view__card_e($link_type, $e, $extra_class = null)
 
     if($access_level_e>=3){
         //Editable:
-        $ui .= view__e_input(6197, $e['e__title'], $e['e__id'], $access_level_e, ( isset($e['link_number']) ? ($e['link_number']*100)+1 : 0  ), true);
-        $ui .= '<div class="hidden text__6197_'.$e['e__id'].'">'.$e['e__title'].'</div>';
+        $ui .= view__e_input(6197, $e['playertext'], $e['playerid'], $access_level_e, ( isset($e['linknumber']) ? ($e['linknumber']*100)+1 : 0  ), true);
+        $ui .= '<div class="hidden text__6197_'.$e['playerid'].'">'.$e['playertext'].'</div>';
     } else {
         //Static:
-        $ui .= '<input type="hidden" class="text__6197_'.$e['e__id'].'" value="'.$e['e__title'].'">';
+        $ui .= '<input type="hidden" class="text__6197_'.$e['playerid'].'" value="'.$e['playertext'].'">';
         $ui .= '<div class="center">';
-        $ui .= '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>';
+        $ui .= '<span class="main__title text__6197_'.$e['playerid'].'">'.$e['playertext'].'</span>';
         $ui .= '</div>';
     }
 
@@ -5484,28 +5484,28 @@ function view__card_e($link_type, $e, $extra_class = null)
     //Source Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_playerhandle_'.$e['playerid'].'" title="ID '.$e['playerid'].'">'.$e['playerhandle'].'</span></div>';
 
     //Source Location:
     $e___42777 = $CI->config->item('e___42777');
     $order_columns = array();
     foreach($e___42777 as $sort_id => $sort) {
-        $order_columns['link_type = \''.$sort_id.'\' DESC'] = null;
+        $order_columns['linktype = \''.$sort_id.'\' DESC'] = null;
     }
     foreach($CI->Mench_ledger->fetch(array(
-        'link_type IN (' . join(',', $CI->config->item('n___42777')) . ')' => null, //Featured Profile
-        'link_down' => $e['e__id'],
-        'link_void' => 0, //Not Void
-    ), array('link_up'), 0, 0, $order_columns) as $location){
-        $ui .= view__featured_links($location['link_type'], $location, $e___42777[$location['link_type']], $focus__node);
+        'linktype IN (' . join(',', $CI->config->item('n___42777')) . ')' => null, //Featured Profile
+        'linkdown' => $e['playerid'],
+        'linkvoid' => 0, //Not Void
+    ), array('linkup'), 0, 0, $order_columns) as $location){
+        $ui .= view__featured_links($location['linktype'], $location, $e___42777[$location['linktype']], $focus__node);
     }
 
 
-    if($is_app && isset($e['link_text']) && strlen($e['link_text'])){
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e['link_text'].'"><i class="far fa-info-circle"></i></span>';
-    } else if($link_id && $access_level_e>=3){
+    if($is_app && isset($e['linktext']) && strlen($e['linktext'])){
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e['linktext'].'"><i class="far fa-info-circle"></i></span>';
+    } else if($linkid && $access_level_e>=3){
         //Main description:
-        $ui .= '<div class="link_text_headline grey hideIfEmpty ignore-click ui_link_text_' . $link_id . ( in_array($e['link_type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '">'.htmlentities($e['link_text']).'</div>';
+        $ui .= '<div class="linktext_headline grey hideIfEmpty ignore-click ui_linktext_' . $linkid . ( in_array($e['linktype'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '">'.htmlentities($e['linktext']).'</div>';
     }
 
     $ui .= '</div>';
@@ -5520,26 +5520,26 @@ function view__card_e($link_type, $e, $extra_class = null)
     if(!$is_app && $access_level_e>=1) {
 
         //Source Link Groups
-        $link_type_id = 0;
-        $link_type_ui = '';
-        if($link_id){
-            foreach($CI->config->item('e___31770') as $link_type1 => $m1){
-                if(in_array($e['link_type'], $CI->config->item('n___'.$link_type1))){
+        $linktype_id = 0;
+        $linktype_ui = '';
+        if($linkid){
+            foreach($CI->config->item('e___31770') as $linktype1 => $m1){
+                if(in_array($e['linktype'], $CI->config->item('n___'.$linktype1))){
                     foreach($CI->Mench_ledger->fetch(array(
-                        'link_id' => $link_id,
-                    ), array('link_player')) as $linker){
-                        $link_type_ui .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">';
-                        $link_type_ui .= view__single_select_instant($link_type1, $e['link_type'], $access_level_e, false, $e['e__id'], $link_id);
-                        $link_type_ui .= '</span>';
+                        'linkid' => $linkid,
+                    ), array('linkplayer')) as $linker){
+                        $linktype_ui .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">';
+                        $linktype_ui .= view__single_select_instant($linktype1, $e['linktype'], $access_level_e, false, $e['playerid'], $linkid);
+                        $linktype_ui .= '</span>';
                     }
-                    $link_type_id = $link_type1;
+                    $linktype_id = $linktype1;
                     break;
                 }
             }
         }
 
         //Top Bar
-        foreach($CI->config->item('e___31963') as $link_type_target_bar => $m_target_bar) {
+        foreach($CI->config->item('e___31963') as $linktype_target_bar => $m_target_bar) {
 
             //See if missing superpower?
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_target_bar['m__following']);
@@ -5547,61 +5547,61 @@ function view__card_e($link_type, $e, $extra_class = null)
                 continue;
             }
 
-            if($link_type_target_bar==31770 && $link_id && $superpower_10939){
+            if($linktype_target_bar==31770 && $linkid && $superpower_10939){
 
-                $featured_sources .= $link_type_ui;
+                $featured_sources .= $linktype_ui;
 
-            } elseif($link_type_target_bar==42795 && $player_e && $player_e['e__id']!=$e['e__id'] && count($CI->Mench_ledger->fetch(array(
-                    'link_down' => $e['e__id'],
-                    'link_up' => 4430, //Active Member
-                    'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'link_void' => 0, //Not Void
+            } elseif($linktype_target_bar==42795 && $player_e && $player_e['playerid']!=$e['playerid'] && count($CI->Mench_ledger->fetch(array(
+                    'linkdown' => $e['playerid'],
+                    'linkup' => 4430, //Active Member
+                    'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkvoid' => 0, //Not Void
                 )))){
 
                 //Allow to follow fellow players:
                 $followings = $CI->Mench_ledger->fetch(array(
-                    'link_up' => $e['e__id'],
-                    'link_down' => $player_e['e__id'],
-                    'link_type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
-                    'link_void' => 0, //Not Void
-                ), array(), 1, 0, array('link_number' => 'ASC'));
+                    'linkup' => $e['playerid'],
+                    'linkdown' => $player_e['playerid'],
+                    'linktype IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
+                    'linkvoid' => 0, //Not Void
+                ), array(), 1, 0, array('linknumber' => 'ASC'));
 
                 if(count($followings) || $access_level_e>=3){
-                    $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view__single_select_instant(42795, ( count($followings) ? $followings[0]['link_type'] : 0 ), $player_e && $access_level_e>=3, false, $e['e__id'], ( count($followings) ? $followings[0]['link_id'] : 0 )).'</span>';
+                    $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view__single_select_instant(42795, ( count($followings) ? $followings[0]['linktype'] : 0 ), $player_e && $access_level_e>=3, false, $e['playerid'], ( count($followings) ? $followings[0]['linkid'] : 0 )).'</span>';
                 }
 
-            } elseif($link_type_target_bar==41037 && $access_level_e>=3 && !$focus__node){
+            } elseif($linktype_target_bar==41037 && $access_level_e>=3 && !$focus__node){
 
                 //Selector
                 $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).' ignore-click">';
-                $featured_sources .= '<input class="form-check-input" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'" aria-label="...">';
+                $featured_sources .= '<input class="form-check-input" type="checkbox" value="" playerid="'.$e['playerid'].'" id="selector_e_'.$e['playerid'].'" aria-label="...">';
                 $featured_sources .= '</span>';
 
-            } elseif($link_type_target_bar==13006 && $has_sortable && $access_level_e>=3){
+            } elseif($linktype_target_bar==13006 && $has_sortable && $access_level_e>=3){
 
                 //Sort Source
                 $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).' sort_e_frame hidden">';
                 $featured_sources .= '<span title="'.$m_target_bar['m__title'].'" class="sort_e_grab">'.$m_target_bar['m__cover'].'</span>';
                 $featured_sources .= '</span>';
 
-            } elseif($link_type_target_bar==14980 && $access_level_e>=3){
+            } elseif($linktype_target_bar==14980 && $access_level_e>=3){
 
                 $action_buttons = null;
 
-                if(!$link_id){
+                if(!$linkid){
                     $focus_dropdown = 12887; //Source Dropdown
-                } elseif($link_type_id==32292){ //Source/Source Links
+                } elseif($linktype_id==32292){ //Source/Source Links
                     $focus_dropdown = 14956; //Source/Source Dropdown
-                } elseif($link_type_id==6255){ //Discoveries
+                } elseif($linktype_id==6255){ //Discoveries
                     $focus_dropdown = 32070; //Source>Discoveries Dropdown
-                } elseif($link_type_id==13550){ //Idea/Source Links
+                } elseif($linktype_id==13550){ //Idea/Source Links
                     $focus_dropdown = 28792; //Source/Idea Dropdown
                 } else {
                     $focus_dropdown = 0;
                 }
 
                 if($focus_dropdown>0 && is_array($CI->config->item('e___'.$focus_dropdown))){
-                    foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
+                    foreach($CI->config->item('e___'.$focus_dropdown) as $playerid_dropdown => $m_dropdown) {
 
                         //Skip if missing superpower:
                         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
@@ -5612,47 +5612,47 @@ function view__card_e($link_type, $e, $extra_class = null)
                         $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
 
-                        if($e__id_dropdown==4997){
+                        if($playerid_dropdown==4997){
 
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(4997,'.$e['playerid'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==6287){
+                        } elseif($playerid_dropdown==6287){
 
                             //App Store
-                            if(in_array($e['e__id'], $CI->config->item('n___6287'))){
-                                $action_buttons .= '<a href="'.view__app_link($e['e__id']).'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            if(in_array($e['playerid'], $CI->config->item('n___6287'))){
+                                $action_buttons .= '<a href="'.view__app_link($e['playerid']).'" class="dropdown-item main__title">'.$anchor.'</a>';
                             }
 
-                        } elseif($e__id_dropdown==31912 && $access_level_e>=3){
+                        } elseif($playerid_dropdown==31912 && $access_level_e>=3){
 
                             //Edit Source
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$link_id.')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['playerid'].','.$linkid.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==29771 && $access_level_e>=3){
+                        } elseif($playerid_dropdown==29771 && $access_level_e>=3){
 
                             //Clone:
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['playerid'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==10673 && $link_id > 0 && $access_level_e>=3 && $superpower_10939){
+                        } elseif($playerid_dropdown==10673 && $linkid > 0 && $access_level_e>=3 && $superpower_10939){
 
                             //UNLINK
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $link_id . ', '.$e['link_type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $linkid . ', '.$e['linktype'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
 
-                        } elseif($e__id_dropdown==42649 && $access_level_e>=3){
+                        } elseif($playerid_dropdown==42649 && $access_level_e>=3){
 
                             //Delete Source
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" onclick="e_void('.$e['e__id'].', '.$link_id.', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" onclick="e_void('.$e['playerid'].', '.$linkid.', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==13007 && $access_level_e>=3){
+                        } elseif($playerid_dropdown==13007 && $access_level_e>=3){
 
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287')) && $access_level_e>=3){
+                        } elseif(in_array($playerid_dropdown, $CI->config->item('n___6287')) && $access_level_e>=3){
 
                             //Standard button
-                            $action_buttons .= '<a href="'.view__app_link($e__id_dropdown).view__memory(42903,42902).$e['e__handle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view__app_link($playerid_dropdown).view__memory(42903,42902).$e['playerhandle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         }
                     }
@@ -5665,8 +5665,8 @@ function view__card_e($link_type, $e, $extra_class = null)
 
                     $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                     $featured_sources .= '<div class="dropdown inline-block">';
-                    $featured_sources .= '<button type="button" class="btn no-left-padding no-right-padding" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
-                    $featured_sources .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
+                    $featured_sources .= '<button type="button" class="btn no-left-padding no-right-padding" id="action_menu_e_'.$e['playerid'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
+                    $featured_sources .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['playerid'].'">';
                     $featured_sources .= $action_buttons;
                     $featured_sources .= '</div>';
                     $featured_sources .= '</div>';
@@ -5681,19 +5681,19 @@ function view__card_e($link_type, $e, $extra_class = null)
     $e___14036 = $CI->config->item('e___14036');
     $order_columns = array();
     foreach($e___14036 as $sort_id => $sort) {
-        $order_columns['link_up = \''.$sort_id.'\' DESC'] = null;
+        $order_columns['linkup = \''.$sort_id.'\' DESC'] = null;
     }
     foreach($CI->Mench_ledger->fetch(array(
-        'link_up IN (' . join(',', $CI->config->item('n___14036')) . ')' => null, //Featured Sources
-        'link_down' => $e['e__id'],
-        'link_type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'link_void' => 0, //Not Void
+        'linkup IN (' . join(',', $CI->config->item('n___14036')) . ')' => null, //Featured Sources
+        'linkdown' => $e['playerid'],
+        'linktype IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkvoid' => 0, //Not Void
     ), array(), 0, 0, $order_columns) as $social_link){
 
-        if(in_array($social_link['link_up'], $CI->config->item('n___32172'))){
-            if(strlen($social_link['link_text'])){
+        if(in_array($social_link['linkup'], $CI->config->item('n___32172'))){
+            if(strlen($social_link['linktext'])){
                 //Must always see, show content here:
-                $ui .= '<div class="source_bio grey center">'.$social_link['link_text'].'</div>';
+                $ui .= '<div class="source_bio grey center">'.$social_link['linktext'].'</div>';
             }
             continue;
         }
@@ -5701,20 +5701,20 @@ function view__card_e($link_type, $e, $extra_class = null)
         //Determine link type:
         $social_url = false;
 
-        if(in_array(4256 , $e___14036[$social_link['link_up']]['m__following'])){
+        if(in_array(4256 , $e___14036[$social_link['linkup']]['m__following'])){
             //We made sure not the current website:
-            $social_url = 'href="'.$social_link['link_text'].'" target="_blank"';
-        } elseif(in_array(32097 , $e___14036[$social_link['link_up']]['m__following'])){
-            $social_url = 'href="mailto:'.$social_link['link_text'].'"';
-        } elseif(in_array(42181 , $e___14036[$social_link['link_up']]['m__following'])){
+            $social_url = 'href="'.$social_link['linktext'].'" target="_blank"';
+        } elseif(in_array(32097 , $e___14036[$social_link['linkup']]['m__following'])){
+            $social_url = 'href="mailto:'.$social_link['linktext'].'"';
+        } elseif(in_array(42181 , $e___14036[$social_link['linkup']]['m__following'])){
             //Phone Number
-            $social_url = 'href="'.phone_href($social_link['link_up'], $social_link['link_text']).'"';
+            $social_url = 'href="'.phone_href($social_link['linkup'], $social_link['linktext']).'"';
         }
 
-        $info = ( strlen($social_link['link_text']) && !$social_url ? $e___14036[$social_link['link_up']]['m__title'].': '.$social_link['link_text'] : ( $social_url ? view__url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['link_up']]['m__title'] ) );
+        $info = ( strlen($social_link['linktext']) && !$social_url ? $e___14036[$social_link['linkup']]['m__title'].': '.$social_link['linktext'] : ( $social_url ? view__url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['linkup']]['m__title'] ) );
 
         //Append to links:
-        $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus__node ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['link_up']]['m__cover'].'</a>' : ( $focus__node ? '<a href="'.view__memory(42903,42902).$e___14036[$social_link['link_up']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['link_up']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['link_up']]['m__cover'].'</span>' ) ).'</span>';
+        $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus__node ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['linkup']]['m__cover'].'</a>' : ( $focus__node ? '<a href="'.view__memory(42903,42902).$e___14036[$social_link['linkup']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['linkup']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['linkup']]['m__cover'].'</span>' ) ).'</span>';
 
     }
 
@@ -5738,18 +5738,18 @@ function view__card_e($link_type, $e, $extra_class = null)
             $ui .= $featured_sources;
 
             //Also Append bottom bar / main menu:
-            foreach($CI->config->item('e___31916') as $e__id_bottom_bar => $m_bottom_bar) {
+            foreach($CI->config->item('e___31916') as $playerid_bottom_bar => $m_bottom_bar) {
                 $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
                 if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                     continue;
                 }
-                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$player_e){
+                if(in_array($playerid_bottom_bar, $CI->config->item('n___42376')) && !$player_e){
                     //Private content without being a member, so dont even show the counters:
                     continue;
                 }
 
                 $ui .= '<span class="hideIfEmpty">';
-                $ui .= view__e_covers($e__id_bottom_bar,  $e['e__id']);
+                $ui .= view__e_covers($playerid_bottom_bar,  $e['playerid']);
                 $ui .= '</span>';
             }
         }
@@ -5765,21 +5765,21 @@ function view__card_e($link_type, $e, $extra_class = null)
 }
 
 
-function view__e_input($cache_e__id, $current_value, $s__id, $access_level_i, $tabindex = 0, $extra_large = false){
+function view__e_input($cache_playerid, $current_value, $s__id, $access_level_i, $tabindex = 0, $extra_large = false){
 
     $CI =& get_instance();
     $e___12112 = $CI->config->item('e___12112');
     $current_value = htmlentities($current_value);
-    $name = 'input'.substr(md5($cache_e__id.$current_value.$s__id.$access_level_i.$tabindex), 0, 8);
+    $name = 'input'.substr(md5($cache_playerid.$current_value.$s__id.$access_level_i.$tabindex), 0, 8);
 
     //Define element attributes:
-    $attributes = ( $access_level_i>=3 ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control 
-     inline-block editing-mode x_set_class_text text__'.$cache_e__id.'_'.$s__id.( $extra_large?' texttype__lg ' : ' texttype__sm ').' text_e_'.$cache_e__id.'" cache_e__id="'.$cache_e__id.'" s__id="'.$s__id.'" ';
+    $attributes = ( $access_level_i>=3 ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_playerid.'_'.$s__id.'" class="form-control 
+     inline-block editing-mode x_set_class_text text__'.$cache_playerid.'_'.$s__id.( $extra_large?' texttype__lg ' : ' texttype__sm ').' text_e_'.$cache_playerid.'" cache_playerid="'.$cache_playerid.'" s__id="'.$s__id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){
 
-        $focus_element = '<textarea name="'.$name.'" placeholder="'.$e___12112[$cache_e__id]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
+        $focus_element = '<textarea name="'.$name.'" placeholder="'.$e___12112[$cache_playerid]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
 
     } else {
 
@@ -5787,7 +5787,7 @@ function view__e_input($cache_e__id, $current_value, $s__id, $access_level_i, $t
 
     }
 
-    return '<span class="span__'.$cache_e__id.' '.( !($access_level_i>=3) ? ' edit-locked ' : '' ).'">'.$focus_element.'</span>';
+    return '<span class="span__'.$cache_playerid.' '.( !($access_level_i>=3) ? ' edit-locked ' : '' ).'">'.$focus_element.'</span>';
 
 }
 

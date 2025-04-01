@@ -4,19 +4,19 @@
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $last_x_days = 7;
 
-$link_time_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
-$link_time_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
+$linktime_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
+$linktime_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
 
-$link_time_start = date("Y-m-d H:i:s", $link_time_start_timestamp);
-$link_time_end = date("Y-m-d H:i:s", $link_time_end_timestamp);
+$linktime_start = date("Y-m-d H:i:s", $linktime_start_timestamp);
+$linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 
 //Email Body
 $html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':</div>';
 
-foreach($this->config->item('e___42263') as $link_type => $m) {
+foreach($this->config->item('e___42263') as $linktype => $m) {
 
-    $unique = count_link_groups($link_type, null, $link_time_end);
-    $this_week = count_link_groups($link_type, $link_time_start, $link_time_end);
+    $unique = count_link_groups($linktype, null, $linktime_end);
+    $this_week = count_link_groups($linktype, $linktime_start, $linktime_end);
     if(!$unique){
         continue;
     }
@@ -27,8 +27,8 @@ foreach($this->config->item('e___42263') as $link_type => $m) {
     $html_message .= '<div class="line"><span style="display:inline-block; width: 55px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.view__number($unique).' '.$m['m__title'].'</div>';
 
     //Primary Coin?
-    if(in_array($link_type, $this->config->item('n___6404'))){
-        $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $link_time_start_timestamp);
+    if(in_array($linktype, $this->config->item('n___6404'))){
+        $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $linktime_start_timestamp);
     }
 
 }
@@ -45,22 +45,22 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
 
     $subscriber_filters = array(
-        'link_up' => 12114,
-        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'link_void' => 0, //Not Void
+        'linkup' => 12114,
+        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkvoid' => 0, //Not Void
         );
 
     //Should we limit the scope?
     if($player_http_request){
-        $subscriber_filters['link_down'] = $player_e['e__id'];
+        $subscriber_filters['linkdown'] = $player_e['playerid'];
     }
 
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Mench_ledger->fetch($subscriber_filters, array('link_down')) as $subscribed_u){
+    foreach($this->Mench_ledger->fetch($subscriber_filters, array('linkdown')) as $subscribed_u){
 
-        $this->Mench_ledger->send_dm($subscribed_u['e__id'], $subject, $html_message);
+        $this->Mench_ledger->send_dm($subscribed_u['playerid'], $subject, $html_message);
         $email_recipients++;
 
     }

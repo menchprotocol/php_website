@@ -15,7 +15,7 @@ $replace_with_confirmed = false;
 if($search_for_set){
 
     $matching_results = $this->Source_cache->fetch(array(
-            'e__title LIKE \'%'.$_GET['search_for'].'%\'' => null,
+            'playertext LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
     //List the matching search:
@@ -39,13 +39,13 @@ if($search_for_set){
 
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $en['e__title'] = sourcesearchreplace . phpstr_ireplace($_GET['search_for'], $_GET['replace_with'], $en['e__title']) . $append_text;
+                $en['playertext'] = sourcesearchreplace . phpstr_ireplace($_GET['search_for'], $_GET['replace_with'], $en['playertext']) . $append_text;
 
                 if($replace_with_confirmed){
                     //Update idea:
-                    $res = $this->Source_cache->update($en['e__id'], array(
-                        'e__title' => $en['e__title'],
-                    ), true, $player_e['e__id']);
+                    $res = $this->Source_cache->update($en['playerid'], array(
+                        'playertext' => $en['playertext'],
+                    ), true, $player_e['playerid']);
                     $replaced++;
                 }
             }

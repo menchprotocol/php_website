@@ -1,56 +1,56 @@
 <?php
 
-$e__handle = ( isset($_GET['e__handle']) ? $_GET['e__handle'] : null );
-$i__hashtag = ( !$e__handle && isset($_GET['i__hashtag']) ? $_GET['i__hashtag'] : null );
+$playerhandle = ( isset($_GET['playerhandle']) ? $_GET['playerhandle'] : null );
+$ideahashtag = ( !$playerhandle && isset($_GET['ideahashtag']) ? $_GET['ideahashtag'] : null );
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $e___42263 = $this->config->item('e___42263'); //Link Groups
 
 
-if($e__handle){
+if($playerhandle){
     foreach($this->Source_cache->fetch(array(
-        'LOWER(e__handle)' => strtolower($e__handle),
+        'LOWER(playerhandle)' => strtolower($playerhandle),
     )) as $e){
-        echo '<h2 class="center"><a href="'.view__memory(42903,42902).$e__handle.'"><span class="icon-block">'.view__cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="'.view__memory(42903,42902).$playerhandle.'"><span class="icon-block">'.view__cover($e['playercover']).'</span> <u>' . $e['playertext'] . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
-} elseif($i__hashtag){
+} elseif($ideahashtag){
     foreach($this->Idea_cache->fetch(array(
-        'LOWER(i__hashtag)' => strtolower($i__hashtag),
+        'LOWER(ideahashtag)' => strtolower($ideahashtag),
     )) as $i){
-        echo '<h2 class="center"><a href="'.view__memory(42903,33286).$i__hashtag.'"><u>' . view__i_title($i, true) . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="'.view__memory(42903,33286).$ideahashtag.'"><u>' . view__i_title($i, true) . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 }
 
 //Misc Stats, if any:
 echo '<div class="center miscstats hideIfEmpty"></div>';
 
-foreach($this->config->item('e___33292') as $e__id1 => $m1) {
+foreach($this->config->item('e___33292') as $playerid1 => $m1) {
 
-    echo '<div class="mid-text-line compact-midline"><span><b class="card_count_'.$e__id1.'"><i class="fas fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</span></div>';
+    echo '<div class="mid-text-line compact-midline"><span><b class="card_count_'.$playerid1.'"><i class="fas fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</span></div>';
 
     echo '<div class="row justify-content list-covers">';
     
-    foreach($this->config->item('e___'.$e__id1) as $e__id2 => $m2) {
+    foreach($this->config->item('e___'.$playerid1) as $playerid2 => $m2) {
 
         echo '<div class="card_cover no-padding col-6">';
-        echo '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id2.'" e__id="'.$e__id2.'">';
+        echo '<div class="card_frame dropdown_d'.$playerid1.' dropdown_'.$playerid2.'" playerid="'.$playerid2.'">';
 
         echo '<div title="'.$m2['m__message'].'">';
         echo '<div class="large_cover">'.$m2['m__cover'].'</div>';
-        echo '<div class="main__title large_title"><b class="card_count_'.$e__id2.'"><i class="fas fa-yin-yang fa-spin"></i></b></div>';
-        echo '<div class="main__title large_title" title="@'.$e__id2.' @'.$m2['m__handle'].'">'.$m2['m__title'].'</div>';
+        echo '<div class="main__title large_title"><b class="card_count_'.$playerid2.'"><i class="fas fa-yin-yang fa-spin"></i></b></div>';
+        echo '<div class="main__title large_title" title="@'.$playerid2.' @'.$m2['m__handle'].'">'.$m2['m__title'].'</div>';
         echo '</div>';
 
-        echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
+        echo '<table class="table table-striped card_subcat card_subcat_'.$playerid2.' hidden" style="width:100%; margin-top:13px;">';
 
         $focus_link_group = 0;
-        $e_pinned = e_pinned($e__id2, true);
+        $e_pinned = e_pinned($playerid2, true);
         if(!$e_pinned || !is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
             continue;
         }
-        foreach($this->config->item('e___'.$e_pinned) as $e__id3 => $m3) {
+        foreach($this->config->item('e___'.$e_pinned) as $playerid3 => $m3) {
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;" title="@'.$e__id3.' @'.$m3['m__handle'].'"><a href="'.view__memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
+            echo '<td style="text-align: left;" title="@'.$playerid3.' @'.$m3['m__handle'].'"><a href="'.view__memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$playerid3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
             echo '</tr>';
 
         }
@@ -73,8 +73,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
     function refresh_gameplay(){
         $.post("/app/refresh_gameplay", {
-            e__handle: '<?= $e__handle ?>',
-            i__hashtag: '<?= $i__hashtag ?>',
+            playerhandle: '<?= $playerhandle ?>',
+            ideahashtag: '<?= $ideahashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
 
@@ -100,7 +100,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         //Watch for click to expand:
         $(".card_frame").click(function (e) {
-            $('.card_subcat_'+$(this).attr('e__id')).toggleClass('hidden');
+            $('.card_subcat_'+$(this).attr('playerid')).toggleClass('hidden');
         });
 
 

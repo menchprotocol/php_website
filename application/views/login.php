@@ -2,12 +2,12 @@
 
 $sign_i = array();
 
-if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
+if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
     $sign_i = $this->Idea_cache->fetch(array(
-        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
+        'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     ));
 }
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . phpview__memory(42903, 33286) . $sign_i[0]['i__hashtag'] : home_url()) );
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . phpview__memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
@@ -22,10 +22,10 @@ if(superpower_unlocked()) {
 
     js_php_redirect($next_url, 13);
 
-} elseif(isset($_GET['e__handle']) && $_GET['e__handle']!='SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
+} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && view__hash($_GET['e__time'].$_GET['playerhandle'])==$_GET['e__hash']){
 
     $es = $this->Source_cache->fetch(array(
-        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
 
     if(count($es)){
@@ -42,7 +42,7 @@ if(superpower_unlocked()) {
         //Assign Session variable so we can detect upon social login:
         $session_data = $this->session->all_userdata();
         if(count($sign_i)){
-            $session_data['login_i__hashtag'] = $sign_i[0]['i__hashtag'];
+            $session_data['login_ideahashtag'] = $sign_i[0]['ideahashtag'];
         }
         if(isset($_GET['url'])){
             $session_data['redirect_url'] = urldecode($_GET['url']);
@@ -62,7 +62,7 @@ if(superpower_unlocked()) {
         //See if any of the current sign-in attempts match this:
         foreach($current_sign_i_attempts as $sign_i_attempt){
             $all_match = true;
-            if(count($sign_i) && $sign_i[0]['i__id'] != intval($sign_i_attempt['link_left'])){
+            if(count($sign_i) && $sign_i[0]['ideaid'] != intval($sign_i_attempt['linkleft'])){
                 $all_match = false;
                 break;
             }
@@ -116,7 +116,7 @@ if(superpower_unlocked()) {
 
 
         var next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
-        var sign_i__id = <?= ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ) ?>;
+        var sign_ideaid = <?= ( count($sign_i) ? $sign_i[0]['ideaid'] : 0 ) ?>;
         var referrer_url = '<?= @$_GET['url'] ?>';
         var logged_messenger = false;
         var logged_website = false;
@@ -172,7 +172,7 @@ if(superpower_unlocked()) {
             $.post("/app/e_verify_contact", {
 
                 account_email_phone: account_email_phone,
-                sign_i__id: sign_i__id,
+                sign_ideaid: sign_ideaid,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
 
             }, function (data) {
@@ -242,7 +242,7 @@ if(superpower_unlocked()) {
                 new_account_email: $('#new_account_email').val(),
                 input_code: $('#input_code').val(),
                 referrer_url: referrer_url,
-                sign_i__id: sign_i__id,
+                sign_ideaid: sign_ideaid,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
                 if (data.status) {
@@ -297,7 +297,7 @@ if(superpower_unlocked()) {
                 if(intval(view__memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="'.view__app_link(14938).view__memory(42903,33286) . $sign_i[0]['i__hashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view__app_link(14938).view__memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
                     echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
                     echo ( strlen($e___11035[14938]['m__message']) ? ': '.$e___11035[14938]['m__message'] : '' );
                     echo '</a></div>';

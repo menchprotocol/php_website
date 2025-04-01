@@ -1,27 +1,27 @@
 <?php
 
 foreach($this->Idea_cache->fetch(array(
-    'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
+    'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
 )) as $i){
 
     echo '<h2>' . view__i_title($i) . '</h2>';
 
     $preg_query = $this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-        'link_right' => $i['i__id'],
-        'link_up' => 32103,
+        'linkvoid' => 0, //Not Void
+        'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        'linkright' => $i['ideaid'],
+        'linkup' => 32103,
     ));
 
 
     //See apply to sources:
     $apply_to = array();
     foreach($this->Mench_ledger->fetch(array(
-        'link_void' => 0, //Not Void
-        'link_type' => 7545, //Following Add
-        'link_right' => $i['i__id'],
-    ), array('link_up')) as $this_tag){
-        array_push($apply_to, intval($this_tag['link_up']));
+        'linkvoid' => 0, //Not Void
+        'linktype' => 7545, //Following Add
+        'linkright' => $i['ideaid'],
+    ), array('linkup')) as $this_tag){
+        array_push($apply_to, intval($this_tag['linkup']));
     }
 
 
@@ -29,48 +29,48 @@ foreach($this->Idea_cache->fetch(array(
 
 
 
-        if(isset($_GET['e__handle'])){
+        if(isset($_GET['playerhandle'])){
 
             $responses = 0;
             $updated = 0;
             $removed = 0;
 
-            echo '<p>SOURCES Applying against ['.$preg_query[0]['link_text'].'] results in:</p>';
+            echo '<p>SOURCES Applying against ['.$preg_query[0]['linktext'].'] results in:</p>';
 
             foreach($this->Source_cache->fetch(array(
-                'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+                'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
             )) as $e){
                 foreach($this->Mench_ledger->fetch(array(
-                    'link_up' => $e['e__id'],
-                    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'link_void' => 0, //Not Void
-                ), array('link_down'), 0) as $x) {
+                    'linkup' => $e['playerid'],
+                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkvoid' => 0, //Not Void
+                ), array('linkdown'), 0) as $x) {
 
                     $responses++;
-                    $new_form = preg_replace($preg_query[0]['link_text'], "", $x['link_text'] );
+                    $new_form = preg_replace($preg_query[0]['linktext'], "", $x['linktext'] );
                     $links_updated = 0;
                     $links_removed = 0;
-                    if(strlen($new_form) != strlen($x['link_text'])) {
+                    if(strlen($new_form) != strlen($x['linktext'])) {
 
                         if(strlen($new_form)){
 
                             $updated++;
                             if(isset($_GET['update'])){
 
-                                $this->Mench_ledger->update($x['link_id'], array(
-                                    'link_text' => $new_form,
+                                $this->Mench_ledger->update($x['linkid'], array(
+                                    'linktext' => $new_form,
                                 ));
 
-                                foreach($apply_to as $apply_e__id){
+                                foreach($apply_to as $apply_playerid){
                                     foreach($this->Mench_ledger->fetch(array(
-                                        'link_up' => $apply_e__id,
-                                        'link_down' => $x['link_player'],
-                                        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                        'link_void' => 0, //Not Void
+                                        'linkup' => $apply_playerid,
+                                        'linkdown' => $x['linkplayer'],
+                                        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                        'linkvoid' => 0, //Not Void
                                     ), array(), 0) as $follow_appended) {
                                         $links_updated++;
-                                        $this->Mench_ledger->update($follow_appended['link_id'], array(
-                                            'link_text' => $new_form,
+                                        $this->Mench_ledger->update($follow_appended['linkid'], array(
+                                            'linktext' => $new_form,
                                         ));
                                     }
                                 }
@@ -83,25 +83,25 @@ foreach($this->Idea_cache->fetch(array(
                             $removed++;
                             if(isset($_GET['update'])){
 
-                                $this->Mench_ledger->update($x['link_id'], array());
+                                $this->Mench_ledger->update($x['linkid'], array());
 
                                 //Also update follower link?
-                                foreach($apply_to as $apply_e__id){
+                                foreach($apply_to as $apply_playerid){
                                     foreach($this->Mench_ledger->fetch(array(
-                                        'link_up' => $apply_e__id,
-                                        'link_down' => $x['link_player'],
-                                        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                        'link_void' => 0, //Not Void
+                                        'linkup' => $apply_playerid,
+                                        'linkdown' => $x['linkplayer'],
+                                        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                        'linkvoid' => 0, //Not Void
                                     ), array(), 0) as $follow_appended) {
                                         $links_removed++;
-                                        $this->Mench_ledger->update($follow_appended['link_id'], array());
+                                        $this->Mench_ledger->update($follow_appended['linkid'], array());
                                     }
                                 }
                                 echo 'Removed! ';
                             }
                         }
 
-                        echo 'Source ID '.$x['link_player'].' ['.$x['link_text'].'] transforms to ['.$new_form.']<hr />';
+                        echo 'Source ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
                     }
                 }
             }
@@ -116,39 +116,39 @@ foreach($this->Idea_cache->fetch(array(
         $updated = 0;
         $removed = 0;
 
-        echo '<p>Applying against ['.$preg_query[0]['link_text'].'] results in:</p>';
+        echo '<p>Applying against ['.$preg_query[0]['linktext'].'] results in:</p>';
 
         foreach($this->Mench_ledger->fetch(array(
-            'link_void' => 0, //Not Void
-            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'LENGTH(link_text)>0' => null,
-            'link_left' => $i['i__id'],
+            'linkvoid' => 0, //Not Void
+            'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'LENGTH(linktext)>0' => null,
+            'linkleft' => $i['ideaid'],
         ), array(), 0) as $x) {
             $responses++;
-            $new_form = preg_replace($preg_query[0]['link_text'], "", $x['link_text'] );
+            $new_form = preg_replace($preg_query[0]['linktext'], "", $x['linktext'] );
             $links_updated = 0;
             $links_removed = 0;
-            if(strlen($new_form) != strlen($x['link_text'])) {
+            if(strlen($new_form) != strlen($x['linktext'])) {
 
                 if(strlen($new_form)){
 
                     $updated++;
                     if(isset($_GET['update'])){
 
-                        $this->Mench_ledger->update($x['link_id'], array(
-                            'link_text' => $new_form,
+                        $this->Mench_ledger->update($x['linkid'], array(
+                            'linktext' => $new_form,
                         ));
 
-                        foreach($apply_to as $apply_e__id){
+                        foreach($apply_to as $apply_playerid){
                             foreach($this->Mench_ledger->fetch(array(
-                                'link_up' => $apply_e__id,
-                                'link_down' => $x['link_player'],
-                                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'link_void' => 0, //Not Void
+                                'linkup' => $apply_playerid,
+                                'linkdown' => $x['linkplayer'],
+                                'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'linkvoid' => 0, //Not Void
                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
-                                $this->Mench_ledger->update($follow_appended['link_id'], array(
-                                    'link_text' => $new_form,
+                                $this->Mench_ledger->update($follow_appended['linkid'], array(
+                                    'linktext' => $new_form,
                                 ));
                             }
                         }
@@ -160,25 +160,25 @@ foreach($this->Idea_cache->fetch(array(
                     $removed++;
                     if(isset($_GET['update'])){
 
-                        $this->Mench_ledger->update($x['link_id'], array());
+                        $this->Mench_ledger->update($x['linkid'], array());
 
                         //Also update follower link?
-                        foreach($apply_to as $apply_e__id){
+                        foreach($apply_to as $apply_playerid){
                             foreach($this->Mench_ledger->fetch(array(
-                                'link_up' => $apply_e__id,
-                                'link_down' => $x['link_player'],
-                                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'link_void' => 0, //Not Void
+                                'linkup' => $apply_playerid,
+                                'linkdown' => $x['linkplayer'],
+                                'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'linkvoid' => 0, //Not Void
                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
-                                $this->Mench_ledger->update($follow_appended['link_id'], array());
+                                $this->Mench_ledger->update($follow_appended['linkid'], array());
                             }
                         }
                         echo 'Removed! ';
                     }
                 }
 
-                echo 'Source ID '.$x['link_player'].' ['.$x['link_text'].'] transforms to ['.$new_form.']<hr />';
+                echo 'Source ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
             }
         }
 
