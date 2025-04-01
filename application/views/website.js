@@ -2490,18 +2490,18 @@ function new_player(linktype, player_existing_id) {
         return false;
     }
 
-    //if player_existing_id>0 it means we're adding an existing Player, in which case e_new_string should be null
-    //If player_existing_id=0 it means we are creating a new Player and then adding it, in which case e_new_string is required
+    //if player_existing_id>0 it means we're adding an existing Player, in which case player_new_string should be null
+    //If player_existing_id=0 it means we are creating a new Player and then adding it, in which case player_new_string is required
     e_is_adding = true;
 
     var input = $('.new-list-'+linktype+' .add-input');
 
     var original_photo = $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html();
     $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    var e_new_string = null;
+    var player_new_string = null;
     if (player_existing_id==0) {
-        e_new_string = input.val();
-        if (e_new_string.length < 1) {
+        player_new_string = input.val();
+        if (player_new_string.length < 1) {
             alert('Missing Player name or URL, try again');
             input.focus();
             return false;
@@ -2515,7 +2515,7 @@ function new_player(linktype, player_existing_id) {
         linktype: linktype,
         focus__id: parseInt($('#focus__id').val()),
         player_existing_id: player_existing_id,
-        e_new_string: e_new_string,
+        player_new_string: player_new_string,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
 
     }, function (data) {
