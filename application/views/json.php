@@ -30,6 +30,8 @@ foreach($this->Mench_ledger->fetch(array(
             echo '<tr><td>ID '.$previous_x['link_id'].'</td><td>TP '.$previous_x['link_type'].'</td><td>PL '.$previous_x['link_player'].'</td><td>LF '.$previous_x['link_left'].'</td><td>RT '.$previous_x['link_right'].'</td><td> </td><td> </td><td>'.$previous_x['link_text'].'</td></tr>';
             echo '<tr style="background-color: #EFEFEF;"><td>ID '.$x['link_id'].'</td><td>TP '.$x['link_type'].'</td><td>PL '.$x['link_player'].'</td><td>LF '.$x['link_left'].'</td><td>RT '.$x['link_right'].'</td><td> </td><td> </td><td>'.$x['link_text'].'</td></tr>';
 
+            $this->db->query("DELETE FROM mench_ledger WHERE link_id=".$x['link_id'].";");
+
             //What about content?
             $link_full_duplicate++;
 
@@ -37,6 +39,8 @@ foreach($this->Mench_ledger->fetch(array(
 
             echo '<tr><td>ID '.$previous_x['link_id'].'</td><td>TP '.$previous_x['link_type'].'</td><td>PL '.$previous_x['link_player'].'</td><td> </td><td> </td><td>UP '.$previous_x['link_up'].'</td><td>DW '.$previous_x['link_down'].'</td><td>'.$previous_x['link_text'].'</td></tr>';
             echo '<tr style="background-color: #EFEFEF;"><td>ID '.$x['link_id'].'</td><td>TP '.$x['link_type'].'</td><td>PL '.$x['link_player'].'</td><td> </td><td> </td><td>UP '.$x['link_up'].'</td><td>DW '.$x['link_down'].'</td><td>'.$x['link_text'].'</td></tr>';
+
+            $this->db->query("DELETE FROM mench_ledger WHERE link_id=".$x['link_id'].";");
 
             //What about content?
             $link_full_duplicate++;
