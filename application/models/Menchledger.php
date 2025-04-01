@@ -187,7 +187,7 @@ class Menchledger extends CIdea_cache
     {
 
         $link_void_found = false;
-        foreach ($select as $key => $value) {
+        foreach ($query_filters as $key => $value) {
             if (substr_count($key, 'linkvoid')) {
                 $link_void_found = true;
                 break;
