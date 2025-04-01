@@ -8,12 +8,13 @@ foreach($this->Cacheideas->fetchold(array(
 ), 0) as $i){
 
     $count++;
-    echo $count.') #'.$i['i__type']."<hr />";
+    //echo $count.') #'.$i['i__type']."<hr />";
 
     //Lets log:
     $new_i_id = intval($i['i__id'])+100000;
 
-    //$this->db->query("UPDATE menchledger SET linkleft=".$migrate_s__id." WHERE linkleft=".$ideaid.";");
-
+    $this->db->query("UPDATE cacheideas SET ideatype=".$i['i__type']." WHERE ideaid=".$i['i__id'].";");
 
 }
+
+echo $count.' TOTAL';
