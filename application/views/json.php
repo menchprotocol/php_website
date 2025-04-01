@@ -16,7 +16,7 @@ foreach($this->Mench_ledger->fetch(array(
     'link_down' => 'ASC',
     'link_left' => 'ASC',
     'link_right' => 'ASC',
-    'link_text' => 'ASC',
+    'LENGTH(link_text)' => 'DESC',
     'link_id' => 'DESC',
 )) as $x){
 
