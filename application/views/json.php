@@ -1,5 +1,7 @@
 <?php
 
+boost_power();
+
 $link_count = 0;
 $link_full_duplicate = 0;
 $link_half_duplicate = 0;
@@ -9,13 +11,14 @@ echo '<table width="100%" border="1px">';
 foreach($this->Mench_ledger->fetch(array(
     'link_id >' => '0',
     'link_type NOT IN (4250,4251)' => null,
-), array(), 0, 0, array(
+), array(), 100000, 0, array(
     'link_type' => 'ASC',
     'link_up' => 'ASC',
     'link_down' => 'ASC',
     'link_left' => 'ASC',
     'link_right' => 'ASC',
 )) as $x){
+
     //echo $x['link_id']."<hr />";
 
     $link_count++;
