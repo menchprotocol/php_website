@@ -1,43 +1,8 @@
 <?php
 
 
-$link_count = 0;
-$link_full_duplicate = 0;
-$link_half_duplicate = 0;
-$previous_x = array();
-foreach($this->Mench_ledger->fetch(array(
-    'link_id >' => '0',
-    'link_type NOT IN (4250,4251)' => null,
-), array(), 500, 0, array(
-    'link_type' => 'ASC',
-    'link_up' => 'ASC',
-    'link_down' => 'ASC',
-    'link_left' => 'ASC',
-    'link_right' => 'ASC',
-    'LENGTH(link_text)' => 'DESC',
-)) as $x){
-    //echo $x['link_id']."<hr />";
-
-    $link_count++;
-    if(count($previous_x)){
-        //Check duplicate with previous link:
-        if($previous_x['link_up']==$x['link_up'] && $previous_x['link_down']==$x['link_down']){
-            //What about content?
-            if($previous_x['link_text']==$x['link_text']){
-                $link_full_duplicate++;
-            } else {
-                $link_half_duplicate++;
-            }
-        }
-    }
-
-    $previous_x = $x;
-}
-
-echo $link_half_duplicate.' HALF & '.$link_full_duplicate.' FULL duplicate out of '.$link_count.' TOTAL';
-
 //view__json($this->Mench_ledger->tree_full_history($focus_i, $focus_e['e__id']));
-if(0){
+if(1){
 if(1){
     $count = 0;
     $found = 0;
@@ -48,30 +13,6 @@ if(1){
         $count++;
         //echo $count.') @'.$e['e__handle'].' @'.$e['e__id'].'<hr />';
 
-        $this->db->insert('menchledger', array(
-            'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
-            'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
-            'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-            'linkup' => 32338, //Player Handle
-            'linktext' => $e['e__handle'],
-            'linkdown' => $e['e__id'],
-            'linktype' => 4230, //Follow
-        ));
-
-        if(strlen($e['e__cover'])){
-            $this->db->insert('menchledger', array(
-                'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
-                'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
-                'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-                'linkup' => 6198, //Player Cover
-                'linktext' => $e['e__cover'],
-                'linkdown' => $e['e__id'],
-                'linktype' => 4230, //Follow
-            ));
-        }
-
-
-        continue;
         $creators = $this->Mench_ledger->fetch(array(
             'link_down' => $e['e__id'],
             'link_type IN (4230,4251)' => null, //Idea References
@@ -97,6 +38,30 @@ if(1){
             'playercover' => $e['e__cover'],
             'playertext' => $e['e__title'],
         ));
+
+        if(0){
+            $this->db->insert('menchledger', array(
+                'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
+                'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
+                'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
+                'linkup' => 32338, //Player Handle
+                'linktext' => $e['e__handle'],
+                'linkdown' => $e['e__id'],
+                'linktype' => 4230, //Follow
+            ));
+
+            if(strlen($e['e__cover'])){
+                $this->db->insert('menchledger', array(
+                    'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
+                    'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
+                    'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
+                    'linkup' => 6198, //Player Cover
+                    'linktext' => $e['e__cover'],
+                    'linkdown' => $e['e__id'],
+                    'linktype' => 4230, //Follow
+                ));
+            }
+        }
 
     }
     echo $found.' Updated Found';
@@ -125,18 +90,6 @@ foreach($this->Idea_cache->fetch(array(
     $new_i_id = intval($i['i__id'])+100000;
 
     $this->db->insert('menchledger', array(
-        'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
-        'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
-        'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-        'linkup' => 32337, //Idea Hashtag
-        'linkright' => $new_i_id,
-        'linktext' => $i['i__hashtag'],
-        'linktype' => 4983, //CO-author
-    ));
-
-    continue;
-
-    $this->db->insert('menchledger', array(
         'linkid' => $new_i_id,
         'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : 1 ),
         'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
@@ -155,7 +108,59 @@ foreach($this->Idea_cache->fetch(array(
         'ideacache' => $i['i__cache'],
     ));
 
+    continue;
+
+    $this->db->insert('menchledger', array(
+        'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
+        'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
+        'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
+        'linkup' => 32337, //Idea Hashtag
+        'linkright' => $new_i_id,
+        'linktext' => $i['i__hashtag'],
+        'linktype' => 4983, //CO-author
+    ));
+
 }
 echo $found.'/'.$count.' Found';
+
+}
+
+
+if(1){
+
+    $link_count = 0;
+    $link_full_duplicate = 0;
+    $link_half_duplicate = 0;
+    $previous_x = array();
+    foreach($this->Mench_ledger->fetch(array(
+        'link_id >' => '0',
+        'link_type NOT IN (4250,4251)' => null,
+    ), array(), 500, 0, array(
+        'link_type' => 'ASC',
+        'link_up' => 'ASC',
+        'link_down' => 'ASC',
+        'link_left' => 'ASC',
+        'link_right' => 'ASC',
+        'LENGTH(link_text)' => 'DESC',
+    )) as $x){
+        //echo $x['link_id']."<hr />";
+
+        $link_count++;
+        if(count($previous_x)){
+            //Check duplicate with previous link:
+            if($previous_x['link_up']==$x['link_up'] && $previous_x['link_down']==$x['link_down']){
+                //What about content?
+                if($previous_x['link_text']==$x['link_text']){
+                    $link_full_duplicate++;
+                } else {
+                    $link_half_duplicate++;
+                }
+            }
+        }
+
+        $previous_x = $x;
+    }
+
+    echo $link_half_duplicate.' HALF & '.$link_full_duplicate.' FULL duplicate out of '.$link_count.' TOTAL';
 
 }
