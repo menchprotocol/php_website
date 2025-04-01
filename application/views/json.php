@@ -63,41 +63,30 @@ foreach($this->Idea_cache->fetch(array(
     //echo $count.') #'.$i['i__id']."<hr />";
 
     $creators = $this->Mench_ledger->fetch(array(
-        '(link_right='.$i['i__id'].' OR link_left='.$i['i__id'].')' => null,
+        'link_right' => $i['i__id'],
         'link_type' => 4250, //Idea References
         'link_void' => 0, //Not Void
     ));
-    if(count($creators)){
-        $found++;
-    }
-    continue;
 
     //Lets log:
+    $new_i_id = intval($i['i__id'])+100000;
     $this->db->insert('menchledger', array(
-        'linkid' => $e['e__id'],
-        'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : $e['e__id'] ),
+        'linkid' => $new_i_id,
+        'linkplayer' => ( isset($creators[0]['link_player']) ? $creators[0]['link_player'] : 1 ),
         'linktime' => ( isset($creators[0]['link_time']) ? $creators[0]['link_time'] : date("Y-m-d H:i:s", time()) ),
         'linkdomain' => ( isset($creators[0]['link_domain']) ? $creators[0]['link_domain'] : 0 ),
-        'linktext' => $e['e__title'],
-        'linktype' => 4251, //New Source Created
+        'linktext' => $i['i__message'],
+        'linktype' => 4250,
     ));
 
     //Add to cache:
-    $this->db->insert('cacheplayers', array(
-        'playerid' => $e['e__id'],
-        'playerexternal' => intval($e['e__external']),
-        'playernumber' => intval($e['e__weight']),
-        'playerhandle' => $e['e__handle'],
-        'playercover' => $e['e__cover'],
-        'playertext' => $e['e__title'],
-    ));
-
-
-    $this->Mench_ledger->create(array(
-        'link_type' => 4250,
-        'link_player' => $link_player,
-        'link_up' => $link_player,
-        'link_right' => $add_fields['i__id'],
+    $this->db->insert('cacheideas', array(
+        'ideaid' => $new_i_id,
+        'ideaexternal' => intval($i['i__external']),
+        'ideanumber' => intval($i['i__weight']),
+        'ideahashtag' => $i['i__hashtag'],
+        'ideatext' => $i['i__message'],
+        'ideacache' => $i['i__cache'],
     ));
 
 }
