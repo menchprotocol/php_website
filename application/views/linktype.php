@@ -10,7 +10,7 @@ $total_points = 0;
 $table_body = '';
 
 //Count total first:
-$totals_count = $this->Mench_ledger->fetch(array(), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+$totals_count = $this->Menchledger->fetch(array(), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
 foreach($this->config->item('e___4593') as $linktype => $m) {
@@ -24,7 +24,7 @@ foreach($this->config->item('e___4593') as $linktype => $m) {
     $table_body .= '<td style="text-align: left;">'.$linktype.'</td>';
 
     //List all statuses:
-    $list_e_count = $this->Mench_ledger->fetch(array(
+    $list_e_count = $this->Menchledger->fetch(array(
         'linktype' => $linktype,
     ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
     $interactions_this = $list_e_count[0]['totals'];

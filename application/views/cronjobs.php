@@ -3,7 +3,7 @@
 //List CronJobs command:
 $longest_time = 0;
 $longest_id = 0;
-$cron_jobs = $this->Mench_ledger->fetch(array(
+$cron_jobs = $this->Menchledger->fetch(array(
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
     'linkup' => 7274,

@@ -10,7 +10,7 @@ foreach($this->config->item('e___14874') as $linktype => $m) {
     if($linktype==12273){
 
         //IDEAS
-        $unique = $this->Mench_ledger->fetch(array(
+        $unique = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
@@ -18,21 +18,21 @@ foreach($this->config->item('e___14874') as $linktype => $m) {
     } elseif($linktype==12274){
 
         //SOURCE
-        $unique = $this->Mench_ledger->fetch(array(
+        $unique = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
         ), array('linkdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif(in_array($linktype, $this->config->item('n___42284'))){
 
-        $unique = $this->Mench_ledger->fetch(array(
+        $unique = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___'.$linktype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif($linktype==6255){
 
-        $unique = $this->Mench_ledger->fetch(array(
+        $unique = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
@@ -60,7 +60,7 @@ foreach($this->config->item('e___14874') as $linktype => $m) {
         if($linktype==12273){
 
             //IDEAS
-            $query = $this->Mench_ledger->fetch(array(
+            $query = $this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
                 'linktype IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'linktime >=' => $time_start,
@@ -70,7 +70,7 @@ foreach($this->config->item('e___14874') as $linktype => $m) {
         } elseif($linktype==12274){
 
             //SOURCE
-            $query = $this->Mench_ledger->fetch(array(
+            $query = $this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
                 'linktype IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
                 'linktime >=' => $time_start,
@@ -79,7 +79,7 @@ foreach($this->config->item('e___14874') as $linktype => $m) {
 
         } elseif($linktype==6255){
 
-            $query = $this->Mench_ledger->fetch(array(
+            $query = $this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
                 'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linktime >=' => $time_start,

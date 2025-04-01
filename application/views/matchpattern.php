@@ -1,13 +1,13 @@
 <?php
 
 if(isset($_GET['ideahashtag'])){
-    foreach($this->Idea_cache->fetch(array(
+    foreach($this->Cacheideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $i){
 
         echo '<h2>' . view__i_title($i) . '</h2>';
 
-        $preg_query = $this->Mench_ledger->fetch(array(
+        $preg_query = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
@@ -21,7 +21,7 @@ if(isset($_GET['ideahashtag'])){
 
             echo '<p>Mismatches against ['.$preg_query[0]['linktext'].'] are:</p>';
 
-            foreach($this->Mench_ledger->fetch(array(
+            foreach($this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
                 'linktype' => 6144, //Written Response
                 'linkleft' => $i['ideaid'],
@@ -30,7 +30,7 @@ if(isset($_GET['ideahashtag'])){
                 if(!preg_match($preg_query[0]['linktext'], $x['linktext'])) {
                     $failed++;
                     if(isset($_GET['delete'])){
-                        $this->Mench_ledger->update($x['linkid'], array());
+                        $this->Menchledger->update($x['linkid'], array());
                         echo 'Deleted! ';
                     } else {
                         echo 'Set ?delete=1? ';

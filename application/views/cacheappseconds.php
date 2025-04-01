@@ -11,7 +11,7 @@ echo '<div class="row justify-content margin-top-down">';
 foreach($this->config->item('e___14599') as $app_playerid => $cache_apps){
 
     //Fetch Last Cache
-    $latest_cache = $this->Mench_ledger->fetch(array(
+    $latest_cache = $this->Menchledger->fetch(array(
         'linkdomain' => website_setting(0),
         'linktype' => 44179, //Triggered
         'linkup' => 14599, //Cache App

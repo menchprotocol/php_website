@@ -6,10 +6,10 @@ $deleted_i = 0;
 $links_removed = 0;
 
 if($player_e){
-    foreach($this->Idea_cache->fetch(array(
+    foreach($this->Cacheideas->fetch(array(
     )) as $deleted_i){
         $deleted_i++;
-        $links_removed += $this->Idea_cache->remove($deleted_i['ideaid'], $player_e['playerid']);
+        $links_removed += $this->Cacheideas->remove($deleted_i['ideaid'], $player_e['playerid']);
     }
 }
 

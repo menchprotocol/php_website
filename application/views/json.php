@@ -1,3 +1,3 @@
 <?php
 
-view__json($this->Mench_ledger->tree_full_history($focus_i, $focus_e['playerid']));
+view__json($this->Menchledger->tree_full_history($focus_i, $focus_e['playerid']));

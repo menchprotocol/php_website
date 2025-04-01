@@ -7,13 +7,13 @@ $e___42263 = $this->config->item('e___42263'); //Link Groups
 
 
 if($playerhandle){
-    foreach($this->Source_cache->fetch(array(
+    foreach($this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($playerhandle),
     )) as $e){
         echo '<h2 class="center"><a href="'.view__memory(42903,42902).$playerhandle.'"><span class="icon-block">'.view__cover($e['playercover']).'</span> <u>' . $e['playertext'] . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif($ideahashtag){
-    foreach($this->Idea_cache->fetch(array(
+    foreach($this->Cacheideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($ideahashtag),
     )) as $i){
         echo '<h2 class="center"><a href="'.view__memory(42903,33286).$ideahashtag.'"><u>' . view__i_title($i, true) . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';

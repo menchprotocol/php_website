@@ -2,9 +2,9 @@
 
 $community_pills = '';
 
-foreach(( isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Source_cache->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Source_cache->scissor_e(website_setting(0), 13207) ) as $e_item) {
+foreach(( isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Cacheplayers->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Cacheplayers->scissor_e(website_setting(0), 13207) ) as $e_item) {
 
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'linkup' => $e_item['playerid'],
         'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'linkvoid' => 0, //Not Void

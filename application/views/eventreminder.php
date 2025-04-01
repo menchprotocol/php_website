@@ -5,7 +5,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
     //This is a request to cancel, do so and redirect:
     if(view__hash($_GET['e__time'].$_GET['playerhandle'])==$_GET['e__hash']){
-        foreach($this->Mench_ledger->fetch(array(
+        foreach($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkid' => $_GET['linkid'],
@@ -13,7 +13,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
         ), array('linkplayer'), 0) as $x){
 
             //Show Header:
-            foreach($this->Idea_cache->fetch(array(
+            foreach($this->Cacheideas->fetch(array(
                 'ideaid' => $x['linkright'],
             )) as $i_from){
                 echo '<h1><a href="'.view__memory(42903,33286).$i_from['ideahashtag'].'"><u>' . view__i_title($i_from, true) . '</u></a></h1>';
@@ -22,13 +22,13 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
             if(isset($_GET['submit'])){
 
                 //They have confirmed, remove:
-                $this->Mench_ledger->update($x['linkid'], array(
+                $this->Menchledger->update($x['linkid'], array(
                     'linktype' => 42333, //RSVP No
                 ), $x['playerid']);
                 //TODO Copy th is elsewhere
 
                 //Notify and give option to go to starting point:
-                foreach($this->Idea_cache->fetch(array(
+                foreach($this->Cacheideas->fetch(array(
                     'ideaid' => $x['linkleft'],
                 )) as $i_go){
                     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="'.view__memory(42903,33286).$i_go['ideahashtag'].'">'.view__i_title($i_go, true).'</a>.</div>';
@@ -58,7 +58,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
     //Track successful idea dispatches:
     $i_scanned = array();
 
-    foreach ($this->Mench_ledger->fetch(array(
+    foreach ($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
         'linkup IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
@@ -72,7 +72,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
             //Fetch Start time for this idea:
             $time_starts = 0;
-            foreach($this->Mench_ledger->fetch(array(
+            foreach($this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
                 'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'linkright' => $i['ideaid'],
@@ -89,7 +89,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
                 if(($time_starts - intval($e___42216[$i['linkup']]['m__message'])) < time()){
 
                     //End time?
-                    $time_ends = $this->Mench_ledger->fetch(array(
+                    $time_ends = $this->Menchledger->fetch(array(
                         'linkvoid' => 0, //Not Void
                         'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                         'linkright' => $i['ideaid'],
@@ -98,7 +98,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
                     //Navigation?
                     $must_follow = array();
-                    foreach($this->Mench_ledger->fetch(array(
+                    foreach($this->Menchledger->fetch(array(
                         'linkvoid' => 0, //Not Void
                         'linktype' => 32235, //Navigation
                         'linkright' => $i['ideaid'],
@@ -111,14 +111,14 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
                     $total_sent = 0;
 
                     //The time is here! Send event reminders to those who successfully discovered this:
-                    foreach($this->Mench_ledger->fetch(array(
+                    foreach($this->Menchledger->fetch(array(
                         'linkvoid' => 0, //Not Void
                         'linktype IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkleft' => $i['ideaid'],
                     ), array('linkplayer'), 0) as $x){
 
                         //Make sure this member qualified:
-                        if(count($must_follow)>0 && count($must_follow)!=count($this->Mench_ledger->fetch(array(
+                        if(count($must_follow)>0 && count($must_follow)!=count($this->Menchledger->fetch(array(
                                 'linkdown' => $x['playerid'],
                                 'linkup IN (' . join(',', $must_follow) . ')' => null,
                                 'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -141,7 +141,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
                             "\n".'https://'.get_domain('m__message', $x['playerid'], $user_website).view__app_link(42216).'?linkid='.$x['linkid'].'&playerhandle='.$x['playerhandle'].'&e__time='.time().'&e__hash='.view__hash(eventreminder . phptime() . $x['playerhandle']);
 
                         //Send message:
-                        $send_dm = $this->Mench_ledger->send_dm($x['playerid'], $subject, $html_message, array(
+                        $send_dm = $this->Menchledger->send_dm($x['playerid'], $subject, $html_message, array(
                             'linkleft' => $i['ideaid'],
                         ), $i['ideaid'], $user_website);
 
@@ -168,7 +168,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
         if($remind_status<0 || $remind_status>0){
             //We are done with this reminder request:
-            $this->Mench_ledger->update($i['linkid'], array(
+            $this->Menchledger->update($i['linkid'], array(
                 'linktype' => ($remind_status>0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }
@@ -177,7 +177,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
     }
 
-    foreach ($this->Mench_ledger->fetch(array(
+    foreach ($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'linknumber >' => time(), //Future event
@@ -187,7 +187,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
         //Determine if it's time to send this message:
         $time_starts = 0;
-        foreach ($this->Mench_ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
@@ -204,7 +204,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
         //Does it have an end time?
         $end_sending = 0;
-        foreach ($this->Mench_ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
@@ -215,7 +215,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
         }
 
 
-        $children = $this->Mench_ledger->fetch(array(
+        $children = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
             'linkleft' => $i['ideaid'],
@@ -229,7 +229,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
         foreach ($list_settings['query_string_filtered'] as $x) {
 
-            if (count($this->Mench_ledger->fetch(array(
+            if (count($this->Menchledger->fetch(array(
                 'linkleft' => $i['ideaid'],
                 'linkplayer' => $x['playerid'],
                 'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -250,7 +250,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
             $html_message = '';
             foreach ($children as $down_or) {
 
-                $discoveries = $this->Mench_ledger->fetch(array(
+                $discoveries = $this->Menchledger->fetch(array(
                     'linkvoid' => 0, //Not Void
                     'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'linkplayer' => $x['playerid'],
@@ -262,7 +262,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
 
             }
 
-            $send_dm = $this->Mench_ledger->send_dm($x['playerid'], $subject_line, $content_message . "\n" . trim($html_message), array(
+            $send_dm = $this->Menchledger->send_dm($x['playerid'], $subject_line, $content_message . "\n" . trim($html_message), array(
                 'linkleft' => $i['ideaid'],
             ), $i['ideaid'], $i['linkdomain'], true);
             $total_sent += ($send_dm['status'] ? 1 : 0);
@@ -273,7 +273,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['e__has
         //Mark this as complete?
         if (!$end_sending || $end_sending < time()) {
             //Ready to be done:
-            $this->Mench_ledger->update($i['linkid'], array(
+            $this->Menchledger->update($i['linkid'], array(
                 'linktype' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }

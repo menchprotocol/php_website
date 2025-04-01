@@ -1,7 +1,7 @@
 <?php
 
 //Make sure member:
-if(!count($this->Mench_ledger->fetch(array(
+if(!count($this->Menchledger->fetch(array(
     'linkvoid' => 0, //Not Void
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'linkup IN (' . join(',', $this->config->item('n___32537')) . ')' => null, //Interested Member
@@ -18,7 +18,7 @@ if(!count($this->Mench_ledger->fetch(array(
     session_delete();
 
     //Assign session & log transaction:
-    $this->Source_cache->activate_session($focus_e);
+    $this->Cacheplayers->activate_session($focus_e);
 
     js_php_redirect(loginas . phpview__memory(42903, 42902) . $focus_e['playerhandle'], 1597);
 

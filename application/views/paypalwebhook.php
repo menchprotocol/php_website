@@ -16,16 +16,16 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     $item_numbers['e_player'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 3 : 2 )])));
 
     //Fetch Objects based on handles:
-    $player_es = $this->Source_cache->fetch(array(
+    $player_es = $this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => $item_numbers['e_player'],
     ));
-    $website_es = $this->Source_cache->fetch(array(
+    $website_es = $this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => $item_numbers['e_wesbite'],
     ));
-    $next_is = $this->Idea_cache->fetch(array(
+    $next_is = $this->Cacheideas->fetch(array(
         'LOWER(ideahashtag)' => $item_numbers['i_destination'],
     ));
-    $target_is = ($item_numbers['i_target'] ? $this->Idea_cache->fetch(array(
+    $target_is = ($item_numbers['i_target'] ? $this->Cacheideas->fetch(array(
         'LOWER(ideahashtag)' => $item_numbers['i_target'],
     )) : false);
 
@@ -42,7 +42,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             $linktype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->Mench_ledger->mark_complete($linktype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Menchledger->mark_complete($linktype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => intval($_POST['quantity']),
                 'linktext' => $_POST,
             ));
@@ -52,14 +52,14 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             $linktype = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
 
             //Find issued tickets:
-            $original_payment = $this->Mench_ledger->fetch(array(
+            $original_payment = $this->Menchledger->fetch(array(
                 'linktype' => 26595,
                 'linkplayer' => $player_es[0]['playerid'],
                 'linkleft' => $next_is[0]['ideaid'],
             ));
 
             //Log Refund:
-            $completion_status = $this->Mench_ledger->mark_complete($linktype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Menchledger->mark_complete($linktype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => (-1 * ( isset($original_payment[0]['linknumber']) ? $original_payment[0]['linknumber'] : 1 )),
                 'linktext' => $_POST,
                 'linkdomain' => ( isset($original_payment[0]['linkdomain']) && $original_payment[0]['linkdomain']>0 ? $original_payment[0]['linkdomain'] : 0 ),

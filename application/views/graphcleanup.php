@@ -19,7 +19,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
 
     $edited = 0;
     $edited_sources = 0;
-    foreach($this->Idea_cache->fetch(array(
+    foreach($this->Cacheideas->fetch(array(
     ), 0) as $i_fix){
 
         $view_sync_links = view__sync_links($i_fix['ideatext'], true, $i_fix['ideaid']);
@@ -66,16 +66,16 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
     //Import Discoveries?
     $flash_message = '';
     if(isset($_GET['playerhandle'])){
-        foreach($this->Source_cache->fetch(array(
+        foreach($this->Cacheplayers->fetch(array(
             'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         )) as $e_append){
             $completed = 0;
-            foreach($this->Mench_ledger->fetch(array(
+            foreach($this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
                 'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linkleft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
-                if(!count($this->Mench_ledger->fetch(array(
+                if(!count($this->Menchledger->fetch(array(
                     'linkup' => $e_append['playerid'],
                     'linkdown' => $x['linkplayer'],
                     'linktext' => $x['linktext'],
@@ -84,7 +84,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
                 )))){
                     //Increment source link:
                     $completed++;
-                    $this->Mench_ledger->create(array(
+                    $this->Menchledger->create(array(
                         'linkplayer' => ($player_e ? $player_e['playerid'] : $x['linkplayer']),
                         'linkup' => $e_append['playerid'],
                         'linkdown' => $x['linkplayer'],

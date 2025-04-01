@@ -7,7 +7,7 @@ if(isset($_GET['playerhandle'])){
     //Find Link Content Duplicates for this Source:
     $main_index = array();
     $duplicates_found = array();
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'linkvoid' => 0, //Not Void
@@ -37,7 +37,7 @@ if(isset($_GET['playerhandle'])){
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from cache_sources en1 where (select count(*) from cache_sources en2 where en2.playertext = en1.playertext ORDER BY en1.playertext ASC');
+    $q = $this->db->query('select en1.* from cacheplayers en1 where (select count(*) from cacheplayers en2 where en2.playertext = en1.playertext ORDER BY en1.playertext ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){

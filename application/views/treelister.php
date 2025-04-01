@@ -15,7 +15,7 @@ if(!count($list_settings['list_config'][34513])){
 }
 
 
-foreach($this->Mench_ledger->fetch(array(
+foreach($this->Menchledger->fetch(array(
     'linkvoid' => 0, //Not Void
     'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
     'linkup IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes

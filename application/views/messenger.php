@@ -1,6 +1,6 @@
 <?php
 
-foreach($this->Mench_ledger->fetch(array(
+foreach($this->Menchledger->fetch(array(
     'linkvoid' => 0, //Not Void
     'linktype' => 33600, //Draft
     'linkup' => 26582,
@@ -8,7 +8,7 @@ foreach($this->Mench_ledger->fetch(array(
 
     //Determine if it's time to send this message:
     $time_starts = 0;
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
@@ -25,7 +25,7 @@ foreach($this->Mench_ledger->fetch(array(
 
     //Does it have an end time?
     $end_sending = 0;
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
@@ -38,14 +38,14 @@ foreach($this->Mench_ledger->fetch(array(
     //Now let's see who will receive this:
     $demo_only = false;
     $list_settings = list_settings($i['ideahashtag']);
-    $total_sent = $this->Mench_ledger->send_i_mass_dm($list_settings['query_string_filtered'], $i, $i['linkdomain'], true, $demo_only);
+    $total_sent = $this->Menchledger->send_i_mass_dm($list_settings['query_string_filtered'], $i, $i['linkdomain'], true, $demo_only);
 
     echo view__i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string_filtered']).' Members<hr />';
 
     //Mark this as complete?
     if(!$demo_only && (!$end_sending || $end_sending<time())){
         //Ready to be done:
-        $this->Mench_ledger->update($i['linkid'], array(
+        $this->Menchledger->update($i['linkid'], array(
             'linktype' => ( $total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */ ),
         ));
     }

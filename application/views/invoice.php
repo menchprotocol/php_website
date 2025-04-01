@@ -22,7 +22,7 @@ if(!$player_e){
 $items = [];
 foreach ($_POST['invoice_items'] as $key => $value) {
 
-    foreach($this->Idea_cache->fetch(array(
+    foreach($this->Cacheideas->fetch(array(
         'ideaid' => $_POST['invoice_items'][$key]['ideaid'], //ACTIVE
     )) as $this_i){
 
@@ -46,25 +46,25 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 }
 
 //Fetch User Data:
-$fetch_emails = $this->Mench_ledger->fetch(array(
+$fetch_emails = $this->Menchledger->fetch(array(
     'linkup' => 3288, //Email
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
 ));
-$fetch_phones = $this->Mench_ledger->fetch(array(
+$fetch_phones = $this->Menchledger->fetch(array(
     'linkup' => 4783, //Phone
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
 ));
-$fetch_first_names = $this->Mench_ledger->fetch(array(
+$fetch_first_names = $this->Menchledger->fetch(array(
     'linkup' => 42584, //First Name
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
 ));
-$fetch_last_names = $this->Mench_ledger->fetch(array(
+$fetch_last_names = $this->Menchledger->fetch(array(
     'linkup' => 30198, //Last Name
     'linkdown' => $player_e['playerid'],
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -82,7 +82,7 @@ if(count($fetch_phones) && strlen($fetch_phones[0]['linktext'])>=8) {
 
 if(!$set_email){
     //No Valid email:
-    $this->Mench_ledger->create(array(
+    $this->Menchledger->create(array(
         'linktype' => 44179, //Triggered
         'linkup' => 4246, //Platform Bug Reports
         'linkdown' => $player_e['playerid'],
@@ -98,22 +98,22 @@ if(!$set_email){
 
 
 
-foreach($this->Idea_cache->fetch(array(
+foreach($this->Cacheideas->fetch(array(
     'ideaid' => $_POST['target_ideaid'], //ACTIVE
 )) as $i_target){
 
-    foreach($this->Idea_cache->fetch(array(
+    foreach($this->Cacheideas->fetch(array(
         'ideaid' => $_POST['focus__id'], //ACTIVE
     )) as $i){
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
-        $invoice_due_dates = $this->Mench_ledger->fetch(array(
+        $invoice_due_dates = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 44378, //Invoice Due Date
         ));
-        $invoice_min_payments = $this->Mench_ledger->fetch(array(
+        $invoice_min_payments = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
@@ -163,17 +163,17 @@ foreach($this->Idea_cache->fetch(array(
 
 
         //Delete Old Parent Invoice:
-        foreach($this->Mench_ledger->fetch(array(
+        foreach($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkleft' => $i['ideaid'],
             'linkplayer' => $player_e['playerid'],
         ), array(), 0) as $x_discovery){
-            $this->Mench_ledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
+            $this->Menchledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
         }
 
         //Delete Old Child Answers:
-        foreach($this->Mench_ledger->fetch(array(
+        foreach($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linktype' => 7712, //Input Choice
             'linkplayer' => $player_e['playerid'],
@@ -181,39 +181,39 @@ foreach($this->Idea_cache->fetch(array(
         ), array('linkright')) as $x_selection){
 
             //Remove Selection:
-            $this->Mench_ledger->update($x_selection['linkid'], array(), $player_e['playerid']);
+            $this->Menchledger->update($x_selection['linkid'], array(), $player_e['playerid']);
 
             //Remove discovery if we can:
             if(!in_array($x_selection['i__type'], $this->config->item('n___42905'))){
-                foreach($this->Mench_ledger->fetch(array(
+                foreach($this->Menchledger->fetch(array(
                     'linkvoid' => 0, //Not Void
                     'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'linkleft' => $x_selection['ideaid'],
                     'linkplayer' => $player_e['playerid'],
                 ), array(), 0) as $x_discovery){
-                    $this->Mench_ledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
+                    $this->Menchledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
                 }
             }
         }
 
 
         //Save New Invoice:
-        $this->Mench_ledger->mark_complete(44245, $player_e['playerid'], $i_target['ideaid'], $i);
+        $this->Menchledger->mark_complete(44245, $player_e['playerid'], $i_target['ideaid'], $i);
 
 
         //Save New Child Answers:
         foreach ($_POST['invoice_items'] as $key => $value) {
-            foreach($this->Idea_cache->fetch(array(
+            foreach($this->Cacheideas->fetch(array(
                 'ideaid' => $_POST['invoice_items'][$key]['ideaid'], //ACTIVE
             )) as $this_i){
 
                 //Complete this item:
-                $this->Mench_ledger->mark_complete(i__discovery_link($this_i), $player_e['playerid'], $i_target['ideaid'], $this_i, array(), array(
+                $this->Menchledger->mark_complete(i__discovery_link($this_i), $player_e['playerid'], $i_target['ideaid'], $this_i, array(), array(
                     'linknumber' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
                 //Save Answer:
-                $this->Mench_ledger->create(array(
+                $this->Menchledger->create(array(
                     'linktype' => 7712, //Input Choice
                     'linkplayer' => $player_e['playerid'],
                     'linkleft' => $_POST['focus__id'],
@@ -227,7 +227,7 @@ foreach($this->Idea_cache->fetch(array(
         //Find Next:
         $i_redirect_url = i_redirect_url($i);
         if(!$i_redirect_url){
-            $find_next = $this->Mench_ledger->find_next($player_e['playerid'], $_POST['target_ideahashtag'], $i);
+            $find_next = $this->Menchledger->find_next($player_e['playerid'], $_POST['target_ideahashtag'], $i);
         }
 
 

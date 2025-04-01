@@ -16,7 +16,7 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 
 $primary_i = array();
 $secondary_i_list = array();
-foreach($this->Mench_ledger->fetch(array(
+foreach($this->Menchledger->fetch(array(
     'linkvoid' => 0, //Not Void
     'linktype' => 34513, //Pinned
     'linkup' => $website_id,
@@ -67,10 +67,10 @@ if($domain_phone || $email_domain) {
 
 
 //Any Info Boxes?
-foreach($this->Source_cache->scissor_e($website_id, 14903) as $e_item) {
+foreach($this->Cacheplayers->scissor_e($website_id, 14903) as $e_item) {
     //Any Followers?
     $info_item = null;
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'linkup' => $e_item['playerid'],
         'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'linkvoid' => 0, //Not Void
@@ -132,7 +132,7 @@ if(strlen($secondary_i)){
 $social_ui = null;
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 foreach($this->config->item('e___14036') as $playerid => $m){
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'linkup' => $playerid,
         'linkdown' => $website_id,
         'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS

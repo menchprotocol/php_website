@@ -13,8 +13,8 @@ if(isset($_GET['update_u_icons'])){
     }
 
     $updated = 0;
-    foreach($this->Mench_ledger->fetch($base_filters, array('linkdown'), 0) as $x){
-        $updated += $this->Source_cache->update($x['playerid'], array(
+    foreach($this->Menchledger->fetch($base_filters, array('linkdown'), 0) as $x){
+        $updated += $this->Cacheplayers->update($x['playerid'], array(
             'playercover' => random_cover(12279),
         ));
     }

@@ -7,7 +7,7 @@ $e___6287 = $this->config->item('e___6287'); //APP
 
 //Start with Featured Apps
 echo '<div class="row">';
-foreach($this->Mench_ledger->fetch(array(
+foreach($this->Menchledger->fetch(array(
     'linkup' => 30841, //Featured Apps
     'linkdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -34,7 +34,7 @@ echo '</div>';
 
 //List Regular Apps:
 echo '<div class="row">';
-foreach($this->Mench_ledger->fetch(array(
+foreach($this->Menchledger->fetch(array(
     'linkup' => 6287, //Featured Apps
     'linkdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS

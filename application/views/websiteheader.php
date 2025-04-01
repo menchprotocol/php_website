@@ -760,7 +760,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Creator(s) -->
                         <div class="creator_box">
                             <?php
-                            foreach($this->Mench_ledger->fetch(array(
+                            foreach($this->Menchledger->fetch(array(
                                 'linkup' => $player_e['playerid'],
                                 'linktype' => 41011, //PINNED FOLLOWER
                                 'linkvoid' => 0, //Not Void

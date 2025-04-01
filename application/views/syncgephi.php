@@ -22,7 +22,7 @@ $id_prefix = array(
 );
 
 //Add Ideas:
-$is = $this->Idea_cache->fetch(array(
+$is = $this->Cacheideas->fetch(array(
 ));
 foreach($is as $in){
 
@@ -35,7 +35,7 @@ foreach($is as $in){
     ));
 
     //Fetch Next Ideas:
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
         'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
         'linkleft' => $in['ideaid'],
@@ -54,7 +54,7 @@ foreach($is as $in){
 
 
 //Transfer sources:
-$es = $this->Source_cache->fetch(array(
+$es = $this->Cacheplayers->fetch(array(
 ));
 foreach($es as $en){
 
@@ -67,7 +67,7 @@ foreach($es as $en){
     ));
 
     //Fetch followers:
-    foreach($this->Mench_ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
             'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'linkup' => $en['playerid'],
