@@ -29,7 +29,7 @@ foreach($this->Mench_ledger->fetch(array(
     $insert_id = $this->db->insert_id();
 
     if($insert_id>0){
-        $this->db->query("DELETE FROM mench_ledge WHERE link_id=".$x['link_id'].";");
+        $this->db->query("DELETE FROM mench_ledger WHERE link_id=".$x['link_id'].";");
         $link_success++;
     }
     $link_count++;
