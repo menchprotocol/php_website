@@ -13,7 +13,7 @@ foreach($this->Cacheideas->fetchold(array(
     //Lets log:
     $new_i_id = intval($i['i__id'])+100000;
 
-    $this->db->query("UPDATE cacheideas SET ideatype=".$i['i__type']." WHERE ideaid=".$i['i__id'].";");
+    $this->db->query("UPDATE cacheideas SET ideatype=".$i['i__type']." WHERE ideaid=".$new_i_id.";");
 
 }
 
