@@ -1,7 +1,43 @@
 <?php
 
-//view__json($this->Mench_ledger->tree_full_history($focus_i, $focus_e['e__id']));
 
+$link_count = 0;
+$link_full_duplicate = 0;
+$link_half_duplicate = 0;
+$previous_x = array();
+foreach($this->Mench_ledger->fetch(array(
+    'link_id >' => '0',
+    'link_type NOT IN (4250,4251)' => null,
+), array(), 500, 0, array(
+    'link_type' => 'ASC',
+    'link_up' => 'ASC',
+    'link_down' => 'ASC',
+    'link_left' => 'ASC',
+    'link_right' => 'ASC',
+    'LENGTH(link_text)' => 'DESC',
+)) as $x){
+    //echo $x['link_id']."<hr />";
+
+    $link_count++;
+    if(count($previous_x)){
+        //Check duplicate with previous link:
+        if($previous_x['link_up']==$x['link_up'] && $previous_x['link_down']==$x['link_down']){
+            //What about content?
+            if($previous_x['link_text']==$x['link_text']){
+                $link_full_duplicate++;
+            } else {
+                $link_half_duplicate++;
+            }
+        }
+    }
+
+    $previous_x = $x;
+}
+
+echo $link_half_duplicate.' HALF & '.$link_full_duplicate.' FULL duplicate out of '.$link_count.' TOTAL';
+
+//view__json($this->Mench_ledger->tree_full_history($focus_i, $focus_e['e__id']));
+if(0){
 if(1){
     $count = 0;
     $found = 0;
@@ -122,13 +158,4 @@ foreach($this->Idea_cache->fetch(array(
 }
 echo $found.'/'.$count.' Found';
 
-
-/*
-foreach($this->Mench_ledger->fetch(array(
-    'link_id >' => '0',
-), array(), 10) as $x){
-    echo $x['link_id']."<hr />";
 }
-*/
-
-//Relations
