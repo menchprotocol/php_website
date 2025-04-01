@@ -1,10 +1,10 @@
 <?php
 
-view__json($this->Menchledger->tree_full_history($focus_i, $focus_e['playerid']));
+//view__json($this->Menchledger->tree_full_history($focus_i, $focus_e['playerid']));
 
 $count = 0;
 foreach($this->Cacheideas->fetchold(array(
-    'ideaid >' => 0,
+    'i__id >' => 0,
 ), 0) as $i){
 
     $count++;
