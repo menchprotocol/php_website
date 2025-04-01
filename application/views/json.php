@@ -15,12 +15,11 @@ foreach($this->Mench_ledger->fetch(array(
     'link_down' => 'ASC',
     'link_left' => 'ASC',
     'link_right' => 'ASC',
-    'LENGTH(link_text)' => 'DESC',
 )) as $x){
     //echo $x['link_id']."<hr />";
 
     $link_count++;
-    if(count($previous_x)){
+    if(count($previous_x) && $previous_x['link_type']==$x['link_type']){
         //Check duplicate with previous link:
         if(($previous_x['link_left']>0 || $previous_x['link_right']>0) && $previous_x['link_left']==$x['link_left'] && $previous_x['link_right']==$x['link_right']){
 
