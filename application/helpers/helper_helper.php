@@ -1876,8 +1876,8 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
     $email_message = str_replace('href="/','style="display:inline-block;" href="'.$base_domain.'/', $email_message);
 
     $email_data = array(
-        // Player is required
-        'Player' => $email_domain,
+        // Source is required
+        'Source' => $email_domain,
         // Destination is required
         'Destination' => array(
             'ToAddresses' => $to_emails,
