@@ -2390,7 +2390,7 @@ class App extends CI_Controller
                 break;
             }
             $session_key = $this->session->userdata('session_key');
-            $key_parts = explode('/', $sent_key, 2);
+            $key_parts = explode('/', $sent_key['linktext'], 2);
             if(strlen($session_key) && $key_parts[1]==md5($session_key.$_POST['input_code'])){
                 //Void access code:
                 $is_authenticated = $this->Menchledger->update($sent_key['linkid'], array(), $_POST['account_id']); //Code Verified
