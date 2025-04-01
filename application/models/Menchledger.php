@@ -65,12 +65,11 @@ class Menchledger extends CIdea_cache
         }
 
         //Lets log:
+        unset($add_fields['linkid']);
         $this->db->insert('menchledger', $add_fields);
-
 
         //Fetch inserted id:
         $add_fields['linkid'] = $this->db->insert_id();
-
 
         //All good huh?
         if ($add_fields['linkid'] < 1) {
