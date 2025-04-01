@@ -13,9 +13,9 @@ $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;"
 $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
 //Load IDEA LINKS:
-$e___4593 = $this->config->item('e___4593');
+$players___4593 = $this->config->item('players___4593');
 
-//To make sure Idea/source IDs are unique:
+//To make sure Idea/Player IDs are unique:
 $id_prefix = array(
     12273 => 100,
     12274 => 200,
@@ -37,14 +37,14 @@ foreach($is as $in){
     //Fetch Next Ideas:
     foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+        'linktype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
         'linkleft' => $in['ideaid'],
     ), array('linkright'), 0, 0) as $next_i){
 
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[12273].$next_i['linkleft'],
             'target' => $id_prefix[12273].$next_i['linkright'],
-            'label' => $e___4593[$next_i['linktype']]['m__title'], //TODO maybe give visibility to condition here?
+            'label' => $players___4593[$next_i['linktype']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['linktype'],
         ));
@@ -53,12 +53,12 @@ foreach($is as $in){
 }
 
 
-//Transfer sources:
+//Transfer Players:
 $es = $this->Cacheplayers->fetch(array(
 ));
 foreach($es as $en){
 
-    //Transfer source node:
+    //Transfer Player node:
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix[12274].$en['playerid'],
         'label' => $en['playertext'],
@@ -69,19 +69,19 @@ foreach($es as $en){
     //Fetch followers:
     foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         'linkup' => $en['playerid'],
-    ), array('linkdown'), 0, 0) as $e_down){
+    ), array('linkdown'), 0, 0) as $player_down){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12274].$e_down['linkup'],
-            'target' => $id_prefix[12274].$e_down['linkdown'],
-            'label' => $e___4593[$e_down['linktype']]['m__title'].': '.$e_down['linktext'],
+            'source' => $id_prefix[12274].$player_down['linkup'],
+            'target' => $id_prefix[12274].$player_down['linkdown'],
+            'label' => $players___4593[$player_down['linktype']]['m__title'].': '.$player_down['linktext'],
             'weight' => 1,
-            'edge_type' => $e_down['linktype'],
+            'edge_type' => $player_down['linktype'],
         ));
 
     }
 }
 
-echo count($is).' ideas & '.count($es).' sources synced.';
+echo count($is).' ideas & '.count($es).' Players synced.';

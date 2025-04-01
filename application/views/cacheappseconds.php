@@ -8,7 +8,7 @@ if($player_e){
 
 $found_cache = 0;
 echo '<div class="row justify-content margin-top-down">';
-foreach($this->config->item('e___14599') as $app_playerid => $cache_apps){
+foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
 
     //Fetch Last Cache
     $latest_cache = $this->Menchledger->fetch(array(

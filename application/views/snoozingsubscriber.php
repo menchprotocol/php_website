@@ -2,7 +2,7 @@
 
 //Auto unsnooze members who is time for them to get unsnoozed.
 
-foreach($this->config->item('e___28917') as $linktype => $m) {
+foreach($this->config->item('players___28917') as $linktype => $m) {
     if(isset($m['m__message']) && intval($m['m__message'])>0){
 
         $total_members = 0;
@@ -10,7 +10,7 @@ foreach($this->config->item('e___28917') as $linktype => $m) {
 
         foreach($this->Menchledger->fetch(array(
             'linkup' => $linktype,
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         ), array('linkdown'), 0) as $x) {
             $total_members++;

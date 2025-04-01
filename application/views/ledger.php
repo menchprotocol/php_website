@@ -13,9 +13,9 @@ $focus_i = false;
 if($input_e){
     foreach($this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-    )) as $e_found){
-        $focus_e = $e_found;
-        $_GET['playerhandle'] = $e_found['playerhandle'];
+    )) as $player_found){
+        $focus_e = $player_found;
+        $_GET['playerhandle'] = $player_found['playerhandle'];
     }
     if(!$focus_e){
         //Invalid input!
@@ -26,9 +26,9 @@ if($input_e){
 if($input_i){
     foreach($this->Cacheideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
-    )) as $i_found){
-        $focus_i = $i_found;
-        $_GET['ideahashtag'] = $i_found['ideahashtag'];
+    )) as $idea_found){
+        $focus_i = $idea_found;
+        $_GET['ideahashtag'] = $idea_found['ideahashtag'];
     }
     if(!$focus_i){
         //Invalid input!
@@ -36,7 +36,7 @@ if($input_i){
     }
 }
 
-$any_i_e_set = $input_i || $input_e;
+$any_ideaplayer_set = $input_i || $input_e;
 
 
 if(isset($_GET['linkplayer']) && strlen($_GET['linkplayer']) > 0){
@@ -157,7 +157,7 @@ if(isset($_GET['linktype'])){
 
 $has_filters = ( count($_GET) > 0 );
 
-$e___11035 = $this->config->item('e___11035'); //Encyclopedia
+$players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 ?>
 
@@ -207,7 +207,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 <?php
 
 if(superpower_unlocked(12701)){
-    echo '<div class="inline-block margin-top-down" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">'.$e___11035[12707]['m__title'].'</a></div>';
+    echo '<div class="inline-block margin-top-down" style="padding-left:7px;"><span class="icon-block">'.$players___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">'.$players___11035[12707]['m__title'].'</a></div>';
 }
 
 
@@ -335,7 +335,7 @@ if(isset($_GET['linktype']) && substr_count($_GET['linktype'], ',')>0){
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->Menchledger->fetch($ini_filter, array('linktype'), 0, 0, sort__e(), 'COUNT(linktype) as total_count, playertext, linktype', 'linktype, playertext') as $x) {
+        foreach($this->Menchledger->fetch($ini_filter, array('linktype'), 0, 0, sort__player(), 'COUNT(linktype) as total_count, playertext, linktype', 'linktype, playertext') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['linktype'] . '" ' . ((isset($_GET['linktype']) && $_GET['linktype']==$x['linktype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
@@ -349,7 +349,7 @@ if(isset($_GET['linktype']) && substr_count($_GET['linktype'], ',')>0){
 
         //Load all fast:
         echo '<option value="0">ALL TRANSACTION TYPES</option>';
-        foreach($this->config->item('e___4593') /* DISCOVERY Types */ as $playerid => $m){
+        foreach($this->config->item('players___4593') /* DISCOVERY Types */ as $playerid => $m){
             //Echo drop down:
             echo '<option value="' . $playerid . '" ' . ((isset($_GET['linktype']) && $_GET['linktype']==$playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }

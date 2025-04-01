@@ -21,8 +21,8 @@ class Cacheplayers extends CIdea_cache
         //Remove from Anonymous:
         foreach($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'linkup IN (' . join(',', $this->config->item('n___32540')) . ')' => null, //Unsubscribers
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkup IN (' . join(',', $this->config->item('playerids___32540')) . ')' => null, //Unsubscribers
             'linkdown' => $playerid,
         )) as $unsubscriber_x){
             $this->Menchledger->update($unsubscriber_x['linkid'], array(), $playerid);
@@ -56,16 +56,16 @@ class Cacheplayers extends CIdea_cache
         );
 
         //Make sure they also belong to this website's members:
-        $this->Cacheplayers->add_regular_e(website_setting(0), $e['playerid']);
+        $this->Cacheplayers->add_regular_player(website_setting(0), $e['playerid']);
 
 
         //Check & Adjust their subscription, IF needed:
         //Remove their subscribe:
         $resubscribed = 0;
         foreach($this->Menchledger->fetch(array(
-            'linkup IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
+            'linkup IN (' . join(',', $this->config->item('playerids___29648')) . ')' => null, //Unsubscribers
             'linkdown' => $e['playerid'],
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         )) as $unsubscribe){
             $resubscribed += $this->Menchledger->update($unsubscribe['linkid'], array(), $e['playerid']);
@@ -94,9 +94,9 @@ class Cacheplayers extends CIdea_cache
         //Fetch Platform Defaults:
         $platform_theme = array();
         foreach($this->Menchledger->fetch(array(
-            'linkup IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
+            'linkup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'linkdown' => 6404, //Platform Default
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         ), array(), 0) as $x) {
             array_push($platform_theme, intval($x['linkup']));
@@ -105,9 +105,9 @@ class Cacheplayers extends CIdea_cache
         //Fetch Website Defaults:
         $website_theme = array();
         foreach($this->Menchledger->fetch(array(
-            'linkup IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
+            'linkup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'linkdown' => website_setting(0), //Website ID
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         ), array(), 0) as $x) {
             array_push($website_theme, intval($x['linkup']));
@@ -117,37 +117,37 @@ class Cacheplayers extends CIdea_cache
         //Fetch User Defaults:
         $user_theme = array();
         foreach($this->Menchledger->fetch(array(
-            'linkdown' => $e['playerid'], //This follower source
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linkdown' => $e['playerid'], //This follower Player
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
-        ), array('linkup'), 0) as $e_up){
+        ), array('linkup'), 0) as $player_up){
 
             //Push to followings IDs:
-            array_push($session_data['session_up_ids'], intval($e_up['playerid']));
+            array_push($session_data['session_up_ids'], intval($player_up['playerid']));
 
             //Website Theme Items?
-            if(in_array($e_up['playerid'], $this->config->item('n___14926'))){
-                array_push($user_theme, intval($e_up['playerid']));
+            if(in_array($player_up['playerid'], $this->config->item('playerids___14926'))){
+                array_push($user_theme, intval($player_up['playerid']));
             }
 
             //Superpower?
-            if(in_array($e_up['playerid'], $this->config->item('n___10957'))){
+            if(in_array($player_up['playerid'], $this->config->item('playerids___10957'))){
 
                 //It's unlocked!
-                array_push($session_data['session_superpowers_unlocked'], intval($e_up['playerid']));
+                array_push($session_data['session_superpowers_unlocked'], intval($player_up['playerid']));
             }
         }
 
 
         //Determine Defaults if missing any of the CUSTOM UI
-        foreach($this->config->item('e___13890') as $playerid => $m){
+        foreach($this->config->item('players___13890') as $playerid => $m){
 
             //Set Default:
             $session_data['session_custom_ui_'.$playerid] = 0;
 
             //First try to find User Theme, if any:
             if(!$session_data['session_custom_ui_'.$playerid]){
-                foreach($this->config->item('e___'.$playerid) as $playerid2 => $m2){
+                foreach($this->config->item('players___'.$playerid) as $playerid2 => $m2){
                     if(in_array($playerid2, $user_theme )){
                         $session_data['session_custom_ui_'.$playerid] = $playerid2;
                         break;
@@ -157,7 +157,7 @@ class Cacheplayers extends CIdea_cache
 
             //Then try to find Website Theme, if any:
             if(!$session_data['session_custom_ui_'.$playerid]){
-                foreach($this->config->item('e___'.$playerid) as $playerid2 => $m2){
+                foreach($this->config->item('players___'.$playerid) as $playerid2 => $m2){
                     if(in_array($playerid2, $website_theme )){
                         $session_data['session_custom_ui_'.$playerid] = $playerid2;
                         break;
@@ -169,7 +169,7 @@ class Cacheplayers extends CIdea_cache
             //Finally try Platform Theme:
             if(!$session_data['session_custom_ui_'.$playerid]){
                 //First try to find Website Default, if any:
-                foreach($this->config->item('e___'.$playerid) as $playerid2 => $m2){
+                foreach($this->config->item('players___'.$playerid) as $playerid2 => $m2){
                     if(in_array($playerid2, $platform_theme )){
                         $session_data['session_custom_ui_'.$playerid] = $playerid2;
                         break;
@@ -187,9 +187,9 @@ class Cacheplayers extends CIdea_cache
         /*
         $unsubscribed_time = null;
         foreach($this->Menchledger->fetch(array(
-            'linkup IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
-            'linkdown' => $e['playerid'], //This follower source
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linkup IN (' . join(',', $this->config->item('playerids___31057')) . ')' => null, //Permanently Unsubscribed
+            'linkdown' => $e['playerid'], //This follower Player
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         ), array(), 0) as $unsubscribed){
             $unsubscribed_time = $unsubscribed['linktime'];
@@ -212,11 +212,11 @@ class Cacheplayers extends CIdea_cache
     }
 
 
-    function add_regular_e($linkup, $linkdown, $linktext = null) {
+    function add_regular_player($linkup, $linkdown, $linktext = null) {
         //Add if link not already there:
         if(!count($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkup' => $linkup,
             'linkdown' => $linkdown,
             'linktext' => $linktext,
@@ -231,20 +231,20 @@ class Cacheplayers extends CIdea_cache
         }
     }
 
-    function scissor_e($linkup, $sub_id){
+    function scissor_player($linkup, $sub_id){
 
         $all_results = $this->Menchledger->fetch(array(
             'linkup' => $linkup,
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
-        ), array('linkdown'), 0, 0, sort__e());
+        ), array('linkdown'), 0, 0, sort__player());
 
         //Remove if not in the secondary group:
         foreach($all_results as $key => $primary_list){
             if(!count($this->Menchledger->fetch(array(
                 'linkup' => $sub_id,
                 'linkdown' => $primary_list['playerid'],
-                'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                 'linkvoid' => 0, //Not Void
             ), array(), 0))){
                 unset($all_results[$key]);
@@ -260,7 +260,7 @@ class Cacheplayers extends CIdea_cache
 
         $all_results = $this->Menchledger->fetch(array(
             'linkup' => $linkup,
-            'linktype IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'linktype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
             'linkvoid' => 0, //Not Void
         ), array('linkright'), 0, 0, array('linknumber' => 'ASC'));
 
@@ -269,7 +269,7 @@ class Cacheplayers extends CIdea_cache
             if(!count($this->Menchledger->fetch(array(
                 'linkup' => $sub_id,
                 'linkright' => $primary_list['ideaid'],
-                'linktype IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'linktype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
                 'linkvoid' => 0, //Not Void
             )))){
                 unset($all_results[$key]);
@@ -290,8 +290,8 @@ class Cacheplayers extends CIdea_cache
             $linkdomain = website_setting(0);
         }
 
-        //All good, create new source:
-        $new_private_users = in_array($linkdomain, $this->config->item('n___44011'));
+        //All good, create new Player:
+        $new_private_users = in_array($linkdomain, $this->config->item('playerids___44011'));
         $added_e = $this->Cacheplayers->create($full_name, 0, ( $image_url ? $image_url : random_cover(12279) ));
         if(!$added_e['status']){
             //We had an error, return it:
@@ -314,8 +314,8 @@ class Cacheplayers extends CIdea_cache
                 'linktype' => 4230,
                 'linktext' => trim(strtolower($email)),
                 'linkup' => 3288, //Email
-                'linkplayer' => $added_e['new_e']['playerid'],
-                'linkdown' => $added_e['new_e']['playerid'],
+                'linkplayer' => $added_e['new_player']['playerid'],
+                'linkdown' => $added_e['new_player']['playerid'],
                 'linkdomain' => $linkdomain,
             ));
         }
@@ -326,15 +326,15 @@ class Cacheplayers extends CIdea_cache
                 'linkup' => 4783, //Phone
                 'linktype' => 4230,
                 'linktext' => $phone_number,
-                'linkplayer' => $added_e['new_e']['playerid'],
-                'linkdown' => $added_e['new_e']['playerid'],
+                'linkplayer' => $added_e['new_player']['playerid'],
+                'linkdown' => $added_e['new_player']['playerid'],
                 'linkdomain' => $linkdomain,
             ));
         }
 
         if($email || $phone_number){
 
-            $this->Cacheplayers->activate_subscription( $added_e['new_e']['playerid'], $linkdomain );
+            $this->Cacheplayers->activate_subscription( $added_e['new_player']['playerid'], $linkdomain );
 
         } else {
 
@@ -342,8 +342,8 @@ class Cacheplayers extends CIdea_cache
             $this->Menchledger->create(array(
                 'linkup' => 14938, //Guest Login
                 'linktype' => 4230,
-                'linkplayer' => $added_e['new_e']['playerid'],
-                'linkdown' => $added_e['new_e']['playerid'],
+                'linkplayer' => $added_e['new_player']['playerid'],
+                'linkdown' => $added_e['new_player']['playerid'],
                 'linkdomain' => $linkdomain,
             ));
 
@@ -355,7 +355,7 @@ class Cacheplayers extends CIdea_cache
 
 
         //Add member to Domain Member Group(s):
-        $this->Cacheplayers->add_regular_e($linkdomain, $added_e['new_e']['playerid']);
+        $this->Cacheplayers->add_regular_player($linkdomain, $added_e['new_player']['playerid']);
 
 
         //Send Welcome Email if any:
@@ -372,23 +372,23 @@ class Cacheplayers extends CIdea_cache
                     'linkright' => $i['ideaid'], //Is this the template?
                 )))){
                     //Found the email template to send:
-                    $total_sent = $this->Menchledger->send_i_mass_dm(array($added_e['new_e']), $i, $linkdomain);
+                    $total_sent = $this->Menchledger->send_idea_mass_dm(array($added_e['new_player']), $i, $linkdomain);
                     break; //Just the first template match
                 }
             }
         }
 
         //Update Search Index:
-        flag_for_search_indexing(12274,  $added_e['new_e']['playerid']);
+        flag_for_search_indexing(12274,  $added_e['new_player']['playerid']);
 
         //Assign session & log login transaction:
-        $this->Cacheplayers->activate_session($added_e['new_e']);
+        $this->Cacheplayers->activate_session($added_e['new_player']);
 
 
         //Return Member:
         return array(
             'status' => 1,
-            'e' => $added_e['new_e'],
+            'e' => $added_e['new_player'],
         );
 
     }
@@ -396,7 +396,7 @@ class Cacheplayers extends CIdea_cache
     function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('playerid' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        //Fetch the target sources:
+        //Fetch the target Players:
         $this->db->select($select);
         $this->db->from('cacheplayers');
         foreach($query_filters as $key => $value) {
@@ -423,7 +423,7 @@ class Cacheplayers extends CIdea_cache
         //Make sure user has access to each item:
         if($select=='*' && 0){
             foreach($results as $key => $value){
-                if(!access_level_e(null, $value['playerid'], $value)){
+                if(!access_level_player(null, $value['playerid'], $value)){
                     unset($results[$key]); //Remove this option
                 }
             }
@@ -438,25 +438,25 @@ class Cacheplayers extends CIdea_cache
         $flat_items = array();
         $s__level++;
 
-        if(in_array($linktype, $this->config->item('n___42276'))){
+        if(in_array($linktype, $this->config->item('playerids___42276'))){
 
-            //Up Source Link Groups:
+            //Up Player Link Groups:
             $order_columns = array('linktype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
             $joins_objects = array('linkup');
             $query_filters = array(
                 'linkdown' => $playerid,
-                'linktype IN (' . join(',', $this->config->item('n___'.$linktype)) . ')' => null, //SOURCE LINKS
+                'linktype IN (' . join(',', $this->config->item('playerids___'.$linktype)) . ')' => null, //SOURCE LINKS
                 'linkvoid' => 0, //Not Void
             );
 
-        } elseif(in_array($linktype, $this->config->item('n___42377'))){
+        } elseif(in_array($linktype, $this->config->item('playerids___42377'))){
 
-            //Down Source Link Groups:
+            //Down Player Link Groups:
             $order_columns = array('linktype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
             $joins_objects = array('linkdown');
             $query_filters = array(
                 'linkup' => $playerid,
-                'linktype IN (' . join(',', $this->config->item('n___'.$linktype)) . ')' => null, //SOURCE LINKS
+                'linktype IN (' . join(',', $this->config->item('playerids___'.$linktype)) . ')' => null, //SOURCE LINKS
                 'linkvoid' => 0, //Not Void
             );
 
@@ -467,35 +467,35 @@ class Cacheplayers extends CIdea_cache
         }
 
 
-        foreach($this->Menchledger->fetch($query_filters, $joins_objects, 0, 0, $order_columns) as $e_down) {
+        foreach($this->Menchledger->fetch($query_filters, $joins_objects, 0, 0, $order_columns) as $player_down) {
 
-            //Filter Sources, if needed:
+            //Filter Players, if needed:
             $qualified_e = true;
             if(count($include_any_e) && !count($this->Menchledger->fetch(array(
                     'linkup IN (' . join(',', $include_any_e) . ')' => null,
-                    'linkdown' => $e_down['playerid'],
-                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkdown' => $player_down['playerid'],
+                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkvoid' => 0, //Not Void
                 )))){
-                //Must include all sources, skip:
+                //Must include all Players, skip:
                 $qualified_e = false;
             }
             if(count($exclude_all_e) && count($this->Menchledger->fetch(array(
                     'linkup IN (' . join(',', $exclude_all_e) . ')' => null,
-                    'linkdown' => $e_down['playerid'],
-                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkdown' => $player_down['playerid'],
+                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkvoid' => 0, //Not Void
                 )))){
-                //Must Exclude If Has ALL sources, skip:
+                //Must Exclude If Has ALL Players, skip:
                 $qualified_e = false;
             }
 
 
-            //Is this a new matching source?
-            if($qualified_e && !isset($flat_items[$e_down['playerid']])){
-                $e_down['s__level'] = $s__level;
-                $e_down['s__count'] = count($flat_items)+1;
-                $flat_items[$e_down['playerid']] = $e_down;
+            //Is this a new matching Player?
+            if($qualified_e && !isset($flat_items[$player_down['playerid']])){
+                $player_down['s__level'] = $s__level;
+                $player_down['s__count'] = count($flat_items)+1;
+                $flat_items[$player_down['playerid']] = $player_down;
             }
 
             //Do we have more followers?
@@ -503,10 +503,10 @@ class Cacheplayers extends CIdea_cache
                 break;
             }
 
-            foreach($this->Cacheplayers->fetch_recursive($linktype, $e_down['playerid'], $include_any_e, $exclude_all_e, $hard_level, $hard_limit, $s__level) as $e_recursive_down){
-                if(!isset($flat_items[$e_recursive_down['playerid']])){
-                    $e_recursive_down['s__count'] = count($flat_items)+1;
-                    $flat_items[$e_recursive_down['playerid']] = $e_recursive_down;
+            foreach($this->Cacheplayers->fetch_recursive($linktype, $player_down['playerid'], $include_any_e, $exclude_all_e, $hard_level, $hard_limit, $s__level) as $player_recursive_down){
+                if(!isset($flat_items[$player_recursive_down['playerid']])){
+                    $player_recursive_down['s__count'] = count($flat_items)+1;
+                    $flat_items[$player_recursive_down['playerid']] = $player_recursive_down;
                 }
             }
         }
@@ -531,33 +531,33 @@ class Cacheplayers extends CIdea_cache
     }
 
 
-    function radio_set($e_up_bucket_id, $set_e_down_id, $linkplayer)
+    function radio_set($player_up_bucket_id, $setplayer_down_id, $linkplayer)
     {
 
         /*
-         * Treats an source follower group as a drop down menu where:
+         * Treats an Player follower group as a drop down menu where:
          *
-         *  $e_up_bucket_id is the followings of the drop down
-         *  $linkplayer is the member source ID that one of the followers of $e_up_bucket_id should be assigned (like a drop down)
-         *  $set_e_down_id is the new value to be assigned, which could also be null (meaning just delete all current values)
+         *  $player_up_bucket_id is the followings of the drop down
+         *  $linkplayer is the member Player ID that one of the followers of $player_up_bucket_id should be assigned (like a drop down)
+         *  $setplayer_down_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like Member communication levels
          *
          * */
 
 
-        //Fetch all the follower sources for $e_up_bucket_id and make sure they match $set_e_down_id
-        $followers = $this->config->item('n___' . $e_up_bucket_id);
-        if ($e_up_bucket_id < 1) {
+        //Fetch all the follower Players for $player_up_bucket_id and make sure they match $setplayer_down_id
+        $followers = $this->config->item('playerids___' . $player_up_bucket_id);
+        if ($player_up_bucket_id < 1) {
             return false;
         } elseif (!$followers) {
             return false;
-        } elseif ($set_e_down_id > 0 && !in_array($set_e_down_id, $followers)) {
+        } elseif ($setplayer_down_id > 0 && !in_array($setplayer_down_id, $followers)) {
             return false;
         }
 
         //First delete existing following/follower transactions for this drop down:
-        $previously_assigned = ($set_e_down_id < 1);
+        $previously_assigned = ($setplayer_down_id < 1);
         $x_update_id = 0;
         foreach($this->Menchledger->fetch(array(
             'linkdown' => $linkplayer,
@@ -565,7 +565,7 @@ class Cacheplayers extends CIdea_cache
             'linkvoid' => 0, //Not Void
         ), array(), view__memory(6404,11064)) as $x) {
 
-            if (!$previously_assigned && $x['linkup']==$set_e_down_id) {
+            if (!$previously_assigned && $x['linkup']==$setplayer_down_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
@@ -578,13 +578,13 @@ class Cacheplayers extends CIdea_cache
         }
 
 
-        //Make sure $set_e_down_id belongs to followings if set (Could be null which means delete all)
+        //Make sure $setplayer_down_id belongs to followings if set (Could be null which means delete all)
         if (!$previously_assigned) {
-            //Let's go ahead and add desired source as parent:
+            //Let's go ahead and add desired Player as parent:
             $this->Menchledger->create(array(
                 'linkplayer' => $linkplayer,
                 'linkdown' => $linkplayer,
-                'linkup' => $set_e_down_id,
+                'linkup' => $setplayer_down_id,
                 'linktype' => 4230,
             ));
         }
@@ -593,7 +593,7 @@ class Cacheplayers extends CIdea_cache
 
     function remove_duplicate_links($playerid){
 
-        //A function that scans source followings links and removes duplicates
+        //A function that scans Player followings links and removes duplicates
 
         $current_up = array();
         $duplicates_removed = 0;
@@ -601,7 +601,7 @@ class Cacheplayers extends CIdea_cache
         //Check followings to see if there are duplicates:
         foreach($this->Menchledger->fetch(array(
             'linkdown' => $playerid,
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         ), array('linkup'), 0, 0, array('linkup' => 'ASC', 'linkid' => 'ASC')) as $x) {
 
@@ -694,25 +694,25 @@ class Cacheplayers extends CIdea_cache
         $action_command2 = trim($action_command2);
 
 
-        if(!in_array($action_playerid, $this->config->item('n___4997'))) {
+        if(!in_array($action_playerid, $this->config->item('playerids___4997'))) {
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(in_array($action_playerid, array(5981, 5982, 11956, 13441)) && !view__valid_handle_e($action_command1)){
+        } elseif(in_array($action_playerid, array(5981, 5982, 11956, 13441)) && !view__valid_handle_player($action_command1)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Source. Format must be: @SourceHandle',
+                'message' => 'Unknown Player. Format must be: @PlayerHandle',
             );
 
-        } elseif(in_array($action_playerid, array(11956)) && !view__valid_handle_e($action_command2)){
+        } elseif(in_array($action_playerid, array(11956)) && !view__valid_handle_player($action_command2)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Source. Format must be: @SourceHandle',
+                'message' => 'Unknown Player. Format must be: @PlayerHandle',
             );
 
         }
@@ -724,7 +724,7 @@ class Cacheplayers extends CIdea_cache
         //Fetch all followers:
         $followers = $this->Menchledger->fetch(array(
             'linkup' => $playerid,
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         ), array('linkdown'), 0);
 
@@ -751,17 +751,17 @@ class Cacheplayers extends CIdea_cache
 
                 $applied_success++;
 
-            } elseif (in_array($action_playerid, array(5981, 5982, 11956, 13441)) && view__valid_handle_e($action_command1)) { //Add/Delete/Migrate followings source
+            } elseif (in_array($action_playerid, array(5981, 5982, 11956, 13441)) && view__valid_handle_player($action_command1)) { //Add/Delete/Migrate followings Player
 
                 //What member searched for:
                 foreach($this->Cacheplayers->fetch(array(
-                    'LOWER(playerhandle)' => strtolower(view__valid_handle_e($action_command1)),
+                    'LOWER(playerhandle)' => strtolower(view__valid_handle_player($action_command1)),
                 )) as $e){
 
-                    //See if follower source has searched followings source:
+                    //See if follower Player has searched followings Player:
                     $down_up_e = $this->Menchledger->fetch(array(
-                        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'linkdown' => $x['playerid'], //This follower source
+                        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkdown' => $x['playerid'], //This follower Player
                         'linkup' => $e['playerid'],
                         'linkvoid' => 0, //Not Void
                     ));
@@ -771,7 +771,7 @@ class Cacheplayers extends CIdea_cache
                         $add_fields = array(
                             'linkplayer' => $linkplayer,
                             'linktype' => 4230,
-                            'linkdown' => $x['playerid'], //This follower source
+                            'linkdown' => $x['playerid'], //This follower Player
                             'linkup' => $e['playerid'],
                         );
 
@@ -800,16 +800,16 @@ class Cacheplayers extends CIdea_cache
                                 $applied_success++;
                             }
 
-                        } elseif($action_playerid==11956 && view__valid_handle_e($action_command2)) {
+                        } elseif($action_playerid==11956 && view__valid_handle_player($action_command2)) {
 
                             foreach($this->Cacheplayers->fetch(array(
-                                'LOWER(playerhandle)' => strtolower(view__valid_handle_e($action_command2)),
+                                'LOWER(playerhandle)' => strtolower(view__valid_handle_player($action_command2)),
                             )) as $e){
                                 //Add as a followings because it meets the condition
                                 $this->Menchledger->create(array(
                                     'linkplayer' => $linkplayer,
                                     'linktype' => 4230,
-                                    'linkdown' => $x['playerid'], //This follower source
+                                    'linkdown' => $x['playerid'], //This follower Player
                                     'linkup' => $e['playerid'],
                                 ));
                                 $applied_success++;
@@ -868,7 +868,7 @@ class Cacheplayers extends CIdea_cache
 
                 $applied_success++;
 
-            } elseif ($action_playerid==42804 && ($action_command1=='*' || $x['linktype']==$action_command1) && in_array($action_command2, $this->config->item('n___32292') /* Source Link Types */)) { //Update Matching Interaction Type
+            } elseif ($action_playerid==42804 && ($action_command1=='*' || $x['linktype']==$action_command1) && in_array($action_command2, $this->config->item('playerids___32292') /* Player Link Types */)) { //Update Matching Interaction Type
 
                 $this->Menchledger->update($x['linkid'], array(
                     'linktype' => $action_command2,
@@ -881,7 +881,7 @@ class Cacheplayers extends CIdea_cache
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . ' of ' . count($followers) . ' sources updated',
+            'message' => $applied_success . ' of ' . count($followers) . ' Players updated',
         );
 
     }
@@ -897,7 +897,7 @@ class Cacheplayers extends CIdea_cache
             return $validate_playertext;
         }
 
-        //Log transaction new source:
+        //Log transaction new Player:
         $player_e = superpower_unlocked();
         $creator = ($linkplayer > 0 ? $linkplayer : ( $player_e ? $player_e['playerid'] : 0));
         if (!$creator) {
@@ -907,11 +907,11 @@ class Cacheplayers extends CIdea_cache
             );
         }
 
-        //Create New Source:
+        //Create New Player:
         $x = $this->Menchledger->create(array(
             'linkplayer' => $creator,
             'linktext' => $validate_playertext['playertext_clean'],
-            'linktype' => 4251, //New Source Created
+            'linktype' => 4251, //New Player Created
         ));
 
         if(!isset($x['linkid'])){
@@ -921,7 +921,7 @@ class Cacheplayers extends CIdea_cache
                 'linktype' => 44179, //Triggered
                 'linkup' => 4246, //Platform Bug Reports
                 'linkdown' => $creator,
-                'linktext' => 'create() failed to create a new source',
+                'linktext' => 'create() failed to create a new Player',
                 'linkplayer' => $creator,
             ));
 
@@ -942,7 +942,7 @@ class Cacheplayers extends CIdea_cache
         //Update Search Index:
         flag_for_search_indexing(12274, $x['linkid']);
 
-        //Fetch to return the complete source data:
+        //Fetch to return the complete Player data:
         $es = $this->Cacheplayers->fetch(array(
             'playerid' => $x['linkid'],
         ));
@@ -950,7 +950,7 @@ class Cacheplayers extends CIdea_cache
         //Return success:
         return array(
             'status' => 1,
-            'new_e' => $es[0],
+            'new_player' => $es[0],
         );
 
     }

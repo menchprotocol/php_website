@@ -49,25 +49,25 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 $fetch_emails = $this->Menchledger->fetch(array(
     'linkup' => 3288, //Email
     'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
 ));
 $fetch_phones = $this->Menchledger->fetch(array(
     'linkup' => 4783, //Phone
     'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
 ));
 $fetch_first_names = $this->Menchledger->fetch(array(
     'linkup' => 42584, //First Name
     'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
 ));
 $fetch_last_names = $this->Menchledger->fetch(array(
     'linkup' => 30198, //Last Name
     'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
 ));
 
@@ -100,7 +100,7 @@ if(!$set_email){
 
 foreach($this->Cacheideas->fetch(array(
     'ideaid' => $_POST['target_ideaid'], //ACTIVE
-)) as $i_target){
+)) as $idea_target){
 
     foreach($this->Cacheideas->fetch(array(
         'ideaid' => $_POST['focus__id'], //ACTIVE
@@ -109,13 +109,13 @@ foreach($this->Cacheideas->fetch(array(
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
         $invoice_due_dates = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 44378, //Invoice Due Date
         ));
         $invoice_min_payments = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 44379, //Invoice Min Payment
         ));
@@ -126,7 +126,7 @@ foreach($this->Cacheideas->fetch(array(
             // Sample invoice data
             $invoiceData = [
                 'invoicer_logo_url' => $website_logo,
-                'invoicer_given_name' => view__i_title($i_target, true),
+                'invoicer_given_name' => view__idea_title($idea_target, true),
                 'invoicer_address_line_1' => '', //Atlas Foundation; Non-Profit #774760508BC0001
                 'invoicer_address_line_2' => '', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['playerid']),
@@ -165,7 +165,7 @@ foreach($this->Cacheideas->fetch(array(
         //Delete Old Parent Invoice:
         foreach($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkleft' => $i['ideaid'],
             'linkplayer' => $player_e['playerid'],
         ), array(), 0) as $x_discovery){
@@ -184,10 +184,10 @@ foreach($this->Cacheideas->fetch(array(
             $this->Menchledger->update($x_selection['linkid'], array(), $player_e['playerid']);
 
             //Remove discovery if we can:
-            if(!in_array($x_selection['i__type'], $this->config->item('n___42905'))){
+            if(!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))){
                 foreach($this->Menchledger->fetch(array(
                     'linkvoid' => 0, //Not Void
-                    'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'linkleft' => $x_selection['ideaid'],
                     'linkplayer' => $player_e['playerid'],
                 ), array(), 0) as $x_discovery){
@@ -198,7 +198,7 @@ foreach($this->Cacheideas->fetch(array(
 
 
         //Save New Invoice:
-        $this->Menchledger->mark_complete(44245, $player_e['playerid'], $i_target['ideaid'], $i);
+        $this->Menchledger->mark_complete(44245, $player_e['playerid'], $idea_target['ideaid'], $i);
 
 
         //Save New Child Answers:
@@ -208,7 +208,7 @@ foreach($this->Cacheideas->fetch(array(
             )) as $this_i){
 
                 //Complete this item:
-                $this->Menchledger->mark_complete(i__discovery_link($this_i), $player_e['playerid'], $i_target['ideaid'], $this_i, array(), array(
+                $this->Menchledger->mark_complete(idea_discovery_link($this_i), $player_e['playerid'], $idea_target['ideaid'], $this_i, array(), array(
                     'linknumber' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
@@ -225,8 +225,8 @@ foreach($this->Cacheideas->fetch(array(
 
 
         //Find Next:
-        $i_redirect_url = i_redirect_url($i);
-        if(!$i_redirect_url){
+        $idea_redirect_url = i_redirect_url($i);
+        if(!$idea_redirect_url){
             $find_next = $this->Menchledger->find_next($player_e['playerid'], $_POST['target_ideahashtag'], $i);
         }
 
@@ -234,7 +234,7 @@ foreach($this->Cacheideas->fetch(array(
         //Return Data:
         return view__json(array(
             'status' => 1,
-            'next__url' => ( $i_redirect_url ? $i_redirect_url : ( $find_next ? $find_next : 'start' ) ),
+            'next__url' => ( $idea_redirect_url ? $idea_redirect_url : ( $find_next ? $find_next : 'start' ) ),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
         ));

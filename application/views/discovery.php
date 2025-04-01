@@ -1,10 +1,10 @@
 <?php
 
-$e___11035 = $this->config->item('e___11035'); //Encyclopedia
+$players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 /*
 if(access_level_i($focus_i['ideahashtag'], 0, $focus_i)){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view__memory(42903,33286).$focus_i['ideahashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$players___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view__memory(42903,33286).$focus_i['ideahashtag'].'"><b><u>'.$players___11035[33286]['m__title'].'</u></b></a></div>';
 }
 */
 
@@ -34,12 +34,12 @@ if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
             //Does this have a follower list?
             $query_subset = $this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
-                'linktype IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+                'linktype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
                 'linkleft' => $followings_i['ideaid'],
             ), array('linkright'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.( $followings_i['ideahashtag']==$target_ideahashtag ? 'start' : $followings_i['ideahashtag'] ).'"><u>'.view__i_title($followings_i, true).'</u></a>';
+            $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.( $followings_i['ideahashtag']==$target_ideahashtag ? 'start' : $followings_i['ideahashtag'] ).'"><u>'.view__idea_title($followings_i, true).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -49,18 +49,18 @@ if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
                 $breadcrum_content .= '<span style="padding-left:5px;"><i class="far fa-sharp fa-chevron-square-up rotate180"></i></span>';
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_'.$followings_i['ideaid'].'">';
-                foreach ($query_subset as $i_subset) {
+                foreach ($query_subset as $idea_subset) {
 
                     if(count($this->Menchledger->fetch(array(
                         'linkvoid' => 0, //Not Void
-                        'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkplayer' => $linkplayer,
-                        'linkleft' => $i_subset['ideaid'],
+                        'linkleft' => $idea_subset['ideaid'],
                     )))){
-                        $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.$i_subset['ideahashtag'].'" class="dropdown-item '.( in_array($i_subset['ideaid'], $main_branch) ? ' active ' : '' ).'">'.view__i_title($i_subset, true).'</a>';
+                        $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.$idea_subset['ideahashtag'].'" class="dropdown-item '.( in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '' ).'">'.view__idea_title($idea_subset, true).'</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($i_subset['ideaid'], $main_branch) ? ' active ' : '' ).'" title="'.$e___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>'.view__i_title($i_subset, true).'</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '' ).'" title="'.$players___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$players___11035[43010]['m__cover'].'</span>'.view__idea_title($idea_subset, true).'</div>';
                     }
 
                 }
@@ -105,7 +105,7 @@ $x_completes = array();
 if($player_e){
     $x_completes = $this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkplayer' => $linkplayer,
         'linkleft' => $focus_i['ideaid'],
     ), array('linkright'));
@@ -123,7 +123,7 @@ echo '</div>';
 
 //Main Navigation
 if($player_e || isset($_GET['open'])){
-    echo view__i_nav(true, $focus_i, $x_completes);
+    echo view__idea_nav(true, $focus_i, $x_completes);
 }
 
 ?>
@@ -131,7 +131,7 @@ if($player_e || isset($_GET['open'])){
 <script>
 
     var total_discoveries = <?= count($x_completes) ?>;
-    var focus_i__type = <?= $focus_i['i__type'] ?>;
+    var focus_ideatype = <?= $focus_i['ideatype'] ?>;
 
     $(document).ready(function () {
 
@@ -139,10 +139,10 @@ if($player_e || isset($_GET['open'])){
 
         set_autosize($('.x_write'));
 
-        if (js_n___7712.includes(focus_i__type)){
+        if (js_playerids___7712.includes(focus_ideatype)){
             //Choose
             $('.xtypecounter12840').text('');
-            $('.xtypetitle_12840').text(js_e___7712[focus_i__type]['m__title']+': ');
+            $('.xtypetitle_12840').text(js_players___7712[focus_ideatype]['m__title']+': ');
         }
 
 
@@ -159,7 +159,7 @@ if($player_e || isset($_GET['open'])){
                 $(".fixed-bottom").removeClass('hidden');
             }
 
-            if(focus_i__type==43758){
+            if(focus_ideatype==43758){
                 invoice_update();
                 $(".fixed-bottom").removeClass('hidden');
             } else {

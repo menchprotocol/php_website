@@ -1,8 +1,8 @@
 <?php
 
-//Focus Source:
+//Focus Player:
 echo '<div class="view__12274 row justify-content">';
-echo view__card_e(42287, $focus_e, null);
+echo view__card_player(42287, $focus_e, null);
 echo '</div>';
 
 //Idea Tree:

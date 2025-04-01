@@ -1,13 +1,13 @@
 
 
 //Define some global variables:
-var has_unsaved_changes = false; //Tracks source/idea modal edits
+var has_unsaved_changes = false; //Tracks player/idea modal edits
 var focus_group = 0;
 
 
 
 
-if(!js_pl_id || !js_n___43512.includes(js_pl_id)){
+if(!js_pl_id || !js_playerids___43512.includes(js_pl_id)){
     //Microsoft Clarity=
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -146,15 +146,15 @@ function gather_media(target_el, uploader_id){
     var uploaded_media = [];
     $(target_el).each(function () {
 
-        var current_e_id = parseInt($(this).attr('playerid'));
+        var currentplayer_id = parseInt($(this).attr('playerid'));
 
-        if(current_e_id > 0){
+        if(currentplayer_id > 0){
 
             //Already there...
             uploaded_media[sort_rank] = {
                 media_playerid:  parseInt($(this).attr('media_playerid')),
                 playback_code: $(this).attr('playback_code'),
-                playerid:        current_e_id,
+                playerid:        currentplayer_id,
                 playercover:     $(this).attr('playercover'),
                 playertext:     $('#'+$(this).attr('id')+' input').val(),
             }
@@ -227,7 +227,7 @@ function load_editor(){
         return false;
     }
 
-    $('.e_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
+    $('.player_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $(this).val('@' + suggestion.s__handle);
 
@@ -236,7 +236,7 @@ function load_editor(){
         source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12274' + search_and_filter,
-                hitsPerPage: js_e___6404[31112]['m__message'],
+                hitsPerPage: js_players___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -253,7 +253,7 @@ function load_editor(){
                 return view__s_js_line(suggestion,'@');
             },
             empty: function (data) {
-                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Sources Found</div>';
+                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Players Found</div>';
             },
         }
 
@@ -268,7 +268,7 @@ function load_editor(){
         source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12273' + search_and_filter,
-                hitsPerPage: js_e___6404[31112]['m__message'],
+                hitsPerPage: js_players___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -308,15 +308,15 @@ function view__s_js_line(suggestion, default_handle = '@'){
     }
 }
 
-function e_load_finder(linktype) {
-    console.log(linktype + " e_load_finder()");
+function player_load_finder(linktype) {
+    console.log(linktype + " player_load_finder()");
     //Load Search:
     var icons_listed = [];
     $('.new-list-'+linktype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            e__add(linktype, 0);
+            new_player(linktype, 0);
             return true;
         }
     });
@@ -330,7 +330,7 @@ function i_load_finder(linktype) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            i__add(linktype, 0);
+            new_idea(linktype, 0);
             return true;
         }
     });
@@ -338,7 +338,7 @@ function i_load_finder(linktype) {
 
 function view__s_js_cover(linktype, suggestion, action_id){
 
-    if(!js_n___26010.includes(linktype)){
+    if(!js_playerids___26010.includes(linktype)){
         alert('Missing type in JS UI');
         return false;
     }
@@ -361,8 +361,8 @@ function view__s_js_cover(linktype, suggestion, action_id){
         var target_url = ( search_only_app ? suggestion.s__url.replace('/@','/') : suggestion.s__url );
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' '+( search_only_app ? ' card-6287 ' : '' )+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+target_url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+target_url+'" class="main__title">'+(suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">'+suggestion.s__title+'</span>' )+'</a></div></div></div>';
     } else if(linktype==26013){
-        //Link Source
-        return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
+        //Link Player
+        return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="new_player('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="new_player('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
     }
 
 }
@@ -425,15 +425,15 @@ function e_sort_load(linktype) {
 
     load_covers();
 
-    console.log('Tring to load Source Sort for @'+linktype);
+    console.log('Tring to load Player Sort for @'+linktype);
 
     var sort_item_count = parseInt($('.headline_body_' + linktype).attr('read-counter'));
 
-    if(!js_n___13911.includes(linktype)){
+    if(!js_playerids___13911.includes(linktype)){
         //Does not support sorting:
         console.log(linktype+' is not sortable');
         return false;
-    } else if(sort_item_count<1 || sort_item_count>parseInt(js_e___6404[11064]['m__message'])){
+    } else if(sort_item_count<1 || sort_item_count>parseInt(js_players___6404[11064]['m__message'])){
         return false;
     }
 
@@ -447,12 +447,12 @@ function e_sort_load(linktype) {
 
         //Show sort icon:
         console.log('Completed Loading Sorting for @'+linktype)
-        $('.sort_e_frame').removeClass('hidden');
+        $('.sortplayer_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: "#list-in-"+linktype+" .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+linktype+" .sort_e_grab", // Restricts sort start click/touch to the specified element
+            handle: "#list-in-"+linktype+" .sortplayer_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
                 e_sort_save(linktype);
             }
@@ -554,7 +554,7 @@ function toggle_pills(linktype_hash, is_first_load){
 
             if(focus__node==12273){
 
-                var loading_url = "/app/view__i_body";
+                var loading_url = "/app/view__idea_body";
                 var loading_data = {
                     focus__node:focus__node,
                     linktype:linktype,
@@ -565,7 +565,7 @@ function toggle_pills(linktype_hash, is_first_load){
 
             } else if(focus__node==12274){
 
-                var loading_url = "/app/view__e_body";
+                var loading_url = "/app/view_player_body";
                 var loading_data = {
                     focus__node:focus__node,
                     linktype:linktype,
@@ -609,9 +609,9 @@ function toggle_pills(linktype_hash, is_first_load){
 
                 setTimeout(function () {
 
-                    if(js_n___11020.includes(linktype) || (focus__node==12274 && (js_n___42261.includes(linktype) || js_n___42284.includes(linktype)))){
+                    if(js_playerids___11020.includes(linktype) || (focus__node==12274 && (js_playerids___42261.includes(linktype) || js_playerids___42284.includes(linktype)))){
                         i_sort_load(linktype);
-                    } else if(js_n___11028.includes(linktype) || (focus__node==12273 && (js_n___42261.includes(linktype) || js_n___42284.includes(linktype)))) {
+                    } else if(js_playerids___11028.includes(linktype) || (focus__node==12273 && (js_playerids___42261.includes(linktype) || js_playerids___42284.includes(linktype)))) {
                         e_sort_load(linktype);
                     }
 
@@ -645,14 +645,14 @@ function i_copy(ideaid, do_recursive){
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
-            js_redirect(js_e___42903[33286]['m__message']+data.new_ideahashtag);
+            js_redirect(js_players___42903[33286]['m__message']+data.new_ideahashtag);
         } else {
             alert('ERROR:' + data.message);
         }
     });
 }
 
-function source_title(playerid){
+function player_title(playerid){
     //Load Instant Fields:
     var return_title = '';
     if($('.text__6197_'+playerid+':first').text().length){
@@ -665,8 +665,8 @@ function source_title(playerid){
 
 function e_copy(playerid){
 
-    var copy_source_title = prompt("What would be the title of the new source?", source_title(playerid));
-    if (!copy_source_title.length) {
+    var copy_player_title = prompt("What would be the title of the new Player?", player_title(playerid));
+    if (!copy_player_title.length) {
         alert('You must enter a title to copy.');
         return false;
     }
@@ -674,11 +674,11 @@ function e_copy(playerid){
     //Go ahead and delete:
     $.post("/app/e_copy", {
         playerid:playerid,
-        copy_source_title:copy_source_title,
+        copy_player_title:copy_player_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
-            js_redirect(js_e___42903[42902]['m__message']+data.new_playerhandle);
+            js_redirect(js_players___42903[42902]['m__message']+data.new_playerhandle);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -692,7 +692,7 @@ function e_copy(playerid){
 
 
 function js_view__shuffle_message(playerid){
-    var messages = js_e___12687[playerid]['m__message'].split("\n");
+    var messages = js_players___12687[playerid]['m__message'].split("\n");
     if(messages.length==1){
         //Return message:
         return messages[0];
@@ -786,35 +786,35 @@ function initiate_algolia(){
     });
 }
 
-function e_load_cover(linktype, playerid, counter, first_segment){
+function player_load_cover(linktype, playerid, counter, first_segment){
 
-    if($('.coins_e_'+playerid+'_'+linktype).html().length){
+    if($('.coinsplayer_'+playerid+'_'+linktype).html().length){
         //Already loaded:
        return false;
     }
 
-    $('.coins_e_'+playerid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coinsplayer_'+playerid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/app/e_load_cover", {
+    $.post("/app/player_load_cover", {
         linktype:linktype,
         playerid:playerid,
         counter:counter,
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_e_'+playerid+'_'+linktype).html(data);
+        $('.coinsplayer_'+playerid+'_'+linktype).html(data);
     });
 
 }
 
 function i_load_cover(linktype, ideaid, counter, first_segment, current_e){
 
-    if($('.coins_i_'+ideaid+'_'+linktype).html().length){
+    if($('.coins_idea_'+ideaid+'_'+linktype).html().length){
         //Already loaded:
         return false;
     }
 
-    $('.coins_i_'+ideaid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_idea_'+ideaid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/i_load_cover", {
         linktype:linktype,
@@ -823,7 +823,7 @@ function i_load_cover(linktype, ideaid, counter, first_segment, current_e){
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_i_'+ideaid+'_'+linktype).html(data);
+        $('.coins_idea_'+ideaid+'_'+linktype).html(data);
     });
 
 }
@@ -865,12 +865,12 @@ function toggle_finder(){
 
 
 function load_covers(){
-    $(".load_e_covers, .load_i_covers").unbind();
+    $(".loadplayer_covers, .load_idea_covers").unbind();
 
-    $(".load_e_covers").click(function(event) {
-        e_load_cover($(this).attr('load_linktype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+    $(".loadplayer_covers").click(function(event) {
+        player_load_cover($(this).attr('load_linktype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
-    $(".load_i_covers").click(function(event) {
+    $(".load_idea_covers").click(function(event) {
         i_load_cover($(this).attr('load_linktype'),$(this).attr('load_ideaid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
@@ -894,7 +894,7 @@ function add_media(result_info){
 function load_card_clickers(){
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .linktext, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
+    var ignore_clicks = 'a, .btn, textarea, .linktext, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_player, .this_selector';
     $( ".card_click" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length){
             js_redirect($(this).attr('href'));
@@ -910,9 +910,9 @@ function load_card_clickers(){
     */
 
     //For Discovery only:
-    if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
+    if(typeof focus_ideatype !== 'undefined' && focus_ideatype>0){
 
-        var is_single_choice = ( focus_i__type==6684 );
+        var is_single_choice = ( focus_ideatype==6684 );
 
         if($(".this_selector").length==1){
             //Auto select if only 1 choice is available:
@@ -994,7 +994,7 @@ function sale_increment(increment, ideaid, max_allowed, min_allowed, unit_total,
     var new_total = ( unit_total * new_quantity );
 
     //Update UI:
-    $(".input_ui_"+ideaid+" .i__quantity").val(new_quantity);
+    $(".input_ui_"+ideaid+" .ideanumber").val(new_quantity);
     $(".input_ui_"+ideaid+" .current_count").text(new_quantity);
     $(".input_ui_"+ideaid+" .paypal_handling").val(handling_total);
 
@@ -1014,7 +1014,7 @@ function invoice_update(){
     $(".sale_controller").each(function () {
 
         var item_ideaid = parseInt($(this).attr('ideaid'));
-        var item_i__title = $('.cache_frame_'+item_ideaid+' .first_line').text();
+        var item_idea_title = $('.cache_frame_'+item_ideaid+' .first_line').text();
         var current_count = parseFloat($('.input_ui_'+item_ideaid+' .current_count').text());
         var current_price = parseFloat($(this).attr('unitprice'));
         var current_currency = $(this).attr('unitcurrency');
@@ -1118,7 +1118,7 @@ $(document).ready(function () {
                 //Add Idea
                 i_editor_load();
             } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
-                //Add Source:
+                //Add Player:
                 e_editor_load(0,0);
             } else if(String.fromCharCode(e.which).toLowerCase() === 'f' && search_enabled()){
                 //Finder:
@@ -1156,7 +1156,7 @@ $(document).ready(function () {
     });
 
     set_autosize($('#sugg_note'));
-    set_autosize($('.texttype__lg'));
+    set_autosize($('.texttype_lg'));
 
     $('.trigger_modal').click(function (e) {
         var linktype = parseInt($(this).attr('linktype'));
@@ -1199,7 +1199,7 @@ $(document).ready(function () {
                 match: /(^|\s)#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        hitsPerPage: js_players___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1232,7 +1232,7 @@ $(document).ready(function () {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        hitsPerPage: js_players___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1310,7 +1310,7 @@ $(document).ready(function () {
 
                         //For Members:
                         if(!js_session_superpowers_unlocked.includes(12701)){
-                            //Can view limited sources:
+                            //Can view limited Players:
                             if(search_filters.length>0){
                                 search_filters += ' AND ';
                             }
@@ -1329,7 +1329,7 @@ $(document).ready(function () {
 
                     //Append filters:
                     index_algolia.search(q, {
-                        hitsPerPage: js_e___6404[31113]['m__message'],
+                        hitsPerPage: js_players___6404[31113]['m__message'],
                         filters:search_filters,
                     }, function (error, content) {
                         if (error) {
@@ -1421,7 +1421,7 @@ function display_media(mediaframe_id, uploader_id, ideaid){
     console.log('display_media: '+mediaframe_id+'/'+uploader_id+'/'+ideaid);
     $(".ui_ideacache_"+ideaid+" .media_display").each(function () {
         $('#'+mediaframe_id).append('<div id="'+$(this).attr('id')+'" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""></div>');
-        cloudinary_preview__source(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
+        cloudinary_preview__player(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
     });
     sort_media(mediaframe_id);
 }
@@ -1430,7 +1430,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
 
 
     $(".idea_link_direction, .idea_link_unlink, .idea_linktype").addClass('hidden');
-    var focus_i_id = ( parseInt($('#focus__node').val())==12273 ? parseInt($('#focus__id').val()) : 0 );
+    var focus_idea_id = ( parseInt($('#focus__node').val())==12273 ? parseInt($('#focus__id').val()) : 0 );
     $("#modal31911 .save_results").html('');
 
     if(!passon_ideaid){
@@ -1447,22 +1447,22 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
 
         //Are we adding an idea for a target action tab?
         console.log('i Modal loaded for '+focus_group);
-        if(focus_i_id && do_checks && focus_group>0 && !next_ideaid && !previous_ideaid && !ideaid && !linkid && !link_linktype){
-            if(js_n___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)){
+        if(focus_idea_id && do_checks && focus_group>0 && !next_ideaid && !previous_ideaid && !ideaid && !linkid && !link_linktype){
+            if(js_playerids___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)){
                 //Next idea group:
-                next_ideaid = focus_i_id;
+                next_ideaid = focus_idea_id;
                 link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
-            } else if(js_n___42380.includes(focus_group)) {
+            } else if(js_playerids___42380.includes(focus_group)) {
                 //Previous idea group:
-                previous_ideaid = focus_i_id;
+                previous_ideaid = focus_idea_id;
                 link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             }
         }
 
 
-        if(!link_linktype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_i_id){
+        if(!link_linktype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id){
             console.log('MATCH');
-            next_ideaid = focus_i_id;
+            next_ideaid = focus_idea_id;
             link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
         }
     }
@@ -1474,8 +1474,8 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    var is_next = next_ideaid && js_n___4486.includes(link_linktype);
-    var is_prev = previous_ideaid && js_n___4486.includes(link_linktype);
+    var is_next = next_ideaid && js_playerids___4486.includes(link_linktype);
+    var is_prev = previous_ideaid && js_playerids___4486.includes(link_linktype);
 
     if(is_next || is_prev){
 
@@ -1498,7 +1498,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
             $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_ideacache_'+next_ideaid).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_linktype+',0,'+next_ideaid+',1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea_editor_switch('+link_linktype+',0,'+next_ideaid+',1)');
 
         } else if(is_prev){
 
@@ -1510,7 +1510,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
             $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_ideacache_'+previous_ideaid).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_linktype+','+previous_ideaid+',0,1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea_editor_switch('+link_linktype+','+previous_ideaid+',0,1)');
 
         }
 
@@ -1528,7 +1528,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
 
     if(ideaid){
 
-        var current_i__type = $('.s__12273_'+ideaid).attr('i__type');
+        var current_ideatype = $('.s__12273_'+ideaid).attr('ideatype');
 
         //Editig an existing idea:
         $('#modal31911 .save_ideaid').val(ideaid);
@@ -1546,7 +1546,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
     } else {
 
         //See the default passed to the form:
-        var current_i__type = 6677;
+        var current_ideatype = 6677;
 
         //Hide hashtag:
         $('#modal31911 .hash_group').addClass('hidden');
@@ -1585,8 +1585,8 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
 
     if(!passon_ideaid){
 
-        //Source Reference:
-        update_form_select(4737, current_i__type, 1, false);
+        //Player Reference:
+        update_form_select(4737, current_ideatype, 1, false);
 
         //Activate Modal:
         $('#modal31911').modal('show');
@@ -1597,7 +1597,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
             set_autosize($('#modal31911 .save_linktext'));
         }, 233);
 
-        var created_ideaid = load_i_dynamic(ideaid, linkid, current_i__type, true);
+        var created_ideaid = load_idea_dynamic(ideaid, linkid, current_ideatype, true);
 
     }
 
@@ -1608,7 +1608,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
 
 }
 
-function load_i_dynamic(ideaid, linkid, current_i__type, initial_loading){
+function load_idea_dynamic(ideaid, linkid, current_ideatype, initial_loading){
 
     $(".dynamic_item").addClass('hidden'); //Hide all current items...
     $(".dynamic_editing_loading").removeClass('hidden');
@@ -1617,7 +1617,7 @@ function load_i_dynamic(ideaid, linkid, current_i__type, initial_loading){
     $.post("/app/i_editor_load", {
         ideaid: ideaid,
         linkid: linkid,
-        current_i__type: current_i__type,
+        current_ideatype: current_ideatype,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
@@ -1647,7 +1647,7 @@ function load_i_dynamic(ideaid, linkid, current_i__type, initial_loading){
             var current_header = null;
 
             //Dynamic Input Fields:
-            for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
+            for(let i=1;i<=js_players___6404[42206]['m__message'];i++) {
 
                 var index_i = i-1;
 
@@ -1673,7 +1673,7 @@ function load_i_dynamic(ideaid, linkid, current_i__type, initial_loading){
                 }
 
 
-                var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_playerids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if(is_locked && !data.return_inputs[index_i]["d__value"].length){
                     //Hide since its locked without a value:
                     $("#modal31911 .dynamic_"+i+" .inner_dynamic").addClass('hidden');
@@ -1755,13 +1755,13 @@ function i_editor_save(){
         save_linktext:    $('#modal31911 .save_linktext').val().trim(),
         save_ideatext:    $('#modal31911 .save_ideatext').val().trim(),
         save_ideahashtag:    $('#modal31911 .save_ideahashtag').val().trim(),
-        save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
+        save_ideatype:       $('.dropd_form_4737').attr('selected_value').trim(),
         uploaded_media:     gather_media_result['uploaded_media'],
         js_request_uri:     js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
-    for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
+    for(let i=1;i<=js_players___6404[42206]['m__message'];i++) {
         if($('#modal31911 .dynamic_'+i).attr('d__id').length){
             modify_data['save_dynamic_'+i] = $('#modal31911 .dynamic_'+i).attr('d_linkid').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_'+i).val().trim();
         } else {
@@ -1799,15 +1799,15 @@ function i_editor_save(){
             var new_handle = modify_data['save_ideahashtag'];
             var on_focus__idea = parseInt($('#focus__node').val())==12273 && modify_data['save_ideaid']==parseInt($('#focus__id').val());
 
-            //Update Source Reference:
-            $('.s__12273_'+modify_data['save_ideaid']).attr('i__type', modify_data['save_i__type']);
-            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_ideaid'], modify_data['save_linkid'], false);
+            //Update Player Reference:
+            $('.s__12273_'+modify_data['save_ideaid']).attr('ideatype', modify_data['save_ideatype']);
+            ui_instant_select(4737, modify_data['save_ideatype'], modify_data['save_ideaid'], modify_data['save_linkid'], false);
 
             //Update Handle & Href links if needed:
             if(old_handle!=new_handle){
                 if(on_focus__idea){
                     //Refresh page since focus item handle changed:
-                    js_redirect(js_e___42903[33286]['m__message']+new_handle);
+                    js_redirect(js_players___42903[33286]['m__message']+new_handle);
                 } else {
                     //Update Hashtag & Link:
                     $('.s__12273_'+modify_data['save_ideaid']).attr('ideahashtag', new_handle);
@@ -1881,19 +1881,19 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
     console.log('Initiating Uploader @'+uploader_id+' with tags '+uploader_tags.join(' & '));
 
-    if(js_e___42363[uploader_id]==undefined){
+    if(js_players___42363[uploader_id]==undefined){
         console.log('Unknown Uploader @'+uploader_id+' Missing in @42363');
         return false;
     }
 
     media_cache[uploader_id] = [];
     //Fetch global defaults:
-    var default_max_file_count = parseFloat(js_e___6404[42382]['m__message']);
+    var default_max_file_count = parseFloat(js_players___6404[42382]['m__message']);
 
     var global_tags = ['@'+uploader_id, '@'+website_id, '@'+js_pl_id];
-    var allow_videos = js_e___42390[uploader_id]!==undefined;
-    var allow_imgaes = js_e___42389[uploader_id]!==undefined;
-    var allow_audio = js_e___42644[uploader_id]!==undefined;
+    var allow_videos = js_players___42390[uploader_id]!==undefined;
+    var allow_imgaes = js_players___42389[uploader_id]!==undefined;
+    var allow_audio = js_players___42644[uploader_id]!==undefined;
 
     if(!allow_videos && !allow_imgaes && !allow_audio){
         //Assume all are allowed:
@@ -1903,21 +1903,21 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
     }
 
     //Initiate CLoudiary for cover:
-    var max_file_count = ( js_e___42382[uploader_id]!==undefined && parseFloat(js_e___42382[uploader_id]['m__message'])>0 && parseFloat(js_e___42382[uploader_id]['m__message'])<default_max_file_count ? parseFloat(js_e___42382[uploader_id]['m__message']) : default_max_file_count );
+    var max_file_count = ( js_players___42382[uploader_id]!==undefined && parseFloat(js_players___42382[uploader_id]['m__message'])>0 && parseFloat(js_players___42382[uploader_id]['m__message'])<default_max_file_count ? parseFloat(js_players___42382[uploader_id]['m__message']) : default_max_file_count );
 
-    var enable_crop = ( js_e___42386[uploader_id]!==undefined );
-    var force_crop = ( js_e___42387[uploader_id]!==undefined );
+    var enable_crop = ( js_players___42386[uploader_id]!==undefined );
+    var force_crop = ( js_players___42387[uploader_id]!==undefined );
 
 
     var clientAllowedFormats = [];
     if(allow_videos){
-        clientAllowedFormats = clientAllowedFormats.concat(js_e___42641[4258]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_players___42641[4258]['m__message'].split(' '));
     }
     if(allow_imgaes){
-        clientAllowedFormats = clientAllowedFormats.concat(js_e___42641[4260]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_players___42641[4260]['m__message'].split(' '));
     }
     if(allow_audio){
-        clientAllowedFormats = clientAllowedFormats.concat(js_e___42641[4259]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_players___42641[4259]['m__message'].split(' '));
     }
 
     var widget_setting = {
@@ -1934,15 +1934,15 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         cropping: enable_crop,
         showSkipCropButton: !force_crop,
         croppingShowBackButton: !force_crop,
-        croppingAspectRatio: ( js_e___42388[uploader_id]!==undefined && parseFloat(js_e___42388[uploader_id]['m__message'])>0 ? parseFloat(js_e___42388[uploader_id]['m__message']) : null ),
+        croppingAspectRatio: ( js_players___42388[uploader_id]!==undefined && parseFloat(js_players___42388[uploader_id]['m__message'])>0 ? parseFloat(js_players___42388[uploader_id]['m__message']) : null ),
 
-        minImageWidth: ( js_e___42407[uploader_id]!==undefined && parseInt(js_e___42407[uploader_id]['m__message'])>0 ? parseInt(js_e___42407[uploader_id]['m__message']) : null ),
-        maxImageWidth: ( js_e___42408[uploader_id]!==undefined && parseInt(js_e___42408[uploader_id]['m__message'])>0 ? parseInt(js_e___42408[uploader_id]['m__message']) : null ),
-        minImageHeight: ( js_e___42409[uploader_id]!==undefined && parseInt(js_e___42409[uploader_id]['m__message'])>0 ? parseInt(js_e___42409[uploader_id]['m__message']) : null ),
-        maxImageHeight: ( js_e___42410[uploader_id]!==undefined && parseInt(js_e___42410[uploader_id]['m__message'])>0 ? parseInt(js_e___42410[uploader_id]['m__message']) : null ),
+        minImageWidth: ( js_players___42407[uploader_id]!==undefined && parseInt(js_players___42407[uploader_id]['m__message'])>0 ? parseInt(js_players___42407[uploader_id]['m__message']) : null ),
+        maxImageWidth: ( js_players___42408[uploader_id]!==undefined && parseInt(js_players___42408[uploader_id]['m__message'])>0 ? parseInt(js_players___42408[uploader_id]['m__message']) : null ),
+        minImageHeight: ( js_players___42409[uploader_id]!==undefined && parseInt(js_players___42409[uploader_id]['m__message'])>0 ? parseInt(js_players___42409[uploader_id]['m__message']) : null ),
+        maxImageHeight: ( js_players___42410[uploader_id]!==undefined && parseInt(js_players___42410[uploader_id]['m__message'])>0 ? parseInt(js_players___42410[uploader_id]['m__message']) : null ),
 
-        validateMaxWidthHeight: ( js_e___42411[uploader_id]!==undefined ),
-        croppingValidateDimensions: ( js_e___42412[uploader_id]!==undefined ),
+        validateMaxWidthHeight: ( js_players___42411[uploader_id]!==undefined ),
+        croppingValidateDimensions: ( js_players___42412[uploader_id]!==undefined ),
 
         inlineContainer: loading_inline_container,
 
@@ -2018,7 +2018,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Append loaders:
             if(uploader_id==42359){
 
-                //Source Cover Uploader:
+                //Player Cover Uploader:
                 updatplayercover('fas fa-yin-yang fa-spin');
 
             } else if(uploader_id==13572){
@@ -2042,7 +2042,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Add uploaded media:
             if(uploader_id==42359){
 
-                //Source Cover Uploader:
+                //Player Cover Uploader:
                 updatplayercover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
 
             } else if(uploader_id==13572 || uploader_id==43004){
@@ -2051,25 +2051,25 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 var playback_code = '';
                 var media_playerid = 0;
                 if(result.info.format && result.info.format.length>0){
-                    if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio){
+                    if(js_players___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio){
                         //Audio
                         media_playerid = 4259;
                         playback_code = result.info.secure_url;
-                    } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
+                    } else if(js_players___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
                         //Image
                         media_playerid = 4260;
                         playback_code = ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','w_1597,h_1597,c_fit') : result.info.secure_url );
-                    } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
+                    } else if(js_players___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
                         media_playerid = 4258;
                         playback_code = result.info.public_id;
                     }
                 }
 
-                //Append this to the main source:
+                //Append this to the main Player:
                 if(media_playerid) {
 
-                    cloudinary_preview__source(uploader_id, result.info.id, media_playerid, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_playerid]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_playerid]['m__title']+' File' ));
+                    cloudinary_preview__player(uploader_id, result.info.id, media_playerid, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_players___42294[media_playerid]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_players___42294[media_playerid]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log('MEDIA CACHE:');
@@ -2135,7 +2135,7 @@ function play_video(public_id){
     cld.source(public_id);
 }
 
-function cloudinary_preview__source(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0){
+function cloudinary_preview__player(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0){
 
     //Update meta variables:
     $('#'+info_id).attr('media_playerid',media_playerid).attr('playback_code',playback_code).attr('playerid',playerid).attr('playercover',playercover);
@@ -2143,19 +2143,19 @@ function cloudinary_preview__source(uploader_id, info_id, media_playerid, playba
     if(media_playerid == 4258){
 
         //Video
-        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_playerid]['m__title']+'">'+js_e___42294[media_playerid]['m__cover']+'</span><img src="'+playercover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Player Title" class="hidden_superpower__10939" /><span title="'+js_players___42294[media_playerid]['m__title']+'">'+js_players___42294[media_playerid]['m__cover']+'</span><img src="'+playercover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
         //<video id="video_player_'+playback_code+'" controls class="cld-video-player vjs-fade-out cld-fluid cld-video-player-skin-light" poster="'+playercover+'"></video>
         //play_video(playback_code);
 
     } else if(media_playerid == 4260){
 
         //Image
-        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Source Title" class="hidden_superpower__10939" /><img src="'+playercover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Player Title" class="hidden_superpower__10939" /><img src="'+playercover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
 
     } else if(media_playerid == 4259){
 
         //Audio
-        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_playerid]['m__title']+'">'+js_e___42294[media_playerid]['m__cover']+'</span><audio controls src="'+playback_code+'"></audio><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+playertext+'" placeholder="Player Title" class="hidden_superpower__10939" /><span title="'+js_players___42294[media_playerid]['m__title']+'">'+js_players___42294[media_playerid]['m__cover']+'</span><audio controls src="'+playback_code+'"></audio><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
 
     } else {
 
@@ -2185,13 +2185,13 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
     $("#modal31912 .dynamic_item").attr('d__id','').attr('d_linkid','');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
-    //Source resets:
+    //Player resets:
     $('#search_cover').val('');
     $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
-    var current_title = source_title(playerid);
+    var current_title = player_title(playerid);
     var current_cover = $('.ui_playercover_'+playerid+':first').attr('raw_cover');
 
     $('#modal31912 .save_playerid').val(playerid);
@@ -2225,14 +2225,14 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
 
         if (data.status) {
 
-            //Initiate Source Cover Uploader:
+            //Initiate Player Cover Uploader:
             load_cloudinary(42359, playerid, ['@'+playerid], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
-            var index_i_content = 0;
+            var index_idea_content = 0;
             var current_header = null;
 
-            for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
+            for(let i=1;i<=js_players___6404[42206]['m__message'];i++) {
 
                 var index_i = i-1;
                 if(data.return_inputs[index_i] == undefined){
@@ -2245,7 +2245,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
                     data.return_inputs[index_i]["d__placeholder"] = '';
                     $("#modal31912 .dynamic_"+i).addClass('hidden');
                 } else {
-                    index_i_content++;
+                    index_idea_content++;
                     $("#modal31912 .dynamic_"+i).removeClass('hidden');
                 }
 
@@ -2260,7 +2260,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
                 $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
                 $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_linkid',data.return_inputs[index_i]["d_linkid"]);
 
-                var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_playerids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if(is_locked && !data.return_inputs[index_i]["d__value"].length){
                     //Hide since its locked without a value:
                     $("#modal31912 .dynamic_"+i+" .inner_dynamic").addClass('hidden');
@@ -2286,7 +2286,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
             }
 
             //Add a second save button at the bottom if we have too much data:
-            if(index_i_content > 5){
+            if(index_idea_content > 5){
                 $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default e_editor_save post_button" onclick="e_editor_save()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
@@ -2334,7 +2334,7 @@ function e_editor_save(){
     };
 
     //Append Dynamic Data:
-    for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
+    for(let i=1;i<=js_players___6404[42206]['m__message'];i++) {
         if($('#modal31912 .dynamic_'+i).attr('d__id').length){
             modify_data['save_dynamic_'+i] = $('#modal31912 .dynamic_'+i).attr('d_linkid').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_'+i).val().trim();
         } else {
@@ -2361,12 +2361,12 @@ function e_editor_save(){
             if(old_handle!=new_handle){
                 if(parseInt($('#focus__node').val())==12274 && modify_data['save_playerid']==parseInt($('#focus__id').val())){
                     //Refresh page since focus item handle changed:
-                    return js_redirect(js_e___42903[42902]['m__message']+new_handle);
+                    return js_redirect(js_players___42903[42902]['m__message']+new_handle);
                 } else {
                     //Make adjustments to current page:
                     $('.s__12274_'+modify_data['save_playerid']).attr('playerhandle', new_handle);
                     $('.ui_playerhandle_'+modify_data['save_playerid']).text(new_handle);
-                    $(".handle_href_e_"+modify_data['save_playerid']).attr('href', $(".handle_href_e_"+modify_data['save_playerid']+':first').attr('href').replaceAll(old_handle, new_handle));
+                    $(".handle_hrefplayer_"+modify_data['save_playerid']).attr('href', $(".handle_hrefplayer_"+modify_data['save_playerid']+':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
 
@@ -2394,8 +2394,8 @@ function e_editor_save(){
 
             //Do we need to refresh the page?
             if(parseInt($('#focus__node').val())==12274 && parseInt($('#focus__id').val())==modify_data['save_playerid']){
-                //Refresh page since source edited their own profile:
-                js_redirect(js_e___42903[42902]['m__message']+$('#focus_handle').val());
+                //Refresh page since Player edited their own profile:
+                js_redirect(js_players___42903[42902]['m__message']+$('#focus_handle').val());
             }
 
         }
@@ -2432,7 +2432,7 @@ function x_view__load_page() {
     }
 
     var current_total_count = parseInt($('.headline_body_' + focus_group).attr('read-counter')); //Total of that item
-    var has_more_to_load = ( current_total_count > parseInt(js_e___6404[11064]['m__message']) * current_page[focus_group] );
+    var has_more_to_load = ( current_total_count > parseInt(js_players___6404[11064]['m__message']) * current_page[focus_group] );
 
     if(!has_more_to_load){
         return false;
@@ -2482,16 +2482,16 @@ function toggle_max_view(css_class){
 }
 
 
-//Adds OR transactions sources to sources
+//Adds OR transactions Players to Players
 var e_is_adding = false;
-function e__add(linktype, e_existing_id) {
+function new_player(linktype, e_existing_id) {
 
     if(e_is_adding){
         return false;
     }
 
-    //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
-    //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
+    //if e_existing_id>0 it means we're adding an existing Player, in which case e_new_string should be null
+    //If e_existing_id=0 it means we are creating a new Player and then adding it, in which case e_new_string is required
     e_is_adding = true;
 
     var input = $('.new-list-'+linktype+' .add-input');
@@ -2502,14 +2502,14 @@ function e__add(linktype, e_existing_id) {
     if (e_existing_id==0) {
         e_new_string = input.val();
         if (e_new_string.length < 1) {
-            alert('Missing source name or URL, try again');
+            alert('Missing Player name or URL, try again');
             input.focus();
             return false;
         }
     }
 
     //Add via Ajax:
-    $.post("/app/e__add", {
+    $.post("/app/new_player", {
 
         focus__node: parseInt($('#focus__node').val()),
         linktype: linktype,
@@ -2559,9 +2559,8 @@ function e__add(linktype, e_existing_id) {
 }
 
 
-
 var i_is_adding = false;
-function i__add(linktype, link_ideaid) {
+function new_idea(linktype, link_ideaid) {
 
     alert('not up yet');
     return false;
@@ -2580,7 +2579,7 @@ function i__add(linktype, link_ideaid) {
 
     //Remove results:
     i_is_adding = true;
-    var sort_i_grabr = ".card_cover";
+    var sort_idea_grabr = ".card_cover";
     var input_field = $('.new-list-'+linktype+' .add-input');
     var new_ideatext = input_field.val();
 
@@ -2594,10 +2593,10 @@ function i__add(linktype, link_ideaid) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(linktype, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(linktype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
-    $.post("/app/i__add", {
+    $.post("/app/new_idea", {
         linktype: linktype,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
@@ -2613,12 +2612,12 @@ function i__add(linktype, link_ideaid) {
         if (data.status) {
 
             //Add new
-            add_to_list(linktype, sort_i_grabr, data.new_i_html, 1);
+            add_to_list(linktype, sort_idea_grabr, data.new_idea_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
             load_covers();
-            set_autosize($('.texttype__lg'));
+            set_autosize($('.texttype_lg'));
 
             //Hide Coin:
             $('.mini-cover.card-12273.card-id-'+link_ideaid).fadeOut();
@@ -2638,7 +2637,7 @@ function i__add(linktype, link_ideaid) {
 
 function e_delete(linkid, linktype) {
 
-    var r = confirm("Unlink this source?");
+    var r = confirm("Unlink this Player?");
     if (r==true) {
         $.post("/app/e_delete", {
 
@@ -2763,7 +2762,7 @@ function adjust_counter(linktype, adjustment_count){
 
 
 function search_enabled(){
-    return universal_search_enabled && parseInt(js_e___6404[12678]['m__message']);
+    return universal_search_enabled && parseInt(js_players___6404[12678]['m__message']);
 }
 
 
@@ -2786,7 +2785,7 @@ function i_sort_load(linktype){
     load_covers();
 
     console.log('Tring to load Idea Sort for @'+linktype);
-    if(!js_n___4603.includes(linktype)){
+    if(!js_playerids___4603.includes(linktype)){
         console.log(linktype+' is not sortable');
         return false;
     }
@@ -2801,8 +2800,8 @@ function i_sort_load(linktype){
         }
 
         //Make sure beow minimum sorting requirement:
-        if($("#list-in-"+linktype+" .sort_draggable").length>=parseInt(js_e___6404[11064]['m__message'])){
-            console.log(linktype+' has '+$("#list-in-"+linktype+" .sort_draggable").length+' items which is more than the page limit of '+js_e___6404[11064]['m__message']);
+        if($("#list-in-"+linktype+" .sort_draggable").length>=parseInt(js_players___6404[11064]['m__message'])){
+            console.log(linktype+' has '+$("#list-in-"+linktype+" .sort_draggable").length+' items which is more than the page limit of '+js_players___6404[11064]['m__message']);
             return false;
         } else if($("#list-in-"+linktype+" .sort_draggable").length<2){
             console.log('Less than 2 items to sort '+linktype);
@@ -2810,13 +2809,13 @@ function i_sort_load(linktype){
         } else {
 
             console.log(linktype+' sorting load success');
-            $('.sort_i_frame').removeClass('hidden');
+            $('.sort_idea_frame').removeClass('hidden');
 
             //Load sorter:
             var sort = Sortable.create(theobject, {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
                 draggable: "#list-in-"+linktype+" .sort_draggable", // Specifies which items inside the element should be sortable
-                handle: "#list-in-"+linktype+" .sort_i_grab", // Restricts sort start click/touch to the specified element
+                handle: "#list-in-"+linktype+" .sort_idea_grab", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
 
                     var sort_rank = 0;
@@ -2862,11 +2861,11 @@ function remove_ui_class(item, index) {
 function e_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_playerid, right_ideaid){
 
     //Any warning needed?
-    if(js_n___31780.includes(selected_playerid) && !confirm(js_e___31780[selected_playerid]['m__message'])){
+    if(js_playerids___31780.includes(selected_playerid) && !confirm(js_players___31780[selected_playerid]['m__message'])){
         return false;
     }
 
-    var field_required = js_n___28239.includes(focus__id);
+    var field_required = js_playerids___28239.includes(focus__id);
     var was_previously_selected = ( $('.radio-'+focus__id+' .item-'+selected_playerid).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
@@ -2876,10 +2875,10 @@ function e_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_
     }
 
     //Updating Customizable Theme?
-    if(js_n___13890.includes(focus__id)){
+    if(js_playerids___13890.includes(focus__id)){
         current_focus = focus__id;
         $('body').removeClass('custom_ui_'+focus__id+'_');
-        window['js_n___'+focus__id].forEach(remove_ui_class); //Removes all Classes
+        window['js_playerids___'+focus__id].forEach(remove_ui_class); //Removes all Classes
         $('body').addClass('custom_ui_'+focus__id+'_'+selected_playerid);
     }
 
@@ -2950,10 +2949,10 @@ function update_form_select(element_id, new_playerid, initial_loading, show_titl
     }
     if(!initial_loading){
         if(element_id==4737){
-            //Changing Source Reference would re-load dynamic fields based on type:
+            //Changing Player Reference would re-load dynamic fields based on type:
             has_unsaved_changes = true;
             console.log('Reloading: '+element_id+' with value: '+' NEW ID '+new_playerid+' / '+$('#modal31911 .created_ideaid').val());
-            load_i_dynamic($('#modal31911 .created_ideaid').val(), 0, new_playerid, false);
+            load_idea_dynamic($('#modal31911 .created_ideaid').val(), 0, new_playerid, false);
             //Add handle to text:
             insertText($(".save_ideatext"), '@'+new_playerid);
         }
@@ -2964,7 +2963,7 @@ function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_na
 
     //Update x:
     console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn' + new_playerid);
-    var data_object = eval('js_e___'+element_id);
+    var data_object = eval('js_players___'+element_id);
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm">'+data_object[new_playerid]['m__cover']+'</span>' + ( show_full_name ? data_object[new_playerid]['m__title'] : '' ));
 
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + linkid).removeClass('active');
@@ -2978,10 +2977,10 @@ function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_na
     var main_object_update = false;
 
     if(element_id==4737){
-        //Source Reference:
-        $('.s__12273_'+o__id).attr('i__type', new_playerid);
+        //Player Reference:
+        $('.s__12273_'+o__id).attr('ideatype', new_playerid);
         main_object_type = 12273;
-        main_object_update = 'i__type';
+        main_object_update = 'ideatype';
     }
 
     if(main_object_type>0 && main_object_update){
@@ -2992,15 +2991,15 @@ function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_na
 
 function e_void(){
 
-    //Deleting Source:
+    //Deleting Player:
     if(js_session_superpowers_unlocked.includes(10939)){
-        var migrate_s__handle = prompt("Are you sure you want to permanently delete this source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
+        var migrate_s__handle = prompt("Are you sure you want to permanently delete this Player?\nYou can reference @anotherPlayer to migrate to or leave blank to delete permanently...", "@");
         if(migrate_s__handle === null){
             return false;
         }
     } else {
         //Confirm deletion:
-        var r = confirm("Are you sure you want to permanently delete this source?");
+        var r = confirm("Are you sure you want to permanently delete this Player?");
         if (!(r==true)) {
             return false;
         }
@@ -3052,7 +3051,7 @@ function i_void(){
 
             }
 
-            if( data.auto_open_i_editor_modal ){
+            if( data.auto_open_idea_editor_modal ){
                 //We need to show idea modal:
                 i_editor_load(o__id, $('.s__12273_'+o__id).attr('linkid'));
             }
@@ -3097,7 +3096,7 @@ function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0
     var migrate_s__handle = null;
 
     //Show Loading
-    var data_object = eval('js_e___'+element_id);
+    var data_object = eval('js_players___'+element_id);
     if(!data_object[new_playerid]){
         alert('Invalid element ID: '+element_id +'/'+ new_playerid +'/'+ o__id +'/'+ linkid +'/'+ show_full_name);
         return false;
@@ -3137,7 +3136,7 @@ function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0
 
             }
 
-            if( data.auto_open_i_editor_modal ){
+            if( data.auto_open_idea_editor_modal ){
                 //We need to show idea modal:
                 i_editor_load(o__id, $('.s__12273_'+o__id).attr('linkid'));
             }
@@ -3219,10 +3218,10 @@ function x_reset_sorting(){
                 //Refresh page:
                 if(focus__node==12273){
                     //Ideation
-                    js_redirect(js_e___42903[33286]['m__message'] + focus_handle);
+                    js_redirect(js_players___42903[33286]['m__message'] + focus_handle);
                 } else if(focus__node==12274){
                     //Sourcing
-                    js_redirect(js_e___42903[42902]['m__message'] + focus_handle);
+                    js_redirect(js_players___42903[42902]['m__message'] + focus_handle);
                 }
 
             }
@@ -3254,7 +3253,7 @@ function go_next(do_skip){
         return false;
     }
 
-    if (js_n___7712.includes(focus_i__type)){
+    if (js_playerids___7712.includes(focus_ideatype)){
         //Choose
         $(".this_selector").each(function () {
             var selection_ideaid_this = parseInt($(this).attr('selection_ideaid'));
@@ -3265,7 +3264,7 @@ function go_next(do_skip){
     }
 
     //Compile all next ideas, if any:
-    var next_i_data = []; //Aggregate the data for all children
+    var next_idea_data = []; //Aggregate the data for all children
     $("#list-in-12840 .edge-cover").each(function () {
 
         //Fetch Media
@@ -3276,10 +3275,10 @@ function go_next(do_skip){
             return false;
         }
 
-        next_i_data.push({
+        next_idea_data.push({
             ideaid: parseInt($(this).attr('ideaid')),
-            i__text: ( $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() ? $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() : null ),
-            i__quantity: ( $('.input_ui_'+$(this).attr('ideaid')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('ideaid')+' .i__quantity').val() : 0 ),
+            new_ideatext: ( $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() ? $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() : null ),
+            ideanumber: ( $('.input_ui_'+$(this).attr('ideaid')+' .ideanumber').val() ? $('.input_ui_'+$(this).attr('ideaid')+' .ideanumber').val() : 0 ),
             uploaded_media: gather_media_result['uploaded_media'],
         });
 
@@ -3294,12 +3293,12 @@ function go_next(do_skip){
     }
 
     //Payment Error?
-    if (focus_i__type==26560 && !$(".tickets_issued")[0]){
+    if (focus_ideatype==26560 && !$(".tickets_issued")[0]){
         //Ticket not yet issued!
         alert('Pay Now via Paypal before going next.');
         next_processing = false;
         return false;
-    } else if (focus_i__type==43758){
+    } else if (focus_ideatype==43758){
 
         //Invoice Process, make sure something is in the cart:
         var invoice_items = {};
@@ -3376,15 +3375,15 @@ function go_next(do_skip){
     $.post("/app/go_next", {
         target_ideahashtag: $('#target_ideahashtag').val(),
         target_ideaid: parseInt($('#target_ideaid').val()),
-        focus_i_data: {
+        focus_idea_data: {
             ideaid: parseInt($('#focus__id').val()),
-            i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
-            i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
+            new_ideatext: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
+            ideanumber: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .ideanumber').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .ideanumber').val() : 0 ),
             uploaded_media: gather_media_result['uploaded_media'],
         },
         do_skip: do_skip,
         selection_ideaid: selection_ideaid,
-        next_i_data: next_i_data,
+        next_idea_data: next_idea_data,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {

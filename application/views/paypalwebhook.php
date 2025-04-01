@@ -10,23 +10,23 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     //Log New Payment:
     $item_parts = explode(' ', $_POST['item_number']);
 
-    $item_numbers['i_target'] = strtolower(( count($item_parts)==4 ? trim(str_replace('#','',$item_parts[0])) : false ));
-    $item_numbers['i_destination'] = strtolower(( count($item_parts)==4 ? trim(str_replace('#','',$item_parts[1])) : trim($item_parts[0]) ));
-    $item_numbers['e_wesbite'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 2 : 1 )])));
-    $item_numbers['e_player'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 3 : 2 )])));
+    $item_numbers['idea_target'] = strtolower(( count($item_parts)==4 ? trim(str_replace('#','',$item_parts[0])) : false ));
+    $item_numbers['idea_destination'] = strtolower(( count($item_parts)==4 ? trim(str_replace('#','',$item_parts[1])) : trim($item_parts[0]) ));
+    $item_numbers['player_wesbite'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 2 : 1 )])));
+    $item_numbers['player_player'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 3 : 2 )])));
 
     //Fetch Objects based on handles:
     $player_es = $this->Cacheplayers->fetch(array(
-        'LOWER(playerhandle)' => $item_numbers['e_player'],
+        'LOWER(playerhandle)' => $item_numbers['player_player'],
     ));
     $website_es = $this->Cacheplayers->fetch(array(
-        'LOWER(playerhandle)' => $item_numbers['e_wesbite'],
+        'LOWER(playerhandle)' => $item_numbers['player_wesbite'],
     ));
     $next_is = $this->Cacheideas->fetch(array(
-        'LOWER(ideahashtag)' => $item_numbers['i_destination'],
+        'LOWER(ideahashtag)' => $item_numbers['idea_destination'],
     ));
-    $target_is = ($item_numbers['i_target'] ? $this->Cacheideas->fetch(array(
-        'LOWER(ideahashtag)' => $item_numbers['i_target'],
+    $target_is = ($item_numbers['idea_target'] ? $this->Cacheideas->fetch(array(
+        'LOWER(ideahashtag)' => $item_numbers['idea_target'],
     )) : false);
 
 

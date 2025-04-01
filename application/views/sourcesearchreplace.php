@@ -19,7 +19,7 @@ if($search_for_set){
     ));
 
     //List the matching search:
-    echo '<div>'.count($matching_results).' Sources Found</div>';
+    echo '<div>'.count($matching_results).' Players Found</div>';
     if(count($matching_results) < 1){
 
         $replace_with_set = false;
@@ -39,7 +39,7 @@ if($search_for_set){
 
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $en['playertext'] = sourcesearchreplace . phpstr_ireplace($_GET['search_for'], $_GET['replace_with'], $en['playertext']) . $append_text;
+                $en['playertext'] = Playersearchreplace . phpstr_ireplace($_GET['search_for'], $_GET['replace_with'], $en['playertext']) . $append_text;
 
                 if($replace_with_confirmed){
                     //Update idea:
@@ -50,7 +50,7 @@ if($search_for_set){
                 }
             }
 
-            echo view__card_e(12730, $en, null);
+            echo view__card_player(12730, $en, null);
         }
         echo '</div>';
 

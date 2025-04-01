@@ -4,7 +4,7 @@
 $longest_time = 0;
 $longest_id = 0;
 $cron_jobs = $this->Menchledger->fetch(array(
-    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkvoid' => 0, //Not Void
     'linkup' => 7274,
 ), array('linkdown'), view__memory(6404,11064), 0, array('linknumber' => 'ASC'));

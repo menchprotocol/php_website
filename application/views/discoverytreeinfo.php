@@ -13,7 +13,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle'])){
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['ideahashtag']);
-echo '<h1>' . view__i_title($list_settings['i']) . '</h1>';
+echo '<h1>' . view__idea_title($list_settings['i']) . '</h1>';
 
 
 foreach($this->Cacheplayers->fetch(array(

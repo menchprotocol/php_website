@@ -10,7 +10,7 @@ foreach($this->Menchledger->fetch(array(
     $time_starts = 0;
     foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
         'linkup' => 43743, //Sending Starts
     )) as $time){
@@ -27,7 +27,7 @@ foreach($this->Menchledger->fetch(array(
     $end_sending = 0;
     foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
         'linkup' => 43744, //Sending Ends
     )) as $time){
@@ -38,9 +38,9 @@ foreach($this->Menchledger->fetch(array(
     //Now let's see who will receive this:
     $demo_only = false;
     $list_settings = list_settings($i['ideahashtag']);
-    $total_sent = $this->Menchledger->send_i_mass_dm($list_settings['query_string_filtered'], $i, $i['linkdomain'], true, $demo_only);
+    $total_sent = $this->Menchledger->send_idea_mass_dm($list_settings['query_string_filtered'], $i, $i['linkdomain'], true, $demo_only);
 
-    echo view__i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string_filtered']).' Members<hr />';
+    echo view__idea_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string_filtered']).' Members<hr />';
 
     //Mark this as complete?
     if(!$demo_only && (!$end_sending || $end_sending<time())){

@@ -4,12 +4,12 @@
 
 if(isset($_GET['playerhandle'])){
 
-    //Find Link Content Duplicates for this Source:
+    //Find Link Content Duplicates for this Player:
     $main_index = array();
     $duplicates_found = array();
     foreach($this->Menchledger->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         'linkvoid' => 0, //Not Void
     ), array('linkup'), 0) as $x) {
         $linktext_md5 = substr(md5($x['linktext']), 0, 16);
@@ -32,7 +32,7 @@ if(isset($_GET['playerhandle'])){
 
 } elseif(!isset($_GET['search_by_name'])){
 
-    echo '<p>Either enter ?playerid= in URL to search specific source Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view__app_link(7268).'?search_by_name=1"><b>Find Duplicate Sources by Name</b></a></p>.';
+    echo '<p>Either enter ?playerid= in URL to search specific Player Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view__app_link(7268).'?search_by_name=1"><b>Find Duplicate Players by Name</b></a></p>.';
 
 } else {
 

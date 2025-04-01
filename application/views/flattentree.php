@@ -7,7 +7,7 @@ if(!isset($_GET['ideahashtag'])){
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['ideahashtag']);
-echo '<h1>' . view__i_title($list_settings['i']) . '</h1>';
+echo '<h1>' . view__idea_title($list_settings['i']) . '</h1>';
 
 
 //Display idea info:
@@ -15,10 +15,10 @@ $recursive_down_ids = $this->Cacheideas->recursive_down_ids($list_settings['i'],
 
 
 //Main Idea:
-echo '<h2><a href="'.view__memory(42903,33286).$list_settings['i']['ideahashtag'].'">'.view__i_title($list_settings['i'], true).'</a> '.count($recursive_down_ids['recursive_i_ids']).' IDEAS</h2>';
+echo '<h2><a href="'.view__memory(42903,33286).$list_settings['i']['ideahashtag'].'">'.view__idea_title($list_settings['i'], true).'</a> '.count($recursive_down_ids['recursive_idea_ids']).' IDEAS</h2>';
 
 echo '<div class="row justify-content">';
-foreach($recursive_down_ids['recursive_i_ids'] as $recursive_down_id){
+foreach($recursive_down_ids['recursive_idea_ids'] as $recursive_down_id){
     foreach($this->Cacheideas->fetch(array(
         'ideaid' => $recursive_down_id,
     ), 0) as $this_i){

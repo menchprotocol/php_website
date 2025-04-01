@@ -12,7 +12,7 @@ echo view__card_i(42288,  $focus_i);
 echo '</div>';
 
 if(superpower_unlocked(10939) || isset($_GET['open'])){
-    echo view__i_nav(false, $focus_i);
+    echo view__idea_nav(false, $focus_i);
 }
 
 ?>

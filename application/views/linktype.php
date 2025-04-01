@@ -1,7 +1,7 @@
 <?php
 
 //List all interactions types and their counts:
-$e___11035 = $this->config->item('e___11035'); //Encyclopedia
+$players___11035 = $this->config->item('players___11035'); //Encyclopedia
 $table_sortable = array('#th_primary','#th_count','#th_total','#th_points','#th_perfect');
 $total_count = 0;
 $total_access = array();
@@ -13,7 +13,7 @@ $table_body = '';
 $totals_count = $this->Menchledger->fetch(array(), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
-foreach($this->config->item('e___4593') as $linktype => $m) {
+foreach($this->config->item('players___4593') as $linktype => $m) {
 
     $total_count++;
 
@@ -24,10 +24,10 @@ foreach($this->config->item('e___4593') as $linktype => $m) {
     $table_body .= '<td style="text-align: left;">'.$linktype.'</td>';
 
     //List all statuses:
-    $list_e_count = $this->Menchledger->fetch(array(
+    $listplayer_count = $this->Menchledger->fetch(array(
         'linktype' => $linktype,
     ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-    $interactions_this = $list_e_count[0]['totals'];
+    $interactions_this = $listplayer_count[0]['totals'];
     $total_interactions += $interactions_this;
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad(number_format(($interactions_this/$totals_count[0]['totals']*100), 3), 6, '0', STR_PAD_LEFT).'%</th>';

@@ -4,17 +4,17 @@ foreach($this->Cacheideas->fetch(array(
     'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
 )) as $i){
 
-    echo '<h2>' . view__i_title($i) . '</h2>';
+    echo '<h2>' . view__idea_title($i) . '</h2>';
 
     $preg_query = $this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
         'linkup' => 32103,
     ));
 
 
-    //See apply to sources:
+    //See apply to Players:
     $apply_to = array();
     foreach($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
@@ -42,7 +42,7 @@ foreach($this->Cacheideas->fetch(array(
             )) as $e){
                 foreach($this->Menchledger->fetch(array(
                     'linkup' => $e['playerid'],
-                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkvoid' => 0, //Not Void
                 ), array('linkdown'), 0) as $x) {
 
@@ -65,7 +65,7 @@ foreach($this->Cacheideas->fetch(array(
                                     foreach($this->Menchledger->fetch(array(
                                         'linkup' => $apply_playerid,
                                         'linkdown' => $x['linkplayer'],
-                                        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                         'linkvoid' => 0, //Not Void
                                     ), array(), 0) as $follow_appended) {
                                         $links_updated++;
@@ -90,7 +90,7 @@ foreach($this->Cacheideas->fetch(array(
                                     foreach($this->Menchledger->fetch(array(
                                         'linkup' => $apply_playerid,
                                         'linkdown' => $x['linkplayer'],
-                                        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                         'linkvoid' => 0, //Not Void
                                     ), array(), 0) as $follow_appended) {
                                         $links_removed++;
@@ -101,7 +101,7 @@ foreach($this->Cacheideas->fetch(array(
                             }
                         }
 
-                        echo 'Source ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                        echo 'Player ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
                     }
                 }
             }
@@ -120,7 +120,7 @@ foreach($this->Cacheideas->fetch(array(
 
         foreach($this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
-            'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'LENGTH(linktext)>0' => null,
             'linkleft' => $i['ideaid'],
         ), array(), 0) as $x) {
@@ -143,7 +143,7 @@ foreach($this->Cacheideas->fetch(array(
                             foreach($this->Menchledger->fetch(array(
                                 'linkup' => $apply_playerid,
                                 'linkdown' => $x['linkplayer'],
-                                'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                 'linkvoid' => 0, //Not Void
                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
@@ -167,7 +167,7 @@ foreach($this->Cacheideas->fetch(array(
                             foreach($this->Menchledger->fetch(array(
                                 'linkup' => $apply_playerid,
                                 'linkdown' => $x['linkplayer'],
-                                'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                 'linkvoid' => 0, //Not Void
                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
@@ -178,7 +178,7 @@ foreach($this->Cacheideas->fetch(array(
                     }
                 }
 
-                echo 'Source ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                echo 'Player ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
             }
         }
 

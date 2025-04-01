@@ -1,14 +1,14 @@
 <?php
 $player_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
-$e_segment = view__valid_handle_e($first_segment);
+$player_segment = view__valid_handle_player($first_segment);
 $second_segment = $this->uri->segment(2);
-$e___11035 = $this->config->item('e___11035'); //Encyclopedia
-$e___14870 = $this->config->item('e___14870'); //Website Partner
-$handle___40904 = $this->config->item('handle___40904');
+$players___11035 = $this->config->item('players___11035'); //Encyclopedia
+$players___14870 = $this->config->item('players___14870'); //Website Partner
+$handlplayers___40904 = $this->config->item('handlplayers___40904');
 $website_id = website_setting(0);
 $website_favicon = website_setting(31887);
-$basic_header_footer = in_array($app_playerid, $this->config->item('n___14562'));
+$basic_header_footer = in_array($app_playerid, $this->config->item('playerids___14562'));
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
 $logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : 'https://s3foundation.s3.us-west-2.amazonaws.com/yin-yang-solid.svg' ));
 $bgVideo = null;
@@ -20,7 +20,7 @@ $is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !string_is_icon(
 
 //Generate Body Class String:
 $body_class = ' app__'.$app_playerid.' '; //Always append current coin
-foreach($this->config->item('e___13890') as $playerid => $m){
+foreach($this->config->item('players___13890') as $playerid => $m){
     if($player_e){
         //Look at their session:
         $body_class .= ' custom_ui_'.$playerid.'_'.$this->session->userdata('session_custom_ui_'.$playerid).' ';
@@ -29,15 +29,15 @@ foreach($this->config->item('e___13890') as $playerid => $m){
         $this_class = '';
 
         //Fetch Website Defaults:
-        foreach(array_intersect($this->config->item('n___'.$playerid), $e___14870[$website_id]['m__following']) as $this_e_id) {
-            $this_class = ' custom_ui_'.$playerid.'_'.$this_e_id.' ';
+        foreach(array_intersect($this->config->item('playerids___'.$playerid), $players___14870[$website_id]['m__following']) as $thisplayer_id) {
+            $this_class = ' custom_ui_'.$playerid.'_'.$thisplayer_id.' ';
         }
 
         //If not found, fetch platform defaults:
         if(!strlen($this_class)){
-            $e___4527 = $this->config->item('e___4527');
-            foreach(array_intersect($this->config->item('n___'.$playerid), $e___4527[6404]['m__following']) as $this_e_id) {
-                $this_class = ' custom_ui_'.$playerid.'_'.$this_e_id.' ';
+            $players___4527 = $this->config->item('players___4527');
+            foreach(array_intersect($this->config->item('playerids___'.$playerid), $players___4527[6404]['m__following']) as $thisplayer_id) {
+                $this_class = ' custom_ui_'.$playerid.'_'.$thisplayer_id.' ';
             }
         }
 
@@ -78,9 +78,9 @@ if(!$basic_header_footer){
     <?php
 
     //Font Helps:
-    $e___29763 = $this->config->item('e___29763'); //CSS Font Family
-    $e___29711 = $this->config->item('e___29711'); //Google Font Family
-    $e___14506 = $this->config->item('e___14506');
+    $players___29763 = $this->config->item('players___29763'); //CSS Font Family
+    $players___29711 = $this->config->item('players___29711'); //Google Font Family
+    $players___14506 = $this->config->item('players___14506');
     $google_fonts = array();
 
 
@@ -112,10 +112,10 @@ if(!$basic_header_footer){
     echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:public_index \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORY
-    foreach($this->config->item('e___11054') as $linktype => $m){
-        if(is_array($this->config->item('e___'.$linktype))){
-            echo ' var js_e___'.$linktype.' = ' . json_encode($this->config->item('e___'.$linktype)) . ';';
-            echo ' var js_n___'.$linktype.' = ' . json_encode($this->config->item('n___'.$linktype)) . ';';
+    foreach($this->config->item('players___11054') as $linktype => $m){
+        if(is_array($this->config->item('players___'.$linktype))){
+            echo ' var js_players___'.$linktype.' = ' . json_encode($this->config->item('players___'.$linktype)) . ';';
+            echo ' var js_playerids___'.$linktype.' = ' . json_encode($this->config->item('playerids___'.$linktype)) . ';';
         }
     }
     echo '</script>';
@@ -175,7 +175,7 @@ if(!$basic_header_footer){
 
 
     //Hide superpower CSS thats missing:
-    foreach($this->config->item('e___10957') as $superpower_id => $superpower){
+    foreach($this->config->item('players___10957') as $superpower_id => $superpower){
         if(is_array($this->session->userdata('session_superpowers_unlocked')) && !in_array($superpower_id, $this->session->userdata('session_superpowers_unlocked'))){
             echo ' body .hidden_superpower__'.$superpower_id.' { display:none !important; } '."\n";
         }
@@ -183,9 +183,9 @@ if(!$basic_header_footer){
 
 
     //Header Fonts
-    foreach($this->config->item('e___14506') as $playerid => $m){
-        if(isset($e___29711[$playerid]) && isset($e___29763[$playerid])){
-            array_push($google_fonts, $e___29711[$playerid]['m__message']);
+    foreach($this->config->item('players___14506') as $playerid => $m){
+        if(isset($players___29711[$playerid]) && isset($players___29763[$playerid])){
+            array_push($google_fonts, $players___29711[$playerid]['m__message']);
             echo '
             .custom_ui_14506_'.$playerid.' .itemsetting.active:not(.exclude_fonts),
             .custom_ui_14506_'.$playerid.'.itemsetting.exclude_fonts,
@@ -196,10 +196,10 @@ if(!$basic_header_footer){
             .custom_ui_14506_'.$playerid.' .headline,
             .custom_ui_14506_'.$playerid.' .btn,
             .custom_ui_14506_'.$playerid.' .mid-text-line span,
-            .custom_ui_14506_'.$playerid.' .texttype__lg,
-            .custom_ui_14506_'.$playerid.' .texttype__lg::placeholder,
+            .custom_ui_14506_'.$playerid.' .texttype_lg,
+            .custom_ui_14506_'.$playerid.' .texttype_lg::placeholder,
             .custom_ui_14506_'.$playerid.' .alert a {
-                font-family:'.$e___29763[$playerid]['m__message'].' !important;
+                font-family:'.$players___29763[$playerid]['m__message'].' !important;
             }
             ';
         }
@@ -207,9 +207,9 @@ if(!$basic_header_footer){
 
 
     //Content Fonts
-    foreach($this->config->item('e___29700') as $playerid => $m){
-        if(isset($e___29711[$playerid]) && isset($e___29763[$playerid])){
-            array_push($google_fonts, $e___29711[$playerid]['m__message']);
+    foreach($this->config->item('players___29700') as $playerid => $m){
+        if(isset($players___29711[$playerid]) && isset($players___29763[$playerid])){
+            array_push($google_fonts, $players___29711[$playerid]['m__message']);
             echo '
             .custom_ui_29700_'.$playerid.'.itemsetting.exclude_fonts,
             .custom_ui_29700_'.$playerid.' div,
@@ -218,7 +218,7 @@ if(!$basic_header_footer){
             .custom_ui_29700_'.$playerid.' html,
             .custom_ui_29700_'.$playerid.' body,
             .custom_ui_29700_'.$playerid.' .doregular {
-                font-family: '.$e___29763[$playerid]['m__message'].' !important;
+                font-family: '.$players___29763[$playerid]['m__message'].' !important;
             }
             ';
         }
@@ -226,7 +226,7 @@ if(!$basic_header_footer){
 
 
 
-    if(isset($app_playerid) && in_array($app_playerid, $this->config->item('n___28621'))){
+    if(isset($app_playerid) && in_array($app_playerid, $this->config->item('playerids___28621'))){
 
         $domain_background = website_setting(28621);
         if(strlen($domain_background)){
@@ -338,7 +338,7 @@ if ($focus_i){
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block-sm">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_finder" type="search" id="website_finder" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block-sm">'.$players___11035[7256]['m__cover'].'</span><input class="form-control algolia_finder" type="search" id="website_finder" data-lpignore="true" placeholder="'.$players___11035[7256]['m__title'].'"></form></div>';
 
 
 
@@ -346,13 +346,13 @@ if ($focus_i){
                     echo '</td>';
 
                     if(search_enabled() && $player_e){
-                        echo '<td class="block-x icon_finder enlarge '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()">'.$e___11035[7256]['m__cover'].'</a></td>';
-                        echo '<td class="block-x icon_finder enlarge hidden"><a href="javascript:void(0);" onclick="toggle_finder()">'.$e___11035[13401]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder enlarge '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()">'.$players___11035[7256]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder enlarge hidden"><a href="javascript:void(0);" onclick="toggle_finder()">'.$players___11035[13401]['m__cover'].'</a></td>';
                     }
 
                     //New Idea?
                     if($player_e){
-                        echo '<td class="block-x enlarge add_idea"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$e___11035[44403]['m__title'].'">'.$e___11035[44403]['m__cover'].'</a></td>';
+                        echo '<td class="block-x enlarge add_idea"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$players___11035[44403]['m__title'].'">'.$players___11035[44403]['m__cover'].'</a></td>';
                     }
 
                     //MENU
@@ -361,17 +361,17 @@ if ($focus_i){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_e && strlen($player_e['playercover']) ? view__cover($player_e['playercover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_e && strlen($player_e['playercover']) ? view__cover($player_e['playercover'], 1) : $players___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
-                    foreach($this->config->item('e___'.$menu_type) as $linktype => $m) {
+                    foreach($this->config->item('players___'.$menu_type) as $linktype => $m) {
 
-                        $superpowers_required = array_intersect($this->config->item('n___10957'), $m['m__following']);
+                        $superpowers_required = array_intersect($this->config->item('playerids___10957'), $m['m__following']);
                         if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                             continue;
                         }
 
-                        $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__following']);
+                        $hosted_domains = array_intersect($this->config->item('playerids___14870'), $m['m__following']);
                         if(count($hosted_domains) && !in_array($website_id, $hosted_domains)){
                             continue;
                         }
@@ -409,7 +409,7 @@ if ($focus_i){
                             }
                             $href = 'href="mailto:'.$value.'"';
 
-                        } elseif(in_array($linktype, $this->config->item('n___6287'))){
+                        } elseif(in_array($linktype, $this->config->item('playerids___6287'))){
 
                             //APP
                             $href = 'href="'.view__app_link($linktype).( $linktype==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
@@ -431,9 +431,9 @@ if ($focus_i){
                     echo '</td>';
 
 
-                    //Add Source
+                    //Add Player
                     if(superpower_unlocked(10939)){
-                        //echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$e___11035[42819]['m__title'].'">'.$e___11035[42819]['m__cover'].'</a></td>';
+                        //echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$players___11035[42819]['m__title'].'">'.$players___11035[42819]['m__cover'].'</a></td>';
                     }
 
                     ?>
@@ -481,7 +481,7 @@ $player_e = superpower_unlocked();
 if($player_e){
     //For profile editing only:
     echo '<div class="hidden">';
-    echo view__card_e(42287, $player_e, null);
+    echo view__card_player(42287, $player_e, null);
     echo '</div>';
 }
 
@@ -499,7 +499,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         $dynamic_edit .= '</div>';
     }
 
-    //Apply to All Sources
+    //Apply to All Players
     if(superpower_unlocked(12700)){
         ?>
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
@@ -519,16 +519,16 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             $input_options = '';
                             $editor_counter = 0;
 
-                            foreach($this->config->item('e___4997') as $action_playerid => $e_list_action) {
+                            foreach($this->config->item('players___4997') as $action_playerid => $player_list_action) {
 
 
                                 $editor_counter++;
-                                $dropdown_options .= '<option value="' . $action_playerid . '" title="'.$e_list_action['m__message'].'">' .$e_list_action['m__title'] . '</option>';
-                                $is_upper = ( in_array($action_playerid, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' main__title ' : false );
+                                $dropdown_options .= '<option value="' . $action_playerid . '" title="'.$player_list_action['m__message'].'">' .$player_list_action['m__title'] . '</option>';
+                                $is_upper = ( in_array($action_playerid, $this->config->item('playerids___12577') /* SOURCE UPDATER UPPERCASE */) ? ' main__title ' : false );
 
 
                                 //Start with the input wrapper:
-                                $input_options .= '<span title="'.$e_list_action['m__message'].'" class="mass_id_'.$action_playerid.' inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                                $input_options .= '<span title="'.$player_list_action['m__message'].'" class="mass_id_'.$action_playerid.' inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
 
 
@@ -549,18 +549,18 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Member search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="Search sources" class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="Search Players" class="form-control algolia_finder player_text_finder border '.$is_upper.'">';
 
                                     //We don't need the second value field here:
-                                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_playerid.'" value="" placeholder="Search Source" />';
+                                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_playerid.'" value="" placeholder="Search Player" />';
 
                                 } elseif($action_playerid==11956){
 
                                     //If Has THIS
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="IF THIS SOURCE" class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="IF THIS SOURCE" class="form-control algolia_finder player_text_finder border '.$is_upper.'">';
 
                                     //ADD THIS
-                                    $input_options .= '<input type="text" name="mass_value2_'.$action_playerid.'"  placeholder="ADD THIS SOURCE" class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value2_'.$action_playerid.'"  placeholder="ADD THIS SOURCE" class="form-control algolia_finder player_text_finder border '.$is_upper.'">';
 
                                 } elseif($action_playerid==42804){
 
@@ -569,7 +569,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_playerid.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Interaction Types</option>';
-                                    foreach($this->config->item('e___32292') /* Source Links */ as $linktype3 => $m3){
+                                    foreach($this->config->item('players___32292') /* Player Links */ as $linktype3 => $m3){
                                         $input_options .= '<option value="'.$linktype3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
@@ -577,7 +577,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_playerid.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status</option>';
-                                    foreach($this->config->item('e___32292') /* Source Links */ as $linktype3 => $m3){
+                                    foreach($this->config->item('players___32292') /* Player Links */ as $linktype3 => $m3){
                                         $input_options .= '<option value="'.$linktype3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
@@ -639,31 +639,31 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             $input_options = '';
                             $this_counter = 0;
 
-                            foreach($this->config->item('e___12589') as $action_playerid => $e_list_action) {
+                            foreach($this->config->item('players___12589') as $action_playerid => $player_list_action) {
 
                                 $this_counter++;
-                                $dropdown_options .= '<option value="' . $action_playerid . '">' .$e_list_action['m__title'] . '</option>';
+                                $dropdown_options .= '<option value="' . $action_playerid . '">' .$player_list_action['m__title'] . '</option>';
 
 
                                 //Start with the input wrapper:
-                                $input_options .= '<span title="'.$e_list_action['m__message'].'" class="mass_id_'.$action_playerid.' inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                                $input_options .= '<span title="'.$player_list_action['m__message'].'" class="mass_id_'.$action_playerid.' inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
                                 if(in_array($action_playerid, array(12591,27080,27985,27082,27084,27086))){
 
-                                    //Source search box:
+                                    //Player search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="Search Sources" class="form-control algolia_finder e_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="Search Players" class="form-control algolia_finder player_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="text" name="mass_value2_'.$action_playerid.'" value="" />';
 
                                 } elseif(in_array($action_playerid, array(12592,27081,27986,27083,27085,27087))){
 
-                                    //Source search box:
+                                    //Player search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="Search Sources" class="form-control algolia_finder e_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_playerid.'"  placeholder="Search Players" class="form-control algolia_finder player_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_playerid.'" value="" />';
@@ -702,8 +702,8 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     if($player_e){
 
-        $e___6201 = $this->config->item('e___6201'); //IDEA Cache
-        $e___6206 = $this->config->item('e___6206'); //Source Cache
+        $players___6201 = $this->config->item('players___6201'); //IDEA Cache
+        $players___6206 = $this->config->item('players___6206'); //Player Cache
 
         ?>
 
@@ -752,9 +752,9 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="doclear">&nbsp;</div>
 
                         <!-- Idea Hashtag -->
-                        <div class="dynamic_editing_input single_line hash_group" title="<?= $e___6201[32337]['m__title'] ?>">
-                            <h3 class="mini-font"><span class="icon-block"><?= $e___6201[32337]['m__cover']  ?></span></h3>
-                            <input type="text" class="form-control unsaved_warning save_ideahashtag no-border" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view__memory(6404,41985) ?>">
+                        <div class="dynamic_editing_input single_line hash_group" title="<?= $players___6201[32337]['m__title'] ?>">
+                            <h3 class="mini-font"><span class="icon-block"><?= $players___6201[32337]['m__cover']  ?></span></h3>
+                            <input type="text" class="form-control unsaved_warning save_ideahashtag no-border" placeholder="<?= $players___6201[32337]['m__title'] ?>" maxlength="<?= view__memory(6404,41985) ?>">
                         </div>
 
                         <!-- Idea Creator(s) -->
@@ -776,7 +776,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Idea Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_ideatext" placeholder="<?= ( strlen($e___6201[4736]['m__message']) ? $e___6201[4736]['m__message'] : $e___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_ideatext" placeholder="<?= ( strlen($players___6201[4736]['m__message']) ? $players___6201[4736]['m__message'] : $players___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="media_outer_frame hideIfEmpty" style="margin-left: 40px;">
                                 <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
                                 <div class="doclear">&nbsp;</div>
@@ -790,7 +790,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <div class="inner_message left_padded">
                             <?php
-                            foreach($this->config->item('e___44168') as $playerid => $m){
+                            foreach($this->config->item('players___44168') as $playerid => $m){
 
                                 if($playerid==44169){ //Idea Reference
 
@@ -798,7 +798,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <a class="add_hashtag_44169 icon-block" href="javascript:void(0)" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>
                                     </div>';
 
-                                } elseif($playerid==4737){ //Source Reference
+                                } elseif($playerid==4737){ //Player Reference
 
                                     echo '<div class="dynamic_editing_input no_padded pull-right " style="margin: 0 !important;">
                                         <div class="dynamic_selector">'.view__single_select_form(4737, 6677).'</div>
@@ -835,7 +835,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <!-- Link Note -->
                             <div class="dynamic_editing_input save_frame hidden">
-                                <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                                <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$players___11035[4372]['m__cover'].'</span>'.$players___11035[4372]['m__title'].': ';  ?></h3>
                                 <textarea class="form-control border unsaved_warning save_linktext" data-lpignore="true" placeholder="..."></textarea>
                             </div>
 
@@ -851,7 +851,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-        <!-- Edit Source Modal -->
+        <!-- Edit Player Modal -->
         <div class="modal fade" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
@@ -871,16 +871,16 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="hidden" class="save_linkid" value="0" />
 
 
-                        <!-- Source Title -->
+                        <!-- Player Title -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6197]['m__cover'].'</span>'.$e___6206[6197]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$players___6206[6197]['m__cover'].'</span>'.$players___6206[6197]['m__title'].': ';  ?></h3>
                             <textarea class="form-control unsaved_warning save_playertext main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
 
-                        <!-- Source Handle -->
+                        <!-- Player Handle -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[32338]['m__cover'].'</span>'.$e___6206[32338]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$players___6206[32338]['m__cover'].'</span>'.$players___6206[32338]['m__title'].': ';  ?></h3>
                             <input type="text" class="form-control unsaved_warning save_playerhandle" placeholder="...">
                         </div>
 
@@ -890,7 +890,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <tr>
                                     <td>
                                         <!-- Upload Cover -->
-                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
+                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $players___11035[42359]['m__title'] ?>"><?= $players___11035[42359]['m__cover'] ?></a>
                                     </td>
                                     <td class="hidden_superpower__13758">
                                         <!-- EMOJI -->
@@ -913,7 +913,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </table>
                         </div>
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$players___6206[6198]['m__cover'].'</span>'.$players___6206[6198]['m__title'].': ';  ?></h3>
 
                             <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
                             <input type="text" class="form-control unsaved_warning save_playercover hidden_superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
@@ -933,7 +933,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </div>
                                 </div>
 
-                                <div style="text-align: center;"><a class="uploader_42359" class="btn btn-lrg" href="javascript:void(0);"><?= '<span class="icon-block">'.$e___11035[42359]['m__cover'].'</span>'.$e___11035[42359]['m__title'] ?></a></div>
+                                <div style="text-align: center;"><a class="uploader_42359" class="btn btn-lrg" href="javascript:void(0);"><?= '<span class="icon-block">'.$players___11035[42359]['m__cover'].'</span>'.$players___11035[42359]['m__title'] ?></a></div>
 
                             </div>
                         </div>
@@ -941,7 +941,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Link Note -->
                         <div class="dynamic_editing_input save_frame hidden">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$players___11035[4372]['m__cover'].'</span>'.$players___11035[4372]['m__title'].': ';  ?></h3>
                             <textarea class="form-control border unsaved_warning save_linktext" data-lpignore="true" placeholder="..."></textarea>
                         </div>
 

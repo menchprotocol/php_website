@@ -5,21 +5,21 @@ $counter = 0;
 foreach ($this->Menchledger->fetch(array(
     'linkvoid' => 0, //Not Void
     'linktype' => 7545,
-    'linkup NOT IN (' . join(',', $this->config->item('n___43048')) . ')' => null, //No need to add these special ones... SourceNickname
+    'linkup NOT IN (' . join(',', $this->config->item('playerids___43048')) . ')' => null, //No need to add these special ones... PlayerNickname
 ), array('linkup'), 0) as $addition_sync) {
 
     $is_found = false;
     //Fetch everyone who has discovered this idea:
     foreach ($this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkleft' => $addition_sync['linkright'],
     ), array('linkplayer'), 0, 0, array('linkid' => 'DESC')) as $dicovered) {
 
-        //Make sure no previous removed link between these two sources:
+        //Make sure no previous removed link between these two Players:
         if(!count($this->Menchledger->fetch(array(
             'linkvoid >' => 0,
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkup' => $addition_sync['linkup'],
             'linkdown' => $dicovered['linkplayer'],
         )))){
@@ -38,11 +38,11 @@ foreach ($this->Menchledger->fetch(array(
             $set_linktext = $response['ideatext'];
         }
 
-        //lets append this source:
-        if (append_source($addition_sync['linkup'], $dicovered['linkplayer'], $set_linktext, $addition_sync['linkright'])) {
+        //lets append this Player:
+        if (append_player($addition_sync['linkup'], $dicovered['linkplayer'], $set_linktext, $addition_sync['linkright'])) {
             $counter++;
         }
     }
 }
 
-echo $counter . ' Sources synced.';
+echo $counter . ' Players synced.';

@@ -14,12 +14,12 @@ if(isset($_GET['search_for'])){
     if(!count($es)){
         return view__json(array(
             'status' => 0,
-            'message' => 'Invalid Source ID #1'
+            'message' => 'Invalid Player ID #1'
         ));
     } elseif(!strlen($es[0]['playercover'])) {
         return view__json(array(
             'status' => 0,
-            'message' => 'Source Missing Cover'
+            'message' => 'Player Missing Cover'
         ));
     }
 
@@ -84,7 +84,7 @@ if($icon_keyword){
         }
 
         if($replaced > 0){
-            echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>Updated icons for '.$replaced.' sources.';
+            echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>Updated icons for '.$replaced.' Players.';
         }
 
     }

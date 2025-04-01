@@ -4,9 +4,9 @@
 
 //TITLE
 $website_id = website_setting(0);
-$expanded_space = in_array($website_id , $this->config->item('n___31025'));
+$expanded_space = in_array($website_id , $this->config->item('playerids___31025'));
 
-if(in_array($website_id, $this->config->item('n___30984'))){
+if(in_array($website_id, $this->config->item('playerids___30984'))){
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_black_font\'); }); </script> ';
 } else {
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_white_font\'); }); </script> ';
@@ -15,7 +15,7 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 
 
 $primary_i = array();
-$secondary_i_list = array();
+$secondary_idea_list = array();
 foreach($this->Menchledger->fetch(array(
     'linkvoid' => 0, //Not Void
     'linktype' => 34513, //Pinned
@@ -25,19 +25,19 @@ foreach($this->Menchledger->fetch(array(
         $primary_i = $this_i;
     } else {
         //Add to secondary ideas:
-        array_push($secondary_i_list, $this_i);
+        array_push($secondary_idea_list, $this_i);
     }
 }
 
 if(count($primary_i)){
-    echo ' <script> $(document).ready(function () { show_more('.$primary_i['ideaid'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view__i_title($primary_i, true)).'\'); }); </script> ';
+    echo ' <script> $(document).ready(function () { show_more('.$primary_i['ideaid'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view__idea_title($primary_i, true)).'\'); }); </script> ';
 }
 
-echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view__i_title($primary_i, true) . '</h1>';
+echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view__idea_title($primary_i, true) . '</h1>';
 
 
 //Did we find any?
-$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view__i__links($primary_i) . '</div>';
+$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view__idea_links($primary_i) . '</div>';
 
 
 
@@ -45,18 +45,18 @@ $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_f
 //SOCIAL FOOTER
 $domain_phone =  website_setting(28615);
 $email_domain =  website_setting(28614);
-$e___11035 = $this->config->item('e___11035');
+$players___11035 = $this->config->item('players___11035');
 
 $contact_us = '';
 if($domain_phone || $email_domain) {
 
     $contact_us .= '<ul class="social-footer">';
     if($domain_phone){
-        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[28615]['m__title'].'">'.$e___11035[28615]['m__cover'].' '.$domain_phone.'</a></li>';
+        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$players___11035[28615]['m__title'].'">'.$players___11035[28615]['m__cover'].' '.$domain_phone.'</a></li>';
     }
 
     if($email_domain){
-        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$e___11035[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[28614]['m__cover'].' '.$email_domain.'</a></li>';
+        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$players___11035[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$players___11035[28614]['m__cover'].' '.$email_domain.'</a></li>';
     }
     $contact_us .= '</ul>';
 
@@ -67,12 +67,12 @@ if($domain_phone || $email_domain) {
 
 
 //Any Info Boxes?
-foreach($this->Cacheplayers->scissor_e($website_id, 14903) as $e_item) {
+foreach($this->Cacheplayers->scissor_player($website_id, 14903) as $player_item) {
     //Any Followers?
     $info_item = null;
     foreach($this->Menchledger->fetch(array(
-        'linkup' => $e_item['playerid'],
-        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linkup' => $player_item['playerid'],
+        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         'linkvoid' => 0, //Not Void
     ), array('linkdown'), 0, 0, array('linknumber' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
@@ -92,9 +92,9 @@ foreach($this->Cacheplayers->scissor_e($website_id, 14903) as $e_item) {
     }
 
     if($info_item){
-        $messages .= '<h2 class="info-head">'.$e_item['playertext'].'</h2>';
-        if(strlen($e_item['linktext'])){
-            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$e_item['linktext'].'</div>';
+        $messages .= '<h2 class="info-head">'.$player_item['playertext'].'</h2>';
+        if(strlen($player_item['linktext'])){
+            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$player_item['linktext'].'</div>';
         }
         $messages .= '<div class="row justify-content" style="margin-bottom: 89px; padding: 34px 0;">'.$info_item.'</div>';
     }
@@ -115,7 +115,7 @@ if($messages){
 
 //List Relevant Ideas in order:
 $secondary_i = '';
-foreach($secondary_i_list as $ref_i){
+foreach($secondary_idea_list as $ref_i){
     $secondary_i .= view__card_i(14565,  $ref_i);
 }
 if(strlen($secondary_i)){
@@ -130,17 +130,17 @@ if(strlen($secondary_i)){
 
 
 $social_ui = null;
-$e___14870 = $this->config->item('e___14870'); //Website Partner
-foreach($this->config->item('e___14036') as $playerid => $m){
+$players___14870 = $this->config->item('players___14870'); //Website Partner
+foreach($this->config->item('players___14036') as $playerid => $m){
     foreach($this->Menchledger->fetch(array(
         'linkup' => $playerid,
         'linkdown' => $website_id,
-        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         'linkvoid' => 0, //Not Void
     ), array(), 0, 0) as $social_link){
 
         //Determine link type:
-        if(filter_var($social_link['linktext'], FILTER_VALIDATE_URL) && view__url_clean($social_link['linktext'])!=view__url_clean($e___14870[$website_id]['m__message'])){
+        if(filter_var($social_link['linktext'], FILTER_VALIDATE_URL) && view__url_clean($social_link['linktext'])!=view__url_clean($players___14870[$website_id]['m__message'])){
             //We made sure not the current website:
             $social_url = $social_link['linktext'];
         } elseif(filter_var($social_link['linktext'], FILTER_VALIDATE_EMAIL)){

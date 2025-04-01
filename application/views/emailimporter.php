@@ -17,19 +17,19 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 
             foreach($this->Menchledger->fetch(array(
                 'linkvoid' => 0, //Not Void
-                'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                 'linkup' => 3288, //Email
                 'linktext' => trim(strtolower($email)),
-            )) as $e_data){
+            )) as $player_data){
 
                 $found_emails++;
 
                 //Do we need to add?
                 if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Menchledger->fetch(array(
                     'linkvoid' => 0, //Not Void
-                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkup' => $_POST['import_playerid'],
-                    'linkdown' => $e_data['linkdown'],
+                    'linkdown' => $player_data['linkdown'],
                 )))){
 
                     $added_emails++;
@@ -37,7 +37,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                         'linktype' => 4230,
                         'linkplayer' => $player_e['playerid'],
                         'linkup' => $_POST['import_playerid'],
-                        'linkdown' => $e_data['linkdown'],
+                        'linkdown' => $player_data['linkdown'],
                     ));
 
                 }
@@ -61,7 +61,7 @@ echo '<form method="POST" action="">';
 echo '<textarea class="form-control border no-padding" style="height:200px;" name="list_emails" data-lpignore="true" placeholder="Paste Emails (One per line)">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
 
 
-echo '<input type="number" class="form-control input_border border maxout" name="import_playerid" value="'.( isset($_POST['import_playerid']) ? $_POST['import_playerid'] : '' ).'" placeholder="Import Source ID"><br />';
+echo '<input type="number" class="form-control input_border border maxout" name="import_playerid" value="'.( isset($_POST['import_playerid']) ? $_POST['import_playerid'] : '' ).'" placeholder="Import Player ID"><br />';
 
 //Apply
 echo '<button type="submit" class="btn btn-lrg go-next top-margin">Map Emails</button>';

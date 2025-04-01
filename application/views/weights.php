@@ -6,36 +6,36 @@ $obj = ( isset($_GET['obj']) ? $_GET['obj'] : false );
 
 $stats = array(
     'start_time' => time(),
-    'i_scanned' => 0,
-    'i_updated' => 0,
-    'i_total_weights' => 0,
-    'e_scanned' => 0,
-    'e_changed' => 0,
+    'idea_scanned' => 0,
+    'idea_updated' => 0,
+    'idea_total_weights' => 0,
+    'player_scanned' => 0,
+    'player_changed' => 0,
 );
 
 if(!$obj || $obj==12273){
 
     //Update the weights for active ideas
     foreach($this->Cacheideas->fetch(array()) as $in) {
-        $stats['i_scanned']++;
-        $stats['i_updated'] += ideanumber_calculator($in);
+        $stats['idea_scanned']++;
+        $stats['idea_updated'] += ideanumber_calculator($in);
     }
 
 }
 
 
 if(!$obj || $obj==12274){
-    //Update the weights for active sources:
+    //Update the weights for active Players:
     foreach($this->Cacheplayers->fetch(array(
         )) as $en) {
-        $stats['e_scanned']++;
-        $stats['e_changed'] += playernumber_calculator($en);
+        $stats['player_scanned']++;
+        $stats['player_changed'] += playernumber_calculator($en);
     }
 }
 
 $stats['end_time'] = time();
 $stats['total_seconds'] = $stats['end_time'] - $stats['start_time'];
-$stats['total_items'] = $stats['e_scanned'] + $stats['i_scanned'];
+$stats['total_items'] = $stats['player_scanned'] + $stats['idea_scanned'];
 if($stats['total_seconds'] > 0){
     $stats['millisecond_speed'] = round(($stats['total_seconds'] / $stats['total_items'] * 1000), 3);
 }

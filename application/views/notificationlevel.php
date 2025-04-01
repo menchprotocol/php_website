@@ -2,7 +2,7 @@
 
 
 
-$playerhandle = ( isset($_GET['playerhandle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && view__hash($_GET['e__time'].$_GET['playerhandle'])==$_GET['e__hash'] ? $_GET['playerhandle'] : $player_e['playerhandle'] );
+$playerhandle = ( isset($_GET['playerhandle']) && isset($_GET['hash']) && isset($_GET['time']) && view__hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash'] ? $_GET['playerhandle'] : $player_e['playerhandle'] );
 
 if(strlen($playerhandle)){
 

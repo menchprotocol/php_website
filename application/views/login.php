@@ -8,7 +8,7 @@ if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
     ));
 }
 $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . phpview__memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
-$e___14870 = $this->config->item('e___14870'); //Website Partner
+$players___14870 = $this->config->item('players___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
 if(superpower_unlocked()) {
@@ -22,7 +22,7 @@ if(superpower_unlocked()) {
 
     js_php_redirect($next_url, 13);
 
-} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && view__hash($_GET['e__time'].$_GET['playerhandle'])==$_GET['e__hash']){
+} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view__hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash']){
 
     $es = $this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
@@ -51,40 +51,40 @@ if(superpower_unlocked()) {
     }
 
 
-    $e___4269 = $this->config->item('e___4269');
-    $e___11035 = $this->config->item('e___11035'); //Encyclopedia
+    $players___4269 = $this->config->item('players___4269');
+    $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 
 
-    $current_sign_i_attempt = array(); //Will try to find this
-    $current_sign_i_attempts = $this->session->userdata('sign_i_attempts');
-    if(is_array($current_sign_i_attempts) && count($current_sign_i_attempts) > 0){
+    $current_sign_idea_attempt = array(); //Will try to find this
+    $current_sign_idea_attempts = $this->session->userdata('sign_idea_attempts');
+    if(is_array($current_sign_idea_attempts) && count($current_sign_idea_attempts) > 0){
         //See if any of the current sign-in attempts match this:
-        foreach($current_sign_i_attempts as $sign_i_attempt){
+        foreach($current_sign_idea_attempts as $sign_idea_attempt){
             $all_match = true;
-            if(count($sign_i) && $sign_i[0]['ideaid'] != intval($sign_i_attempt['linkleft'])){
+            if(count($sign_i) && $sign_i[0]['ideaid'] != intval($sign_idea_attempt['linkleft'])){
                 $all_match = false;
                 break;
             }
             if($all_match){
                 //We found a match!
-                $current_sign_i_attempt = $sign_i_attempt;
+                $current_sign_idea_attempt = $sign_idea_attempt;
                 break;
             }
         }
     } else {
-        $current_sign_i_attempts = array();
+        $current_sign_idea_attempts = array();
     }
 
 
     //See what to do based on current matches:
-    if(count($current_sign_i_attempt)==0){
+    if(count($current_sign_idea_attempt)==0){
 
         //Grow the array:
-        array_push($current_sign_i_attempts, $current_sign_i_attempt);
+        array_push($current_sign_idea_attempts, $current_sign_idea_attempt);
 
         //Add this sign-in attempt to session:
-        $this->session->set_userdata(array('sign_i_attempts' => $current_sign_i_attempts));
+        $this->session->set_userdata(array('sign_idea_attempts' => $current_sign_idea_attempts));
 
     }
     ?>
@@ -115,7 +115,7 @@ if(superpower_unlocked()) {
         });
 
 
-        var next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
+        var next_icon = '<?= $players___11035[26104]['m__cover'] ?>';
         var sign_ideaid = <?= ( count($sign_i) ? $sign_i[0]['ideaid'] : 0 ) ?>;
         var referrer_url = '<?= @$_GET['url'] ?>';
         var logged_messenger = false;
@@ -277,15 +277,15 @@ if(superpower_unlocked()) {
             <!-- Step 1: Enter Email -->
             <div id="step2" class="signup-steps hidden">
 
-                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
+                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$players___4269[32079]['m__cover'].'</span>'.$players___4269[32079]['m__title'] ?></span>
 
-                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $e___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
+                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $players___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
 
                 <div id="account_email_phone_errors" class="margin-top-down hideIfEmpty"></div>
 
 
                 <span>
-                    <a href="javascript:void(0)" onclick="e_verify_contact()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="e_verify_contact()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
                 </span>
 
 
@@ -298,8 +298,8 @@ if(superpower_unlocked()) {
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
                     echo '<div class="full-width-btn center top-margin"><a href="'.view__app_link(14938).view__memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
-                    echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
-                    echo ( strlen($e___11035[14938]['m__message']) ? ': '.$e___11035[14938]['m__message'] : '' );
+                    echo $players___11035[14938]['m__title'].' '.$players___11035[14938]['m__cover'];
+                    echo ( strlen($players___11035[14938]['m__message']) ? ': '.$players___11035[14938]['m__message'] : '' );
                     echo '</a></div>';
                     echo '</div>';
                 }
@@ -320,11 +320,11 @@ if(superpower_unlocked()) {
                 <!-- New Account (If not found) -->
                 <div class="margin-top-down new_account hidden">
 
-                    <div class="main__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                    <div class="main__title"><span class="icon-block"><?= $players___4269[14026]['m__cover'] ?></span><?= $players___4269[14026]['m__title'] ?></div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
-                        <div class="main__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
+                        <div class="main__title"><span class="icon-block"><?= $players___4269[3288]['m__cover'] ?></span><?= $players___4269[3288]['m__title'] ?></div>
                         <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title input_border" /></div>
                     </div>
                     <div class="doclear">&nbsp;</div>
@@ -332,15 +332,15 @@ if(superpower_unlocked()) {
 
 
                 <!-- Sign in Code -->
-                <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
+                <div style="padding:8px 0;">Enter the <?= $players___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
                 <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border input_border" /></div>
                 <div id="sign_code_errors" class="margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
 
                 <div id="step3buttons">
-                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="e_contact_auth()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $players___11035[12991]['m__title'] ?>"><?= $players___11035[12991]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="e_contact_auth()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
                 </div>
 
                 <div class="doclear">&nbsp;</div>

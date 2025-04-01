@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$e___11035 = $this->config->item('e___11035'); //Encyclopedia
+$players___11035 = $this->config->item('players___11035'); //Encyclopedia
 $last_x_days = 7;
 
 $linktime_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
@@ -13,7 +13,7 @@ $linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 //Email Body
 $html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':</div>';
 
-foreach($this->config->item('e___42263') as $linktype => $m) {
+foreach($this->config->item('players___42263') as $linktype => $m) {
 
     $unique = count_link_groups($linktype, null, $linktime_end);
     $this_week = count_link_groups($linktype, $linktime_start, $linktime_end);
@@ -27,7 +27,7 @@ foreach($this->config->item('e___42263') as $linktype => $m) {
     $html_message .= '<div class="line"><span style="display:inline-block; width: 55px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.view__number($unique).' '.$m['m__title'].'</div>';
 
     //Primary Coin?
-    if(in_array($linktype, $this->config->item('n___6404'))){
+    if(in_array($linktype, $this->config->item('playerids___6404'))){
         $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $linktime_start_timestamp);
     }
 
@@ -46,7 +46,7 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     $subscriber_filters = array(
         'linkup' => 12114,
-        'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         'linkvoid' => 0, //Not Void
         );
 

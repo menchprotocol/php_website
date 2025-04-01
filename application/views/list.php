@@ -5,11 +5,11 @@ if(!isset($_GET['ideahashtag'])){
 }
 
 //Sheet
-$e___6287 = $this->config->item('e___6287'); //APP
-$e___4737 = $this->config->item('e___4737'); //Source References
+$players___6287 = $this->config->item('players___6287'); //APP
+$players___4737 = $this->config->item('players___4737'); //Player References
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
-$recursive_i_ids = array();
+$recursive_idea_ids = array();
 $is_with_action_es = array();
 $es_added = array();
 $count = 0;
@@ -23,8 +23,8 @@ $count_totals = array(
 //Generate list & settings:
 $list_settings = list_settings($_GET['ideahashtag']);
 
-echo '<h1>' . view__i_title($list_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view__i__links($list_settings['i'], ( isset($player_e['playerid']) ? $player_e['playerid'] : 0 )) . '</div>';
+echo '<h1>' . view__idea_title($list_settings['i']) . '</h1>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view__idea_links($list_settings['i'], ( isset($player_e['playerid']) ? $player_e['playerid'] : 0 )) . '</div>';
 
 echo 'Filter:';
 
@@ -33,15 +33,15 @@ foreach($list_settings['query_string_filtered'] as $x){
     $body_content .= '<tr class="body_tr">';
 
     //IDEAS
-    $i_content = '';
+    $idea_content = '';
     $this_quantity = 1;
     $name = '';
-    foreach($list_settings['column_i'] as $i_var){
+    foreach($list_settings['column_i'] as $idea_var){
 
         $discoveries = $this->Menchledger->fetch(array(
-            'linkleft' => $i_var['ideaid'],
+            'linkleft' => $idea_var['ideaid'],
             'linkplayer' => $x['playerid'],
-            'linktype IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkvoid' => 0, //Not Void
         ), array(), 1);
 
@@ -54,18 +54,18 @@ foreach($list_settings['query_string_filtered'] as $x){
 
         }
 
-        $i_content .= '<td title="'.$x['playertext'].' x '.view__i_title($i_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['linktext']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view__i_title($i_var, true).': '.$discoveries[0]['linktext'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['linktext'].'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['linktext'].' ['.$discoveries[0]['linktime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view__i_title($i_var, true).' ['.$discoveries[0]['linktime'].']">✔️</span>' )  : '').'</td>';
+        $idea_content .= '<td title="'.$x['playertext'].' x '.view__idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['linktext']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view__idea_title($idea_var, true).': '.$discoveries[0]['linktext'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['linktext'].'</p>' : '<span title="'.view__idea_title($idea_var, true).': '.$discoveries[0]['linktext'].' ['.$discoveries[0]['linktime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view__idea_title($idea_var, true).' ['.$discoveries[0]['linktime'].']">✔️</span>' )  : '').'</td>';
 
-        if(count($discoveries) && (!count($i_var['must_follow']) || count($i_var['must_follow'])!=count($this->Menchledger->fetch(array(
+        if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Menchledger->fetch(array(
                     'linkdown' => $x['playerid'],
-                    'linkup IN (' . join(',', $i_var['must_follow']) . ')' => null,
-                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'linkup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
+                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkvoid' => 0, //Not Void
                 ))))){
-            if(!isset($count_totals['i'][$i_var['ideaid']])){
-                $count_totals['i'][$i_var['ideaid']] = 0;
+            if(!isset($count_totals['i'][$idea_var['ideaid']])){
+                $count_totals['i'][$idea_var['ideaid']] = 0;
             }
-            $count_totals['i'][$i_var['ideaid']]++;
+            $count_totals['i'][$idea_var['ideaid']]++;
         }
 
     }
@@ -85,16 +85,16 @@ foreach($list_settings['query_string_filtered'] as $x){
     foreach($list_settings['column_e'] as $e){
 
         $require_writing = count($this->Menchledger->fetch(array(
-            'linkup IN (' . join(',', $this->config->item('n___43510')) . ')' => null, //Require Written Answers
+            'linkup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
             'linkdown' => $e['playerid'],
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkvoid' => 0, //Not Void
         )));
 
         $fetch_data = $this->Menchledger->fetch(array(
             'linkvoid' => 0, //Not Void
             'linkdown' => $x['playerid'],
-            'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkup' => $e['playerid'],
         ));
 
@@ -104,7 +104,7 @@ foreach($list_settings['query_string_filtered'] as $x){
                 if(filter_var($fetch_data[0]['linktext'], FILTER_VALIDATE_URL)){
                     //Sheet Click to Expand
                     $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['linktext'].'" target="_blank" title="Open in a New Window">'.view__cover($e['playercover'], '🔗️', ' ').'</a>';
-                } elseif(!isset($_GET['expand']) && in_array($e['playerid'], $this->config->item('n___40945'))){
+                } elseif(!isset($_GET['expand']) && in_array($e['playerid'], $this->config->item('playerids___40945'))){
                     //Sheet Click to Expand
                     $message_clean = '<span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['linktext'].' [Click to Expand]">'.view__cover($e['playercover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].' hidden">'.$fetch_data[0]['linktext'].'</span>';
                 } elseif(isset($_GET['expand']) || $require_writing){
@@ -118,7 +118,7 @@ foreach($list_settings['query_string_filtered'] as $x){
         }
 
 
-        $body_content .= '<td title="'.$x['playertext'].' x '.$e['playertext'].'" class="'.( superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('n___37695')) ? 'editable linkplayer_'.$e['playerid'].'_'.$x['playerid'] : '' ).'" ideaid="0" playerid="'.$e['playerid'].'" linkplayer="'.$x['playerid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" linkid="'.$x['linkid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['playertext'].' x '.$e['playertext'].'" class="'.( superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkplayer_'.$e['playerid'].'_'.$x['playerid'] : '' ).'" ideaid="0" playerid="'.$e['playerid'].'" linkplayer="'.$x['playerid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" linkid="'.$x['linkid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
@@ -129,14 +129,14 @@ foreach($list_settings['query_string_filtered'] as $x){
             $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + ( count($this->Menchledger->fetch(array(
                     'linkvoid' => 0, //Not Void
                     'linkdown' => $e['playerid'],
-                    'linktype IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'linkup IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
+                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1 );
         }
     }
 
 
-    $body_content .= $i_content;
+    $body_content .= $idea_content;
 
     $body_content .= '</tr>';
     $count++;
@@ -148,25 +148,25 @@ $table_sortable = array('#th_primary','#th_done');
 echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
+echo '<th id="th_primary" style="width:200px;">'.$count.' Players</th>';
 foreach($list_settings['column_e'] as $e){
-    array_push($table_sortable, '#th_e_'.$e['playerid']);
-    echo '<th id="th_e_'.$e['playerid'].'"><a class="icon-block-xs" href="'.view__memory(42903,42902).$e['playerhandle'].'" target="_blank" title="Open in New Window">'.view__cover($e['playercover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['playerid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['playerid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['playertext'].'</span></th>';
+    array_push($table_sortable, '#thplayer_'.$e['playerid']);
+    echo '<th id="thplayer_'.$e['playerid'].'"><a class="icon-block-xs" href="'.view__memory(42903,42902).$e['playerhandle'].'" target="_blank" title="Open in New Window">'.view__cover($e['playercover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['playerid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['playerid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['playertext'].'</span></th>';
 }
-foreach($list_settings['column_i'] as $i_var){
+foreach($list_settings['column_i'] as $idea_var){
 
     $max_available = $this->Menchledger->fetch(array(
         'linkvoid' => 0, //Not Void
-        'linktype IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-        'linkright' => $i_var['ideaid'],
+        'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'linkright' => $idea_var['ideaid'],
         'linkup' => 26189,
     ), array(), 1);
-    $current_x = ( isset($count_totals['i'][$i_var['ideaid']]) ? $count_totals['i'][$i_var['ideaid']] : 0 );
+    $current_x = ( isset($count_totals['i'][$idea_var['ideaid']]) ? $count_totals['i'][$idea_var['ideaid']] : 0 );
     $max_limit = (count($max_available) && is_numeric($max_available[0]['linktext']) && intval($max_available[0]['linktext'])>0 ? intval($max_available[0]['linktext']) : 0 );
 
-    array_push($table_sortable, '#th_i_'.$i_var['ideaid']);
+    array_push($table_sortable, '#th_idea_'.$idea_var['ideaid']);
 
-    echo '<th id="th_i_'.$i_var['ideaid'].'"><div></div><a class="icon-block-xs" href="'.view__memory(42903,33286).$i_var['ideahashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i_var['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($i_var['linktext']) ? $i_var['linktext'] : view__i_title($i_var, true) ).'</span></th>';
+    echo '<th id="th_idea_'.$idea_var['ideaid'].'"><div></div><a class="icon-block-xs" href="'.view__memory(42903,33286).$idea_var['ideahashtag'].'" target="_blank" title="Open in New Window">'.$players___4737[$idea_var['ideatype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($idea_var['linktext']) ? $idea_var['linktext'] : view__idea_title($idea_var, true) ).'</span></th>';
 
 }
 echo '</tr>';
@@ -278,11 +278,11 @@ echo '</table>';
             $('.linkplayer_' + modify_data['playerid'] + '_' + modify_data['linkplayer']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
-            $.post("/app/e_toggle_e", modify_data, function (data) {
+            $.post("/app/e_toggle_player", modify_data, function (data) {
 
                 if (data.status) {
 
-                    //Update source id IF existed previously:
+                    //Update Player id IF existed previously:
                     $('.linkplayer_' + modify_data['playerid'] + '_' + modify_data['linkplayer']).html(data.message);
 
                 } else {
