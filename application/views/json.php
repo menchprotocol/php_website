@@ -5,7 +5,7 @@ $link_full_duplicate = 0;
 $link_half_duplicate = 0;
 $previous_x = array();
 
-echo '<table>';
+echo '<table width="100%" border="1px">';
 foreach($this->Mench_ledger->fetch(array(
     'link_id >' => '0',
     'link_type NOT IN (4250,4251)' => null,
@@ -24,8 +24,8 @@ foreach($this->Mench_ledger->fetch(array(
         //Check duplicate with previous link:
         if($previous_x['link_up']==$x['link_up'] && $previous_x['link_down']==$x['link_down']){
 
-            echo '<tr><td>ID '.$previous_x['link_id'].'</td><td>PL '.$previous_x['link_player'].'</td><td>UP '.$previous_x['link_up'].'</td><td>DW '.$previous_x['link_down'].'</td><td>'.$previous_x['link_text'].'</td></tr>';
-            echo '<tr><td>ID '.$x['link_id'].'</td><td>PL '.$x['link_player'].'</td><td>UP '.$x['link_up'].'</td><td>DW '.$x['link_down'].'</td><td>'.$x['link_text'].'</td></tr>';
+            echo '<tr><td>ID '.$previous_x['link_id'].'</td><td>TP '.$previous_x['link_type'].'</td><td>PL '.$previous_x['link_player'].'</td><td>UP '.$previous_x['link_up'].'</td><td>DW '.$previous_x['link_down'].'</td><td>'.$previous_x['link_text'].'</td></tr>';
+            echo '<tr style="border-bottom:1px solid #000;"><td>ID '.$x['link_id'].'</td><td>TP '.$x['link_type'].'</td><td>PL '.$x['link_player'].'</td><td>UP '.$x['link_up'].'</td><td>DW '.$x['link_down'].'</td><td>'.$x['link_text'].'</td></tr>';
 
             //What about content?
             if($previous_x['link_text']==$x['link_text']){
@@ -35,8 +35,8 @@ foreach($this->Mench_ledger->fetch(array(
             }
         } elseif($previous_x['link_left']==$x['link_left'] && $previous_x['link_right']==$x['link_right']){
 
-            echo '<tr><td>ID '.$previous_x['link_id'].'</td><td>PL '.$previous_x['link_player'].'</td><td>LF '.$previous_x['link_left'].'</td><td>RT '.$previous_x['link_right'].'</td><td>'.$x['link_text'].'</td></tr>';
-            echo '<tr><td>ID '.$x['link_id'].'</td><td>PL '.$x['link_player'].'</td><td>LF '.$x['link_left'].'</td><td>RT '.$x['link_right'].'</td><td>'.$x['link_text'].'</td></tr>';
+            echo '<tr><td>ID '.$previous_x['link_id'].'</td><td>TP '.$previous_x['link_type'].'</td><td>PL '.$previous_x['link_player'].'</td><td>LF '.$previous_x['link_left'].'</td><td>RT '.$previous_x['link_right'].'</td><td>'.$x['link_text'].'</td></tr>';
+            echo '<tr><td>ID '.$x['link_id'].'</td><td>TP '.$x['link_type'].'</td><td>PL '.$x['link_player'].'</td><td>LF '.$x['link_left'].'</td><td>RT '.$x['link_right'].'</td><td>'.$x['link_text'].'</td></tr>';
 
             //What about content?
             if($previous_x['link_text']==$x['link_text']){
