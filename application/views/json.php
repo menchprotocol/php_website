@@ -8,7 +8,7 @@ $link_success = 0;
 echo '<table width="100%" border="1px">';
 foreach($this->Mench_ledger->fetch(array(
     'link_type !=' => 4250,
-), array(), 1, 0, array(
+), array(), 0, 0, array(
     'link_id' => 'ASC',
 )) as $x){
 
