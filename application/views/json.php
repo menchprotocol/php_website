@@ -7,30 +7,36 @@ $link_count = 0;
 echo '<table width="100%" border="1px">';
 foreach($this->Mench_ledger->fetch(array(
     'link_type !=' => 4250,
-), array(), 1000000, 0, array(
+), array(), 1, 0, array(
     'link_id' => 'ASC',
 )) as $x){
 
-    //echo $x['link_id']."<hr />";
-
-    /*
-    $this->db->insert('menchledger', array(
+    $new_x = $this->db->insert('menchledger', array(
         'linkplayer' => $x['link_player'],
         'linktime' => $x['link_time'],
         'linkdomain' => $x['link_domain'],
-        'linkdown' => $x['link_down'],
+        'linkup' => intval($x['link_up']),
+        'linkdown' => intval($x['link_down']),
         'linkleft' => ( $x['link_left']>0 ? 100000+$x['link_left'] : 0 ),
         'linkright' => ( $x['link_right']>0 ? 100000+$x['link_right'] : 0 ),
+        'linknumber' => $x['link_number'],
         'linktext' => $x['link_text'],
-        'linktype' => ( $x['link_type']==4251 ? 4230 : $x['link_type'] ),
+        'linktype' => $x['link_type'],
+        'linkvoid' => 0,
     ));
-    */
 
+    if(isset($new_x['linkid'])){
+        $this->db->query("DELETE FROM mench_ledge WHERE link_left=".$x['link_id'].";");
+        $link_success++;
+
+    }
     $link_count++;
+
+
 }
 echo '</table>';
 
-echo $link_count.' LINKS';
+echo $link_success.'/'.$link_count.' SUCCESS';
 
 
 

@@ -910,7 +910,7 @@ class Source_cache extends CIdea_cache
         //Create New Source:
         $x = $this->Mench_ledger->create(array(
             'link_player' => $creator,
-            'link_message' => $validate_e__title['e__title_clean'],
+            'link_text' => $validate_e__title['e__title_clean'],
             'link_type' => 4251, //New Source Created
         ));
 
