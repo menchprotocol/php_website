@@ -5,9 +5,22 @@
 
 
 $count = 0;
-foreach ($this->Nodeideas->fetch(array()) as $i) {
+$missing = 0;
+foreach ($this->Menchledger->fetchold(array(
+    'link_type' => 4983,
+)) as $x) {
     $count++;
-    view_sync_links($i['ideatext'], true, $i['ideaid']);
+    if(!count($this->Menchledger->fetch(array(
+        'linktype' => 4983,
+        'linkplayerup' => $x['link_up'],
+        'linkplayerdown' => $x['link_down'],
+        'linkidealeft' => ( $x['link_left']>0 ? intval($x['link_left'])+100000 : 0 ),
+        'linkidearight' => ( $x['link_right']>0 ? intval($x['link_right'])+100000 : 0 ),
+    )))){
+        $missing++;
+        echo print_r($x, true);
+        echo '<hr />';
+    }
 }
 
-echo $count;
+echo $missing.'/'.$count.' Missing';
