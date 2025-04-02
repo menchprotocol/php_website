@@ -3018,7 +3018,14 @@ class App extends CI_Controller
 
                     if (!($idea_required && $trying_to_skip)) {
                         //Try to complete:
-                        array_push($completed_children, $idea_next);
+                        array_push($completed_children, array(
+                            '$input__required' => ( $input__required ? 1 : 0 ),
+                            '$input__text' => ( $input__text ? 1 : 0 ),
+                            '$input__upload' => ( $input__upload ? 1 : 0 ),
+                            '$trying_to_skip' => ( $trying_to_skip ? 1 : 0 ),
+                            '$idea_required' => ( $idea_required ? 1 : 0 ),
+                            'idea' => $idea_next,
+                        ));
                         $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
                             'linknumber' => $next_idea_data['ideanumber'],
                         ));
