@@ -22,7 +22,7 @@ $count = 0;
 $missing = 0;
 foreach ($this->Menchledger->fetchold(array(
     'link_type >' => 0, //4983
-), array(), 100000, 0, array('link_id' => 'DESC')) as $x) {
+), array(), 5000, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
     $is_missing = !count($this->Menchledger->fetch(array(
@@ -66,12 +66,6 @@ foreach ($this->Menchledger->fetchold(array(
         echo print_r($x, true);
         echo 'WAS OTHER<hr />';
     }
-
-    $missing_ideation = 0;
-    $missing_sourcing = 0;
-    $missing_contribution = 0;
-    $missing_discovery = 0;
-    $missing_other = 0;
 
 }
 
