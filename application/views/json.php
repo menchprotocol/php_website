@@ -11,12 +11,13 @@ $count_sourcing = 0;
 $count_contribution = 0;
 $count_discovery = 0;
 $count_other = 0;
+boost_power();
 
 $count = 0;
 $missing = 0;
 foreach ($this->Menchledger->fetchold(array(
     'link_type >' => 0, //4983
-), array(), 0, 0) as $x) {
+), array(), 10000, 0, array('link_id' => 'DESC')) as $x) {
 
     if(in_array($x['link_type'], $is_ideation)) {
         $count_ideation++;
