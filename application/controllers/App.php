@@ -2861,6 +2861,7 @@ class App extends CI_Controller
 
 
         //Discover Focus Idea:
+        $completed_children = array();
         $primary_ideaid = null;
         foreach ($this->Nodeideas->fetch(array(
             'ideaid' => $_POST['player_submitted_data']['ideaid'],
@@ -2987,19 +2988,13 @@ class App extends CI_Controller
             //Look through ALL next ideas and see which ones we can complete, if any:
             foreach ($_POST['next_idea_data'] as $index => $next_idea_data) {
 
-                if (!isset($next_idea_data['ideaid'])) {
-                    continue;
-                }
-                if (!isset($next_idea_data['new_ideatext'])) {
-                    $next_idea_data['new_ideatext'] = null;
-                }
-                if (!isset($next_idea_data['uploaded_media'])) {
-                    $next_idea_data['uploaded_media'] = array();
-                }
-
                 if ($input__selection && !in_array($next_idea_data['ideaid'], $_POST['selection_ideaid'])) {
                     //Not selected, move on:
                     continue;
+                }
+
+                if (!isset($next_idea_data['uploaded_media'])) {
+                    $next_idea_data['uploaded_media'] = array();
                 }
 
                 foreach ($this->Nodeideas->fetch(array(
@@ -3023,6 +3018,7 @@ class App extends CI_Controller
 
                     if (!($idea_required && $trying_to_skip)) {
                         //Try to complete:
+                        array_push($completed_children, $idea_next);
                         $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
                             'linknumber' => $next_idea_data['ideanumber'],
                         ));
@@ -3058,6 +3054,7 @@ class App extends CI_Controller
         return view_json(array(
             'status' => 0,
             'message' => 'Invalid Idea',
+            'completed' => $completed_children,
         ));
 
     }
