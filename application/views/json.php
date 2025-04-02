@@ -36,6 +36,18 @@ foreach ($this->Menchledger->fetchold(array(
         $missing++;
         echo print_r($x, true);
         echo 'WAS MISSING <hr />';
+        $this->Menchledger->create(array(
+            'linktime' => $x['link_time'],
+            'linkplayercreator' => $x['link_player'],
+            'linkplayertype' => $x['link_type'],
+            'linkplayerdomain' => $x['link_domain'],
+            'linkplayerup' => $x['link_up'],
+            'linkplayerdown' => $x['link_down'],
+            'linkidealeft' => ($x['link_left'] > 0 ? intval($x['link_left']) + 100000 : 0),
+            'linkidearight' => ($x['link_right'] > 0 ? intval($x['link_right']) + 100000 : 0),
+            'linknumber' => $x['link_number'],
+            'linktext' => $x['link_text'],
+        ));
     }
 
     if (in_array($x['link_type'], $is_ideation)) {
