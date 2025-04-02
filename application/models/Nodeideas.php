@@ -256,52 +256,6 @@ class Nodeideas extends CIdea_cache
     }
 
 
-    function duplicate($i, $copy_to__id, $linkplayercreator)
-    {
-
-        $idea_new = $this->Nodeideas->create(array(
-            'ideatext' => $i['ideatext'],
-            'ideatype' => $i['ideatype'],
-        ), $linkplayercreator);
-
-        //Copy related transactions:
-        $links = 0;
-        foreach ($this->Menchledger->fetch(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___27240')) . ')' => null, //COPY Transactions
-            '(linkidearight=' . $i['ideaid'] . ' OR linkidealeft=' . $i['ideaid'] . ')' => null,
-        ), array(), 0) as $x) {
-
-            //Duplicate transaction, with new idea
-            if (!count($this->Menchledger->fetch(array(
-                'linkplayertype' => $x['linkplayertype'],
-                'linktext' => $x['linktext'],
-                'linkplayerup' => $x['linkplayerup'],
-                'linkplayerdown' => $x['linkplayerdown'],
-                'linkidealeft' => ($i['ideaid'] == $x['linkidealeft'] ? $idea_new['ideaid'] : $x['linkidealeft']),
-                'linkidearight' => ($i['ideaid'] == $x['linkidearight'] ? $idea_new['ideaid'] : $x['linkidearight']),
-            )))) {
-                $links++;
-                $this->Menchledger->create(array(
-                    //Copy:
-                    'linkplayertype' => $x['linkplayertype'],
-                    'linknumber' => $x['linknumber'],
-                    'linktext' => $x['linktext'],
-                    'linkplayerup' => $x['linkplayerup'],
-                    'linkplayerdown' => $x['linkplayerdown'],
-                    //Change:
-                    'linkplayercreator' => $linkplayercreator,
-                    'linkidealeft' => ($i['ideaid'] == $x['linkidealeft'] ? $idea_new['ideaid'] : $x['linkidealeft']),
-                    'linkidearight' => ($i['ideaid'] == $x['linkidearight'] ? $idea_new['ideaid'] : $x['linkidearight']),
-                ));
-            }
-
-        }
-
-        return $links;
-
-    }
-
-
     function i_link($i, $linkplayertype, $next_i, $linkplayercreator)
     {
 
@@ -426,6 +380,10 @@ class Nodeideas extends CIdea_cache
         );
 
         foreach ($this->Menchledger->fetch($filters, array(), 0) as $x) {
+            if($x['linkplayerup']==32337 && $x['linkplayertype']==4983){
+                //Hashtag is a system link that does not to be replicated:
+                continue;
+            }
             $this->Menchledger->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => $x['linkplayertype'],
@@ -443,12 +401,12 @@ class Nodeideas extends CIdea_cache
         foreach ($this->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41301')) . ')' => null, //Duplicate Links
             'linkidearight' => $ideaid,
-        ), array('linkidealeft'), 0) as $x) {
+        ), array(), 0) as $x) {
             $this->Menchledger->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => $x['linkplayertype'],
                 'linkidearight' => $idea_new['ideaid'],
-                'linkidealeft' => $x['ideaid'],
+                'linkidealeft' => $x['linkidealeft'],
                 'linktext' => $x['linktext'],
                 'linknumber' => $x['linknumber'],
             ));
@@ -591,9 +549,8 @@ class Nodeideas extends CIdea_cache
                     if ($action_playerid == 27240) {
 
                         //Copy
-                        $link_count = $this->Nodeideas->duplicate($next_i, $i['ideaid'], $linkplayercreator);
-
-                        if ($link_count > 0) {
+                        $result = $this->Nodeideas->recursive_clone(intval($_POST['ideaid']), 0, $action_playerid);
+                        if ($result['status']) {
                             //Increment Player since not there:
                             $applied_success++;
                         }
