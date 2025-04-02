@@ -1,6 +1,8 @@
 <?php
 
-//view_json($this->Menchledger->tree_full_history($focus_i, $focus_e['playerid']));
+view_json($this->Menchledger->tree_full_history($focus_i, $focus_e['playerid']));
+
+die('pending...');
 
 $is_ideation = array(4228, 31834, 42337, 33532, 44161, 40791, 44162, 40793, 32247, 32304, 33344, 30901, 42244, 42243);
 $is_sourcing = array(41011, 4251, 44399, 33335, 42659, 42849, 44176, 44179, 42897, 32486, 4230, 32489, 42579, 42581, 42580, 42283, 42335, 42516, 42554, 42570, 42427, 42518, 42440, 42791);
