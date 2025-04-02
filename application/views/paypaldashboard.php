@@ -59,7 +59,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         foreach($this->Menchledger->fetch(array(
                     'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkleft' => $i['ideaid'],
-        ), array(), 0, 0, array('linkplayer' => 'ASC')) as $x){
+        ), array(), 0, 0, array('linkcreator' => 'ASC')) as $x){
 
             $linktext = unserialize($x['linktext']);
             $total_transactions++;
@@ -112,7 +112,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
             }
 
             $item_parts = explode('-',$linktext['item_number']);
-            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['linkplayer'] );
+            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['linkcreator'] );
             array_push($all_e, $this_e);
             $es = $this->Cacheplayers->fetch(array(
                 'playerid' => $this_e,

@@ -82,7 +82,7 @@ if(!$set_email){
         'linktype' => 44179, //Triggered
         'linkup' => 4246, //Platform Bug Reports
         'linkdown' => $player_e['playerid'],
-        'linkplayer' => $player_e['playerid'],
+        'linkcreator' => $player_e['playerid'],
         'linkright' => $_POST['focus__id'],
         'linktext' => 'No Valid email found for invoice',
     ));
@@ -160,7 +160,7 @@ foreach($this->Cacheideas->fetch(array(
         foreach($this->Menchledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkleft' => $i['ideaid'],
-            'linkplayer' => $player_e['playerid'],
+            'linkcreator' => $player_e['playerid'],
         ), array(), 0) as $x_discovery){
             $this->Menchledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
         }
@@ -168,7 +168,7 @@ foreach($this->Cacheideas->fetch(array(
         //Delete Old Child Answers:
         foreach($this->Menchledger->fetch(array(
             'linktype' => 7712, //Input Choice
-            'linkplayer' => $player_e['playerid'],
+            'linkcreator' => $player_e['playerid'],
             'linkleft' => $i['ideaid'],
         ), array('linkright')) as $x_selection){
 
@@ -180,7 +180,7 @@ foreach($this->Cacheideas->fetch(array(
                 foreach($this->Menchledger->fetch(array(
                         'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'linkleft' => $x_selection['ideaid'],
-                    'linkplayer' => $player_e['playerid'],
+                    'linkcreator' => $player_e['playerid'],
                 ), array(), 0) as $x_discovery){
                     $this->Menchledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
                 }
@@ -206,7 +206,7 @@ foreach($this->Cacheideas->fetch(array(
                 //Save Answer:
                 $this->Menchledger->create(array(
                     'linktype' => 7712, //Input Choice
-                    'linkplayer' => $player_e['playerid'],
+                    'linkcreator' => $player_e['playerid'],
                     'linkleft' => $_POST['focus__id'],
                     'linknumber' => $_POST['invoice_items'][$key]['quantity'],
                     'linkright' => $_POST['invoice_items'][$key]['ideaid'],

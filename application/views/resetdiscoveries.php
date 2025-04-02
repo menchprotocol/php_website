@@ -14,7 +14,7 @@ if(!isset($_GET['confirm'])){
     //Fetch their current progress transactions:
     $progress_x = $this->Menchledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
-        'linkplayer' => $focus_e['playerid'],
+        'linkcreator' => $focus_e['playerid'],
     ), array(), 0);
 
     if(count($progress_x) > 0){

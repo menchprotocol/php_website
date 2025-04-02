@@ -27,13 +27,13 @@ foreach($this->Menchledger->fetch($filters, array('linkright'), 0) as $expires){
     foreach($this->Menchledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
         'linkleft' => $expires['ideaid'],
-    ), array('linkplayer'), 0) as $x_progress){
+    ), array('linkcreator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->Menchledger->fetch(array(
                     'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
             'linkleft' => $x_progress['linkright'],
-            'linkplayer' => $x_progress['playerid'],
+            'linkcreator' => $x_progress['playerid'],
         ));
         $seconds_left = intval( intval( $expires['linktext']) + $buffer_time - (time() - strtotime($x_progress['linktime'])));
 
@@ -44,7 +44,7 @@ foreach($this->Menchledger->fetch($filters, array('linkright'), 0) as $expires){
             foreach($this->Menchledger->fetch(array(
                             'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
                 'linkleft' => $expires['ideaid'],
-                'linkplayer' => $x_progress['playerid'],
+                'linkcreator' => $x_progress['playerid'],
             ), array(), 0) as $delete){
 
                 $deleted = true;

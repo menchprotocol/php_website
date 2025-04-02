@@ -54,7 +54,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             //Find issued tickets:
             $original_payment = $this->Menchledger->fetch(array(
                 'linktype' => 26595,
-                'linkplayer' => $player_es[0]['playerid'],
+                'linkcreator' => $player_es[0]['playerid'],
                 'linkleft' => $next_is[0]['ideaid'],
             ));
 

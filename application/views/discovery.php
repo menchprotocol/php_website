@@ -8,15 +8,15 @@ if(access_level_i($focus_i['ideahashtag'], 0, $focus_i)){
 }
 */
 
-$linkplayer = ( $player_e ? $player_e['playerid'] : 0 );
-$target_ideahashtag = ( count($target_i) && $linkplayer ? $target_i['ideahashtag'] : null );
+$linkcreator = ( $player_e ? $player_e['playerid'] : 0 );
+$target_ideahashtag = ( count($target_i) && $linkcreator ? $target_i['ideahashtag'] : null );
 
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
+if($linkcreator && $target_ideahashtag!=$focus_i['ideahashtag']){
 
-    $find_previous = $this->Menchledger->find_previous($linkplayer, $target_ideahashtag, $focus_i['ideaid']);
+    $find_previous = $this->Menchledger->find_previous($linkcreator, $target_ideahashtag, $focus_i['ideaid']);
     if(count($find_previous)){
 
         $nav_list = array();
@@ -52,7 +52,7 @@ if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
 
                     if(count($this->Menchledger->fetch(array(
                                             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'linkplayer' => $linkplayer,
+                        'linkcreator' => $linkcreator,
                         'linkleft' => $idea_subset['ideaid'],
                     )))){
                         $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_ideahashtag.'/'.$idea_subset['ideahashtag'].'" class="dropdown-item '.( in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '' ).'">'.view_idea_title($idea_subset, true).'</a>';
@@ -86,7 +86,7 @@ if($breadcrum_content){
 
 //Progress?
 if($player_e){
-    $tree_progress = $this->Menchledger->tree_progress($linkplayer, $target_i);
+    $tree_progress = $this->Menchledger->tree_progress($linkcreator, $target_i);
     $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     if($target_completed) {
         echo '<div class="alert alert-success" role="alert" title="'.$tree_progress['fixed_total'].'/'.$tree_progress['fixed_discovered'].' '.$tree_progress['fixed_completed_percentage'].'% '.$tree_progress['fixed_discovered'].': '.join(',',$tree_progress['list_discovered']).'"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
@@ -103,7 +103,7 @@ $x_completes = array();
 if($player_e){
     $x_completes = $this->Menchledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        'linkplayer' => $linkplayer,
+        'linkcreator' => $linkcreator,
         'linkleft' => $focus_i['ideaid'],
     ), array('linkright'));
 }

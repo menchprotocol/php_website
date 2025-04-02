@@ -15,13 +15,13 @@ class Cacheideas extends CIdea_cache
     }
 
 
-    function create($add_fields, $linkplayer = 14068)
+    function create($add_fields, $linkcreator = 14068)
     {
 
         //Add if not added as the author:
         $new_x = $this->Menchledger->create(array(
             'linktype' => 4250,
-            'linkplayer' => $linkplayer,
+            'linkcreator' => $linkcreator,
             'linktext' => (isset($add_fields['ideatext']) ? $add_fields['ideatext'] : null),
         ));
 
@@ -30,9 +30,9 @@ class Cacheideas extends CIdea_cache
             $this->Menchledger->create(array(
                 'linktype' => 44179, //Triggered
                 'linkup' => 4246, //Platform Bug Reports
-                'linkdown' => $linkplayer,
+                'linkdown' => $linkcreator,
                 'linktext' => 'i->create() failed to create a new idea',
-                'linkplayer' => $linkplayer,
+                'linkcreator' => $linkcreator,
             ));
             return false;
         }
@@ -43,7 +43,7 @@ class Cacheideas extends CIdea_cache
             $add_fields['ideahashtag'] = random_string(13);
         }
         $this->Menchledger->create(array(
-            'linkplayer' => $linkplayer,
+            'linkcreator' => $linkcreator,
             'linkup' => 32337, //Idea Hashtag
             'linkright' => $new_x['linkid'],
             'linktext' => $add_fields['ideahashtag'],
@@ -66,9 +66,9 @@ class Cacheideas extends CIdea_cache
         flag_for_search_indexing(12273, $add_fields['ideaid']);
 
         //Additional Players to be added? Start with creator
-        $player_appended = array($linkplayer);
+        $player_appended = array($linkcreator);
         $pinned_followers = $this->Menchledger->fetch(array(
-            'linkup' => $linkplayer,
+            'linkup' => $linkcreator,
             'linktype' => 41011, //PINNED FOLLOWER
         ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
@@ -85,7 +85,7 @@ class Cacheideas extends CIdea_cache
                     'linktype' => 4983, //Idea Created
                     'linkup' => $x_pinned['playerid'],
                     'linkright' => $add_fields['ideaid'],
-                    'linkplayer' => $linkplayer,
+                    'linkcreator' => $linkcreator,
                     'linknumber' => $linknumber,
                 ));
                 array_push($player_appended, $x_pinned['playerid']);
@@ -157,7 +157,7 @@ class Cacheideas extends CIdea_cache
         return $affected_rows;
     }
 
-    function remove($ideaid, $linkplayer = 0, $migrate_s__id = 0)
+    function remove($ideaid, $linkcreator = 0, $migrate_s__id = 0)
     {
 
         //TODO Needs work
@@ -241,13 +241,13 @@ class Cacheideas extends CIdea_cache
                 '(linkright = ' . $ideaid . ' OR linkleft = ' . $ideaid . ')' => null,
             ), array(), 0) as $x) {
                 //Delete this transaction:
-                $x_adjusted += $this->Menchledger->update($x['linkid'], array(), $linkplayer);
+                $x_adjusted += $this->Menchledger->update($x['linkid'], array(), $linkcreator);
             }
 
         }
 
         //Delete Idea:
-        $this->Cacheideas->update($ideaid, array(), $linkplayer);
+        $this->Cacheideas->update($ideaid, array(), $linkcreator);
 
         //Update Search Index?
         if (0) {
@@ -259,13 +259,13 @@ class Cacheideas extends CIdea_cache
     }
 
 
-    function duplicate($i, $copy_to__id, $linkplayer)
+    function duplicate($i, $copy_to__id, $linkcreator)
     {
 
         $idea_new = $this->Cacheideas->create(array(
             'ideatext' => $i['ideatext'],
             'ideatype' => $i['ideatype'],
-        ), $linkplayer);
+        ), $linkcreator);
 
         //Copy related transactions:
         $links = 0;
@@ -292,7 +292,7 @@ class Cacheideas extends CIdea_cache
                     'linkup' => $x['linkup'],
                     'linkdown' => $x['linkdown'],
                     //Change:
-                    'linkplayer' => $linkplayer,
+                    'linkcreator' => $linkcreator,
                     'linkleft' => ($i['ideaid'] == $x['linkleft'] ? $idea_new['ideaid'] : $x['linkleft']),
                     'linkright' => ($i['ideaid'] == $x['linkright'] ? $idea_new['ideaid'] : $x['linkright']),
                 ));
@@ -305,7 +305,7 @@ class Cacheideas extends CIdea_cache
     }
 
 
-    function i_link($i, $linktype, $next_i, $linkplayer)
+    function i_link($i, $linktype, $next_i, $linkcreator)
     {
 
         //Links ideas with the causality link ensuring not a duplicate:
@@ -328,7 +328,7 @@ class Cacheideas extends CIdea_cache
 
         //Adding PREVIOUS or NEXT Idea from Idea
         $this->Menchledger->create(array(
-            'linkplayer' => $linkplayer,
+            'linkcreator' => $linkcreator,
             'linkleft' => $i['ideaid'],
             'linktype' => $linktype,
             'linkright' => $next_i['ideaid'],
@@ -400,7 +400,7 @@ class Cacheideas extends CIdea_cache
 
     }
 
-    function recursive_clone($ideaid, $do_recursive, $linkplayer, $previous_i = null, $clone_title = null)
+    function recursive_clone($ideaid, $do_recursive, $linkcreator, $previous_i = null, $clone_title = null)
     {
 
         //Create Clone -or- Link & move-on?
@@ -420,7 +420,7 @@ class Cacheideas extends CIdea_cache
         $idea_new = $this->Cacheideas->create(array(
             'ideatext' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['ideatext']),
             'ideatype' => $this_i[0]['ideatype'],
-        ), $linkplayer);
+        ), $linkcreator);
 
         //Always Link Players:
         $filters = array(
@@ -430,7 +430,7 @@ class Cacheideas extends CIdea_cache
 
         foreach ($this->Menchledger->fetch($filters, array(), 0) as $x) {
             $this->Menchledger->create(array(
-                'linkplayer' => $linkplayer,
+                'linkcreator' => $linkcreator,
                 'linktype' => $x['linktype'],
                 'linkright' => $idea_new['ideaid'],
                 'linkup' => $x['linkup'],
@@ -448,7 +448,7 @@ class Cacheideas extends CIdea_cache
             'linkright' => $ideaid,
         ), array('linkleft'), 0) as $x) {
             $this->Menchledger->create(array(
-                'linkplayer' => $linkplayer,
+                'linkcreator' => $linkcreator,
                 'linktype' => $x['linktype'],
                 'linkright' => $idea_new['ideaid'],
                 'linkleft' => $x['ideaid'],
@@ -470,11 +470,11 @@ class Cacheideas extends CIdea_cache
                     'linkup' => 42208, //No-Clone Idea
                 )))) {
                 //Clone Followers Recursively:
-                $this->Cacheideas->recursive_clone($x['ideaid'], $do_recursive, $linkplayer, $this_i[0]);
+                $this->Cacheideas->recursive_clone($x['ideaid'], $do_recursive, $linkcreator, $this_i[0]);
             } else {
                 //Link Followers:
                 $this->Menchledger->create(array(
-                    'linkplayer' => $linkplayer,
+                    'linkcreator' => $linkcreator,
                     'linktype' => $x['linktype'],
                     'linkleft' => $idea_new['ideaid'],
                     'linkright' => $x['ideaid'],
@@ -493,7 +493,7 @@ class Cacheideas extends CIdea_cache
     }
 
 
-    function mass_update($ideaid, $action_playerid, $action_command1, $action_command2, $linkplayer)
+    function mass_update($ideaid, $action_playerid, $action_command1, $action_command2, $linkcreator)
     {
 
         //Alert: Has a twin function called e_mass_update()
@@ -566,7 +566,7 @@ class Cacheideas extends CIdea_cache
 
                         //Missing & Must be Added:
                         $this->Menchledger->create(array(
-                            'linkplayer' => $linkplayer,
+                            'linkcreator' => $linkcreator,
                             'linkup' => $e['playerid'],
                             'linktype' => $player_mapper[$action_playerid],
                             'linkright' => $next_i['ideaid'],
@@ -578,7 +578,7 @@ class Cacheideas extends CIdea_cache
                     } elseif (in_array($action_playerid, array(12592, 27081, 27986, 27083, 27085, 27087)) && count($idea_has_e)) {
 
                         //Has and must be deleted:
-                        $this->Menchledger->update($idea_has_e[0]['linkid'], array(), $linkplayer);
+                        $this->Menchledger->update($idea_has_e[0]['linkid'], array(), $linkcreator);
 
                         $applied_success++;
 
@@ -594,7 +594,7 @@ class Cacheideas extends CIdea_cache
                     if ($action_playerid == 27240) {
 
                         //Copy
-                        $link_count = $this->Cacheideas->duplicate($next_i, $i['ideaid'], $linkplayer);
+                        $link_count = $this->Cacheideas->duplicate($next_i, $i['ideaid'], $linkcreator);
 
                         if ($link_count > 0) {
                             //Increment Player since not there:
@@ -614,13 +614,13 @@ class Cacheideas extends CIdea_cache
                         if (in_array($action_playerid, array(12611, 28801)) && !count($is_previous)) {
 
                             //Link
-                            $status = $this->Cacheideas->i_link($i, 4228, $next_i, $linkplayer);
+                            $status = $this->Cacheideas->i_link($i, 4228, $next_i, $linkcreator);
 
                             if ($status['status']) {
 
                                 if ($action_playerid == 28801) {
                                     //Also remove old link:
-                                    $this->Menchledger->update($next_i['linkid'], array(), $linkplayer);
+                                    $this->Menchledger->update($next_i['linkid'], array(), $linkcreator);
                                 }
 
                                 //Increment Player since not there:
@@ -631,7 +631,7 @@ class Cacheideas extends CIdea_cache
 
                         if ($action_playerid == 12612 && count($is_previous)) {
                             //Unlink
-                            $this->Menchledger->update($is_previous[0]['linkid'], array(), $linkplayer);
+                            $this->Menchledger->update($is_previous[0]['linkid'], array(), $linkcreator);
 
                             $applied_success++;
                         }
@@ -648,8 +648,8 @@ class Cacheideas extends CIdea_cache
         $this->Menchledger->create(array(
             'linktype' => 44179, //Triggered
             'linkup' => $action_playerid,
-            'linkdown' => $linkplayer,
-            'linkplayer' => $linkplayer,
+            'linkdown' => $linkcreator,
+            'linkcreator' => $linkcreator,
             'linkright' => $ideaid,
             'linktext' => array(
                 'payload' => $_POST,

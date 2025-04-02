@@ -12,14 +12,14 @@ foreach ($this->Menchledger->fetch(array(
     foreach ($this->Menchledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkleft' => $addition_sync['linkright'],
-    ), array('linkplayer'), 0, 0, array('linkid' => 'DESC')) as $dicovered) {
+    ), array('linkcreator'), 0, 0, array('linkid' => 'DESC')) as $dicovered) {
 
         //Make sure no previous removed link between these two Players:
         if(!count($this->Menchledger->fetch(array(
             'linkvoid >' => 0,
             'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkup' => $addition_sync['linkup'],
-            'linkdown' => $dicovered['linkplayer'],
+            'linkdown' => $dicovered['linkcreator'],
         )))){
             //We would not recreate a removed link:
             continue;
@@ -30,13 +30,13 @@ foreach ($this->Menchledger->fetch(array(
         foreach($this->Menchledger->fetch(array(
                     'linktype' => 33532, //Private Reply
             'linkleft' => $addition_sync['linkright'],
-            'linkplayer' => $dicovered['linkplayer'],
+            'linkcreator' => $dicovered['linkcreator'],
         ), array('linkright'), 0, 1, array('linkid' => 'DESC')) as $response){
             $set_linktext = $response['ideatext'];
         }
 
         //lets append this Player:
-        if (append_player($addition_sync['linkup'], $dicovered['linkplayer'], $set_linktext, $addition_sync['linkright'])) {
+        if (append_player($addition_sync['linkup'], $dicovered['linkcreator'], $set_linktext, $addition_sync['linkright'])) {
             $counter++;
         }
     }

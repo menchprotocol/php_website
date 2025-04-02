@@ -40,7 +40,7 @@ foreach($list_settings['query_string_filtered'] as $x){
 
         $discoveries = $this->Menchledger->fetch(array(
             'linkleft' => $idea_var['ideaid'],
-            'linkplayer' => $x['playerid'],
+            'linkcreator' => $x['playerid'],
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 ), array(), 1);
 
@@ -114,7 +114,7 @@ foreach($list_settings['query_string_filtered'] as $x){
         }
 
 
-        $body_content .= '<td title="'.$x['playertext'].' x '.$e['playertext'].'" class="'.( superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkplayer_'.$e['playerid'].'_'.$x['playerid'] : '' ).'" ideaid="0" playerid="'.$e['playerid'].'" linkplayer="'.$x['playerid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" linkid="'.$x['linkid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['playertext'].' x '.$e['playertext'].'" class="'.( superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkcreator_'.$e['playerid'].'_'.$x['playerid'] : '' ).'" ideaid="0" playerid="'.$e['playerid'].'" linkcreator="'.$x['playerid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" linkid="'.$x['linkid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
@@ -251,9 +251,9 @@ echo '</table>';
             var written_answer = '';
             if(require_writing){
 
-                //return e_editor_load(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkplayer_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayer')).text());
+                //return e_editor_load(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkcreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkcreator')).text());
 
-                written_answer = prompt($(this).attr('title') + ":", $('.linkplayer_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayer')).text());
+                written_answer = prompt($(this).attr('title') + ":", $('.linkcreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkcreator')).text());
                 if(written_answer == null){
                     return false;
                 }
@@ -262,14 +262,14 @@ echo '</table>';
             var modify_data = {
                 ideaid: $(this).attr('ideaid'),
                 playerid: $(this).attr('playerid'),
-                linkplayer: $(this).attr('linkplayer'),
+                linkcreator: $(this).attr('linkcreator'),
                 linkid: $(this).attr('linkid'),
                 require_writing: require_writing,
                 written_answer: written_answer,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             };
 
-            $('.linkplayer_' + modify_data['playerid'] + '_' + modify_data['linkplayer']).html('<i class="fas fa-yin-yang fa-spin"></i>');
+            $('.linkcreator_' + modify_data['playerid'] + '_' + modify_data['linkcreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
             $.post("/app/e_toggle_player", modify_data, function (data) {
@@ -277,7 +277,7 @@ echo '</table>';
                 if (data.status) {
 
                     //Update Player id IF existed previously:
-                    $('.linkplayer_' + modify_data['playerid'] + '_' + modify_data['linkplayer']).html(data.message);
+                    $('.linkcreator_' + modify_data['playerid'] + '_' + modify_data['linkcreator']).html(data.message);
 
                 } else {
                     alert('ERROR:' + data.message);

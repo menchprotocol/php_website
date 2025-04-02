@@ -76,16 +76,16 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
             ), array(), 0) as $x){
                 if(!count($this->Menchledger->fetch(array(
                     'linkup' => $player_append['playerid'],
-                    'linkdown' => $x['linkplayer'],
+                    'linkdown' => $x['linkcreator'],
                     'linktext' => $x['linktext'],
                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     )))){
                     //Increment Player link:
                     $completed++;
                     $this->Menchledger->create(array(
-                        'linkplayer' => ($player_e ? $player_e['playerid'] : $x['linkplayer']),
+                        'linkcreator' => ($player_e ? $player_e['playerid'] : $x['linkcreator']),
                         'linkup' => $player_append['playerid'],
-                        'linkdown' => $x['linkplayer'],
+                        'linkdown' => $x['linkcreator'],
                         'linktext' => $x['linktext'],
                         'linktype' => 4230,
                     ));

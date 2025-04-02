@@ -36,7 +36,7 @@ class Cacheplayers extends CIdea_cache
         $this->Menchledger->create(array(
             'linkup' => 4430, //Subscriber
             'linktype' => 4230,
-            'linkplayer' => $playerid,
+            'linkcreator' => $playerid,
             'linkdown' => $playerid,
             'linkdomain' => $linkdomain,
         ));
@@ -74,7 +74,7 @@ class Cacheplayers extends CIdea_cache
             $this->Menchledger->create(array(
                 'linktype' => 4230,
                 'linkup' => 4430, //Active Member
-                'linkplayer' => $e['playerid'],
+                'linkcreator' => $e['playerid'],
                 'linkdown' => $e['playerid'],
             ));
         }
@@ -193,7 +193,7 @@ class Cacheplayers extends CIdea_cache
             $this->Menchledger->create(array(
                 'linktype' => 4230,
                 'linkup' => 4430, //Active Member
-                'linkplayer' => $e['playerid'],
+                'linkcreator' => $e['playerid'],
                 'linkdown' => $e['playerid'],
             ));
             $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
@@ -215,7 +215,7 @@ class Cacheplayers extends CIdea_cache
             'linktext' => $linktext,
         )))) {
             $this->Menchledger->create(array(
-                'linkplayer' => $linkdown, //Belongs to this Member
+                'linkcreator' => $linkdown, //Belongs to this Member
                 'linktype' => 4230,
                 'linktext' => $linktext,
                 'linkup' => $linkup,
@@ -305,7 +305,7 @@ class Cacheplayers extends CIdea_cache
                 'linktype' => 4230,
                 'linktext' => trim(strtolower($email)),
                 'linkup' => 3288, //Email
-                'linkplayer' => $added_e['new_player']['playerid'],
+                'linkcreator' => $added_e['new_player']['playerid'],
                 'linkdown' => $added_e['new_player']['playerid'],
                 'linkdomain' => $linkdomain,
             ));
@@ -317,7 +317,7 @@ class Cacheplayers extends CIdea_cache
                 'linkup' => 4783, //Phone
                 'linktype' => 4230,
                 'linktext' => $phone_number,
-                'linkplayer' => $added_e['new_player']['playerid'],
+                'linkcreator' => $added_e['new_player']['playerid'],
                 'linkdown' => $added_e['new_player']['playerid'],
                 'linkdomain' => $linkdomain,
             ));
@@ -333,7 +333,7 @@ class Cacheplayers extends CIdea_cache
             $this->Menchledger->create(array(
                 'linkup' => 14938, //Guest Login
                 'linktype' => 4230,
-                'linkplayer' => $added_e['new_player']['playerid'],
+                'linkcreator' => $added_e['new_player']['playerid'],
                 'linkdown' => $added_e['new_player']['playerid'],
                 'linkdomain' => $linkdomain,
             ));
@@ -517,14 +517,14 @@ class Cacheplayers extends CIdea_cache
     }
 
 
-    function radio_set($player_up_bucket_id, $setplayer_down_id, $linkplayer)
+    function radio_set($player_up_bucket_id, $setplayer_down_id, $linkcreator)
     {
 
         /*
          * Treats an Player follower group as a drop down menu where:
          *
          *  $player_up_bucket_id is the followings of the drop down
-         *  $linkplayer is the member Player ID that one of the followers of $player_up_bucket_id should be assigned (like a drop down)
+         *  $linkcreator is the member Player ID that one of the followers of $player_up_bucket_id should be assigned (like a drop down)
          *  $setplayer_down_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like Member communication levels
@@ -546,7 +546,7 @@ class Cacheplayers extends CIdea_cache
         $previously_assigned = ($setplayer_down_id < 1);
         $x_update_id = 0;
         foreach ($this->Menchledger->fetch(array(
-            'linkdown' => $linkplayer,
+            'linkdown' => $linkcreator,
             'linkup IN (' . join(',', $followers) . ')' => null, //Current followers
         ), array(), view_memory(6404, 11064)) as $x) {
 
@@ -557,7 +557,7 @@ class Cacheplayers extends CIdea_cache
                 $x_update_id = $x['linkid'];
 
                 //Do not log update transaction here as we would log it further below:
-                $this->Menchledger->update($x['linkid'], array(), $linkplayer);
+                $this->Menchledger->update($x['linkid'], array(), $linkcreator);
             }
 
         }
@@ -567,8 +567,8 @@ class Cacheplayers extends CIdea_cache
         if (!$previously_assigned) {
             //Let's go ahead and add desired Player as parent:
             $this->Menchledger->create(array(
-                'linkplayer' => $linkplayer,
-                'linkdown' => $linkplayer,
+                'linkcreator' => $linkcreator,
+                'linkdown' => $linkcreator,
                 'linkup' => $setplayer_down_id,
                 'linktype' => 4230,
             ));
@@ -602,7 +602,7 @@ class Cacheplayers extends CIdea_cache
             if ($duplicate_found) {
                 //Remove it:
                 $duplicates_removed++;
-                $this->Menchledger->update($x['linkid'], array(), $x['linkplayer']); //Duplicate Link Removed
+                $this->Menchledger->update($x['linkid'], array(), $x['linkcreator']); //Duplicate Link Removed
             } else {
                 //Add it to main list:
                 array_push($current_up, array(
@@ -619,7 +619,7 @@ class Cacheplayers extends CIdea_cache
     }
 
 
-    function remove($playerid, $linkplayer = 0, $migrate_s__id = 0)
+    function remove($playerid, $linkcreator = 0, $migrate_s__id = 0)
     {
 
         if ($playerid < 1) {
@@ -639,9 +639,9 @@ class Cacheplayers extends CIdea_cache
             $this->db->query("UPDATE menchledger SET linkdown=".$migrate_s__id." WHERE linkdown=".$playerid.";");
             $affected_linkdown = $this->db->affected_rows();
             $x_adjusted += $affected_linkdown;
-            $this->db->query("UPDATE menchledger SET linkplayer=".$migrate_s__id." WHERE linkplayer=".$playerid.";");
-            $affected_linkplayer = $this->db->affected_rows();
-            $x_adjusted += $affected_linkplayer;
+            $this->db->query("UPDATE menchledger SET linkcreator=".$migrate_s__id." WHERE linkcreator=".$playerid.";");
+            $affected_linkcreator = $this->db->affected_rows();
+            $x_adjusted += $affected_linkcreator;
             $this->db->query("UPDATE menchledger SET linktype=".$migrate_s__id." WHERE linktype=".$playerid.";");
             $affected_linktype = $this->db->affected_rows();
             $x_adjusted += $affected_linktype;
@@ -658,10 +658,10 @@ class Cacheplayers extends CIdea_cache
 
             //REMOVE TRANSACTIONS
             foreach ($this->Menchledger->fetch(array(
-                '(linkdown = ' . $playerid . ' OR linkup = ' . $playerid . ' OR linkplayer = ' . $playerid . ')' => null,
+                '(linkdown = ' . $playerid . ' OR linkup = ' . $playerid . ' OR linkcreator = ' . $playerid . ')' => null,
             ), array(), 0) as $adjust_tr) {
                 //Delete this transaction:
-                $x_adjusted += $this->Menchledger->update($adjust_tr['linkid'], array(), $linkplayer);
+                $x_adjusted += $this->Menchledger->update($adjust_tr['linkid'], array(), $linkcreator);
             }
 
         }
@@ -670,7 +670,7 @@ class Cacheplayers extends CIdea_cache
     }
 
 
-    function mass_update($playerid, $action_playerid, $action_command1, $action_command2, $linkplayer)
+    function mass_update($playerid, $action_playerid, $action_command1, $action_command2, $linkcreator)
     {
 
         //Alert: Has a twin function called i_mass_update()
@@ -725,7 +725,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Cacheplayers->update($x['playerid'], array(
                     'playertext' => $action_command1 . $x['playertext'],
-                ), true, $linkplayer);
+                ), true, $linkcreator);
 
                 $applied_success++;
 
@@ -733,7 +733,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Cacheplayers->update($x['playerid'], array(
                     'playertext' => $x['playertext'] . $action_command1,
-                ), true, $linkplayer);
+                ), true, $linkcreator);
 
                 $applied_success++;
 
@@ -754,7 +754,7 @@ class Cacheplayers extends CIdea_cache
                     if ((in_array($action_playerid, array(5981, 13441)) && count($down_up_e) == 0)) {
 
                         $add_fields = array(
-                            'linkplayer' => $linkplayer,
+                            'linkcreator' => $linkcreator,
                             'linktype' => 4230,
                             'linkdown' => $x['playerid'], //This follower Player
                             'linkup' => $e['playerid'],
@@ -772,7 +772,7 @@ class Cacheplayers extends CIdea_cache
 
                         if ($action_playerid == 13441) {
                             //Since we're migrating we should remove from here:
-                            $this->Menchledger->update($x['linkid'], array(), $linkplayer);
+                            $this->Menchledger->update($x['linkid'], array(), $linkcreator);
                         }
 
                     } elseif (in_array($action_playerid, array(5982, 11956)) && count($down_up_e) > 0) {
@@ -781,7 +781,7 @@ class Cacheplayers extends CIdea_cache
 
                             //Following Member Removal
                             foreach ($down_up_e as $delete_tr) {
-                                $this->Menchledger->update($delete_tr['linkid'], array(), $linkplayer);
+                                $this->Menchledger->update($delete_tr['linkid'], array(), $linkcreator);
                                 $applied_success++;
                             }
 
@@ -792,7 +792,7 @@ class Cacheplayers extends CIdea_cache
                             )) as $e) {
                                 //Add as a followings because it meets the condition
                                 $this->Menchledger->create(array(
-                                    'linkplayer' => $linkplayer,
+                                    'linkcreator' => $linkcreator,
                                     'linktype' => 4230,
                                     'linkdown' => $x['playerid'], //This follower Player
                                     'linkup' => $e['playerid'],
@@ -807,7 +807,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Cacheplayers->update($x['playerid'], array(
                     'playercover' => $action_command1,
-                ), true, $linkplayer);
+                ), true, $linkcreator);
 
                 $applied_success++;
 
@@ -815,7 +815,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Cacheplayers->update($x['playerid'], array(
                     'playercover' => $action_command1,
-                ), true, $linkplayer);
+                ), true, $linkcreator);
 
                 $applied_success++;
 
@@ -823,7 +823,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Cacheplayers->update($x['playerid'], array(
                     'playertext' => str_ireplace($action_command1, $action_command2, $x['playertext']),
-                ), true, $linkplayer);
+                ), true, $linkcreator);
 
                 $applied_success++;
 
@@ -831,7 +831,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Cacheplayers->update($x['playerid'], array(
                     'playercover' => str_replace($action_command1, $action_command2, $x['playercover']),
-                ), true, $linkplayer);
+                ), true, $linkcreator);
 
                 $applied_success++;
 
@@ -841,7 +841,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Menchledger->update($x['linkid'], array(
                     'linktext' => $new_message,
-                ), $linkplayer);
+                ), $linkcreator);
 
                 $applied_success++;
 
@@ -849,7 +849,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Menchledger->update($x['linkid'], array(
                     'linktext' => $action_command1,
-                ), $linkplayer);
+                ), $linkcreator);
 
                 $applied_success++;
 
@@ -857,7 +857,7 @@ class Cacheplayers extends CIdea_cache
 
                 $this->Menchledger->update($x['linkid'], array(
                     'linktype' => $action_command2,
-                ), $linkplayer);
+                ), $linkcreator);
                 $applied_success++;
 
             }
@@ -872,7 +872,7 @@ class Cacheplayers extends CIdea_cache
     }
 
 
-    function create($playertext, $linkplayer = 0, $playercover = null)
+    function create($playertext, $linkcreator = 0, $playercover = null)
     {
 
         //Validate Title
@@ -883,7 +883,7 @@ class Cacheplayers extends CIdea_cache
 
         //Log transaction new Player:
         $player_e = superpower_unlocked();
-        $creator = ($linkplayer > 0 ? $linkplayer : ($player_e ? $player_e['playerid'] : 0));
+        $creator = ($linkcreator > 0 ? $linkcreator : ($player_e ? $player_e['playerid'] : 0));
         if (!$creator) {
             return array(
                 'status' => 1,
@@ -893,7 +893,7 @@ class Cacheplayers extends CIdea_cache
 
         //Create New Player:
         $new_x = $this->Menchledger->create(array(
-            'linkplayer' => $creator,
+            'linkcreator' => $creator,
             'linktype' => 4251, //New Player Created
             'linktext' => $validate_playertext['playertext_clean'],
         ));
@@ -905,7 +905,7 @@ class Cacheplayers extends CIdea_cache
                 'linkup' => 4246, //Platform Bug Reports
                 'linkdown' => $creator,
                 'linktext' => 'create() failed to create a new Player',
-                'linkplayer' => $creator,
+                'linkcreator' => $creator,
             ));
             return array(
                 'status' => 1,
@@ -916,7 +916,7 @@ class Cacheplayers extends CIdea_cache
         //Handle Generation
         $new_handle = generate_handle(12274, $validate_playertext['playertext_clean']);
         $this->Menchledger->create(array(
-            'linkplayer' => $creator,
+            'linkcreator' => $creator,
             'linktype' => 4230, //Follow
             'linkup' => 32338, //Player Handle
             'linktext' => $new_handle,
@@ -926,7 +926,7 @@ class Cacheplayers extends CIdea_cache
         //Cover saving if any
         if (strlen($playercover)) {
             $this->Menchledger->create(array(
-                'linkplayer' => $creator,
+                'linkcreator' => $creator,
                 'linktype' => 4230, //Follow
                 'linkup' => 6198, //Player Cover
                 'linktext' => $playercover,

@@ -39,12 +39,12 @@ if($input_i){
 $any_ideaplayer_set = $input_i || $input_e;
 
 
-if(isset($_GET['linkplayer']) && strlen($_GET['linkplayer']) > 0){
-    if (substr_count($_GET['linkplayer'], ',') > 0) {
+if(isset($_GET['linkcreator']) && strlen($_GET['linkcreator']) > 0){
+    if (substr_count($_GET['linkcreator'], ',') > 0) {
         //This is multiple:
-        $query_filters['( linkplayer IN (' . $_GET['linkplayer'] . '))'] = null;
-    } elseif (intval($_GET['linkplayer']) > 0) {
-        $query_filters['linkplayer'] = $_GET['linkplayer'];
+        $query_filters['( linkcreator IN (' . $_GET['linkcreator'] . '))'] = null;
+    } elseif (intval($_GET['linkcreator']) > 0) {
+        $query_filters['linkcreator'] = $_GET['linkcreator'];
     }
 }
 
@@ -96,7 +96,7 @@ if(isset($_GET['linkid']) && strlen($_GET['linkid']) > 0){
 
 if($input_e){
     //We need to look for both following/follower
-    $query_filters['( linkdown = ' . $focus_e['playerid'] . ' OR linkup = ' . $focus_e['playerid'] . ' OR linkplayer = ' . $focus_e['playerid'] . ' )'] = null;
+    $query_filters['( linkdown = ' . $focus_e['playerid'] . ' OR linkup = ' . $focus_e['playerid'] . ' OR linkcreator = ' . $focus_e['playerid'] . ' )'] = null;
 }
 
 
@@ -248,7 +248,7 @@ echo '<span class="mini-header">ANY SOURCE:</span>';
 echo '<input type="text" name="playerhandle" value="' . ( $input_e ? $_GET['playerhandle'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="linkplayer" value="' . ((isset($_GET['linkplayer'])) ? $_GET['linkplayer'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="linkcreator" value="' . ((isset($_GET['linkcreator'])) ? $_GET['linkcreator'] : '') . '" class="form-control border"></td>';
 
 echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="linkup" value="' . ((isset($_GET['linkup'])) ? $_GET['linkup'] : '') . '" class="form-control border"></td>';
 
@@ -330,7 +330,7 @@ if(isset($_GET['linktype']) && substr_count($_GET['linktype'], ',')>0){
 
     echo '<select class="form-control border" name="linktype" id="linktype" class="border" style="width: 100% !important;">';
 
-    if(isset($_GET['linkplayer'])) {
+    if(isset($_GET['linkcreator'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;

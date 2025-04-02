@@ -61,7 +61,7 @@ foreach($this->Cacheideas->fetch(array(
                                 foreach($apply_to as $apply_playerid){
                                     foreach($this->Menchledger->fetch(array(
                                         'linkup' => $apply_playerid,
-                                        'linkdown' => $x['linkplayer'],
+                                        'linkdown' => $x['linkcreator'],
                                         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                                                         ), array(), 0) as $follow_appended) {
                                         $links_updated++;
@@ -85,7 +85,7 @@ foreach($this->Cacheideas->fetch(array(
                                 foreach($apply_to as $apply_playerid){
                                     foreach($this->Menchledger->fetch(array(
                                         'linkup' => $apply_playerid,
-                                        'linkdown' => $x['linkplayer'],
+                                        'linkdown' => $x['linkcreator'],
                                         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                                             ), array(), 0) as $follow_appended) {
                                         $links_removed++;
@@ -96,7 +96,7 @@ foreach($this->Cacheideas->fetch(array(
                             }
                         }
 
-                        echo 'Player ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                        echo 'Player ID '.$x['linkcreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
                     }
                 }
             }
@@ -136,7 +136,7 @@ foreach($this->Cacheideas->fetch(array(
                         foreach($apply_to as $apply_playerid){
                             foreach($this->Menchledger->fetch(array(
                                 'linkup' => $apply_playerid,
-                                'linkdown' => $x['linkplayer'],
+                                'linkdown' => $x['linkcreator'],
                                 'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
@@ -159,7 +159,7 @@ foreach($this->Cacheideas->fetch(array(
                         foreach($apply_to as $apply_playerid){
                             foreach($this->Menchledger->fetch(array(
                                 'linkup' => $apply_playerid,
-                                'linkdown' => $x['linkplayer'],
+                                'linkdown' => $x['linkcreator'],
                                 'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
@@ -170,7 +170,7 @@ foreach($this->Cacheideas->fetch(array(
                     }
                 }
 
-                echo 'Player ID '.$x['linkplayer'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                echo 'Player ID '.$x['linkcreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
             }
         }
 

@@ -33,7 +33,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                     $added_emails++;
                     $this->Menchledger->create(array(
                         'linktype' => 4230,
-                        'linkplayer' => $player_e['playerid'],
+                        'linkcreator' => $player_e['playerid'],
                         'linkup' => $_POST['import_playerid'],
                         'linkdown' => $player_data['linkdown'],
                     ));

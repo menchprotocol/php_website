@@ -9,7 +9,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
                     'linktype IN (' . join(',', $this->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkid' => $_GET['linkid'],
             'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        ), array('linkplayer'), 0) as $x){
+        ), array('linkcreator'), 0) as $x){
 
             //Show Header:
             foreach($this->Cacheideas->fetch(array(
@@ -109,7 +109,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
                     foreach($this->Menchledger->fetch(array(
                                             'linktype IN (' . join(',', $this->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkleft' => $i['ideaid'],
-                    ), array('linkplayer'), 0) as $x){
+                    ), array('linkcreator'), 0) as $x){
 
                         //Make sure this member qualified:
                         if(count($must_follow)>0 && count($must_follow)!=count($this->Menchledger->fetch(array(
@@ -220,7 +220,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
 
             if (count($this->Menchledger->fetch(array(
                 'linkleft' => $i['ideaid'],
-                'linkplayer' => $x['playerid'],
+                'linkcreator' => $x['playerid'],
                 'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             )))) {
                 //Skip since they already discovered this idea:
@@ -240,7 +240,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
 
                 $discoveries = $this->Menchledger->fetch(array(
                         'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                    'linkplayer' => $x['playerid'],
+                    'linkcreator' => $x['playerid'],
                     'linkleft' => $down_or['ideaid'],
                 ));
                 //Has this user discovered this idea or no?
