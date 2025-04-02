@@ -854,11 +854,13 @@ class Menchledger extends CIdea_cache
     function find_next($playerid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
+        /*
         foreach ($this->Nodeideas->fetch(array(
             'LOWER(ideahashtag)' => strtolower($target_ideahashtag),
         )) as $i_new) {
             $i = $i_new;
         }
+        */
 
         if (count($loop_breaker_ids) > 0 && in_array($i['ideaid'], $loop_breaker_ids)) {
             return null;
