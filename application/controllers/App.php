@@ -3045,6 +3045,7 @@ class App extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
+                'completed' => $completed_children,
                 'next__url' => ($idea_redirect_url ? $idea_redirect_url : ($find_next ? $find_next : 'start')),
             ));
 
@@ -3054,7 +3055,6 @@ class App extends CI_Controller
         return view_json(array(
             'status' => 0,
             'message' => 'Invalid Idea',
-            'completed' => $completed_children,
         ));
 
     }
