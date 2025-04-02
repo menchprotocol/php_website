@@ -434,7 +434,7 @@ function idea_popup_url($i)
 function idea_required($i)
 {
     $CI =& get_instance();
-    return in_array($i['ideatype'], $CI->config->item('playerids___43009')) || count($CI->Menchledger->fetch(array(
+    return count($CI->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $i['ideaid'],
             'linkplayerup' => 28239, //Required
@@ -5195,7 +5195,7 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
             $focus_menu = ($has_discovered ? $m_target_bar : $players___6255[idea_discovery_link($i)]);
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
-        } elseif ($linkplayertype_target_bar == 31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !idea_required($i)) {
+        } elseif ($linkplayertype_target_bar == 31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !in_array($i['ideatype'], $CI->config->item('playerids___43009')) && !idea_required($i)) {
 
             //Skip
             $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
