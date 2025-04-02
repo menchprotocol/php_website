@@ -16,7 +16,7 @@ $count = 0;
 $missing = 0;
 foreach ($this->Menchledger->fetchold(array(
     'link_type' => 4983,
-)) as $x) {
+), array(), 0, 0) as $x) {
 
     if(in_array($x['link_type'], $is_ideation)) {
         $count_ideation++;
