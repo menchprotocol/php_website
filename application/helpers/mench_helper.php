@@ -434,7 +434,7 @@ function idea_popup_url($i)
 function idea_required($i)
 {
     $CI =& get_instance();
-    return in_array($i['ideatype'], $CI->config->item('playerids___43009')) || count($CI->Menchledger->fetch(array(
+    return in_array($i['ideatype'], $CI->config->item('playerids___43039')) || in_array($i['ideatype'], $CI->config->item('playerids___43009')) || count($CI->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $i['ideaid'],
             'linkplayerup' => 28239, //Required

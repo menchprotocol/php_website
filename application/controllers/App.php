@@ -3006,26 +3006,6 @@ class App extends CI_Controller
                     'ideaid' => $next_idea_data['ideaid'],
                 )) as $idea_next) {
 
-                    continue; //TODO Reactivate
-
-                    $some_input_required = count($this->Menchledger->fetch(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-                        'linkidearight' => $idea_next['linkidearight'],
-                        'linkplayerup IN (' . join(',', $this->config->item('playerids___43050')) . ')' => null, //Input Required Ideas
-                    )));
-
-                    //Can we auto-complete?
-                    if (in_array($idea_next['ideatype'], $this->config->item('playerids___43039')) || (!strlen($next_idea_data['new_ideatext']) && !count($next_idea_data['uploaded_media']))) {
-                        //Focus Discovery only, so must go to next level:
-                        foreach ($this->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
-                            'linkidealeft' => $idea_next['ideaid'],
-                        ), array(), 0, 0) as $result) {
-                            continue;
-                        }
-
-                    }
-
                     //Analyze input:
                     $input__text = in_array($idea_next['ideatype'], $this->config->item('playerids___43002')) || in_array($idea_next['ideatype'], $this->config->item('playerids___43003'));
                     $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
