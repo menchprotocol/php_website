@@ -22,7 +22,7 @@ $count = 0;
 $missing = 0;
 foreach ($this->Menchledger->fetchold(array(
     'link_type >' => 0, //4983
-), array(), 5000, 0, array('link_id' => 'DESC')) as $x) {
+), array(), 34000, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
     $is_missing = !count($this->Menchledger->fetch(array(
