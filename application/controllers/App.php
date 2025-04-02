@@ -3007,7 +3007,8 @@ class App extends CI_Controller
                     }
                     $input__text = in_array($idea_next['ideatype'], $this->config->item('playerids___43002')) || in_array($idea_next['ideatype'], $this->config->item('playerids___43003'));
                     $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
-                    $trying_to_skip =
+                    $skipping_not_allowed = in_array($idea_next['ideatype'], $this->config->item('playerids___43009'));
+                    $trying_to_skip = !$skipping_not_allowed &&
                         (
                             ($input__text && !$input__upload && !strlen($next_idea_data['new_ideatext'])) ||
                             (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) ||
@@ -3015,7 +3016,7 @@ class App extends CI_Controller
                         );
                     $idea_required = idea_required($idea_next);
 
-                    if (!($idea_required && $trying_to_skip)) {
+                    if ($skipping_not_allowed || !($idea_required && $trying_to_skip)) {
                         //Try to complete:
                         $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
                             'linknumber' => $next_idea_data['ideanumber'],
