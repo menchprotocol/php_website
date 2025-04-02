@@ -895,7 +895,7 @@ function idea_is_startable($i)
     $CI =& get_instance();
     return count($CI->Menchledger->fetch(array(
         'linktype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linkleft' => $i['ideaid'],
+        'linkright' => $i['ideaid'],
         'linkup' => 4235,
     )));
 }
