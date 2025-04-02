@@ -17,9 +17,8 @@ class App extends CI_Controller
 
         auto_login_player(false);
 
-        if(1){
-            $this->dbold = $this->load->database('old', TRUE); // Load second DB manually
-        }
+        $this->dbold = $this->load->database('old', TRUE); //TODO Remove later
+
     }
 
     function index()
