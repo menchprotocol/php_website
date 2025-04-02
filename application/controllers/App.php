@@ -3013,7 +3013,7 @@ class App extends CI_Controller
                     );
                     $idea_required = !$skipping_not_allowed && idea_required($idea_next);
 
-                    if(!$idea_required && $trying_to_skip){
+                    if($idea_required && $trying_to_skip){
                         return view_json(array(
                             'status' => 0,
                             'message' => 'You must respond to this required idea',
