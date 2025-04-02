@@ -1,8 +1,8 @@
 <?php
 
 $filters = array(
-    'linktype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
-    'linkup' => 28199,
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
+    'linkplayerup' => 28199,
 );
 
 //Give it some extra time in case they are in Paypal making the payment
@@ -12,7 +12,7 @@ if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
     foreach($this->Nodeideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $i){
-        $filters['linkright'] = $i['ideaid'];
+        $filters['linkidearight'] = $i['ideaid'];
         $buffer_time = 0;
     }
 }
@@ -21,19 +21,19 @@ $links_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds ideas:
-foreach($this->Ledger->fetch($filters, array('linkright'), 0) as $expires){
+foreach($this->Ledger->fetch($filters, array('linkidearight'), 0) as $expires){
 
     //Now go through everyone who discovered this selection:
     foreach($this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
-        'linkleft' => $expires['ideaid'],
-    ), array('linkcreator'), 0) as $x_progress){
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
+        'linkidealeft' => $expires['ideaid'],
+    ), array('linkplayercreator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->Ledger->fetch(array(
-                    'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
-            'linkleft' => $x_progress['linkright'],
-            'linkcreator' => $x_progress['playerid'],
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+            'linkidealeft' => $x_progress['linkidearight'],
+            'linkplayercreator' => $x_progress['playerid'],
         ));
         $seconds_left = intval( intval( $expires['linktext']) + $buffer_time - (time() - strtotime($x_progress['linktime'])));
 
@@ -42,9 +42,9 @@ foreach($this->Ledger->fetch($filters, array('linkright'), 0) as $expires){
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
             foreach($this->Ledger->fetch(array(
-                            'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
-                'linkleft' => $expires['ideaid'],
-                'linkcreator' => $x_progress['playerid'],
+                            'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+                'linkidealeft' => $expires['ideaid'],
+                'linkplayercreator' => $x_progress['playerid'],
             ), array(), 0) as $delete){
 
                 $deleted = true;
@@ -69,8 +69,8 @@ foreach($this->Ledger->fetch($filters, array('linkright'), 0) as $expires){
 
 echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
 
-if(isset($filters['linkright'])){
-    foreach($this->Nodeideas->fetch(array('ideaid' => $filters['linkright'])) as $i){
+if(isset($filters['linkidearight'])){
+    foreach($this->Nodeideas->fetch(array('ideaid' => $filters['linkidearight'])) as $i){
         //We were deleting a single item, redirect back:
         js_php_redirect(timelimit . phpview_memory(42903, 33286) . $i['ideahashtag'], 0);
     }

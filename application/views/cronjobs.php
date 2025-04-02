@@ -4,9 +4,9 @@
 $longest_time = 0;
 $longest_id = 0;
 $cron_jobs = $this->Ledger->fetch(array(
-    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-    'linkup' => 7274,
-), array('linkdown'), view_memory(6404,11064), 0, array('linknumber' => 'ASC'));
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayerup' => 7274,
+), array('linkplayerdown'), view_memory(6404,11064), 0, array('linknumber' => 'ASC'));
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['linktext']) > $longest_time){
         $longest_time = strlen($cron_job['linktext']);

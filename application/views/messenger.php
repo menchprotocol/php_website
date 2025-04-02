@@ -1,16 +1,16 @@
 <?php
 
 foreach($this->Ledger->fetch(array(
-    'linktype' => 33600, //Draft
-    'linkup' => 26582,
-), array('linkright')) as $i){
+    'linkplayertype' => 33600, //Draft
+    'linkplayerup' => 26582,
+), array('linkidearight')) as $i){
 
     //Determine if it's time to send this message:
     $time_starts = 0;
     foreach($this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linkright' => $i['ideaid'],
-        'linkup' => 43743, //Sending Starts
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'linkidearight' => $i['ideaid'],
+        'linkplayerup' => 43743, //Sending Starts
     )) as $time){
         $time_starts = strtotime($time['linktext']);
         break;
@@ -24,9 +24,9 @@ foreach($this->Ledger->fetch(array(
     //Does it have an end time?
     $end_sending = 0;
     foreach($this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linkright' => $i['ideaid'],
-        'linkup' => 43744, //Sending Ends
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'linkidearight' => $i['ideaid'],
+        'linkplayerup' => 43744, //Sending Ends
     )) as $time){
         $end_sending = strtotime($time['linktext']);
         break;
@@ -35,7 +35,7 @@ foreach($this->Ledger->fetch(array(
     //Now let's see who will receive this:
     $demo_only = false;
     $list_settings = list_settings($i['ideahashtag']);
-    $total_sent = $this->Ledger->send_idea_mass_dm($list_settings['query_string_filtered'], $i, $i['linkdomain'], true, $demo_only);
+    $total_sent = $this->Ledger->send_idea_mass_dm($list_settings['query_string_filtered'], $i, $i['linkplayerdomain'], true, $demo_only);
 
     echo view_idea_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string_filtered']).' Members<hr />';
 
@@ -43,7 +43,7 @@ foreach($this->Ledger->fetch(array(
     if(!$demo_only && (!$end_sending || $end_sending<time())){
         //Ready to be done:
         $this->Ledger->update($i['linkid'], array(
-            'linktype' => ( $total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */ ),
+            'linkplayertype' => ( $total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */ ),
         ));
     }
 

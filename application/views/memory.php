@@ -19,15 +19,15 @@ $biggest_player_handle = '';
 
 //CONFIG VARS
 foreach ($this->Ledger->fetch(array(
-    'linkup' => 4527,
-    'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-), array('linkdown'), 0, 0, array('playerid' => 'ASC')) as $en) {
+    'linkplayerup' => 4527,
+    'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+), array('linkplayerdown'), 0, 0, array('playerid' => 'ASC')) as $en) {
 
     //Now fetch all its followers:
     $down__e = $this->Ledger->fetch(array(
-        'linkup' => $en['linkdown'],
-        'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-    ), array('linkdown'), 0, 0, sort__player());
+        'linkplayerup' => $en['linkplayerdown'],
+        'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    ), array('linkplayerdown'), 0, 0, sort__player());
 
     if (!count($down__e)) {
         continue;
@@ -53,8 +53,8 @@ foreach ($this->Ledger->fetch(array(
 
     $prefix_common_words = prefix_common_words($down_titles); //Clean Titles
     $memory_text .= "\n" . '//' . $en['playertext'] . ':' . "\n";
-    $memory_text .= '$config[\'playerids___' . $en['linkdown'] . '\'] = array(' . join(',', $down_ids) . ');' . "\n";
-    $memory_text .= '$config[\'players___' . $en['linkdown'] . '\'] = array(' . (strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "' . trim($prefix_common_words) . '"' : '') . "\n";
+    $memory_text .= '$config[\'playerids___' . $en['linkplayerdown'] . '\'] = array(' . join(',', $down_ids) . ');' . "\n";
+    $memory_text .= '$config[\'players___' . $en['linkplayerdown'] . '\'] = array(' . (strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "' . trim($prefix_common_words) . '"' : '') . "\n";
     foreach ($down__e as $follower) {
 
         if ($follower['playerid'] < 1) {
@@ -63,17 +63,17 @@ foreach ($this->Ledger->fetch(array(
 
         //Does this have any Pins?
         foreach ($this->Ledger->fetch(array(
-            'linkup' => $follower['playerid'],
-            'linktype' => 41011, //PINNED FOLLOWER
+            'linkplayerup' => $follower['playerid'],
+            'linkplayertype' => 41011, //PINNED FOLLOWER
         ), array(), 0) as $x_pinned) {
             if (!isset($pinned_down[$follower['playerid']])) {
-                $pinned_down[$follower['playerid']] = array($x_pinned['linkdown']);
-            } elseif (!in_array($x_pinned['linkdown'], $pinned_down[$follower['playerid']])) {
-                array_push($pinned_down[$follower['playerid']], $x_pinned['linkdown']);
+                $pinned_down[$follower['playerid']] = array($x_pinned['linkplayerdown']);
+            } elseif (!in_array($x_pinned['linkplayerdown'], $pinned_down[$follower['playerid']])) {
+                array_push($pinned_down[$follower['playerid']], $x_pinned['linkplayerdown']);
             }
         }
 
-        if ($follower['linktype'] == 41011) {
+        if ($follower['linkplayertype'] == 41011) {
             if (!isset($pinned_up[$follower['playerid']])) {
                 $pinned_up[$follower['playerid']] = array($en['playerid']);
             } elseif (!in_array($en['playerid'], $pinned_up[$follower['playerid']])) {
@@ -84,9 +84,9 @@ foreach ($this->Ledger->fetch(array(
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
         foreach ($this->Ledger->fetch(array(
-            'linkdown' => $follower['playerid'],
-            'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-        ), array('linkup'), 0) as $cp_en) {
+            'linkplayerdown' => $follower['playerid'],
+            'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        ), array('linkplayerup'), 0) as $cp_en) {
             array_push($down_up_ids, intval($cp_en['playerid']));
         }
 
@@ -107,15 +107,15 @@ foreach ($this->Ledger->fetch(array(
 //Append all App Handlers for quick checking:
 $memory_text .= "\n" . "\n";
 foreach ($this->Ledger->fetch(array(
-    'linkup' => 42043, //Handle Cache
-    'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-), array('linkdown'), 0) as $handle) {
+    'linkplayerup' => 42043, //Handle Cache
+    'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+), array('linkplayerdown'), 0) as $handle) {
 
     $memory_text .= '$config[\'handlplayers___' . $handle['playerid'] . '\'] = array(' . "\n";
     foreach ($this->Ledger->fetch(array(
-        'linkup' => $handle['playerid'],
-        'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-    ), array('linkdown'), 0) as $app) {
+        'linkplayerup' => $handle['playerid'],
+        'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    ), array('linkplayerdown'), 0) as $app) {
         $memory_text .= '     \'' . strtolower($app['playerhandle']) . '\' => ' . $app['playerid'] . ',' . "\n";
     }
     $memory_text .= ');' . "\n";
@@ -158,16 +158,16 @@ $special_route_text = '';
 $routes_text .= '//APPS:' . "\n\n";
 
 foreach ($this->Ledger->fetch(array(
-    'linkup' => 6287, //Apps
-    'linktype IN (' . join(',', ($memory_detected ? $this->config->item('playerids___32292') : $playerids___33337)) . ')' => null, //SOURCE LINKS
-), array('linkdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
+    'linkplayerup' => 6287, //Apps
+    'linkplayertype IN (' . join(',', ($memory_detected ? $this->config->item('playerids___32292') : $playerids___33337)) . ')' => null, //SOURCE LINKS
+), array('linkplayerdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;
         foreach ($this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-            'linkup' => 42921,
-            'linkdown' => $app['playerid'], //Required
+            'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+            'linkplayerup' => 42921,
+            'linkplayerdown' => $app['playerid'], //Required
         )) as $route) {
             if (strlen($route['linktext']) > 0) {
                 $special_routes = $route['linktext'];
@@ -180,18 +180,18 @@ foreach ($this->Ledger->fetch(array(
 
 
     if (count($this->Ledger->fetch(array(
-        'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-        'linkup' => 44330,
-        'linkdown' => $app['playerid'], //Required
+        'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        'linkplayerup' => 44330,
+        'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Player AND Idea Input
         $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/$2/$1' . '";' . "\n";
         $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/0/$1' . '";' . "\n"; //Should give error
         $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/$1/0' . '";' . "\n"; //Should give error
     } elseif (count($this->Ledger->fetch(array(
-        'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-        'linkup' => 42905,
-        'linkdown' => $app['playerid'], //Required
+        'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        'linkplayerup' => 42905,
+        'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Player Input
         if ($special_routes) {
@@ -200,9 +200,9 @@ foreach ($this->Ledger->fetch(array(
             $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/$1' . '";' . "\n";
         }
     } elseif (count($this->Ledger->fetch(array(
-        'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-        'linkup' => 42911,
-        'linkdown' => $app['playerid'], //Required
+        'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        'linkplayerup' => 42911,
+        'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Idea Input
         if ($special_routes) {
@@ -211,9 +211,9 @@ foreach ($this->Ledger->fetch(array(
             $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/0/$1' . '";' . "\n";
         }
     } elseif (count($this->Ledger->fetch(array(
-        'linktype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-        'linkup' => 44329,
-        'linkdown' => $app['playerid'], //Required
+        'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        'linkplayerup' => 44329,
+        'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Discoveries Input
         if ($special_routes) {
@@ -241,7 +241,7 @@ fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached ' . $total_nodes . ' Players (' . $biggest_player_handle . ' had ' . $biggest_player_count . ') & removed ' . ($memory_detected ? reset_cache($linkcreator) : 'NONE') . '.</div><div></div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached ' . $total_nodes . ' Players (' . $biggest_player_handle . ' had ' . $biggest_player_count . ') & removed ' . ($memory_detected ? reset_cache($linkplayercreator) : 'NONE') . '.</div><div></div></div>';
 
 
 //Show:

@@ -112,10 +112,10 @@ if(!$basic_header_footer){
     echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:public_index \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORY
-    foreach($this->config->item('players___11054') as $linktype => $m){
-        if(is_array($this->config->item('players___'.$linktype))){
-            echo ' var js_players___'.$linktype.' = ' . json_encode($this->config->item('players___'.$linktype)) . ';';
-            echo ' var js_playerids___'.$linktype.' = ' . json_encode($this->config->item('playerids___'.$linktype)) . ';';
+    foreach($this->config->item('players___11054') as $linkplayertype => $m){
+        if(is_array($this->config->item('players___'.$linkplayertype))){
+            echo ' var js_players___'.$linkplayertype.' = ' . json_encode($this->config->item('players___'.$linkplayertype)) . ';';
+            echo ' var js_playerids___'.$linkplayertype.' = ' . json_encode($this->config->item('playerids___'.$linkplayertype)) . ';';
         }
     }
     echo '</script>';
@@ -364,7 +364,7 @@ if ($focus_i){
                     echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_e && strlen($player_e['playercover']) ? view_cover($player_e['playercover'], 1) : $players___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
-                    foreach($this->config->item('players___'.$menu_type) as $linktype => $m) {
+                    foreach($this->config->item('players___'.$menu_type) as $linkplayertype => $m) {
 
                         $superpowers_required = array_intersect($this->config->item('playerids___10957'), $m['m__following']);
                         if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
@@ -379,40 +379,40 @@ if ($focus_i){
                         $extra_class = null;
                         $text_class = null;
 
-                        if($linktype==26105 && $player_e) {
+                        if($linkplayertype==26105 && $player_e) {
 
                             //Profile View
                             $m['m__cover'] = view_cover($player_e['playercover'], 1);
                             $m['m__title'] = '<div class="type_head main__title">'.$player_e['playertext'].'</div><div class="grey type_handle">@'.$player_e['playerhandle'].'</div>';
                             $href = 'href="'.view_memory(42903,42902).$player_e['playerhandle'].'" ';
 
-                        } elseif($linktype==42246 && $player_e) {
+                        } elseif($linkplayertype==42246 && $player_e) {
 
                             //Profile Edit
                             $href = 'href="javascript:void(0);" onclick="e_editor_load('.$player_e['playerid'].',0)" ';
 
-                        } elseif($linktype==28615){
+                        } elseif($linkplayertype==28615){
 
                             //Phone US
-                            $value = website_setting($linktype);
+                            $value = website_setting($linkplayertype);
                             if(!strlen($value)){
                                 continue;
                             }
                             $href = 'href="tel:'.preg_replace("/[^0-9]/", "", $value).'"';
 
-                        } elseif($linktype==28614){
+                        } elseif($linkplayertype==28614){
 
                             //Email US
-                            $value = website_setting($linktype);
+                            $value = website_setting($linkplayertype);
                             if(!strlen($value)){
                                 continue;
                             }
                             $href = 'href="mailto:'.$value.'"';
 
-                        } elseif(in_array($linktype, $this->config->item('playerids___6287'))){
+                        } elseif(in_array($linkplayertype, $this->config->item('playerids___6287'))){
 
                             //APP
-                            $href = 'href="'.view_app_link($linktype).( $linktype==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
+                            $href = 'href="'.view_app_link($linkplayertype).( $linkplayertype==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
 
                         } else {
 
@@ -422,7 +422,7 @@ if ($focus_i){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' linktype="'.$linktype.'" class="dropdown-item dropdown_type_'.$linktype.' main__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' linkplayertype="'.$linkplayertype.'" class="dropdown-item dropdown_type_'.$linkplayertype.' main__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 
@@ -569,16 +569,16 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_playerid.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Interaction Types</option>';
-                                    foreach($this->config->item('players___32292') /* Player Links */ as $linktype3 => $m3){
-                                        $input_options .= '<option value="'.$linktype3.'">Update Only If = '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('players___32292') /* Player Links */ as $linkplayertype3 => $m3){
+                                        $input_options .= '<option value="'.$linkplayertype3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_playerid.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status</option>';
-                                    foreach($this->config->item('players___32292') /* Player Links */ as $linktype3 => $m3){
-                                        $input_options .= '<option value="'.$linktype3.'">Set to '.$m3['m__title'].'</option>';
+                                    foreach($this->config->item('players___32292') /* Player Links */ as $linkplayertype3 => $m3){
+                                        $input_options .= '<option value="'.$linkplayertype3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
@@ -719,7 +719,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                             <!-- Idea Links -->
-                            <div class="dynamic_editing_input idea_linktype hidden hidden_superpower__10939" style="margin: 0 !important;">
+                            <div class="dynamic_editing_input idea_linkplayertype hidden hidden_superpower__10939" style="margin: 0 !important;">
                                 <div class="dynamic_selector"><?= view_single_select_form(4486, 4228); ?></div>
                             </div>
 
@@ -761,9 +761,9 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="creator_box">
                             <?php
                             foreach($this->Ledger->fetch(array(
-                                'linkup' => $player_e['playerid'],
-                                'linktype' => 41011, //PINNED FOLLOWER
-                                            ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {
+                                'linkplayerup' => $player_e['playerid'],
+                                'linkplayertype' => 41011, //PINNED FOLLOWER
+                                            ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {
                                 echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['playercover']).'</span><b>'.$x_pinned['playertext'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['playerhandle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }

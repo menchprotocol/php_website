@@ -9,8 +9,8 @@ if(isset($_GET['playerhandle'])){
     $duplicates_found = array();
     foreach($this->Ledger->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        ), array('linkup'), 0) as $x) {
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        ), array('linkplayerup'), 0) as $x) {
         $linktext_md5 = substr(md5($x['linktext']), 0, 16);
         if(!isset($main_index[$linktext_md5])){
             $main_index[$linktext_md5] = array();
@@ -19,10 +19,10 @@ if(isset($_GET['playerhandle'])){
             if(!isset($duplicates_found[$linktext_md5])){
                 $duplicates_found[$linktext_md5] = $main_index[$linktext_md5];
             }
-            array_push($duplicates_found[$linktext_md5], $x['linkdown']);
+            array_push($duplicates_found[$linktext_md5], $x['linkplayerdown']);
         }
 
-        array_push($main_index[$linktext_md5], $x['linkdown']);
+        array_push($main_index[$linktext_md5], $x['linkplayerdown']);
 
     }
 

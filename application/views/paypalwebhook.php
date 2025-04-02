@@ -39,30 +39,30 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
         if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
             //Paid:
-            $linktype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
+            $linkplayertype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->Ledger->mark_complete($linktype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Ledger->mark_complete($linkplayertype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => intval($_POST['quantity']),
                 'linktext' => $_POST,
             ));
 
         } else {
 
-            $linktype = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
+            $linkplayertype = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
 
             //Find issued tickets:
             $original_payment = $this->Ledger->fetch(array(
-                'linktype' => 26595,
-                'linkcreator' => $player_es[0]['playerid'],
-                'linkleft' => $next_is[0]['ideaid'],
+                'linkplayertype' => 26595,
+                'linkplayercreator' => $player_es[0]['playerid'],
+                'linkidealeft' => $next_is[0]['ideaid'],
             ));
 
             //Log Refund:
-            $completion_status = $this->Ledger->mark_complete($linktype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Ledger->mark_complete($linkplayertype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => (-1 * ( isset($original_payment[0]['linknumber']) ? $original_payment[0]['linknumber'] : 1 )),
                 'linktext' => $_POST,
-                'linkdomain' => ( isset($original_payment[0]['linkdomain']) && $original_payment[0]['linkdomain']>0 ? $original_payment[0]['linkdomain'] : 0 ),
+                'linkplayerdomain' => ( isset($original_payment[0]['linkplayerdomain']) && $original_payment[0]['linkplayerdomain']>0 ? $original_payment[0]['linkplayerdomain'] : 0 ),
             ));
 
         }

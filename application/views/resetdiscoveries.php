@@ -13,8 +13,8 @@ if(!isset($_GET['confirm'])){
 
     //Fetch their current progress transactions:
     $progress_x = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
-        'linkcreator' => $focus_e['playerid'],
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+        'linkplayercreator' => $focus_e['playerid'],
     ), array(), 0);
 
     if(count($progress_x) > 0){

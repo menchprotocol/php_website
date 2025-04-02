@@ -39,49 +39,49 @@ if($input_i){
 $any_ideaplayer_set = $input_i || $input_e;
 
 
-if(isset($_GET['linkcreator']) && strlen($_GET['linkcreator']) > 0){
-    if (substr_count($_GET['linkcreator'], ',') > 0) {
+if(isset($_GET['linkplayercreator']) && strlen($_GET['linkplayercreator']) > 0){
+    if (substr_count($_GET['linkplayercreator'], ',') > 0) {
         //This is multiple:
-        $query_filters['( linkcreator IN (' . $_GET['linkcreator'] . '))'] = null;
-    } elseif (intval($_GET['linkcreator']) > 0) {
-        $query_filters['linkcreator'] = $_GET['linkcreator'];
+        $query_filters['( linkplayercreator IN (' . $_GET['linkplayercreator'] . '))'] = null;
+    } elseif (intval($_GET['linkplayercreator']) > 0) {
+        $query_filters['linkplayercreator'] = $_GET['linkplayercreator'];
     }
 }
 
 
-if(isset($_GET['linkup']) && strlen($_GET['linkup']) > 0){
-    if (substr_count($_GET['linkup'], ',') > 0) {
+if(isset($_GET['linkplayerup']) && strlen($_GET['linkplayerup']) > 0){
+    if (substr_count($_GET['linkplayerup'], ',') > 0) {
         //This is multiple:
-        $query_filters['( linkup IN (' . $_GET['linkup'] . '))'] = null;
-    } elseif (intval($_GET['linkup']) > 0) {
-        $query_filters['linkup'] = $_GET['linkup'];
+        $query_filters['( linkplayerup IN (' . $_GET['linkplayerup'] . '))'] = null;
+    } elseif (intval($_GET['linkplayerup']) > 0) {
+        $query_filters['linkplayerup'] = $_GET['linkplayerup'];
     }
 }
 
-if(isset($_GET['linkdown']) && strlen($_GET['linkdown']) > 0){
-    if (substr_count($_GET['linkdown'], ',') > 0) {
+if(isset($_GET['linkplayerdown']) && strlen($_GET['linkplayerdown']) > 0){
+    if (substr_count($_GET['linkplayerdown'], ',') > 0) {
         //This is multiple:
-        $query_filters['( linkdown IN (' . $_GET['linkdown'] . '))'] = null;
-    } elseif (intval($_GET['linkdown']) > 0) {
-        $query_filters['linkdown'] = $_GET['linkdown'];
+        $query_filters['( linkplayerdown IN (' . $_GET['linkplayerdown'] . '))'] = null;
+    } elseif (intval($_GET['linkplayerdown']) > 0) {
+        $query_filters['linkplayerdown'] = $_GET['linkplayerdown'];
     }
 }
 
-if(isset($_GET['linkleft']) && strlen($_GET['linkleft']) > 0){
-    if (substr_count($_GET['linkleft'], ',') > 0) {
+if(isset($_GET['linkidealeft']) && strlen($_GET['linkidealeft']) > 0){
+    if (substr_count($_GET['linkidealeft'], ',') > 0) {
         //This is multiple:
-        $query_filters['( linkleft IN (' . $_GET['linkleft'] . '))'] = null;
-    } elseif (intval($_GET['linkleft']) > 0) {
-        $query_filters['linkleft'] = $_GET['linkleft'];
+        $query_filters['( linkidealeft IN (' . $_GET['linkidealeft'] . '))'] = null;
+    } elseif (intval($_GET['linkidealeft']) > 0) {
+        $query_filters['linkidealeft'] = $_GET['linkidealeft'];
     }
 }
 
-if(isset($_GET['linkright']) && strlen($_GET['linkright']) > 0){
-    if (substr_count($_GET['linkright'], ',') > 0) {
+if(isset($_GET['linkidearight']) && strlen($_GET['linkidearight']) > 0){
+    if (substr_count($_GET['linkidearight'], ',') > 0) {
         //This is multiple:
-        $query_filters['( linkright IN (' . $_GET['linkright'] . '))'] = null;
-    } elseif (intval($_GET['linkright']) > 0) {
-        $query_filters['linkright'] = $_GET['linkright'];
+        $query_filters['( linkidearight IN (' . $_GET['linkidearight'] . '))'] = null;
+    } elseif (intval($_GET['linkidearight']) > 0) {
+        $query_filters['linkidearight'] = $_GET['linkidearight'];
     }
 }
 
@@ -96,13 +96,13 @@ if(isset($_GET['linkid']) && strlen($_GET['linkid']) > 0){
 
 if($input_e){
     //We need to look for both following/follower
-    $query_filters['( linkdown = ' . $focus_e['playerid'] . ' OR linkup = ' . $focus_e['playerid'] . ' OR linkcreator = ' . $focus_e['playerid'] . ' )'] = null;
+    $query_filters['( linkplayerdown = ' . $focus_e['playerid'] . ' OR linkplayerup = ' . $focus_e['playerid'] . ' OR linkplayercreator = ' . $focus_e['playerid'] . ' )'] = null;
 }
 
 
 if($input_i){
     //We need to look for both following/follower
-    $query_filters['( linkright = ' . $focus_i['ideaid'] . ' OR linkleft = ' . $focus_i['ideaid'] . ')'] = null;
+    $query_filters['( linkidearight = ' . $focus_i['ideaid'] . ' OR linkidealeft = ' . $focus_i['ideaid'] . ')'] = null;
 
 }
 
@@ -144,13 +144,13 @@ foreach($query_filters as $key => $value){
 
 
 //Make sure its a valid type considering other filters:
-if(isset($_GET['linktype'])){
+if(isset($_GET['linkplayertype'])){
 
-    if (substr_count($_GET['linktype'], ',') > 0) {
+    if (substr_count($_GET['linkplayertype'], ',') > 0) {
         //This is multiple:
-        $query_filters['linktype IN (' . $_GET['linktype'] . ')'] = null;
-    } elseif (intval($_GET['linktype']) > 0) {
-        $query_filters['linktype'] = intval($_GET['linktype']);
+        $query_filters['linkplayertype IN (' . $_GET['linkplayertype'] . ')'] = null;
+    } elseif (intval($_GET['linkplayertype']) > 0) {
+        $query_filters['linkplayertype'] = intval($_GET['linkplayertype']);
     }
 
 }
@@ -228,9 +228,9 @@ echo '<span class="mini-header">ANY IDEA:</span>';
 echo '<input type="text" name="ideahashtag" value="' . ( $input_i ? $_GET['ideahashtag'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="linkleft" value="' . ((isset($_GET['linkleft'])) ? $_GET['linkleft'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="linkidealeft" value="' . ((isset($_GET['linkidealeft'])) ? $_GET['linkidealeft'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="linkright" value="' . ((isset($_GET['linkright'])) ? $_GET['linkright'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="linkidearight" value="' . ((isset($_GET['linkidearight'])) ? $_GET['linkidearight'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -248,11 +248,11 @@ echo '<span class="mini-header">ANY SOURCE:</span>';
 echo '<input type="text" name="playerhandle" value="' . ( $input_e ? $_GET['playerhandle'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="linkcreator" value="' . ((isset($_GET['linkcreator'])) ? $_GET['linkcreator'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="linkplayercreator" value="' . ((isset($_GET['linkplayercreator'])) ? $_GET['linkplayercreator'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="linkup" value="' . ((isset($_GET['linkup'])) ? $_GET['linkup'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="linkplayerup" value="' . ((isset($_GET['linkplayerup'])) ? $_GET['linkplayerup'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="linkdown" value="' . ((isset($_GET['linkdown'])) ? $_GET['linkdown'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="linkplayerdown" value="' . ((isset($_GET['linkplayerdown'])) ? $_GET['linkplayerdown'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -321,23 +321,23 @@ echo '<td>';
 echo '<div>';
 echo '<span class="mini-header">TRANSACTION TYPE:</span>';
 
-if(isset($_GET['linktype']) && substr_count($_GET['linktype'], ',')>0){
+if(isset($_GET['linkplayertype']) && substr_count($_GET['linkplayertype'], ',')>0){
 
     //We have multiple predefined transaction types, so we must use a text input:
-    echo '<input type="text" name="linktype" value="' . $_GET['linktype'] . '" class="form-control border">';
+    echo '<input type="text" name="linkplayertype" value="' . $_GET['linkplayertype'] . '" class="form-control border">';
 
 } else {
 
-    echo '<select class="form-control border" name="linktype" id="linktype" class="border" style="width: 100% !important;">';
+    echo '<select class="form-control border" name="linkplayertype" id="linkplayertype" class="border" style="width: 100% !important;">';
 
-    if(isset($_GET['linkcreator'])) {
+    if(isset($_GET['linkplayercreator'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->Ledger->fetch($ini_filter, array('linktype'), 0, 0, sort__player(), 'COUNT(linktype) as total_count, playertext, linktype', 'linktype, playertext') as $x) {
+        foreach($this->Ledger->fetch($ini_filter, array('linkplayertype'), 0, 0, sort__player(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['linktype'] . '" ' . ((isset($_GET['linktype']) && $_GET['linktype']==$x['linktype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['linkplayertype'] . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype']==$x['linkplayertype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 
@@ -351,7 +351,7 @@ if(isset($_GET['linktype']) && substr_count($_GET['linktype'], ',')>0){
         echo '<option value="0">ALL TRANSACTION TYPES</option>';
         foreach($this->config->item('players___4593') /* DISCOVERY Types */ as $playerid => $m){
             //Echo drop down:
-            echo '<option value="' . $playerid . '" ' . ((isset($_GET['linktype']) && $_GET['linktype']==$playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+            echo '<option value="' . $playerid . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype']==$playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
 
     }

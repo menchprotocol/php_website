@@ -5,9 +5,9 @@ $community_pills = '';
 foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Nodeplayers->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Nodeplayers->scissor_player(website_setting(0), 13207)) as $player_item) {
 
     foreach ($this->Ledger->fetch(array(
-        'linkup' => $player_item['playerid'],
-        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-    ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
+        'linkplayerup' => $player_item['playerid'],
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
 
         $total_count = view_player_covers(12274, $x['playerid'], 0, false);
 

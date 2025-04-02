@@ -7,19 +7,19 @@ foreach($this->Nodeideas->fetch(array(
     echo '<h2>' . view_idea_title($i) . '</h2>';
 
     $preg_query = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linkright' => $i['ideaid'],
-        'linkup' => 32103,
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'linkidearight' => $i['ideaid'],
+        'linkplayerup' => 32103,
     ));
 
 
     //See apply to Players:
     $apply_to = array();
     foreach($this->Ledger->fetch(array(
-            'linktype' => 7545, //Following Add
-        'linkright' => $i['ideaid'],
-    ), array('linkup')) as $this_tag){
-        array_push($apply_to, intval($this_tag['linkup']));
+            'linkplayertype' => 7545, //Following Add
+        'linkidearight' => $i['ideaid'],
+    ), array('linkplayerup')) as $this_tag){
+        array_push($apply_to, intval($this_tag['linkplayerup']));
     }
 
 
@@ -39,9 +39,9 @@ foreach($this->Nodeideas->fetch(array(
                 'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
             )) as $e){
                 foreach($this->Ledger->fetch(array(
-                    'linkup' => $e['playerid'],
-                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-                                ), array('linkdown'), 0) as $x) {
+                    'linkplayerup' => $e['playerid'],
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                ), array('linkplayerdown'), 0) as $x) {
 
                     $responses++;
                     $new_form = preg_replace($preg_query[0]['linktext'], "", $x['linktext'] );
@@ -60,9 +60,9 @@ foreach($this->Nodeideas->fetch(array(
 
                                 foreach($apply_to as $apply_playerid){
                                     foreach($this->Ledger->fetch(array(
-                                        'linkup' => $apply_playerid,
-                                        'linkdown' => $x['linkcreator'],
-                                        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                        'linkplayerup' => $apply_playerid,
+                                        'linkplayerdown' => $x['linkplayercreator'],
+                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                                                         ), array(), 0) as $follow_appended) {
                                         $links_updated++;
                                         $this->Ledger->update($follow_appended['linkid'], array(
@@ -84,9 +84,9 @@ foreach($this->Nodeideas->fetch(array(
                                 //Also update follower link?
                                 foreach($apply_to as $apply_playerid){
                                     foreach($this->Ledger->fetch(array(
-                                        'linkup' => $apply_playerid,
-                                        'linkdown' => $x['linkcreator'],
-                                        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                        'linkplayerup' => $apply_playerid,
+                                        'linkplayerdown' => $x['linkplayercreator'],
+                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                                             ), array(), 0) as $follow_appended) {
                                         $links_removed++;
                                         $this->Ledger->update($follow_appended['linkid'], array());
@@ -96,7 +96,7 @@ foreach($this->Nodeideas->fetch(array(
                             }
                         }
 
-                        echo 'Player ID '.$x['linkcreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                        echo 'Player ID '.$x['linkplayercreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
                     }
                 }
             }
@@ -114,9 +114,9 @@ foreach($this->Nodeideas->fetch(array(
         echo '<p>Applying against ['.$preg_query[0]['linktext'].'] results in:</p>';
 
         foreach($this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'LENGTH(linktext)>0' => null,
-            'linkleft' => $i['ideaid'],
+            'linkidealeft' => $i['ideaid'],
         ), array(), 0) as $x) {
             $responses++;
             $new_form = preg_replace($preg_query[0]['linktext'], "", $x['linktext'] );
@@ -135,9 +135,9 @@ foreach($this->Nodeideas->fetch(array(
 
                         foreach($apply_to as $apply_playerid){
                             foreach($this->Ledger->fetch(array(
-                                'linkup' => $apply_playerid,
-                                'linkdown' => $x['linkcreator'],
-                                'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                'linkplayerup' => $apply_playerid,
+                                'linkplayerdown' => $x['linkplayercreator'],
+                                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
                                 $this->Ledger->update($follow_appended['linkid'], array(
@@ -158,9 +158,9 @@ foreach($this->Nodeideas->fetch(array(
                         //Also update follower link?
                         foreach($apply_to as $apply_playerid){
                             foreach($this->Ledger->fetch(array(
-                                'linkup' => $apply_playerid,
-                                'linkdown' => $x['linkcreator'],
-                                'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                'linkplayerup' => $apply_playerid,
+                                'linkplayerdown' => $x['linkplayercreator'],
+                                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
                                 $this->Ledger->update($follow_appended['linkid'], array());
@@ -170,7 +170,7 @@ foreach($this->Nodeideas->fetch(array(
                     }
                 }
 
-                echo 'Player ID '.$x['linkcreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                echo 'Player ID '.$x['linkplayercreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
             }
         }
 

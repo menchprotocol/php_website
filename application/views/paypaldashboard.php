@@ -35,10 +35,10 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     echo '<h2>'.$es[0]['playertext'].' @'.$es[0]['playerhandle'].'</h2>';
 
     $idea_query = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
         'ideatype IN (' . join(',', $this->config->item('playerids___41055')) . ')' => null, //Payment Ideas
-        'linkup' => $es[0]['playerid'],
-    ), array('linkright'), 0, 0, array('linknumber' => 'ASC'));
+        'linkplayerup' => $es[0]['playerid'],
+    ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
 
 
     //List all payment Ideas and their total earnings
@@ -57,9 +57,9 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $currencies = array();
 
         foreach($this->Ledger->fetch(array(
-                    'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'linkleft' => $i['ideaid'],
-        ), array(), 0, 0, array('linkcreator' => 'ASC')) as $x){
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkidealeft' => $i['ideaid'],
+        ), array(), 0, 0, array('linkplayercreator' => 'ASC')) as $x){
 
             $linktext = unserialize($x['linktext']);
             $total_transactions++;
@@ -78,7 +78,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
             }
 
             //Count only if a TICKET idea:
-            if(!in_array($x['linktype'], $this->config->item('playerids___30469'))){
+            if(!in_array($x['linkplayertype'], $this->config->item('playerids___30469'))){
                 $linktext['mc_gross'] = 0;
                 $linktext['mc_fee'] = 0;
                 $linktext['mc_currency'] = '';
@@ -112,7 +112,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
             }
 
             $item_parts = explode('-',$linktext['item_number']);
-            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['linkcreator'] );
+            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['linkplayercreator'] );
             array_push($all_e, $this_e);
             $es = $this->Nodeplayers->fetch(array(
                 'playerid' => $this_e,
@@ -141,7 +141,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
                     $daily_sales[$date] = $this_payout;
                 }
 
-                $origin_e = $x['linkright'];
+                $origin_e = $x['linkidearight'];
                 if(isset($origin_sales[$origin_e])){
                     $origin_sales[$origin_e] += number_format($this_payout, 0, '','');
                 } else {
@@ -167,9 +167,9 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $gross_payout += $payout;
 
         $max_available = $this->Ledger->fetch(array(
-                    'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkright' => $i['ideaid'],
-            'linkup' => 26189,
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'linkidearight' => $i['ideaid'],
+            'linkplayerup' => 26189,
         ), array(), 1);
         $available_transactions = (count($max_available) && is_numeric($max_available[0]['linktext']) ? intval($max_available[0]['linktext']) : '∞');
 
@@ -211,13 +211,13 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e){
         $filters = array(
-                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-            'linkup' => $e['playerid'], //Member
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayerup' => $e['playerid'], //Member
         );
         if(count($all_e)){
-            $filters[ 'linkdown NOT IN (' . join(',', $all_e) . ')'] = null;
+            $filters[ 'linkplayerdown NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Ledger->fetch($filters, array('linkdown'), 0);
+        $other_es = $this->Ledger->fetch($filters, array('linkplayerdown'), 0);
     }
 
 
@@ -349,9 +349,9 @@ if(count($idea_query)){
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->Ledger->fetch(array(
-                                                    'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-                            'linkright' => $origin,
-                            'linkup' => 30564, //None Promoter
+                                                    'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                            'linkidearight' => $origin,
+                            'linkplayerup' => 30564, //None Promoter
                         )))){
                         //This item has more than 50% of sales, remove it:
                         continue;

@@ -13,7 +13,7 @@ $table_body = '';
 $totals_count = $this->Ledger->fetch(array(), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
-foreach($this->config->item('players___4593') as $linktype => $m) {
+foreach($this->config->item('players___4593') as $linkplayertype => $m) {
 
     $total_count++;
 
@@ -21,11 +21,11 @@ foreach($this->config->item('players___4593') as $linktype => $m) {
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
     $table_body .= '<td style="text-align: left;"><a href="'.view_memory(42903,42902).$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
-    $table_body .= '<td style="text-align: left;">'.$linktype.'</td>';
+    $table_body .= '<td style="text-align: left;">'.$linkplayertype.'</td>';
 
     //List all statuses:
     $listplayer_count = $this->Ledger->fetch(array(
-        'linktype' => $linktype,
+        'linkplayertype' => $linkplayertype,
     ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
     $interactions_this = $listplayer_count[0]['totals'];
     $total_interactions += $interactions_this;

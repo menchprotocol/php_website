@@ -34,9 +34,9 @@ foreach ($list_settings['query_string_filtered'] as $x) {
     foreach ($list_settings['column_i'] as $idea_var) {
 
         $discoveries = $this->Ledger->fetch(array(
-            'linkleft' => $idea_var['ideaid'],
-            'linkcreator' => $x['playerid'],
-            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkidealeft' => $idea_var['ideaid'],
+            'linkplayercreator' => $x['playerid'],
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 1);
 
         $idea_content .= '<td title="' . $x['playertext'] . ' x ' . view_idea_title($idea_var, true) . '">';
@@ -49,10 +49,10 @@ foreach ($list_settings['query_string_filtered'] as $x) {
 
             $set_linktext = '';
             foreach ($this->Ledger->fetch(array(
-                'linktype' => 33532, //Private Reply
-                'linkleft' => $idea_var['ideaid'],
-                'linkcreator' => $x['playerid'],
-            ), array('linkright'), 0, 1, array('linkid' => 'DESC')) as $response) {
+                'linkplayertype' => 33532, //Private Reply
+                'linkidealeft' => $idea_var['ideaid'],
+                'linkplayercreator' => $x['playerid'],
+            ), array('linkidearight'), 0, 1, array('linkid' => 'DESC')) as $response) {
                 $set_linktext = $response['ideatext'];
             }
 
@@ -74,9 +74,9 @@ foreach ($list_settings['query_string_filtered'] as $x) {
 
 
         if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Ledger->fetch(array(
-                    'linkdown' => $x['playerid'],
-                    'linkup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
-                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayerdown' => $x['playerid'],
+                    'linkplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                 ))))) {
             if (!isset($count_totals['i'][$idea_var['ideaid']])) {
                 $count_totals['i'][$idea_var['ideaid']] = 0;
@@ -96,15 +96,15 @@ foreach ($list_settings['query_string_filtered'] as $x) {
     foreach ($list_settings['column_e'] as $e) {
 
         $require_writing = count($this->Ledger->fetch(array(
-            'linkup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
-            'linkdown' => $e['playerid'],
-            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
+            'linkplayerdown' => $e['playerid'],
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         )));
 
         $fetch_data = $this->Ledger->fetch(array(
-            'linkdown' => $x['playerid'],
-            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-            'linkup' => $e['playerid'],
+            'linkplayerdown' => $x['playerid'],
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayerup' => $e['playerid'],
         ));
 
         $message_clean = '';
@@ -130,15 +130,15 @@ foreach ($list_settings['query_string_filtered'] as $x) {
         if ($e['playerid'] == 44328) {
             //Fetch primary filter:
             foreach ($this->Ledger->fetch(array(
-                'linkright' => $focus_i['ideaid'],
-                'linktype IN (' . join(',', $this->config->item('playerids___44344')) . ')' => null, //Idea Filter Additions
-            ), array('linkleft'), 1) as $target_i) {
+                'linkidearight' => $focus_i['ideaid'],
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___44344')) . ')' => null, //Idea Filter Additions
+            ), array('linkidealeft'), 1) as $target_i) {
                 //See History for this user:
                 $message_clean = '<a href="' . view_app_link(44328) . '/' . $target_i['ideahashtag'] . '@' . $x['playerhandle'] . '" target="_blank" title="' . $players___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $players___11035[44328]['m__cover'] . '</span></a>';
             }
         }
 
-        $body_content .= '<td title="' . $x['playertext'] . ' x ' . $e['playertext'] . '" class="' . (superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkcreator_' . $e['playerid'] . '_' . $x['playerid'] : '') . '" ideaid="0" playerid="' . $e['playerid'] . '" linkcreator="' . $x['playerid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" linkid="' . $x['linkid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
+        $body_content .= '<td title="' . $x['playertext'] . ' x ' . $e['playertext'] . '" class="' . (superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkplayercreator_' . $e['playerid'] . '_' . $x['playerid'] : '') . '" ideaid="0" playerid="' . $e['playerid'] . '" linkplayercreator="' . $x['playerid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" linkid="' . $x['linkid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
 
         if (strlen($message_clean) > 0) {
 
@@ -147,9 +147,9 @@ foreach ($list_settings['query_string_filtered'] as $x) {
             }
 
             $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Ledger->fetch(array(
-                    'linkdown' => $e['playerid'],
-                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-                    'linkup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
+                    'linkplayerdown' => $e['playerid'],
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1);
         }
     }
@@ -177,9 +177,9 @@ foreach ($list_settings['column_e'] as $e) {
 foreach ($list_settings['column_i'] as $idea_var) {
 
     $max_available = $this->Ledger->fetch(array(
-        'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linkright' => $idea_var['ideaid'],
-        'linkup' => 26189,
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'linkidearight' => $idea_var['ideaid'],
+        'linkplayerup' => 26189,
     ), array(), 1);
     $current_x = (isset($count_totals['i'][$idea_var['ideaid']]) ? $count_totals['i'][$idea_var['ideaid']] : 0);
     $max_limit = (count($max_available) && is_numeric($max_available[0]['linktext']) && intval($max_available[0]['linktext']) > 0 ? intval($max_available[0]['linktext']) : 0);
@@ -278,9 +278,9 @@ echo '</table>';
             var written_answer = '';
             if (require_writing) {
 
-                //return e_editor_load(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkcreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkcreator')).text());
+                //return e_editor_load(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayercreator')).text());
 
-                written_answer = prompt($(this).attr('title') + ":", $('.linkcreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkcreator')).text());
+                written_answer = prompt($(this).attr('title') + ":", $('.linkplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayercreator')).text());
                 if (written_answer == null) {
                     return false;
                 }
@@ -289,14 +289,14 @@ echo '</table>';
             var modify_data = {
                 ideaid: $(this).attr('ideaid'),
                 playerid: $(this).attr('playerid'),
-                linkcreator: $(this).attr('linkcreator'),
+                linkplayercreator: $(this).attr('linkplayercreator'),
                 linkid: $(this).attr('linkid'),
                 require_writing: require_writing,
                 written_answer: written_answer,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             };
 
-            $('.linkcreator_' + modify_data['playerid'] + '_' + modify_data['linkcreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
+            $('.linkplayercreator_' + modify_data['playerid'] + '_' + modify_data['linkplayercreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
             $.post("/app/e_toggle_player", modify_data, function (data) {
@@ -304,7 +304,7 @@ echo '</table>';
                 if (data.status) {
 
                     //Update Player id IF existed previously:
-                    $('.linkcreator_' + modify_data['playerid'] + '_' + modify_data['linkcreator']).html(data.message);
+                    $('.linkplayercreator_' + modify_data['playerid'] + '_' + modify_data['linkplayercreator']).html(data.message);
 
                 } else {
                     alert('ERROR:' + data.message);

@@ -36,16 +36,16 @@ foreach($is as $in){
 
     //Fetch Next Ideas:
     foreach($this->Ledger->fetch(array(
-        'linktype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
-        'linkleft' => $in['ideaid'],
-    ), array('linkright'), 0, 0) as $next_i){
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
+        'linkidealeft' => $in['ideaid'],
+    ), array('linkidearight'), 0, 0) as $next_i){
 
         $this->db->insert('gephilinks', array(
-            'source' => $id_prefix[12273].$next_i['linkleft'],
-            'target' => $id_prefix[12273].$next_i['linkright'],
-            'label' => $players___4593[$next_i['linktype']]['m__title'], //TODO maybe give visibility to condition here?
+            'source' => $id_prefix[12273].$next_i['linkidealeft'],
+            'target' => $id_prefix[12273].$next_i['linkidearight'],
+            'label' => $players___4593[$next_i['linkplayertype']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_i['linktype'],
+            'edge_type' => $next_i['linkplayertype'],
         ));
 
     }
@@ -67,16 +67,16 @@ foreach($es as $en){
 
     //Fetch followers:
     foreach($this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        'linkup' => $en['playerid'],
-    ), array('linkdown'), 0, 0) as $player_down){
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayerup' => $en['playerid'],
+    ), array('linkplayerdown'), 0, 0) as $player_down){
 
         $this->db->insert('gephilinks', array(
-            'source' => $id_prefix[12274].$player_down['linkup'],
-            'target' => $id_prefix[12274].$player_down['linkdown'],
-            'label' => $players___4593[$player_down['linktype']]['m__title'].': '.$player_down['linktext'],
+            'source' => $id_prefix[12274].$player_down['linkplayerup'],
+            'target' => $id_prefix[12274].$player_down['linkplayerdown'],
+            'label' => $players___4593[$player_down['linkplayertype']]['m__title'].': '.$player_down['linktext'],
             'weight' => 1,
-            'edge_type' => $player_down['linktype'],
+            'edge_type' => $player_down['linkplayertype'],
         ));
 
     }

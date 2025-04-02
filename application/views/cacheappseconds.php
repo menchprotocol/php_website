@@ -12,10 +12,10 @@ foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
 
     //Fetch Last Cache
     $latest_cache = $this->Ledger->fetch(array(
-        'linkdomain' => website_setting(0),
-        'linktype' => 44179, //Triggered
-        'linkup' => 14599, //Cache App
-        'linkdown' => $app_playerid,
+        'linkplayerdomain' => website_setting(0),
+        'linkplayertype' => 44179, //Triggered
+        'linkplayerup' => 14599, //Cache App
+        'linkplayerdown' => $app_playerid,
         ), array(), 1, 0, array('linktime' => 'DESC'));
 
     echo '<div class="col-8 main__title"><span class="icon-block">'.$cache_apps['m__cover'].'</span>'.$cache_apps['m__title'].'</div>';

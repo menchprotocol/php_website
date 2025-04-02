@@ -47,24 +47,24 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 
 //Fetch User Data:
 $fetch_emails = $this->Ledger->fetch(array(
-    'linkup' => 3288, //Email
-    'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayerup' => 3288, //Email
+    'linkplayerdown' => $player_e['playerid'],
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_phones = $this->Ledger->fetch(array(
-    'linkup' => 4783, //Phone
-    'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayerup' => 4783, //Phone
+    'linkplayerdown' => $player_e['playerid'],
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_first_names = $this->Ledger->fetch(array(
-    'linkup' => 42584, //First Name
-    'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayerup' => 42584, //First Name
+    'linkplayerdown' => $player_e['playerid'],
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_last_names = $this->Ledger->fetch(array(
-    'linkup' => 30198, //Last Name
-    'linkdown' => $player_e['playerid'],
-    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayerup' => 30198, //Last Name
+    'linkplayerdown' => $player_e['playerid'],
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
 ));
 
 $set_email = false;
@@ -79,11 +79,11 @@ if(count($fetch_phones) && strlen($fetch_phones[0]['linktext'])>=8) {
 if(!$set_email){
     //No Valid email:
     $this->Ledger->create(array(
-        'linktype' => 44179, //Triggered
-        'linkup' => 4246, //Platform Bug Reports
-        'linkdown' => $player_e['playerid'],
-        'linkcreator' => $player_e['playerid'],
-        'linkright' => $_POST['focus__id'],
+        'linkplayertype' => 44179, //Triggered
+        'linkplayerup' => 4246, //Platform Bug Reports
+        'linkplayerdown' => $player_e['playerid'],
+        'linkplayercreator' => $player_e['playerid'],
+        'linkidearight' => $_POST['focus__id'],
         'linktext' => 'No Valid email found for invoice',
     ));
     return view_json(array(
@@ -104,14 +104,14 @@ foreach($this->Nodeideas->fetch(array(
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
         $invoice_due_dates = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkright' => $i['ideaid'],
-            'linkup' => 44378, //Invoice Due Date
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'linkidearight' => $i['ideaid'],
+            'linkplayerup' => 44378, //Invoice Due Date
         ));
         $invoice_min_payments = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkright' => $i['ideaid'],
-            'linkup' => 44379, //Invoice Min Payment
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'linkidearight' => $i['ideaid'],
+            'linkplayerup' => 44379, //Invoice Min Payment
         ));
         $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['linktext'])>0 ? floatval($invoice_min_payments[0]['linktext']) : 0 );
 
@@ -158,19 +158,19 @@ foreach($this->Nodeideas->fetch(array(
 
         //Delete Old Parent Invoice:
         foreach($this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'linkleft' => $i['ideaid'],
-            'linkcreator' => $player_e['playerid'],
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkidealeft' => $i['ideaid'],
+            'linkplayercreator' => $player_e['playerid'],
         ), array(), 0) as $x_discovery){
             $this->Ledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
         }
 
         //Delete Old Child Answers:
         foreach($this->Ledger->fetch(array(
-            'linktype' => 7712, //Input Choice
-            'linkcreator' => $player_e['playerid'],
-            'linkleft' => $i['ideaid'],
-        ), array('linkright')) as $x_selection){
+            'linkplayertype' => 7712, //Input Choice
+            'linkplayercreator' => $player_e['playerid'],
+            'linkidealeft' => $i['ideaid'],
+        ), array('linkidearight')) as $x_selection){
 
             //Remove Selection:
             $this->Ledger->update($x_selection['linkid'], array(), $player_e['playerid']);
@@ -178,9 +178,9 @@ foreach($this->Nodeideas->fetch(array(
             //Remove discovery if we can:
             if(!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))){
                 foreach($this->Ledger->fetch(array(
-                        'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                    'linkleft' => $x_selection['ideaid'],
-                    'linkcreator' => $player_e['playerid'],
+                        'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'linkidealeft' => $x_selection['ideaid'],
+                    'linkplayercreator' => $player_e['playerid'],
                 ), array(), 0) as $x_discovery){
                     $this->Ledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
                 }
@@ -205,11 +205,11 @@ foreach($this->Nodeideas->fetch(array(
 
                 //Save Answer:
                 $this->Ledger->create(array(
-                    'linktype' => 7712, //Input Choice
-                    'linkcreator' => $player_e['playerid'],
-                    'linkleft' => $_POST['focus__id'],
+                    'linkplayertype' => 7712, //Input Choice
+                    'linkplayercreator' => $player_e['playerid'],
+                    'linkidealeft' => $_POST['focus__id'],
                     'linknumber' => $_POST['invoice_items'][$key]['quantity'],
-                    'linkright' => $_POST['invoice_items'][$key]['ideaid'],
+                    'linkidearight' => $_POST['invoice_items'][$key]['ideaid'],
                 ));
             }
         }

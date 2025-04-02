@@ -16,9 +16,9 @@ if(!count($list_settings['list_config'][34513])){
 
 
 foreach($this->Ledger->fetch(array(
-    'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-    'linkup IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes
-), array('linkright'), 0, 0, array('linknumber' => 'ASC')) as $link_i){
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+    'linkplayerup IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes
+), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $link_i){
 
     $list_settings = list_settings($link_i['ideahashtag'], true);
     if(!count($list_settings['query_string_filtered'])){

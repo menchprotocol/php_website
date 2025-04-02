@@ -71,23 +71,23 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
         )) as $player_append){
             $completed = 0;
             foreach($this->Ledger->fetch(array(
-                'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                'linkleft' => $is[0]['ideaid'],
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'linkidealeft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
                 if(!count($this->Ledger->fetch(array(
-                    'linkup' => $player_append['playerid'],
-                    'linkdown' => $x['linkcreator'],
+                    'linkplayerup' => $player_append['playerid'],
+                    'linkplayerdown' => $x['linkplayercreator'],
                     'linktext' => $x['linktext'],
-                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     )))){
                     //Increment Player link:
                     $completed++;
                     $this->Ledger->create(array(
-                        'linkcreator' => ($player_e ? $player_e['playerid'] : $x['linkcreator']),
-                        'linkup' => $player_append['playerid'],
-                        'linkdown' => $x['linkcreator'],
+                        'linkplayercreator' => ($player_e ? $player_e['playerid'] : $x['linkplayercreator']),
+                        'linkplayerup' => $player_append['playerid'],
+                        'linkplayerdown' => $x['linkplayercreator'],
                         'linktext' => $x['linktext'],
-                        'linktype' => 4230,
+                        'linkplayertype' => 4230,
                     ));
                 }
             }

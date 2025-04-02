@@ -16,8 +16,8 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             //echo $email.'<hr />';
 
             foreach($this->Ledger->fetch(array(
-                            'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-                'linkup' => 3288, //Email
+                            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayerup' => 3288, //Email
                 'linktext' => trim(strtolower($email)),
             )) as $player_data){
 
@@ -25,17 +25,17 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 
                 //Do we need to add?
                 if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Ledger->fetch(array(
-                                    'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-                    'linkup' => $_POST['import_playerid'],
-                    'linkdown' => $player_data['linkdown'],
+                                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayerup' => $_POST['import_playerid'],
+                    'linkplayerdown' => $player_data['linkplayerdown'],
                 )))){
 
                     $added_emails++;
                     $this->Ledger->create(array(
-                        'linktype' => 4230,
-                        'linkcreator' => $player_e['playerid'],
-                        'linkup' => $_POST['import_playerid'],
-                        'linkdown' => $player_data['linkdown'],
+                        'linkplayertype' => 4230,
+                        'linkplayercreator' => $player_e['playerid'],
+                        'linkplayerup' => $_POST['import_playerid'],
+                        'linkplayerdown' => $player_data['linkplayerdown'],
                     ));
 
                 }

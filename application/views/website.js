@@ -308,37 +308,37 @@ function view_s_js_line(suggestion, default_handle = '@'){
     }
 }
 
-function player_load_finder(linktype) {
-    console.log(linktype + " player_load_finder()");
+function player_load_finder(linkplayertype) {
+    console.log(linkplayertype + " player_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-'+linktype + ' .add-input').keypress(function (e) {
+    $('.new-list-'+linkplayertype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            new_player(linktype, 0);
+            new_player(linkplayertype, 0);
             return true;
         }
     });
 }
 
-function i_load_finder(linktype) {
-    console.log(linktype + " i_load_finder()");
+function i_load_finder(linkplayertype) {
+    console.log(linkplayertype + " i_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-'+linktype + ' .add-input').keypress(function (e) {
+    $('.new-list-'+linkplayertype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            new_idea(linktype, 0);
+            new_idea(linkplayertype, 0);
             return true;
         }
     });
 }
 
-function view_s_js_cover(linktype, suggestion, action_id){
+function view_s_js_cover(linkplayertype, suggestion, action_id){
 
-    if(!js_playerids___26010.includes(linktype)){
+    if(!js_playerids___26010.includes(linkplayertype)){
         alert('Missing type in JS UI');
         return false;
     }
@@ -355,12 +355,12 @@ function view_s_js_cover(linktype, suggestion, action_id){
     }
 
     //Return appropriate UI:
-    if(linktype==26011){
+    if(linkplayertype==26011){
         //Mini Coin
         var search_only_app = $("#website_finder").val().charAt(0)=='-';
         var target_url = ( search_only_app ? suggestion.s__url.replace('/@','/') : suggestion.s__url );
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' '+( search_only_app ? ' card-6287 ' : '' )+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+target_url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+target_url+'" class="main__title">'+(suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">'+suggestion.s__title+'</span>' )+'</a></div></div></div>';
-    } else if(linktype==26013){
+    } else if(linkplayertype==26013){
         //Link Player
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="new_player('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="new_player('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
     }
@@ -371,26 +371,26 @@ function view_s_mini_js(s__cover,s__title){
 }
 
 
-function toggle_headline(linktype){
+function toggle_headline(linkplayertype){
 
-    var linkdown = 0;
-    var linkright = 0;
+    var linkplayerdown = 0;
+    var linkidearight = 0;
     var focus__node = parseInt($('#focus__node').val());
     if(focus__node==12273){
-        linkright = parseInt($('#focus__id').val());
+        linkidearight = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        linkdown = parseInt($('#focus__id').val());
+        linkplayerdown = parseInt($('#focus__id').val());
     }
 
-    if($('.headline_title_' + linktype+' .icon_26008').hasClass('hidden')){
+    if($('.headline_title_' + linkplayertype+' .icon_26008').hasClass('hidden')){
 
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-        $('.headline_title_' + linktype+ ' .icon_26008').removeClass('hidden');
-        $('.headline_title_' + linktype+ ' .icon_26007').addClass('hidden');
-        $('.headline_body_' + linktype).addClass('hidden');
+        $('.headline_title_' + linkplayertype+ ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + linkplayertype+ ' .icon_26007').addClass('hidden');
+        $('.headline_body_' + linkplayertype).addClass('hidden');
 
-        if (linktype==6255){
+        if (linkplayertype==6255){
             $('.navigate_12273').removeClass('active');
         }
 
@@ -403,17 +403,17 @@ function toggle_headline(linktype){
 
         //Currently closed, must now be opened
         var action_id = 26007; //Open
-        $('.headline_title_' + linktype+ ' .icon_26007').removeClass('hidden');
-        $('.headline_title_' + linktype+ ' .icon_26008').addClass('hidden');
-        $('.headline_body_' + linktype).removeClass('hidden');
+        $('.headline_title_' + linkplayertype+ ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + linkplayertype+ ' .icon_26008').addClass('hidden');
+        $('.headline_body_' + linkplayertype).removeClass('hidden');
 
-        if (linktype==6255){
+        if (linkplayertype==6255){
             $('.navigate_12273').addClass('active');
         }
 
         //Scroll To:
         $('html, body').animate({
-            scrollTop: $('.headline_body_' + linktype).offset().top
+            scrollTop: $('.headline_body_' + linkplayertype).offset().top
         }, 13);
 
     }
@@ -421,24 +421,24 @@ function toggle_headline(linktype){
 }
 
 
-function e_sort_load(linktype) {
+function e_sort_load(linkplayertype) {
 
     load_covers();
 
-    console.log('Tring to load Player Sort for @'+linktype);
+    console.log('Tring to load Player Sort for @'+linkplayertype);
 
-    var sort_item_count = parseInt($('.headline_body_' + linktype).attr('read-counter'));
+    var sort_item_count = parseInt($('.headline_body_' + linkplayertype).attr('read-counter'));
 
-    if(!js_playerids___13911.includes(linktype)){
+    if(!js_playerids___13911.includes(linkplayertype)){
         //Does not support sorting:
-        console.log(linktype+' is not sortable');
+        console.log(linkplayertype+' is not sortable');
         return false;
     } else if(sort_item_count<1 || sort_item_count>parseInt(js_players___6404[11064]['m__message'])){
         return false;
     }
 
     setTimeout(function () {
-        var theobject = document.getElementById("list-in-"+linktype);
+        var theobject = document.getElementById("list-in-"+linkplayertype);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
             console.log('No object');
@@ -446,15 +446,15 @@ function e_sort_load(linktype) {
         }
 
         //Show sort icon:
-        console.log('Completed Loading Sorting for @'+linktype)
+        console.log('Completed Loading Sorting for @'+linkplayertype)
         $('.sortplayer_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-"+linktype+" .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+linktype+" .sortplayer_grab", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-"+linkplayertype+" .sort_draggable", // Specifies which items inside the element should be sortable
+            handle: "#list-in-"+linkplayertype+" .sortplayer_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                e_sort_save(linktype);
+                e_sort_save(linkplayertype);
             }
         });
     }, 377);
@@ -486,47 +486,47 @@ function load_hashtag_menu(load_hashtag = null, is_first_load = true){
 var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
-function toggle_pills(linktype_hash, is_first_load){
+function toggle_pills(linkplayertype_hash, is_first_load){
 
-    console.log('Toggle Pill: '+linktype_hash);
+    console.log('Toggle Pill: '+linkplayertype_hash);
 
-    if(pills_loading && !loaded_pills.includes(linktype_hash)){
+    if(pills_loading && !loaded_pills.includes(linkplayertype_hash)){
         return false;
     } else if (loading_in_progress){
         return false;
     }
 
-    console.log('Toggle Pill Active: '+linktype_hash);
+    console.log('Toggle Pill Active: '+linkplayertype_hash);
 
-    if($('.handle_nav_'+linktype_hash).attr('linktype') && $('.handle_nav_'+linktype_hash).attr('linktype').length){
-        linktype = parseInt($('.handle_nav_'+linktype_hash).attr('linktype'));
+    if($('.handle_nav_'+linkplayertype_hash).attr('linkplayertype') && $('.handle_nav_'+linkplayertype_hash).attr('linkplayertype').length){
+        linkplayertype = parseInt($('.handle_nav_'+linkplayertype_hash).attr('linkplayertype'));
     } else {
-        console.log('ERROR: #'+linktype_hash+' is not a valid menu.');
+        console.log('ERROR: #'+linkplayertype_hash+' is not a valid menu.');
         return false;
     }
 
     loading_in_progress = true;
 
-    if(!loaded_pills.includes(linktype_hash)){
-        pills_loading = linktype_hash;
+    if(!loaded_pills.includes(linkplayertype_hash)){
+        pills_loading = linkplayertype_hash;
     }
 
-    var linkdown = 0;
-    var linkright = 0;
+    var linkplayerdown = 0;
+    var linkidearight = 0;
     var focus__node = parseInt($('#focus__node').val());
 
     if(focus__node==12273){
-        linkright = parseInt($('#focus__id').val());
+        linkidearight = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        linkdown = parseInt($('#focus__id').val());
+        linkplayerdown = parseInt($('#focus__id').val());
     }
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
-    $('.xtypetitle_'+linktype).removeClass('hidden');
+    $('.xtypetitle_'+linkplayertype).removeClass('hidden');
 
 
-    if(!$('.thepill' + linktype+' .nav-link').hasClass('active')){
+    if(!$('.thepill' + linkplayertype+' .nav-link').hasClass('active')){
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
@@ -534,31 +534,31 @@ function toggle_pills(linktype_hash, is_first_load){
         //Hide all elements
         $('.nav-link').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + linktype+ ' .nav-link').addClass('active');
-        $('.headline_body_' + linktype).removeClass('hidden');
+        $('.thepill' + linkplayertype+ ' .nav-link').addClass('active');
+        $('.headline_body_' + linkplayertype).removeClass('hidden');
 
         //Set focus tab:
-        console.log('focus_group Updated from '+focus_group+' to '+linktype);
-        focus_group = linktype;
-        if(!is_first_load && (!window.location.hash || window.location.hash!=$('.thepill' + linktype+' .nav-link').attr('href'))) {
-            window.location.hash = $('.thepill' + linktype+' .nav-link').attr('href');
+        console.log('focus_group Updated from '+focus_group+' to '+linkplayertype);
+        focus_group = linkplayertype;
+        if(!is_first_load && (!window.location.hash || window.location.hash!=$('.thepill' + linkplayertype+' .nav-link').attr('href'))) {
+            window.location.hash = $('.thepill' + linkplayertype+' .nav-link').attr('href');
         }
 
         //Do we need to load data via ajax?
-        if( !loaded_pills.includes(linktype_hash) ){
+        if( !loaded_pills.includes(linkplayertype_hash) ){
 
-            $('.headline_body_' + linktype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + linkplayertype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
             var focus__node = parseInt($('#focus__node').val());
-            console.log('Tab loading from @'+focus__node+' for @'+linktype);
+            console.log('Tab loading from @'+focus__node+' for @'+linkplayertype);
 
             if(focus__node==12273){
 
                 var loading_url = "/app/view_idea_body";
                 var loading_data = {
                     focus__node:focus__node,
-                    linktype:linktype,
-                    counter:$('.headline_body_' + linktype).attr('read-counter'),
+                    linkplayertype:linkplayertype,
+                    counter:$('.headline_body_' + linkplayertype).attr('read-counter'),
                     ideaid:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
@@ -568,8 +568,8 @@ function toggle_pills(linktype_hash, is_first_load){
                 var loading_url = "/app/view_player_body";
                 var loading_data = {
                     focus__node:focus__node,
-                    linktype:linktype,
-                    counter:$('.headline_body_'+linktype).attr('read-counter'),
+                    linkplayertype:linkplayertype,
+                    counter:$('.headline_body_'+linkplayertype).attr('read-counter'),
                     playerid:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
@@ -587,9 +587,9 @@ function toggle_pills(linktype_hash, is_first_load){
             $.post(loading_url, loading_data, function (data) {
 
                 //Add data to the page:
-                $('.headline_body_' + linktype + ' .tab_content').html(data);
+                $('.headline_body_' + linkplayertype + ' .tab_content').html(data);
 
-                loaded_pills.push(linktype_hash);
+                loaded_pills.push(linkplayertype_hash);
 
                 load_card_clickers();
                 initiate_algolia();
@@ -609,10 +609,10 @@ function toggle_pills(linktype_hash, is_first_load){
 
                 setTimeout(function () {
 
-                    if(js_playerids___11020.includes(linktype) || (focus__node==12274 && (js_playerids___42261.includes(linktype) || js_playerids___42284.includes(linktype)))){
-                        i_sort_load(linktype);
-                    } else if(js_playerids___11028.includes(linktype) || (focus__node==12273 && (js_playerids___42261.includes(linktype) || js_playerids___42284.includes(linktype)))) {
-                        e_sort_load(linktype);
+                    if(js_playerids___11020.includes(linkplayertype) || (focus__node==12274 && (js_playerids___42261.includes(linkplayertype) || js_playerids___42284.includes(linkplayertype)))){
+                        i_sort_load(linkplayertype);
+                    } else if(js_playerids___11028.includes(linkplayertype) || (focus__node==12273 && (js_playerids___42261.includes(linkplayertype) || js_playerids___42284.includes(linkplayertype)))) {
+                        e_sort_load(linkplayertype);
                     }
 
                     activate_popover();
@@ -703,21 +703,21 @@ function js_view_shuffle_message(playerid){
 }
 
 
-function loadtab(linktype, tab_data_id){
+function loadtab(linkplayertype, tab_data_id){
 
     //Hide all tabs:
-    $('.tab-group-'+linktype).addClass('hidden');
-    $('.tab-nav-'+linktype).removeClass('active');
+    $('.tab-group-'+linkplayertype).addClass('hidden');
+    $('.tab-nav-'+linkplayertype).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-'+linktype+'.tab-data-'+tab_data_id).removeClass('hidden');
-    $('.tab-nav-'+linktype+'.tab-head-'+tab_data_id).addClass('active');
+    $('.tab-group-'+linkplayertype+'.tab-data-'+tab_data_id).removeClass('hidden');
+    $('.tab-nav-'+linkplayertype+'.tab-head-'+tab_data_id).addClass('active');
 
 }
 
 
 var init_in_process = 0;
-function x_remove(linkid, linktype, ideahashtag){
+function x_remove(linkid, linkplayertype, ideahashtag){
 
     if(init_in_process==linkid){
         return false;
@@ -742,7 +742,7 @@ function x_remove(linkid, linktype, ideahashtag){
 
         } else {
 
-            adjust_counter(linktype, -1);
+            adjust_counter(linkplayertype, -1);
 
             //REMOVE BOOKMARK from UI:
             $('.cover_x_'+linkid).fadeOut();
@@ -786,44 +786,44 @@ function initiate_algolia(){
     });
 }
 
-function player_load_cover(linktype, playerid, counter, first_segment){
+function player_load_cover(linkplayertype, playerid, counter, first_segment){
 
-    if($('.coinsplayer_'+playerid+'_'+linktype).html().length){
+    if($('.coinsplayer_'+playerid+'_'+linkplayertype).html().length){
         //Already loaded:
        return false;
     }
 
-    $('.coinsplayer_'+playerid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coinsplayer_'+playerid+'_'+linkplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/player_load_cover", {
-        linktype:linktype,
+        linkplayertype:linkplayertype,
         playerid:playerid,
         counter:counter,
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coinsplayer_'+playerid+'_'+linktype).html(data);
+        $('.coinsplayer_'+playerid+'_'+linkplayertype).html(data);
     });
 
 }
 
-function i_load_cover(linktype, ideaid, counter, first_segment, current_e){
+function i_load_cover(linkplayertype, ideaid, counter, first_segment, current_e){
 
-    if($('.coins_idea_'+ideaid+'_'+linktype).html().length){
+    if($('.coins_idea_'+ideaid+'_'+linkplayertype).html().length){
         //Already loaded:
         return false;
     }
 
-    $('.coins_idea_'+ideaid+'_'+linktype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_idea_'+ideaid+'_'+linkplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/i_load_cover", {
-        linktype:linktype,
+        linkplayertype:linkplayertype,
         ideaid:ideaid,
         counter:counter,
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_idea_'+ideaid+'_'+linktype).html(data);
+        $('.coins_idea_'+ideaid+'_'+linkplayertype).html(data);
     });
 
 }
@@ -868,10 +868,10 @@ function load_covers(){
     $(".loadplayer_covers, .load_idea_covers").unbind();
 
     $(".loadplayer_covers").click(function(event) {
-        player_load_cover($(this).attr('load_linktype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        player_load_cover($(this).attr('load_linkplayertype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
     $(".load_idea_covers").click(function(event) {
-        i_load_cover($(this).attr('load_linktype'),$(this).attr('load_ideaid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        i_load_cover($(this).attr('load_linkplayertype'),$(this).attr('load_ideaid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
 
@@ -1159,8 +1159,8 @@ $(document).ready(function () {
     set_autosize($('.texttype_lg'));
 
     $('.trigger_modal').click(function (e) {
-        var linktype = parseInt($(this).attr('linktype'));
-        $('#modal'+linktype).modal('show');
+        var linkplayertype = parseInt($(this).attr('linkplayertype'));
+        $('#modal'+linkplayertype).modal('show');
     });
 
 
@@ -1400,12 +1400,12 @@ function update_cover_mini(cover_code, target_css){
 
 
 
-function i_editor_switch(link_linktype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0){
+function i_editor_switch(link_linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0){
 
-    console.log('SWITCHING TO '+link_linktype+'/'+next_ideaid+'/'+previous_ideaid+'/'+do_checks+'/'+$('#modal31911 .save_ideatext').val()+'/'+parseInt($('#modal31911 .created_ideaid').val()));
+    console.log('SWITCHING TO '+link_linkplayertype+'/'+next_ideaid+'/'+previous_ideaid+'/'+do_checks+'/'+$('#modal31911 .save_ideatext').val()+'/'+parseInt($('#modal31911 .created_ideaid').val()));
 
     /*
-    if(!next_ideaid && !previous_ideaid && !link_linktype && !do_checks){
+    if(!next_ideaid && !previous_ideaid && !link_linkplayertype && !do_checks){
         var r = confirm("Are you sure you want to unlink this idea?");
         if (!(r==true)) {
             return false;
@@ -1414,7 +1414,7 @@ function i_editor_switch(link_linktype = 0, next_ideaid = 0, previous_ideaid = 0
     */
 
     //Will switch the nature/direction of the link:
-    return i_editor_load(0, 0, link_linktype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
+    return i_editor_load(0, 0, link_linkplayertype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
 }
 
 function display_media(mediaframe_id, uploader_id, ideaid){
@@ -1426,10 +1426,10 @@ function display_media(mediaframe_id, uploader_id, ideaid){
     sort_media(mediaframe_id);
 }
 
-function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
+function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
 
 
-    $(".idea_link_direction, .link_idea_unlink, .idea_linktype").addClass('hidden');
+    $(".idea_link_direction, .link_idea_unlink, .idea_linkplayertype").addClass('hidden');
     var focus_idea_id = ( parseInt($('#focus__node').val())==12273 ? parseInt($('#focus__id').val()) : 0 );
     $("#modal31911 .save_results").html('');
 
@@ -1447,23 +1447,23 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
 
         //Are we adding an idea for a target action tab?
         console.log('i Modal loaded for '+focus_group);
-        if(focus_idea_id && do_checks && focus_group>0 && !next_ideaid && !previous_ideaid && !ideaid && !linkid && !link_linktype){
+        if(focus_idea_id && do_checks && focus_group>0 && !next_ideaid && !previous_ideaid && !ideaid && !linkid && !link_linkplayertype){
             if(js_playerids___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)){
                 //Next idea group:
                 next_ideaid = focus_idea_id;
-                link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                link_linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             } else if(js_playerids___42380.includes(focus_group)) {
                 //Previous idea group:
                 previous_ideaid = focus_idea_id;
-                link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                link_linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             }
         }
 
 
-        if(!link_linktype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id){
+        if(!link_linkplayertype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id){
             console.log('MATCH');
             next_ideaid = focus_idea_id;
-            link_linktype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
+            link_linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
         }
     }
 
@@ -1474,8 +1474,8 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    var is_next = next_ideaid && js_playerids___4486.includes(link_linktype);
-    var is_prev = previous_ideaid && js_playerids___4486.includes(link_linktype);
+    var is_next = next_ideaid && js_playerids___4486.includes(link_linkplayertype);
+    var is_prev = previous_ideaid && js_playerids___4486.includes(link_linkplayertype);
 
     if(is_next || is_prev){
 
@@ -1498,7 +1498,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
             $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_ideacache_'+next_ideaid).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea_editor_switch('+link_linktype+',0,'+next_ideaid+',1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea_editor_switch('+link_linkplayertype+',0,'+next_ideaid+',1)');
 
         } else if(is_prev){
 
@@ -1510,13 +1510,13 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linktype = 0, next_ideaid = 
             $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_ideacache_'+previous_ideaid).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea_editor_switch('+link_linktype+','+previous_ideaid+',0,1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea_editor_switch('+link_linkplayertype+','+previous_ideaid+',0,1)');
 
         }
 
-        $('.link_idea_unlink, .idea_linktype').removeClass('hidden');
+        $('.link_idea_unlink, .idea_linkplayertype').removeClass('hidden');
         if(!passon_ideaid){
-            update_form_select(4486, link_linktype, 1, false);
+            update_form_select(4486, link_linkplayertype, 1, false);
         }
     }
 
@@ -1749,7 +1749,7 @@ function i_editor_save(){
         save_linkid:         $('#modal31911 .save_linkid').val(),
         next_ideaid:         $('#modal31911 .next_ideaid').val(),
         previous_ideaid:     $('#modal31911 .previous_ideaid').val(),
-        save_linktype:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
+        save_linkplayertype:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
         focus_group:     focus_group,
         save_linktext:    $('#modal31911 .save_linktext').val().trim(),
         save_ideatext:    $('#modal31911 .save_ideatext').val().trim(),
@@ -1825,7 +1825,7 @@ function i_editor_save(){
             console.log('START INSERTING');
             if(!current_ideaid && created_ideaid>0 && focus_group>0){
 
-                console.log('ADD NEW '+modify_data['save_linktype']+' & x GROUP: '+focus_group);
+                console.log('ADD NEW '+modify_data['save_linkplayertype']+' & x GROUP: '+focus_group);
 
                 $("#list-in-" + focus_group).append(data.return_ideacache_full);
 
@@ -1837,7 +1837,7 @@ function i_editor_save(){
 
             } else {
 
-                console.log('UPDATE  '+modify_data['save_linktype']+' & x GROUP: '+focus_group);
+                console.log('UPDATE  '+modify_data['save_linkplayertype']+' & x GROUP: '+focus_group);
 
                 //Update Cache otherwise:
                 $('.ui_ideacache_'+modify_data['save_ideaid']).html(data.return_ideacache_links);
@@ -2446,7 +2446,7 @@ function x_view_load_page() {
     $.post("/app/x_view_load_page", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        linktype: focus_group,
+        linkplayertype: focus_group,
         current_page: current_page[focus_group],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -2483,7 +2483,7 @@ function toggle_max_view(css_class){
 
 //Adds OR transactions Players to Players
 var e_is_adding = false;
-function new_player(linktype, player_existing_id) {
+function new_player(linkplayertype, player_existing_id) {
 
     if(e_is_adding){
         return false;
@@ -2493,7 +2493,7 @@ function new_player(linktype, player_existing_id) {
     //If player_existing_id=0 it means we are creating a new Player and then adding it, in which case player_new_string is required
     e_is_adding = true;
 
-    var input = $('.new-list-'+linktype+' .add-input');
+    var input = $('.new-list-'+linkplayertype+' .add-input');
 
     var original_photo = $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html();
     $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
@@ -2511,7 +2511,7 @@ function new_player(linktype, player_existing_id) {
     $.post("/app/new_player", {
 
         focus__node: parseInt($('#focus__node').val()),
-        linktype: linktype,
+        linkplayertype: linkplayertype,
         focus__id: parseInt($('#focus__id').val()),
         player_existing_id: player_existing_id,
         player_new_string: player_new_string,
@@ -2527,15 +2527,15 @@ function new_player(linktype, player_existing_id) {
             //input.focus();
 
             //Add new object to list:
-            adjust_counter(linktype, 1);
+            adjust_counter(linkplayertype, 1);
 
             //See if we previously have a list in place?
-            if ($("#list-in-" + linktype + " .card-12274").length > 0) {
+            if ($("#list-in-" + linkplayertype + " .card-12274").length > 0) {
                 //Downwards add to start"
-                $("#list-in-" + linktype + " .card-12274:first").before(data.e_new_echo);
+                $("#list-in-" + linkplayertype + " .card-12274:first").before(data.e_new_echo);
             } else {
                 //Raw list, add before input filed:
-                $("#list-in-" + linktype).prepend(data.e_new_echo);
+                $("#list-in-" + linkplayertype).prepend(data.e_new_echo);
             }
 
             //Allow inline editing if enabled:
@@ -2543,7 +2543,7 @@ function new_player(linktype, player_existing_id) {
 
             setTimeout(function () {
                 activate_popover();
-                e_sort_load(linktype);
+                e_sort_load(linkplayertype);
             }, 987);
 
             //Hide Coin:
@@ -2559,7 +2559,7 @@ function new_player(linktype, player_existing_id) {
 
 
 var i_is_adding = false;
-function new_idea(linktype, link_ideaid) {
+function new_idea(linkplayertype, link_ideaid) {
 
     alert('not up yet');
     return false;
@@ -2579,7 +2579,7 @@ function new_idea(linktype, link_ideaid) {
     //Remove results:
     i_is_adding = true;
     var sort_idea_grabr = ".card_cover";
-    var input_field = $('.new-list-'+linktype+' .add-input');
+    var input_field = $('.new-list-'+linkplayertype+' .add-input');
     var new_ideatext = input_field.val();
 
 
@@ -2592,11 +2592,11 @@ function new_idea(linktype, link_ideaid) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(linktype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(linkplayertype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
     $.post("/app/new_idea", {
-        linktype: linktype,
+        linkplayertype: linkplayertype,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         new_ideatext: new_ideatext,
@@ -2611,7 +2611,7 @@ function new_idea(linktype, link_ideaid) {
         if (data.status) {
 
             //Add new
-            add_to_list(linktype, sort_idea_grabr, data.new_idea_html, 1);
+            add_to_list(linkplayertype, sort_idea_grabr, data.new_idea_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -2634,7 +2634,7 @@ function new_idea(linktype, link_ideaid) {
 }
 
 
-function link_unlink(linkid, linktype) {
+function link_unlink(linkid, linkplayertype) {
 
     var r = confirm("Unlink?");
     if (r==true) {
@@ -2646,7 +2646,7 @@ function link_unlink(linkid, linktype) {
         }, function (data) {
             if (data.status) {
 
-                adjust_counter(linktype, -1);
+                adjust_counter(linkplayertype, -1);
                 $(".cover_x_" + linkid).fadeOut();
                 setTimeout(function () {
                     $(".cover_x_" + linkid).remove();
@@ -2755,8 +2755,8 @@ function x_set_text(this_grabr){
 
 
 
-function adjust_counter(linktype, adjustment_count){
-    $('.xtypecounter'+linktype).text((parseInt($('.headline_body_' + linktype).attr('read-counter')) + adjustment_count));
+function adjust_counter(linkplayertype, adjustment_count){
+    $('.xtypecounter'+linkplayertype).text((parseInt($('.headline_body_' + linkplayertype).attr('read-counter')) + adjustment_count));
 }
 
 
@@ -2780,47 +2780,47 @@ function set_autosize(theobject){
 
 
 
-function i_sort_load(linktype){
+function i_sort_load(linkplayertype){
 
     load_covers();
 
-    console.log('Tring to load Idea Sort for @'+linktype);
-    if(!js_playerids___4603.includes(linktype)){
-        console.log(linktype+' is not sortable');
+    console.log('Tring to load Idea Sort for @'+linkplayertype);
+    if(!js_playerids___4603.includes(linkplayertype)){
+        console.log(linkplayertype+' is not sortable');
         return false;
     }
 
     setTimeout(function () {
 
-        var theobject = document.getElementById("list-in-" + linktype);
+        var theobject = document.getElementById("list-in-" + linkplayertype);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
-            console.log(linktype+' failed to find sortable object');
+            console.log(linkplayertype+' failed to find sortable object');
             return false;
         }
 
         //Make sure beow minimum sorting requirement:
-        if($("#list-in-"+linktype+" .sort_draggable").length>=parseInt(js_players___6404[11064]['m__message'])){
-            console.log(linktype+' has '+$("#list-in-"+linktype+" .sort_draggable").length+' items which is more than the page limit of '+js_players___6404[11064]['m__message']);
+        if($("#list-in-"+linkplayertype+" .sort_draggable").length>=parseInt(js_players___6404[11064]['m__message'])){
+            console.log(linkplayertype+' has '+$("#list-in-"+linkplayertype+" .sort_draggable").length+' items which is more than the page limit of '+js_players___6404[11064]['m__message']);
             return false;
-        } else if($("#list-in-"+linktype+" .sort_draggable").length<2){
-            console.log('Less than 2 items to sort '+linktype);
+        } else if($("#list-in-"+linkplayertype+" .sort_draggable").length<2){
+            console.log('Less than 2 items to sort '+linkplayertype);
             return false;
         } else {
 
-            console.log(linktype+' sorting load success');
+            console.log(linkplayertype+' sorting load success');
             $('.sort_idea_frame').removeClass('hidden');
 
             //Load sorter:
             var sort = Sortable.create(theobject, {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: "#list-in-"+linktype+" .sort_draggable", // Specifies which items inside the element should be sortable
-                handle: "#list-in-"+linktype+" .sort_idea_grab", // Restricts sort start click/touch to the specified element
+                draggable: "#list-in-"+linkplayertype+" .sort_draggable", // Specifies which items inside the element should be sortable
+                handle: "#list-in-"+linkplayertype+" .sort_idea_grab", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
 
                     var sort_rank = 0;
                     var new_x_order = [];
-                    $("#list-in-"+linktype+" .sort_draggable").each(function () {
+                    $("#list-in-"+linkplayertype+" .sort_draggable").each(function () {
                         var linkid = parseInt($(this).attr('linkid'));
                         if(linkid > 0){
                             sort_rank++;
@@ -2832,7 +2832,7 @@ function i_sort_load(linktype){
                     if(sort_rank > 0){
                         $.post("/app/i_sort_load", {
                             new_x_order:new_x_order,
-                            linktype:linktype,
+                            linkplayertype:linkplayertype,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
                         }, function (data) {
                             //Update UI to confirm with member:
@@ -3157,12 +3157,12 @@ function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0
 
 
 
-function e_sort_save(linktype) {
+function e_sort_save(linkplayertype) {
 
     var new_linknumber = [];
     var sort_rank = 0;
 
-    $("#list-in-"+linktype+" .card-12274").each(function () {
+    $("#list-in-"+linkplayertype+" .card-12274").each(function () {
         //Fetch variables for this idea:
         var playerid = parseInt($(this).attr('playerid'));
         var linkid = parseInt($(this).attr('linkid'));
@@ -3178,7 +3178,7 @@ function e_sort_save(linktype) {
         //Update backend:
         $.post("/app/e_sort_save", {
             playerid: parseInt($('#focus__id').val()),
-            linktype:linktype,
+            linkplayertype:linkplayertype,
             new_linknumber: new_linknumber,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {

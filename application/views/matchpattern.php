@@ -8,9 +8,9 @@ if(isset($_GET['ideahashtag'])){
         echo '<h2>' . view_idea_title($i) . '</h2>';
 
         $preg_query = $this->Ledger->fetch(array(
-                    'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkright' => $i['ideaid'],
-            'linkup' => 26611,
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'linkidearight' => $i['ideaid'],
+            'linkplayerup' => 26611,
         ));
 
         if(count($preg_query)){
@@ -21,8 +21,8 @@ if(isset($_GET['ideahashtag'])){
             echo '<p>Mismatches against ['.$preg_query[0]['linktext'].'] are:</p>';
 
             foreach($this->Ledger->fetch(array(
-                            'linktype' => 6144, //Written Response
-                'linkleft' => $i['ideaid'],
+                            'linkplayertype' => 6144, //Written Response
+                'linkidealeft' => $i['ideaid'],
             ), array(), 0) as $x) {
                 $responses++;
                 if(!preg_match($preg_query[0]['linktext'], $x['linktext'])) {

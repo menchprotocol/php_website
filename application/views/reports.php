@@ -13,10 +13,10 @@ $linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 //Email Body
 $html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view_s($last_x_days).':</div>';
 
-foreach($this->config->item('players___42263') as $linktype => $m) {
+foreach($this->config->item('players___42263') as $linkplayertype => $m) {
 
-    $unique = count_link_groups($linktype, null, $linktime_end);
-    $this_week = count_link_groups($linktype, $linktime_start, $linktime_end);
+    $unique = count_link_groups($linkplayertype, null, $linktime_end);
+    $this_week = count_link_groups($linkplayertype, $linktime_start, $linktime_end);
     if(!$unique){
         continue;
     }
@@ -27,7 +27,7 @@ foreach($this->config->item('players___42263') as $linktype => $m) {
     $html_message .= '<div class="line"><span style="display:inline-block; width: 55px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.view_number($unique).' '.$m['m__title'].'</div>';
 
     //Primary Coin?
-    if(in_array($linktype, $this->config->item('playerids___6404'))){
+    if(in_array($linkplayertype, $this->config->item('playerids___6404'))){
         $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $linktime_start_timestamp);
     }
 
@@ -45,19 +45,19 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
 
     $subscriber_filters = array(
-        'linkup' => 12114,
-        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayerup' => 12114,
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             );
 
     //Should we limit the scope?
     if($player_http_request){
-        $subscriber_filters['linkdown'] = $player_e['playerid'];
+        $subscriber_filters['linkplayerdown'] = $player_e['playerid'];
     }
 
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Ledger->fetch($subscriber_filters, array('linkdown')) as $subscribed_u){
+    foreach($this->Ledger->fetch($subscriber_filters, array('linkplayerdown')) as $subscribed_u){
 
         $this->Ledger->send_dm($subscribed_u['playerid'], $subject, $html_message);
         $email_recipients++;

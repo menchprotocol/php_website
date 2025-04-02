@@ -3,8 +3,8 @@
 if(isset($_GET['update_u_icons'])){
 
     $base_filters = array(
-        'linkup IN (' . join(',', $this->config->item('playerids___30820')) . ')' => null, //Active Member
-        'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayerup IN (' . join(',', $this->config->item('playerids___30820')) . ')' => null, //Active Member
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         );
 
     if(!isset($_GET['force'])) {
@@ -12,7 +12,7 @@ if(isset($_GET['update_u_icons'])){
     }
 
     $updated = 0;
-    foreach($this->Ledger->fetch($base_filters, array('linkdown'), 0) as $x){
+    foreach($this->Ledger->fetch($base_filters, array('linkplayerdown'), 0) as $x){
         $updated += $this->Nodeplayers->update($x['playerid'], array(
             'playercover' => random_cover(12279),
         ));

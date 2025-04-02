@@ -5,32 +5,32 @@ $start_month = 01;
 
 echo '<table>';
 
-foreach ($this->config->item('players___14874') as $linktype => $m) {
+foreach ($this->config->item('players___14874') as $linkplayertype => $m) {
 
-    if ($linktype == 12273) {
+    if ($linkplayertype == 12273) {
 
         //IDEAS
         $unique = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
-        ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
+        ), array('linkidearight'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-    } elseif ($linktype == 12274) {
+    } elseif ($linkplayertype == 12274) {
 
         //SOURCE
         $unique = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
-        ), array('linkdown'), 0, 0, array(), 'COUNT(linkid) as totals');
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
+        ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-    } elseif (in_array($linktype, $this->config->item('playerids___42284'))) {
+    } elseif (in_array($linkplayertype, $this->config->item('playerids___42284'))) {
 
         $unique = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___' . $linktype)) . ')' => null,
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___' . $linkplayertype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
-    } elseif ($linktype == 6255) {
+    } elseif ($linkplayertype == 6255) {
 
         $unique = $this->Ledger->fetch(array(
-            'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } else {
@@ -53,28 +53,28 @@ foreach ($this->config->item('players___14874') as $linktype => $m) {
         $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i, 1, $start_year));
         $time_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i + 1, 1, $start_year));
 
-        if ($linktype == 12273) {
+        if ($linkplayertype == 12273) {
 
             //IDEAS
             $query = $this->Ledger->fetch(array(
-                'linktype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,
-            ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
+            ), array('linkidearight'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-        } elseif ($linktype == 12274) {
+        } elseif ($linkplayertype == 12274) {
 
             //SOURCE
             $query = $this->Ledger->fetch(array(
-                'linktype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //UNIQUE SOURCES
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //UNIQUE SOURCES
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,
-            ), array('linkdown'), 0, 0, array(), 'COUNT(linkid) as totals');
+            ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-        } elseif ($linktype == 6255) {
+        } elseif ($linkplayertype == 6255) {
 
             $query = $this->Ledger->fetch(array(
-                'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
