@@ -22,7 +22,7 @@ $count = 0;
 $missing = 0;
 foreach ($this->Menchledger->fetchold(array(
     'link_type IN (' . join(',', $is_contribution) . ')' => null, //Active Writes
-), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
+), array(), 1, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
     $is_missing = !count($this->Menchledger->fetch(array(
