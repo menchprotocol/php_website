@@ -3018,6 +3018,11 @@ class App extends CI_Controller
 
                     if (!($idea_required && $trying_to_skip)) {
                         //Try to complete:
+
+                        $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
+                            'linknumber' => $next_idea_data['ideanumber'],
+                        ));
+
                         array_push($completed_children, array(
                             '$input__required' => ( $input__required ? 1 : 0 ),
                             '$input__text' => ( $input__text ? 1 : 0 ),
@@ -3027,11 +3032,10 @@ class App extends CI_Controller
                             'idea_discovery_link' => idea_discovery_link($idea_next, $trying_to_skip),
                             'target_ideaid' => $_POST['target_ideaid'],
                             '$next_idea_data' => $next_idea_data,
+                            '$completion_status' => $completion_status,
                             'idea' => $idea_next,
                         ));
-                        $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
-                            'linknumber' => $next_idea_data['ideanumber'],
-                        ));
+
                         if ($idea_required && !$completion_status['status']) {
                             //We had an error with data within target_ideaid:
                             return view_json($completion_status);
