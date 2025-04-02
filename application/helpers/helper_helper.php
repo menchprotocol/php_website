@@ -2603,8 +2603,7 @@ function update_algolia($focus__node = null, $s__id = 0)
                     'linkright' => $s['ideaid'],
                 ), array('linkup'), 0) as $x) {
 
-                    //Featured?
-                    if (in_array($x['playerid'], $CI->config->item('playerids___41804'))) {
+                    if(idea_is_startable($i)){
                         array_push($export_row['_tags'], 'public_index');
                     }
 
