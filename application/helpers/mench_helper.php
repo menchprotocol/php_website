@@ -5200,10 +5200,6 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
             //Skip
             $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
-        } elseif ($linkplayertype_target_bar == 31022 ) {
-
-            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;">'.( $discovery_mode ? 1 : 0 ).'/'.( $focus__node ? 1 : 0 ).'/'.( $player_e ? 1 : 0 ).'/'.( count($x_completes) ? 1 : 0 ).'/'.( idea_required($i) ? 1 : 0 ).'</span>';
-
         }
     }
 
