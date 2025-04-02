@@ -17,7 +17,7 @@ class App extends CI_Controller
 
         auto_login_player(false);
 
-        if(isset($_GET['old'])){
+        if(1){
             $this->dbold = $this->load->database('old', TRUE); // Load second DB manually
         }
     }
