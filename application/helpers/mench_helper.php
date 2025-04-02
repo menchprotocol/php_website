@@ -3884,7 +3884,6 @@ function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node 
     if ($playerid > 0) {
         foreach ($CI->Menchledger->fetch(array(
             'linkidearight' => $i['ideaid'],
-            'linkplayerup > 0' => null,
             'linkplayertype' => 31835, //References
         ), array('linkplayerup'), 0) as $message_references) {
             if (!substr_count(strtolower($i['ideacache']), '>@' . strtolower($message_references['playerhandle']))) {
@@ -3893,8 +3892,8 @@ function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node 
                 continue;
             }
             foreach ($CI->Menchledger->fetch(array(
-                'linkplayerdown' => $playerid,
                 'linkplayerup' => $message_references['playerid'],
+                'linkplayerdown' => $playerid,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___33337')) . ')' => null, //SOURCE LINKS
                 'LENGTH(linktext) > 0' => null,
             ), array(), 1) as $reference_profile) {

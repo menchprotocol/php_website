@@ -7,7 +7,7 @@
 $count = 0;
 foreach ($this->Nodeideas->fetch(array()) as $i) {
     $count++;
-    //$content_message = view_idea_links($i, $x['playerid'], true); //Hide the show more content if any
+    view_sync_links($i['ideatext'], true, $i['ideaid']);
 }
 
 echo $count;
