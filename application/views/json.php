@@ -34,7 +34,7 @@ foreach ($this->Menchledger->fetchold(array(
 
     $count++;
     if(!count($this->Menchledger->fetch(array(
-        'linktype' => $x['link_type'],
+        'linkplayertype' => $x['link_type'],
         'linkplayerup' => $x['link_up'],
         'linkplayerdown' => $x['link_down'],
         'linkidealeft' => ( $x['link_left']>0 ? intval($x['link_left'])+100000 : 0 ),
