@@ -186,29 +186,29 @@ class Menchledger extends CIdea_cache
     function fetchold($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('link_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        $this->db->select($select);
-        $this->db->from('mench_ledger');
+        $this->dbold->select($select);
+        $this->dbold->from('mench_ledger');
 
         foreach ($query_filters as $key => $value) {
             if (!is_null($value)) {
-                $this->db->where($key, $value);
+                $this->dbold->where($key, $value);
             } else {
-                $this->db->where($key);
+                $this->dbold->where($key);
             }
         }
 
         if ($group_by) {
-            $this->db->group_by($group_by);
+            $this->dbold->group_by($group_by);
         }
 
         foreach ($order_columns as $key => $value) {
-            $this->db->order_by($key, $value);
+            $this->dbold->order_by($key, $value);
         }
 
         if ($limit > 0) {
-            $this->db->limit($limit, $limit_offset);
+            $this->dbold->limit($limit, $limit_offset);
         }
-        $q = $this->db->get();
+        $q = $this->dbold->get();
         return $q->result_array();
 
     }

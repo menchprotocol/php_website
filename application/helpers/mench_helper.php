@@ -1919,7 +1919,6 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
     require_once('application/libraries/aws/aws-autoloader.php');
 
     $client = new Aws\Ses\SesClient([
-        //'profile' => 'default',
         'version' => 'latest',
         'region' => 'us-west-2',
         'credentials' => $CI->config->item('cred_aws'),

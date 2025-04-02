@@ -16,6 +16,10 @@ class App extends CI_Controller
         $this->player_e = superpower_unlocked();
 
         auto_login_player(false);
+
+        if(isset($_GET['old'])){
+            $this->dbold = $this->load->database('old', TRUE); // Load second DB manually
+        }
     }
 
     function index()
