@@ -10,26 +10,26 @@ foreach ($this->config->item('players___14874') as $linktype => $m) {
     if ($linktype == 12273) {
 
         //IDEAS
-        $unique = $this->Menchledger->fetch(array(
+        $unique = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('linkright'), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif ($linktype == 12274) {
 
         //SOURCE
-        $unique = $this->Menchledger->fetch(array(
+        $unique = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
         ), array('linkdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif (in_array($linktype, $this->config->item('playerids___42284'))) {
 
-        $unique = $this->Menchledger->fetch(array(
+        $unique = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___' . $linktype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif ($linktype == 6255) {
 
-        $unique = $this->Menchledger->fetch(array(
+        $unique = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
@@ -56,7 +56,7 @@ foreach ($this->config->item('players___14874') as $linktype => $m) {
         if ($linktype == 12273) {
 
             //IDEAS
-            $query = $this->Menchledger->fetch(array(
+            $query = $this->Ledger->fetch(array(
                 'linktype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,
@@ -65,7 +65,7 @@ foreach ($this->config->item('players___14874') as $linktype => $m) {
         } elseif ($linktype == 12274) {
 
             //SOURCE
-            $query = $this->Menchledger->fetch(array(
+            $query = $this->Ledger->fetch(array(
                 'linktype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //UNIQUE SOURCES
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,
@@ -73,7 +73,7 @@ foreach ($this->config->item('players___14874') as $linktype => $m) {
 
         } elseif ($linktype == 6255) {
 
-            $query = $this->Menchledger->fetch(array(
+            $query = $this->Ledger->fetch(array(
                 'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,

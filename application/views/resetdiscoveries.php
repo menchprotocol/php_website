@@ -12,7 +12,7 @@ if(!isset($_GET['confirm'])){
 } else {
 
     //Fetch their current progress transactions:
-    $progress_x = $this->Menchledger->fetch(array(
+    $progress_x = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
         'linkcreator' => $focus_e['playerid'],
     ), array(), 0);
@@ -24,7 +24,7 @@ if(!isset($_GET['confirm'])){
 
         //Delete all progressions:
         foreach($progress_x as $progress_x){
-            $this->Menchledger->update($progress_x['linkid'], array(), $focus_e['playerid']);
+            $this->Ledger->update($progress_x['linkid'], array(), $focus_e['playerid']);
         }
 
     } else {

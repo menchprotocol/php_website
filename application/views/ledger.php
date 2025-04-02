@@ -11,7 +11,7 @@ $input_i = ( isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) > 0 );
 $focus_i = false;
 
 if($input_e){
-    foreach($this->Cacheplayers->fetch(array(
+    foreach($this->Nodeplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $player_found){
         $focus_e = $player_found;
@@ -24,7 +24,7 @@ if($input_e){
 }
 
 if($input_i){
-    foreach($this->Cacheideas->fetch(array(
+    foreach($this->Nodeideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $idea_found){
         $focus_i = $idea_found;
@@ -335,7 +335,7 @@ if(isset($_GET['linktype']) && substr_count($_GET['linktype'], ',')>0){
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->Menchledger->fetch($ini_filter, array('linktype'), 0, 0, sort__player(), 'COUNT(linktype) as total_count, playertext, linktype', 'linktype, playertext') as $x) {
+        foreach($this->Ledger->fetch($ini_filter, array('linktype'), 0, 0, sort__player(), 'COUNT(linktype) as total_count, playertext, linktype', 'linktype, playertext') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['linktype'] . '" ' . ((isset($_GET['linktype']) && $_GET['linktype']==$x['linktype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];

@@ -4,7 +4,7 @@
 
 
 //Do a query to detect Ideas with the exact same title:
-$q = $this->db->query('select in1.* from cacheideas in1 where (select count(*) from cacheideas in2 where in2.ideatext = in1.ideatext ORDER BY in1.ideatext ASC');
+$q = $this->db->query('select in1.* from nodeideas in1 where (select count(*) from nodeideas in2 where in2.ideatext = in1.ideatext ORDER BY in1.ideatext ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){

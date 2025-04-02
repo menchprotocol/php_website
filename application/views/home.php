@@ -16,7 +16,7 @@ if(in_array($website_id, $this->config->item('playerids___30984'))){
 
 $primary_i = array();
 $secondary_idea_list = array();
-foreach($this->Menchledger->fetch(array(
+foreach($this->Ledger->fetch(array(
     'linktype' => 34513, //Pinned
     'linkup' => $website_id,
 ), array('linkright'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $this_i){
@@ -66,10 +66,10 @@ if($domain_phone || $email_domain) {
 
 
 //Any Info Boxes?
-foreach($this->Cacheplayers->scissor_player($website_id, 14903) as $player_item) {
+foreach($this->Nodeplayers->scissor_player($website_id, 14903) as $player_item) {
     //Any Followers?
     $info_item = null;
-    foreach($this->Menchledger->fetch(array(
+    foreach($this->Ledger->fetch(array(
         'linkup' => $player_item['playerid'],
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         ), array('linkdown'), 0, 0, array('linknumber' => 'ASC')) as $info_element) {
@@ -130,7 +130,7 @@ if(strlen($secondary_i)){
 $social_ui = null;
 $players___14870 = $this->config->item('players___14870'); //Website Partner
 foreach($this->config->item('players___14036') as $playerid => $m){
-    foreach($this->Menchledger->fetch(array(
+    foreach($this->Ledger->fetch(array(
         'linkup' => $playerid,
         'linkdown' => $website_id,
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS

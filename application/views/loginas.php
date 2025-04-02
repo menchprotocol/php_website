@@ -1,7 +1,7 @@
 <?php
 
 //Make sure member:
-if(!count($this->Menchledger->fetch(array(
+if(!count($this->Ledger->fetch(array(
     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkup IN (' . join(',', $this->config->item('playerids___32537')) . ')' => null, //Interested Member
     'linkdown' => $focus_e['playerid'],
@@ -17,7 +17,7 @@ if(!count($this->Menchledger->fetch(array(
     session_delete();
 
     //Assign session & log transaction:
-    $this->Cacheplayers->activate_session($focus_e);
+    $this->Nodeplayers->activate_session($focus_e);
 
     js_php_redirect(loginas . phpview_memory(42903, 42902) . $focus_e['playerhandle'], 1597);
 

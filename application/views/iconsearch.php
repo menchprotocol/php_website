@@ -8,7 +8,7 @@ if(isset($_GET['search_for'])){
 
 } elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']){
 
-    $es = $this->Cacheplayers->fetch(array(
+    $es = $this->Nodeplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
     if(!count($es)){
@@ -46,7 +46,7 @@ echo '<input type="submit" class="btn" value="Search">';
 
 if($icon_keyword){
 
-    $matching_results = $this->Cacheplayers->fetch(array(
+    $matching_results = $this->Nodeplayers->fetch(array(
         'LOWER(playercover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 
@@ -70,7 +70,7 @@ if($icon_keyword){
         foreach($matching_results as $count=>$en){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
-                $replaced += $this->Cacheplayers->update($en['playerid'], array(
+                $replaced += $this->Nodeplayers->update($en['playerid'], array(
                     'playercover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['playercover']),
                 ), false, $player_e['playerid']);
 

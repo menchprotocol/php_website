@@ -3,7 +3,7 @@
 $sign_i = array();
 
 if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
-    $sign_i = $this->Cacheideas->fetch(array(
+    $sign_i = $this->Nodeideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     ));
 }
@@ -24,13 +24,13 @@ if(superpower_unlocked()) {
 
 } elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash']){
 
-    $es = $this->Cacheplayers->fetch(array(
+    $es = $this->Nodeplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
 
     if(count($es)){
         //Assign session & log transaction:
-        $this->Cacheplayers->activate_session($es[0], false, true);
+        $this->Nodeplayers->activate_session($es[0], false, true);
     }
 
     js_php_redirect($next_url, 13);

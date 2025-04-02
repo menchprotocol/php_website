@@ -1,7 +1,7 @@
 <?php
 
 //See if we need to redirect to starting point?
-if($player_e && !superpower_unlocked(10939) && count($this->Menchledger->fetch(array(
+if($player_e && !superpower_unlocked(10939) && count($this->Ledger->fetch(array(
         'linkcreator' => $player_e['playerid'],
         'linktype' => 4235, //Get started
         'linkleft' => $focus_i['ideaid'],

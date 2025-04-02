@@ -10,7 +10,7 @@ if(!isset($_GET['linkid']) || !intval($_GET['linkid'])){
 
 
     //Fetch transaction metadata and display it:
-    $x = $this->Menchledger->fetch(array(
+    $x = $this->Ledger->fetch(array(
         'linkid' => $_GET['linkid'],
     ));
 

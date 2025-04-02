@@ -10,7 +10,7 @@ if($player_e['playerid']){
 } else {
 
     $random_cover = random_cover(12279);
-    $player_result = $this->Cacheplayers->add_member(view_random_title(), null, null, $random_cover);
+    $player_result = $this->Nodeplayers->add_member(view_random_title(), null, null, $random_cover);
     js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$player_result['e']['playerhandle'] ), 13);
 
 }

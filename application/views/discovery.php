@@ -16,7 +16,7 @@ $target_ideahashtag = ( count($target_i) && $linkcreator ? $target_i['ideahashta
 $breadcrum_content = null;
 if($linkcreator && $target_ideahashtag!=$focus_i['ideahashtag']){
 
-    $find_previous = $this->Menchledger->find_previous($linkcreator, $target_ideahashtag, $focus_i['ideaid']);
+    $find_previous = $this->Ledger->find_previous($linkcreator, $target_ideahashtag, $focus_i['ideaid']);
     if(count($find_previous)){
 
         $nav_list = array();
@@ -32,7 +32,7 @@ if($linkcreator && $target_ideahashtag!=$focus_i['ideahashtag']){
             $level++;
 
             //Does this have a follower list?
-            $query_subset = $this->Menchledger->fetch(array(
+            $query_subset = $this->Ledger->fetch(array(
                             'linktype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
                 'linkleft' => $followings_i['ideaid'],
             ), array('linkright'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
@@ -50,7 +50,7 @@ if($linkcreator && $target_ideahashtag!=$focus_i['ideahashtag']){
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_'.$followings_i['ideaid'].'">';
                 foreach ($query_subset as $idea_subset) {
 
-                    if(count($this->Menchledger->fetch(array(
+                    if(count($this->Ledger->fetch(array(
                                             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkcreator' => $linkcreator,
                         'linkleft' => $idea_subset['ideaid'],
@@ -86,7 +86,7 @@ if($breadcrum_content){
 
 //Progress?
 if($player_e){
-    $tree_progress = $this->Menchledger->tree_progress($linkcreator, $target_i);
+    $tree_progress = $this->Ledger->tree_progress($linkcreator, $target_i);
     $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     if($target_completed) {
         echo '<div class="alert alert-success" role="alert" title="'.$tree_progress['fixed_total'].'/'.$tree_progress['fixed_discovered'].' '.$tree_progress['fixed_completed_percentage'].'% '.$tree_progress['fixed_discovered'].': '.join(',',$tree_progress['list_discovered']).'"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
@@ -101,7 +101,7 @@ if($player_e){
 
 $x_completes = array();
 if($player_e){
-    $x_completes = $this->Menchledger->fetch(array(
+    $x_completes = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkcreator' => $linkcreator,
         'linkleft' => $focus_i['ideaid'],

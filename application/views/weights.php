@@ -16,7 +16,7 @@ $stats = array(
 if(!$obj || $obj==12273){
 
     //Update the weights for active ideas
-    foreach($this->Cacheideas->fetch(array()) as $in) {
+    foreach($this->Nodeideas->fetch(array()) as $in) {
         $stats['idea_scanned']++;
         $stats['idea_updated'] += ideanumber_calculator($in);
     }
@@ -26,7 +26,7 @@ if(!$obj || $obj==12273){
 
 if(!$obj || $obj==12274){
     //Update the weights for active Players:
-    foreach($this->Cacheplayers->fetch(array(
+    foreach($this->Nodeplayers->fetch(array(
         )) as $en) {
         $stats['player_scanned']++;
         $stats['player_changed'] += playernumber_calculator($en);

@@ -19,7 +19,7 @@ $all_e = array();
 if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['playerhandle'] || $_GET['playerhandle']=='0'){
     
     echo '<h1>'.$players___6287[27004]['m__title'].'</h1>';
-    foreach($this->Cacheplayers->fetch_recursive(11029, $player_e['playerid'], array(27004)) as $e){
+    foreach($this->Nodeplayers->fetch_recursive(11029, $player_e['playerid'], array(27004)) as $e){
         echo '<div><a href="'.view_app_link(27004).view_memory(42903,42902).$e['playerhandle'].'" class="main__title">'.$e['playertext'].'</a></div>';
     }
 
@@ -29,12 +29,12 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     //Show header:
     echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$players___6287[27004]['m__title'].'</b></a></div>';
 
-    $es = $this->Cacheplayers->fetch(array(
+    $es = $this->Nodeplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
     echo '<h2>'.$es[0]['playertext'].' @'.$es[0]['playerhandle'].'</h2>';
 
-    $idea_query = $this->Menchledger->fetch(array(
+    $idea_query = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
         'ideatype IN (' . join(',', $this->config->item('playerids___41055')) . ')' => null, //Payment Ideas
         'linkup' => $es[0]['playerid'],
@@ -56,7 +56,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $total_paypal_fee = 0;
         $currencies = array();
 
-        foreach($this->Menchledger->fetch(array(
+        foreach($this->Ledger->fetch(array(
                     'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkleft' => $i['ideaid'],
         ), array(), 0, 0, array('linkcreator' => 'ASC')) as $x){
@@ -114,7 +114,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
             $item_parts = explode('-',$linktext['item_number']);
             $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['linkcreator'] );
             array_push($all_e, $this_e);
-            $es = $this->Cacheplayers->fetch(array(
+            $es = $this->Nodeplayers->fetch(array(
                 'playerid' => $this_e,
             ));
 
@@ -166,7 +166,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $gross_commission += $total_commission;
         $gross_payout += $payout;
 
-        $max_available = $this->Menchledger->fetch(array(
+        $max_available = $this->Ledger->fetch(array(
                     'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkright' => $i['ideaid'],
             'linkup' => 26189,
@@ -207,7 +207,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
     $other_es = array();
 
-    foreach($this->Cacheplayers->fetch(array(
+    foreach($this->Nodeplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e){
         $filters = array(
@@ -217,7 +217,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         if(count($all_e)){
             $filters[ 'linkdown NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Menchledger->fetch($filters, array('linkdown'), 0);
+        $other_es = $this->Ledger->fetch($filters, array('linkdown'), 0);
     }
 
 
@@ -348,7 +348,7 @@ if(count($idea_query)){
                 <?php
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
-                    if(($sales/$gross_revenue)>=0.5 || count($this->Menchledger->fetch(array(
+                    if(($sales/$gross_revenue)>=0.5 || count($this->Ledger->fetch(array(
                                                     'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'linkright' => $origin,
                             'linkup' => 30564, //None Promoter
@@ -358,7 +358,7 @@ if(count($idea_query)){
                     }
                     if($sales > 0){
                         //Fetch this origin:
-                        $is = $this->Cacheideas->fetch(array(
+                        $is = $this->Nodeideas->fetch(array(
                             'ideaid' => $origin,
                         ));
                         echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_idea_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";

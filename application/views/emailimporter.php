@@ -15,7 +15,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             $total_emails++;
             //echo $email.'<hr />';
 
-            foreach($this->Menchledger->fetch(array(
+            foreach($this->Ledger->fetch(array(
                             'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                 'linkup' => 3288, //Email
                 'linktext' => trim(strtolower($email)),
@@ -24,14 +24,14 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                 $found_emails++;
 
                 //Do we need to add?
-                if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Menchledger->fetch(array(
+                if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Ledger->fetch(array(
                                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkup' => $_POST['import_playerid'],
                     'linkdown' => $player_data['linkdown'],
                 )))){
 
                     $added_emails++;
-                    $this->Menchledger->create(array(
+                    $this->Ledger->create(array(
                         'linktype' => 4230,
                         'linkcreator' => $player_e['playerid'],
                         'linkup' => $_POST['import_playerid'],

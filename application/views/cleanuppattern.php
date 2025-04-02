@@ -1,12 +1,12 @@
 <?php
 
-foreach($this->Cacheideas->fetch(array(
+foreach($this->Nodeideas->fetch(array(
     'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
 )) as $i){
 
     echo '<h2>' . view_idea_title($i) . '</h2>';
 
-    $preg_query = $this->Menchledger->fetch(array(
+    $preg_query = $this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $i['ideaid'],
         'linkup' => 32103,
@@ -15,7 +15,7 @@ foreach($this->Cacheideas->fetch(array(
 
     //See apply to Players:
     $apply_to = array();
-    foreach($this->Menchledger->fetch(array(
+    foreach($this->Ledger->fetch(array(
             'linktype' => 7545, //Following Add
         'linkright' => $i['ideaid'],
     ), array('linkup')) as $this_tag){
@@ -35,10 +35,10 @@ foreach($this->Cacheideas->fetch(array(
 
             echo '<p>SOURCES Applying against ['.$preg_query[0]['linktext'].'] results in:</p>';
 
-            foreach($this->Cacheplayers->fetch(array(
+            foreach($this->Nodeplayers->fetch(array(
                 'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
             )) as $e){
-                foreach($this->Menchledger->fetch(array(
+                foreach($this->Ledger->fetch(array(
                     'linkup' => $e['playerid'],
                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                 ), array('linkdown'), 0) as $x) {
@@ -54,18 +54,18 @@ foreach($this->Cacheideas->fetch(array(
                             $updated++;
                             if(isset($_GET['update'])){
 
-                                $this->Menchledger->update($x['linkid'], array(
+                                $this->Ledger->update($x['linkid'], array(
                                     'linktext' => $new_form,
                                 ));
 
                                 foreach($apply_to as $apply_playerid){
-                                    foreach($this->Menchledger->fetch(array(
+                                    foreach($this->Ledger->fetch(array(
                                         'linkup' => $apply_playerid,
                                         'linkdown' => $x['linkcreator'],
                                         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                                                         ), array(), 0) as $follow_appended) {
                                         $links_updated++;
-                                        $this->Menchledger->update($follow_appended['linkid'], array(
+                                        $this->Ledger->update($follow_appended['linkid'], array(
                                             'linktext' => $new_form,
                                         ));
                                     }
@@ -79,17 +79,17 @@ foreach($this->Cacheideas->fetch(array(
                             $removed++;
                             if(isset($_GET['update'])){
 
-                                $this->Menchledger->update($x['linkid'], array());
+                                $this->Ledger->update($x['linkid'], array());
 
                                 //Also update follower link?
                                 foreach($apply_to as $apply_playerid){
-                                    foreach($this->Menchledger->fetch(array(
+                                    foreach($this->Ledger->fetch(array(
                                         'linkup' => $apply_playerid,
                                         'linkdown' => $x['linkcreator'],
                                         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                                             ), array(), 0) as $follow_appended) {
                                         $links_removed++;
-                                        $this->Menchledger->update($follow_appended['linkid'], array());
+                                        $this->Ledger->update($follow_appended['linkid'], array());
                                     }
                                 }
                                 echo 'Removed! ';
@@ -113,7 +113,7 @@ foreach($this->Cacheideas->fetch(array(
 
         echo '<p>Applying against ['.$preg_query[0]['linktext'].'] results in:</p>';
 
-        foreach($this->Menchledger->fetch(array(
+        foreach($this->Ledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'LENGTH(linktext)>0' => null,
             'linkleft' => $i['ideaid'],
@@ -129,18 +129,18 @@ foreach($this->Cacheideas->fetch(array(
                     $updated++;
                     if(isset($_GET['update'])){
 
-                        $this->Menchledger->update($x['linkid'], array(
+                        $this->Ledger->update($x['linkid'], array(
                             'linktext' => $new_form,
                         ));
 
                         foreach($apply_to as $apply_playerid){
-                            foreach($this->Menchledger->fetch(array(
+                            foreach($this->Ledger->fetch(array(
                                 'linkup' => $apply_playerid,
                                 'linkdown' => $x['linkcreator'],
                                 'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
-                                $this->Menchledger->update($follow_appended['linkid'], array(
+                                $this->Ledger->update($follow_appended['linkid'], array(
                                     'linktext' => $new_form,
                                 ));
                             }
@@ -153,17 +153,17 @@ foreach($this->Cacheideas->fetch(array(
                     $removed++;
                     if(isset($_GET['update'])){
 
-                        $this->Menchledger->update($x['linkid'], array());
+                        $this->Ledger->update($x['linkid'], array());
 
                         //Also update follower link?
                         foreach($apply_to as $apply_playerid){
-                            foreach($this->Menchledger->fetch(array(
+                            foreach($this->Ledger->fetch(array(
                                 'linkup' => $apply_playerid,
                                 'linkdown' => $x['linkcreator'],
                                 'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
-                                $this->Menchledger->update($follow_appended['linkid'], array());
+                                $this->Ledger->update($follow_appended['linkid'], array());
                             }
                         }
                         echo 'Removed! ';

@@ -1,7 +1,7 @@
 <?php
 
 
-//Various Ledger cleanup functions
+//Various cleanup functions
 echo @$_GET['playerhandle'];
 
 
@@ -19,7 +19,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
 
     $edited = 0;
     $edited_players = 0;
-    foreach($this->Cacheideas->fetch(array(
+    foreach($this->Nodeideas->fetch(array(
     ), 0) as $idea_fix){
 
         $view_sync_links = view_sync_links($idea_fix['ideatext'], true, $idea_fix['ideaid']);
@@ -66,15 +66,15 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
     //Import Discoveries?
     $flash_message = '';
     if(isset($_GET['playerhandle'])){
-        foreach($this->Cacheplayers->fetch(array(
+        foreach($this->Nodeplayers->fetch(array(
             'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         )) as $player_append){
             $completed = 0;
-            foreach($this->Menchledger->fetch(array(
+            foreach($this->Ledger->fetch(array(
                 'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linkleft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
-                if(!count($this->Menchledger->fetch(array(
+                if(!count($this->Ledger->fetch(array(
                     'linkup' => $player_append['playerid'],
                     'linkdown' => $x['linkcreator'],
                     'linktext' => $x['linktext'],
@@ -82,7 +82,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
                     )))){
                     //Increment Player link:
                     $completed++;
-                    $this->Menchledger->create(array(
+                    $this->Ledger->create(array(
                         'linkcreator' => ($player_e ? $player_e['playerid'] : $x['linkcreator']),
                         'linkup' => $player_append['playerid'],
                         'linkdown' => $x['linkcreator'],

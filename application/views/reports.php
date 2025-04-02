@@ -57,9 +57,9 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Menchledger->fetch($subscriber_filters, array('linkdown')) as $subscribed_u){
+    foreach($this->Ledger->fetch($subscriber_filters, array('linkdown')) as $subscribed_u){
 
-        $this->Menchledger->send_dm($subscribed_u['playerid'], $subject, $html_message);
+        $this->Ledger->send_dm($subscribed_u['playerid'], $subject, $html_message);
         $email_recipients++;
 
     }

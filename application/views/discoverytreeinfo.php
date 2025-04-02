@@ -16,12 +16,12 @@ $list_settings = list_settings($_GET['ideahashtag']);
 echo '<h1>' . view_idea_title($list_settings['i']) . '</h1>';
 
 
-foreach($this->Cacheplayers->fetch(array(
+foreach($this->Nodeplayers->fetch(array(
     'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
 )) as $e){
     //List the idea:
     print_r(array(
-        'find_next' => $this->Menchledger->find_next($e['playerid'], $list_settings['i']['ideahashtag'], $list_settings['i'], 0, false),
-        'tree_progress' => $this->Menchledger->tree_progress($e['playerid'], $list_settings['i']),
+        'find_next' => $this->Ledger->find_next($e['playerid'], $list_settings['i']['ideahashtag'], $list_settings['i'], 0, false),
+        'tree_progress' => $this->Ledger->tree_progress($e['playerid'], $list_settings['i']),
     ));
 }
