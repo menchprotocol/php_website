@@ -2766,6 +2766,7 @@ function search_enabled(){
 
 
 function show_more(ideaid){
+    console.log('SHOW MORE #'+ideaid);
     $('.cache_frame_'+ideaid+' .line, .cache_frame_'+ideaid+' .inner_line').removeClass('hidden');
     $('.cache_frame_'+ideaid+' .show_more_line').addClass('hidden');
 }
