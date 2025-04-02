@@ -33,7 +33,7 @@ foreach ($list_settings['query_string_filtered'] as $x) {
     $this_quantity = 1;
     foreach ($list_settings['column_i'] as $idea_var) {
 
-        $discoveries = $this->Ledger->fetch(array(
+        $discoveries = $this->Menchledger->fetch(array(
             'linkidealeft' => $idea_var['ideaid'],
             'linkplayercreator' => $x['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -48,7 +48,7 @@ foreach ($list_settings['query_string_filtered'] as $x) {
             }
 
             $set_linktext = '';
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Menchledger->fetch(array(
                 'linkplayertype' => 33532, //Private Reply
                 'linkidealeft' => $idea_var['ideaid'],
                 'linkplayercreator' => $x['playerid'],
@@ -73,7 +73,7 @@ foreach ($list_settings['query_string_filtered'] as $x) {
         $idea_content .= '</td>';
 
 
-        if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Ledger->fetch(array(
+        if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Menchledger->fetch(array(
                     'linkplayerdown' => $x['playerid'],
                     'linkplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
@@ -95,13 +95,13 @@ foreach ($list_settings['query_string_filtered'] as $x) {
     //SOURCES
     foreach ($list_settings['column_e'] as $e) {
 
-        $require_writing = count($this->Ledger->fetch(array(
+        $require_writing = count($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
             'linkplayerdown' => $e['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         )));
 
-        $fetch_data = $this->Ledger->fetch(array(
+        $fetch_data = $this->Menchledger->fetch(array(
             'linkplayerdown' => $x['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $e['playerid'],
@@ -129,7 +129,7 @@ foreach ($list_settings['query_string_filtered'] as $x) {
 
         if ($e['playerid'] == 44328) {
             //Fetch primary filter:
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Menchledger->fetch(array(
                 'linkidearight' => $focus_i['ideaid'],
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___44344')) . ')' => null, //Idea Filter Additions
             ), array('linkidealeft'), 1) as $target_i) {
@@ -146,7 +146,7 @@ foreach ($list_settings['query_string_filtered'] as $x) {
                 $count_totals['e'][$e['playerid']] = 0;
             }
 
-            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Ledger->fetch(array(
+            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Menchledger->fetch(array(
                     'linkplayerdown' => $e['playerid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
@@ -176,7 +176,7 @@ foreach ($list_settings['column_e'] as $e) {
 
 foreach ($list_settings['column_i'] as $idea_var) {
 
-    $max_available = $this->Ledger->fetch(array(
+    $max_available = $this->Menchledger->fetch(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkidearight' => $idea_var['ideaid'],
         'linkplayerup' => 26189,

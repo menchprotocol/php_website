@@ -70,11 +70,11 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
             'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         )) as $player_append){
             $completed = 0;
-            foreach($this->Ledger->fetch(array(
+            foreach($this->Menchledger->fetch(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linkidealeft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
-                if(!count($this->Ledger->fetch(array(
+                if(!count($this->Menchledger->fetch(array(
                     'linkplayerup' => $player_append['playerid'],
                     'linkplayerdown' => $x['linkplayercreator'],
                     'linktext' => $x['linktext'],
@@ -82,7 +82,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
                     )))){
                     //Increment Player link:
                     $completed++;
-                    $this->Ledger->create(array(
+                    $this->Menchledger->create(array(
                         'linkplayercreator' => ($player_e ? $player_e['playerid'] : $x['linkplayercreator']),
                         'linkplayerup' => $player_append['playerid'],
                         'linkplayerdown' => $x['linkplayercreator'],

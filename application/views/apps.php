@@ -6,7 +6,7 @@ $players___6287 = $this->config->item('players___6287'); //APP
 
 //Start with Featured Apps
 echo '<div class="row">';
-foreach ($this->Ledger->fetch(array(
+foreach ($this->Menchledger->fetch(array(
     'linkplayerup' => 30841, //Featured Apps
     'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
@@ -30,7 +30,7 @@ echo '</div>';
 
 //List Regular Apps:
 echo '<div class="row">';
-foreach ($this->Ledger->fetch(array(
+foreach ($this->Menchledger->fetch(array(
     'linkplayerup' => 6287, //Featured Apps
     'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS

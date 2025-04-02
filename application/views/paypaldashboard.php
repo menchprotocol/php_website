@@ -34,7 +34,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     ));
     echo '<h2>'.$es[0]['playertext'].' @'.$es[0]['playerhandle'].'</h2>';
 
-    $idea_query = $this->Ledger->fetch(array(
+    $idea_query = $this->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
         'ideatype IN (' . join(',', $this->config->item('playerids___41055')) . ')' => null, //Payment Ideas
         'linkplayerup' => $es[0]['playerid'],
@@ -56,7 +56,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $total_paypal_fee = 0;
         $currencies = array();
 
-        foreach($this->Ledger->fetch(array(
+        foreach($this->Menchledger->fetch(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkidealeft' => $i['ideaid'],
         ), array(), 0, 0, array('linkplayercreator' => 'ASC')) as $x){
@@ -166,7 +166,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $gross_commission += $total_commission;
         $gross_payout += $payout;
 
-        $max_available = $this->Ledger->fetch(array(
+        $max_available = $this->Menchledger->fetch(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $i['ideaid'],
             'linkplayerup' => 26189,
@@ -217,7 +217,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         if(count($all_e)){
             $filters[ 'linkplayerdown NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Ledger->fetch($filters, array('linkplayerdown'), 0);
+        $other_es = $this->Menchledger->fetch($filters, array('linkplayerdown'), 0);
     }
 
 
@@ -348,7 +348,7 @@ if(count($idea_query)){
                 <?php
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
-                    if(($sales/$gross_revenue)>=0.5 || count($this->Ledger->fetch(array(
+                    if(($sales/$gross_revenue)>=0.5 || count($this->Menchledger->fetch(array(
                                                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'linkidearight' => $origin,
                             'linkplayerup' => 30564, //None Promoter

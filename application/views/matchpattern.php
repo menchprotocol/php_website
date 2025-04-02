@@ -7,7 +7,7 @@ if(isset($_GET['ideahashtag'])){
 
         echo '<h2>' . view_idea_title($i) . '</h2>';
 
-        $preg_query = $this->Ledger->fetch(array(
+        $preg_query = $this->Menchledger->fetch(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $i['ideaid'],
             'linkplayerup' => 26611,
@@ -20,7 +20,7 @@ if(isset($_GET['ideahashtag'])){
 
             echo '<p>Mismatches against ['.$preg_query[0]['linktext'].'] are:</p>';
 
-            foreach($this->Ledger->fetch(array(
+            foreach($this->Menchledger->fetch(array(
                             'linkplayertype' => 6144, //Written Response
                 'linkidealeft' => $i['ideaid'],
             ), array(), 0) as $x) {
@@ -28,7 +28,7 @@ if(isset($_GET['ideahashtag'])){
                 if(!preg_match($preg_query[0]['linktext'], $x['linktext'])) {
                     $failed++;
                     if(isset($_GET['delete'])){
-                        $this->Ledger->update($x['linkid'], array());
+                        $this->Menchledger->update($x['linkid'], array());
                         echo 'Deleted! ';
                     } else {
                         echo 'Set ?delete=1? ';

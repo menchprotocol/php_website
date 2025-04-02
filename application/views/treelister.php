@@ -15,7 +15,7 @@ if(!count($list_settings['list_config'][34513])){
 }
 
 
-foreach($this->Ledger->fetch(array(
+foreach($this->Menchledger->fetch(array(
     'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
     'linkplayerup IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes
 ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $link_i){

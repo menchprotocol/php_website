@@ -20,12 +20,12 @@ class Nodeplayers extends CIdea_cache
 
 
         //Remove from Anonymous:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkplayerup IN (' . join(',', $this->config->item('playerids___32540')) . ')' => null, //Unsubscribers
             'linkplayerdown' => $playerid,
         )) as $unsubscriber_x) {
-            $this->Ledger->update($unsubscriber_x['linkid'], array(), $playerid);
+            $this->Menchledger->update($unsubscriber_x['linkid'], array(), $playerid);
         }
 
         $session_data = $this->session->all_userdata();
@@ -33,7 +33,7 @@ class Nodeplayers extends CIdea_cache
 
 
         //Add to Subscriber:
-        $this->Ledger->create(array(
+        $this->Menchledger->create(array(
             'linkplayerup' => 4430, //Subscriber
             'linkplayertype' => 4230,
             'linkplayercreator' => $playerid,
@@ -62,16 +62,16 @@ class Nodeplayers extends CIdea_cache
         //Check & Adjust their subscription, IF needed:
         //Remove their subscribe:
         $resubscribed = 0;
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___29648')) . ')' => null, //Unsubscribers
             'linkplayerdown' => $e['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         )) as $unsubscribe) {
-            $resubscribed += $this->Ledger->update($unsubscribe['linkid'], array(), $e['playerid']);
+            $resubscribed += $this->Menchledger->update($unsubscribe['linkid'], array(), $e['playerid']);
         }
         if ($resubscribed > 0) {
             //Add Back to Subscribers:
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayertype' => 4230,
                 'linkplayerup' => 4430, //Active Member
                 'linkplayercreator' => $e['playerid'],
@@ -90,7 +90,7 @@ class Nodeplayers extends CIdea_cache
 
         //Fetch Platform Defaults:
         $platform_theme = array();
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'linkplayerdown' => 6404, //Platform Default
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
@@ -100,7 +100,7 @@ class Nodeplayers extends CIdea_cache
 
         //Fetch Website Defaults:
         $website_theme = array();
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'linkplayerdown' => website_setting(0), //Website ID
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
@@ -111,7 +111,7 @@ class Nodeplayers extends CIdea_cache
 
         //Fetch User Defaults:
         $user_theme = array();
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkplayerdown' => $e['playerid'], //This follower Player
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0) as $player_up) {
@@ -180,17 +180,17 @@ class Nodeplayers extends CIdea_cache
         //Resubscribe IF they are Permanently Unsubscribed:
         /*
         $unsubscribed_time = null;
-        foreach($this->Ledger->fetch(array(
+        foreach($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___31057')) . ')' => null, //Permanently Unsubscribed
             'linkplayerdown' => $e['playerid'], //This follower Player
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                 ), array(), 0) as $unsubscribed){
             $unsubscribed_time = $unsubscribed['linktime'];
-            $this->Ledger->update($unsubscribed['linkid'], array(), $e['playerid']); //Resubscribe
+            $this->Menchledger->update($unsubscribed['linkid'], array(), $e['playerid']); //Resubscribe
         }
         if($unsubscribed_time){
             //Add to subscribed again:
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayertype' => 4230,
                 'linkplayerup' => 4430, //Active Member
                 'linkplayercreator' => $e['playerid'],
@@ -208,13 +208,13 @@ class Nodeplayers extends CIdea_cache
     function add_regular_player($linkplayerup, $linkplayerdown, $linktext = null)
     {
         //Add if link not already there:
-        if (!count($this->Ledger->fetch(array(
+        if (!count($this->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $linkplayerup,
             'linkplayerdown' => $linkplayerdown,
             'linktext' => $linktext,
         )))) {
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayercreator' => $linkplayerdown, //Belongs to this Member
                 'linkplayertype' => 4230,
                 'linktext' => $linktext,
@@ -227,14 +227,14 @@ class Nodeplayers extends CIdea_cache
     function scissor_player($linkplayerup, $sub_id)
     {
 
-        $all_results = $this->Ledger->fetch(array(
+        $all_results = $this->Menchledger->fetch(array(
             'linkplayerup' => $linkplayerup,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerdown'), 0, 0, sort__player());
 
         //Remove if not in the secondary group:
         foreach ($all_results as $key => $primary_list) {
-            if (!count($this->Ledger->fetch(array(
+            if (!count($this->Menchledger->fetch(array(
                 'linkplayerup' => $sub_id,
                 'linkplayerdown' => $primary_list['playerid'],
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
@@ -251,14 +251,14 @@ class Nodeplayers extends CIdea_cache
     function scissor_i($linkplayerup, $sub_id)
     {
 
-        $all_results = $this->Ledger->fetch(array(
+        $all_results = $this->Menchledger->fetch(array(
             'linkplayerup' => $linkplayerup,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
         ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
 
         //Remove if not in the secondary group:
         foreach ($all_results as $key => $primary_list) {
-            if (!count($this->Ledger->fetch(array(
+            if (!count($this->Menchledger->fetch(array(
                 'linkplayerup' => $sub_id,
                 'linkidearight' => $primary_list['ideaid'],
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
@@ -301,7 +301,7 @@ class Nodeplayers extends CIdea_cache
 
         //Add email?
         if ($email) {
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayertype' => 4230,
                 'linktext' => trim(strtolower($email)),
                 'linkplayerup' => 3288, //Email
@@ -313,7 +313,7 @@ class Nodeplayers extends CIdea_cache
 
         //Add Number?
         if ($phone_number) {
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayerup' => 4783, //Phone
                 'linkplayertype' => 4230,
                 'linktext' => $phone_number,
@@ -330,7 +330,7 @@ class Nodeplayers extends CIdea_cache
         } else {
 
             //Add to anonymous:
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayerup' => 14938, //Guest Login
                 'linkplayertype' => 4230,
                 'linkplayercreator' => $added_e['new_player']['playerid'],
@@ -351,17 +351,17 @@ class Nodeplayers extends CIdea_cache
 
         //Send Welcome Email if any:
         if ($email) {
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Menchledger->fetch(array(
                 'linkplayertype' => 33600, //Draft
                 'linkplayerup' => 14929, //Website Welcome Email Templates
             ), array('linkidearight'), 0) as $i) {
-                if (count($this->Ledger->fetch(array(
+                if (count($this->Menchledger->fetch(array(
                     'linkplayertype' => 33600, //Draft
                     'linkplayerup' => $linkplayerdomain, //for Current website
                     'linkidearight' => $i['ideaid'], //Is this the template?
                 )))) {
                     //Found the email template to send:
-                    $total_sent = $this->Ledger->send_idea_mass_dm(array($added_e['new_player']), $i, $linkplayerdomain);
+                    $total_sent = $this->Menchledger->send_idea_mass_dm(array($added_e['new_player']), $i, $linkplayerdomain);
                     break; //Just the first template match
                 }
             }
@@ -455,11 +455,11 @@ class Nodeplayers extends CIdea_cache
         }
 
 
-        foreach ($this->Ledger->fetch($query_filters, $joins_objects, 0, 0, $order_columns) as $player_down) {
+        foreach ($this->Menchledger->fetch($query_filters, $joins_objects, 0, 0, $order_columns) as $player_down) {
 
             //Filter Players, if needed:
             $qualified_e = true;
-            if (count($include_any_e) && !count($this->Ledger->fetch(array(
+            if (count($include_any_e) && !count($this->Menchledger->fetch(array(
                     'linkplayerup IN (' . join(',', $include_any_e) . ')' => null,
                     'linkplayerdown' => $player_down['playerid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
@@ -467,7 +467,7 @@ class Nodeplayers extends CIdea_cache
                 //Must include all Players, skip:
                 $qualified_e = false;
             }
-            if (count($exclude_all_e) && count($this->Ledger->fetch(array(
+            if (count($exclude_all_e) && count($this->Menchledger->fetch(array(
                     'linkplayerup IN (' . join(',', $exclude_all_e) . ')' => null,
                     'linkplayerdown' => $player_down['playerid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
@@ -545,7 +545,7 @@ class Nodeplayers extends CIdea_cache
         //First delete existing following/follower transactions for this drop down:
         $previously_assigned = ($setplayer_down_id < 1);
         $x_update_id = 0;
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkplayerdown' => $linkplayercreator,
             'linkplayerup IN (' . join(',', $followers) . ')' => null, //Current followers
         ), array(), view_memory(6404, 11064)) as $x) {
@@ -557,7 +557,7 @@ class Nodeplayers extends CIdea_cache
                 $x_update_id = $x['linkid'];
 
                 //Do not log update transaction here as we would log it further below:
-                $this->Ledger->update($x['linkid'], array(), $linkplayercreator);
+                $this->Menchledger->update($x['linkid'], array(), $linkplayercreator);
             }
 
         }
@@ -566,7 +566,7 @@ class Nodeplayers extends CIdea_cache
         //Make sure $setplayer_down_id belongs to followings if set (Could be null which means delete all)
         if (!$previously_assigned) {
             //Let's go ahead and add desired Player as parent:
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayerdown' => $linkplayercreator,
                 'linkplayerup' => $setplayer_down_id,
@@ -585,7 +585,7 @@ class Nodeplayers extends CIdea_cache
         $duplicates_removed = 0;
 
         //Check followings to see if there are duplicates:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Menchledger->fetch(array(
             'linkplayerdown' => $playerid,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0, 0, array('linkplayerup' => 'ASC', 'linkid' => 'ASC')) as $x) {
@@ -602,7 +602,7 @@ class Nodeplayers extends CIdea_cache
             if ($duplicate_found) {
                 //Remove it:
                 $duplicates_removed++;
-                $this->Ledger->update($x['linkid'], array(), $x['linkplayercreator']); //Duplicate Link Removed
+                $this->Menchledger->update($x['linkid'], array(), $x['linkplayercreator']); //Duplicate Link Removed
             } else {
                 //Add it to main list:
                 array_push($current_up, array(
@@ -657,11 +657,11 @@ class Nodeplayers extends CIdea_cache
         } else {
 
             //REMOVE TRANSACTIONS
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Menchledger->fetch(array(
                 '(linkplayerdown = ' . $playerid . ' OR linkplayerup = ' . $playerid . ' OR linkplayercreator = ' . $playerid . ')' => null,
             ), array(), 0) as $adjust_tr) {
                 //Delete this transaction:
-                $x_adjusted += $this->Ledger->update($adjust_tr['linkid'], array(), $linkplayercreator);
+                $x_adjusted += $this->Menchledger->update($adjust_tr['linkid'], array(), $linkplayercreator);
             }
 
         }
@@ -709,7 +709,7 @@ class Nodeplayers extends CIdea_cache
         $applied_success = 0; //To be populated
 
         //Fetch all followers:
-        $followers = $this->Ledger->fetch(array(
+        $followers = $this->Menchledger->fetch(array(
             'linkplayerup' => $playerid,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerdown'), 0);
@@ -745,7 +745,7 @@ class Nodeplayers extends CIdea_cache
                 )) as $e) {
 
                     //See if follower Player has searched followings Player:
-                    $down_up_e = $this->Ledger->fetch(array(
+                    $down_up_e = $this->Menchledger->fetch(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                         'linkplayerdown' => $x['playerid'], //This follower Player
                         'linkplayerup' => $e['playerid'],
@@ -766,13 +766,13 @@ class Nodeplayers extends CIdea_cache
                         }
 
                         //Following Member Addition
-                        $this->Ledger->create($add_fields);
+                        $this->Menchledger->create($add_fields);
 
                         $applied_success++;
 
                         if ($action_playerid == 13441) {
                             //Since we're migrating we should remove from here:
-                            $this->Ledger->update($x['linkid'], array(), $linkplayercreator);
+                            $this->Menchledger->update($x['linkid'], array(), $linkplayercreator);
                         }
 
                     } elseif (in_array($action_playerid, array(5982, 11956)) && count($down_up_e) > 0) {
@@ -781,7 +781,7 @@ class Nodeplayers extends CIdea_cache
 
                             //Following Member Removal
                             foreach ($down_up_e as $delete_tr) {
-                                $this->Ledger->update($delete_tr['linkid'], array(), $linkplayercreator);
+                                $this->Menchledger->update($delete_tr['linkid'], array(), $linkplayercreator);
                                 $applied_success++;
                             }
 
@@ -791,7 +791,7 @@ class Nodeplayers extends CIdea_cache
                                 'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command2)),
                             )) as $e) {
                                 //Add as a followings because it meets the condition
-                                $this->Ledger->create(array(
+                                $this->Menchledger->create(array(
                                     'linkplayercreator' => $linkplayercreator,
                                     'linkplayertype' => 4230,
                                     'linkplayerdown' => $x['playerid'], //This follower Player
@@ -839,7 +839,7 @@ class Nodeplayers extends CIdea_cache
 
                 $new_message = str_replace($action_command1, $action_command2, $x['linktext']);
 
-                $this->Ledger->update($x['linkid'], array(
+                $this->Menchledger->update($x['linkid'], array(
                     'linktext' => $new_message,
                 ), $linkplayercreator);
 
@@ -847,7 +847,7 @@ class Nodeplayers extends CIdea_cache
 
             } elseif ($action_playerid == 26093) { //Replace Transaction Matching String
 
-                $this->Ledger->update($x['linkid'], array(
+                $this->Menchledger->update($x['linkid'], array(
                     'linktext' => $action_command1,
                 ), $linkplayercreator);
 
@@ -855,7 +855,7 @@ class Nodeplayers extends CIdea_cache
 
             } elseif ($action_playerid == 42804 && ($action_command1 == '*' || $x['linkplayertype'] == $action_command1) && in_array($action_command2, $this->config->item('playerids___32292') /* Player Link Types */)) { //Update Matching Interaction Type
 
-                $this->Ledger->update($x['linkid'], array(
+                $this->Menchledger->update($x['linkid'], array(
                     'linkplayertype' => $action_command2,
                 ), $linkplayercreator);
                 $applied_success++;
@@ -892,7 +892,7 @@ class Nodeplayers extends CIdea_cache
         }
 
         //Create New Player:
-        $new_x = $this->Ledger->create(array(
+        $new_x = $this->Menchledger->create(array(
             'linkplayercreator' => $creator,
             'linkplayertype' => 4251, //New Player Created
             'linktext' => $validate_playertext['playertext_clean'],
@@ -900,7 +900,7 @@ class Nodeplayers extends CIdea_cache
 
         if (!$new_x['linkid']) {
             //Ooopsi, something went wrong!
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayertype' => 44179, //Triggered
                 'linkplayerup' => 4246, //Platform Bug Reports
                 'linkplayerdown' => $creator,
@@ -915,7 +915,7 @@ class Nodeplayers extends CIdea_cache
 
         //Handle Generation
         $new_handle = generate_handle(12274, $validate_playertext['playertext_clean']);
-        $this->Ledger->create(array(
+        $this->Menchledger->create(array(
             'linkplayercreator' => $creator,
             'linkplayertype' => 4230, //Follow
             'linkplayerup' => 32338, //Player Handle
@@ -925,7 +925,7 @@ class Nodeplayers extends CIdea_cache
 
         //Cover saving if any
         if (strlen($playercover)) {
-            $this->Ledger->create(array(
+            $this->Menchledger->create(array(
                 'linkplayercreator' => $creator,
                 'linkplayertype' => 4230, //Follow
                 'linkplayerup' => 6198, //Player Cover

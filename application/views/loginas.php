@@ -1,7 +1,7 @@
 <?php
 
 //Make sure member:
-if(!count($this->Ledger->fetch(array(
+if(!count($this->Menchledger->fetch(array(
     'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkplayerup IN (' . join(',', $this->config->item('playerids___32537')) . ')' => null, //Interested Member
     'linkplayerdown' => $focus_e['playerid'],

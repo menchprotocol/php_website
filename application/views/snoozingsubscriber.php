@@ -8,7 +8,7 @@ foreach($this->config->item('players___28917') as $linkplayertype => $m) {
         $total_members = 0;
         $unsnooze_members = 0;
 
-        foreach($this->Ledger->fetch(array(
+        foreach($this->Menchledger->fetch(array(
             'linkplayerup' => $linkplayertype,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerdown'), 0) as $x) {
@@ -16,10 +16,10 @@ foreach($this->config->item('players___28917') as $linkplayertype => $m) {
             if((time()-strtotime($x['linktime']))>(86400*intval($m['m__message']))){
 
                 //Remove from Snooze:
-                $this->Ledger->update($x['linkid'], array(), $x['linkplayercreator']);
+                $this->Menchledger->update($x['linkid'], array(), $x['linkplayercreator']);
 
                 //Add to subscribers:
-                $this->Ledger->create(array(
+                $this->Menchledger->create(array(
                     'linkplayertype' => 4230,
                     'linkplayercreator' => $x['linkplayercreator'],
                     'linkplayerup' => 4430, //Active Member

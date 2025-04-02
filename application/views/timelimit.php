@@ -21,16 +21,16 @@ $links_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds ideas:
-foreach($this->Ledger->fetch($filters, array('linkidearight'), 0) as $expires){
+foreach($this->Menchledger->fetch($filters, array('linkidearight'), 0) as $expires){
 
     //Now go through everyone who discovered this selection:
-    foreach($this->Ledger->fetch(array(
+    foreach($this->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
         'linkidealeft' => $expires['ideaid'],
     ), array('linkplayercreator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
-        $answer_completed = $this->Ledger->fetch(array(
+        $answer_completed = $this->Menchledger->fetch(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
             'linkidealeft' => $x_progress['linkidearight'],
             'linkplayercreator' => $x_progress['playerid'],
@@ -41,14 +41,14 @@ foreach($this->Ledger->fetch($filters, array('linkidearight'), 0) as $expires){
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
-            foreach($this->Ledger->fetch(array(
+            foreach($this->Menchledger->fetch(array(
                             'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
                 'linkidealeft' => $expires['ideaid'],
                 'linkplayercreator' => $x_progress['playerid'],
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->Ledger->update($delete['linkid'], array(), $player_e['playerid']); //Time Expired
+                $this->Menchledger->update($delete['linkid'], array(), $player_e['playerid']); //Time Expired
 
             }
 

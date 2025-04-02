@@ -10,7 +10,7 @@ $total_points = 0;
 $table_body = '';
 
 //Count total first:
-$totals_count = $this->Ledger->fetch(array(), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+$totals_count = $this->Menchledger->fetch(array(), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
 foreach($this->config->item('players___4593') as $linkplayertype => $m) {
@@ -24,7 +24,7 @@ foreach($this->config->item('players___4593') as $linkplayertype => $m) {
     $table_body .= '<td style="text-align: left;">'.$linkplayertype.'</td>';
 
     //List all statuses:
-    $listplayer_count = $this->Ledger->fetch(array(
+    $listplayer_count = $this->Menchledger->fetch(array(
         'linkplayertype' => $linkplayertype,
     ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
     $interactions_this = $listplayer_count[0]['totals'];

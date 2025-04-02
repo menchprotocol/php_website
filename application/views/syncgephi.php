@@ -22,27 +22,26 @@ $id_prefix = array(
 );
 
 //Add Ideas:
-$is = $this->Nodeideas->fetch(array(
-));
-foreach($is as $in){
+$is = $this->Nodeideas->fetch(array());
+foreach ($is as $in) {
 
     //Add Idea node:
     $this->db->insert('gephinodes', array(
-        'id' => $id_prefix[12273].$in['ideaid'],
+        'id' => $id_prefix[12273] . $in['ideaid'],
         'label' => $in['ideatext'],
         'size' => 1,
         'node_type' => 1, //Idea
     ));
 
     //Fetch Next Ideas:
-    foreach($this->Ledger->fetch(array(
+    foreach ($this->Menchledger->fetch(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
         'linkidealeft' => $in['ideaid'],
-    ), array('linkidearight'), 0, 0) as $next_i){
+    ), array('linkidearight'), 0, 0) as $next_i) {
 
         $this->db->insert('gephilinks', array(
-            'source' => $id_prefix[12273].$next_i['linkidealeft'],
-            'target' => $id_prefix[12273].$next_i['linkidearight'],
+            'source' => $id_prefix[12273] . $next_i['linkidealeft'],
+            'target' => $id_prefix[12273] . $next_i['linkidearight'],
             'label' => $players___4593[$next_i['linkplayertype']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['linkplayertype'],
@@ -53,28 +52,27 @@ foreach($is as $in){
 
 
 //Transfer Players:
-$es = $this->Nodeplayers->fetch(array(
-));
-foreach($es as $en){
+$es = $this->Nodeplayers->fetch(array());
+foreach ($es as $en) {
 
     //Transfer Player node:
     $this->db->insert('gephinodes', array(
-        'id' => $id_prefix[12274].$en['playerid'],
+        'id' => $id_prefix[12274] . $en['playerid'],
         'label' => $en['playertext'],
         'size' => 1,
         'node_type' => 2, //Member
     ));
 
     //Fetch followers:
-    foreach($this->Ledger->fetch(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    foreach ($this->Menchledger->fetch(array(
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
         'linkplayerup' => $en['playerid'],
-    ), array('linkplayerdown'), 0, 0) as $player_down){
+    ), array('linkplayerdown'), 0, 0) as $player_down) {
 
         $this->db->insert('gephilinks', array(
-            'source' => $id_prefix[12274].$player_down['linkplayerup'],
-            'target' => $id_prefix[12274].$player_down['linkplayerdown'],
-            'label' => $players___4593[$player_down['linkplayertype']]['m__title'].': '.$player_down['linktext'],
+            'source' => $id_prefix[12274] . $player_down['linkplayerup'],
+            'target' => $id_prefix[12274] . $player_down['linkplayerdown'],
+            'label' => $players___4593[$player_down['linkplayertype']]['m__title'] . ': ' . $player_down['linktext'],
             'weight' => 1,
             'edge_type' => $player_down['linkplayertype'],
         ));
@@ -82,4 +80,4 @@ foreach($es as $en){
     }
 }
 
-echo count($is).' ideas & '.count($es).' Players synced.';
+echo count($is) . ' ideas & ' . count($es) . ' Players synced.';
