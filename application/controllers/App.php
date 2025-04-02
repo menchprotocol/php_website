@@ -30,8 +30,6 @@ class App extends CI_Controller
     function load($app_playerid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0)
     {
 
-        //if (!isset($_SERVER['REMOTE_ADDR']) || $_SERVER['REMOTE_ADDR'] != '73.15.62.97') { die('We will be back up shortly... IP '); }
-
         $memory_detected = is_array($this->config->item('playerids___6287')) && count($this->config->item('playerids___6287'));
         if (!$memory_detected) {
             //Since we don't have the memory created we must load the app that does so:
@@ -2896,25 +2894,26 @@ class App extends CI_Controller
 
                 $is_single_selection = in_array($focus_i['ideatype'], $this->config->item('playerids___33331'));
 
-                //How about the min selection?
-                if ($idea_required && !$is_single_selection) {
-                    foreach ($this->Menchledger->fetch(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-                        'linkidearight' => $focus_i['ideaid'],
-                        'linkplayerup' => 40834, //Min Selection
-                    ), array(), 1) as $limit) {
-                        if (intval($limit['linktext']) > 0 && $total_selected < intval($limit['linktext'])) {
-                            return view_json(array(
-                                'status' => 0,
-                                'message' => 'Select ' . $limit['linktext'] . ' or more ideas to go next.',
-                            ));
+
+                if (!$is_single_selection) {
+
+                    //How about the min selection?
+                    if ($idea_required) {
+                        foreach ($this->Menchledger->fetch(array(
+                            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                            'linkidearight' => $focus_i['ideaid'],
+                            'linkplayerup' => 40834, //Min Selection
+                        ), array(), 1) as $limit) {
+                            if (intval($limit['linktext']) > 0 && $total_selected < intval($limit['linktext'])) {
+                                return view_json(array(
+                                    'status' => 0,
+                                    'message' => 'Select ' . $limit['linktext'] . ' or more ideas to go next.',
+                                ));
+                            }
                         }
                     }
-                }
 
-
-                //How about max selection?
-                if (!$is_single_selection) {
+                    //How about max selection?
                     foreach ($this->Menchledger->fetch(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'linkidearight' => $focus_i['ideaid'],
@@ -2927,6 +2926,7 @@ class App extends CI_Controller
                             ));
                         }
                     }
+
                 }
 
 
@@ -3000,29 +3000,33 @@ class App extends CI_Controller
 
                     //Analyze input:
                     $input__required = in_array($idea_next['ideatype'], $this->config->item('playerids___43039'));
-                    if($input__required){
+                    if ($input__required) {
                         continue;
                     }
                     $input__text = in_array($idea_next['ideatype'], $this->config->item('playerids___43002')) || in_array($idea_next['ideatype'], $this->config->item('playerids___43003'));
                     $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
                     $skipping_not_allowed = in_array($idea_next['ideatype'], $this->config->item('playerids___43009'));
-                    $trying_to_skip = !$skipping_not_allowed &&
-                        (
-                            ($input__text && !$input__upload && !strlen($next_idea_data['new_ideatext'])) ||
-                            (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) ||
-                            ($input__text && $input__upload && !count($next_idea_data['uploaded_media']) && !strlen($next_idea_data['new_ideatext']))
-                        );
-                    $idea_required = idea_required($idea_next);
+                    $trying_to_skip = (
+                        ($input__text && !$input__upload && !strlen($next_idea_data['new_ideatext'])) ||
+                        (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) ||
+                        ($input__text && $input__upload && !count($next_idea_data['uploaded_media']) && !strlen($next_idea_data['new_ideatext']))
+                    );
+                    $idea_required = !$skipping_not_allowed && idea_required($idea_next);
 
-                    if ($skipping_not_allowed || !($idea_required && $trying_to_skip)) {
-                        //Try to complete:
-                        $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
-                            'linknumber' => $next_idea_data['ideanumber'],
+                    if(!$idea_required && $trying_to_skip){
+                        return view_json(array(
+                            'status' => 0,
+                            'message' => 'You must respond to this required idea',
                         ));
-                        if ($idea_required && !$completion_status['status']) {
-                            //We had an error with data within target_ideaid:
-                            return view_json($completion_status);
-                        }
+                    }
+
+                    //Try to complete:
+                    $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
+                        'linknumber' => $next_idea_data['ideanumber'],
+                    ));
+                    if ($idea_required && !$completion_status['status']) {
+                        //We had an error with data within target_ideaid:
+                        //return view_json($completion_status);
                     }
                 }
             }
