@@ -23,7 +23,7 @@ if ($_GET['focus__id']==12273 && superpower_unlocked(12700) && isset($_POST['s__
     $this->session->set_flashdata('flash_message', '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="far fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>');
 
     foreach($this->Cacheplayers->fetch(array('playerid' => $_POST['s__id'])) as $e){
-        header("Location: " . view__memory(42903,42902) . $e['playerhandle'] );
+        header("Location: " . view_memory(42903,42902) . $e['playerhandle'] );
     }
 
 } else {

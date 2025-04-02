@@ -21,7 +21,7 @@ foreach ($this->Menchledger->fetch(array(
         continue;
     }
 
-    echo view__card_player(6287, $app);
+    echo view_card_player(6287, $app);
     array_push($already_loaded, intval($app['playerid']));
 
 }
@@ -47,6 +47,6 @@ foreach ($this->Menchledger->fetch(array(
         }
     }
 
-    echo view__card_player(6287, $app);
+    echo view_card_player(6287, $app);
 }
 echo '</div>';

@@ -55,7 +55,7 @@ class Cacheideas extends CIdea_cache
         $this->db->insert('cacheideas', $add_fields);
 
         //Sync messages:
-        $view_sync_links = view__sync_links($add_fields['ideatext'], true, $add_fields['ideaid']);
+        $view_sync_links = view_sync_links($add_fields['ideatext'], true, $add_fields['ideaid']);
 
         //Fetch to return the complete Player data:
         $is = $this->Cacheideas->fetch(array(
@@ -189,7 +189,7 @@ class Cacheideas extends CIdea_cache
                 'linktype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //IDEA LINKS
                 'linkright' => $o__id,
             ), array('linkleft'), 1) as $previous_i) {
-                $deletion_redirect = view__memory(42903, 33286) . $previous_i['ideahashtag'];
+                $deletion_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
             }
 
             //If not found, find active followings:
@@ -198,7 +198,7 @@ class Cacheideas extends CIdea_cache
                     'linktype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //IDEA LINKS
                     'linkright' => $o__id,
                 ), array('linkleft'), 1) as $previous_i) {
-                    $deletion_redirect = view__memory(42903, 33286) . $previous_i['ideahashtag'];
+                    $deletion_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
                 }
             }
 
@@ -207,7 +207,7 @@ class Cacheideas extends CIdea_cache
                 foreach ($this->Cacheideas->fetch(array(
                     'ideaid' => $o__id,
                 )) as $i) {
-                    $deletion_redirect = view__memory(42903, 33286) . $i['ideahashtag'];
+                    $deletion_redirect = view_memory(42903, 33286) . $i['ideahashtag'];
                 }
             }
 
@@ -507,14 +507,14 @@ class Cacheideas extends CIdea_cache
                 'message' => 'Unknown mass action',
             );
 
-        } elseif (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && !view__valid_handle_player($action_command1)) {
+        } elseif (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && !view_valid_handle_player($action_command1)) {
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown Player. Format must be: @PlayerHandle',
             );
 
-        } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && !view__valid_handle_i($action_command1)) {
+        } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && !view_valid_handle_i($action_command1)) {
 
             return array(
                 'status' => 0,
@@ -541,11 +541,11 @@ class Cacheideas extends CIdea_cache
 
             //Logic here must match items in e_mass_actions config variable
 
-            if (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && view__valid_handle_player($action_command1)) {
+            if (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && view_valid_handle_player($action_command1)) {
 
                 //Check if it has this item:
                 foreach ($this->Cacheplayers->fetch(array(
-                    'LOWER(playerhandle)' => strtolower(view__valid_handle_player($action_command1)),
+                    'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command1)),
                 )) as $e) {
 
                     $idea_has_e = $this->Menchledger->fetch(array(
@@ -585,10 +585,10 @@ class Cacheideas extends CIdea_cache
                     }
                 }
 
-            } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && view__valid_handle_i($action_command1)) {
+            } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && view_valid_handle_i($action_command1)) {
 
                 foreach ($this->Cacheideas->fetch(array(
-                    'LOWER(ideahashtag)' => strtolower(view__valid_handle_i($action_command1)),
+                    'LOWER(ideahashtag)' => strtolower(view_valid_handle_i($action_command1)),
                 )) as $i) {
 
                     if ($action_playerid == 27240) {

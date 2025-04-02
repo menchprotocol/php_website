@@ -12,12 +12,12 @@ if(isset($_GET['search_for'])){
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
     if(!count($es)){
-        return view__json(array(
+        return view_json(array(
             'status' => 0,
             'message' => 'Invalid Player ID #1'
         ));
     } elseif(!strlen($es[0]['playercover'])) {
-        return view__json(array(
+        return view_json(array(
             'status' => 0,
             'message' => 'Player Missing Cover'
         ));
@@ -78,7 +78,7 @@ if($icon_keyword){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.view__cover($en['playercover']).'</span><a href="'.view__memory(42903,42902).$en['playerhandle'].'">'.$en['playertext'].'</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['playercover']).'</span><a href="'.view_memory(42903,42902).$en['playerhandle'].'">'.$en['playertext'].'</a></td>';
             echo '</tr>';
 
         }

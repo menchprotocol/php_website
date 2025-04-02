@@ -2,25 +2,25 @@
 
 $community_pills = '';
 
-foreach(( isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Cacheplayers->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Cacheplayers->scissor_player(website_setting(0), 13207) ) as $player_item) {
+foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Cacheplayers->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Cacheplayers->scissor_player(website_setting(0), 13207)) as $player_item) {
 
-    foreach($this->Menchledger->fetch(array(
+    foreach ($this->Menchledger->fetch(array(
         'linkup' => $player_item['playerid'],
         'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-        ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
+    ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
 
         $total_count = view_player_covers(12274, $x['playerid'], 0, false);
 
-        if($total_count){
+        if ($total_count) {
 
             $ui = '<div class="row justify-content">';
-            foreach(view_player_covers(12274, $x['playerid'], 1, false) as $count=>$e) {
-                $ui .= view__card_player(13207, $e, null);
+            foreach (view_player_covers(12274, $x['playerid'], 1, false) as $count => $e) {
+                $ui .= view_card_player(13207, $e, null);
             }
             $ui .= '</div>';
 
-            $community_pills .= view__pill(12274, $x['playerid'], $total_count, array(
-                'm__cover' => view__cover($x['playercover'], true),
+            $community_pills .= view_pill(12274, $x['playerid'], $total_count, array(
+                'm__cover' => view_cover($x['playercover'], true),
                 'm__title' => $x['playertext'],
                 'm__message' => $x['linktext'],
                 'm__handle' => $x['playerhandle'],
@@ -31,10 +31,10 @@ foreach(( isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
 }
 
 
-if(strlen($community_pills)){
+if (strlen($community_pills)) {
 
     //Community
-    echo '<h2 class="center">'.$player_item['playertext'].'</h2>';
+    echo '<h2 class="center">' . $player_item['playertext'] . '</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 

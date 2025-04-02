@@ -23,8 +23,8 @@ $count_totals = array(
 //Generate list & settings:
 $list_settings = list_settings($_GET['ideahashtag']);
 
-echo '<h1>' . view__idea_title($list_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view__idea_links($list_settings['i'], ( isset($player_e['playerid']) ? $player_e['playerid'] : 0 )) . '</div>';
+echo '<h1>' . view_idea_title($list_settings['i']) . '</h1>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($list_settings['i'], ( isset($player_e['playerid']) ? $player_e['playerid'] : 0 )) . '</div>';
 
 echo 'Filter:';
 
@@ -53,7 +53,7 @@ foreach($list_settings['query_string_filtered'] as $x){
 
         }
 
-        $idea_content .= '<td title="'.$x['playertext'].' x '.view__idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['linktext']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view__idea_title($idea_var, true).': '.$discoveries[0]['linktext'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['linktext'].'</p>' : '<span title="'.view__idea_title($idea_var, true).': '.$discoveries[0]['linktext'].' ['.$discoveries[0]['linktime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view__idea_title($idea_var, true).' ['.$discoveries[0]['linktime'].']">✔️</span>' )  : '').'</td>';
+        $idea_content .= '<td title="'.$x['playertext'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['linktext']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['linktext'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['linktext'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['linktext'].' ['.$discoveries[0]['linktime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['linktime'].']">✔️</span>' )  : '').'</td>';
 
         if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Menchledger->fetch(array(
                     'linkdown' => $x['playerid'],
@@ -75,7 +75,7 @@ foreach($list_settings['query_string_filtered'] as $x){
 
     $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
 
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view__cover($x['playercover'], true).'</span><a href="'.view__memory(42903,42902).$x['playerhandle'].'" style="font-weight:bold;">'.$x['playertext'].'</a>'.$name.$plus_info.'</td>';
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['playercover'], true).'</span><a href="'.view_memory(42903,42902).$x['playerhandle'].'" style="font-weight:bold;">'.$x['playertext'].'</a>'.$name.$plus_info.'</td>';
 
 
 
@@ -99,17 +99,17 @@ foreach($list_settings['query_string_filtered'] as $x){
             if(strlen($fetch_data[0]['linktext'])){
                 if(filter_var($fetch_data[0]['linktext'], FILTER_VALIDATE_URL)){
                     //Sheet Click to Expand
-                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['linktext'].'" target="_blank" title="Open in a New Window">'.view__cover($e['playercover'], '🔗️', ' ').'</a>';
+                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['linktext'].'" target="_blank" title="Open in a New Window">'.view_cover($e['playercover'], '🔗️', ' ').'</a>';
                 } elseif(!isset($_GET['expand']) && in_array($e['playerid'], $this->config->item('playerids___40945'))){
                     //Sheet Click to Expand
-                    $message_clean = '<span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['linktext'].' [Click to Expand]">'.view__cover($e['playercover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].' hidden">'.$fetch_data[0]['linktext'].'</span>';
+                    $message_clean = '<span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['linktext'].' [Click to Expand]">'.view_cover($e['playercover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].' hidden">'.$fetch_data[0]['linktext'].'</span>';
                 } elseif(isset($_GET['expand']) || $require_writing){
                     $message_clean = $fetch_data[0]['linktext'];
                 } else {
-                    $message_clean = '<span '.$underdot_class.' title="'.$fetch_data[0]['linktext'].'">'.view__cover($e['playercover'], '✔️', ' ').'</span>';
+                    $message_clean = '<span '.$underdot_class.' title="'.$fetch_data[0]['linktext'].'">'.view_cover($e['playercover'], '✔️', ' ').'</span>';
                 }
             } else {
-                $message_clean = '<span class="icon-block-xs">'.view__cover($e['playercover'], '✔️', ' ').'</span>';
+                $message_clean = '<span class="icon-block-xs">'.view_cover($e['playercover'], '✔️', ' ').'</span>';
             }
         }
 
@@ -146,7 +146,7 @@ echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">'.$count.' Players</th>';
 foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#thplayer_'.$e['playerid']);
-    echo '<th id="thplayer_'.$e['playerid'].'"><a class="icon-block-xs" href="'.view__memory(42903,42902).$e['playerhandle'].'" target="_blank" title="Open in New Window">'.view__cover($e['playercover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['playerid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['playerid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['playertext'].'</span></th>';
+    echo '<th id="thplayer_'.$e['playerid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['playerhandle'].'" target="_blank" title="Open in New Window">'.view_cover($e['playercover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['playerid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['playerid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['playertext'].'</span></th>';
 }
 foreach($list_settings['column_i'] as $idea_var){
 
@@ -160,7 +160,7 @@ foreach($list_settings['column_i'] as $idea_var){
 
     array_push($table_sortable, '#th_idea_'.$idea_var['ideaid']);
 
-    echo '<th id="th_idea_'.$idea_var['ideaid'].'"><div></div><a class="icon-block-xs" href="'.view__memory(42903,33286).$idea_var['ideahashtag'].'" target="_blank" title="Open in New Window">'.$players___4737[$idea_var['ideatype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($idea_var['linktext']) ? $idea_var['linktext'] : view__idea_title($idea_var, true) ).'</span></th>';
+    echo '<th id="th_idea_'.$idea_var['ideaid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$idea_var['ideahashtag'].'" target="_blank" title="Open in New Window">'.$players___4737[$idea_var['ideatype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($idea_var['linktext']) ? $idea_var['linktext'] : view_idea_title($idea_var, true) ).'</span></th>';
 
 }
 echo '</tr>';

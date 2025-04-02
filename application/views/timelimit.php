@@ -54,7 +54,7 @@ foreach($this->Menchledger->fetch($filters, array('linkright'), 0) as $expires){
 
             if($deleted){
                 $links_deleted++;
-                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="'.view__memory(42903,42902).$x_progress['playerhandle'].'">'.$x_progress['playertext'].'</a>: '.$x_progress['linktime'].' ? '.$x_progress['linktext'].' / <a href="'.view__app_link(12722).'?linkid=' . $x_progress['linkid'] . '">'.$x_progress['linkid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['linktext']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['linktime'] ).' = '.$seconds_left.')</div>';
+                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="'.view_memory(42903,42902).$x_progress['playerhandle'].'">'.$x_progress['playertext'].'</a>: '.$x_progress['linktime'].' ? '.$x_progress['linktext'].' / <a href="'.view_app_link(12722).'?linkid=' . $x_progress['linkid'] . '">'.$x_progress['linkid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['linktext']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['linktime'] ).' = '.$seconds_left.')</div>';
             }
 
 
@@ -72,6 +72,6 @@ echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expi
 if(isset($filters['linkright'])){
     foreach($this->Cacheideas->fetch(array('ideaid' => $filters['linkright'])) as $i){
         //We were deleting a single item, redirect back:
-        js_php_redirect(timelimit . phpview__memory(42903, 33286) . $i['ideahashtag'], 0);
+        js_php_redirect(timelimit . phpview_memory(42903, 33286) . $i['ideahashtag'], 0);
     }
 }

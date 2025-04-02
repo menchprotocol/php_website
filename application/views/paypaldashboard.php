@@ -20,14 +20,14 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     
     echo '<h1>'.$players___6287[27004]['m__title'].'</h1>';
     foreach($this->Cacheplayers->fetch_recursive(11029, $player_e['playerid'], array(27004)) as $e){
-        echo '<div><a href="'.view__app_link(27004).view__memory(42903,42902).$e['playerhandle'].'" class="main__title">'.$e['playertext'].'</a></div>';
+        echo '<div><a href="'.view_app_link(27004).view_memory(42903,42902).$e['playerhandle'].'" class="main__title">'.$e['playertext'].'</a></div>';
     }
 
 } else {
 
 
     //Show header:
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view__app_link(27004).'"><b>'.$players___6287[27004]['m__title'].'</b></a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$players___6287[27004]['m__title'].'</b></a></div>';
 
     $es = $this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
@@ -120,8 +120,8 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
 
             $transaction_content .= '<tr class="transaction_columns transactions_'.$i['ideaid'].' hidden">';
-            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view__cover($es[0]['playercover'],true).'</span><a href="'.view__memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['playertext'].'</u></a> ' : '' ).$linktext['first_name'].' '.$linktext['last_name'].'</td>';
-            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $linktext['mc_gross']!=0 && strlen($linktext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$linktext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view__app_link(4341).'?linkid='.$x['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
+            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['playertext'].'</u></a> ' : '' ).$linktext['first_name'].' '.$linktext['last_name'].'</td>';
+            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $linktext['mc_gross']!=0 && strlen($linktext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$linktext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?linkid='.$x['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
             $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($linktext['mc_gross'], 2).'</td>';
@@ -178,7 +178,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view__idea_title($i).'</u></a>' : view__idea_title($i) ).' <a href="'.view__memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_idea_title($i).'</u></a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
@@ -246,10 +246,10 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         //Doo We Have other?
         foreach($other_es as $other_e){
             $otherplayer_content .= '<tr class="transaction_columns thr_e hidden">';
-            $otherplayer_content .= '<td><span class="icon-block e_cover_micro">'.view__cover($other_e['playercover'],true).'</span><a href="'.view__memory(42903,42902).$other_e['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['playertext'].'</u></a></td>';
+            $otherplayer_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['playercover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['playertext'].'</u></a></td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view__app_link(4341).'?linkid='.$other_e['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
+            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?linkid='.$other_e['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
@@ -361,7 +361,7 @@ if(count($idea_query)){
                         $is = $this->Cacheideas->fetch(array(
                             'ideaid' => $origin,
                         ));
-                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view__idea_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
+                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_idea_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
                     }
                 }
                 ?>

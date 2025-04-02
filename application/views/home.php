@@ -29,14 +29,14 @@ foreach($this->Menchledger->fetch(array(
 }
 
 if(count($primary_i)){
-    echo ' <script> $(document).ready(function () { show_more('.$primary_i['ideaid'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view__idea_title($primary_i, true)).'\'); }); </script> ';
+    echo ' <script> $(document).ready(function () { show_more('.$primary_i['ideaid'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_idea_title($primary_i, true)).'\'); }); </script> ';
 }
 
-echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view__idea_title($primary_i, true) . '</h1>';
+echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_idea_title($primary_i, true) . '</h1>';
 
 
 //Did we find any?
-$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view__idea_links($primary_i) . '</div>';
+$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($primary_i) . '</div>';
 
 
 
@@ -79,7 +79,7 @@ foreach($this->Cacheplayers->scissor_player($website_id, 14903) as $player_item)
             $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['playercover'].'\');"></div>'.'</div>';
             $info_item .= '<div class="info_box_title main__title">'.$info_element['playertext'].'</div>';
         } else {
-            $info_item .= '<div class="info_box_cover">'.view__cover($info_element['playercover']).'</div>';
+            $info_item .= '<div class="info_box_cover">'.view_cover($info_element['playercover']).'</div>';
             $info_item .= '<div class="info_box_title main__title">'.$info_element['playertext'].'</div>';
         }
         if(strlen($info_element['linktext'])){
@@ -114,7 +114,7 @@ if($messages){
 //List Relevant Ideas in order:
 $secondary_i = '';
 foreach($secondary_idea_list as $ref_i){
-    $secondary_i .= view__card_i(14565,  $ref_i);
+    $secondary_i .= view_card_i(14565,  $ref_i);
 }
 if(strlen($secondary_i)){
     echo '<div class="row justify-content flip-content">';
@@ -137,7 +137,7 @@ foreach($this->config->item('players___14036') as $playerid => $m){
         ), array(), 0, 0) as $social_link){
 
         //Determine link type:
-        if(filter_var($social_link['linktext'], FILTER_VALIDATE_URL) && view__url_clean($social_link['linktext'])!=view__url_clean($players___14870[$website_id]['m__message'])){
+        if(filter_var($social_link['linktext'], FILTER_VALIDATE_URL) && view_url_clean($social_link['linktext'])!=view_url_clean($players___14870[$website_id]['m__message'])){
             //We made sure not the current website:
             $social_url = $social_link['linktext'];
         } elseif(filter_var($social_link['linktext'], FILTER_VALIDATE_EMAIL)){

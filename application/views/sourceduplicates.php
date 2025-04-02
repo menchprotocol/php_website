@@ -31,7 +31,7 @@ if(isset($_GET['playerhandle'])){
 
 } elseif(!isset($_GET['search_by_name'])){
 
-    echo '<p>Either enter ?playerid= in URL to search specific Player Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view__app_link(7268).'?search_by_name=1"><b>Find Duplicate Players by Name</b></a></p>.';
+    echo '<p>Either enter ?playerid= in URL to search specific Player Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_link(7268).'?search_by_name=1"><b>Find Duplicate Players by Name</b></a></p>.';
 
 } else {
 
@@ -50,7 +50,7 @@ if(isset($_GET['playerhandle'])){
                 $prev_title = $en['playertext'];
             }
 
-            echo '<a href="'.view__memory(42903,42902) . $en['playerhandle'] . '"><b>' . $en['playertext'] . '</b></a> @' . $en['playerid'] . '<br />';
+            echo '<a href="'.view_memory(42903,42902) . $en['playerhandle'] . '"><b>' . $en['playertext'] . '</b></a> @' . $en['playerid'] . '<br />';
         }
 
     } else {

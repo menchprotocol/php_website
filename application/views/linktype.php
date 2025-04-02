@@ -20,7 +20,7 @@ foreach($this->config->item('players___4593') as $linktype => $m) {
     $table_body .= '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
-    $table_body .= '<td style="text-align: left;"><a href="'.view__memory(42903,42902).$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
+    $table_body .= '<td style="text-align: left;"><a href="'.view_memory(42903,42902).$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
     $table_body .= '<td style="text-align: left;">'.$linktype.'</td>';
 
     //List all statuses:

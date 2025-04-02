@@ -7,7 +7,7 @@ if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     ));
 }
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . phpview__memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . phpview_memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
 $players___14870 = $this->config->item('players___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
@@ -22,7 +22,7 @@ if(superpower_unlocked()) {
 
     js_php_redirect($next_url, 13);
 
-} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view__hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash']){
+} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash']){
 
     $es = $this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
@@ -294,10 +294,10 @@ if(superpower_unlocked()) {
 
                 <?php
                 //ANONYMOUS LOGIN:
-                if(intval(view__memory(6404,14938)) && count($sign_i)){
+                if(intval(view_memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="'.view__app_link(14938).view__memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_link(14938).view_memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
                     echo $players___11035[14938]['m__title'].' '.$players___11035[14938]['m__cover'];
                     echo ( strlen($players___11035[14938]['m__message']) ? ': '.$players___11035[14938]['m__message'] : '' );
                     echo '</a></div>';

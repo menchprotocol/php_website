@@ -1,7 +1,7 @@
 <?php
 $player_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
-$player_segment = view__valid_handle_player($first_segment);
+$player_segment = view_valid_handle_player($first_segment);
 $second_segment = $this->uri->segment(2);
 $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 $players___14870 = $this->config->item('players___14870'); //Website Partner
@@ -87,14 +87,14 @@ if(!$basic_header_footer){
     //Do we have Google Analytics?
     $google_analytics_code = website_setting(30033);
     if(strlen($google_analytics_code) > 0){
-        echo view__google_tag($google_analytics_code);
+        echo view_google_tag($google_analytics_code);
     }
 
 
     //Do we have Google Tags or second google analytics?
     $google_tag_code = website_setting(38216);
     if(strlen($google_tag_code) > 0){
-        echo view__google_tag($google_tag_code);
+        echo view_google_tag($google_tag_code);
     }
 
 
@@ -123,7 +123,7 @@ if(!$basic_header_footer){
 
 
     //Latest version of twitter bootstrap:
-    echo view__memory(6404,4523);
+    echo view_memory(6404,4523);
     ?>
 
     <link href="/application/views/website.css?cache_time=<?= $this->config->item('cache_time') ?>" rel="stylesheet">
@@ -334,7 +334,7 @@ if ($focus_i){
 
                     echo '<td>';
 
-                    echo '<div class="logo_frame">'.( strlen($domain_cover) ? '<a href="'.view__memory(42903,14565).'" class="icon-block logo_cover">'.view__cover($domain_logo).'</a>' : '') . '<a href="'.view__memory(42903,14565).'" class="main__title logo_title">'.get_domain('m__title').'</a>'.'</div>';
+                    echo '<div class="logo_frame">'.( strlen($domain_cover) ? '<a href="'.view_memory(42903,14565).'" class="icon-block logo_cover">'.view_cover($domain_logo).'</a>' : '') . '<a href="'.view_memory(42903,14565).'" class="main__title logo_title">'.get_domain('m__title').'</a>'.'</div>';
 
 
                     //SEARCH
@@ -361,7 +361,7 @@ if ($focus_i){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_e && strlen($player_e['playercover']) ? view__cover($player_e['playercover'], 1) : $players___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_e && strlen($player_e['playercover']) ? view_cover($player_e['playercover'], 1) : $players___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('players___'.$menu_type) as $linktype => $m) {
@@ -382,9 +382,9 @@ if ($focus_i){
                         if($linktype==26105 && $player_e) {
 
                             //Profile View
-                            $m['m__cover'] = view__cover($player_e['playercover'], 1);
+                            $m['m__cover'] = view_cover($player_e['playercover'], 1);
                             $m['m__title'] = '<div class="type_head main__title">'.$player_e['playertext'].'</div><div class="grey type_handle">@'.$player_e['playerhandle'].'</div>';
-                            $href = 'href="'.view__memory(42903,42902).$player_e['playerhandle'].'" ';
+                            $href = 'href="'.view_memory(42903,42902).$player_e['playerhandle'].'" ';
 
                         } elseif($linktype==42246 && $player_e) {
 
@@ -412,7 +412,7 @@ if ($focus_i){
                         } elseif(in_array($linktype, $this->config->item('playerids___6287'))){
 
                             //APP
-                            $href = 'href="'.view__app_link($linktype).( $linktype==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
+                            $href = 'href="'.view_app_link($linktype).( $linktype==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
 
                         } else {
 
@@ -481,14 +481,14 @@ $player_e = superpower_unlocked();
 if($player_e){
     //For profile editing only:
     echo '<div class="hidden">';
-    echo view__card_player(42287, $player_e, null);
+    echo view_card_player(42287, $player_e, null);
     echo '</div>';
 }
 
 if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $dynamic_edit = '';
-    for ($p = 1; $p <= view__memory(6404,42206); $p++) {
+    for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_linkid="">';
         $dynamic_edit .= '<div class="inner_dynamic">';
         $dynamic_edit .= '<div class="text_content">';
@@ -505,7 +505,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
-                    <form method="POST" action="<?= view__app_link(27196) ?>?focus__id=12274">
+                    <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12274">
                         <div class="modal-header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             <button type="submit" class="btn btn-default">APPLY</button>
@@ -622,7 +622,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
 
-                    <form method="POST" action="<?= view__app_link(27196) ?>?focus__id=12273">
+                    <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12273">
 
                         <div class="modal-header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -720,7 +720,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <!-- Idea Links -->
                             <div class="dynamic_editing_input idea_linktype hidden hidden_superpower__10939" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view__single_select_form(4486, 4228); ?></div>
+                                <div class="dynamic_selector"><?= view_single_select_form(4486, 4228); ?></div>
                             </div>
 
                             <!-- Unlink -->
@@ -754,7 +754,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Hashtag -->
                         <div class="dynamic_editing_input single_line hash_group" title="<?= $players___6201[32337]['m__title'] ?>">
                             <h3 class="mini-font"><span class="icon-block"><?= $players___6201[32337]['m__cover']  ?></span></h3>
-                            <input type="text" class="form-control unsaved_warning save_ideahashtag no-border" placeholder="<?= $players___6201[32337]['m__title'] ?>" maxlength="<?= view__memory(6404,41985) ?>">
+                            <input type="text" class="form-control unsaved_warning save_ideahashtag no-border" placeholder="<?= $players___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
                         </div>
 
                         <!-- Idea Creator(s) -->
@@ -764,12 +764,12 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 'linkup' => $player_e['playerid'],
                                 'linktype' => 41011, //PINNED FOLLOWER
                                             ), array('linkdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {
-                                echo '<div class="creator_headline"><span class="icon-block">'.view__cover($x_pinned['playercover']).'</span><b>'.$x_pinned['playertext'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['playerhandle'].'</span></div>';
+                                echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['playercover']).'</span><b>'.$x_pinned['playertext'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['playerhandle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }
 
                             //Always append current user:
-                            echo '<div class="creator_headline first_headline"><span class="icon-block">'.view__cover($player_e['playercover']).'</span></div>';
+                            echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($player_e['playercover']).'</span></div>';
                             ?>
                         </div>
 
@@ -800,7 +800,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 } elseif($playerid==4737){ //Player Reference
 
                                     echo '<div class="dynamic_editing_input no_padded pull-right " style="margin: 0 !important;">
-                                        <div class="dynamic_selector">'.view__single_select_form(4737, 6677).'</div>
+                                        <div class="dynamic_selector">'.view_single_select_form(4737, 6677).'</div>
                                     </div>';
 
                                 } elseif($playerid==13572){ //Upload File

@@ -41,4 +41,4 @@ if($stats['total_seconds'] > 0){
 }
 
 //Return results:
-view__json($stats);
+view_json($stats);

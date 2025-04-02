@@ -2,17 +2,17 @@
 
 $player_e = superpower_unlocked(null, 0, $this->player_e);
 if(!$player_e){
-    return view__json(array(
+    return view_json(array(
         'status' => 0,
-        'message' => view__unauthorized_message(),
+        'message' => view_unauthorized_message(),
     ));
 } elseif (!isset($_POST['target_ideahashtag']) || !isset($_POST['target_ideaid']) || !isset($_POST['invoice_items']) || !isset($_POST['do_skip'])) {
-    return view__json(array(
+    return view_json(array(
         'status' => 0,
         'message' => 'Missing Core Data',
     ));
 } elseif(!(filter_var(website_setting(30882), FILTER_VALIDATE_EMAIL) && strlen(website_setting(44355))>10 && strlen(website_setting(44354))>10)) {
-    return view__json(array(
+    return view_json(array(
         'status' => 0,
         'message' => 'Paypal Invoicing is Not Active on This Domain... Contact Webmaster...',
     ));
@@ -86,7 +86,7 @@ if(!$set_email){
         'linkright' => $_POST['focus__id'],
         'linktext' => 'No Valid email found for invoice',
     ));
-    return view__json(array(
+    return view_json(array(
         'status' => 0,
         'message' => 'Your account does not have a valid email address for us to send your invoice. Click on Edit Profile from Top/Right menu, edit your email address, and try again.',
     ));
@@ -120,7 +120,7 @@ foreach($this->Cacheideas->fetch(array(
             // Sample invoice data
             $invoiceData = [
                 'invoicer_logo_url' => $website_logo,
-                'invoicer_given_name' => view__idea_title($idea_target, true),
+                'invoicer_given_name' => view_idea_title($idea_target, true),
                 'invoicer_address_line_1' => '', //Atlas Foundation; Non-Profit #774760508BC0001
                 'invoicer_address_line_2' => '', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['playerid']),
@@ -216,14 +216,14 @@ foreach($this->Cacheideas->fetch(array(
 
 
         //Find Next:
-        $idea_redirect_url = i_redirect_url($i);
+        $idea_redirect_url = idea_redirect_url($i);
         if(!$idea_redirect_url){
             $find_next = $this->Menchledger->find_next($player_e['playerid'], $_POST['target_ideahashtag'], $i);
         }
 
 
         //Return Data:
-        return view__json(array(
+        return view_json(array(
             'status' => 1,
             'next__url' => ( $idea_redirect_url ? $idea_redirect_url : ( $find_next ? $find_next : 'start' ) ),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),

@@ -6,7 +6,7 @@ $longest_id = 0;
 $cron_jobs = $this->Menchledger->fetch(array(
     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     'linkup' => 7274,
-), array('linkdown'), view__memory(6404,11064), 0, array('linknumber' => 'ASC'));
+), array('linkdown'), view_memory(6404,11064), 0, array('linknumber' => 'ASC'));
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['linktext']) > $longest_time){
         $longest_time = strlen($cron_job['linktext']);
@@ -21,7 +21,7 @@ echo '<textarea class="mono-space" readonly style="background-color: #FFFFFF; co
 echo '# APPS WITH CRON JOBS:'."\n"."\n";
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['linktext'])){
-        echo str_pad($cron_job['linktext'], $longest_time, " ", STR_PAD_RIGHT) . ' cronjobs.php' .view__memory(6404,7274).' '.str_pad($cron_job['playerid'], $longest_id, " ", STR_PAD_RIGHT).' #'.$cron_job['playertext']."\n";
+        echo str_pad($cron_job['linktext'], $longest_time, " ", STR_PAD_RIGHT) . ' cronjobs.php' .view_memory(6404,7274).' '.str_pad($cron_job['playerid'], $longest_id, " ", STR_PAD_RIGHT).' #'.$cron_job['playertext']."\n";
     }
 }
 echo '</textarea>';

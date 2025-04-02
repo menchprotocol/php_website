@@ -5,9 +5,9 @@ if(!isset($_GET['confirm'])){
 
     //Asl user to confirm:
     echo '<div class="alert alert-warning" role="alert">You are about to delete all discoveries for @'.$focus_e['playerhandle'].'... Are you sure you want to continue?</div>';
-    echo '<a href="'.view__app_link(6415).view__memory(42903,42902).$focus_e['playerhandle'].'?confirm=1" class="btn btn-default">Confirm</a>';
+    echo '<a href="'.view_app_link(6415).view_memory(42903,42902).$focus_e['playerhandle'].'?confirm=1" class="btn btn-default">Confirm</a>';
     echo ' - OR - ';
-    echo '<a href="'.view__memory(42903,42902).$focus_e['playerhandle'].'" class="btn btn-default">Cancel & Return to @'.$focus_e['playerhandle'].'</a>';
+    echo '<a href="'.view_memory(42903,42902).$focus_e['playerhandle'].'" class="btn btn-default">Cancel & Return to @'.$focus_e['playerhandle'].'</a>';
 
 } else {
 
@@ -37,7 +37,7 @@ if(!isset($_GET['confirm'])){
     //Show basic UI for now:
     echo $message;
 
-    //return redirect_message(view__memory(42903,42902).$focus_e['playerhandle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
+    //return redirect_message(view_memory(42903,42902).$focus_e['playerhandle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
 
 
 }

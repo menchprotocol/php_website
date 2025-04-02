@@ -4,7 +4,7 @@ foreach($this->Cacheideas->fetch(array(
     'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
 )) as $i){
 
-    echo '<h2>' . view__idea_title($i) . '</h2>';
+    echo '<h2>' . view_idea_title($i) . '</h2>';
 
     $preg_query = $this->Menchledger->fetch(array(
             'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes

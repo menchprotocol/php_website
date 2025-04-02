@@ -106,7 +106,7 @@ foreach($this->Menchledger->fetch(array(
         $memory_text .= '        \'m__handle\' => \''.$follower['playerhandle'].'\','."\n";
         $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',str_replace($prefix_common_words,'',$follower['playertext']) )).'\','."\n";
         $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['linktext'])).'\','."\n";
-        $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view__cover($follower['playercover'])).'\','."\n";
+        $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view_cover($follower['playercover'])).'\','."\n";
         $memory_text .= '        \'m__following\' => array('.join(',',$down_up_ids).'),'."\n";
         $memory_text .= '     ),'."\n";
 

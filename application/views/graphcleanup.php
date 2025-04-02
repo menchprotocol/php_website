@@ -22,10 +22,10 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
     foreach($this->Cacheideas->fetch(array(
     ), 0) as $idea_fix){
 
-        $view_sync_links = view__sync_links($idea_fix['ideatext'], true, $idea_fix['ideaid']);
+        $view_sync_links = view_sync_links($idea_fix['ideatext'], true, $idea_fix['ideaid']);
 
         /*
-        echo '<a href="'.view__memory(42903,33286).$idea_fix['ideahashtag'].'">#'.$idea_fix['ideahashtag'].'</a><br />';
+        echo '<a href="'.view_memory(42903,33286).$idea_fix['ideahashtag'].'">#'.$idea_fix['ideahashtag'].'</a><br />';
         echo nl2br(htmlentities($idea_fix['ideatext'])).'<br />';
 
         if(count($view_sync_links['replace_from'])){
@@ -45,7 +45,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
             }
 
             if($starting_message!=$idea_fix['ideatext']){
-                //view__sync_links($starting_message, true, $idea_fix['ideaid']);
+                //view_sync_links($starting_message, true, $idea_fix['ideaid']);
                 $edited++;
             }
 

@@ -2,8 +2,8 @@
 
 
 //Focus Player:
-echo '<div class="view__12274 row justify-content">';
-echo view__card_player(42287, $focus_e, null);
+echo '<div class="view_12274 row justify-content">';
+echo view_card_player(42287, $focus_e, null);
 echo '</div>';
 
 
@@ -34,7 +34,7 @@ foreach($this->config->item('players___31916') as $linktype => $m) {
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
-                               maxlength="' . view__memory(6404,6197) . '"
+                               maxlength="' . view_memory(6404,6197) . '"
                                placeholder="Search or Link @Players">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { player_load_finder('.$linktype.'); }); </script>';
@@ -46,7 +46,7 @@ foreach($this->config->item('players___31916') as $linktype => $m) {
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
-                               maxlength="' . view__memory(6404,6197) . '"
+                               maxlength="' . view_memory(6404,6197) . '"
                                placeholder="Search or Link #ideas">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { i_load_finder('.$linktype.'); }); </script>';
@@ -59,7 +59,7 @@ foreach($this->config->item('players___31916') as $linktype => $m) {
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$linktype.' hidden" read-counter="'.$coins_count[$linktype].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-        echo '<li class="nav-item thepill'.$linktype.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" linktype="'.$linktype.'" href="#'.$m['m__handle'].'" title="'.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$linktype.'">'. view__number($coins_count[$linktype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$linktype.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+        echo '<li class="nav-item thepill'.$linktype.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" linktype="'.$linktype.'" href="#'.$m['m__handle'].'" title="'.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$linktype.'">'. view_number($coins_count[$linktype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$linktype.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
 
     }
 }

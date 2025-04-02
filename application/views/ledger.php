@@ -121,10 +121,10 @@ if(isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0){
 }
 
 
-if(isset($_GET['start_range']) && is_valid_date($_GET['start_range'])){
+if(isset($_GET['start_range']) && string_is_date($_GET['start_range'])){
     $query_filters['linktime >='] = $_GET['start_range'].( strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '' );
 }
-if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
+if(isset($_GET['end_range']) && string_is_date($_GET['end_range'])){
     $query_filters['linktime <='] = $_GET['end_range'].( strlen($_GET['end_range']) <= 10 ? ' 23:59:59' : '' );
 }
 
@@ -179,7 +179,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     function x_4341(x_filters, x_joined_by, page_num){
 
         //Show spinner:
-        $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_view__shuffle_message(12694) +  '</div>').hide().fadeIn();
+        $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
         $.post("/app/x_4341", {
@@ -378,7 +378,7 @@ echo '</tr></table>';
 echo '<input type="submit" class="btn" value="Apply" />';
 
 if($has_filters){
-    echo ' &nbsp;<a href="'.view__app_link(4341).'" style="font-size: 0.8em;">Remove Filters</a>';
+    echo ' &nbsp;<a href="'.view_app_link(4341).'" style="font-size: 0.8em;">Remove Filters</a>';
 }
 
 echo '</form>';

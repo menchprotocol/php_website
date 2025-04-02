@@ -4,7 +4,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 /*
 if(access_level_i($focus_i['ideahashtag'], 0, $focus_i)){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$players___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view__memory(42903,33286).$focus_i['ideahashtag'].'"><b><u>'.$players___11035[33286]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$players___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view_memory(42903,33286).$focus_i['ideahashtag'].'"><b><u>'.$players___11035[33286]['m__title'].'</u></b></a></div>';
 }
 */
 
@@ -38,7 +38,7 @@ if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
             ), array('linkright'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.( $followings_i['ideahashtag']==$target_ideahashtag ? 'start' : $followings_i['ideahashtag'] ).'"><u>'.view__idea_title($followings_i, true).'</u></a>';
+            $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_ideahashtag.'/'.( $followings_i['ideahashtag']==$target_ideahashtag ? 'start' : $followings_i['ideahashtag'] ).'"><u>'.view_idea_title($followings_i, true).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -55,10 +55,10 @@ if($linkplayer && $target_ideahashtag!=$focus_i['ideahashtag']){
                         'linkplayer' => $linkplayer,
                         'linkleft' => $idea_subset['ideaid'],
                     )))){
-                        $breadcrum_content .= '<a href="'.view__memory(42903,30795).$target_ideahashtag.'/'.$idea_subset['ideahashtag'].'" class="dropdown-item '.( in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '' ).'">'.view__idea_title($idea_subset, true).'</a>';
+                        $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_ideahashtag.'/'.$idea_subset['ideahashtag'].'" class="dropdown-item '.( in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '' ).'">'.view_idea_title($idea_subset, true).'</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '' ).'" title="'.$players___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$players___11035[43010]['m__cover'].'</span>'.view__idea_title($idea_subset, true).'</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '' ).'" title="'.$players___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$players___11035[43010]['m__cover'].'</span>'.view_idea_title($idea_subset, true).'</div>';
                     }
 
                 }
@@ -114,13 +114,13 @@ if($player_e){
 
 //Focus Discovery:
 echo '<div class="row justify-content">';
-echo view__card_i(43007, $focus_i, null, null, 0, $x_completes);
+echo view_card_i(43007, $focus_i, null, null, 0, $x_completes);
 echo '</div>';
 
 
 //Main Navigation
 if($player_e || isset($_GET['open'])){
-    echo view__idea_nav(true, $focus_i, $x_completes);
+    echo view_idea_nav(true, $focus_i, $x_completes);
 }
 
 ?>

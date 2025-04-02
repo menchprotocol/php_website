@@ -140,27 +140,27 @@ class Menchledger extends CIdea_cache
 
                     //IDEA
                     foreach ($this->Cacheideas->fetch(array('ideaid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_i) {
-                        $html_message .= $m['m__title'] . ': ' . view__idea_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view__memory(42903, 33286) . $this_i['ideahashtag'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . view_idea_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['ideahashtag'] . "\n\n";
                     }
 
                 } elseif (in_array(6160, $m['m__following'])) {
 
                     //SOURCE
                     foreach ($this->Cacheplayers->fetch(array('playerid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_e) {
-                        $html_message .= $m['m__title'] . ': ' . $this_e['playertext'] . "\n" . $this->config->item('base_url') . view__memory(42903, 42902) . $this_e['playerhandle'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . $this_e['playertext'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['playerhandle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
 
                     //DISCOVERY
-                    $html_message .= $m['m__title'] . ':' . "\n" . $this->config->item('base_url') . view__app_link(12722) . '?linkid=' . $add_fields[$players___32088[$playerid]['m__message']] . "\n\n";
+                    $html_message .= $m['m__title'] . ':' . "\n" . $this->config->item('base_url') . view_app_link(12722) . '?linkid=' . $add_fields[$players___32088[$playerid]['m__message']] . "\n\n";
 
                 }
 
             }
 
             //Finally append DISCOVERY ID:
-            $html_message .= 'TRANSACTION: #' . $add_fields['linkid'] . "\n" . $this->config->item('base_url') . view__app_link(12722) . '?linkid=' . $add_fields['linkid'] . "\n\n";
+            $html_message .= 'TRANSACTION: #' . $add_fields['linkid'] . "\n" . $this->config->item('base_url') . view_app_link(12722) . '?linkid=' . $add_fields['linkid'] . "\n\n";
 
             //Send to all Watchers:
             foreach ($tr_watchers as $tr_watcher) {
@@ -337,7 +337,7 @@ class Menchledger extends CIdea_cache
         if (!$player_e) {
             return array(
                 'status' => 0,
-                'message' => view__unauthorized_message(),
+                'message' => view_unauthorized_message(),
             );
         } elseif (intval($o__id) < 1) {
             return array(
@@ -625,7 +625,7 @@ class Menchledger extends CIdea_cache
                 'linkdown' => $playerid,
             )) as $player_data) {
 
-                foreach (explode('|||', wordwrap($sms_message, view__memory(6404, 27891), "|||")) as $single_message) {
+                foreach (explode('|||', wordwrap($sms_message, view_memory(6404, 27891), "|||")) as $single_message) {
 
                     $sms_sent = dispatch_sms($player_data['linktext'], $single_message, $playerid, $x_data, $template_ideaid, $linkdomain, $log_tr, $demo_only);
 
@@ -657,7 +657,7 @@ class Menchledger extends CIdea_cache
 
         $total_sent = 0;
         $linkdomain = ($linkdomain > 0 ? $linkdomain : (isset($i['linkdomain']) ? $i['linkdomain'] : 0));
-        $subject_line = view__idea_title($i, true);
+        $subject_line = view_idea_title($i, true);
         $wacth_repeat_handles = array();
 
         foreach ($list_of_playerid as $count => $x) {
@@ -696,7 +696,7 @@ class Menchledger extends CIdea_cache
             }
 
 
-            $content_message = view__idea_links($i, $x['playerid'], true); //Hide the show more content if any
+            $content_message = view_idea_links($i, $x['playerid'], true); //Hide the show more content if any
             if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
                 //Let's remove the first line since it's used in the title:
                 $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);
@@ -709,8 +709,8 @@ class Menchledger extends CIdea_cache
                 'linkleft' => $i['ideaid'],
             ), array('linkright'), 0, 0, array('linknumber' => 'ASC')) as $down_or) {
                 //Has this user discovered this idea or no?
-                $html_message .= '<div class="line">' . view__idea_title($down_or, true) . ':</div>';
-                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['playerid'], $linkdomain) . view__memory(42903, 33286) . $down_or['ideahashtag'] . (i_startable($down_or) ? '/' . view__memory(6404, 4235) : '') . '?playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view__hash(time() . $x['playerhandle']) . '</div>';
+                $html_message .= '<div class="line">' . view_idea_title($down_or, true) . ':</div>';
+                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['playerid'], $linkdomain) . view_memory(42903, 33286) . $down_or['ideahashtag'] . (idea_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['playerhandle']) . '</div>';
             }
 
             //Where to place the next step?
@@ -968,7 +968,7 @@ class Menchledger extends CIdea_cache
 
                     //Update existing response if different:
                     if ($focus_idea_data['new_ideatext'] != $x_responses[0]['ideatext']) {
-                        $view_sync_links = view__sync_links($focus_idea_data['new_ideatext'], true, $x_responses[0]['ideaid']);
+                        $view_sync_links = view_sync_links($focus_idea_data['new_ideatext'], true, $x_responses[0]['ideaid']);
                     }
                     $this_ideaid = $x_responses[0]['ideaid'];
 
@@ -1089,7 +1089,7 @@ class Menchledger extends CIdea_cache
                         ));
 
                         //New link:
-                        $clone_urls .= $new_title . ':' . "\n" . 'https://' . get_domain('m__message', $x_data['linkplayer']) . view__memory(42903, 33286) . $result['new_ideahashtag'] . "\n\n";
+                        $clone_urls .= $new_title . ':' . "\n" . 'https://' . get_domain('m__message', $x_data['linkplayer']) . view_memory(42903, 33286) . $result['new_ideahashtag'] . "\n\n";
                     }
 
                 } elseif ($clone_i['linktype'] == 32304) {
@@ -1110,7 +1110,7 @@ class Menchledger extends CIdea_cache
             if (strlen($clone_urls)) {
                 //Send DM with all the new clone idea URLs:
                 $clone_urls = $clone_urls . 'You have been added as a subscriber so you will be notified when anyone start using your link.';
-                $idea_title = view__idea_title($i, true);
+                $idea_title = view_idea_title($i, true);
                 $this->Menchledger->send_dm($x_data['linkplayer'], $idea_title, $clone_urls);
                 //Also DM all watchers of the idea:
                 foreach ($this->Menchledger->fetch(array(
@@ -1228,11 +1228,11 @@ class Menchledger extends CIdea_cache
                         if (!in_array(intval($watcher['linkup']), $sent_watchers)) {
                             array_push($sent_watchers, intval($watcher['linkup']));
 
-                            $this->Menchledger->send_dm($watcher['linkup'], $es_discoverer[0]['playertext'] . ' Discovered: ' . view__idea_title($i, true),
+                            $this->Menchledger->send_dm($watcher['linkup'], $es_discoverer[0]['playertext'] . ' Discovered: ' . view_idea_title($i, true),
                                 //Message Body:
-                                view__idea_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view__memory(42903, 33286) . $i['ideahashtag'] . "\n\n" .
+                                view_idea_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['ideahashtag'] . "\n\n" .
                                 (strlen($x_data['linktext']) ? $x_data['linktext'] . "\n\n" : '') .
-                                $es_discoverer[0]['playertext'] . ':' . "\n" . 'https://' . $domain_url . view__memory(42903, 42902) . $es_discoverer[0]['playerhandle'] . "\n\n" .
+                                $es_discoverer[0]['playertext'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['playerhandle'] . "\n\n" .
                                 $discoverer_contact
                             );
                         }

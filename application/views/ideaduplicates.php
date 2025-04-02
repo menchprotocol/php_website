@@ -17,7 +17,7 @@ if(count($duplicates) > 0){
             $prev_title = $in['ideatext'];
         }
 
-        echo '<div><a href="' . view__memory(42903,33286). $in['ideahashtag'] . '"><b>' . $in['ideatext'] . '</b></a> #' . $in['ideaid'] . '</div>';
+        echo '<div><a href="' . view_memory(42903,33286). $in['ideahashtag'] . '"><b>' . $in['ideatext'] . '</b></a> #' . $in['ideaid'] . '</div>';
     }
 
 } else {

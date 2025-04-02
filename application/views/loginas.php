@@ -7,7 +7,7 @@ if(!count($this->Menchledger->fetch(array(
     'linkdown' => $focus_e['playerid'],
 )))){
 
-    return view__json(array(
+    return view_json(array(
         'status' => 0,
         'message' => 'Player is not an interested member',
     ));
@@ -19,6 +19,6 @@ if(!count($this->Menchledger->fetch(array(
     //Assign session & log transaction:
     $this->Cacheplayers->activate_session($focus_e);
 
-    js_php_redirect(loginas . phpview__memory(42903, 42902) . $focus_e['playerhandle'], 1597);
+    js_php_redirect(loginas . phpview_memory(42903, 42902) . $focus_e['playerhandle'], 1597);
 
 }

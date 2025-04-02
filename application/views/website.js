@@ -250,7 +250,7 @@ function load_editor(){
         },
         templates: {
             suggestion: function (suggestion) {
-                return view__s_js_line(suggestion,'@');
+                return view_s_js_line(suggestion,'@');
             },
             empty: function (data) {
                 return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Players Found</div>';
@@ -282,7 +282,7 @@ function load_editor(){
         },
         templates: {
             suggestion: function (suggestion) {
-                return view__s_js_line(suggestion,'#');
+                return view_s_js_line(suggestion,'#');
             },
             empty: function (data) {
                 return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Ideas Found</div>';
@@ -293,18 +293,18 @@ function load_editor(){
 }
 
 
-function view__s__title(suggestion){
+function view_s__title(suggestion){
     var title = ( suggestion._highlightResult && suggestion._highlightResult.s__title.value ? suggestion._highlightResult.s__title.value : suggestion.s__title );
     var max_limit = 89;
     return htmlentitiesjs( title.length>=max_limit ? title.substring(0,max_limit)+'...' : title );
 }
 
 
-function view__s_js_line(suggestion, default_handle = '@'){
+function view_s_js_line(suggestion, default_handle = '@'){
     if(suggestion.s__type==12273){
-        return '<span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view__s__title(suggestion) + '</span>';
+        return '<span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     } else if(suggestion.s__type==12274){
-        return '<span class="icon-block-xs">'+ view__cover_js(suggestion.s__cover) +'</span><span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view__s__title(suggestion) + '</span>';
+        return '<span class="icon-block-xs">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     }
 }
 
@@ -336,7 +336,7 @@ function i_load_finder(linktype) {
     });
 }
 
-function view__s_js_cover(linktype, suggestion, action_id){
+function view_s_js_cover(linktype, suggestion, action_id){
 
     if(!js_playerids___26010.includes(linktype)){
         alert('Missing type in JS UI');
@@ -350,7 +350,7 @@ function view__s_js_cover(linktype, suggestion, action_id){
         if(validURL(suggestion.s__cover)){
             background_image = 'style="background-image:url(\''+suggestion.s__cover+'\')"';
         } else {
-            icon_image = view__cover_js(suggestion.s__cover);
+            icon_image = view_cover_js(suggestion.s__cover);
         }
     }
 
@@ -366,8 +366,8 @@ function view__s_js_cover(linktype, suggestion, action_id){
     }
 
 }
-function view__s_mini_js(s__cover,s__title){
-    return '<span class="block-cover" title="'+s__title+'">'+ view__cover_js(s__cover) +'</span>';
+function view_s_mini_js(s__cover,s__title){
+    return '<span class="block-cover" title="'+s__title+'">'+ view_cover_js(s__cover) +'</span>';
 }
 
 
@@ -554,7 +554,7 @@ function toggle_pills(linktype_hash, is_first_load){
 
             if(focus__node==12273){
 
-                var loading_url = "/app/view__idea_body";
+                var loading_url = "/app/view_idea_body";
                 var loading_data = {
                     focus__node:focus__node,
                     linktype:linktype,
@@ -602,7 +602,7 @@ function toggle_pills(linktype_hash, is_first_load){
                     $win.scroll(function () {
                         //Download loading from bottom:
                         if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                            x_view__load_page();
+                            x_view_load_page();
                         }
                     });
                 });
@@ -691,7 +691,7 @@ function e_copy(playerid){
 
 
 
-function js_view__shuffle_message(playerid){
+function js_view_shuffle_message(playerid){
     var messages = js_players___12687[playerid]['m__message'].split("\n");
     if(messages.length==1){
         //Return message:
@@ -771,7 +771,7 @@ function updatplayercover(new_cover, changed = true){
     }
 }
 function image_cover(cover_preview, cover_apply, new_title){
-    return '<a href="javascript:void(0);" onclick="updatplayercover(\''+cover_apply+'\')">' + view__s_mini_js(cover_preview, new_title) + '</a>';
+    return '<a href="javascript:void(0);" onclick="updatplayercover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
 }
 
 
@@ -1212,7 +1212,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion,'#');
+                    return view_s_js_line(suggestion,'#');
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {
@@ -1245,7 +1245,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion,'@');
+                    return view_s_js_line(suggestion,'@');
                 },
                 replace: function (suggestion) {
                     return ' @' + suggestion.s__handle + ' ';
@@ -1346,7 +1346,7 @@ $(document).ready(function () {
                     var item_key = suggestion.s__type+'_'+suggestion.s__id;
                     if(!icons_listed.includes(item_key)) {
                         icons_listed.push(item_key);
-                        $("#container_finder .row").append(view__s_js_cover(26011, suggestion, 0));
+                        $("#container_finder .row").append(view_s_js_cover(26011, suggestion, 0));
                     }
                     return false;
                 },
@@ -1379,7 +1379,7 @@ function update_cover_main(cover_code, target_css){
     }
 }
 
-function view__cover_js(cover_code){
+function view_cover_js(cover_code){
     if(cover_code && cover_code.length){
         if(validURL(cover_code)){
             return '<img src="'+cover_code+'" />';
@@ -1395,7 +1395,7 @@ function view__cover_js(cover_code){
 
 function update_cover_mini(cover_code, target_css){
     //Update:
-    $(target_css).html(view__cover_js(cover_code));
+    $(target_css).html(view_cover_js(cover_code));
 }
 
 
@@ -1421,7 +1421,7 @@ function display_media(mediaframe_id, uploader_id, ideaid){
     console.log('display_media: '+mediaframe_id+'/'+uploader_id+'/'+ideaid);
     $(".ui_ideacache_"+ideaid+" .media_display").each(function () {
         $('#'+mediaframe_id).append('<div id="'+$(this).attr('id')+'" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""></div>');
-        cloudinary_preview__player(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
+        cloudinary_preview_player(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
     });
     sort_media(mediaframe_id);
 }
@@ -2068,7 +2068,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 //Append this to the main Player:
                 if(media_playerid) {
 
-                    cloudinary_preview__player(uploader_id, result.info.id, media_playerid, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_players___42294[media_playerid]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_players___42294[media_playerid]['m__title']+' File' ));
+                    cloudinary_preview_player(uploader_id, result.info.id, media_playerid, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_players___42294[media_playerid]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_players___42294[media_playerid]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log('MEDIA CACHE:');
@@ -2134,7 +2134,7 @@ function play_video(public_id){
     cld.source(public_id);
 }
 
-function cloudinary_preview__player(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0){
+function cloudinary_preview_player(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0){
 
     //Update meta variables:
     $('#'+info_id).attr('media_playerid',media_playerid).attr('playback_code',playback_code).attr('playerid',playerid).attr('playercover',playercover);
@@ -2420,7 +2420,7 @@ function e_editor_save(){
 
 var busy_loading = false;
 var current_page = [];
-function x_view__load_page() {
+function x_view_load_page() {
 
     if(!focus_group){
         return false;
@@ -2443,7 +2443,7 @@ function x_view__load_page() {
 
     current_page[focus_group]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_group);
-    $.post("/app/x_view__load_page", {
+    $.post("/app/x_view_load_page", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         linktype: focus_group,

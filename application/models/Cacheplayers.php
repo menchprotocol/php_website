@@ -83,8 +83,8 @@ class Cacheplayers extends CIdea_cache
         if (!$update_session && !$is_cookie) {
             //Create Cookie:
             $cookie_time = time();
-            $cookie_val = $e['playerid'] . 'ABCEFG' . $cookie_time . 'ABCEFG' . view__hash($e['playerid'] . $cookie_time);
-            setcookie('auth_cookie', $cookie_val, ($cookie_time + (86400 * view__memory(6404, 14031))), "/");
+            $cookie_val = $e['playerid'] . 'ABCEFG' . $cookie_time . 'ABCEFG' . view_hash($e['playerid'] . $cookie_time);
+            setcookie('auth_cookie', $cookie_val, ($cookie_time + (86400 * view_memory(6404, 14031))), "/");
         }
 
 
@@ -548,7 +548,7 @@ class Cacheplayers extends CIdea_cache
         foreach ($this->Menchledger->fetch(array(
             'linkdown' => $linkplayer,
             'linkup IN (' . join(',', $followers) . ')' => null, //Current followers
-        ), array(), view__memory(6404, 11064)) as $x) {
+        ), array(), view_memory(6404, 11064)) as $x) {
 
             if (!$previously_assigned && $x['linkup'] == $setplayer_down_id) {
                 $previously_assigned = true;
@@ -688,14 +688,14 @@ class Cacheplayers extends CIdea_cache
                 'message' => 'Unknown mass action',
             );
 
-        } elseif (in_array($action_playerid, array(5981, 5982, 11956, 13441)) && !view__valid_handle_player($action_command1)) {
+        } elseif (in_array($action_playerid, array(5981, 5982, 11956, 13441)) && !view_valid_handle_player($action_command1)) {
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown Player. Format must be: @PlayerHandle',
             );
 
-        } elseif (in_array($action_playerid, array(11956)) && !view__valid_handle_player($action_command2)) {
+        } elseif (in_array($action_playerid, array(11956)) && !view_valid_handle_player($action_command2)) {
 
             return array(
                 'status' => 0,
@@ -737,11 +737,11 @@ class Cacheplayers extends CIdea_cache
 
                 $applied_success++;
 
-            } elseif (in_array($action_playerid, array(5981, 5982, 11956, 13441)) && view__valid_handle_player($action_command1)) { //Add/Delete/Migrate followings Player
+            } elseif (in_array($action_playerid, array(5981, 5982, 11956, 13441)) && view_valid_handle_player($action_command1)) { //Add/Delete/Migrate followings Player
 
                 //What member searched for:
                 foreach ($this->Cacheplayers->fetch(array(
-                    'LOWER(playerhandle)' => strtolower(view__valid_handle_player($action_command1)),
+                    'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command1)),
                 )) as $e) {
 
                     //See if follower Player has searched followings Player:
@@ -785,10 +785,10 @@ class Cacheplayers extends CIdea_cache
                                 $applied_success++;
                             }
 
-                        } elseif ($action_playerid == 11956 && view__valid_handle_player($action_command2)) {
+                        } elseif ($action_playerid == 11956 && view_valid_handle_player($action_command2)) {
 
                             foreach ($this->Cacheplayers->fetch(array(
-                                'LOWER(playerhandle)' => strtolower(view__valid_handle_player($action_command2)),
+                                'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command2)),
                             )) as $e) {
                                 //Add as a followings because it meets the condition
                                 $this->Menchledger->create(array(

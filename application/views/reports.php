@@ -11,7 +11,7 @@ $linktime_start = date("Y-m-d H:i:s", $linktime_start_timestamp);
 $linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 
 //Email Body
-$html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':</div>';
+$html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view_s($last_x_days).':</div>';
 
 foreach($this->config->item('players___42263') as $linktype => $m) {
 
@@ -24,7 +24,7 @@ foreach($this->config->item('players___42263') as $linktype => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div class="line"><span style="display:inline-block; width: 55px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.view__number($unique).' '.$m['m__title'].'</div>';
+    $html_message .= '<div class="line"><span style="display:inline-block; width: 55px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.view_number($unique).' '.$m['m__title'].'</div>';
 
     //Primary Coin?
     if(in_array($linktype, $this->config->item('playerids___6404'))){
@@ -39,7 +39,7 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
     echo $html_message;
-    echo '<div style="padding: 21px 0;"><a href="'.view__app_link(12114).'?email_trigger=1">Email Me This Report</a></div>';
+    echo '<div style="padding: 21px 0;"><a href="'.view_app_link(12114).'?email_trigger=1">Email Me This Report</a></div>';
 
 } else {
 
@@ -64,6 +64,6 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     }
 
-    echo 'Report sent to '.$email_recipients.' Member'.view__s($email_recipients);
+    echo 'Report sent to '.$email_recipients.' Member'.view_s($email_recipients);
 
 }

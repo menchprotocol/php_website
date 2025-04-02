@@ -7,7 +7,7 @@ if(!isset($_GET['ideahashtag'])){
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['ideahashtag'], true);
-echo '<h1 class="no-print">' . view__idea_title($list_settings['i']) . '</h1>';
+echo '<h1 class="no-print">' . view_idea_title($list_settings['i']) . '</h1>';
 
 
 if(!count($list_settings['list_config'][34513])){
@@ -26,7 +26,7 @@ foreach($this->Menchledger->fetch(array(
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="'.view__memory(42903,33286).$link_i['ideahashtag'].'">'.view__idea_title($link_i).'</a> ['.count($list_settings['query_string_filtered']).' Total]</h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$link_i['ideahashtag'].'">'.view_idea_title($link_i).'</a> ['.count($list_settings['query_string_filtered']).' Total]</h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     foreach($list_settings['query_string_filtered'] as $count => $x){

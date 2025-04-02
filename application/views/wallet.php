@@ -10,13 +10,13 @@ if($playerhandle){
     foreach($this->Cacheplayers->fetch(array(
         'LOWER(playerhandle)' => strtolower($playerhandle),
     )) as $e){
-        echo '<h2 class="center"><a href="'.view__memory(42903,42902).$playerhandle.'"><span class="icon-block">'.view__cover($e['playercover']).'</span> <u>' . $e['playertext'] . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="'.view_memory(42903,42902).$playerhandle.'"><span class="icon-block">'.view_cover($e['playercover']).'</span> <u>' . $e['playertext'] . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif($ideahashtag){
     foreach($this->Cacheideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($ideahashtag),
     )) as $i){
-        echo '<h2 class="center"><a href="'.view__memory(42903,33286).$ideahashtag.'"><u>' . view__idea_title($i, true) . '</u></a> <a href="'.view__memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="'.view_memory(42903,33286).$ideahashtag.'"><u>' . view_idea_title($i, true) . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 }
 
@@ -44,14 +44,14 @@ foreach($this->config->item('players___33292') as $playerid1 => $m1) {
         if($playerid2!=12273 && $playerid2!=12274){
             echo '<table class="table table-striped card_subcat card_subcat_'.$playerid2.' hidden" style="width:100%; margin-top:13px;">';
             $focus_link_group = 0;
-            $player_pinned = e_pinned($playerid2, true);
+            $player_pinned = player_pinned($playerid2, true);
             if(!$player_pinned || !is_array($this->config->item('players___'.$player_pinned)) || !count($this->config->item('players___'.$player_pinned)) ){
                 continue;
             }
             foreach($this->config->item('players___'.$player_pinned) as $playerid3 => $m3) {
 
                 echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-                echo '<td style="text-align: left;" title="@'.$playerid3.' @'.$m3['m__handle'].'"><a href="'.view__memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$playerid3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
+                echo '<td style="text-align: left;" title="@'.$playerid3.' @'.$m3['m__handle'].'"><a href="'.view_memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$playerid3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
                 echo '</tr>';
 
             }

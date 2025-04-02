@@ -50,7 +50,7 @@ if($search_for_set){
                 }
             }
 
-            echo view__card_player(12730, $en, null);
+            echo view_card_player(12730, $en, null);
         }
         echo '</div>';
 

@@ -19,7 +19,7 @@ foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
         ), array(), 1, 0, array('linktime' => 'DESC'));
 
     echo '<div class="col-8 main__title"><span class="icon-block">'.$cache_apps['m__cover'].'</span>'.$cache_apps['m__title'].'</div>';
-    echo '<div class="col-4"><i class="far fa-history"></i> '.( count($latest_cache) ? view__time_difference($latest_cache[0]['linktime']) : 'NEVER' ).'</div>';
+    echo '<div class="col-4"><i class="far fa-history"></i> '.( count($latest_cache) ? view_time_difference($latest_cache[0]['linktime']) : 'NEVER' ).'</div>';
 
     if(count($latest_cache)){
         $found_cache++;
@@ -29,5 +29,5 @@ foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
 echo '</div>';
 
 if($found_cache){
-    echo '<a href="'.view__app_link(14599).'?reset=1" class="btn btn-default">RESET ACTIVE CACHE</a>';
+    echo '<a href="'.view_app_link(14599).'?reset=1" class="btn btn-default">RESET ACTIVE CACHE</a>';
 }

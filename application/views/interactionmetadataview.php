@@ -20,12 +20,12 @@ if(!isset($_GET['linkid']) || !intval($_GET['linkid'])){
 
     } elseif(!superpower_unlocked(12701)) {
 
-        echo view__unauthorized_message(12701);
+        echo view_unauthorized_message(12701);
 
     } else {
 
         //Print on scree:
-        view__json($x[0]);
+        view_json($x[0]);
 
     }
 
