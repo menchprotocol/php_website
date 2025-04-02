@@ -9,8 +9,8 @@
 
 
 //Empty both tables:
-$this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
-$this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
+$this->db->query("TRUNCATE TABLE public.gephilinks CONTINUE IDENTITY RESTRICT;");
+$this->db->query("TRUNCATE TABLE public.gephinodes CONTINUE IDENTITY RESTRICT;");
 
 //Load IDEA LINKS:
 $players___4593 = $this->config->item('players___4593');
@@ -27,7 +27,7 @@ $is = $this->Nodeideas->fetch(array(
 foreach($is as $in){
 
     //Add Idea node:
-    $this->db->insert('gephi_nodes', array(
+    $this->db->insert('gephinodes', array(
         'id' => $id_prefix[12273].$in['ideaid'],
         'label' => $in['ideatext'],
         'size' => 1,
@@ -40,7 +40,7 @@ foreach($is as $in){
         'linkleft' => $in['ideaid'],
     ), array('linkright'), 0, 0) as $next_i){
 
-        $this->db->insert('gephi_edges', array(
+        $this->db->insert('gephilinks', array(
             'source' => $id_prefix[12273].$next_i['linkleft'],
             'target' => $id_prefix[12273].$next_i['linkright'],
             'label' => $players___4593[$next_i['linktype']]['m__title'], //TODO maybe give visibility to condition here?
@@ -58,7 +58,7 @@ $es = $this->Nodeplayers->fetch(array(
 foreach($es as $en){
 
     //Transfer Player node:
-    $this->db->insert('gephi_nodes', array(
+    $this->db->insert('gephinodes', array(
         'id' => $id_prefix[12274].$en['playerid'],
         'label' => $en['playertext'],
         'size' => 1,
@@ -71,7 +71,7 @@ foreach($es as $en){
         'linkup' => $en['playerid'],
     ), array('linkdown'), 0, 0) as $player_down){
 
-        $this->db->insert('gephi_edges', array(
+        $this->db->insert('gephilinks', array(
             'source' => $id_prefix[12274].$player_down['linkup'],
             'target' => $id_prefix[12274].$player_down['linkdown'],
             'label' => $players___4593[$player_down['linktype']]['m__title'].': '.$player_down['linktext'],
