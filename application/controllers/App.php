@@ -3024,6 +3024,9 @@ class App extends CI_Controller
                             '$input__upload' => ( $input__upload ? 1 : 0 ),
                             '$trying_to_skip' => ( $trying_to_skip ? 1 : 0 ),
                             '$idea_required' => ( $idea_required ? 1 : 0 ),
+                            'idea_discovery_link' => idea_discovery_link($idea_next, $trying_to_skip),
+                            'target_ideaid' => $_POST['target_ideaid'],
+                            '$next_idea_data' => $next_idea_data,
                             'idea' => $idea_next,
                         ));
                         $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
