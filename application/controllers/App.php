@@ -2861,7 +2861,6 @@ class App extends CI_Controller
 
 
         //Discover Focus Idea:
-        $completed_children = array();
         $primary_ideaid = null;
         foreach ($this->Nodeideas->fetch(array(
             'ideaid' => $_POST['player_submitted_data']['ideaid'],
@@ -3018,24 +3017,9 @@ class App extends CI_Controller
 
                     if (!($idea_required && $trying_to_skip)) {
                         //Try to complete:
-
                         $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
                             'linknumber' => $next_idea_data['ideanumber'],
                         ));
-
-                        array_push($completed_children, array(
-                            '$input__required' => ( $input__required ? 1 : 0 ),
-                            '$input__text' => ( $input__text ? 1 : 0 ),
-                            '$input__upload' => ( $input__upload ? 1 : 0 ),
-                            '$trying_to_skip' => ( $trying_to_skip ? 1 : 0 ),
-                            '$idea_required' => ( $idea_required ? 1 : 0 ),
-                            'idea_discovery_link' => idea_discovery_link($idea_next, $trying_to_skip),
-                            'target_ideaid' => $_POST['target_ideaid'],
-                            '$next_idea_data' => $next_idea_data,
-                            '$completion_status' => $completion_status,
-                            'idea' => $idea_next,
-                        ));
-
                         if ($idea_required && !$completion_status['status']) {
                             //We had an error with data within target_ideaid:
                             return view_json($completion_status);
@@ -3059,7 +3043,6 @@ class App extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'completed' => $completed_children,
                 'next__url' => ($idea_redirect_url ? $idea_redirect_url : ($find_next ? $find_next : 'start')),
             ));
 

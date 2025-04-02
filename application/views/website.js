@@ -3388,7 +3388,7 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            //js_redirect(data.next__url); //TODO Remove later
+            js_redirect(data.next__url); //TODO Remove later
         } else {
             next_processing = false;
             //Show error:
