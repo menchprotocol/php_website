@@ -886,7 +886,7 @@ class Nodeplayers extends CIdea_cache
         $creator = ($linkcreator > 0 ? $linkcreator : ($player_e ? $player_e['playerid'] : 0));
         if (!$creator) {
             return array(
-                'status' => 1,
+                'status' => 0,
                 'message' => 'Missing Creator Player',
             );
         }
@@ -908,7 +908,7 @@ class Nodeplayers extends CIdea_cache
                 'linkcreator' => $creator,
             ));
             return array(
-                'status' => 1,
+                'status' => 0,
                 'message' => 'Error trying to create Player',
             );
         }
