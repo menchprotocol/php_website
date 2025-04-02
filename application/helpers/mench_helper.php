@@ -5023,14 +5023,14 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
         } elseif (in_array($i['ideatype'], $CI->config->item('playerids___33532'))) {
 
             //Find the created idea if any:
-            $x_responses = $CI->Menchledger->fetch(array(
+            $player_private_replies = $CI->Menchledger->fetch(array(
                 'linkplayertype' => 33532, //Private Reply
                 'linkidealeft' => $i['ideaid'],
                 'linkplayercreator' => $linkplayercreator,
             ), array('linkidearight'), 0, 1, array('linkid' => 'DESC'));
 
             $input_attributes = '';
-            $previous_response = (isset($x_responses[0]['ideatext']) ? $x_responses[0]['ideatext'] : '');
+            $previous_response = (isset($player_private_replies[0]['ideatext']) ? $player_private_replies[0]['ideatext'] : '');
 
             if (in_array($i['ideatype'], $CI->config->item('playerids___43002'))) {
 
@@ -5126,7 +5126,7 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
                     $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['ideaid'] . '"><span class="icon-block-sm">' . $players___11035[7637]['m__cover'] . '</span>' . $players___11035[7637]['m__title'] . '</div></div>';
                     $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['ideaid'] . ', [\'#' . $i['ideaid'] . '\'], \'.inner_uploader_' . $i['ideaid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $i['ideaid'] . '); }, 144); }); </script>';
 
-                    foreach ($x_responses as $x_response) {
+                    foreach ($player_private_replies as $x_response) {
                         $input_ui .= '<div class="hidden">' . view_card_i(6255, $x_response) . '</div>';
                         $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $x_response['ideaid'] . '); }, 144); }); </script>';
                     }

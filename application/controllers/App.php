@@ -2839,7 +2839,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['target_ideahashtag']) || !isset($_POST['target_ideaid']) || !isset($_POST['focus_idea_data']) || !isset($_POST['do_skip'])) {
+        } elseif (!isset($_POST['target_ideahashtag']) || !isset($_POST['target_ideaid']) || !isset($_POST['player_submitted_data']) || !isset($_POST['do_skip'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Data',
@@ -2849,11 +2849,11 @@ class App extends CI_Controller
         if (!isset($_POST['selection_ideaid'])) {
             $_POST['selection_ideaid'] = array();
         }
-        if (!isset($_POST['focus_idea_data']['new_ideatext'])) {
-            $_POST['focus_idea_data']['new_ideatext'] = null;
+        if (!isset($_POST['player_submitted_data']['new_ideatext'])) {
+            $_POST['player_submitted_data']['new_ideatext'] = null;
         }
-        if (!isset($_POST['focus_idea_data']['uploaded_media'])) {
-            $_POST['focus_idea_data']['uploaded_media'] = array();
+        if (!isset($_POST['player_submitted_data']['uploaded_media'])) {
+            $_POST['player_submitted_data']['uploaded_media'] = array();
         }
         if (!isset($_POST['next_idea_data'])) {
             $_POST['next_idea_data'] = array();
@@ -2863,7 +2863,7 @@ class App extends CI_Controller
         //Discover Focus Idea:
         $primary_ideaid = null;
         foreach ($this->Nodeideas->fetch(array(
-            'ideaid' => $_POST['focus_idea_data']['ideaid'],
+            'ideaid' => $_POST['player_submitted_data']['ideaid'],
         )) as $focus_i) {
 
             $input__selection = in_array($focus_i['ideatype'], $this->config->item('playerids___7712'));
@@ -2875,9 +2875,9 @@ class App extends CI_Controller
                 (
                     intval($_POST['do_skip'])
                     || ($input__selection && !$total_selected)
-                    || ($input__text && !$input__upload && !strlen($_POST['focus_idea_data']['new_ideatext']))
-                    || (!$input__text && $input__upload && !count($_POST['focus_idea_data']['uploaded_media']))
-                    || ($input__text && $input__upload && !count($_POST['focus_idea_data']['uploaded_media']) && !strlen($_POST['focus_idea_data']['new_ideatext']))
+                    || ($input__text && !$input__upload && !strlen($_POST['player_submitted_data']['new_ideatext']))
+                    || (!$input__text && $input__upload && !count($_POST['player_submitted_data']['uploaded_media']))
+                    || ($input__text && $input__upload && !count($_POST['player_submitted_data']['uploaded_media']) && !strlen($_POST['player_submitted_data']['new_ideatext']))
                 );
             $idea_required = idea_required($focus_i);
 
@@ -2975,8 +2975,8 @@ class App extends CI_Controller
             }
 
             //Issue DISCOVERY/IDEA COIN:
-            $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($focus_i, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['focus_idea_data'], array(
-                'linknumber' => $_POST['focus_idea_data']['ideanumber'],
+            $completion_status = $this->Menchledger->mark_complete(idea_discovery_link($focus_i, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
+                'linknumber' => $_POST['player_submitted_data']['ideanumber'],
             ));
             if (!$completion_status['status']) {
                 //We had an error with data within target_ideaid:

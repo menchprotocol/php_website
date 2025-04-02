@@ -160,12 +160,9 @@ class Nodeideas extends CIdea_cache
     function remove($ideaid, $linkplayercreator = 0, $migrate_s__id = 0)
     {
 
-        //TODO Needs work
-        return false;
-
         if ($migrate_s__id > 0) {
             $valid_hashtag = $this->Nodeideas->fetch(array(
-                'LOWER(ideahashtag)' => $migrate_s__id,
+                'ideaid' => $migrate_s__id,
             ));
             if (!count($valid_hashtag)) {
                 return array(

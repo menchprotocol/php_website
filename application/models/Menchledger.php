@@ -924,7 +924,7 @@ class Menchledger extends CIdea_cache
     }
 
 
-    function mark_complete($linkplayertype, $linkplayercreator, $target_ideaid = 0, $i, $focus_idea_data = array(), $x_data = array())
+    function mark_complete($linkplayertype, $linkplayercreator, $target_ideaid = 0, $i, $player_submitted_data = array(), $x_data = array())
     {
 
         if (!$linkplayercreator || !in_array($linkplayertype, $this->config->item('playerids___31777' /* DISCOVERIES */))) {
@@ -954,28 +954,27 @@ class Menchledger extends CIdea_cache
 
         if ($input__upload || $input__text) {
 
-            if (!isset($focus_idea_data['new_ideatext'])) {
-                $focus_idea_data['new_ideatext'] = null;
+            if (!isset($player_submitted_data['new_ideatext'])) {
+                $player_submitted_data['new_ideatext'] = null;
             }
-            if (!isset($focus_idea_data['uploaded_media'])) {
-                $focus_idea_data['uploaded_media'] = array();
+            if (!isset($player_submitted_data['uploaded_media'])) {
+                $player_submitted_data['uploaded_media'] = array();
             }
-
 
             //Must add a new idea, but first let's validate the input:
-            if ($i['ideatype'] == 31794 && strlen($focus_idea_data['new_ideatext']) && !is_numeric($focus_idea_data['new_ideatext'])) {
+            if ($i['ideatype'] == 31794 && strlen($player_submitted_data['new_ideatext']) && !is_numeric($player_submitted_data['new_ideatext'])) {
                 //Number Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Number',
                 );
-            } elseif ($i['ideatype'] == 42915 && strlen($focus_idea_data['new_ideatext']) && !filter_var($focus_idea_data['new_ideatext'], FILTER_VALIDATE_URL)) {
+            } elseif ($i['ideatype'] == 42915 && strlen($player_submitted_data['new_ideatext']) && !filter_var($player_submitted_data['new_ideatext'], FILTER_VALIDATE_URL)) {
                 //Link Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid URL',
                 );
-            } elseif ($i['ideatype'] == 30350 && strlen($focus_idea_data['new_ideatext']) && !strtotime($focus_idea_data['new_ideatext'])) {
+            } elseif ($i['ideatype'] == 30350 && strlen($player_submitted_data['new_ideatext']) && !strtotime($player_submitted_data['new_ideatext'])) {
                 //Date Input
                 return array(
                     'status' => 0,
@@ -984,7 +983,7 @@ class Menchledger extends CIdea_cache
             }
 
             //Find most recent answers by this user:
-            $x_responses = $this->Menchledger->fetch(array(
+            $player_private_replies = $this->Menchledger->fetch(array(
                 'linkplayertype' => 33532, //Private Reply
                 'linkidealeft' => $i['ideaid'],
                 'linkplayercreator' => $linkplayercreator,
@@ -992,21 +991,21 @@ class Menchledger extends CIdea_cache
 
 
             //All validated, lets create the new idea:
-            if (strlen($focus_idea_data['new_ideatext']) || count($focus_idea_data['uploaded_media'])) {
+            if (strlen($player_submitted_data['new_ideatext']) || count($player_submitted_data['uploaded_media'])) {
 
-                if (count($x_responses)) {
+                if (count($player_private_replies)) {
 
                     //Update existing response if different:
-                    if ($focus_idea_data['new_ideatext'] != $x_responses[0]['ideatext']) {
-                        $view_sync_links = view_sync_links($focus_idea_data['new_ideatext'], true, $x_responses[0]['ideaid']);
+                    if ($player_submitted_data['new_ideatext'] != $player_private_replies[0]['ideatext']) {
+                        $view_sync_links = view_sync_links($player_submitted_data['new_ideatext'], true, $player_private_replies[0]['ideaid']);
                     }
-                    $this_ideaid = $x_responses[0]['ideaid'];
+                    $this_ideaid = $player_private_replies[0]['ideaid'];
 
                 } else {
 
                     //Create a new response:
                     $idea_new = $this->Nodeideas->create(array(
-                        'ideatext' => $focus_idea_data['new_ideatext'],
+                        'ideatext' => $player_submitted_data['new_ideatext'],
                     ), $linkplayercreator);
 
                     $this_ideaid = $idea_new['ideaid'];
@@ -1022,9 +1021,9 @@ class Menchledger extends CIdea_cache
                 }
 
                 //Process Media:
-                $media_stats = process_media($this_ideaid, $focus_idea_data['uploaded_media']);
+                $media_stats = process_media($this_ideaid, $player_submitted_data['uploaded_media']);
 
-            } elseif (count($x_responses)) {
+            } elseif (count($player_private_replies)) {
 
                 if ($is_required) {
                     return array(
@@ -1033,7 +1032,7 @@ class Menchledger extends CIdea_cache
                     );
                 } else {
                     //Delete Links
-                    $links_removed = $this->Nodeideas->remove($x_responses[0]['ideaid'], $linkplayercreator);
+                    $links_removed = $this->Nodeideas->remove($player_private_replies[0]['ideaid'], $linkplayercreator);
                 }
 
             }
@@ -1065,6 +1064,10 @@ class Menchledger extends CIdea_cache
             'linkplayercreator' => $linkplayercreator,
             'linktext' => $x_data['linktext'],
         )) as $already_discovered) {
+
+            //Update:
+            $this->Menchledger->update($already_discovered['linkid'], $x_data, $linkplayercreator);
+
             //Already discovered!
             return array(
                 'status' => 1,
@@ -1075,6 +1078,8 @@ class Menchledger extends CIdea_cache
 
         //Add new transaction:
         $domain_url = get_domain('m__message', $linkplayercreator);
+
+        //Create Transaction:
         $new_x = $this->Menchledger->create($x_data);
 
         //Auto Complete OR Answers:
@@ -1084,10 +1089,17 @@ class Menchledger extends CIdea_cache
                 'linkplayercreator' => $x_data['linkplayercreator'],
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0) as $next_i) {
-                if (!in_array($next_i['ideatype'], $this->config->item('playerids___43039')) && !count($this->Menchledger->fetch(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
-                        'linkidealeft' => $next_i['ideaid'],
-                    ), array('linkidearight'), 0, 0))) {
+
+                if(in_array($next_i['ideatype'], $this->config->item('playerids___43039'))){
+                    continue;
+                }
+
+                $has_children = count($this->Menchledger->fetch(array(
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
+                    'linkidealeft' => $next_i['ideaid'],
+                ), array('linkidearight'), 0, 0));
+
+                if (!$has_children) {
                     //Mark as complete:
                     $this->Menchledger->mark_complete(idea_discovery_link($next_i), $x_data['linkplayercreator'], $target_ideaid, $next_i, $x_data);
                 }
@@ -1191,7 +1203,7 @@ class Menchledger extends CIdea_cache
                 } else {
 
                     //Assign tag if following/follower transaction NOT previously assigned:
-                    $append_player = append_player($this_tag['linkplayerup'], $x_data['linkplayercreator'], (isset($focus_idea_data['new_ideatext']) ? $focus_idea_data['new_ideatext'] : null), $i['ideaid']);
+                    $append_player = append_player($this_tag['linkplayerup'], $x_data['linkplayercreator'], (isset($player_submitted_data['new_ideatext']) ? $player_submitted_data['new_ideatext'] : null), $i['ideaid']);
 
                     //See if Session needs to be updated:
                     $player_e = superpower_unlocked();

@@ -3375,7 +3375,7 @@ function go_next(do_skip){
     $.post("/app/go_next", {
         target_ideahashtag: $('#target_ideahashtag').val(),
         target_ideaid: parseInt($('#target_ideaid').val()),
-        focus_idea_data: {
+        player_submitted_data: {
             ideaid: parseInt($('#focus__id').val()),
             new_ideatext: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
             ideanumber: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .ideanumber').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .ideanumber').val() : 0 ),
@@ -3388,7 +3388,7 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            //js_redirect(data.next__url);
+            //js_redirect(data.next__url); //TODO Remove later
         } else {
             next_processing = false;
             //Show error:
