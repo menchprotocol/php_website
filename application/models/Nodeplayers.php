@@ -883,13 +883,7 @@ class Nodeplayers extends CIdea_cache
 
         //Log transaction new Player:
         $player_e = superpower_unlocked();
-        $creator = ($linkplayercreator > 0 ? $linkplayercreator : ($player_e ? $player_e['playerid'] : 0));
-        if (!$creator) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing Creator Player',
-            );
-        }
+        $creator = ($linkplayercreator > 0 ? $linkplayercreator : ($player_e ? $player_e['playerid'] : 14068 ));
 
         //Create New Player:
         $new_x = $this->Menchledger->create(array(
