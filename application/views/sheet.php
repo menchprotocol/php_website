@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($_GET['ideahashtag'])){
+if (!isset($_GET['ideahashtag'])) {
     die('Missing Idea ID ideahashtag');
 }
 
@@ -22,50 +22,50 @@ $count_totals = array(
 $list_settings = list_settings($_GET['ideahashtag']);
 
 echo '<h1>' . view_idea_title($list_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($list_settings['i'], ( isset($player_e['playerid']) ? $player_e['playerid'] : 0 )) . '</div>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($list_settings['i'], (isset($player_e['playerid']) ? $player_e['playerid'] : 0)) . '</div>';
 
-foreach($list_settings['query_string_filtered'] as $x){
+foreach ($list_settings['query_string_filtered'] as $x) {
 
     $body_content .= '<tr class="body_tr">';
 
     //IDEAS
     $idea_content = '';
     $this_quantity = 1;
-    foreach($list_settings['column_i'] as $idea_var){
+    foreach ($list_settings['column_i'] as $idea_var) {
 
         $discoveries = $this->Menchledger->fetch(array(
             'linkleft' => $idea_var['ideaid'],
             'linkcreator' => $x['playerid'],
             'linktype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                ), array(), 1);
+        ), array(), 1);
 
-        $idea_content .= '<td title="'.$x['playertext'].' x '.view_idea_title($idea_var, true).'">';
+        $idea_content .= '<td title="' . $x['playertext'] . ' x ' . view_idea_title($idea_var, true) . '">';
 
-        if(count($discoveries)){
+        if (count($discoveries)) {
 
-            if($this_quantity<2 && intval($discoveries[0]['linknumber'])>=2){
+            if ($this_quantity < 2 && intval($discoveries[0]['linknumber']) >= 2) {
                 $this_quantity = $discoveries[0]['linknumber'];
             }
 
             $set_linktext = '';
-            foreach($this->Menchledger->fetch(array(
+            foreach ($this->Menchledger->fetch(array(
                 'linktype' => 33532, //Private Reply
                 'linkleft' => $idea_var['ideaid'],
                 'linkcreator' => $x['playerid'],
-            ), array('linkright'), 0, 1, array('linkid' => 'DESC')) as $response){
+            ), array('linkright'), 0, 1, array('linkid' => 'DESC')) as $response) {
                 $set_linktext = $response['ideatext'];
             }
 
-            if($set_linktext){
+            if ($set_linktext) {
 
-                $idea_content .= ( isset($_GET['expand']) ? '<p data-placement="top">'.$set_linktext.'</p>' : '<span title="'.$set_linktext.' ['.$discoveries[0]['linktime'].']">ℹ️️</span>'  );
+                $idea_content .= (isset($_GET['expand']) ? '<p data-placement="top">' . $set_linktext . '</p>' : '<span title="' . $set_linktext . ' [' . $discoveries[0]['linktime'] . ']">ℹ️️</span>');
 
-            } elseif(strlen($discoveries[0]['linktext']) > 0){
+            } elseif (strlen($discoveries[0]['linktext']) > 0) {
 
-                $idea_content .= ( isset($_GET['expand']) ? '<p data-placement="top" title="'.$discoveries[0]['linktext'].'">'.$discoveries[0]['linktext'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['linktext'].' ['.$discoveries[0]['linktime'].']">ℹ️️</span>'  );
+                $idea_content .= (isset($_GET['expand']) ? '<p data-placement="top" title="' . $discoveries[0]['linktext'] . '">' . $discoveries[0]['linktext'] . '</p>' : '<span title="' . view_idea_title($idea_var, true) . ': ' . $discoveries[0]['linktext'] . ' [' . $discoveries[0]['linktime'] . ']">ℹ️️</span>');
 
             } else {
-                $idea_content .= '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['linktime'].']">✔️</span>';
+                $idea_content .= '<span title="' . view_idea_title($idea_var, true) . ' [' . $discoveries[0]['linktime'] . ']">✔️</span>';
             }
 
         }
@@ -73,12 +73,12 @@ foreach($list_settings['query_string_filtered'] as $x){
         $idea_content .= '</td>';
 
 
-        if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Menchledger->fetch(array(
+        if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Menchledger->fetch(array(
                     'linkdown' => $x['playerid'],
                     'linkup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
-                    ))))){
-            if(!isset($count_totals['i'][$idea_var['ideaid']])){
+                ))))) {
+            if (!isset($count_totals['i'][$idea_var['ideaid']])) {
                 $count_totals['i'][$idea_var['ideaid']] = 0;
             }
             $count_totals['i'][$idea_var['ideaid']]++;
@@ -86,16 +86,14 @@ foreach($list_settings['query_string_filtered'] as $x){
 
     }
 
-    $this_quantity = $this_quantity-1;
+    $this_quantity = $this_quantity - 1;
 
 
-
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['playercover'], true).'</span><a href="'.view_memory(42903,42902).$x['playerhandle'].'" style="font-weight:bold;">'.$x['playertext'].'</a>'.( $this_quantity > 0 ? ' +'.$this_quantity : '' ).'</td>';
-
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">' . view_cover($x['playercover'], true) . '</span><a href="' . view_memory(42903, 42902) . $x['playerhandle'] . '" style="font-weight:bold;">' . $x['playertext'] . '</a>' . ($this_quantity > 0 ? ' +' . $this_quantity : '') . '</td>';
 
 
     //SOURCES
-    foreach($list_settings['column_e'] as $e){
+    foreach ($list_settings['column_e'] as $e) {
 
         $require_writing = count($this->Menchledger->fetch(array(
             'linkup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
@@ -110,49 +108,49 @@ foreach($list_settings['query_string_filtered'] as $x){
         ));
 
         $message_clean = '';
-        if(count($fetch_data)){
-            if(strlen($fetch_data[0]['linktext'])){
-                if(filter_var($fetch_data[0]['linktext'], FILTER_VALIDATE_URL)){
+        if (count($fetch_data)) {
+            if (strlen($fetch_data[0]['linktext'])) {
+                if (filter_var($fetch_data[0]['linktext'], FILTER_VALIDATE_URL)) {
                     //Sheet Click to Expand
-                    $message_clean = '<a href="'.$fetch_data[0]['linktext'].'" target="_blank" title="Open in a New Window">'.view_cover($e['playercover'], '🔗️', ' ').'</a>';
-                } elseif(!isset($_GET['expand']) && in_array($e['playerid'], $this->config->item('playerids___40945'))){
+                    $message_clean = '<a href="' . $fetch_data[0]['linktext'] . '" target="_blank" title="Open in a New Window">' . view_cover($e['playercover'], '🔗️', ' ') . '</a>';
+                } elseif (!isset($_GET['expand']) && in_array($e['playerid'], $this->config->item('playerids___40945'))) {
                     //Sheet Click to Expand
-                    $message_clean = '<span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'\').toggleClass(\'hidden\')" title="'.$fetch_data[0]['linktext'].' [Click to Expand]">'.view_cover($e['playercover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].' hidden">'.$fetch_data[0]['linktext'].'</span>';
-                } elseif(isset($_GET['expand']) || $require_writing){
+                    $message_clean = '<span class="click_2_see_' . $e['playerid'] . '_' . $fetch_data[0]['linkid'] . '"><a href="javascript:void(0);" onclick="$(\'.click_2_see_' . $e['playerid'] . '_' . $fetch_data[0]['linkid'] . '\').toggleClass(\'hidden\')" title="' . $fetch_data[0]['linktext'] . ' [Click to Expand]">' . view_cover($e['playercover'], '✔️', ' ') . '</a></span><span class="click_2_see_' . $e['playerid'] . '_' . $fetch_data[0]['linkid'] . ' hidden">' . $fetch_data[0]['linktext'] . '</span>';
+                } elseif (isset($_GET['expand']) || $require_writing) {
                     $message_clean = $fetch_data[0]['linktext'];
                 } else {
-                    $message_clean = '<span title="'.$fetch_data[0]['linktext'].'">'.view_cover($e['playercover'], '✔️', ' ').'</span>';
+                    $message_clean = '<span title="' . $fetch_data[0]['linktext'] . '">' . view_cover($e['playercover'], '✔️', ' ') . '</span>';
                 }
             } else {
-                $message_clean = '<span class="icon-block-xs">'.view_cover($e['playercover'], '✔️', ' ').'</span>';
+                $message_clean = '<span class="icon-block-xs">' . view_cover($e['playercover'], '✔️', ' ') . '</span>';
             }
         }
 
 
-        if($e['playerid']==44328){
+        if ($e['playerid'] == 44328) {
             //Fetch primary filter:
-            foreach($this->Menchledger->fetch(array(
+            foreach ($this->Menchledger->fetch(array(
                 'linkright' => $focus_i['ideaid'],
                 'linktype IN (' . join(',', $this->config->item('playerids___44344')) . ')' => null, //Idea Filter Additions
-            ), array('linkleft'), 1) as $target_i){
+            ), array('linkleft'), 1) as $target_i) {
                 //See History for this user:
-                $message_clean = '<a href="'.view_app_link(44328).'/'.$target_i['ideahashtag'].'@'.$x['playerhandle'].'" target="_blank" title="'.$players___11035[44328]['m__title'].'"><span class="icon-block-sm">'.$players___11035[44328]['m__cover'].'</span></a>';
+                $message_clean = '<a href="' . view_app_link(44328) . '/' . $target_i['ideahashtag'] . '@' . $x['playerhandle'] . '" target="_blank" title="' . $players___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $players___11035[44328]['m__cover'] . '</span></a>';
             }
         }
 
-        $body_content .= '<td title="'.$x['playertext'].' x '.$e['playertext'].'" class="'.( superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkcreator_'.$e['playerid'].'_'.$x['playerid'] : '' ).'" ideaid="0" playerid="'.$e['playerid'].'" linkcreator="'.$x['playerid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" linkid="'.$x['linkid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="' . $x['playertext'] . ' x ' . $e['playertext'] . '" class="' . (superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkcreator_' . $e['playerid'] . '_' . $x['playerid'] : '') . '" ideaid="0" playerid="' . $e['playerid'] . '" linkcreator="' . $x['playerid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" linkid="' . $x['linkid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
 
-        if(strlen($message_clean)>0){
+        if (strlen($message_clean) > 0) {
 
-            if(!isset($count_totals['e'][$e['playerid']])){
+            if (!isset($count_totals['e'][$e['playerid']])) {
                 $count_totals['e'][$e['playerid']] = 0;
             }
 
-            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + ( count($this->Menchledger->fetch(array(
-                        'linkdown' => $e['playerid'],
+            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Menchledger->fetch(array(
+                    'linkdown' => $e['playerid'],
                     'linktype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
                     'linkup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
-                ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1 );
+                ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1);
         }
     }
 
@@ -169,26 +167,26 @@ $table_sortable = array('#th_primary');
 echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-echo '<th id="th_primary" style="width:200px;">'.$count.' Players</th>';
+echo '<th id="th_primary" style="width:200px;">' . $count . ' Players</th>';
 
-foreach($list_settings['column_e'] as $e){
-    array_push($table_sortable, '#thplayer_'.$e['playerid']);
-    echo '<th id="thplayer_'.$e['playerid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['playerhandle'].'" target="_blank" title="Open in New Window">'.( isset($count_totals['e'][$e['playerid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['playerid']], 2)) : '0' ).'</a><span class="vertical_col">'.view_cover($e['playercover'], '✔️', ' ').$e['playertext'].'</span></th>';
+foreach ($list_settings['column_e'] as $e) {
+    array_push($table_sortable, '#thplayer_' . $e['playerid']);
+    echo '<th id="thplayer_' . $e['playerid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['playerhandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['playerid']]) ? str_replace('.00', '', number_format($count_totals['e'][$e['playerid']], 2)) : '0') . '</a><span class="vertical_col">' . view_cover($e['playercover'], '✔️', ' ') . $e['playertext'] . '</span></th>';
 }
 
-foreach($list_settings['column_i'] as $idea_var){
+foreach ($list_settings['column_i'] as $idea_var) {
 
     $max_available = $this->Menchledger->fetch(array(
         'linktype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkright' => $idea_var['ideaid'],
         'linkup' => 26189,
     ), array(), 1);
-    $current_x = ( isset($count_totals['i'][$idea_var['ideaid']]) ? $count_totals['i'][$idea_var['ideaid']] : 0 );
-    $max_limit = (count($max_available) && is_numeric($max_available[0]['linktext']) && intval($max_available[0]['linktext'])>0 ? intval($max_available[0]['linktext']) : 0 );
+    $current_x = (isset($count_totals['i'][$idea_var['ideaid']]) ? $count_totals['i'][$idea_var['ideaid']] : 0);
+    $max_limit = (count($max_available) && is_numeric($max_available[0]['linktext']) && intval($max_available[0]['linktext']) > 0 ? intval($max_available[0]['linktext']) : 0);
 
-    array_push($table_sortable, '#th_idea_'.$idea_var['ideaid']);
+    array_push($table_sortable, '#th_idea_' . $idea_var['ideaid']);
 
-    echo '<th id="th_idea_'.$idea_var['ideaid'].'"><a class="icon-block-xs" href="'.view_memory(42903,33286).$idea_var['ideahashtag'].'" target="_blank" title="Open in New Window" '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</a><span class="vertical_col">'.( strlen($idea_var['linktext']) ? $idea_var['linktext'] : view_idea_title($idea_var, true) ).'</span></th>';
+    echo '<th id="th_idea_' . $idea_var['ideaid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 33286) . $idea_var['ideahashtag'] . '" target="_blank" title="Open in New Window" ' . ($max_limit ? ($current_x >= $max_limit ? '' : (($current_x / $max_limit) >= 0.5 ? 'isgold' : 'isred')) : '') . '">' . $current_x . ($max_limit ? '/' . $max_limit : '') . '</a><span class="vertical_col">' . (strlen($idea_var['linktext']) ? $idea_var['linktext'] : view_idea_title($idea_var, true)) . '</span></th>';
 
 }
 echo '</tr>';
@@ -196,7 +194,6 @@ echo $body_content;
 echo '</table>';
 
 ?>
-
 
 
 <style>
@@ -207,7 +204,7 @@ echo '</table>';
     <?php if(count($list_settings['list_config'][34513])){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
 
     .mini-header,
-    #sortable_table td>p{
+    #sortable_table td > p {
         display: block;
         max-width: 144px !important;
         max-height: 179px !important;
@@ -221,30 +218,35 @@ echo '</table>';
     /* CSS Adjustments for Printing View */
     #sortable_table .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;
-        -webkit-print-color-adjust:exact;
+        -webkit-print-color-adjust: exact;
     }
+
     #sortable_table .table-striped td {
         border-bottom: 1px dotted #000000 !important;
         font-size: 1.15em;
     }
-    .fa-filter173{
+
+    .fa-filter173 {
         font-size: 1.01em !important;
         margin-bottom: 3px;
     }
-    #sortable_table th{
+
+    #sortable_table th {
         cursor: ns-resize !important;
     }
-    #sortable_table th, #sortable_table td{
+
+    #sortable_table th, #sortable_table td {
         border: 1px solid #000000 !important;
     }
 
-    #sortable_table th:hover, #sortable_table th:active{
+    #sortable_table th:hover, #sortable_table th:active {
         background-color: #FFF;
     }
 
     #sortable_table .body_tr:hover {
         background-color: #CCC;
     }
+
     #sortable_table .body_tr .editable:hover {
         background-color: #FFD961;
         cursor: pointer;
@@ -256,9 +258,10 @@ echo '</table>';
         display: block;
         padding-bottom: 8px;
     }
-    .col_stat{
-        height:71px;
-        display:inline-block;
+
+    .col_stat {
+        height: 71px;
+        display: inline-block;
         text-align: left;
         width: 8px;
     }
@@ -273,12 +276,12 @@ echo '</table>';
 
             var require_writing = parseInt($(this).attr('require_writing'));
             var written_answer = '';
-            if(require_writing){
+            if (require_writing) {
 
                 //return e_editor_load(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkcreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkcreator')).text());
 
                 written_answer = prompt($(this).attr('title') + ":", $('.linkcreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkcreator')).text());
-                if(written_answer == null){
+                if (written_answer == null) {
                     return false;
                 }
             }
@@ -312,25 +315,25 @@ echo '</table>';
 
         var table = $('#sortable_table');
         $('<?= join(', ', $table_sortable) ?>')
-            .each(function(){
+            .each(function () {
 
                 var th = $(this),
                     thIndex = th.index(),
                     inverse = false;
 
-                th.click(function(){
+                th.click(function () {
 
-                    table.find('td').filter(function(){
+                    table.find('td').filter(function () {
 
                         return $(this).index() === thIndex;
 
-                    }).sortElements(function(a, b){
+                    }).sortElements(function (a, b) {
 
                         return $.text([a]) < $.text([b]) ?
                             inverse ? -1 : 1
                             : inverse ? 1 : -1;
 
-                    }, function(){
+                    }, function () {
 
                         return this.parentNode;
 
