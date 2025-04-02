@@ -3013,7 +3013,12 @@ class App extends CI_Controller
                     }
                     $input__text = in_array($idea_next['ideatype'], $this->config->item('playerids___43002')) || in_array($idea_next['ideatype'], $this->config->item('playerids___43003'));
                     $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
-                    $trying_to_skip = (($input__text && !$input__upload && !strlen($next_idea_data['new_ideatext'])) || (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_idea_data['uploaded_media']) && !strlen($next_idea_data['new_ideatext'])));
+                    $trying_to_skip =
+                        (
+                            ($input__text && !$input__upload && !strlen($next_idea_data['new_ideatext'])) ||
+                            (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) ||
+                            ($input__text && $input__upload && !count($next_idea_data['uploaded_media']) && !strlen($next_idea_data['new_ideatext']))
+                        );
                     $idea_required = idea_required($idea_next);
 
                     if (!($idea_required && $trying_to_skip)) {
