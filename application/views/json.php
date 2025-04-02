@@ -11,47 +11,75 @@ $count_sourcing = 0;
 $count_contribution = 0;
 $count_discovery = 0;
 $count_other = 0;
+$missing_ideation = 0;
+$missing_sourcing = 0;
+$missing_contribution = 0;
+$missing_discovery = 0;
+$missing_other = 0;
 boost_power();
 
 $count = 0;
 $missing = 0;
 foreach ($this->Menchledger->fetchold(array(
     'link_type >' => 0, //4983
-), array(), 10000, 0, array('link_id' => 'DESC')) as $x) {
-
-    if(in_array($x['link_type'], $is_ideation)) {
-        $count_ideation++;
-    } elseif(in_array($x['link_type'], $is_sourcing)) {
-        $count_sourcing++;
-    } elseif(in_array($x['link_type'], $is_contribution)) {
-        $count_contribution++;
-    } elseif(in_array($x['link_type'], $is_discovery)) {
-        $count_discovery++;
-    } else {
-        $count_other++;
-        echo print_r($x, true);
-        echo 'WAS OTHER<hr />';
-    }
+), array(), 100000, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
-    if(!count($this->Menchledger->fetch(array(
+    $is_missing = !count($this->Menchledger->fetch(array(
         'linkplayertype' => $x['link_type'],
         'linkplayerup' => $x['link_up'],
         'linkplayerdown' => $x['link_down'],
         'linkidealeft' => ( $x['link_left']>0 ? intval($x['link_left'])+100000 : 0 ),
         'linkidearight' => ( $x['link_right']>0 ? intval($x['link_right'])+100000 : 0 ),
-    )))){
+    )));
+    if($is_missing){
         $missing++;
         echo print_r($x, true);
         echo 'WAS MISSING <hr />';
     }
+
+    if(in_array($x['link_type'], $is_ideation)) {
+        $count_ideation++;
+        if($is_missing){
+            $missing_ideation++;
+        }
+    } elseif(in_array($x['link_type'], $is_sourcing)) {
+        $count_sourcing++;
+        if($is_missing){
+            $missing_sourcing++;
+        }
+    } elseif(in_array($x['link_type'], $is_contribution)) {
+        $count_contribution++;
+        if($is_missing){
+            $missing_contribution++;
+        }
+    } elseif(in_array($x['link_type'], $is_discovery)) {
+        $count_discovery++;
+        if($is_missing){
+            $missing_discovery++;
+        }
+    } else {
+        $count_other++;
+        if($is_missing){
+            $missing_other++;
+        }
+        echo print_r($x, true);
+        echo 'WAS OTHER<hr />';
+    }
+
+    $missing_ideation = 0;
+    $missing_sourcing = 0;
+    $missing_contribution = 0;
+    $missing_discovery = 0;
+    $missing_other = 0;
+
 }
 
-echo $count.' Total:<br /><br />';
+echo $missing.'/'.$count.' Total Missing:<br /><br />';
 
-echo $missing.' MISSING<br />';
-echo $count_ideation.' $count_ideation<br />';
-echo $count_sourcing.' $count_sourcing<br />';
-echo $count_contribution.' $count_contribution<br />';
-echo $count_discovery.' $count_discovery<br />';
-echo $count_other.' $count_other<br />';
+echo $missing_ideation.'/'.$count_ideation.' $count_ideation<br />';
+echo $missing_sourcing.'/'.$count_sourcing.' $count_sourcing<br />';
+echo $missing_contribution.'/'.$count_contribution.' $count_contribution<br />';
+echo $missing_discovery.'/'.$count_discovery.' $count_discovery<br /><br />';
+
+echo $missing_other.'/'.$count_other.' $count_other<br />';
