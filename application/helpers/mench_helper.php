@@ -2583,6 +2583,10 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__cache'] = $s['ideacache'];
                 $export_row['s__weight'] = intval($s['ideanumber']);
 
+                if(idea_is_startable($s)){
+                    array_push($export_row['_tags'], 'public_index');
+                }
+
                 //Top/Bottom Idea Keywords
                 foreach ($CI->Menchledger->fetch(array(
                     'linkplayertype IN (' . join(',', $CI->config->item('playerids___42345')) . ')' => null, //Active Sequence 2-Ways
@@ -2602,10 +2606,6 @@ function update_algolia($focus__node = null, $s__id = 0)
                     'linkplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
                     'linkidearight' => $s['ideaid'],
                 ), array('linkplayerup'), 0) as $x) {
-
-                    if(idea_is_startable($i)){
-                        array_push($export_row['_tags'], 'public_index');
-                    }
 
                     //Authored?
                     $is_author = in_array($x['linkplayertype'], $CI->config->item('playerids___31919'));
