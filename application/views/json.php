@@ -50,7 +50,7 @@ $var['list_links_count_reverse'] = $this->Menchledger->fetch(array(
 
 
 $var['result_query'] = $this->Menchledger->fetch(array(
-    'linkplayertype NOT IN (' . join(',', $list_links_joined) . ')' => null, //SOURCE LINKS
+    'linkplayertype NOT IN (' . join(',', $playersids_joined) . ')' => null, //SOURCE LINKS
 ), array(), 0, 0, array(), 'linkplayertype, COUNT(*) as total', 'linkplayertype');
 
 
