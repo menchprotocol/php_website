@@ -6,7 +6,7 @@ foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
 
     foreach ($this->Menchledger->fetch(array(
         'linkplayerup' => $player_item['playerid'],
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
 
         $total_count = view_player_cards(12274, $x['playerid'], 0, false);

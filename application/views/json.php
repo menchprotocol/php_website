@@ -1,5 +1,13 @@
 <?php
 
+view_json(array(
+    'playerids___32292' => $this->config->item('playerids___32292'),
+    'playerids___31777' => $this->config->item('playerids___31777'),
+    'playerids___13550' => $this->config->item('playerids___13550'),
+    'playerids___4486' => $this->config->item('playerids___4486'),
+));
+
+/*
 view_json($this->Menchledger->tree_full_history($focus_i, $focus_e['playerid']));
 
 die('pending...');
@@ -85,5 +93,6 @@ echo $missing_ideation . '/' . $count_ideation . ' $count_ideation<br />';
 echo $missing_sourcing . '/' . $count_sourcing . ' $count_sourcing<br />';
 echo $missing_contribution . '/' . $count_contribution . ' $count_contribution<br />';
 echo $missing_discovery . '/' . $count_discovery . ' $count_discovery<br /><br />';
-
 echo $missing_other . '/' . $count_other . ' $count_other<br />';
+
+*/

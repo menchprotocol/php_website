@@ -9,7 +9,7 @@ echo '<div class="row">';
 foreach ($this->Menchledger->fetch(array(
     'linkplayerup' => 30841, //Featured Apps
     'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, sort__player()) as $app) {
 
     if (!in_array($app['playerid'], $this->config->item('playerids___6287')) || in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?
@@ -33,7 +33,7 @@ echo '<div class="row">';
 foreach ($this->Menchledger->fetch(array(
     'linkplayerup' => 6287, //Featured Apps
     'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, sort__player()) as $app) {
 
     if (in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?

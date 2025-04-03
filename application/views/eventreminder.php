@@ -115,7 +115,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
                         if(count($must_follow)>0 && count($must_follow)!=count($this->Menchledger->fetch(array(
                                 'linkplayerdown' => $x['playerid'],
                                 'linkplayerup IN (' . join(',', $must_follow) . ')' => null,
-                                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                                         )))){
                             //User does not have all navigation items, skip for now:
                             continue;

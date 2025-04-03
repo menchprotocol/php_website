@@ -24,7 +24,7 @@ if(!isset($_GET['confirm'])){
 
         //Delete all progressions:
         foreach($progress_x as $progress_x){
-            $this->Menchledger->update($progress_x['linkid'], array(), $focus_e['playerid']);
+            $this->Menchledger->void($progress_x['linkid'], $focus_e['playerid']);
         }
 
     } else {

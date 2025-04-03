@@ -48,7 +48,7 @@ foreach($this->Menchledger->fetch($filters, array('linkidearight'), 0) as $expir
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->Menchledger->update($delete['linkid'], array(), $player_e['playerid']); //Time Expired
+                $this->Menchledger->void($delete['linkid'], $player_e['playerid']); //Time Expired
 
             }
 

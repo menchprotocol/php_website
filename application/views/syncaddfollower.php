@@ -17,7 +17,7 @@ foreach ($this->Menchledger->fetch(array(
         //Make sure no previous removed link between these two Players:
         if(!count($this->Menchledger->fetch(array(
             'linkvoid >' => 0,
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $addition_sync['linkplayerup'],
             'linkplayerdown' => $dicovered['linkplayercreator'],
         )))){

@@ -238,7 +238,7 @@ class Nodeideas extends CIdea_cache
                 '(linkidearight = ' . $ideaid . ' OR linkidealeft = ' . $ideaid . ')' => null,
             ), array(), 0) as $x) {
                 //Delete this transaction:
-                $x_adjusted += $this->Menchledger->update($x['linkid'], array(), $linkplayercreator);
+                $x_adjusted += $this->Menchledger->void($x['linkid'], $linkplayercreator);
             }
 
         }
@@ -533,7 +533,7 @@ class Nodeideas extends CIdea_cache
                     } elseif (in_array($action_playerid, array(12592, 27081, 27986, 27083, 27085, 27087)) && count($idea_has_e)) {
 
                         //Has and must be deleted:
-                        $this->Menchledger->update($idea_has_e[0]['linkid'], array(), $linkplayercreator);
+                        $this->Menchledger->void($idea_has_e[0]['linkid'], $linkplayercreator);
 
                         $applied_success++;
 
@@ -574,7 +574,7 @@ class Nodeideas extends CIdea_cache
 
                                 if ($action_playerid == 28801) {
                                     //Also remove old link:
-                                    $this->Menchledger->update($next_i['linkid'], array(), $linkplayercreator);
+                                    $this->Menchledger->void($next_i['linkid'], $linkplayercreator);
                                 }
 
                                 //Increment Player since not there:
@@ -585,7 +585,7 @@ class Nodeideas extends CIdea_cache
 
                         if ($action_playerid == 12612 && count($is_previous)) {
                             //Unlink
-                            $this->Menchledger->update($is_previous[0]['linkid'], array(), $linkplayercreator);
+                            $this->Menchledger->void($is_previous[0]['linkid'], $linkplayercreator);
 
                             $applied_success++;
                         }

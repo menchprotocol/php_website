@@ -76,7 +76,7 @@ foreach ($list_settings['query_string_filtered'] as $x) {
         if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Menchledger->fetch(array(
                     'linkplayerdown' => $x['playerid'],
                     'linkplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 ))))) {
             if (!isset($count_totals['i'][$idea_var['ideaid']])) {
                 $count_totals['i'][$idea_var['ideaid']] = 0;
@@ -98,12 +98,12 @@ foreach ($list_settings['query_string_filtered'] as $x) {
         $require_writing = count($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
             'linkplayerdown' => $e['playerid'],
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         )));
 
         $fetch_data = $this->Menchledger->fetch(array(
             'linkplayerdown' => $x['playerid'],
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $e['playerid'],
         ));
 
@@ -148,7 +148,7 @@ foreach ($list_settings['query_string_filtered'] as $x) {
 
             $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Menchledger->fetch(array(
                     'linkplayerdown' => $e['playerid'],
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     'linkplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1);
         }

@@ -65,7 +65,7 @@ foreach ($es as $en) {
 
     //Fetch followers:
     foreach ($this->Menchledger->fetch(array(
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         'linkplayerup' => $en['playerid'],
     ), array('linkplayerdown'), 0, 0) as $player_down) {
 

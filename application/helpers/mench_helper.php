@@ -281,7 +281,7 @@ function reset_cache($linkplayercreator)
         'linkplayerdown >' => 0,
     )) as $delete_cahce) {
         //Void:
-        $count += $CI->Menchledger->update($delete_cahce['linkid'], array(), $linkplayercreator);
+        $count += $CI->Menchledger->void($delete_cahce['linkid'], $linkplayercreator);
     }
     return $count;
 }
@@ -358,7 +358,7 @@ function idea_spots_remaining($ideaid)
                 if (count($must_follow) == count($CI->Menchledger->fetch(array(
                         'linkplayerdown' => $e['linkplayercreator'],
                         'linkplayerup IN (' . join(',', $must_follow) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     )))) {
                     $current_discoveries++;
                 }
@@ -693,7 +693,7 @@ function list_settings($ideahashtag, $fetch_contact = false)
             //Include If Has ANY
             $query_string_all = $CI->Menchledger->fetch(array(
                 'linkplayerup IN (' . join(',', $list_config[27984]) . ')' => null,
-                'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
         } elseif (count($list_config[43513])) {
@@ -701,7 +701,7 @@ function list_settings($ideahashtag, $fetch_contact = false)
             //Include If Has ALL
             $query_string_all = $CI->Menchledger->fetch(array(
                 'linkplayerup IN (' . join(',', $list_config[43513]) . ')' => null,
-                'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
         } else {
@@ -727,21 +727,21 @@ function list_settings($ideahashtag, $fetch_contact = false)
                 (count($list_config[27984]) && !count($CI->Menchledger->fetch(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup IN (' . join(',', $list_config[27984]) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     )))) ||
 
                 //Exclude If Has ALL
                 (count($list_config[26600]) && count($CI->Menchledger->fetch(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup IN (' . join(',', $list_config[26600]) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     ))) == count($list_config[26600])) ||
 
                 //Exclude If Has ANY
                 (count($list_config[43514]) && count($CI->Menchledger->fetch(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup IN (' . join(',', $list_config[43514]) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     ))) > 0) ||
 
                 //If Not Discovered Any
@@ -762,7 +762,7 @@ function list_settings($ideahashtag, $fetch_contact = false)
                     $total_found_43513 += (count($CI->Menchledger->fetch(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup' => $CI_filter,
-                        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     ))) ? 1 : 0);
                 }
                 if ($total_found_43513 < count($list_config[43513])) {
@@ -782,7 +782,7 @@ function list_settings($ideahashtag, $fetch_contact = false)
 
             $column_e = $CI->Menchledger->fetch(array(
                 'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
-                'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, sort__player());
 
             foreach ($CI->Menchledger->fetch(array(
@@ -803,17 +803,17 @@ function list_settings($ideahashtag, $fetch_contact = false)
                 $fetch_names = $CI->Menchledger->fetch(array(
                     'linkplayerup' => 42584, //First Name
                     'linkplayerdown' => $x['playerid'],
-                    'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 ));
                 $fetch_emails = $CI->Menchledger->fetch(array(
                     'linkplayerup' => 3288, //Email
                     'linkplayerdown' => $x['playerid'],
-                    'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 ));
                 $fetch_phones = $CI->Menchledger->fetch(array(
                     'linkplayerup' => 4783, //Phone
                     'linkplayerdown' => $x['playerid'],
-                    'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 ));
 
                 $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['linktext']) ? $fetch_names[0]['linktext'] : $x['playertext']);
@@ -1128,7 +1128,7 @@ function process_media($ideaid, $uploaded_media)
                     //We we already have this asset, link to that Player without giving this new Player the authority over it...
                     //First person to upload a Player will get authority over its created Player...
                     foreach ($CI->Menchledger->fetch(array(
-                        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                         'linkplayerup' => 42662, //etag
                         'linktext' => $upload_media['media_cache']['etag'],
                     ), array('linkplayerdown'), 1) as $existing_media) {
@@ -1188,7 +1188,7 @@ function process_media($ideaid, $uploaded_media)
                             //Single select that needs auto creation of Players if missing:
                             $child_id = 0;
                             foreach ($CI->Menchledger->fetch(array(
-                                'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                 'linkplayerup' => $linkplayertype,
                                 'playertext' => $target_variable,
                             ), array('linkplayerdown'), 1, 0, array('linkid' => 'ASC')) as $child_player) {
@@ -1312,7 +1312,7 @@ function process_media($ideaid, $uploaded_media)
     //Remove current media missing from submitted (Removed during editing):
     foreach (array_diff($current_media_playerids, $upload_media_playerids) as $deleted_media_playerid) {
         $media_stats['adjust_removed']++;
-        $CI->Menchledger->update($full_media[$deleted_media_playerid]['linkid'], array(), $player_e['playerid']); //Media Removed
+        $CI->Menchledger->void($full_media[$deleted_media_playerid]['linkid'], $player_e['playerid']); //Media Removed
     }
 
     //Calculate total media:
@@ -1330,7 +1330,7 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid)
 
     //First validate data type to ensure it matches:
     foreach ($CI->Menchledger->fetch(array(
-        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         'linkplayerup IN (' . join(',', $CI->config->item('playerids___4592')) . ')' => null, //Data Types
         'linkplayerdown' => $linkplayerup,
     )) as $data_type) {
@@ -1838,7 +1838,7 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
             $fetch_emails = $CI->Menchledger->fetch(array(
                 'linkplayerup' => 3288, //Email
                 'linkplayerdown' => $playerid,
-                'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ));
             if (count($fetch_emails) && filter_var($fetch_emails[0]['linktext'], FILTER_VALIDATE_EMAIL)) {
                 array_push($ReplyToAddresses, trim($fetch_emails[0]['linktext']));
@@ -2291,7 +2291,7 @@ function access_level_i($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce 
             if ($player_e) {
                 foreach ($fetch_27984 as $player_pre) {
                     if ((($player_e && $player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         ))))) {
@@ -2316,7 +2316,7 @@ function access_level_i($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce 
             if ($player_e) {
                 foreach ($fetch_43513 as $player_pre) {
                     if ((($player_e && $player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         ))))) {
@@ -2340,7 +2340,7 @@ function access_level_i($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce 
             if ($player_e) {
                 foreach ($fetch_43514 as $player_pre) {
                     if (($player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         )))) {
@@ -2365,7 +2365,7 @@ function access_level_i($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce 
             if ($player_e) {
                 foreach ($fetch_26600 as $player_pre) {
                     if (($player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         )))) {
@@ -2640,7 +2640,7 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                 //Fetch Following:
                 foreach ($CI->Menchledger->fetch(array(
-                    'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     'linkplayerdown' => $s['playerid'], //This follower Player
                 ), array('linkplayerup'), 0, 0, array('playertext' => 'DESC')) as $x) {
 
@@ -3276,7 +3276,7 @@ function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_ca
         $joins_objects = array('linkplayerdown');
         $query_filters = array(
             'linkplayerup' => $playerid,
-            'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         );
 
     } elseif (in_array($linkplayertype, $CI->config->item('playerids___42261'))) {
@@ -3561,7 +3561,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
             foreach ($CI->Menchledger->fetch(array(
                 'linkplayerup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
                 'linkplayerdown' => $down_playerid,
-                'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             )) as $sel) {
                 array_push($already_selected, $sel['linkplayerup']);
             }
@@ -3724,7 +3724,7 @@ function view_single_select_instant($cache_playerid, $selected_playerid, $access
         foreach($CI->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $CI->config->item('playerids___'.$cache_playerid)) . ')' => null, //SOURCE LINKS
             'linkplayerdown' => $player_e['playerid'],
-            'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         )) as $x) {
             //Supports one for now
             $selected_playerid = $x['linkplayerup'];
@@ -3896,7 +3896,7 @@ function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node 
         ), array('linkplayerup'), 0) as $message_references) {
             if (!substr_count(strtolower($i['ideacache']), '>@' . strtolower($message_references['playerhandle']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
-                $CI->Menchledger->update($message_references['linkid'], array());
+                $CI->Menchledger->void($message_references['linkid']);
                 continue;
             }
             foreach ($CI->Menchledger->fetch(array(
@@ -4068,7 +4068,7 @@ function view_sync_links($str, $return_array = false, $save_ideaid = 0)
             if (!in_array($x['linktext'], $idea_references[$x['linkplayertype']])) {
 
                 //Not valid, must be removed:
-                $CI->Menchledger->update($x['linkid'], array(), $player_e['playerid']);
+                $CI->Menchledger->void($x['linkid'], $player_e['playerid']);
 
                 $sync_stats['old_links_removed']++;
 
@@ -5483,7 +5483,7 @@ function view_card_player($linkplayertype, $e, $extra_class = null)
             } elseif ($linkplayertype_target_bar == 42795 && $player_e && $player_e['playerid'] != $e['playerid'] && count($CI->Menchledger->fetch(array(
                     'linkplayerdown' => $e['playerid'],
                     'linkplayerup' => 4430, //Active Member
-                    'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 )))) {
 
                 //Allow to follow fellow players:
@@ -5613,7 +5613,7 @@ function view_card_player($linkplayertype, $e, $extra_class = null)
     foreach ($CI->Menchledger->fetch(array(
         'linkplayerup IN (' . join(',', $CI->config->item('playerids___14036')) . ')' => null, //Featured Players
         'linkplayerdown' => $e['playerid'],
-        'linkplayertype IN (' . join(',', $CI->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
     ), array(), 0, 0, $order_columns) as $social_link) {
 
         if (in_array($social_link['linkplayerup'], $CI->config->item('playerids___32172'))) {

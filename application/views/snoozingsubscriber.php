@@ -10,13 +10,13 @@ foreach($this->config->item('players___28917') as $linkplayertype => $m) {
 
         foreach($this->Menchledger->fetch(array(
             'linkplayerup' => $linkplayertype,
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         ), array('linkplayerdown'), 0) as $x) {
             $total_members++;
             if((time()-strtotime($x['linktime']))>(86400*intval($m['m__message']))){
 
                 //Remove from Snooze:
-                $this->Menchledger->update($x['linkid'], array(), $x['linkplayercreator']);
+                $this->Menchledger->void($x['linkid'], $x['linkplayercreator']);
 
                 //Add to subscribers:
                 $this->Menchledger->create(array(

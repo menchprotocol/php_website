@@ -49,22 +49,22 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 $fetch_emails = $this->Menchledger->fetch(array(
     'linkplayerup' => 3288, //Email
     'linkplayerdown' => $player_e['playerid'],
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
 ));
 $fetch_phones = $this->Menchledger->fetch(array(
     'linkplayerup' => 4783, //Phone
     'linkplayerdown' => $player_e['playerid'],
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
 ));
 $fetch_first_names = $this->Menchledger->fetch(array(
     'linkplayerup' => 42584, //First Name
     'linkplayerdown' => $player_e['playerid'],
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
 ));
 $fetch_last_names = $this->Menchledger->fetch(array(
     'linkplayerup' => 30198, //Last Name
     'linkplayerdown' => $player_e['playerid'],
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
 ));
 
 $set_email = false;
@@ -162,7 +162,7 @@ foreach($this->Nodeideas->fetch(array(
             'linkidealeft' => $i['ideaid'],
             'linkplayercreator' => $player_e['playerid'],
         ), array(), 0) as $x_discovery){
-            $this->Menchledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
+            $this->Menchledger->void($x_discovery['linkid'], $player_e['playerid']);
         }
 
         //Delete Old Child Answers:
@@ -173,7 +173,7 @@ foreach($this->Nodeideas->fetch(array(
         ), array('linkidearight')) as $x_selection){
 
             //Remove Selection:
-            $this->Menchledger->update($x_selection['linkid'], array(), $player_e['playerid']);
+            $this->Menchledger->void($x_selection['linkid'], $player_e['playerid']);
 
             //Remove discovery if we can:
             if(!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))){
@@ -182,7 +182,7 @@ foreach($this->Nodeideas->fetch(array(
                     'linkidealeft' => $x_selection['ideaid'],
                     'linkplayercreator' => $player_e['playerid'],
                 ), array(), 0) as $x_discovery){
-                    $this->Menchledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
+                    $this->Menchledger->void($x_discovery['linkid'], $player_e['playerid']);
                 }
             }
         }

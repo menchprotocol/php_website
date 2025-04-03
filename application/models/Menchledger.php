@@ -316,23 +316,7 @@ class Menchledger extends CIdea_cache
 
         if (!count($update_columns)) {
 
-            //Trying to VOID
 
-            //Determine if we are removing a discovery, idea or Player:
-            if (in_array($before_data[0]['linkplayertype'], $this->config->item('playerids___6255')) && $before_data[0]['linkplayertype'] != 44397) {
-                $linkplayertype = 44397; //Undiscovered Discovery
-            } elseif ($before_data[0]['linkidealeft'] > 0 || $before_data[0]['linkidearight'] > 0) {
-                $linkplayertype = 44396; //Unpublished Idea
-            } else {
-                //It must be a Player then:
-                $linkplayertype = 44399; //Player Removed
-            }
-
-            //Create new Link:
-            $update_columns = array(
-                'linkplayercreator' => $linkplayercreator,
-                'linkplayertype' => $linkplayertype,
-            );
 
         } else {
 
@@ -340,6 +324,58 @@ class Menchledger extends CIdea_cache
             $update_columns['linkplayercreator'] = $linkplayercreator;
 
         }
+
+        //We are updating something:
+        $x = $this->Menchledger->create(array_merge($before_data[0], $update_columns));
+
+        if (isset($x['linkid']) && $x['linkid'] > 0) {
+            //Void Old Link:
+            $this->db->where('linkid', intval($id));
+            $this->db->update('menchledger', array(
+                'linkvoid' => $x['linkid'],
+            ));
+            return $this->db->affected_rows();
+        }
+
+        return 0;
+    }
+
+
+    function void($id, $linkplayercreator = 0)
+    {
+
+        //Fetch transaction before updating:
+        $before_data = $this->Menchledger->fetch(array(
+            'linkid' => $id,
+        ));
+        if (!count($before_data)) {
+            //Invalid link:
+            return 0;
+        }
+
+        if (!$linkplayercreator) {
+            //Fetch session player:
+            $player_e = superpower_unlocked();
+            $linkplayercreator = ($player_e ? $player_e['playerid'] : ($before_data[0]['linkplayercreator'] > 0 ? $before_data[0]['linkplayercreator'] : 14068 /* Guest Member */));
+        }
+
+        //Trying to VOID
+
+        //Determine if we are removing a discovery, idea or Player:
+        if (in_array($before_data[0]['linkplayertype'], $this->config->item('playerids___6255')) && $before_data[0]['linkplayertype'] != 44397) {
+            $linkplayertype = 44397; //Undiscovered Discovery
+        } elseif ($before_data[0]['linkidealeft'] > 0 || $before_data[0]['linkidearight'] > 0) {
+            $linkplayertype = 44396; //Unpublished Idea
+        } else {
+            //It must be a Player then:
+            $linkplayertype = 44399; //Player Removed
+        }
+
+        //Create new Link:
+        $update_columns = array(
+            'linkplayercreator' => $linkplayercreator,
+            'linkplayertype' => $linkplayertype,
+        );
 
         //We are updating something:
         $x = $this->Menchledger->create(array_merge($before_data[0], $update_columns));
@@ -433,7 +469,7 @@ class Menchledger extends CIdea_cache
                 //Updating reaction:
                 if (in_array($new_playerid, $this->config->item('playerids___42850'))) {
                     //Unsubscribe
-                    $status = $this->Menchledger->update($linkid, array(), $player_e['playerid']); //Media Removed
+                    $status = $this->Menchledger->void($linkid, $player_e['playerid']); //Media Removed
                 } else {
                     $status = $this->Menchledger->update($linkid, array(
                         'linkplayertype' => $new_playerid,
@@ -466,7 +502,7 @@ class Menchledger extends CIdea_cache
             //Reactions...
             if ($linkid > 0) {
                 if (in_array($new_playerid, $this->config->item('playerids___42850'))) {
-                    $status = $this->Menchledger->update($linkid, array(), $player_e['playerid']); //Removed
+                    $status = $this->Menchledger->void($linkid, $player_e['playerid']); //Removed
                 } else {
                     //Updating reaction:
                     $status = $this->Menchledger->update($linkid, array(
@@ -569,7 +605,7 @@ class Menchledger extends CIdea_cache
             $notification_levels = $this->Menchledger->fetch(array(
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___30820')) . ')' => null, //Active Subscriber
                 'linkplayerdown' => $playerid,
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ));
             if (!count($notification_levels)) {
                 return array(
@@ -616,13 +652,13 @@ class Menchledger extends CIdea_cache
 
         //Send Emails:
         foreach ($this->Menchledger->fetch(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => 3288, //Email
             'linkplayerdown' => $playerid,
         )) as $player_data) {
 
             if (!filter_var($player_data['linktext'], FILTER_VALIDATE_EMAIL)) {
-                $this->Menchledger->update($player_data['linkid'], array(), $playerid);
+                $this->Menchledger->void($player_data['linkid'], $playerid);
                 continue;
             }
 
@@ -650,7 +686,7 @@ class Menchledger extends CIdea_cache
 
             //Send SMS
             foreach ($this->Menchledger->fetch(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 'linkplayerup' => 4783, //Phone
                 'linkplayerdown' => $playerid,
             )) as $player_data) {
@@ -661,7 +697,7 @@ class Menchledger extends CIdea_cache
 
                     if (!$sms_sent) {
                         //bad number, remove it:
-                        $this->Menchledger->update($player_data['linkid'], array(), $playerid);
+                        $this->Menchledger->void($player_data['linkid'], $playerid);
                     }
 
                 }
@@ -1150,7 +1186,7 @@ class Menchledger extends CIdea_cache
                         'linkidealeft' => $i['ideaid'],
                         'linkplayercreator' => $x_data['linkplayercreator'],
                     )) as $remove_x) {
-                        $this->Menchledger->update($remove_x['linkid'], array(), $x_data['linkplayercreator']);
+                        $this->Menchledger->void($remove_x['linkid'], $x_data['linkplayercreator']);
                     }
 
                 }
@@ -1231,12 +1267,12 @@ class Menchledger extends CIdea_cache
 
                 //Remove Following IF previously assigned:
                 foreach ($this->Menchledger->fetch(array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $this_tag['linkplayerup'], //CERTIFICATES saved here
                     'linkplayerdown' => $x_data['linkplayercreator'],
                 )) as $existing_x) {
 
-                    $this->Menchledger->update($existing_x['linkid'], array(), $x_data['linkplayercreator']);
+                    $this->Menchledger->void($existing_x['linkid'], $x_data['linkplayercreator']);
 
                     //See if Session needs to be updated:
                     if ($player_e && $player_e['playerid'] == $x_data['linkplayercreator']) {
@@ -1263,7 +1299,7 @@ class Menchledger extends CIdea_cache
                     $discoverer_contact = '';
                     foreach ($this->config->item('players___34541') as $linkplayertype => $m) {
                         foreach ($this->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerdown' => $x_data['linkplayercreator'],
                             'linkplayerup' => $linkplayertype,
                             'LENGTH(linktext)>0' => null,
@@ -1336,7 +1372,7 @@ class Menchledger extends CIdea_cache
             foreach ($this->Menchledger->fetch(array(
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___44393')) . ')' => null, //Media JSON
                 'linkplayerdown' => $media['playerid'],
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'), 0) as $player_group) {
                 if (strlen($player_group['linktext'])) {
                     $media[$player_group['playerhandle']] = $player_group['linktext'];

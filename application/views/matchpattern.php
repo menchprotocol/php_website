@@ -28,7 +28,7 @@ if (isset($_GET['ideahashtag'])) {
                 if (!preg_match($preg_query[0]['linktext'], $x['linktext'])) {
                     $failed++;
                     if (isset($_GET['delete'])) {
-                        $this->Menchledger->update($x['linkid'], array());
+                        $this->Menchledger->void($x['linkid']);
                         echo 'Deleted! ';
                     } else {
                         echo 'Set ?delete=1? ';

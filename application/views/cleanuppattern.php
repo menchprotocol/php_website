@@ -40,7 +40,7 @@ foreach($this->Nodeideas->fetch(array(
             )) as $e){
                 foreach($this->Menchledger->fetch(array(
                     'linkplayerup' => $e['playerid'],
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                 ), array('linkplayerdown'), 0) as $x) {
 
                     $responses++;
@@ -62,7 +62,7 @@ foreach($this->Nodeideas->fetch(array(
                                     foreach($this->Menchledger->fetch(array(
                                         'linkplayerup' => $apply_playerid,
                                         'linkplayerdown' => $x['linkplayercreator'],
-                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                                                         ), array(), 0) as $follow_appended) {
                                         $links_updated++;
                                         $this->Menchledger->update($follow_appended['linkid'], array(
@@ -79,17 +79,17 @@ foreach($this->Nodeideas->fetch(array(
                             $removed++;
                             if(isset($_GET['update'])){
 
-                                $this->Menchledger->update($x['linkid'], array());
+                                $this->Menchledger->void($x['linkid']);
 
                                 //Also update follower link?
                                 foreach($apply_to as $apply_playerid){
                                     foreach($this->Menchledger->fetch(array(
                                         'linkplayerup' => $apply_playerid,
                                         'linkplayerdown' => $x['linkplayercreator'],
-                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                                             ), array(), 0) as $follow_appended) {
                                         $links_removed++;
-                                        $this->Menchledger->update($follow_appended['linkid'], array());
+                                        $this->Menchledger->void($follow_appended['linkid']);
                                     }
                                 }
                                 echo 'Removed! ';
@@ -137,7 +137,7 @@ foreach($this->Nodeideas->fetch(array(
                             foreach($this->Menchledger->fetch(array(
                                 'linkplayerup' => $apply_playerid,
                                 'linkplayerdown' => $x['linkplayercreator'],
-                                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
                                 $this->Menchledger->update($follow_appended['linkid'], array(
@@ -153,17 +153,17 @@ foreach($this->Nodeideas->fetch(array(
                     $removed++;
                     if(isset($_GET['update'])){
 
-                        $this->Menchledger->update($x['linkid'], array());
+                        $this->Menchledger->void($x['linkid']);
 
                         //Also update follower link?
                         foreach($apply_to as $apply_playerid){
                             foreach($this->Menchledger->fetch(array(
                                 'linkplayerup' => $apply_playerid,
                                 'linkplayerdown' => $x['linkplayercreator'],
-                                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
-                                $this->Menchledger->update($follow_appended['linkid'], array());
+                                $this->Menchledger->void($follow_appended['linkid']);
                             }
                         }
                         echo 'Removed! ';

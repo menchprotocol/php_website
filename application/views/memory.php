@@ -155,7 +155,7 @@ $routes_text .= '//APPS:' . "\n\n";
 
 foreach ($this->Menchledger->fetch(array(
     'linkplayerup' => 6287, //Apps
-    'linkplayertype IN (' . join(',', ($memory_detected ? $this->config->item('playerids___32292') : $playerids___33337)) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', ($memory_detected ? $this->list_player_links_intentional : $playerids___33337)) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if (!$memory_detected) {

@@ -266,7 +266,7 @@ class App extends CI_Controller
                     ), array(), 1, 0, array('linktime' => 'DESC')) as $latest_cache) {
                         if (strtotime($latest_cache['linktime']) <= (time() - view_memory(6404, 14599))) {
                             //Its expired, void it:
-                            $this->Menchledger->update($latest_cache['linkid'], array());
+                            $this->Menchledger->void($latest_cache['linkid']);
                         } else {
                             $ui = $latest_cache['linktext'];
                             $cache_linktime = '<div class="texttransparent center main__title">Updated ' . view_time_difference($latest_cache['linktime']) . ' Ago</div>';
@@ -649,7 +649,7 @@ class App extends CI_Controller
 
             //Find Published Followings:
             foreach ($this->Menchledger->fetch(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 'linkplayerdown' => $o__id,
             ), array('linkplayerup'), 1, 0, array('playertext' => 'DESC')) as $up_e) {
                 $deletion_redirect = view_memory(42903, 42902) . $up_e['playerhandle'];
@@ -910,7 +910,7 @@ class App extends CI_Controller
 
                     //Remove Link if we have one:
                     if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key links that should not be removed */) {
-                        $this->Menchledger->update($values[0]['linkid'], array(), $player_e['playerid']);
+                        $this->Menchledger->void($values[0]['linkid'], $player_e['playerid']);
                     }
 
                 } elseif (!count($values)) {
@@ -1273,7 +1273,7 @@ class App extends CI_Controller
             //Count followers:
             $listplayer_count = $this->Menchledger->fetch(array(
                 'linkplayerup' => $_POST['playerid'],
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(playerid) as totals');
 
             if (count($es) < 1) {
@@ -1327,7 +1327,7 @@ class App extends CI_Controller
         }
 
         //Archive Transaction:
-        $this->Menchledger->update($_POST['linkid'], array(), $player_e['playerid']);
+        $this->Menchledger->void($_POST['linkid'], $player_e['playerid']);
 
         return view_json(array(
             'status' => 1,
@@ -1744,7 +1744,7 @@ class App extends CI_Controller
         foreach ($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___42178')) . ')' => null, //Dynamic Players
             'linkplayerdown' => $es[0]['playerid'],
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0, 0, sort_by(42178)) as $player_group) {
 
             if (in_array($player_group['playerid'], $scanned_players)) {
@@ -1755,7 +1755,7 @@ class App extends CI_Controller
             foreach ($this->Menchledger->fetch(array(
                 'linkplayerdown' => $player_group['playerid'],
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___42145')) . ')' => null, //Dynamic Input Templates
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'), 0, 0, $order_42145) as $player_template) {
 
                 $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($player_template['playercover']) . '</span>' . $player_template['playertext'] . '<a href="' . view_memory(42903, 42902) . $player_group['playerhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $player_group['playertext'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($player_group['playercover']) . '</span></a></div>';
@@ -1845,7 +1845,7 @@ class App extends CI_Controller
                         $counted = 0;
                         $unique_values = array();
                         foreach ($this->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerdown' => $es[0]['playerid'],
                             'linkplayerup' => $dynamic_playerid,
                         ), array('linkplayerup')) as $selected_e) {
@@ -1895,7 +1895,7 @@ class App extends CI_Controller
                 foreach (array_intersect($players___42776[$selected_e['playerid']]['m__following'], $this->config->item('playerids___4592')) as $data_type) {
                     //Any value?
                     $values = $this->Menchledger->fetch(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                         'linkplayerdown' => $es[0]['playerid'],
                         'linkplayerup' => $selected_e['playerid'],
                     ));
@@ -2018,7 +2018,7 @@ class App extends CI_Controller
 
             if (!$d_linkid || !count($values)) {
                 $values = $this->Menchledger->fetch(array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $dynamic_playerid,
                     'linkplayerdown' => $es[0]['playerid'],
                 ));
@@ -2030,7 +2030,7 @@ class App extends CI_Controller
 
                 //Remove Link if we have one:
                 if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key links that should not be removed */) {
-                    $this->Menchledger->update($values[0]['linkid'], array(), $player_e['playerid']);
+                    $this->Menchledger->void($values[0]['linkid'], $player_e['playerid']);
                 }
 
             } elseif (!count($values)) {
@@ -2202,7 +2202,7 @@ class App extends CI_Controller
             //Fetch all possible answers based on followings Player:
             $query_filters = array(
                 'linkplayerup' => $_POST['focus__id'],
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             );
 
             if ((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']) {
@@ -2222,7 +2222,7 @@ class App extends CI_Controller
                 $delete_query = $this->Menchledger->fetch(array(
                     'linkplayerup IN (' . join(',', $possible_answers) . ')' => null,
                     'linkplayerdown' => $_POST['down_playerid'],
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 ));
             } elseif ($_POST['right_ideaid']) {
                 $delete_query = $this->Menchledger->fetch(array(
@@ -2235,7 +2235,7 @@ class App extends CI_Controller
             foreach ($delete_query as $delete) {
                 $stats['deleted']++;
                 //Should usually delete a single option:
-                $this->Menchledger->update($delete['linkid'], array(), $player_e['playerid']);
+                $this->Menchledger->void($delete['linkid'], $player_e['playerid']);
             }
 
         }
@@ -2351,14 +2351,14 @@ class App extends CI_Controller
         ), array(), 1, 0, array('linktime' => 'DESC')) as $sent_key) {
             if (strtotime($sent_key['linktime']) <= (time() - 86400)) {
                 //Expired
-                $this->Menchledger->update($sent_key['linkid'], array(), $_POST['account_id']); //Code Verified
+                $this->Menchledger->void($sent_key['linkid'], $_POST['account_id']); //Code Verified
                 break;
             }
             $session_key = $this->session->userdata('session_key');
             $key_parts = explode('/', $sent_key['linktext'], 2);
             if (strlen($session_key) && $key_parts[1] == md5($session_key . $_POST['input_code'])) {
                 //Void access code:
-                $is_authenticated = $this->Menchledger->update($sent_key['linkid'], array(), $_POST['account_id']); //Code Verified
+                $is_authenticated = $this->Menchledger->void($sent_key['linkid'], $_POST['account_id']); //Code Verified
             }
         }
         if (!$is_authenticated) {
@@ -2439,7 +2439,7 @@ class App extends CI_Controller
             $already_added = $this->Menchledger->fetch(array(
                 'linkplayerup' => $_POST['playerid'],
                 'linkplayerdown' => $_POST['linkplayercreator'],
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'));
 
             if (count($already_added)) {
@@ -2452,7 +2452,7 @@ class App extends CI_Controller
                             'linktext' => $_POST['written_answer'],
                         ), $player_e['playerid']);
                     } elseif (!strlen($_POST['written_answer'])) {
-                        $this->Menchledger->update($already_added[0]['linkid'], array(), $player_e['playerid']);
+                        $this->Menchledger->void($already_added[0]['linkid'], $player_e['playerid']);
                     }
 
                     return view_json(array(
@@ -2463,7 +2463,7 @@ class App extends CI_Controller
                 } else {
 
                     //Already exists, let's remove:
-                    $this->Menchledger->update($already_added[0]['linkid'], array(), $player_e['playerid']);
+                    $this->Menchledger->void($already_added[0]['linkid'], $player_e['playerid']);
 
                     return view_json(array(
                         'status' => 1,
@@ -2554,7 +2554,7 @@ class App extends CI_Controller
         $linkplayercreator = 0;
         foreach ($this->Menchledger->fetch(array(
             'linktext' => $_POST['account_email_phone'],
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
         ), array('linkplayerdown')) as $map_e) {
             $u = $map_e;
@@ -2830,7 +2830,7 @@ class App extends CI_Controller
             //Players reset order
             foreach ($this->Menchledger->fetch(array(
                 'linkplayerup' => $_POST['focus__id'],
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0) as $x) {
                 $this->Menchledger->update($x['linkid'], array(
                     'linknumber' => 0,
@@ -2963,7 +2963,7 @@ class App extends CI_Controller
                         continue; //Nothing we need to do here...
                     }
 
-                    $this->Menchledger->update($x_selection['linkid'], array(), $player_e['playerid']);
+                    $this->Menchledger->void($x_selection['linkid'], $player_e['playerid']);
 
                     //Remove discovery if we can:
                     if (!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))) {
@@ -2972,7 +2972,7 @@ class App extends CI_Controller
                             'linkidealeft' => $x_selection['ideaid'],
                             'linkplayercreator' => $player_e['playerid'],
                         ), array(), 0) as $x_discovery) {
-                            $this->Menchledger->update($x_discovery['linkid'], array(), $player_e['playerid']);
+                            $this->Menchledger->void($x_discovery['linkid'], $player_e['playerid']);
                         }
                     }
                 }
@@ -3153,7 +3153,7 @@ class App extends CI_Controller
         }
 
         //Remove Idea
-        $this->Menchledger->update($_POST['linkid'], array(), $player_e['playerid']);
+        $this->Menchledger->void($_POST['linkid'], $player_e['playerid']);
 
         return view_json(array(
             'status' => 1,
@@ -3324,7 +3324,7 @@ class App extends CI_Controller
                         if ($has_handle) {
 
                             $sub_counter = $this->Menchledger->fetch(array(
-                                'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                 'linkplayerup' => $es[0]['playerid'],
                             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 

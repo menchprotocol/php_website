@@ -46,7 +46,7 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     $subscriber_filters = array(
         'linkplayerup' => 12114,
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             );
 
     //Should we limit the scope?
