@@ -23,7 +23,8 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
                 //They have confirmed, remove:
                 $this->Menchledger->update($x['linkid'], array(
                     'linkplayertype' => 42333, //RSVP No
-                ), $x['playerid']);
+                    'linkplayercreator' => $x['playerid'],
+                ));
                 //TODO Copy th is elsewhere
 
                 //Notify and give option to go to starting point:
@@ -163,6 +164,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
             //We are done with this reminder request:
             $this->Menchledger->update($i['linkid'], array(
                 'linkplayertype' => ($remind_status>0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
+                'linkplayercreator' => $player_e['playerid'],
             ));
         }
 
@@ -213,10 +215,10 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
 
         //Now let's see who will receive this:
         $total_sent = 0;
-        $list_settings = list_settings($i['ideahashtag']);
+        $idea_settings = idea_settings($i['ideahashtag']);
         $subject_line = view_idea_title($i, true);
 
-        foreach ($list_settings['query_string_filtered'] as $x) {
+        foreach ($idea_settings['query_string_filtered'] as $x) {
 
             if (count($this->Menchledger->fetch(array(
                 'linkidealeft' => $i['ideaid'],
@@ -262,6 +264,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
             //Ready to be done:
             $this->Menchledger->update($i['linkid'], array(
                 'linkplayertype' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
+                'linkplayercreator' => $player_e['playerid'],
             ));
         }
 

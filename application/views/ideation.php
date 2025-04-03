@@ -12,7 +12,7 @@ if($player_e && !superpower_unlocked(10939) && count($this->Menchledger->fetch(a
 
 //Focus Idea:
 echo '<div class="view_12273 row justify-content">';
-echo view_card_idea(42288,  $focus_i);
+echo view_idea(42288,  $focus_i);
 echo '</div>';
 
 if(superpower_unlocked(10939) || isset($_GET['open'])){

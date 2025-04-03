@@ -3,7 +3,7 @@
 
 //Focus Player:
 echo '<div class="view_12274 row justify-content">';
-echo view_card_player(42287, $focus_e, null);
+echo view_player(42287, $focus_e, null);
 echo '</div>';
 
 

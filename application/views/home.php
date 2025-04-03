@@ -66,7 +66,7 @@ if($domain_phone || $email_domain) {
 
 
 //Any Info Boxes?
-foreach($this->Nodeplayers->scissor_player($website_id, 14903) as $player_item) {
+foreach($this->Nodeplayers->scissor($website_id, 14903) as $player_item) {
     //Any Followers?
     $info_item = null;
     foreach($this->Menchledger->fetch(array(
@@ -114,7 +114,7 @@ if($messages){
 //List Relevant Ideas in order:
 $secondary_i = '';
 foreach($secondary_idea_list as $ref_i){
-    $secondary_i .= view_card_idea(14565,  $ref_i);
+    $secondary_i .= view_idea(14565,  $ref_i);
 }
 if(strlen($secondary_i)){
     echo '<div class="row justify-content flip-content">';

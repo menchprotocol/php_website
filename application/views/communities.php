@@ -2,7 +2,7 @@
 
 $community_pills = '';
 
-foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Nodeplayers->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Nodeplayers->scissor_player(website_setting(0), 13207)) as $player_item) {
+foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Nodeplayers->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Nodeplayers->scissor(website_setting(0), 13207)) as $player_item) {
 
     foreach ($this->Menchledger->fetch(array(
         'linkplayerup' => $player_item['playerid'],
@@ -15,7 +15,7 @@ foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
 
             $ui = '<div class="row justify-content">';
             foreach (view_player_cards(12274, $x['playerid'], 1, false) as $count => $e) {
-                $ui .= view_card_player(13207, $e, null);
+                $ui .= view_player(13207, $e, null);
             }
             $ui .= '</div>';
 

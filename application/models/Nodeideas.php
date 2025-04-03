@@ -15,6 +15,47 @@ class Nodeideas extends CIdea_cache
     }
 
 
+
+    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    {
+
+        //The basic fetcher for Ideas
+        $this->db->select($select);
+        $this->db->from('nodeideas');
+
+        foreach ($query_filters as $key => $value) {
+            $this->db->where($key, $value);
+        }
+
+        if ($group_by) {
+            $this->db->group_by($group_by);
+        }
+        if (count($order_columns) > 0) {
+            foreach ($order_columns as $key => $value) {
+                $this->db->order_by($key, $value);
+            }
+        }
+        if ($limit > 0) {
+            $this->db->limit($limit, $limit_offset);
+        }
+        $q = $this->db->get();
+        $results = $q->result_array();
+
+        //Make sure user has access to each item:
+        if ($select == '*' && 0) {
+            foreach ($results as $key => $value) {
+                if (!access_level_idea($value['ideahashtag'], 0, $value)) {
+                    unset($results[$key]); //Remove this option
+                }
+            }
+        }
+
+
+        return $results;
+
+    }
+
+
     function create($add_fields, $linkplayercreator = 14068)
     {
 
@@ -97,51 +138,19 @@ class Nodeideas extends CIdea_cache
 
     }
 
-    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
-    {
-
-        //The basic fetcher for Ideas
-        $this->db->select($select);
-        $this->db->from('nodeideas');
-
-        foreach ($query_filters as $key => $value) {
-            $this->db->where($key, $value);
-        }
-
-        if ($group_by) {
-            $this->db->group_by($group_by);
-        }
-        if (count($order_columns) > 0) {
-            foreach ($order_columns as $key => $value) {
-                $this->db->order_by($key, $value);
-            }
-        }
-        if ($limit > 0) {
-            $this->db->limit($limit, $limit_offset);
-        }
-        $q = $this->db->get();
-        $results = $q->result_array();
-
-        //Make sure user has access to each item:
-        if ($select == '*' && 0) {
-            foreach ($results as $key => $value) {
-                if (!access_level_i($value['ideahashtag'], 0, $value)) {
-                    unset($results[$key]); //Remove this option
-                }
-            }
-        }
-
-
-        return $results;
-
-    }
-
 
     function update($id, $update_columns, $external_sync = false)
     {
 
         if (count($update_columns) == 0) {
             return false;
+        }
+        
+        //Update idea on the ledger:
+        foreach($this->Menchledger->fetch(array(
+            'linkid' => $id,
+        )) as $i){
+            
         }
 
         //Update:
@@ -157,7 +166,7 @@ class Nodeideas extends CIdea_cache
         return $affected_rows;
     }
 
-    function remove($ideaid, $linkplayercreator = 0, $migrate_s__id = 0)
+    function void($ideaid, $linkplayercreator = 0, $migrate_s__id = 0)
     {
 
         if ($migrate_s__id > 0) {
@@ -244,7 +253,7 @@ class Nodeideas extends CIdea_cache
         }
 
         //Delete Idea:
-        $this->Nodeideas->update($ideaid, array(), $linkplayercreator);
+        $this->Nodeideas->void($ideaid, $linkplayercreator);
 
         //Update Search Index?
         if (0) {
@@ -256,7 +265,184 @@ class Nodeideas extends CIdea_cache
     }
 
 
-    function i_link($i, $linkplayertype, $next_i, $linkplayercreator)
+
+
+    function command($ideaid, $action_playerid, $action_command1, $action_command2, $linkplayercreator)
+    {
+
+
+        boost_power();
+
+        if (!in_array($action_playerid, $this->config->item('playerids___12589'))) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown mass action',
+            );
+
+        } elseif (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && !view_valid_handle_player($action_command1)) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown Player. Format must be: @PlayerHandle',
+            );
+
+        } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && !view_valid_handle_idea($action_command1)) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Unknown Idea. Format must be: #IdeaHashtag',
+            );
+
+        }
+
+
+        //Basic input validation done, let's continue
+
+
+        //Fetch all followers:
+        $applied_success = 0; //To be populated
+
+        $is_next = $this->Menchledger->fetch(array(
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
+            'linkidealeft' => $ideaid,
+        ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
+
+
+        //Process request:
+        foreach ($is_next as $next_i) {
+
+            //Logic here must match items in e_mass_actions config variable
+
+            if (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && view_valid_handle_player($action_command1)) {
+
+                //Check if it has this item:
+                foreach ($this->Nodeplayers->fetch(array(
+                    'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command1)),
+                )) as $e) {
+
+                    $idea_has_e = $this->Menchledger->fetch(array(
+                        'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+                        'linkidearight' => $next_i['ideaid'],
+                        'linkplayerup' => $e['playerid'],
+                    ));
+
+                    if (in_array($action_playerid, array(12591, 27080, 27985, 27082, 27084, 27086)) && !count($idea_has_e)) {
+
+                        $player_mapper = array(
+                            12591 => 4983,  //Co-Author
+                            27985 => 27984, //Include If Has ANY
+                            27082 => 26600, //Exclude If Has ALL
+                            27084 => 7545,  //Following Add
+                            27086 => 26599, //Following Remove
+                        );
+
+                        //Missing & Must be Added:
+                        $this->Menchledger->create(array(
+                            'linkplayercreator' => $linkplayercreator,
+                            'linkplayerup' => $e['playerid'],
+                            'linkplayertype' => $player_mapper[$action_playerid],
+                            'linkidearight' => $next_i['ideaid'],
+                            'linktext' => trim($action_command2),
+                        ), true);
+
+                        $applied_success++;
+
+                    } elseif (in_array($action_playerid, array(12592, 27081, 27986, 27083, 27085, 27087)) && count($idea_has_e)) {
+
+                        //Has and must be deleted:
+                        $this->Menchledger->void($idea_has_e[0]['linkid'], $linkplayercreator);
+
+                        $applied_success++;
+
+                    }
+                }
+
+            } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && view_valid_handle_idea($action_command1)) {
+
+                foreach ($this->Nodeideas->fetch(array(
+                    'LOWER(ideahashtag)' => strtolower(view_valid_handle_idea($action_command1)),
+                )) as $i) {
+
+                    if ($action_playerid == 27240) {
+
+                        //Copy
+                        $result = $this->Nodeideas->copy(intval($_POST['ideaid']), 0, $action_playerid);
+                        if ($result['status']) {
+                            //Increment Player since not there:
+                            $applied_success++;
+                        }
+
+                    } else {
+
+                        $is_previous = $this->Menchledger->fetch(array(
+                            'linkplayertype IN (' . join(',', $this->config->item('playerids___42345')) . ')' => null, //Active Sequence 2-Ways
+                            'linkidealeft' => $i['ideaid'],
+                            'linkidearight' => $next_i['ideaid'],
+                        ), array(), 0);
+
+
+                        //See how to adjust:
+                        if (in_array($action_playerid, array(12611, 28801)) && !count($is_previous)) {
+
+                            //Link
+                            $status = $this->Nodeideas->link($i, 4228, $next_i, $linkplayercreator);
+
+                            if ($status['status']) {
+
+                                if ($action_playerid == 28801) {
+                                    //Also remove old link:
+                                    $this->Menchledger->void($next_i['linkid'], $linkplayercreator);
+                                }
+
+                                //Increment Player since not there:
+                                $applied_success++;
+                            }
+                        }
+
+
+                        if ($action_playerid == 12612 && count($is_previous)) {
+                            //Unlink
+                            $this->Menchledger->void($is_previous[0]['linkid'], $linkplayercreator);
+
+                            $applied_success++;
+                        }
+
+
+                    }
+                }
+
+            }
+        }
+
+
+        //Log mass Player edit transaction:
+        $this->Menchledger->create(array(
+            'linkplayertype' => 44179, //Triggered
+            'linkplayerup' => $action_playerid,
+            'linkplayerdown' => $linkplayercreator,
+            'linkplayercreator' => $linkplayercreator,
+            'linkidearight' => $ideaid,
+            'linktext' => array(
+                'payload' => $_POST,
+                'idea_total' => count($is_next),
+                'idea_updated' => $applied_success,
+                'command1' => $action_command1,
+                'command2' => $action_command2,
+            ),
+        ));
+
+        //Return results:
+        return array(
+            'status' => 1,
+            'message' => $applied_success . ' of ' . count($is_next) . ' ideas updated',
+        );
+
+    }
+
+
+
+    function link($i, $linkplayertype, $next_i, $linkplayercreator)
     {
 
         //Links ideas with the causality link ensuring not a duplicate:
@@ -292,18 +478,10 @@ class Nodeideas extends CIdea_cache
     }
 
 
-    function recursive_down_ids($i, $scope, $loop_breaker_ids = array())
+    function ids($i, $scope, $loop_breaker_ids = array())
     {
 
-        /*
-         *
-         * $fetch can be either:
-         * - ALL includes both AND and OR ideas
-         * - AND ideas only
-         * - OR ideas only
-         * */
-
-        if (!($scope == 'ALL' || $scope == 'AND' || $scope == 'OR')) {
+        if (!($scope == 'ALL' /* includes both AND and OR ideas */ || $scope == 'AND' /* AND ideas only */ || $scope == 'OR' /* OR ideas only */ )) {
             return false;
         }
 
@@ -333,9 +511,9 @@ class Nodeideas extends CIdea_cache
             }
 
             //Add to current array if we found anything:
-            $recursive_down_ids = $this->Nodeideas->recursive_down_ids($next_i, $scope, $loop_breaker_ids);
-            if (isset($recursive_down_ids['recursive_idea_ids'])) {
-                foreach ($recursive_down_ids['recursive_idea_ids'] as $recursive_idea_id) {
+            $copy = $this->Nodeideas->ids($next_i, $scope, $loop_breaker_ids);
+            if (isset($copy['recursive_idea_ids'])) {
+                foreach ($copy['recursive_idea_ids'] as $recursive_idea_id) {
                     if (!in_array($recursive_idea_id, $recursive_idea_ids)) {
                         array_push($recursive_idea_ids, $recursive_idea_id);
                     }
@@ -351,7 +529,7 @@ class Nodeideas extends CIdea_cache
 
     }
 
-    function recursive_clone($ideaid, $do_recursive, $linkplayercreator, $previous_i = null, $clone_title = null)
+    function copy($ideaid, $do_recursive, $linkplayercreator, $previous_i = null, $clone_title = null)
     {
 
         //Create Clone -or- Link & move-on?
@@ -425,7 +603,7 @@ class Nodeideas extends CIdea_cache
                     'linkplayerup' => 42208, //No-Clone Idea
                 )))) {
                 //Clone Followers Recursively:
-                $this->Nodeideas->recursive_clone($x['ideaid'], $do_recursive, $linkplayercreator, $this_i[0]);
+                $this->Nodeideas->copy($x['ideaid'], $do_recursive, $linkplayercreator, $this_i[0]);
             } else {
                 //Link Followers:
                 $this->Menchledger->create(array(
@@ -448,179 +626,6 @@ class Nodeideas extends CIdea_cache
     }
 
 
-    function mass_update($ideaid, $action_playerid, $action_command1, $action_command2, $linkplayercreator)
-    {
-
-        //Alert: Has a twin function called e_mass_update()
-
-        boost_power();
-
-        if (!in_array($action_playerid, $this->config->item('playerids___12589'))) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Unknown mass action',
-            );
-
-        } elseif (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && !view_valid_handle_player($action_command1)) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Unknown Player. Format must be: @PlayerHandle',
-            );
-
-        } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && !view_valid_handle_i($action_command1)) {
-
-            return array(
-                'status' => 0,
-                'message' => 'Unknown Idea. Format must be: #IdeaHashtag',
-            );
-
-        }
-
-
-        //Basic input validation done, let's continue
-
-
-        //Fetch all followers:
-        $applied_success = 0; //To be populated
-
-        $is_next = $this->Menchledger->fetch(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
-            'linkidealeft' => $ideaid,
-        ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
-
-
-        //Process request:
-        foreach ($is_next as $next_i) {
-
-            //Logic here must match items in e_mass_actions config variable
-
-            if (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && view_valid_handle_player($action_command1)) {
-
-                //Check if it has this item:
-                foreach ($this->Nodeplayers->fetch(array(
-                    'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command1)),
-                )) as $e) {
-
-                    $idea_has_e = $this->Menchledger->fetch(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
-                        'linkidearight' => $next_i['ideaid'],
-                        'linkplayerup' => $e['playerid'],
-                    ));
-
-                    if (in_array($action_playerid, array(12591, 27080, 27985, 27082, 27084, 27086)) && !count($idea_has_e)) {
-
-                        $player_mapper = array(
-                            12591 => 4983,  //Co-Author
-                            27985 => 27984, //Include If Has ANY
-                            27082 => 26600, //Exclude If Has ALL
-                            27084 => 7545,  //Following Add
-                            27086 => 26599, //Following Remove
-                        );
-
-                        //Missing & Must be Added:
-                        $this->Menchledger->create(array(
-                            'linkplayercreator' => $linkplayercreator,
-                            'linkplayerup' => $e['playerid'],
-                            'linkplayertype' => $player_mapper[$action_playerid],
-                            'linkidearight' => $next_i['ideaid'],
-                            'linktext' => trim($action_command2),
-                        ), true);
-
-                        $applied_success++;
-
-                    } elseif (in_array($action_playerid, array(12592, 27081, 27986, 27083, 27085, 27087)) && count($idea_has_e)) {
-
-                        //Has and must be deleted:
-                        $this->Menchledger->void($idea_has_e[0]['linkid'], $linkplayercreator);
-
-                        $applied_success++;
-
-                    }
-                }
-
-            } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && view_valid_handle_i($action_command1)) {
-
-                foreach ($this->Nodeideas->fetch(array(
-                    'LOWER(ideahashtag)' => strtolower(view_valid_handle_i($action_command1)),
-                )) as $i) {
-
-                    if ($action_playerid == 27240) {
-
-                        //Copy
-                        $result = $this->Nodeideas->recursive_clone(intval($_POST['ideaid']), 0, $action_playerid);
-                        if ($result['status']) {
-                            //Increment Player since not there:
-                            $applied_success++;
-                        }
-
-                    } else {
-
-                        $is_previous = $this->Menchledger->fetch(array(
-                            'linkplayertype IN (' . join(',', $this->config->item('playerids___42345')) . ')' => null, //Active Sequence 2-Ways
-                            'linkidealeft' => $i['ideaid'],
-                            'linkidearight' => $next_i['ideaid'],
-                        ), array(), 0);
-
-
-                        //See how to adjust:
-                        if (in_array($action_playerid, array(12611, 28801)) && !count($is_previous)) {
-
-                            //Link
-                            $status = $this->Nodeideas->i_link($i, 4228, $next_i, $linkplayercreator);
-
-                            if ($status['status']) {
-
-                                if ($action_playerid == 28801) {
-                                    //Also remove old link:
-                                    $this->Menchledger->void($next_i['linkid'], $linkplayercreator);
-                                }
-
-                                //Increment Player since not there:
-                                $applied_success++;
-                            }
-                        }
-
-
-                        if ($action_playerid == 12612 && count($is_previous)) {
-                            //Unlink
-                            $this->Menchledger->void($is_previous[0]['linkid'], $linkplayercreator);
-
-                            $applied_success++;
-                        }
-
-
-                    }
-                }
-
-            }
-        }
-
-
-        //Log mass Player edit transaction:
-        $this->Menchledger->create(array(
-            'linkplayertype' => 44179, //Triggered
-            'linkplayerup' => $action_playerid,
-            'linkplayerdown' => $linkplayercreator,
-            'linkplayercreator' => $linkplayercreator,
-            'linkidearight' => $ideaid,
-            'linktext' => array(
-                'payload' => $_POST,
-                'idea_total' => count($is_next),
-                'idea_updated' => $applied_success,
-                'command1' => $action_command1,
-                'command2' => $action_command2,
-            ),
-        ));
-
-        //Return results:
-        return array(
-            'status' => 1,
-            'message' => $applied_success . ' of ' . count($is_next) . ' ideas updated',
-        );
-
-    }
 
 
 }

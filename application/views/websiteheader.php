@@ -481,7 +481,7 @@ $player_e = superpower_unlocked();
 if($player_e){
     //For profile editing only:
     echo '<div class="hidden">';
-    echo view_card_player(42287, $player_e, null);
+    echo view_player(42287, $player_e, null);
     echo '</div>';
 }
 

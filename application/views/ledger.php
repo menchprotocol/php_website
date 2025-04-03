@@ -196,7 +196,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
             } else {
                 //Load Report:
                 $('#x_page_'+page_num).html(data.message);
-                activate_popover();
+                setup_popover();
             }
         });
 

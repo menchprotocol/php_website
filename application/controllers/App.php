@@ -19,13 +19,71 @@ class App extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         $this->player_e = superpower_unlocked();
-        $this->list_player_links_intentional = array(4151,4230,42659,42849);
+        $this->list_player_links_intentional = array(4151, 4230, 42659, 42849);
         $this->list_link_ideation = array(4228, 31834, 42337, 33532, 44161, 40791, 44162, 40793, 32247, 32304, 33344, 30901, 42244, 42243);
         $this->list_link_sourcing = array(41011, 4251, 44399, 33335, 42659, 42849, 44176, 44179, 42897, 32486, 4230, 32489, 42579, 42581, 42580, 42283, 42335, 42516, 42554, 42570, 42427, 42518, 42440, 42791);
         $this->list_link_contribution = array(34513, 4250, 4983, 44396, 42292, 33600, 42272, 42274, 31840, 42275, 42282, 32488, 4258, 4260, 4259, 31835, 41949, 43941, 4256, 12896, 10573, 27984, 43513, 43514, 26600, 7545, 26599, 32235);
         $this->list_link_discovery = array(44397, 44245, 43798, 43142, 42995, 42916, 42402, 42397, 29393, 42332, 41940, 39597, 35572, 32016, 4559, 31967, 31810, 31798, 31797, 7712, 6144, 31022, 6157, 26595, 4235, 12117, 4235, 7712, 27676, 27678, 29399);
 
-        auto_login_player(false);
+
+        //AUTO Login player:
+        $is_ajax = false;
+        date_default_timezone_set('America/Los_Angeles');
+        @session_start();
+
+
+        $player_user = false;
+        $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $this->uri->segment(1));
+        $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
+        $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_link(4269));
+        $player_e = superpower_unlocked();
+        $is_login_verified = isset($_GET['playerhandle']) && $_GET['playerhandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['playerhandle']) && view_hash($_GET['time'] . $_GET['playerhandle']) == $_GET['hash'];
+
+        if (
+            !$player_e //User must not be logged in
+            && !array_key_exists(strtolower($first_segment), $this->config->item('handlplayers___14582'))
+            && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
+        ) {
+
+
+            if ($is_login_verified) {
+
+                foreach ($this->Nodeplayers->fetch(array(
+                    'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
+                )) as $player_e) {
+
+                    //Login:
+                    $this->Nodeplayers->activate($player_e, true);
+
+                    //Log them in:
+                    if (!$is_ajax) {
+                        header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
+                        exit;
+                    }
+
+                }
+
+            } elseif (isset($_COOKIE['auth_cookie'])) {
+
+                $player_e = verify_cookie();
+                if ($player_e) {
+                    //Log them in:
+                    if (!$is_ajax) {
+                        header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
+                        exit;
+                    }
+                }
+            }
+
+
+            //Log them in:
+            if (!$is_ajax) {
+                header("Location: " . view_app_link(4269) . (strlen($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : ''), true, 307);
+                exit;
+            }
+
+        }
+
 
         //$this->dbold = $this->load->database('old', TRUE); //TODO Remove later
 
@@ -40,7 +98,9 @@ class App extends CI_Controller
     function load($app_playerid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0)
     {
 
-        if(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR']!='73.15.62.97'){ die('We will be back up by Sunday...'); }
+        if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '73.15.62.97') {
+            die('We will be back up by Sunday...');
+        }
 
         $memory_detected = is_array($this->config->item('playerids___6287')) && count($this->config->item('playerids___6287'));
         if (!$memory_detected) {
@@ -203,7 +263,7 @@ class App extends CI_Controller
 
                     //If not logged in, log them in:
                     if (!$player_e) {
-                        $session_data = $this->Nodeplayers->activate_session($player_e, true);
+                        $session_data = $this->Nodeplayers->activate($player_e, true);
                     }
 
                 }
@@ -218,8 +278,8 @@ class App extends CI_Controller
         $linkplayercreator = ($player_http_request ? ($player_e ? $player_e['playerid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
         $skip_idea_privacy_check = !$memory_detected || in_array($app_playerid, $this->config->item('playerids___43388'));
         $access_level_e = access_level_player(null, $focus_e['playerid'], $focus_e);
-        $access_level_i = access_level_i(null, $focus_i['ideaid'], $focus_i);
-        $target_access_level_i = access_level_i(null, $target_i['ideaid'], $target_i);
+        $access_level_idea = access_level_idea(null, $focus_i['ideaid'], $focus_i);
+        $target_access_level_idea = access_level_idea(null, $target_i['ideaid'], $target_i);
 
         //MEMBER REDIRECT?
         if ($player_http_request && $memory_detected) {
@@ -238,9 +298,9 @@ class App extends CI_Controller
                 $missing_access = 'Error: You Cannot Access ' . $players___6287[$app_playerid]['m__title'] . ' as it requires the superpower of ' . $players___10957[end($superpowers_required)]['m__title'] . '.';
             } elseif ($focus_e && !$access_level_e) {
                 $missing_access = 'Error: You Cannot Access @' . $focus_e['playerhandle'] . ' due to Privacy Settings.';
-            } elseif (!$skip_idea_privacy_check && $focus_i && !$access_level_i) {
+            } elseif (!$skip_idea_privacy_check && $focus_i && !$access_level_idea) {
                 $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['ideahashtag'] . ' due to Privacy Settings.';
-            } elseif (!$skip_idea_privacy_check && $target_i && !$target_access_level_i) {
+            } elseif (!$skip_idea_privacy_check && $target_i && !$target_access_level_idea) {
                 $missing_access = 'Error: You Cannot Access Target #' . $target_i['ideahashtag'] . ' due to Privacy Settings.';
             }
 
@@ -312,8 +372,8 @@ class App extends CI_Controller
             'target_i' => $target_i,
 
             '$access_level_e' => $access_level_e,
-            '$access_level_i' => $access_level_i,
-            '$target_access_level_i' => $target_access_level_i,
+            '$access_level_idea' => $access_level_idea,
+            '$target_access_level_idea' => $target_access_level_idea,
 
             'title' => $title,
             'flash_message' => $flash_message,
@@ -415,14 +475,14 @@ class App extends CI_Controller
                 foreach ($this->Nodeideas->fetch(array(
                     'LOWER(ideahashtag)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $i) {
-                    echo view_card_idea(6255, $i);
+                    echo view_idea(6255, $i);
                     return true;
                 }
             } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
                 foreach ($this->Nodeplayers->fetch(array(
                     'LOWER(playerhandle)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $e) {
-                    echo view_card_player(12274, $e);
+                    echo view_player(12274, $e);
                     return true;
                 }
             }
@@ -469,7 +529,7 @@ class App extends CI_Controller
                     'status' => 0,
                     'message' => 'Idea is no longer active',
                 ));
-            } elseif (!access_level_i($is[0]['ideahashtag'], 0, $is[0])) {
+            } elseif (!access_level_idea($is[0]['ideahashtag'], 0, $is[0])) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You are missing permission to edit this idea',
@@ -615,7 +675,7 @@ class App extends CI_Controller
 
         //TODO Must get going...
         //Delete all transactions:
-        $links_removed = $this->Nodeideas->remove($o__id, $player_e['playerid'], $migrate_s__id);
+        $links_removed = $this->Nodeideas->void($o__id, $player_e['playerid'], $migrate_s__id);
 
     }
 
@@ -670,10 +730,10 @@ class App extends CI_Controller
         }
 
         //Delete all transactions:
-        $links_removed = $this->Nodeplayers->remove($o__id, $player_e['playerid'], $migrate_s__id);
+        $links_removed = $this->Nodeplayers->void($o__id, $player_e['playerid'], $migrate_s__id);
 
         //Remove:
-        $status = $this->Nodeplayers->update($o__id, array(), true, $player_e['playerid']);
+        $status = $this->Nodeplayers->void($o__id, $player_e['playerid']);
 
         //Update Search Index:
         flag_for_search_indexing(12274, $o__id);
@@ -805,9 +865,9 @@ class App extends CI_Controller
                         //Append all of these hashtags:
                         foreach ($idea_references as $reference_i) {
                             if (intval($_POST['next_ideaid']) > 0) {
-                                $status = $this->Nodeideas->i_link($focus_i, $_POST['save_linkplayertype'], $reference_i, $player_e['playerid']);
+                                $status = $this->Nodeideas->link($focus_i, $_POST['save_linkplayertype'], $reference_i, $player_e['playerid']);
                             } elseif (intval($_POST['previous_ideaid']) > 0) {
-                                $status = $this->Nodeideas->i_link($reference_i, $_POST['save_linkplayertype'], $focus_i, $player_e['playerid']);
+                                $status = $this->Nodeideas->link($reference_i, $_POST['save_linkplayertype'], $focus_i, $player_e['playerid']);
                             }
                             if (!$status['status']) {
                                 return view_json($status);
@@ -821,7 +881,7 @@ class App extends CI_Controller
                             'status' => 1,
                             'return_ideacache' => '',
                             'return_ideacache_links' => '',
-                            'return_ideacache_full' => view_card_idea($_POST['focus_group'], $return_i),
+                            'return_ideacache_full' => view_idea($_POST['focus_group'], $return_i),
                             'redirect_idea' => view_memory(42903, 33286) . $return_i['ideahashtag'],
                             'message' => count($idea_references) . ' ideas linked',
                         ));
@@ -833,7 +893,7 @@ class App extends CI_Controller
             //Update new idea fields:
             $this->Nodeideas->update($is[0]['ideaid'], array(
                 'ideatype' => $_POST['save_ideatype'],
-            ), true, $player_e['playerid']);
+            ), $player_e['playerid']);
             $is[0]['ideatype'] = trim($_POST['save_ideatype']);
         }
 
@@ -930,7 +990,8 @@ class App extends CI_Controller
                     //Update Link:
                     $this->Menchledger->update($values[0]['linkid'], array(
                         'linktext' => $dynamic_value,
-                    ), $player_e['playerid']);
+                        'linkplayercreator' => $player_e['playerid'],
+                    ));
 
                 }
             }
@@ -950,7 +1011,7 @@ class App extends CI_Controller
             //Save hashtag since changed:
             $this->Nodeideas->update($is[0]['ideaid'], array(
                 'ideahashtag' => trim($_POST['save_ideahashtag']),
-            ), true, $player_e['playerid']);
+            ), $player_e['playerid']);
 
             //Now Handles everywhere they are referenced:
             foreach ($this->Menchledger->fetch(array(
@@ -996,7 +1057,8 @@ class App extends CI_Controller
                 if ($this_x['linktext'] != trim($_POST['save_linktext'])) {
                     $this->Menchledger->update($this_x['linkid'], array(
                         'linktext' => trim($_POST['save_linktext']),
-                    ), $player_e['playerid']);
+                        'linkplayercreator' => $player_e['playerid'],
+                    ));
                 }
             }
         }
@@ -1016,7 +1078,7 @@ class App extends CI_Controller
             'status' => 1,
             'return_ideacache' => $view_sync_links['ideacache'],
             'return_ideacache_links' => view_idea_links($is[0], $player_e['playerid'], $focus__node, $focus__node),
-            'return_ideacache_full' => view_card_idea($_POST['focus_group'], $is[0]),
+            'return_ideacache_full' => view_idea($_POST['focus_group'], $is[0]),
             'redirect_idea' => (isset($is[0]['ideahashtag']) ? view_memory(42903, 33286) . $is[0]['ideahashtag'] : null),
             'message' => $media_stats['total_current'] . ' current & ' . $media_stats['total_submitted'] . ' submitted media: ' . $media_stats['total_submitted'] . ' Created, ' . $media_stats['adjust_updated'] . ' Updated & ' . $media_stats['adjust_removed'] . ' Removed while detected ' . $media_stats['adjust_duplicated'] . ' duplicate uploads. ' . $view_sync_links['sync_stats']['old_links_removed'] . ' old links removed, ' . $view_sync_links['sync_stats']['old_links_kept'] . ' old links kept, ' . $view_sync_links['sync_stats']['new_links_added'] . ' new links added.',
         ));
@@ -1046,7 +1108,7 @@ class App extends CI_Controller
             ));
         }
 
-        return view_json($this->Nodeideas->recursive_clone(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_e['playerid']));
+        return view_json($this->Nodeideas->copy(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_e['playerid']));
 
     }
 
@@ -1057,7 +1119,7 @@ class App extends CI_Controller
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !access_level_i(null, $_POST['ideaid'])) {
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !access_level_idea(null, $_POST['ideaid'])) {
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
@@ -1146,7 +1208,8 @@ class App extends CI_Controller
                 //Update order of this transaction:
                 if ($this->Menchledger->update(intval($linkid), array(
                     'linknumber' => $linknumber,
-                ), $player_e['playerid'])) {
+                    'linkplayercreator' => $player_e['playerid'],
+                ))) {
                     $updated++;
                 }
             }
@@ -1296,7 +1359,7 @@ class App extends CI_Controller
                 foreach ($_POST['new_linknumber'] as $rank => $linkid) {
                     $this->Menchledger->update($linkid, array(
                         'linknumber' => intval($rank),
-                    ), $player_e['playerid']);
+                    ));
                 }
 
                 //Display message:
@@ -1412,7 +1475,7 @@ class App extends CI_Controller
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Links
         ), array(), 0) as $x) {
 
-            if(in_array($x['linkplayerup'], array(32338,6198)) && $x['linkplayertype']==4230){
+            if (in_array($x['linkplayerup'], array(32338, 6198)) && $x['linkplayertype'] == 4230) {
                 //Handle & COver is a system link that do not to be replicated:
                 continue;
             }
@@ -1505,9 +1568,9 @@ class App extends CI_Controller
         }
 
 
-        if (!$_POST['link_ideaid'] && view_valid_handle_i($_POST['new_ideatext'])) {
+        if (!$_POST['link_ideaid'] && view_valid_handle_idea($_POST['new_ideatext'])) {
             foreach ($this->Nodeideas->fetch(array(
-                'LOWER(ideahashtag)' => strtolower(view_valid_handle_i($_POST['new_ideatext'])),
+                'LOWER(ideahashtag)' => strtolower(view_valid_handle_idea($_POST['new_ideatext'])),
             )) as $i) {
                 $_POST['link_ideaid'] = $i['ideaid'];
             }
@@ -1693,7 +1756,7 @@ class App extends CI_Controller
         //Return Player:
         return view_json(array(
             'status' => 1,
-            'player_new_echo' => view_card_player($_POST['linkplayertype'], array_merge($focus_e, $ur2), null),
+            'player_new_echo' => view_player($_POST['linkplayertype'], array_merge($focus_e, $ur2), null),
         ));
 
     }
@@ -2050,7 +2113,8 @@ class App extends CI_Controller
                 //Update Link:
                 $this->Menchledger->update($values[0]['linkid'], array(
                     'linktext' => $dynamic_value,
-                ), $player_e['playerid']);
+                    'linkplayercreator' => $player_e['playerid'],
+                ));
 
             }
         }
@@ -2090,10 +2154,25 @@ class App extends CI_Controller
             'playertext' => $validate_playertext['playertext_clean'],
             'playercover' => trim($_POST['save_playercover']),
             'playerhandle' => trim($_POST['save_playerhandle']),
-        ), true, $player_e['playerid']);
+        ), $player_e['playerid']);
 
 
-        $es[0]['playerhandle'] = sync_handle_references($es[0], trim($_POST['save_playerhandle']));
+        //Sync handle reference:
+        $new_handle_string = trim($_POST['save_playerhandle']);
+        if ($es[0]['playerhandle'] == $new_handle_string) {
+            return false; //Nothing changed...
+        }
+
+        //Update Handles everywhere they are referenced:
+        $CI =& get_instance();
+        foreach ($CI->Menchledger->fetch(array(
+            'linkplayerup' => $es[0]['playerid'],
+            'linkplayertype' => 31835, //Player Mention
+        ), array('linkidearight')) as $ref) {
+            view_sync_links(str_replace('@' . $es[0]['playerhandle'], '@' . $new_handle_string, $ref['ideatext']), true, $ref['ideaid']);
+        }
+        $es[0]['playerhandle'] = $new_handle_string;
+
 
         //Do we have a link reference message that need to be saved?
         if ($_POST['save_linkid'] > 0 && $_POST['save_linktext'] != 'IGNORE_INPUT') {
@@ -2108,7 +2187,8 @@ class App extends CI_Controller
                 if ($this_x['linktext'] != trim($_POST['save_linktext'])) {
                     $this->Menchledger->update($this_x['linkid'], array(
                         'linktext' => trim($_POST['save_linktext']),
-                    ), $player_e['playerid']);
+                        'linkplayercreator' => $player_e['playerid'],
+                    ));
                 }
             }
         }
@@ -2116,7 +2196,7 @@ class App extends CI_Controller
 
         //Reset member session data if this data belongs to the logged-in member:
         if ($_POST['save_playerid'] == $player_e['playerid']) {
-            $this->Nodeplayers->activate_session($es[0], true);
+            $this->Nodeplayers->activate($es[0], true);
         }
 
 
@@ -2272,7 +2352,7 @@ class App extends CI_Controller
 
         //Update Session:
         if ($_POST['down_playerid'] && count($player_e)) {
-            $this->Nodeplayers->activate_session($player_e, true);
+            $this->Nodeplayers->activate($player_e, true);
         }
 
 
@@ -2373,7 +2453,7 @@ class App extends CI_Controller
         if ($_POST['account_id'] > 0) {
 
             //Assign session & log transaction:
-            $this->Nodeplayers->activate_session($es[0]);
+            $this->Nodeplayers->activate($es[0]);
 
         } else {
 
@@ -2383,7 +2463,7 @@ class App extends CI_Controller
 
             //Prep inputs & validate further:
             $acc_email = ($is_email ? $_POST['account_email_phone'] : $_POST['new_account_email']);
-            $player_result = $this->Nodeplayers->add_member(strstr($acc_email, '@', true), $acc_email, (!$is_email ? $_POST['account_email_phone'] : ''));
+            $player_result = $this->Nodeplayers->join(strstr($acc_email, '@', true), $acc_email, (!$is_email ? $_POST['account_email_phone'] : ''));
             if (!$player_result['status']) {
                 return view_json($player_result);
             }
@@ -2450,7 +2530,8 @@ class App extends CI_Controller
                     if (strlen($_POST['written_answer']) && trim($_POST['written_answer']) != $already_added[0]['linktext']) {
                         $this->Menchledger->update($already_added[0]['linkid'], array(
                             'linktext' => $_POST['written_answer'],
-                        ), $player_e['playerid']);
+                            'linkplayercreator' => $player_e['playerid'],
+                        ));
                     } elseif (!strlen($_POST['written_answer'])) {
                         $this->Menchledger->void($already_added[0]['linkid'], $player_e['playerid']);
                     }
@@ -2653,13 +2734,13 @@ class App extends CI_Controller
             //All good, go ahead and update:
             $this->Nodeplayers->update($es[0]['playerid'], array(
                 'playertext' => $validate_playertext['playertext_clean'],
-            ), true, $player_e['playerid']);
+            ), $player_e['playerid']);
 
             //Reset member session data if this data belongs to the logged-in member:
             if ($es[0]['playerid'] == $player_e['playerid']) {
-                //Re-activate Session with new data:
+                //set Session with new data:
                 $es[0]['playertext'] = $validate_playertext['playertext_clean'];
-                $this->Nodeplayers->activate_session($es[0], true);
+                $this->Nodeplayers->activate($es[0], true);
             }
 
             return view_json(array(
@@ -2702,7 +2783,7 @@ class App extends CI_Controller
                     $ids = array();
                     foreach (view_player_cards(12274, $_POST['s__id'], 1, true) as $e) {
                         array_push($ids, $e['playerid']);
-                        echo view_card_player(12274, $e);
+                        echo view_player(12274, $e);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent" title="Total of ' . count($ids) . '">' . join(', ', $ids) . '</div>';
@@ -2725,7 +2806,7 @@ class App extends CI_Controller
                     $ids = array();
                     foreach ($is_next as $i) {
                         array_push($ids, $i['ideaid']);
-                        echo view_card_idea(12273, $i);
+                        echo view_idea(12273, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">' . join(',', $ids) . '</div>';
@@ -2758,10 +2839,10 @@ class App extends CI_Controller
 
             foreach (view_player_cards($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
-                    echo view_card_player($_POST['linkplayertype'], $s);
+                    echo view_player($_POST['linkplayertype'], $s);
                     $success = true;
                 } else if ($_POST['linkplayertype'] == 6255 || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
-                    echo view_card_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                    echo view_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
                     $success = true;
                 }
             }
@@ -2776,10 +2857,10 @@ class App extends CI_Controller
 
             foreach (view_idea_query($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
-                    echo view_card_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                    echo view_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
                     $success = true;
                 } else if ($_POST['linkplayertype'] == 6255 || in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
-                    echo view_card_player($_POST['linkplayertype'], $s);
+                    echo view_player($_POST['linkplayertype'], $s);
                     $success = true;
                 }
             }
@@ -2824,7 +2905,7 @@ class App extends CI_Controller
                 $order++;
                 $this->Menchledger->update($x['linkid'], array(
                     'linknumber' => $order,
-                ), $player_e['playerid']);
+                ));
             }
         } elseif ($_POST['focus__node'] == 12274) {
             //Players reset order
@@ -2834,7 +2915,7 @@ class App extends CI_Controller
             ), array('linkplayerdown'), 0, 0) as $x) {
                 $this->Menchledger->update($x['linkid'], array(
                     'linknumber' => 0,
-                ), $player_e['playerid']);
+                ));
             }
         }
 
@@ -3032,7 +3113,7 @@ class App extends CI_Controller
                     );
                     $idea_required = !$skipping_not_allowed && idea_required($idea_next);
 
-                    if($idea_required && $trying_to_skip){
+                    if ($idea_required && $trying_to_skip) {
                         return view_json(array(
                             'status' => 0,
                             'message' => 'You must respond to this required idea',
@@ -3199,7 +3280,7 @@ class App extends CI_Controller
             $message .= '<div class="list-group list-grey">';
             foreach ($x as $x) {
 
-                $message .= view_card_x($x);
+                $message .= view_link($x);
 
                 if ($player_e && strlen($x['linktext']) > 0 && strlen($_POST['linktext_find']) > 0 && strlen($_POST['linktext_replace']) > 0 && substr_count($x['linktext'], $_POST['linktext_find']) > 0) {
 
@@ -3207,7 +3288,8 @@ class App extends CI_Controller
 
                     $this->Menchledger->update($x['linkid'], array(
                         'linktext' => $new_content,
-                    ), $player_e['playerid']);
+                        'linkplayercreator' => $player_e['playerid'],
+                    ));
 
                     $message .= '<div class="alert alert-info" role="alert"><i class="far fa-check-circle"></i> Replaced [' . $_POST['linktext_find'] . '] with [' . trim($_POST['linktext_replace']) . ']</div>';
 
@@ -3276,10 +3358,10 @@ class App extends CI_Controller
                 ));
             }
 
-            $recursive_down_ids = $this->Nodeideas->recursive_down_ids($is[0], 'ALL');
+            $copy = $this->Nodeideas->ids($is[0], 'ALL');
 
             //List stats:
-            $miscstats .= '<div>Tree Ideas: ' . number_format(count($recursive_down_ids['recursive_idea_ids']), 0) . '</div>';
+            $miscstats .= '<div>Tree Ideas: ' . number_format(count($copy['recursive_idea_ids']), 0) . '</div>';
 
         }
 
@@ -3306,11 +3388,11 @@ class App extends CI_Controller
                                 'linkplayerup' => $es[0]['playerid'],
                             ), array('linkidearight'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-                        } elseif ($has_hashtag && count($recursive_down_ids['recursive_idea_ids'])) {
+                        } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
                             //See stats for this idea:
                             $sub_counter = $this->Nodeideas->fetch(array(
-                                'ideaid IN (' . join(',', $recursive_down_ids['recursive_idea_ids']) . ')' => null,
+                                'ideaid IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
                             ), 0, 0, array(), 'COUNT(ideaid) as totals');
 
                         } else {
@@ -3328,12 +3410,12 @@ class App extends CI_Controller
                                 'linkplayerup' => $es[0]['playerid'],
                             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
-                        } elseif ($has_hashtag && count($recursive_down_ids['recursive_idea_ids'])) {
+                        } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
                             //See stats for this idea:
                             $sub_counter = $this->Menchledger->fetch(array(
                                 'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
-                                'linkidearight IN (' . join(',', $recursive_down_ids['recursive_idea_ids']) . ')' => null,
+                                'linkidearight IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
                             ), array('linkplayerup'), 0, 0, array(), 'COUNT(linkid) as totals');
 
                         } else {
@@ -3351,11 +3433,11 @@ class App extends CI_Controller
                                 '( linkplayerdown = ' . $es[0]['playerid'] . ' OR linkplayerup = ' . $es[0]['playerid'] . ' OR linkplayercreator = ' . $es[0]['playerid'] . ' )' => null,
                             ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
-                        } elseif ($has_hashtag && count($recursive_down_ids['recursive_idea_ids'])) {
+                        } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
                             $sub_counter = $this->Menchledger->fetch(array(
                                 'linkplayertype' => $linkplayertype3,
-                                '( linkidealeft IN (' . join(',', $recursive_down_ids['recursive_idea_ids']) . ') OR linkidearight IN (' . join(',', $recursive_down_ids['recursive_idea_ids']) . '))' => null,
+                                '( linkidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ') OR linkidearight IN (' . join(',', $copy['recursive_idea_ids']) . '))' => null,
                             ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
                         } else {

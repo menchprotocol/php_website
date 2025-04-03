@@ -3,7 +3,7 @@
 $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 /*
-if(access_level_i($focus_i['ideahashtag'], 0, $focus_i)){
+if(access_level_idea($focus_i['ideahashtag'], 0, $focus_i)){
     echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$players___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view_memory(42903,33286).$focus_i['ideahashtag'].'"><b><u>'.$players___11035[33286]['m__title'].'</u></b></a></div>';
 }
 */
@@ -114,7 +114,7 @@ if($player_e){
 
 //Focus Discovery:
 echo '<div class="row justify-content">';
-echo view_card_idea(43007, $focus_i, null, null, 0, $x_completes);
+echo view_idea(43007, $focus_i, null, null, 0, $x_completes);
 echo '</div>';
 
 

@@ -30,7 +30,7 @@ if(superpower_unlocked()) {
 
     if(count($es)){
         //Assign session & log transaction:
-        $this->Nodeplayers->activate_session($es[0], false, true);
+        $this->Nodeplayers->activate($es[0], false, true);
     }
 
     js_php_redirect($next_url, 13);

@@ -17,7 +17,7 @@ if(!count($this->Menchledger->fetch(array(
     session_delete();
 
     //Assign session & log transaction:
-    $this->Nodeplayers->activate_session($focus_e);
+    $this->Nodeplayers->activate($focus_e);
 
     js_php_redirect(loginas . phpview_memory(42903, 42902) . $focus_e['playerhandle'], 1597);
 

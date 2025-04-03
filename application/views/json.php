@@ -45,9 +45,7 @@ $var['stats_ideation'] = $this->Menchledger->fetch(array(
     'linkplayertype IN (' . join(',', $this->list_link_ideation) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
-$var['stats_void'] = $this->Menchledger->fetch(array(
-    'linkvoid > ' => 0,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+
 
 
 $var['playersids_count'] = $this->Menchledger->fetch(array(
@@ -73,6 +71,11 @@ $var['playersids_MISSING'] = $this->Menchledger->fetch(array(
 $var['list_links_MISSING'] = $this->Menchledger->fetch(array(
     'linkplayertype NOT IN (' . join(',', $list_links_joined) . ')' => null,
 ), array(), 0, 0, array(), 'linkplayertype, COUNT(*) as total', 'linkplayertype');
+
+
+$var['stats_void_xxxxxxxxxxxxxxxxxxxxxxxxxx'] = $this->Menchledger->fetch(array(
+    'linkvoid > ' => 0,
+), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 
 view_json($var);

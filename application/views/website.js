@@ -97,11 +97,9 @@ function watch_cover_change(new_cover){
     } else {
         $('#modal31912 .save_playercover, #modal31912 .fa_search').addClass('hidden');
     }
-    //Reactivate:
-    //activate_cover_watch();
 }
 
-function activate_cover_watch(){
+function watch_cover(){
     $('#modal31912 .save_playercover').change(function () {
 
         console.log('change detexted:'+$(this).val());
@@ -615,7 +613,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
                         e_sort_load(linkplayertype);
                     }
 
-                    activate_popover();
+                    setup_popover();
 
                     pills_loading = null;
 
@@ -1042,7 +1040,7 @@ function random_animal(basic_style = false){
 }
 
 var interval = null;
-function activate_popover(){
+function setup_popover(){
 
     if(interval){
         clearInterval(interval);
@@ -1104,9 +1102,9 @@ $(document).ready(function () {
 
 
 
-    activate_popover();
+    setup_popover();
 
-    activate_cover_watch();
+    watch_cover();
 
     //Only for idea page but still:
     set_autosize($('.text__6197_'+parseInt($('#focus__id').val())));
@@ -1256,7 +1254,7 @@ $(document).ready(function () {
     }
 
 
-    activate_popover();
+    setup_popover();
 
 
     //Prevent search submit:
@@ -1587,7 +1585,6 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
         //Player Reference:
         update_form_select(4737, current_ideatype, 1, false);
 
-        //Activate Modal:
         $('#modal31911').modal('show');
 
         setTimeout(function () {
@@ -1703,7 +1700,7 @@ function load_idea_dynamic(ideaid, linkid, current_ideatype, initial_loading){
 
             setTimeout(function () {
 
-                activate_popover();
+                setup_popover();
 
             }, 377);
 
@@ -1855,7 +1852,7 @@ function i_editor_save(){
 
             //Tooltips:
             setTimeout(function () {
-                activate_popover();
+                setup_popover();
             }, 987);
 
         }
@@ -2171,7 +2168,6 @@ function cloudinary_preview_player(uploader_id, info_id, media_playerid, playbac
 
 function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = null){
 
-    //Activate Modal:
     $('#modal31912').modal('show');
 
     //Reset Fields:
@@ -2292,7 +2288,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
             }
 
             setTimeout(function () {
-                activate_popover();
+                setup_popover();
             }, 987);
 
         } else {
@@ -2383,9 +2379,9 @@ function e_editor_save(){
             }
 
             //Tooltips:
-            activate_popover();
+            setup_popover();
             setTimeout(function () {
-                activate_popover();
+                setup_popover();
             }, 987);
 
             has_unsaved_changes = false;
@@ -2455,7 +2451,7 @@ function x_view_load_page() {
             $('#list-in-'+focus_group).append(data);
             x_set_start_text();
             load_card_clickers();
-            activate_popover();
+            setup_popover();
         }
         busy_loading = false;
     });
@@ -2542,7 +2538,7 @@ function new_player(linkplayertype, player_existing_id) {
             x_set_start_text();
 
             setTimeout(function () {
-                activate_popover();
+                setup_popover();
                 e_sort_load(linkplayertype);
             }, 987);
 
@@ -2914,7 +2910,7 @@ function e_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_
     }, function (data) {
 
         $(notify_el).html(initial_icon);
-        activate_popover();
+        setup_popover();
 
         if (!data.status) {
             alert(data.message);

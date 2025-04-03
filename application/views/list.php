@@ -21,14 +21,14 @@ $count_totals = array(
 
 
 //Generate list & settings:
-$list_settings = list_settings($_GET['ideahashtag']);
+$idea_settings = idea_settings($_GET['ideahashtag']);
 
-echo '<h1>' . view_idea_title($list_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($list_settings['i'], ( isset($player_e['playerid']) ? $player_e['playerid'] : 0 )) . '</div>';
+echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($idea_settings['i'], ( isset($player_e['playerid']) ? $player_e['playerid'] : 0 )) . '</div>';
 
 echo 'Filter:';
 
-foreach($list_settings['query_string_filtered'] as $x){
+foreach($idea_settings['query_string_filtered'] as $x){
 
     $body_content .= '<tr class="body_tr">';
 
@@ -36,7 +36,7 @@ foreach($list_settings['query_string_filtered'] as $x){
     $idea_content = '';
     $this_quantity = 1;
     $name = '';
-    foreach($list_settings['column_i'] as $idea_var){
+    foreach($idea_settings['column_i'] as $idea_var){
 
         $discoveries = $this->Menchledger->fetch(array(
             'linkidealeft' => $idea_var['ideaid'],
@@ -80,7 +80,7 @@ foreach($list_settings['query_string_filtered'] as $x){
 
 
     //SOURCES
-    foreach($list_settings['column_e'] as $e){
+    foreach($idea_settings['column_e'] as $e){
 
         $require_writing = count($this->Menchledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
@@ -144,11 +144,11 @@ echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm 
 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">'.$count.' Players</th>';
-foreach($list_settings['column_e'] as $e){
+foreach($idea_settings['column_e'] as $e){
     array_push($table_sortable, '#thplayer_'.$e['playerid']);
     echo '<th id="thplayer_'.$e['playerid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['playerhandle'].'" target="_blank" title="Open in New Window">'.view_cover($e['playercover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['playerid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['playerid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['playertext'].'</span></th>';
 }
-foreach($list_settings['column_i'] as $idea_var){
+foreach($idea_settings['column_i'] as $idea_var){
 
     $max_available = $this->Menchledger->fetch(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
@@ -176,7 +176,7 @@ echo '</table>';
     <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
 
-    <?php if(count($list_settings['list_config'][34513])){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
+    <?php if(count($idea_settings['list_config'][34513])){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
 
     .mini-header,
     #sortable_table td>p{

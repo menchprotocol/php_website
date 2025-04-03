@@ -56,6 +56,7 @@ foreach($this->Nodeideas->fetch(array(
 
                                 $this->Menchledger->update($x['linkid'], array(
                                     'linktext' => $new_form,
+                                    'linkplayercreator' => $player_e['playerid'],
                                 ));
 
                                 foreach($apply_to as $apply_playerid){
@@ -67,6 +68,7 @@ foreach($this->Nodeideas->fetch(array(
                                         $links_updated++;
                                         $this->Menchledger->update($follow_appended['linkid'], array(
                                             'linktext' => $new_form,
+                                            'linkplayercreator' => $player_e['playerid'],
                                         ));
                                     }
                                 }
@@ -131,6 +133,7 @@ foreach($this->Nodeideas->fetch(array(
 
                         $this->Menchledger->update($x['linkid'], array(
                             'linktext' => $new_form,
+                            'linkplayercreator' => $player_e['playerid'],
                         ));
 
                         foreach($apply_to as $apply_playerid){
@@ -142,6 +145,7 @@ foreach($this->Nodeideas->fetch(array(
                                 $links_updated++;
                                 $this->Menchledger->update($follow_appended['linkid'], array(
                                     'linktext' => $new_form,
+                                    'linkplayercreator' => $player_e['playerid'],
                                 ));
                             }
                         }

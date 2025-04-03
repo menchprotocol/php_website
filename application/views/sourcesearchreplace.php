@@ -45,12 +45,12 @@ if($search_for_set){
                     //Update idea:
                     $res = $this->Nodeplayers->update($en['playerid'], array(
                         'playertext' => $en['playertext'],
-                    ), true, $player_e['playerid']);
+                    ), $player_e['playerid']);
                     $replaced++;
                 }
             }
 
-            echo view_card_player(12730, $en, null);
+            echo view_player(12730, $en, null);
         }
         echo '</div>';
 

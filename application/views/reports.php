@@ -20,7 +20,8 @@ foreach($this->config->item('players___42263') as $linkplayertype => $m) {
     if(!$unique){
         continue;
     }
-    $growth = format_percentage(($unique / ( $unique - $this_week ) * 100) - 100);
+    $percent = ($unique / ( $unique - $this_week ) * 100) - 100;
+    $growth = number_format($percent, ($percent < 10 ? 1 : 0));
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:

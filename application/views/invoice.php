@@ -141,10 +141,10 @@ foreach($this->Nodeideas->fetch(array(
             ];
 
             // Step 1: Get access token
-            $accessToken = getAccessToken(website_setting(44354), website_setting(44355));
+            $accessToken = paypal_token(website_setting(44354), website_setting(44355));
 
             // Step 2: Create invoice
-            $invoiceId = createPaypalInvoice($accessToken, $invoiceData);
+            $invoiceId = paypal_invoice($accessToken, $invoiceData);
 
             // Step 3: Send invoice
             sendPaypalInvoice($accessToken, $invoiceId);
