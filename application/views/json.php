@@ -1,11 +1,28 @@
 <?php
 
-view_json(array(
+$var = array(
+    'list_link_sourcing' => $this->list_link_sourcing,
     'playerids___32292' => $this->config->item('playerids___32292'),
+    'list_link_discovery' => $this->list_link_discovery,
     'playerids___31777' => $this->config->item('playerids___31777'),
+    'list_link_contribution' => $this->list_link_contribution,
     'playerids___13550' => $this->config->item('playerids___13550'),
+    'list_link_ideation' => $this->list_link_ideation,
     'playerids___4486' => $this->config->item('playerids___4486'),
-));
+    'playersids_joined' => array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486')),
+    'list_links_joined' => array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation),
+);
+
+$var['playersids_count'] = $this->Menchledger->fetch(array(
+    'linkplayertype IN (' . join(',', $var['playersids_joined']) . ')' => null, //SOURCE LINKS
+), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+
+$var['list_links_count'] = $this->Menchledger->fetch(array(
+    'linkplayertype IN (' . join(',', $var['list_links_joined']) . ')' => null, //SOURCE LINKS
+), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+
+view_json($var);
+
 
 /*
 view_json($this->Menchledger->tree_full_history($focus_i, $focus_e['playerid']));
