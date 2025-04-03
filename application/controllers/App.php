@@ -1060,7 +1060,7 @@ class App extends CI_Controller
                     //SOURCES
                     $players___4593 = $this->config->item('players___4593'); //Transaction Types
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
-                    foreach (view_idea_covers($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $player_e) {
+                    foreach (view_idea_cards($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $player_e) {
                         if (isset($player_e['playerid'])) {
                             $ui .= view_card(view_memory(42903, 42902) . $player_e['playerhandle'], $current_playerhandle && $player_e['playerhandle'] == $current_playerhandle, $player_e['linkplayertype'], view_cover($player_e['playercover'], true), $player_e['playertext'], $player_e['linktext']);
                             $listed_items++;
@@ -1074,7 +1074,7 @@ class App extends CI_Controller
                     $players___4593 = $this->config->item('players___4593'); //Transaction Types
                     $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
-                    foreach (view_idea_covers($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $next_i) {
+                    foreach (view_idea_cards($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
                             $ui .= view_card($target_disccovery . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
                             $listed_items++;
@@ -1192,7 +1192,7 @@ class App extends CI_Controller
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
                     $players___4593 = $this->config->item('players___4593'); //Transaction Types
 
-                    foreach (view_player_covers($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $player_e) {
+                    foreach (view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $player_e) {
                         if (isset($player_e['playerid'])) {
                             $ui .= view_card(view_memory(42903, 42902) . $player_e['playerhandle'], $player_e['playerhandle'] == $current_playerhandle, $player_e['linkplayertype'], view_cover($player_e['playercover'], true), $player_e['playertext'], $player_e['linktext']);
                             $listed_items++;
@@ -1207,7 +1207,7 @@ class App extends CI_Controller
                     $players___4593 = $this->config->item('players___4593'); //Transaction Types
                     $target_disccovery = target_disccovery();
 
-                    foreach (view_player_covers($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $next_i) {
+                    foreach (view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
                             $ui .= view_card($target_disccovery . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
                             $listed_items++;
@@ -2681,14 +2681,14 @@ class App extends CI_Controller
             if ($_POST['apply_id'] == 4997) {
 
                 //Player list:
-                $counter = view_player_covers(12274, $_POST['s__id'], 0, false);
+                $counter = view_player_cards(12274, $_POST['s__id'], 0, false);
                 if (!$counter) {
                     echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Players yet</div>';
                 } else {
                     echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Player' . view_s($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach (view_player_covers(12274, $_POST['s__id'], 1, true) as $e) {
+                    foreach (view_player_cards(12274, $_POST['s__id'], 1, true) as $e) {
                         array_push($ids, $e['playerid']);
                         echo view_card_player(12274, $e);
                     }
@@ -2744,7 +2744,7 @@ class App extends CI_Controller
             ));
             $focus_e = $focus_es[0];
 
-            foreach (view_player_covers($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+            foreach (view_player_cards($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
                     echo view_card_player($_POST['linkplayertype'], $s);
                     $success = true;
@@ -2762,7 +2762,7 @@ class App extends CI_Controller
             ));
             $previous_i = $previous_is[0];
 
-            foreach (view_idea_covers($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+            foreach (view_idea_cards($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
                     echo view_card_i($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
                     $success = true;

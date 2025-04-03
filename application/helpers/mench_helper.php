@@ -3117,7 +3117,7 @@ function view_player_body($linkplayertype, $counter, $playerid, $js_request_uri)
         return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
     }
 
-    $list_results = view_player_covers($linkplayertype, $playerid, 1);
+    $list_results = view_player_cards($linkplayertype, $playerid, 1);
     $focus_playerid = ($playerid > 0 ? $playerid : ($player_e ? $player_e['playerid'] : 0));
     $es = $CI->Nodeplayers->fetch(array(
         'playerid' => $playerid,
@@ -3178,7 +3178,7 @@ function view_idea_body($linkplayertype, $counter, $ideaid)
     $CI =& get_instance();
 
 
-    $list_results = view_idea_covers($linkplayertype, $ideaid, 1);
+    $list_results = view_idea_cards($linkplayertype, $ideaid, 1);
     $ui = '';
     $is = $CI->Nodeideas->fetch(array(
         'ideaid' => $ideaid,
@@ -3232,7 +3232,7 @@ function view_idea_body($linkplayertype, $counter, $ideaid)
 
 }
 
-function view_player_covers($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
+function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
 {
 
     /*
@@ -3245,7 +3245,7 @@ function view_player_covers($linkplayertype, $playerid, $page_num = 0, $append_c
     $first_segment = $CI->uri->segment(1);
 
     if(!in_array($linkplayertype, $CI->config->item('playerids___6404'))){
-        return null;
+        return array();
     }
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
@@ -3311,7 +3311,7 @@ function view_player_covers($linkplayertype, $playerid, $page_num = 0, $append_c
 
     } else {
 
-        return null;
+        return array();
 
     }
 
@@ -3346,13 +3346,13 @@ function view_player_covers($linkplayertype, $playerid, $page_num = 0, $append_c
         if ($append_card_icon) {
 
             if (!$count_query) {
-                return null;
+                return array();
             }
 
             $card_icon = '<span class="icon-block-xs">' . $players___11035[$linkplayertype]['m__cover'] . '</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding loadplayer_covers button_of_' . $playerid . '_' . $linkplayertype . '" id="cardplayer_group_' . $linkplayertype . '_' . $playerid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_linkplayertype="' . $linkplayertype . '" load_playerid="' . $playerid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding loadplayer_cards button_of_' . $playerid . '_' . $linkplayertype . '" id="cardplayer_group_' . $linkplayertype . '_' . $playerid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_linkplayertype="' . $linkplayertype . '" load_playerid="' . $playerid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
             $ui .= '<div class="dropdown-menu dropdown_' . $linkplayertype . ' coinsplayer_' . $playerid . '_' . $linkplayertype . '" aria-labelledby="cardplayer_group_' . $linkplayertype . '_' . $playerid . '">';
             //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
@@ -3368,7 +3368,7 @@ function view_player_covers($linkplayertype, $playerid, $page_num = 0, $append_c
 }
 
 
-function view_idea_covers($linkplayertype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array())
+function view_idea_cards($linkplayertype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array())
 {
 
     /*
@@ -3463,7 +3463,7 @@ function view_idea_covers($linkplayertype, $ideaid, $page_num = 0, $append_card_
             $card_icon = '<span class="icon-block-sm">' . $players___11035[$linkplayertype]['m__cover'] . '</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_idea_covers button_of_' . $ideaid . '_' . $linkplayertype . '" id="card_group_idea_' . $linkplayertype . '_' . $ideaid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_linkplayertype="' . $linkplayertype . '" load_ideaid="' . $ideaid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_idea_cards button_of_' . $ideaid . '_' . $linkplayertype . '" id="card_group_idea_' . $linkplayertype . '_' . $ideaid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_linkplayertype="' . $linkplayertype . '" load_ideaid="' . $ideaid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
 
             //Menu To be loaded dynamically via AJAX:
             $ui .= '<div class="dropdown-menu dropdown_' . $linkplayertype . ' coins_idea_' . $ideaid . '_' . $linkplayertype . '" aria-labelledby="card_group_idea_' . $linkplayertype . '_' . $ideaid . '"></div>';
@@ -4204,7 +4204,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
         }
 
 
-        $coins_count[$linkplayertype] = view_idea_covers($linkplayertype, $focus_i['ideaid'], 0, false);
+        $coins_count[$linkplayertype] = view_idea_cards($linkplayertype, $focus_i['ideaid'], 0, false);
         if (!$coins_count[$linkplayertype] && ($discovery_mode || in_array($linkplayertype, $CI->config->item('playerids___12144')))) {
             continue;
         }
@@ -5220,7 +5220,7 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
                 continue;
             }
 
-            $coins_ui = view_idea_covers($playerid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
+            $coins_ui = view_idea_cards($playerid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
             if (strlen($coins_ui)) {
                 $bottom_menu_ui .= '<span class="hideIfEmpty">';
                 $bottom_menu_ui .= $coins_ui;
@@ -5232,7 +5232,7 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
 
     if ($bottom_menu_ui) {
         $ui .= '<div class="' . ($focus__node && $discovery_mode ? ' container fixed-bottom hidden ' : '') . '">';
-        $ui .= '<div class="card_covers">';
+        $ui .= '<div class="card_cards">';
         $ui .= $bottom_menu_ui;
         $ui .= '</div>';
         $ui .= '</div>';
@@ -5652,7 +5652,7 @@ function view_card_player($linkplayertype, $e, $extra_class = null)
     //Bottom Bar
     if (!$is_app && $access_level_e >= 1) {
 
-        $ui .= '<div class="card_covers hideIfEmpty">';
+        $ui .= '<div class="card_cards hideIfEmpty">';
 
         if (!$focus__node) {
 
@@ -5670,7 +5670,7 @@ function view_card_player($linkplayertype, $e, $extra_class = null)
                 }
 
                 $ui .= '<span class="hideIfEmpty">';
-                $ui .= view_player_covers($playerid_bottom_bar, $e['playerid']);
+                $ui .= view_player_cards($playerid_bottom_bar, $e['playerid']);
                 $ui .= '</span>';
             }
         }

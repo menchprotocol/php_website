@@ -423,7 +423,7 @@ function toggle_headline(linkplayertype){
 
 function e_sort_load(linkplayertype) {
 
-    load_covers();
+    load_cards();
 
     console.log('Tring to load Player Sort for @'+linkplayertype);
 
@@ -864,13 +864,13 @@ function toggle_finder(){
 }
 
 
-function load_covers(){
-    $(".loadplayer_covers, .load_idea_covers").unbind();
+function load_cards(){
+    $(".loadplayer_cards, .load_idea_cards").unbind();
 
-    $(".loadplayer_covers").click(function(event) {
+    $(".loadplayer_cards").click(function(event) {
         player_load_cover($(this).attr('load_linkplayertype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
-    $(".load_idea_covers").click(function(event) {
+    $(".load_idea_cards").click(function(event) {
         i_load_cover($(this).attr('load_linkplayertype'),$(this).attr('load_ideaid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
@@ -1059,7 +1059,7 @@ function activate_popover(){
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
                 $('.popover-body').html(data);
-                load_covers();
+                load_cards();
                 x_set_start_text();
                 load_card_clickers();
             });
@@ -1131,7 +1131,7 @@ $(document).ready(function () {
     load_card_clickers();
 
     setTimeout(function () {
-        load_covers();
+        load_cards();
     }, 987);
 
     //Lookout for textinput updates
@@ -2615,7 +2615,7 @@ function new_idea(linkplayertype, link_ideaid) {
 
             //Lookout for textinput updates
             x_set_start_text();
-            load_covers();
+            load_cards();
             set_autosize($('.texttype_lg'));
 
             //Hide Coin:
@@ -2782,7 +2782,7 @@ function set_autosize(theobject){
 
 function i_sort_load(linkplayertype){
 
-    load_covers();
+    load_cards();
 
     console.log('Tring to load Idea Sort for @'+linkplayertype);
     if(!js_playerids___4603.includes(linkplayertype)){

@@ -9,12 +9,12 @@ foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
         'linkplayertype IN (' . join(',', $this->config->item('playerids___32292')) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
 
-        $total_count = view_player_covers(12274, $x['playerid'], 0, false);
+        $total_count = view_player_cards(12274, $x['playerid'], 0, false);
 
         if ($total_count) {
 
             $ui = '<div class="row justify-content">';
-            foreach (view_player_covers(12274, $x['playerid'], 1, false) as $count => $e) {
+            foreach (view_player_cards(12274, $x['playerid'], 1, false) as $count => $e) {
                 $ui .= view_card_player(13207, $e, null);
             }
             $ui .= '</div>';
