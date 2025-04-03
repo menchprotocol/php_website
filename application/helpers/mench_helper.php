@@ -3244,6 +3244,10 @@ function view_player_covers($linkplayertype, $playerid, $page_num = 0, $append_c
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
+    if(!in_array($linkplayertype, $CI->config->item('playerids___6404'))){
+        return null;
+    }
+
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
 
         //Down Player Link Groups:
