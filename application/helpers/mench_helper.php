@@ -3183,7 +3183,7 @@ function view_idea_body($linkplayertype, $counter, $ideaid)
     $is = $CI->Nodeideas->fetch(array(
         'ideaid' => $ideaid,
     ));
-    if (!count($is)) {
+    if (!count($is) || !$list_results) {
         return false;
     }
 
