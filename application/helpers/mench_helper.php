@@ -3244,9 +3244,6 @@ function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_ca
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if(!in_array($linkplayertype, $CI->config->item('playerids___6404'))){
-        return array();
-    }
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
 
@@ -3311,7 +3308,7 @@ function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_ca
 
     } else {
 
-        return array();
+        return null;
 
     }
 
@@ -3346,7 +3343,7 @@ function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_ca
         if ($append_card_icon) {
 
             if (!$count_query) {
-                return array();
+                return null;
             }
 
             $card_icon = '<span class="icon-block-xs">' . $players___11035[$linkplayertype]['m__cover'] . '</span>';
