@@ -3122,7 +3122,7 @@ function view_player_body($linkplayertype, $counter, $playerid, $js_request_uri)
     $es = $CI->Nodeplayers->fetch(array(
         'playerid' => $playerid,
     ));
-    if (!count($es) || !count($list_results)) {
+    if (!count($es) || !$list_results) {
         return false;
     }
     $ui = '';
