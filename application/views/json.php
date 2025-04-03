@@ -1,5 +1,8 @@
 <?php
 
+$playersids_joined = array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486'));
+$list_links_joined = array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation);
+
 $var = array(
     'count_list_link_sourcing' => count($this->list_link_sourcing),
     'count_playerids___32292' => count($this->config->item('playerids___32292')),
@@ -9,8 +12,8 @@ $var = array(
     'count_playerids___13550' => count($this->config->item('playerids___13550')),
     'count_list_link_ideation' => count($this->list_link_ideation),
     'count_playerids___4486' => count($this->config->item('playerids___4486')),
-    'count_playersids_joined' => count(array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486'))),
-    'count_list_links_joined' => count(array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation)),
+    'count_playersids_joined' => count($playersids_joined),
+    'count_list_links_joined' => count($list_links_joined),
 
     /*
     'list_link_sourcing' => $this->list_link_sourcing,
@@ -22,16 +25,17 @@ $var = array(
     'list_link_ideation' => $this->list_link_ideation,
     'playerids___4486' => $this->config->item('playerids___4486'),
     */
-    'playersids_joined' => array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486')),
-    'list_links_joined' => array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation),
+
+    'playersids_joined' => $playersids_joined,
+    'list_links_joined' => $list_links_joined,
 );
 
 $var['playersids_count'] = $this->Menchledger->fetch(array(
-    'linkplayertype IN (' . join(',', $var['playersids_joined']) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $playersids_joined) . ')' => null, //SOURCE LINKS
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 $var['list_links_count'] = $this->Menchledger->fetch(array(
-    'linkplayertype IN (' . join(',', $var['list_links_joined']) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $list_links_joined) . ')' => null, //SOURCE LINKS
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 view_json($var);
