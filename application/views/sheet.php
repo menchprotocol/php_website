@@ -33,7 +33,7 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
     $this_quantity = 1;
     foreach ($idea_settings['column_i'] as $idea_var) {
 
-        $discoveries = $this->Menchledger->fetch(array(
+        $discoveries = $this->Ledger->fetch(array(
             'linkidealeft' => $idea_var['ideaid'],
             'linkplayercreator' => $x['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -48,7 +48,7 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
             }
 
             $set_linktext = '';
-            foreach ($this->Menchledger->fetch(array(
+            foreach ($this->Ledger->fetch(array(
                 'linkplayertype' => 33532, //Private Reply
                 'linkidealeft' => $idea_var['ideaid'],
                 'linkplayercreator' => $x['playerid'],
@@ -73,7 +73,7 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
         $idea_content .= '</td>';
 
 
-        if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Menchledger->fetch(array(
+        if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Ledger->fetch(array(
                     'linkplayerdown' => $x['playerid'],
                     'linkplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
                     'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
@@ -95,13 +95,13 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
     //SOURCES
     foreach ($idea_settings['column_e'] as $e) {
 
-        $require_writing = count($this->Menchledger->fetch(array(
+        $require_writing = count($this->Ledger->fetch(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
             'linkplayerdown' => $e['playerid'],
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         )));
 
-        $fetch_data = $this->Menchledger->fetch(array(
+        $fetch_data = $this->Ledger->fetch(array(
             'linkplayerdown' => $x['playerid'],
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $e['playerid'],
@@ -129,7 +129,7 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
 
         if ($e['playerid'] == 44328) {
             //Fetch primary filter:
-            foreach ($this->Menchledger->fetch(array(
+            foreach ($this->Ledger->fetch(array(
                 'linkidearight' => $focus_i['ideaid'],
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___44344')) . ')' => null, //Idea Filter Additions
             ), array('linkidealeft'), 1) as $target_i) {
@@ -146,7 +146,7 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
                 $count_totals['e'][$e['playerid']] = 0;
             }
 
-            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Menchledger->fetch(array(
+            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Ledger->fetch(array(
                     'linkplayerdown' => $e['playerid'],
                     'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     'linkplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
@@ -176,7 +176,7 @@ foreach ($idea_settings['column_e'] as $e) {
 
 foreach ($idea_settings['column_i'] as $idea_var) {
 
-    $max_available = $this->Menchledger->fetch(array(
+    $max_available = $this->Ledger->fetch(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'linkidearight' => $idea_var['ideaid'],
         'linkplayerup' => 26189,
@@ -299,7 +299,7 @@ echo '</table>';
             $('.linkplayercreator_' + modify_data['playerid'] + '_' + modify_data['linkplayercreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
-            $.post("/app/e_toggle_player", modify_data, function (data) {
+            $.post("/controller/e_toggle_player", modify_data, function (data) {
 
                 if (data.status) {
 

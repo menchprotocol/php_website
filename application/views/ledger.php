@@ -11,7 +11,7 @@ $input_i = ( isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) > 0 );
 $focus_i = false;
 
 if($input_e){
-    foreach($this->Nodeplayers->fetch(array(
+    foreach($this->Players->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $player_found){
         $focus_e = $player_found;
@@ -24,7 +24,7 @@ if($input_e){
 }
 
 if($input_i){
-    foreach($this->Nodeideas->fetch(array(
+    foreach($this->Ideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $idea_found){
         $focus_i = $idea_found;
@@ -182,7 +182,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
-        $.post("/app/x_4341", {
+        $.post("/controller/x_4341", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
             linktext_find:linktext_find,
@@ -335,7 +335,7 @@ if(isset($_GET['linkplayertype']) && substr_count($_GET['linkplayertype'], ',')>
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->Menchledger->fetch($ini_filter, array('linkplayertype'), 0, 0, sort__player(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
+        foreach($this->Ledger->fetch($ini_filter, array('linkplayertype'), 0, 0, sort__player(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['linkplayertype'] . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype']==$x['linkplayertype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];

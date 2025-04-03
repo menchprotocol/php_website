@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('mench','cookie');
+$autoload['helper'] = array('general','cookie');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Menchledger','Nodeplayers', 'Nodeideas');
+$autoload['model'] = array('Ledger','Players', 'Ideas');

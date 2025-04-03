@@ -760,7 +760,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Creator(s) -->
                         <div class="creator_box">
                             <?php
-                            foreach($this->Menchledger->fetch(array(
+                            foreach($this->Ledger->fetch(array(
                                 'linkplayerup' => $player_e['playerid'],
                                 'linkplayertype' => 41011, //PINNED FOLLOWER
                                             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {

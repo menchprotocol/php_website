@@ -11,7 +11,7 @@ echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
 
 
 //Display idea info:
-$copy = $this->Nodeideas->ids($idea_settings['i'], 'ALL');
+$copy = $this->Ideas->ids($idea_settings['i'], 'ALL');
 
 
 //Main Idea:
@@ -19,7 +19,7 @@ echo '<h2><a href="'.view_memory(42903,33286).$idea_settings['i']['ideahashtag']
 
 echo '<div class="row justify-content">';
 foreach($copy['recursive_idea_ids'] as $recursive_down_id){
-    foreach($this->Nodeideas->fetch(array(
+    foreach($this->Ideas->fetch(array(
         'ideaid' => $recursive_down_id,
     ), 0) as $this_i){
         echo view_idea(12273, $this_i);

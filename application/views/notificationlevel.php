@@ -7,7 +7,7 @@ $playerhandle = ( isset($_GET['playerhandle']) && isset($_GET['hash']) && isset(
 if(strlen($playerhandle)){
 
     //Notification Settings
-    foreach($this->Nodeplayers->fetch(array(
+    foreach($this->Players->fetch(array(
         'playerhandle' => $playerhandle,
     )) as $e){
         echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['playertext'].'</h3>';

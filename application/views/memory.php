@@ -18,13 +18,13 @@ $biggest_player_handle = '';
 
 
 //CONFIG VARS
-foreach ($this->Menchledger->fetch(array(
+foreach ($this->Ledger->fetch(array(
     'linkplayerup' => 4527,
     'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, array('playerid' => 'ASC')) as $en) {
 
     //Now fetch all its followers:
-    $down__e = $this->Menchledger->fetch(array(
+    $down__e = $this->Ledger->fetch(array(
         'linkplayerup' => $en['linkplayerdown'],
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, sort__player());
@@ -58,7 +58,7 @@ foreach ($this->Menchledger->fetch(array(
         }
 
         //Does this have any Pins?
-        foreach ($this->Menchledger->fetch(array(
+        foreach ($this->Ledger->fetch(array(
             'linkplayerup' => $follower['playerid'],
             'linkplayertype' => 41011, //PINNED FOLLOWER
         ), array(), 0) as $x_pinned) {
@@ -79,7 +79,7 @@ foreach ($this->Menchledger->fetch(array(
 
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
-        foreach ($this->Menchledger->fetch(array(
+        foreach ($this->Ledger->fetch(array(
             'linkplayerdown' => $follower['playerid'],
             'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0) as $cp_en) {
@@ -102,13 +102,13 @@ foreach ($this->Menchledger->fetch(array(
 
 //Append all App Handlers for quick checking:
 $memory_text .= "\n" . "\n";
-foreach ($this->Menchledger->fetch(array(
+foreach ($this->Ledger->fetch(array(
     'linkplayerup' => 42043, //Handle Cache
     'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0) as $handle) {
 
     $memory_text .= '$config[\'handlplayers___' . $handle['playerid'] . '\'] = array(' . "\n";
-    foreach ($this->Menchledger->fetch(array(
+    foreach ($this->Ledger->fetch(array(
         'linkplayerup' => $handle['playerid'],
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0) as $app) {
@@ -146,21 +146,21 @@ fclose($memory_file);
 
 //Now generate Routes file:
 $routes_text .= '$route[\'translate_uri_dashes\'] = FALSE;' . "\n";
-$routes_text .= '$route[\'default_controller\'] = "app/index"; //Home' . "\n";
-$routes_text .= '$route[\'404_override\'] = "app/load"; //Error' . "\n";
+$routes_text .= '$route[\'default_controller\'] = "controller/index"; //Home' . "\n";
+$routes_text .= '$route[\'404_override\'] = "controller/load"; //Error' . "\n";
 $routes_text .= "\n";
 
 $special_route_text = '';
 $routes_text .= '//APPS:' . "\n\n";
 
-foreach ($this->Menchledger->fetch(array(
+foreach ($this->Ledger->fetch(array(
     'linkplayerup' => 6287, //Apps
     'linkplayertype IN (' . join(',', ($memory_detected ? $this->list_player_links_intentional : $playerids___33337)) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;
-        foreach ($this->Menchledger->fetch(array(
+        foreach ($this->Ledger->fetch(array(
             'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
             'linkplayerup' => 42921,
             'linkplayerdown' => $app['playerid'], //Required
@@ -175,53 +175,53 @@ foreach ($this->Menchledger->fetch(array(
     }
 
 
-    if (count($this->Menchledger->fetch(array(
+    if (count($this->Ledger->fetch(array(
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         'linkplayerup' => 44330,
         'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Player AND Idea Input
-        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/$2/$1' . '";' . "\n";
-        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/0/$1' . '";' . "\n"; //Should give error
-        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/$1/0' . '";' . "\n"; //Should give error
-    } elseif (count($this->Menchledger->fetch(array(
+        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/$2/$1' . '";' . "\n";
+        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/0/$1' . '";' . "\n"; //Should give error
+        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/$1/0' . '";' . "\n"; //Should give error
+    } elseif (count($this->Ledger->fetch(array(
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         'linkplayerup' => 42905,
         'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Player Input
         if ($special_routes) {
-            $special_route_text .= '$route[\'' . $special_routes . '\'] = "app/load/' . $app['playerid'] . '/$1' . '";' . "\n";
+            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['playerid'] . '/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/$1' . '";' . "\n";
         }
-    } elseif (count($this->Menchledger->fetch(array(
+    } elseif (count($this->Ledger->fetch(array(
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         'linkplayerup' => 42911,
         'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Idea Input
         if ($special_routes) {
-            $special_route_text .= '$route[\'' . $special_routes . '\'] = "app/load/' . $app['playerid'] . '/0/$1' . '";' . "\n";
+            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['playerid'] . '/0/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/0/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/0/$1' . '";' . "\n";
         }
-    } elseif (count($this->Menchledger->fetch(array(
+    } elseif (count($this->Ledger->fetch(array(
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
         'linkplayerup' => 44329,
         'linkplayerdown' => $app['playerid'], //Required
     )))) {
         //Discoveries Input
         if ($special_routes) {
-            $special_route_text .= '$route[\'' . $special_routes . '\'] = "app/load/' . $app['playerid'] . '/0/$2/$1' . '";' . "\n";
+            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['playerid'] . '/0/$2/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/' . $app['playerid'] . '/0/$2/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/0/$2/$1' . '";' . "\n";
         }
     }
 
     //Always Have no Input option:
     if (!$special_routes) {
-        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '\'] = "app/load/' . $app['playerid'] . '";' . "\n";
+        $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '\'] = "controller/load/' . $app['playerid'] . '";' . "\n";
     }
 
 }

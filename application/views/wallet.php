@@ -7,13 +7,13 @@ $players___42263 = $this->config->item('players___42263'); //Link Groups
 
 
 if($playerhandle){
-    foreach($this->Nodeplayers->fetch(array(
+    foreach($this->Players->fetch(array(
         'LOWER(playerhandle)' => strtolower($playerhandle),
     )) as $e){
         echo '<h2 class="center"><a href="'.view_memory(42903,42902).$playerhandle.'"><span class="icon-block">'.view_cover($e['playercover']).'</span> <u>' . $e['playertext'] . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif($ideahashtag){
-    foreach($this->Nodeideas->fetch(array(
+    foreach($this->Ideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($ideahashtag),
     )) as $i){
         echo '<h2 class="center"><a href="'.view_memory(42903,33286).$ideahashtag.'"><u>' . view_idea_title($i, true) . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
@@ -73,7 +73,7 @@ foreach($this->config->item('players___33292') as $playerid1 => $m1) {
 <script>
 
     function refresh_wallet(){
-        $.post("/app/refresh_wallet", {
+        $.post("/controller/refresh_wallet", {
             playerhandle: '<?= $playerhandle ?>',
             ideahashtag: '<?= $ideahashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls

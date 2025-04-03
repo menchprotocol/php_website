@@ -2,20 +2,20 @@
 
 //Sync All Adding followers:
 $counter = 0;
-foreach ($this->Menchledger->fetch(array(
+foreach ($this->Ledger->fetch(array(
     'linkplayertype' => 7545,
     'linkplayerup NOT IN (' . join(',', $this->config->item('playerids___43048')) . ')' => null, //No need to add these special ones... PlayerNickname
 ), array('linkplayerup'), 0) as $addition_sync) {
 
     $is_found = false;
     //Fetch everyone who has discovered this idea:
-    foreach ($this->Menchledger->fetch(array(
+    foreach ($this->Ledger->fetch(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkidealeft' => $addition_sync['linkidearight'],
     ), array('linkplayercreator'), 0, 0, array('linkid' => 'DESC')) as $dicovered) {
 
         //Make sure no previous removed link between these two Players:
-        if(!count($this->Menchledger->fetch(array(
+        if(!count($this->Ledger->fetch(array(
             'linkvoid >' => 0,
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $addition_sync['linkplayerup'],
@@ -27,7 +27,7 @@ foreach ($this->Menchledger->fetch(array(
 
         //Any responses by this user?
         $set_linktext = $dicovered['linktext'];
-        foreach($this->Menchledger->fetch(array(
+        foreach($this->Ledger->fetch(array(
                     'linkplayertype' => 33532, //Private Reply
             'linkidealeft' => $addition_sync['linkidearight'],
             'linkplayercreator' => $dicovered['linkplayercreator'],

@@ -7,7 +7,7 @@ if(isset($_GET['playerhandle'])){
     //Find Link Content Duplicates for this Player:
     $main_index = array();
     $duplicates_found = array();
-    foreach($this->Menchledger->fetch(array(
+    foreach($this->Ledger->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0) as $x) {

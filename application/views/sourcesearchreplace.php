@@ -14,7 +14,7 @@ $replace_with_confirmed = false;
 
 if($search_for_set){
 
-    $matching_results = $this->Nodeplayers->fetch(array(
+    $matching_results = $this->Players->fetch(array(
             'playertext LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
@@ -43,7 +43,7 @@ if($search_for_set){
 
                 if($replace_with_confirmed){
                     //Update idea:
-                    $res = $this->Nodeplayers->update($en['playerid'], array(
+                    $res = $this->Players->update($en['playerid'], array(
                         'playertext' => $en['playertext'],
                     ), $player_e['playerid']);
                     $replaced++;

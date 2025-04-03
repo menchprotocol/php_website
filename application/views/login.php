@@ -3,7 +3,7 @@
 $sign_i = array();
 
 if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
-    $sign_i = $this->Nodeideas->fetch(array(
+    $sign_i = $this->Ideas->fetch(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     ));
 }
@@ -24,13 +24,13 @@ if(superpower_unlocked()) {
 
 } elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash']){
 
-    $es = $this->Nodeplayers->fetch(array(
+    $es = $this->Players->fetch(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
 
     if(count($es)){
         //Assign session & log transaction:
-        $this->Nodeplayers->activate($es[0], false, true);
+        $this->Players->activate($es[0], false, true);
     }
 
     js_php_redirect($next_url, 13);
@@ -169,7 +169,7 @@ if(superpower_unlocked()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/app/e_verify_contact", {
+            $.post("/controller/e_verify_contact", {
 
                 account_email_phone: account_email_phone,
                 sign_ideaid: sign_ideaid,
@@ -236,7 +236,7 @@ if(superpower_unlocked()) {
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:
-            $.post("/app/e_contact_auth", {
+            $.post("/controller/e_contact_auth", {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),

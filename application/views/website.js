@@ -202,7 +202,7 @@ function x_mass_apply_preview(apply_id, s__id){
 
     //Load Ppeview:
     $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
-    $.post("/app/x_mass_apply_preview", {
+    $.post("/controller/x_mass_apply_preview", {
         apply_id: apply_id,
         s__id: s__id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -552,7 +552,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
             if(focus__node==12273){
 
-                var loading_url = "/app/view_idea_body";
+                var loading_url = "/controller/view_idea_body";
                 var loading_data = {
                     focus__node:focus__node,
                     linkplayertype:linkplayertype,
@@ -563,7 +563,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
             } else if(focus__node==12274){
 
-                var loading_url = "/app/view_player_body";
+                var loading_url = "/controller/view_player_body";
                 var loading_data = {
                     focus__node:focus__node,
                     linkplayertype:linkplayertype,
@@ -637,7 +637,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 function i_copy(ideaid, do_recursive){
 
     //Go ahead and delete:
-    $.post("/app/i_copy", {
+    $.post("/controller/i_copy", {
         ideaid:ideaid,
         do_recursive:do_recursive,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -670,7 +670,7 @@ function e_copy(playerid){
     }
 
     //Go ahead and delete:
-    $.post("/app/e_copy", {
+    $.post("/controller/e_copy", {
         playerid:playerid,
         copy_player_title:copy_player_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -728,7 +728,7 @@ function x_remove(linkid, linkplayertype, ideahashtag){
     }
 
     //Save changes:
-    $.post("/app/x_remove", {
+    $.post("/controller/x_remove", {
         linkid:linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -793,7 +793,7 @@ function player_load_cover(linkplayertype, playerid, counter, first_segment){
 
     $('.coinsplayer_'+playerid+'_'+linkplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/app/player_load_cover", {
+    $.post("/controller/player_load_cover", {
         linkplayertype:linkplayertype,
         playerid:playerid,
         counter:counter,
@@ -814,7 +814,7 @@ function i_load_cover(linkplayertype, ideaid, counter, first_segment, current_e)
 
     $('.coins_idea_'+ideaid+'_'+linkplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/app/i_load_cover", {
+    $.post("/controller/i_load_cover", {
         linkplayertype:linkplayertype,
         ideaid:ideaid,
         counter:counter,
@@ -1052,7 +1052,7 @@ function setup_popover(){
         html: true,
         //title: '<a class="close" href="javascript:void(0);" style="display: block;">Close</a>',
         content: function (inner_content) {
-            $.post("/app/load_popover", {
+            $.post("/controller/load_popover", {
                 handle_string:inner_content.innerText,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
@@ -1610,7 +1610,7 @@ function load_idea_dynamic(ideaid, linkid, current_ideatype, initial_loading){
     $(".dynamic_editing_loading").removeClass('hidden');
     var created_ideaid = 0;
 
-    $.post("/app/i_editor_load", {
+    $.post("/controller/i_editor_load", {
         ideaid: ideaid,
         linkid: linkid,
         current_ideatype: current_ideatype,
@@ -1766,7 +1766,7 @@ function i_editor_save(){
         }
     }
 
-    $.post("/app/i_editor_save", modify_data, function (data) {
+    $.post("/controller/i_editor_save", modify_data, function (data) {
 
         //Load Images:
         i_saving = false;
@@ -2212,7 +2212,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
 
 
 
-    $.post("/app/e_editor_load", {
+    $.post("/controller/e_editor_load", {
         playerid: playerid,
         linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2338,7 +2338,7 @@ function e_editor_save(){
         }
     }
 
-    $.post("/app/e_editor_save", modify_data, function (data) {
+    $.post("/controller/e_editor_save", modify_data, function (data) {
 
         e_saving = false;
         $(".e_editor_save").html('SAVE');
@@ -2439,7 +2439,7 @@ function x_view_load_page() {
 
     current_page[focus_group]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_group);
-    $.post("/app/x_view_load_page", {
+    $.post("/controller/x_view_load_page", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         linkplayertype: focus_group,
@@ -2504,7 +2504,7 @@ function new_player(linkplayertype, player_existing_id) {
     }
 
     //Add via Ajax:
-    $.post("/app/new_player", {
+    $.post("/controller/new_player", {
 
         focus__node: parseInt($('#focus__node').val()),
         linkplayertype: linkplayertype,
@@ -2591,7 +2591,7 @@ function new_idea(linkplayertype, link_ideaid) {
     add_to_list(linkplayertype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
-    $.post("/app/new_idea", {
+    $.post("/controller/new_idea", {
         linkplayertype: linkplayertype,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
@@ -2634,7 +2634,7 @@ function link_unlink(linkid, linkplayertype) {
 
     var r = confirm("Unlink?");
     if (r==true) {
-        $.post("/app/link_unlink", {
+        $.post("/controller/link_unlink", {
 
             linkid: linkid,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2728,7 +2728,7 @@ function x_set_text(this_grabr){
 
     //Grey background to indicate saving
     var target_element = '.text__'+modify_data['cache_playerid']+'_'+modify_data['s__id'];
-    $.post("/app/x_set_text", modify_data, function (data) {
+    $.post("/controller/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -2826,7 +2826,7 @@ function i_sort_load(linkplayertype){
 
                     //Update order:
                     if(sort_rank > 0){
-                        $.post("/app/i_sort_load", {
+                        $.post("/controller/i_sort_load", {
                             new_x_order:new_x_order,
                             linkplayertype:linkplayertype,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2899,7 +2899,7 @@ function e_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_
         $('.radio-'+focus__id+' .item-'+selected_playerid+' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
     }
 
-    $.post("/app/e_select_apply", {
+    $.post("/controller/e_select_apply", {
         focus__id: focus__id,
         down_playerid: down_playerid,
         right_ideaid: right_ideaid,
@@ -3014,7 +3014,7 @@ function i_void(){
     }
 
 
-    $.post("/app/i_void", {
+    $.post("/controller/i_void", {
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
@@ -3099,7 +3099,7 @@ function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0
     }
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/app/x_update_instant_select", {
+    $.post("/controller/x_update_instant_select", {
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
@@ -3172,7 +3172,7 @@ function e_sort_save(linkplayertype) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/app/e_sort_save", {
+        $.post("/controller/e_sort_save", {
             playerid: parseInt($('#focus__id').val()),
             linkplayertype:linkplayertype,
             new_linknumber: new_linknumber,
@@ -3198,7 +3198,7 @@ function x_reset_sorting(){
         var focus_handle = $('#focus_handle').val();
 
         //Update via call:
-        $.post("/app/x_reset_sorting", {
+        $.post("/controller/x_reset_sorting", {
             focus__node: focus__node,
             focus__id: focus__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3368,7 +3368,7 @@ function go_next(do_skip){
     $('.go_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
-    $.post("/app/go_next", {
+    $.post("/controller/go_next", {
         target_ideahashtag: $('#target_ideahashtag').val(),
         target_ideaid: parseInt($('#target_ideaid').val()),
         player_submitted_data: {

@@ -12,8 +12,8 @@ if(isset($_GET['update_u_icons'])){
     }
 
     $updated = 0;
-    foreach($this->Menchledger->fetch($base_filters, array('linkplayerdown'), 0) as $x){
-        $updated += $this->Nodeplayers->update($x['playerid'], array(
+    foreach($this->Ledger->fetch($base_filters, array('linkplayerdown'), 0) as $x){
+        $updated += $this->Players->update($x['playerid'], array(
             'playercover' => random_cover(12279),
         ));
     }
