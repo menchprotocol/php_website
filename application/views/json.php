@@ -46,7 +46,7 @@ $var['stats_ideation'] = $this->Menchledger->fetch(array(
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 $var['stats_void'] = $this->Menchledger->fetch(array(
-    'linkvoid > IN' => 0,
+    'linkvoid > ' => 0,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 
