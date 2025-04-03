@@ -49,6 +49,7 @@ $var['list_links_count_reverse'] = $this->Menchledger->fetch(array(
 
 $this->db->select('linkplayertype, COUNT(*) as total');
 $this->db->from('menchledger');
+$this->db->where('linkplayertype NOT IN (' . join(',', $list_links_joined) . ')');
 $this->db->group_by('linkplayertype');
 $query = $this->db->get();
 $var['result_query'] = $query->result();
