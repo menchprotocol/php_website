@@ -1346,7 +1346,6 @@ class App extends CI_Controller
             ));
         }
 
-
         //Validate Player:
         $fetch_o = $this->Nodeplayers->fetch(array(
             'playerid' => $_POST['playerid'],
@@ -1369,11 +1368,13 @@ class App extends CI_Controller
             $focus_e = $added_e['new_player'];
         }
 
+
         //Followers:
         foreach ($this->Menchledger->fetch(array(
             'linkplayerup' => $_POST['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Links
         ), array(), 0) as $x) {
+
             //Make sure none existent in new Player:
             if (!count($this->Menchledger->fetch(array(
                 'linkplayertype' => $x['linkplayertype'],
@@ -1398,6 +1399,12 @@ class App extends CI_Controller
             'linkplayerdown' => $_POST['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Links
         ), array(), 0) as $x) {
+
+            if(in_array($x['linkplayerup'], array(32338,6198)) && $x['linkplayertype']==4230){
+                //Handle & COver is a system link that do not to be replicated:
+                continue;
+            }
+
             if (!count($this->Menchledger->fetch(array(
                 'linkplayertype' => $x['linkplayertype'],
                 'linkplayerup' => $x['linkplayerup'],

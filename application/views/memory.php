@@ -29,10 +29,6 @@ foreach ($this->Menchledger->fetch(array(
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, sort__player());
 
-    if (!count($down__e)) {
-        continue;
-    }
-
 
     $total_nodes += (1 + count($down__e));
     if (count($down__e) > $biggest_player_count) {
