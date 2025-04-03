@@ -745,6 +745,12 @@ class App extends CI_Controller
             ));
         }
 
+        return view_json(array(
+            'status' => 0,
+            '$is' => $is,
+            'message' => 'Idea Not Valid',
+        ));
+
 
         $focus__node = ($_POST['focus__node'] == 12273 && $_POST['focus__id'] == $_POST['save_ideaid']);
         if (!isset($_POST['uploaded_media']) || !is_array($_POST['uploaded_media'])) {
