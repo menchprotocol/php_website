@@ -12,6 +12,7 @@ $var = array(
     'count_playersids_joined' => count(array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486'))),
     'count_list_links_joined' => count(array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation)),
 
+    /*
     'list_link_sourcing' => $this->list_link_sourcing,
     'playerids___32292' => $this->config->item('playerids___32292'),
     'list_link_discovery' => $this->list_link_discovery,
@@ -20,6 +21,7 @@ $var = array(
     'playerids___13550' => $this->config->item('playerids___13550'),
     'list_link_ideation' => $this->list_link_ideation,
     'playerids___4486' => $this->config->item('playerids___4486'),
+    */
     'playersids_joined' => array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486')),
     'list_links_joined' => array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation),
 );
