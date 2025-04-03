@@ -5,6 +5,7 @@ class App extends CI_Controller
 {
 
     public $player_e; // Declare the variable
+    public $intentional_sourcing; // Declare the variable
 
     function __construct()
     {
@@ -14,6 +15,7 @@ class App extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         $this->player_e = superpower_unlocked();
+        $this->intentional_sourcing = array(4151,4230,42659,42849);
 
         auto_login_player(false);
 
