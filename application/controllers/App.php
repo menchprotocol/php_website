@@ -403,7 +403,7 @@ class App extends CI_Controller
                 foreach ($this->Nodeideas->fetch(array(
                     'LOWER(ideahashtag)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $i) {
-                    echo view_card_i(6255, $i);
+                    echo view_card_idea(6255, $i);
                     return true;
                 }
             } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
@@ -809,7 +809,7 @@ class App extends CI_Controller
                             'status' => 1,
                             'return_ideacache' => '',
                             'return_ideacache_links' => '',
-                            'return_ideacache_full' => view_card_i($_POST['focus_group'], $return_i),
+                            'return_ideacache_full' => view_card_idea($_POST['focus_group'], $return_i),
                             'redirect_idea' => view_memory(42903, 33286) . $return_i['ideahashtag'],
                             'message' => count($idea_references) . ' ideas linked',
                         ));
@@ -1004,7 +1004,7 @@ class App extends CI_Controller
             'status' => 1,
             'return_ideacache' => $view_sync_links['ideacache'],
             'return_ideacache_links' => view_idea_links($is[0], $player_e['playerid'], $focus__node, $focus__node),
-            'return_ideacache_full' => view_card_i($_POST['focus_group'], $is[0]),
+            'return_ideacache_full' => view_card_idea($_POST['focus_group'], $is[0]),
             'redirect_idea' => (isset($is[0]['ideahashtag']) ? view_memory(42903, 33286) . $is[0]['ideahashtag'] : null),
             'message' => $media_stats['total_current'] . ' current & ' . $media_stats['total_submitted'] . ' submitted media: ' . $media_stats['total_submitted'] . ' Created, ' . $media_stats['adjust_updated'] . ' Updated & ' . $media_stats['adjust_removed'] . ' Removed while detected ' . $media_stats['adjust_duplicated'] . ' duplicate uploads. ' . $view_sync_links['sync_stats']['old_links_removed'] . ' old links removed, ' . $view_sync_links['sync_stats']['old_links_kept'] . ' old links kept, ' . $view_sync_links['sync_stats']['new_links_added'] . ' new links added.',
         ));
@@ -1060,7 +1060,7 @@ class App extends CI_Controller
                     //SOURCES
                     $players___4593 = $this->config->item('players___4593'); //Transaction Types
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
-                    foreach (view_idea_cards($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $player_e) {
+                    foreach (view_idea_query($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $player_e) {
                         if (isset($player_e['playerid'])) {
                             $ui .= view_card(view_memory(42903, 42902) . $player_e['playerhandle'], $current_playerhandle && $player_e['playerhandle'] == $current_playerhandle, $player_e['linkplayertype'], view_cover($player_e['playercover'], true), $player_e['playertext'], $player_e['linktext']);
                             $listed_items++;
@@ -1074,7 +1074,7 @@ class App extends CI_Controller
                     $players___4593 = $this->config->item('players___4593'); //Transaction Types
                     $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
-                    foreach (view_idea_cards($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $next_i) {
+                    foreach (view_idea_query($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
                             $ui .= view_card($target_disccovery . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
                             $listed_items++;
@@ -2713,7 +2713,7 @@ class App extends CI_Controller
                     $ids = array();
                     foreach ($is_next as $i) {
                         array_push($ids, $i['ideaid']);
-                        echo view_card_i(12273, $i);
+                        echo view_card_idea(12273, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">' . join(',', $ids) . '</div>';
@@ -2749,7 +2749,7 @@ class App extends CI_Controller
                     echo view_card_player($_POST['linkplayertype'], $s);
                     $success = true;
                 } else if ($_POST['linkplayertype'] == 6255 || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
-                    echo view_card_i($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                    echo view_card_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
                     $success = true;
                 }
             }
@@ -2762,9 +2762,9 @@ class App extends CI_Controller
             ));
             $previous_i = $previous_is[0];
 
-            foreach (view_idea_cards($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+            foreach (view_idea_query($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
-                    echo view_card_i($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                    echo view_card_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
                     $success = true;
                 } else if ($_POST['linkplayertype'] == 6255 || in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
                     echo view_card_player($_POST['linkplayertype'], $s);

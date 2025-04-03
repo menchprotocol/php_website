@@ -3132,7 +3132,7 @@ function view_player_body($linkplayertype, $counter, $playerid, $js_request_uri)
         //Ideas:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $i) {
-            $ui .= view_card_i($linkplayertype, $i, null, null, $focus_playerid);
+            $ui .= view_card_idea($linkplayertype, $i, null, null, $focus_playerid);
         }
         $ui .= '</div>';
 
@@ -3150,7 +3150,7 @@ function view_player_body($linkplayertype, $counter, $playerid, $js_request_uri)
         //Discoveries:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $i) {
-            $ui .= view_card_i($linkplayertype, $i, null, null, $focus_playerid);
+            $ui .= view_card_idea($linkplayertype, $i, null, null, $focus_playerid);
         }
         $ui .= '</div>';
 
@@ -3178,7 +3178,7 @@ function view_idea_body($linkplayertype, $counter, $ideaid)
     $CI =& get_instance();
 
 
-    $list_results = view_idea_cards($linkplayertype, $ideaid, 1);
+    $list_results = view_idea_query($linkplayertype, $ideaid, 1);
     $ui = '';
     $is = $CI->Nodeideas->fetch(array(
         'ideaid' => $ideaid,
@@ -3196,7 +3196,7 @@ function view_idea_body($linkplayertype, $counter, $ideaid)
         //IDEA Link Groups Previous
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $previous_i) {
-            $ui .= view_card_i(11019, $previous_i);
+            $ui .= view_card_idea(11019, $previous_i);
         }
         $ui .= '</div>';
 
@@ -3205,7 +3205,7 @@ function view_idea_body($linkplayertype, $counter, $ideaid)
         //IDEA Link Groups Next
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $next_i) {
-            $ui .= view_card_i($linkplayertype, $next_i, $is[0]);
+            $ui .= view_card_idea($linkplayertype, $next_i, $is[0]);
         }
         $ui .= '</div>';
 
@@ -3365,7 +3365,7 @@ function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_ca
 }
 
 
-function view_idea_cards($linkplayertype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array())
+function view_idea_query($linkplayertype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array())
 {
 
     /*
@@ -3376,6 +3376,10 @@ function view_idea_cards($linkplayertype, $ideaid, $page_num = 0, $append_card_i
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
+
+    if(!in_array($linkplayertype, $CI->config->item('playerids___6404'))){
+        return null;
+    }
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42261'))) {
 
@@ -4201,7 +4205,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
         }
 
 
-        $coins_count[$linkplayertype] = view_idea_cards($linkplayertype, $focus_i['ideaid'], 0, false);
+        $coins_count[$linkplayertype] = view_idea_query($linkplayertype, $focus_i['ideaid'], 0, false);
         if (!$coins_count[$linkplayertype] && ($discovery_mode || in_array($linkplayertype, $CI->config->item('playerids___12144')))) {
             continue;
         }
@@ -4444,7 +4448,7 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 }
 
 
-function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashtag = null, $focus_playerid = 0, $x_completes = false)
+function view_card_idea($linkplayertype, $i, $previous_i = null, $target_ideahashtag = null, $focus_playerid = 0, $x_completes = false)
 {
 
     //Search to see if an idea has a thumbnail:
@@ -5126,7 +5130,7 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
                     $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['ideaid'] . ', [\'#' . $i['ideaid'] . '\'], \'.inner_uploader_' . $i['ideaid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $i['ideaid'] . '); }, 144); }); </script>';
 
                     foreach ($player_private_replies as $x_response) {
-                        $input_ui .= '<div class="hidden">' . view_card_i(6255, $x_response) . '</div>';
+                        $input_ui .= '<div class="hidden">' . view_card_idea(6255, $x_response) . '</div>';
                         $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $x_response['ideaid'] . '); }, 144); }); </script>';
                     }
                 }
@@ -5217,7 +5221,7 @@ function view_card_i($linkplayertype, $i, $previous_i = null, $target_ideahashta
                 continue;
             }
 
-            $coins_ui = view_idea_cards($playerid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
+            $coins_ui = view_idea_query($playerid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
             if (strlen($coins_ui)) {
                 $bottom_menu_ui .= '<span class="hideIfEmpty">';
                 $bottom_menu_ui .= $coins_ui;

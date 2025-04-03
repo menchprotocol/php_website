@@ -114,7 +114,7 @@ if($messages){
 //List Relevant Ideas in order:
 $secondary_i = '';
 foreach($secondary_idea_list as $ref_i){
-    $secondary_i .= view_card_i(14565,  $ref_i);
+    $secondary_i .= view_card_idea(14565,  $ref_i);
 }
 if(strlen($secondary_i)){
     echo '<div class="row justify-content flip-content">';
