@@ -3541,7 +3541,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
     $selection_ids = array();
     $selection_options = $CI->Menchledger->fetch(array(
         'linkplayerup' => $focus__id,
-        'linkplayertype IN (' . join(',', $CI->intentional_sourcing) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC'));
     foreach ($selection_options as $list_item) {
         array_push($selection_ids, $list_item['playerid']);
@@ -3902,7 +3902,7 @@ function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node 
             foreach ($CI->Menchledger->fetch(array(
                 'linkplayerup' => $message_references['playerid'],
                 'linkplayerdown' => $playerid,
-                'linkplayertype IN (' . join(',', $CI->intentional_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 'LENGTH(linktext) > 0' => null,
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['linktext'])) {
