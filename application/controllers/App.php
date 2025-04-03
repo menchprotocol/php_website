@@ -40,7 +40,7 @@ class App extends CI_Controller
     function load($app_playerid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0)
     {
 
-        if(!isset($_SERVER['REMOTE_ADDR']) || $_SERVER['REMOTE_ADDR']!='73.15.62.97'){ die('We will be back up by Sunday...'); }
+        if(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR']!='73.15.62.97'){ die('We will be back up by Sunday...'); }
 
         $memory_detected = is_array($this->config->item('playerids___6287')) && count($this->config->item('playerids___6287'));
         if (!$memory_detected) {
