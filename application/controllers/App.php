@@ -17,8 +17,6 @@ class App extends CI_Controller
 
         auto_login_player(false);
 
-        $this->dbold = $this->load->database('old', TRUE); //TODO Remove later
-
     }
 
     function index()

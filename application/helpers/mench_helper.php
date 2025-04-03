@@ -2397,8 +2397,6 @@ function boost_power()
 function flag_for_search_indexing($focus__node = null, $s__id = 0)
 {
 
-    return false; //TODO Remove later
-
     $CI =& get_instance();
 
     if ($focus__node && !in_array($focus__node, $CI->config->item('playerids___12761'))) {
