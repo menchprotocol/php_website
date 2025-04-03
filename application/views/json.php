@@ -24,10 +24,11 @@ $var = array(
     'playerids___13550' => $this->config->item('playerids___13550'),
     'list_link_ideation' => $this->list_link_ideation,
     'playerids___4486' => $this->config->item('playerids___4486'),
-    */
+
 
     'playersids_joined' => $playersids_joined,
     'list_links_joined' => $list_links_joined,
+    */
 );
 
 
@@ -47,12 +48,10 @@ $var['list_links_count_reverse'] = $this->Menchledger->fetch(array(
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 
-$this->db->select('linkplayertype, COUNT(*) as total');
-$this->db->from('menchledger');
-$this->db->where('linkplayertype NOT IN (' . join(',', $list_links_joined) . ')');
-$this->db->group_by('linkplayertype');
-$query = $this->db->get();
-$var['result_query'] = $query->result();
+
+$var['result_query'] = $this->Menchledger->fetch(array(
+    'linkplayertype IN (' . join(',', $list_links_joined) . ')' => null, //SOURCE LINKS
+), array(), 0, 0, array(), 'linkplayertype, COUNT(*) as total', 'linkplayertype');
 
 
 view_json($var);
