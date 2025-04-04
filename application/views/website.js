@@ -3108,7 +3108,7 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
     }
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/selector", {
+    $.post("/controller//Users/shervinenayati/PhpstormProjects/php_website/application/controllers/Controller.php", {
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,

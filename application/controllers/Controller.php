@@ -3350,7 +3350,7 @@ class Controller extends CI_Controller
 
     }
 
-    function selector()
+    function player_select()
     {
 
         if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_playerid']) || !isset($_POST['migrate_s__handle']) || !isset($_POST['linkid'])) {
