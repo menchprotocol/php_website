@@ -2781,7 +2781,7 @@ class Controller extends CI_Controller
             'linktext' => $_POST['account_email_phone'],
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
-        ), array('linkplayerdown'), 1, 0, array('linkid' => 'ASC')) as $map_e) {
+        ), array('linkplayerdown'), 1, 0, array('linkid' => 'DESC')) as $map_e) {
             $u = $map_e;
             $linkplayercreator = $map_e['playerid'];
         }
