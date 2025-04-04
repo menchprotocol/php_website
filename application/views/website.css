@@ -3107,9 +3107,9 @@ h4.main__title{
     margin-top: -24%;
 }
 .list-covers {
-    border-bottom: 1px solid #000;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
+    border-bottom: 1px solid #999;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
 }
 .list-covers .card_cover {
     text-align: center;
@@ -4674,7 +4674,7 @@ h1 i.fad{
 .fixed-bottom .card_cards>span {
     display: block;
     width: 100% !important;
-    border-right: 1px solid #000;
+    border-right: 1px solid #999;
 }
 .fixed-bottom .card_cards>span:last-of-type {
     border-right: 0;
