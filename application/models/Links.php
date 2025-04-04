@@ -14,7 +14,7 @@ class Links extends CIdea_cache
         parent::__construct();
     }
 
-    function create($add_fields, $external_sync = false)
+    function create($add_fields, $external_sync = false, $update_observed = true)
     {
 
         //Required field:
@@ -38,24 +38,33 @@ class Links extends CIdea_cache
             $add_fields['linktext'] = serialize($add_fields['linktext']);
         }
 
-        //Set some defaults:
+        //Set some zero defaults if not set:
+        foreach (array('linkidearight', 'linkidealeft', 'linkplayerdown', 'linkplayerup', 'linknumber') as $dz) {
+            if (!isset($add_fields[$dz])) {
+                $add_fields[$dz] = 0;
+            }
+        }
+
+        //Is this an observation link that should replace an older observation, if any:
+        if($update_observed && in_array($add_fields['linkplayertype'], array(44176,44179,42275))){
+            foreach ($this->Links->read($add_fields, array(), 1) as $last_observation) {
+                //Update the previous observed link:
+                return $this->Links->update($last_observation['linkid'], $add_fields);
+            }
+        }
+
+        //Append Domain:
         if (!isset($add_fields['linkplayerdomain']) || $add_fields['linkplayerdomain'] < 1) {
             $add_fields['linkplayerdomain'] = website_setting(0, $add_fields['linkplayercreator']);
         }
 
+        //Append time:
         if (!isset($add_fields['linktime']) || is_null($add_fields['linktime'])) {
             //Time with milliseconds:
             $t = microtime(true);
             $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
             $d = new DateTime(date('Y-m-d H:i:s.' . $micro, $t));
             $add_fields['linktime'] = $d->format("Y-m-d H:i:s");
-        }
-
-        //Set some zero defaults if not set:
-        foreach (array('linkidearight', 'linkidealeft', 'linkplayerdown', 'linkplayerup', 'linknumber') as $dz) {
-            if (!isset($add_fields[$dz])) {
-                $add_fields[$dz] = 0;
-            }
         }
 
         //Lets log:
@@ -293,7 +302,7 @@ class Links extends CIdea_cache
             $update_columns['linkplayercreator'] = $linkplayercreator;
 
             //Create New Link
-            $new_x = $this->Links->create(array_merge($old_x, $update_columns));
+            $new_x = $this->Links->create(array_merge($old_x, $update_columns), true, false);
 
             if ($new_x['linkid'] > 0) {
                 //Void Old Link:
