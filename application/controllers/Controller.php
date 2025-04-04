@@ -684,7 +684,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
             ));
-        } elseif (strlen($_POST['migrate_s__handle'])) {
+        } elseif (strlen($_POST['migrate_s__handle'])>1) {
             $valid_handle = $this->Ideas->read(array(
                 'ideaid !=' => $_POST['ideaid'],
                 'LOWER(ideahashtag)' => strtolower(str_replace('#', '', $_POST['migrate_s__handle'])),
@@ -771,7 +771,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
             ));
-        } elseif (strlen($_POST['migrate_s__handle'])) {
+        } elseif (strlen($_POST['migrate_s__handle'])>1) {
             $valid_handle = $this->Players->read(array(
                 'playerid !=' => $_POST['playerid'],
                 'LOWER(playerhandle)' => strtolower(str_replace('@', '', $_POST['migrate_s__handle'])),
