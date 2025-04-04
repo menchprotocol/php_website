@@ -129,10 +129,10 @@ class Ideas extends CIdea_cache
     }
 
 
-    function update($id, $update_columns, $linkplayercreator = 0)
+    function update($linkid, $update_columns, $linkplayercreator = 0)
     {
 
-        if (count($update_columns) == 0 || !count($this->Links->read(array('linkid' => $id )))) {
+        if (count($update_columns) == 0 || !count($this->Links->read(array('linkid' => $linkid )))) {
             return false;
         }
 
@@ -150,7 +150,7 @@ class Ideas extends CIdea_cache
                     'linkplayertype' => 42275, //Observed
                     'linkplayerup' => $must_sync_ledger[$key], //Idea Hashtag
                     'linkplayercreator' => $linkplayercreator,
-                    'linkidearight' => $id,
+                    'linkidearight' => $linkid,
                     'linktext' => $value,
                 ));
                 $must_sync_found = true;
@@ -164,20 +164,24 @@ class Ideas extends CIdea_cache
 
         if(isset($update_columns['ideatext']) && !isset($update_columns['ideacache'])){
             //Update Idea Text:
-            $update_columns['ideacache'] = ideacache($id, $update_columns['ideatext']);
+            $update_columns['ideacache'] = ideacache($linkid, $update_columns['ideatext']);
         }
 
         //Update:
+        $set = "";
         foreach($update_columns as $key => $value) {
-            $this->db->set($key, $value);
+            if(strlen($set)){
+                $set .= " , ";
+
+            }
+            $set .= " ".$key." = ".( is_integer($value) ? $value : "'".$value."'" );
         }
-        $this->db->where('ideaid', intval($id));
-        $this->db->update('nodeideas');
+        $this->db->query("UPDATE nodeideas SET " . $set . " WHERE linkid = " . $linkid . ";");
         $affected_rows = $this->db->affected_rows();
 
         if($must_sync_found){
             //Sync algolia:
-            update_algolia(12273, $id);
+            update_algolia(12273, $linkid);
         }
 
         return $affected_rows;
