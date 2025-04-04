@@ -4353,7 +4353,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     } elseif ($playerid_dropdown == 30873 && $idea_access_level >= 3) {
 
                         //Clone Idea Tree:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy(' . $i['ideaid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_copy(' . $i['ideaid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 33292 && $player_active) {
 
@@ -4363,7 +4363,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     } elseif ($playerid_dropdown == 29771 && $idea_access_level >= 3) {
 
                         //Clone Single Idea:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy(' . $i['ideaid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_copy(' . $i['ideaid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 28636 && $idea_access_level >= 3 && $linkid) {
 
@@ -5157,7 +5157,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                         } elseif ($playerid_dropdown == 29771 && $player_access_level >= 3) {
 
                             //Clone:
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy(' . $e['playerid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="player_copy(' . $e['playerid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         } elseif ($playerid_dropdown == 10673 && $linkid > 0 && $player_access_level >= 3 && $superpower_10939) {
 

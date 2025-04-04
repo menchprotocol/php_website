@@ -633,10 +633,10 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
 
 
-function i_copy(ideaid, do_recursive){
+function idea_copy(ideaid, do_recursive){
 
     //Go ahead and delete:
-    $.post("/controller/i_copy", {
+    $.post("/controller/idea_copy", {
         ideaid:ideaid,
         do_recursive:do_recursive,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -660,7 +660,7 @@ function player_title(playerid){
     return return_title;
 }
 
-function e_copy(playerid){
+function player_copy(playerid){
 
     var copy_player_title = prompt("What would be the title of the new Player?", player_title(playerid));
     if (!copy_player_title.length) {
@@ -669,7 +669,7 @@ function e_copy(playerid){
     }
 
     //Go ahead and delete:
-    $.post("/controller/e_copy", {
+    $.post("/controller/player_copy", {
         playerid:playerid,
         copy_player_title:copy_player_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
