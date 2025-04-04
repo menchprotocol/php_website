@@ -164,13 +164,12 @@ class Ideas extends CIdea_cache
 
         if(isset($update_columns['ideatext']) && !isset($update_columns['ideacache'])){
             //Update Idea Text:
-            $update_columns['ideacache'] = ideacache($id, $value);
+            $update_columns['ideacache'] = ideacache($id, $update_columns['ideatext']);
         }
 
         //Update:
-        $this->db->set($update_columns);
         $this->db->where('ideaid', intval($id));
-        $this->db->update('nodeideas');
+        $this->db->update('nodeideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         if($must_sync_found){
