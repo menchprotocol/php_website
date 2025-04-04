@@ -268,10 +268,10 @@ class Links extends CIdea_cache
     {
 
         //Fetch Link before updating:
-        foreach($this->Links->read(array(
+        foreach ($this->Links->read(array(
             'linkid' => $id,
-        )) as $old_x){
-            
+        )) as $old_x) {
+
             if (!$linkplayercreator) {
                 //Fetch session player:
                 $player_e = superpower_unlocked();
@@ -284,7 +284,7 @@ class Links extends CIdea_cache
             //Create New Link
             $new_x = $this->Links->create(array_merge($old_x, $update_columns));
 
-            if($new_x['linkid']>0){
+            if ($new_x['linkid'] > 0) {
                 //Void Old Link:
                 return $this->Links->update($id, array(
                     'linkplayercreator' => $linkplayercreator,
@@ -295,7 +295,7 @@ class Links extends CIdea_cache
 
         //Invalid link:
         return 0;
-        
+
     }
 
 
@@ -303,9 +303,9 @@ class Links extends CIdea_cache
     {
 
         //Validate $linkid
-        foreach($this->Links->read(array(
+        foreach ($this->Links->read(array(
             'linkid' => $linkid,
-        )) as $old_x){
+        )) as $old_x) {
 
             //Set default player:
             if (!$linkplayercreator) {
@@ -337,16 +337,16 @@ class Links extends CIdea_cache
                 'linkvoid' => $linkid, //We insert as void since this is a void link only
             ));
 
-            if(!isset($new_x['linkid'])){
+            if (!isset($new_x['linkid'])) {
                 return 0; //Should not happen
             }
 
             //Void this Link:
-            $this->db->query("UPDATE menchledger SET linkvoid = ".$linkid." WHERE linkid = " . $new_x['linkid'] . ";");
+            $this->db->query("UPDATE menchledger SET linkvoid = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
             return $this->db->affected_rows();
 
         }
-        
+
         //Invalid link:
         return 0;
 
