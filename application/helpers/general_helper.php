@@ -484,6 +484,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         }
         //Now search for these settings across Players:
         foreach ($CI->Links->read(array(
+            'playerid >' => 0,
             'linkidearight' => $i['ideaid'],
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___40946')) . ')' => null, //Player List Controllers
         ), array('linkplayerup'), 0) as $setting_link) {
@@ -491,6 +492,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         }
         //Now search for these settings across ideas:
         foreach ($CI->Links->read(array(
+            'ideaid >' => 0,
             'linkidearight' => $i['ideaid'],
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___40946')) . ')' => null, //Player List Controllers
         ), array('linkidealeft'), 0) as $setting_link) {
@@ -605,18 +607,9 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, sort__player());
 
-            print_r(array(
-                'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
-                'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
-                'linkplayertype !=' => 4250, //TODO Figure this out...
-                'linkidearight !=' => $i['ideaid'],
-            ));
-            die();
-
             foreach ($CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
-                'linkplayertype !=' => 4250, //TODO Figure this out...
                 'linkidearight !=' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC', 'ideatext' => 'ASC')) as $link_i) {
                 array_push($idea_column, $link_i);
