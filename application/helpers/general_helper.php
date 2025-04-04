@@ -3558,8 +3558,6 @@ function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node 
 
     if ($replace_links) {
         $i['ideacache'] = str_replace('spanaa', 'a', $i['ideacache']);
-        $i['ideacache'] = str_replace('class="ref_idea">#', 'class="ref_idea">', $i['ideacache']);
-        $i['ideacache'] = str_replace('class="ref_player">@', 'class="ref_player">', $i['ideacache']);
     }
 
     if ($playerid > 0) {
