@@ -168,6 +168,9 @@ class Ideas extends CIdea_cache
         }
 
         //Update:
+        foreach($update_columns as $key => $value) {
+            $this->db->set($key, $value);
+        }
         $this->db->where('ideaid', intval($id));
         $this->db->update('nodeideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
