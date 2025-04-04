@@ -306,6 +306,7 @@ class Links extends CIdea_cache
         foreach($this->Links->read(array(
             'linkid' => $linkid,
         )) as $old_x){
+
             //Set default player:
             if (!$linkplayercreator) {
                 //Fetch session player:
@@ -327,29 +328,23 @@ class Links extends CIdea_cache
                 //Sourcing
                 $linkplayertype = 44399; //TODO Adjust this
             } else {
-                //Should not happen:
-                return 0;
+                return 0; //Should not happen
             }
 
-            $this->Links->create(array(
-                'linkplayercreator' => $player_e['playerid'],
-                'linknumber' => $x['linknumber'],
-                'linkplayertype' => $x['linkplayertype'],
-                'linkplayerup' => $x['linkplayerup'],
-                'linkplayerdown' => $focus_e['playerid'],
-                'linktext' => $x['linktext'],
-            ));
-
-            //Void this Link:
-            $this->db->query("UPDATE menchledger SET linkvoid = ".$linkid." WHERE linkid = " . $linkid . ";");
-
-            
-            
-            return $this->Links->update($linkid, array(
+            $new_x = $this->Links->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => $linkplayertype,
                 'linkvoid' => $linkid, //We insert as void since this is a void link only
             ));
+
+            if(!isset($new_x['linkid'])){
+                return 0; //Should not happen
+            }
+
+            //Void this Link:
+            $this->db->query("UPDATE menchledger SET linkvoid = ".$linkid." WHERE linkid = " . $new_x['linkid'] . ";");
+            return $this->db->affected_rows();
+
         }
         
         //Invalid link:
