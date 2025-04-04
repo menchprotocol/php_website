@@ -139,7 +139,7 @@ class Ideas extends CIdea_cache
         $must_sync_found = false;
         $skip_sync_ledger = array('ideacache','ideaexternal','ideanumber','ideatype');
         $must_sync_ledger = array(
-            'ideamessage' => 32337, //TODO Update later with message
+            'ideatext' => 32337, //TODO Update later with message
             'ideahashtag' => 32337,
         );
 
@@ -168,17 +168,10 @@ class Ideas extends CIdea_cache
         }
 
         //Update:
-        $set = "";
-        foreach($update_columns as $key => $value) {
-            if(strlen($set)){
-                $set .= " , ";
-
-            }
-            $set .= " ".$key." = ".( is_integer($value) ? $value : "'".$value."'" );
-        }
-        $this->db->query("UPDATE nodeideas SET " . $set . " WHERE ideaid = " . $linkid . ";");
+        $this->db->where('ideaid', $linkid);
+        $this->db->update('nodeideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
-
+        
         if($must_sync_found){
             //Sync algolia:
             update_algolia(12273, $linkid);
