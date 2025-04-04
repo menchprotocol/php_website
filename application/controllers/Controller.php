@@ -3360,11 +3360,6 @@ class Controller extends CI_Controller
             ));
         }
 
-        return view_json(array(
-            'status' => 0,
-            'message' => 'asdas core data',
-        ));
-
         //Validate migration handles if any:
         $_POST['migrate_s__handle'] = trim($_POST['migrate_s__handle']);
         $first_letter = substr($_POST['migrate_s__handle'], 0, 1);
