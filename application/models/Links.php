@@ -182,26 +182,37 @@ class Links extends CIdea_cache
         $this->db->from('menchledger');
 
         //IDEA JOIN?
+        $idea_join = false;
         if (in_array('linkidealeft', $joins_objects)) {
+            $idea_join = true;
             $this->db->join('nodeideas', 'linkidealeft=ideaid', 'left');
         } elseif (in_array('linkidearight', $joins_objects)) {
+            $idea_join = true;
             $this->db->join('nodeideas', 'linkidearight=ideaid', 'left');
         } elseif (in_array('linkideaid', $joins_objects)) {
+            $idea_join = true;
             $this->db->join('nodeideas', 'linkid=ideaid', 'left');
         }
 
-        //SOURCE JOIN?
+        //PLAYER JOIN?
+        $player_join = false;
         if (in_array('linkplayerup', $joins_objects)) {
+            $player_join = true;
             $this->db->join(' nodeplayers', 'linkplayerup=playerid', 'left');
         } elseif (in_array('linkplayerdown', $joins_objects)) {
+            $player_join = true;
             $this->db->join(' nodeplayers', 'linkplayerdown=playerid', 'left');
         } elseif (in_array('linkplayertype', $joins_objects)) {
+            $player_join = true;
             $this->db->join(' nodeplayers', 'linkplayertype=playerid', 'left');
         } elseif (in_array('linkplayercreator', $joins_objects)) {
+            $player_join = true;
             $this->db->join(' nodeplayers', 'linkplayercreator=playerid', 'left');
         } elseif (in_array('linkplayerdomain', $joins_objects)) {
+            $player_join = true;
             $this->db->join(' nodeplayers', 'linkplayerdomain=playerid', 'left');
         } elseif (in_array('linkplayerid', $joins_objects)) {
+            $player_join = true;
             $this->db->join(' nodeplayers', 'linkid=playerid', 'left');
         }
 
@@ -221,6 +232,12 @@ class Links extends CIdea_cache
         if (!$link_void_found) {
             //Auto add:
             $this->db->where('linkvoid', 0); //Not Void
+        }
+        if($idea_join){
+            $this->db->where('ideaid >', 0);
+        }
+        if($player_join){
+            $this->db->where('playerid >', 0);
         }
 
 

@@ -484,7 +484,6 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         }
         //Now search for these settings across Players:
         foreach ($CI->Links->read(array(
-            'playerid >' => 0,
             'linkidearight' => $i['ideaid'],
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___40946')) . ')' => null, //Player List Controllers
         ), array('linkplayerup'), 0) as $setting_link) {
@@ -492,7 +491,6 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         }
         //Now search for these settings across ideas:
         foreach ($CI->Links->read(array(
-            'ideaid >' => 0,
             'linkidearight' => $i['ideaid'],
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___40946')) . ')' => null, //Player List Controllers
         ), array('linkidealeft'), 0) as $setting_link) {
