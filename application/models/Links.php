@@ -1254,8 +1254,8 @@ class Links extends CIdea_cache
 
                     //See if Session needs to be updated:
                     $player_e = superpower_unlocked();
-                    if ($player_e && $player_e['playerid'] == $x_data['linkplayercreator'] && $append_player) {
-                        $this->Players->activate($es_creator[0], true);
+                    if ($player_e && $player_e['playerid']==$x_data['linkplayercreator'] && $append_player) {
+                        $this->Players->activate($player_e, true);
                     }
 
                 }
