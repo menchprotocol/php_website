@@ -1551,13 +1551,16 @@ class Controller extends CI_Controller
 
                 //Update them all:
                 foreach ($_POST['new_linknumber'] as $rank => $linkid) {
-                    $this->Links->update($linkid, array(
-                        'linknumber' => intval($rank),
-                    ));
+                    if($linkid>0){
+                        $this->Links->update($linkid, array(
+                            'linknumber' => intval($rank),
+                        ));
+                    }
                 }
 
                 //Display message:
                 return view_json(array(
+                    'status' => 1,
                     'status' => 1,
                 ));
 
