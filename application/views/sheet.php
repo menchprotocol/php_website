@@ -23,7 +23,7 @@ $idea_settings = idea_settings($_GET['ideahashtag']);
 
 if(1){
 
-    view_json($idea_settings);
+    print_r($idea_settings);
 
 } else {
 
