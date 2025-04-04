@@ -5117,7 +5117,7 @@ function view_player($linkplayertype, $e, $extra_class = null)
 
                 $featured_players .= $linkplayertype_ui;
 
-            } elseif ($linkplayertype_target_bar == 42795 && $player_e && $player_e['playerid'] != $e['playerid'] && count($CI->Links->read(array(
+            } elseif (0 && $linkplayertype_target_bar == 42795 && $player_e && $player_e['playerid'] != $e['playerid'] && count($CI->Links->read(array(
                     'linkplayerdown' => $e['playerid'],
                     'linkplayerup' => 4430, //Active Member
                     'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS

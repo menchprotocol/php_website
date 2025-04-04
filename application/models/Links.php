@@ -445,7 +445,7 @@ class Links extends CIdea_cache
                 'linkplayercreator' => $player_e['playerid'],
             ));
 
-        } elseif ($element_id == 42795 && $o__id > 0 && $new_playerid && $player_e) {
+        } elseif (0 && $element_id == 42795 && $o__id > 0 && $new_playerid && $player_e) {
 
             if (!$linkid) {
                 //Double check database as it may be updating newly selected value:
