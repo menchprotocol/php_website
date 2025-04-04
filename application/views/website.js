@@ -562,7 +562,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
             } else if(focus__node==12274){
 
-                var loading_url = "/controller/view_player_body";
+                var loading_url = "/controller/players_list";
                 var loading_data = {
                     focus__node:focus__node,
                     linkplayertype:linkplayertype,

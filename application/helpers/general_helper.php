@@ -2865,7 +2865,7 @@ function view_google_tag($google_analytics_code)
 
 
 
-function players_list($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
+function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
 {
 
     /*
@@ -2997,7 +2997,7 @@ function players_list($linkplayertype, $playerid, $page_num = 0, $append_card_ic
 }
 
 
-function view_idea_query($linkplayertype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array())
+function ideas_query($linkplayertype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array())
 {
 
     /*
@@ -3043,14 +3043,6 @@ function view_idea_query($linkplayertype, $ideaid, $page_num = 0, $append_card_i
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___' . $linkplayertype)) . ')' => null,
             'linkidealeft' => $ideaid,
         );
-
-        //HACK:
-        if (0 && $linkplayertype == 42997) {
-            $player_e = superpower_unlocked();
-            if ($player_e) {
-                $query_filters['linkplayercreator !='] = $player_e['playerid'];
-            }
-        }
 
     } elseif (in_array($linkplayertype, $CI->config->item('playerids___12144'))) {
 
@@ -3793,7 +3785,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
         }
 
 
-        $coins_count[$linkplayertype] = view_idea_query($linkplayertype, $focus_i['ideaid'], 0, false);
+        $coins_count[$linkplayertype] = ideas_query($linkplayertype, $focus_i['ideaid'], 0, false);
         if (!$coins_count[$linkplayertype] && ($discovery_mode || in_array($linkplayertype, $CI->config->item('playerids___12144')))) {
             continue;
         }
@@ -4805,7 +4797,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 continue;
             }
 
-            $coins_ui = view_idea_query($playerid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
+            $coins_ui = ideas_query($playerid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
             if (strlen($coins_ui)) {
                 $bottom_menu_ui .= '<span class="hideIfEmpty">';
                 $bottom_menu_ui .= $coins_ui;
@@ -5246,7 +5238,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                 }
 
                 $ui .= '<span class="hideIfEmpty">';
-                $ui .= players_list($playerid_bottom_bar, $e['playerid']);
+                $ui .= players_query($playerid_bottom_bar, $e['playerid']);
                 $ui .= '</span>';
             }
         }
