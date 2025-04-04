@@ -2863,63 +2863,7 @@ function view_google_tag($google_analytics_code)
 </script>';
 }
 
-function ideas_list($linkplayertype, $counter, $ideaid)
-{
 
-    $CI =& get_instance();
-    $list_results = view_idea_query($linkplayertype, $ideaid, 1);
-    $ui = '';
-    $is = $CI->Ideas->read(array(
-        'ideaid' => $ideaid,
-    ));
-    if (!count($is) || !$list_results) {
-        return false;
-    }
-
-    if (in_array($linkplayertype, $CI->config->item('playerids___42376')) && !idea_access_level(null, $is[0]['ideaid'], $is[0])) {
-        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
-    }
-
-    if (in_array($linkplayertype, $CI->config->item('playerids___42380'))) {
-
-        //IDEA Link Groups Previous
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
-        foreach ($list_results as $previous_i) {
-            $ui .= idea_view(11019, $previous_i);
-        }
-        $ui .= '</div>';
-
-    } elseif (in_array($linkplayertype, $CI->config->item('playerids___42265'))) {
-
-        //IDEA Link Groups Next
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
-        foreach ($list_results as $next_i) {
-            $ui .= idea_view($linkplayertype, $next_i, $is[0]);
-        }
-        $ui .= '</div>';
-
-    } elseif (in_array($linkplayertype, $CI->config->item('playerids___42284'))) {
-
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
-        foreach ($list_results as $item) {
-            $ui .= player_view(6255, $item);
-        }
-        $ui .= '</div>';
-
-    } elseif (in_array($linkplayertype, $CI->config->item('playerids___42261'))) {
-
-        //Players
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
-        foreach ($list_results as $player_ref) {
-            $ui .= player_view($linkplayertype, $player_ref, null);
-        }
-        $ui .= '</div>';
-
-    }
-
-    return $ui;
-
-}
 
 function players_list($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
 {
@@ -3064,10 +3008,6 @@ function view_idea_query($linkplayertype, $ideaid, $page_num = 0, $append_card_i
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-
-    if (!in_array($linkplayertype, $CI->config->item('playerids___6404'))) {
-        return null;
-    }
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42261'))) {
 

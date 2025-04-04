@@ -691,7 +691,7 @@ class Controller extends CI_Controller
         } elseif (strlen($_POST['migrate_s__handle'])) {
             $valid_handle = $this->Ideas->read(array(
                 'ideaid !=' => $_POST['ideaid'],
-                'LOWER(ideahashtag)' => strtolower(str_replace('#','',$_POST['migrate_s__handle'])),
+                'LOWER(ideahashtag)' => strtolower(str_replace('#', '', $_POST['migrate_s__handle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
@@ -778,7 +778,7 @@ class Controller extends CI_Controller
         } elseif (strlen($_POST['migrate_s__handle'])) {
             $valid_handle = $this->Players->read(array(
                 'playerid !=' => $_POST['playerid'],
-                'LOWER(playerhandle)' => strtolower(str_replace('@','',$_POST['migrate_s__handle'])),
+                'LOWER(playerhandle)' => strtolower(str_replace('@', '', $_POST['migrate_s__handle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
@@ -1318,7 +1318,60 @@ class Controller extends CI_Controller
         if (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1 || !isset($_POST['counter']) || !isset($_POST['linkplayertype']) || intval($_POST['linkplayertype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
-            echo ideas_list($_POST['linkplayertype'], $_POST['counter'], $_POST['ideaid']);
+
+            $list_results = view_idea_query($_POST['linkplayertype'], $_POST['ideaid'], 1);
+            $ui = '';
+            $is = $this->Ideas->read(array(
+                'ideaid' => $_POST['ideaid'],
+            ));
+            if (!count($is) || !$list_results) {
+                return false;
+            }
+
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !idea_access_level(null, $is[0]['ideaid'], $is[0])) {
+                return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
+            }
+
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42380'))) {
+
+                //IDEA Link Groups Previous
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
+                foreach ($list_results as $previous_i) {
+                    $ui .= idea_view(11019, $previous_i);
+                }
+                $ui .= '</div>';
+
+            } elseif (in_array($_POST['linkplayertype'], $this->config->item('playerids___42265'))) {
+
+                //IDEA Link Groups Next
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
+                foreach ($list_results as $next_i) {
+                    $ui .= idea_view($_POST['linkplayertype'], $next_i, $is[0]);
+                }
+                $ui .= '</div>';
+
+            } elseif (in_array($_POST['linkplayertype'], $this->config->item('playerids___42284'))) {
+
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
+                foreach ($list_results as $item) {
+                    $ui .= player_view(6255, $item);
+                }
+                $ui .= '</div>';
+
+            } elseif (in_array($_POST['linkplayertype'], $this->config->item('playerids___42261'))) {
+
+                //Players
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
+                foreach ($list_results as $player_ref) {
+                    $ui .= player_view($_POST['linkplayertype'], $player_ref, null);
+                }
+                $ui .= '</div>';
+
+            }
+
+            return $ui;
+
+
         }
     }
 
