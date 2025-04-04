@@ -608,6 +608,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             foreach ($CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
+                'linkplayertype !=' => 4250,
                 'linkidearight !=' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC', 'ideatext' => 'ASC')) as $link_i) {
                 array_push($idea_column, $link_i);
