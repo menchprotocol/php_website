@@ -20,7 +20,7 @@ boost_power();
 $count = 0;
 $missing = 0;
 foreach ($this->Links->readalt(array(
-    'link_type IN (' . join(',', $is_ideation) . ')' => null, //Active Writes
+    'link_type IN (' . join(',', $is_sourcing) . ')' => null, //Active Writes
 ), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
