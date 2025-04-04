@@ -19,7 +19,7 @@ boost_power();
 
 $count = 0;
 $missing = 0;
-foreach ($this->Links->readold(array(
+foreach ($this->Links->readalt(array(
     'link_type IN (' . join(',', $is_contribution) . ')' => null, //Active Writes
 ), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
 
