@@ -2178,7 +2178,7 @@ class Controller extends CI_Controller
 
     }
 
-    function e_editor_save()
+    function player_edit_save()
     {
 
         $player_e = superpower_unlocked(null, 0, $this->player_e);
@@ -2352,20 +2352,20 @@ class Controller extends CI_Controller
 
         //Sync handle reference:
         $new_handle_string = trim($_POST['save_playerhandle']);
-        if ($es[0]['playerhandle'] == $new_handle_string) {
-            return false; //Nothing changed...
+        if ($es[0]['playerhandle'] != $new_handle_string) {
+            //Update Handles everywhere they are referenced:
+            foreach ($this->Links->read(array(
+                'linkplayerup' => $es[0]['playerid'],
+                'linkplayertype' => 31835, //Player Mention
+            ), array('linkidearight')) as $ref) {
+                $this->Ideas->update($ref['ideaid'], array(
+                    'ideatext' => str_replace('@' . $es[0]['playerhandle'], '@' . $new_handle_string, $ref['ideatext']),
+                ), $player_e['playerid']);
+            }
+            $es[0]['playerhandle'] = $new_handle_string;
         }
 
-        //Update Handles everywhere they are referenced:
-        foreach ($this->Links->read(array(
-            'linkplayerup' => $es[0]['playerid'],
-            'linkplayertype' => 31835, //Player Mention
-        ), array('linkidearight')) as $ref) {
-            $this->Ideas->update($ref['ideaid'], array(
-                'ideatext' => str_replace('@' . $es[0]['playerhandle'], '@' . $new_handle_string, $ref['ideatext']),
-            ), $player_e['playerid']);
-        }
-        $es[0]['playerhandle'] = $new_handle_string;
+
 
 
         //Do we have a link reference message that need to be saved?

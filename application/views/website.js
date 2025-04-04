@@ -2278,7 +2278,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
 
             //Add a second save button at the bottom if we have too much data:
             if(index_idea_content > 5){
-                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default e_editor_save post_button" onclick="e_editor_save()">SAVE</button>');
+                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default player_edit_save post_button" onclick="player_edit_save()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
             }
@@ -2304,14 +2304,14 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
 }
 
 e_saving = false;
-function e_editor_save(){
+function player_edit_save(){
 
     if(e_saving){
         return false;
     }
 
     e_saving = true;
-    $(".e_editor_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".player_edit_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
@@ -2334,10 +2334,10 @@ function e_editor_save(){
         }
     }
 
-    $.post("/controller/e_editor_save", modify_data, function (data) {
+    $.post("/controller/player_edit_save", modify_data, function (data) {
 
         e_saving = false;
-        $(".e_editor_save").html('SAVE');
+        $(".player_edit_save").html('SAVE');
 
         if (!data.status) {
 

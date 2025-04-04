@@ -859,7 +859,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="initial_header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <button type="button" class="e_editor_save btn btn-default post_button" onclick="e_editor_save()">SAVE</button>
+                        <button type="button" class="player_edit_save btn btn-default post_button" onclick="player_edit_save()">SAVE</button>
                     </div>
 
                     <div class="modal-body">
