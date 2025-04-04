@@ -20,7 +20,7 @@ boost_power();
 $count = 0;
 $missing = 0;
 foreach ($this->Links->readalt(array(
-    'link_type IN (' . join(',', $is_contribution) . ')' => null, //Active Writes
+    'link_type >' => 0,
 ), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
@@ -34,12 +34,9 @@ foreach ($this->Links->readalt(array(
     if ($is_missing) {
 
         $missing++;
-        echo print_r($x, true);
-        echo 'WAS MISSING <hr />';
+        //echo print_r($x, true);
 
-        /*
         $this->Links->create(array(
-            'linktime' => $x['link_time'],
             'linkplayercreator' => $x['link_player'],
             'linkplayertype' => $x['link_type'],
             'linkplayerdomain' => $x['link_domain'],
@@ -49,8 +46,9 @@ foreach ($this->Links->readalt(array(
             'linkidearight' => ($x['link_right'] > 0 ? intval($x['link_right']) + 100000 : 0),
             'linknumber' => $x['link_number'],
             'linktext' => $x['link_text'],
+            'linktime' => $x['link_time'],
         ));
-        */
+
     }
 
     if (in_array($x['link_type'], $is_ideation)) {
