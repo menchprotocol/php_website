@@ -176,7 +176,7 @@ class Ideas extends CIdea_cache
             }
             $set .= " ".$key." = ".( is_integer($value) ? $value : "'".$value."'" );
         }
-        $this->db->query("UPDATE nodeideas SET " . $set . " WHERE linkid = " . $linkid . ";");
+        $this->db->query("UPDATE nodeideas SET " . $set . " WHERE ideaid = " . $linkid . ";");
         $affected_rows = $this->db->affected_rows();
 
         if($must_sync_found){
