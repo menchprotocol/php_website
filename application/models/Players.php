@@ -591,7 +591,7 @@ class Players extends CIdea_cache
         $this->session->set_userdata($session_data);
 
 
-        //Resubscribe IF they are Permanently Unsubscribed:
+        //TODO Resubscribe IF they are Permanently Unsubscribed:
         /*
         $unsubscribed_time = null;
         foreach($this->Links->read(array(
