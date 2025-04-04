@@ -135,45 +135,56 @@ class Players extends CIdea_cache
 
     function update($linkid, $update_columns, $linkplayercreator = 0)
     {
-        if (count($update_columns) == 0 || !count($this->Links->read(array('linkid' => $linkid )))) {
+        if (count($update_columns) == 0) {
             return false;
         }
 
-        $must_sync_found = false;
-        $skip_sync_ledger = array('playerexternal','playernumber');
-        $must_sync_ledger = array(
-            'playerhandle' => 32338,
-            'playercover' => 6198,
-            'playertext' => 6197,
-        );
+        $affected_rows = 0;
+        foreach($this->Links->read(array('linkid' => $linkid )) as $old_x){
 
-        //See what is being updated:
-        foreach($update_columns as $key => $value) {
-            if(array_key_exists($key, $must_sync_ledger)){
-                $this->Links->create(array(
-                    'linkplayercreator' => $linkplayercreator,
-                    'linkplayertype' => 44176, //Viewed
-                    'linkplayerup' => $must_sync_ledger[$key], //Idea Hashtag
-                    'linktext' => $value,
-                    'linkplayerdown' => $linkid,
-                ));
-                $must_sync_found = true;
-            } elseif(in_array($key, $skip_sync_ledger)){
-                //Nothing we need to do here
-            } else {
-                //Remove this as its unknown:
-                unset($update_columns[$key]);
+            $must_sync_found = false;
+            $skip_sync_ledger = array('playerexternal','playernumber');
+            $must_sync_ledger = array(
+                'playerhandle' => 32338,
+                'playercover' => 6198,
+                'playertext' => 6197,
+            );
+
+            //See what is being updated:
+            foreach($update_columns as $key => $value) {
+                if(array_key_exists($key, $must_sync_ledger)){
+                    //Update if anything changed:
+                    if($value!=$old_x['linktext']){
+                        $this->Links->create(array(
+                            'linkplayercreator' => $linkplayercreator,
+                            'linkplayertype' => 44176, //Viewed
+                            'linkplayerup' => $must_sync_ledger[$key], //Idea Hashtag
+                            'linktext' => $value,
+                            'linkplayerdown' => $linkid,
+                        ));
+                        $must_sync_found = true;
+                    } else {
+                        //Nothing changed:
+                        unset($update_columns[$key]);
+                    }
+                } elseif(in_array($key, $skip_sync_ledger)){
+                    //Nothing we need to do here
+                } else {
+                    //Unknown not allowed:
+                    unset($update_columns[$key]);
+                }
             }
-        }
 
-        //Update:
-        $this->db->where('playerid', $linkid);
-        $this->db->update('nodeplayers', $update_columns);
-        $affected_rows = $this->db->affected_rows();
+            //Update:
+            $this->db->where('playerid', $linkid);
+            $this->db->update('nodeplayers', $update_columns);
+            $affected_rows = $this->db->affected_rows();
 
-        if($must_sync_found){
-            //Sync algolia:
-            update_algolia(12274, intval($linkid));
+            if($must_sync_found){
+                //Sync algolia:
+                update_algolia(12274, intval($linkid));
+            }
+
         }
 
         return $affected_rows;
