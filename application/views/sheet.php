@@ -243,7 +243,7 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
         }
 
         #sortable_table th, #sortable_table td {
-            border: 1px solid #000000 !important;
+            border: 1px solid #999999 !important;
         }
 
         #sortable_table th:hover, #sortable_table th:active {
