@@ -1339,13 +1339,19 @@ class Controller extends CI_Controller
         }
 
         $list_results = view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1);
-        $focus_playerid = ($_POST['playerid'] > 0 ? $_POST['playerid'] : ($player_e ? $player_e['playerid'] : 0));
         $es = $this->Players->read(array(
             'playerid' => $_POST['playerid'],
         ));
-        if (!count($es) || !$list_results) {
+        if (!count($es)) {
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Invalid Player ID</div>';
             return false;
         }
+        if (!$list_results) {
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Nothing to See</div>';
+            return false;
+        }
+
+        $focus_playerid = ($_POST['playerid'] > 0 ? $_POST['playerid'] : ($player_e ? $player_e['playerid'] : 0));
         $ui = '';
 
         if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42261'))) {
