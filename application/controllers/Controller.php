@@ -1347,7 +1347,6 @@ class Controller extends CI_Controller
             return false;
         }
         if (!$list_results) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Nothing to See</div>';
             return false;
         }
 

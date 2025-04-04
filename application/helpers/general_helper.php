@@ -2937,9 +2937,7 @@ function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_ca
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if (!in_array($linkplayertype, $CI->config->item('playerids___6404'))) {
-        return null;
-    }
+    //if (!in_array($linkplayertype, $CI->config->item('playerids___6404'))) { return null; }
 
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
