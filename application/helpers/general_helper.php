@@ -2909,7 +2909,8 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
     $first_segment = $CI->uri->segment(1);
 
     if(!in_array($linkplayertype, $CI->config->item('playerids___4527')) || !is_array($CI->config->item('playerids___' . $linkplayertype)) || !count($CI->config->item('playerids___' . $linkplayertype))){
-        log_error('MENCH ERROR: @'.$linkplayertype.' Empty Array in Cache @4527');
+        log_error('players_query() @'.$linkplayertype.' Empty Array in Cache @4527');
+        return false;
     }
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
