@@ -19,7 +19,7 @@ $all_e = array();
 if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['playerhandle'] || $_GET['playerhandle']=='0'){
     
     echo '<h1>'.$players___6287[27004]['m__title'].'</h1>';
-    foreach($this->Players->tree(11029, $player_e['playerid'], array(27004)) as $e){
+    foreach($this->Players->tree(11029, $player_active['playerid'], array(27004)) as $e){
         echo '<div><a href="'.view_app_link(27004).view_memory(42903,42902).$e['playerhandle'].'" class="main__title">'.$e['playertext'].'</a></div>';
     }
 

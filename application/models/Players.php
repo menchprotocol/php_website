@@ -24,8 +24,8 @@ class Players extends CIdea_cache
         }
 
         //Log Link new Player:
-        $player_e = superpower_unlocked();
-        $linkplayercreator = ($linkplayercreator > 0 ? $linkplayercreator : ($player_e ? $player_e['playerid'] : 14068));
+        $player_active = superpower_unlocked();
+        $linkplayercreator = ($linkplayercreator > 0 ? $linkplayercreator : ($player_active ? $player_active['playerid'] : 14068));
 
         //Create New Player:
         $new_x = $this->Links->create(array(

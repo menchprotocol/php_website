@@ -164,7 +164,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
             //We are done with this reminder request:
             $this->Links->update($i['linkid'], array(
                 'linkplayertype' => ($remind_status>0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
-                'linkplayercreator' => $player_e['playerid'],
+                'linkplayercreator' => $player_active['playerid'],
             ));
         }
 
@@ -264,7 +264,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
             //Ready to be done:
             $this->Links->update($i['linkid'], array(
                 'linkplayertype' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
-                'linkplayercreator' => $player_e['playerid'],
+                'linkplayercreator' => $player_active['playerid'],
             ));
         }
 

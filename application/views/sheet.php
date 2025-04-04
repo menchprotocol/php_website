@@ -29,7 +29,7 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
 } else {
 
     echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
-    echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($idea_settings['i'], (isset($player_e['playerid']) ? $player_e['playerid'] : 0)) . '</div>';
+    echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($idea_settings['i'], (isset($player_active['playerid']) ? $player_active['playerid'] : 0)) . '</div>';
 
     foreach ($idea_settings['query_string_filtered'] as $x) {
 

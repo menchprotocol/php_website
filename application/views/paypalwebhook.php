@@ -16,7 +16,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     $item_numbers['player_player'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 3 : 2 )])));
 
     //Fetch Objects based on handles:
-    $player_es = $this->Players->read(array(
+    $player_actives = $this->Players->read(array(
         'LOWER(playerhandle)' => $item_numbers['player_player'],
     ));
     $website_es = $this->Players->read(array(
@@ -30,7 +30,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     )) : false);
 
 
-    if(count($player_es) && count($next_is)) {
+    if(count($player_actives) && count($next_is)) {
 
         $is_pending = ($_POST['payment_status']=='Pending');
         $is_good = true;
@@ -42,7 +42,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             $linkplayertype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->Links->discovered($linkplayertype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Links->discovered($linkplayertype, $player_actives[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => intval($_POST['quantity']),
                 'linktext' => $_POST,
             ));
@@ -54,12 +54,12 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             //Find issued tickets:
             $original_payment = $this->Links->read(array(
                 'linkplayertype' => 26595,
-                'linkplayercreator' => $player_es[0]['playerid'],
+                'linkplayercreator' => $player_actives[0]['playerid'],
                 'linkidealeft' => $next_is[0]['ideaid'],
             ));
 
             //Log Refund:
-            $completion_status = $this->Links->discovered($linkplayertype, $player_es[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Links->discovered($linkplayertype, $player_actives[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => (-1 * ( isset($original_payment[0]['linknumber']) ? $original_payment[0]['linknumber'] : 1 )),
                 'linktext' => $_POST,
                 'linkplayerdomain' => ( isset($original_payment[0]['linkplayerdomain']) && $original_payment[0]['linkplayerdomain']>0 ? $original_payment[0]['linkplayerdomain'] : 0 ),

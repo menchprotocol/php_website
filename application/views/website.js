@@ -2278,7 +2278,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
 
             //Add a second save button at the bottom if we have too much data:
             if(index_idea_content > 5){
-                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default player_edit_save post_button" onclick="player_edit_save()">SAVE</button>');
+                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default player_save_edit post_button" onclick="player_save_edit()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
             }
@@ -2304,14 +2304,14 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
 }
 
 e_saving = false;
-function player_edit_save(){
+function player_save_edit(){
 
     if(e_saving){
         return false;
     }
 
     e_saving = true;
-    $(".player_edit_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".player_save_edit").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
@@ -2334,10 +2334,10 @@ function player_edit_save(){
         }
     }
 
-    $.post("/controller/player_edit_save", modify_data, function (data) {
+    $.post("/controller/player_save_edit", modify_data, function (data) {
 
         e_saving = false;
-        $(".player_edit_save").html('SAVE');
+        $(".player_save_edit").html('SAVE');
 
         if (!data.status) {
 
@@ -2475,22 +2475,22 @@ function toggle_max_view(css_class){
 
 //Adds OR links Players to Players
 var e_is_adding = false;
-function new_player(linkplayertype, player_existing_id) {
+function new_player(linkplayertype, player_current_id) {
 
     if(e_is_adding){
         return false;
     }
 
-    //if player_existing_id>0 it means we're adding an existing Player, in which case player_new_string should be null
-    //If player_existing_id=0 it means we are creating a new Player and then adding it, in which case player_new_string is required
+    //if player_current_id>0 it means we're adding an existing Player, in which case player_new_string should be null
+    //If player_current_id=0 it means we are creating a new Player and then adding it, in which case player_new_string is required
     e_is_adding = true;
 
     var input = $('.new-list-'+linkplayertype+' .add-input');
 
-    var original_photo = $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html();
-    $('.mini-cover.card-12274.card-id-'+player_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    var original_photo = $('.mini-cover.card-12274.card-id-'+player_current_id+' .cover-btn').html();
+    $('.mini-cover.card-12274.card-id-'+player_current_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
     var player_new_string = null;
-    if (player_existing_id==0) {
+    if (player_current_id==0) {
         player_new_string = input.val();
         if (player_new_string.length < 1) {
             alert('Missing Player name or URL, try again');
@@ -2505,7 +2505,7 @@ function new_player(linkplayertype, player_existing_id) {
         focus__node: parseInt($('#focus__node').val()),
         linkplayertype: linkplayertype,
         focus__id: parseInt($('#focus__id').val()),
-        player_existing_id: player_existing_id,
+        player_current_id: player_current_id,
         player_new_string: player_new_string,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
 
@@ -2539,7 +2539,7 @@ function new_player(linkplayertype, player_existing_id) {
             }, 987);
 
             //Hide Coin:
-            $('.mini-cover.card-12274.card-id-'+player_existing_id).fadeOut();
+            $('.mini-cover.card-12274.card-id-'+player_current_id).fadeOut();
 
         } else {
             //We had an error:

@@ -72,7 +72,7 @@ if($icon_keyword){
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
                 $replaced += $this->Players->update($en['playerid'], array(
                     'playercover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['playercover']),
-                ), $player_e['playerid']);
+                ), $player_active['playerid']);
 
             }
 

@@ -1,8 +1,8 @@
 <?php
 
 //See if we need to redirect to starting point?
-if($player_e && !superpower_unlocked(10939) && count($this->Links->read(array(
-        'linkplayercreator' => $player_e['playerid'],
+if($player_active && !superpower_unlocked(10939) && count($this->Links->read(array(
+        'linkplayercreator' => $player_active['playerid'],
         'linkplayertype' => 4235, //Get started
         'linkidealeft' => $focus_i['ideaid'],
     )))){
