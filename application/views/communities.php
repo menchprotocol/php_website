@@ -15,7 +15,7 @@ foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
 
             $ui = '<div class="row justify-content">';
             foreach (players_list(12274, $x['playerid'], 1, false) as $count => $e) {
-                $ui .= view_player(13207, $e, null);
+                $ui .= player_view(13207, $e, null);
             }
             $ui .= '</div>';
 

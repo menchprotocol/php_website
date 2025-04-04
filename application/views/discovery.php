@@ -100,7 +100,7 @@ if ($player_e) {
 
 //Focus Discovery:
 echo '<div class="row justify-content">';
-echo view_idea(43007, $focus_i, null, null, 0, $x_completes);
+echo idea_view(43007, $focus_i, null, null, 0, $x_completes);
 echo '</div>';
 
 

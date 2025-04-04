@@ -21,7 +21,7 @@ foreach ($this->Links->read(array(
         continue;
     }
 
-    echo view_player(6287, $app);
+    echo player_view(6287, $app);
     array_push($already_loaded, intval($app['playerid']));
 
 }
@@ -47,6 +47,6 @@ foreach ($this->Links->read(array(
         }
     }
 
-    echo view_player(6287, $app);
+    echo player_view(6287, $app);
 }
 echo '</div>';

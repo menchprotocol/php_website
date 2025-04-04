@@ -466,8 +466,8 @@ function idea_settings($ideahashtag, $fetch_contact = false)
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $players___40946 = $CI->config->item('players___40946'); //Player List Controllers
     $list_config = array(); //To compile the settings of this sheet:
-    $column_e = array();
-    $column_i = array();
+    $player_column = array();
+    $idea_column = array();
     $contact_details = array(
         'full_list' => '',
         'email_list' => '',
@@ -600,7 +600,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         //Determine columns if any:
         if (count($list_config[34513])) {
 
-            $column_e = $CI->Links->read(array(
+            $player_column = $CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, sort__player());
@@ -610,7 +610,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
                 'linkidearight !=' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC', 'ideatext' => 'ASC')) as $link_i) {
-                array_push($column_i, $link_i);
+                array_push($idea_column, $link_i);
             }
 
         }
@@ -655,7 +655,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
 
         //Append Navigation:
-        foreach ($column_i as $key => $idea_var) {
+        foreach ($idea_column as $key => $idea_var) {
             $must_follow = array();
             foreach ($CI->Links->read(array(
                 'linkplayertype' => 32235, //Navigation
@@ -663,14 +663,14 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             )) as $follow) {
                 array_push($must_follow, $follow['linkplayerup']);
             }
-            $column_i[$key]['must_follow'] = $must_follow;
+            $idea_column[$key]['must_follow'] = $must_follow;
         }
 
         return array(
             'i' => $i,
             'list_config' => $list_config,
-            'column_e' => $column_e,
-            'column_i' => $column_i,
+            'player_column' => $player_column,
+            'idea_column' => $idea_column,
             'query_string_filtered' => $query_string_filtered,
             'contact_details' => $contact_details, //Optional addon
         );
@@ -2885,7 +2885,7 @@ function ideas_list($linkplayertype, $counter, $ideaid)
         //IDEA Link Groups Previous
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $previous_i) {
-            $ui .= view_idea(11019, $previous_i);
+            $ui .= idea_view(11019, $previous_i);
         }
         $ui .= '</div>';
 
@@ -2894,7 +2894,7 @@ function ideas_list($linkplayertype, $counter, $ideaid)
         //IDEA Link Groups Next
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $next_i) {
-            $ui .= view_idea($linkplayertype, $next_i, $is[0]);
+            $ui .= idea_view($linkplayertype, $next_i, $is[0]);
         }
         $ui .= '</div>';
 
@@ -2902,7 +2902,7 @@ function ideas_list($linkplayertype, $counter, $ideaid)
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $item) {
-            $ui .= view_player(6255, $item);
+            $ui .= player_view(6255, $item);
         }
         $ui .= '</div>';
 
@@ -2911,7 +2911,7 @@ function ideas_list($linkplayertype, $counter, $ideaid)
         //Players
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
         foreach ($list_results as $player_ref) {
-            $ui .= view_player($linkplayertype, $player_ref, null);
+            $ui .= player_view($linkplayertype, $player_ref, null);
         }
         $ui .= '</div>';
 
@@ -4096,7 +4096,7 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 }
 
 
-function view_idea($linkplayertype, $i, $previous_i = null, $target_ideahashtag = null, $focus_playerid = 0, $x_completes = false)
+function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag = null, $focus_playerid = 0, $x_completes = false)
 {
 
     //Search to see if an idea has a thumbnail:
@@ -4778,7 +4778,7 @@ function view_idea($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['ideaid'] . ', [\'#' . $i['ideaid'] . '\'], \'.inner_uploader_' . $i['ideaid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $i['ideaid'] . '); }, 144); }); </script>';
 
                     foreach ($player_private_replies as $x_response) {
-                        $input_ui .= '<div class="hidden">' . view_idea(6255, $x_response) . '</div>';
+                        $input_ui .= '<div class="hidden">' . idea_view(6255, $x_response) . '</div>';
                         $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $x_response['ideaid'] . '); }, 144); }); </script>';
                     }
                 }
@@ -4988,7 +4988,7 @@ function view_pill($focus__node, $linkplayertype, $counter, $m, $ui = null, $is_
 
 
 
-function view_player($linkplayertype, $e, $extra_class = null)
+function player_view($linkplayertype, $e, $extra_class = null)
 {
 
     $CI =& get_instance();
@@ -4998,7 +4998,7 @@ function view_player($linkplayertype, $e, $extra_class = null)
             'linkplayertype' => 44179, //Triggered
             'linkplayerup' => 4246, //Platform Bug Reports
             'linkplayerdown' => $linkplayertype,
-            'linktext' => 'view_player() Missing core variables',
+            'linktext' => 'player_view() Missing core variables',
         ));
         return 'Missing core variables';
     }

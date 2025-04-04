@@ -321,7 +321,6 @@ function player_load_finder(linkplayertype) {
 }
 
 function i_load_finder(linkplayertype) {
-    console.log(linkplayertype + " i_load_finder()");
     //Load Search:
     var icons_listed = [];
     $('.new-list-'+linkplayertype + ' .add-input').keypress(function (e) {
@@ -1419,7 +1418,7 @@ function display_media(mediaframe_id, uploader_id, ideaid){
     console.log('display_media: '+mediaframe_id+'/'+uploader_id+'/'+ideaid);
     $(".ui_ideacache_"+ideaid+" .media_display").each(function () {
         $('#'+mediaframe_id).append('<div id="'+$(this).attr('id')+'" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""></div>');
-        cloudinary_preview_player(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
+        cloudinary_preplayer_view(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
     });
     sort_media(mediaframe_id);
 }
@@ -2063,10 +2062,9 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 //Append this to the main Player:
                 if(media_playerid) {
 
-                    cloudinary_preview_player(uploader_id, result.info.id, media_playerid, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_players___42294[media_playerid]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_players___42294[media_playerid]['m__title']+' File' ));
+                    cloudinary_preplayer_view(uploader_id, result.info.id, media_playerid, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_players___42294[media_playerid]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_players___42294[media_playerid]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
-                    console.log('MEDIA CACHE:');
                     console.log(media_cache);
 
                 } else {
@@ -2129,7 +2127,7 @@ function play_video(public_id){
     cld.source(public_id);
 }
 
-function cloudinary_preview_player(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0){
+function cloudinary_preplayer_view(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0){
 
     //Update meta variables:
     $('#'+info_id).attr('media_playerid',media_playerid).attr('playback_code',playback_code).attr('playerid',playerid).attr('playercover',playercover);

@@ -2,7 +2,7 @@
 
 //Focus Player:
 echo '<div class="view_12274 row justify-content">';
-echo view_player(42287, $focus_e, null);
+echo player_view(42287, $focus_e, null);
 echo '</div>';
 
 //Idea Tree:

@@ -31,7 +31,7 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
     //IDEAS
     $idea_content = '';
     $this_quantity = 1;
-    foreach ($idea_settings['column_i'] as $idea_var) {
+    foreach ($idea_settings['idea_column'] as $idea_var) {
 
         $discoveries = $this->Links->read(array(
             'linkidealeft' => $idea_var['ideaid'],
@@ -93,7 +93,7 @@ foreach ($idea_settings['query_string_filtered'] as $x) {
 
 
     //SOURCES
-    foreach ($idea_settings['column_e'] as $e) {
+    foreach ($idea_settings['player_column'] as $e) {
 
         $require_writing = count($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
@@ -169,12 +169,12 @@ echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">' . $count . ' Players</th>';
 
-foreach ($idea_settings['column_e'] as $e) {
+foreach ($idea_settings['player_column'] as $e) {
     array_push($table_sortable, '#thplayer_' . $e['playerid']);
     echo '<th id="thplayer_' . $e['playerid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['playerhandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['playerid']]) ? str_replace('.00', '', number_format($count_totals['e'][$e['playerid']], 2)) : '0') . '</a><span class="vertical_col">' . view_cover($e['playercover'], '✔️', ' ') . $e['playertext'] . '</span></th>';
 }
 
-foreach ($idea_settings['column_i'] as $idea_var) {
+foreach ($idea_settings['idea_column'] as $idea_var) {
 
     $max_available = $this->Links->read(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes

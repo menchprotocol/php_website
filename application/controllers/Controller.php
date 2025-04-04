@@ -472,14 +472,14 @@ class Controller extends CI_Controller
                 foreach ($this->Ideas->read(array(
                     'LOWER(ideahashtag)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $i) {
-                    echo view_idea(6255, $i);
+                    echo idea_view(6255, $i);
                     return true;
                 }
             } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
                 foreach ($this->Players->read(array(
                     'LOWER(playerhandle)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $e) {
-                    echo view_player(12274, $e);
+                    echo player_view(12274, $e);
                     return true;
                 }
             }
@@ -968,7 +968,7 @@ class Controller extends CI_Controller
                         return view_json(array(
                             'status' => 1,
                             'return_ideacache_links' => '',
-                            'return_ideacache_full' => view_idea($_POST['focus_group'], $return_i),
+                            'return_ideacache_full' => idea_view($_POST['focus_group'], $return_i),
                             'redirect_idea' => view_memory(42903, 33286) . $return_i['ideahashtag'],
                             'message' => count($idea_references) . ' ideas linked',
                         ));
@@ -1154,13 +1154,13 @@ class Controller extends CI_Controller
         }
 
         //Update Text:
-        $this->Ideas->update($ref['ideaid'], array(
+        $this->Ideas->update($is[0]['ideaid'], array(
             'ideatext' => trim($_POST['save_ideatext']),
         ), $player_e['playerid']);
 
 
         foreach ($this->Ideas->read(array(
-            'ideaid' => $ref['ideaid'],
+            'ideaid' => $is[0]['ideaid'],
         )) as $new_i) {
             //Update Search Index:
             update_algolia(12273, $new_i['ideaid']);
@@ -1168,7 +1168,7 @@ class Controller extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'return_ideacache_links' => view_idea_links($new_i, $player_e['playerid'], $focus__node, $focus__node),
-                'return_ideacache_full' => view_idea($_POST['focus_group'], $new_i),
+                'return_ideacache_full' => idea_view($_POST['focus_group'], $new_i),
                 'redirect_idea' => (isset($new_i['ideahashtag']) ? view_memory(42903, 33286) . $new_i['ideahashtag'] : null),
                 'message' => $media_stats['total_current'] . ' current & ' . $media_stats['total_submitted'] . ' submitted media: ' . $media_stats['total_submitted'] . ' Created, ' . $media_stats['adjust_updated'] . ' Updated & ' . $media_stats['adjust_removed'] . ' Removed while detected ' . $media_stats['adjust_duplicated'] . ' duplicate uploads.',
             ));
@@ -1362,7 +1362,7 @@ class Controller extends CI_Controller
             //Ideas:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
             foreach ($list_results as $i) {
-                $ui .= view_idea($_POST['linkplayertype'], $i, null, null, $focus_playerid);
+                $ui .= idea_view($_POST['linkplayertype'], $i, null, null, $focus_playerid);
             }
             $ui .= '</div>';
 
@@ -1371,7 +1371,7 @@ class Controller extends CI_Controller
             //Players:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
             foreach ($list_results as $e) {
-                $ui .= view_player($_POST['linkplayertype'], $e, null);
+                $ui .= player_view($_POST['linkplayertype'], $e, null);
             }
             $ui .= '</div>';
 
@@ -1380,7 +1380,7 @@ class Controller extends CI_Controller
             //Discoveries:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
             foreach ($list_results as $i) {
-                $ui .= view_idea($_POST['linkplayertype'], $i, null, null, $focus_playerid);
+                $ui .= idea_view($_POST['linkplayertype'], $i, null, null, $focus_playerid);
             }
             $ui .= '</div>';
 
@@ -1903,7 +1903,7 @@ class Controller extends CI_Controller
         //Return Player:
         return view_json(array(
             'status' => 1,
-            'player_new_echo' => view_player($_POST['linkplayertype'], array_merge($focus_e, $ur2), null),
+            'player_new_echo' => player_view($_POST['linkplayertype'], array_merge($focus_e, $ur2), null),
         ));
 
     }
@@ -2930,7 +2930,7 @@ class Controller extends CI_Controller
                     $ids = array();
                     foreach (players_list(12274, $_POST['s__id'], 1, true) as $e) {
                         array_push($ids, $e['playerid']);
-                        echo view_player(12274, $e);
+                        echo player_view(12274, $e);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent" title="Total of ' . count($ids) . '">' . join(', ', $ids) . '</div>';
@@ -2953,7 +2953,7 @@ class Controller extends CI_Controller
                     $ids = array();
                     foreach ($is_next as $i) {
                         array_push($ids, $i['ideaid']);
-                        echo view_idea(12273, $i);
+                        echo idea_view(12273, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">' . join(',', $ids) . '</div>';
@@ -2986,10 +2986,10 @@ class Controller extends CI_Controller
 
             foreach (players_list($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
-                    echo view_player($_POST['linkplayertype'], $s);
+                    echo player_view($_POST['linkplayertype'], $s);
                     $success = true;
                 } else if ($_POST['linkplayertype'] == 6255 || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
-                    echo view_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                    echo idea_view($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
                     $success = true;
                 }
             }
@@ -3004,10 +3004,10 @@ class Controller extends CI_Controller
 
             foreach (view_idea_query($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
-                    echo view_idea($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                    echo idea_view($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
                     $success = true;
                 } else if ($_POST['linkplayertype'] == 6255 || in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
-                    echo view_player($_POST['linkplayertype'], $s);
+                    echo player_view($_POST['linkplayertype'], $s);
                     $success = true;
                 }
             }

@@ -50,7 +50,7 @@ if($search_for_set){
                 }
             }
 
-            echo view_player(12730, $en, null);
+            echo player_view(12730, $en, null);
         }
         echo '</div>';
 
