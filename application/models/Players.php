@@ -144,7 +144,7 @@ class Players extends CIdea_cache
         $must_sync_ledger = array(
             'playerhandle' => 32338,
             'playercover' => 6198,
-            'playertext' => 6198, //TODO Update later with message
+            'playertext' => 6197,
         );
 
         //See what is being updated:

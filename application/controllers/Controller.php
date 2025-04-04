@@ -1671,7 +1671,7 @@ class Controller extends CI_Controller
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Links
         ), array(), 0) as $x) {
 
-            if (in_array($x['linkplayerup'], array(32338, 6198)) && $x['linkplayertype'] == 44176) {
+            if (in_array($x['linkplayerup'], array(32338, 6198, 6197)) && $x['linkplayertype'] == 44176) {
                 //Handle & COver is a system link that do not to be replicated:
                 continue;
             }

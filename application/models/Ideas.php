@@ -139,7 +139,7 @@ class Ideas extends CIdea_cache
         $must_sync_found = false;
         $skip_sync_ledger = array('ideacache','ideaexternal','ideanumber','ideatype');
         $must_sync_ledger = array(
-            'ideatext' => 32337, //TODO Update later with message
+            'ideatext' => 4736,
             'ideahashtag' => 32337,
         );
 
@@ -528,7 +528,7 @@ class Ideas extends CIdea_cache
         );
 
         foreach ($this->Links->read($filters, array(), 0) as $x) {
-            if ($x['linkplayerup'] == 32337 && $x['linkplayertype'] == 42275) {
+            if (in_array($x['linkplayerup'],array(4736,32337)) && $x['linkplayertype']==42275) {
                 //Hashtag is a system link that does not to be replicated:
                 continue;
             }
