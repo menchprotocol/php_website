@@ -24,7 +24,7 @@ foreach ($this->Links->readalt(array(
 ), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
-    $is_missing = !count($this->Menchledger->fetch(array(
+    $is_missing = !count($this->Links->fetch(array(
         'linkplayertype' => $x['link_type'],
         'linkplayerup' => $x['link_up'],
         'linkplayerdown' => $x['link_down'],
@@ -38,7 +38,7 @@ foreach ($this->Links->readalt(array(
         echo 'WAS MISSING <hr />';
 
         /*
-        $this->Menchledger->create(array(
+        $this->Links->create(array(
             'linktime' => $x['link_time'],
             'linkplayercreator' => $x['link_player'],
             'linkplayertype' => $x['link_type'],
