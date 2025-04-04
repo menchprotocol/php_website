@@ -15,7 +15,7 @@ class Ideas extends CIdea_cache
     }
 
 
-    function create($add_fields, $linkplayercreator = 14068)
+    function create($add_fields, $linkplayercreator = 14068 /* GUEST */)
     {
 
         //Add if not added as the author:
@@ -168,8 +168,9 @@ class Ideas extends CIdea_cache
         }
 
         //Update:
+        $this->db->set($update_columns);
         $this->db->where('ideaid', intval($id));
-        $this->db->update('nodeideas', $update_columns);
+        $this->db->update('nodeideas');
         $affected_rows = $this->db->affected_rows();
 
         if($must_sync_found){
