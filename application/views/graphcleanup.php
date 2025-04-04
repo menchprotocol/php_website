@@ -24,7 +24,7 @@ foreach ($this->Links->readalt(array(
 ), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
-    $is_missing = !count($this->Links->fetch(array(
+    $is_missing = !count($this->Links->read(array(
         'linkplayertype' => $x['link_type'],
         'linkplayerup' => $x['link_up'],
         'linkplayerdown' => $x['link_down'],
