@@ -264,12 +264,12 @@ class Links extends CIdea_cache
     }
 
 
-    function update($id, $update_columns, $linkplayercreator = 0)
+    function update($linkid, $update_columns, $linkplayercreator = 0)
     {
 
         //Fetch Link before updating:
         foreach ($this->Links->read(array(
-            'linkid' => $id,
+            'linkid' => $linkid,
         )) as $old_x) {
 
             if (!$linkplayercreator) {
@@ -286,11 +286,10 @@ class Links extends CIdea_cache
 
             if ($new_x['linkid'] > 0) {
                 //Void Old Link:
-                return $this->Links->update($id, array(
-                    'linkplayercreator' => $linkplayercreator,
-                    'linkvoid' => $new_x['linkid'], //We insert as void since this is a void link only
-                ));
+                $this->db->query("UPDATE menchledger SET linkvoid = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
+                return $this->db->affected_rows();
             }
+
         }
 
         //Invalid link:
