@@ -528,7 +528,7 @@ class Ideas extends CIdea_cache
         );
 
         foreach ($this->Links->read($filters, array(), 0) as $x) {
-            if ($x['linkplayerup'] == 32337) {
+            if ($x['linkplayerup'] == 32337 && $x['linkplayertype'] == 42275) {
                 //Hashtag is a system link that does not to be replicated:
                 continue;
             }
