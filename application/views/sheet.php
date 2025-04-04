@@ -21,6 +21,12 @@ $count_totals = array(
 //Generate list & settings:
 $idea_settings = idea_settings($_GET['ideahashtag']);
 
+if(1){
+
+    view_json($idea_settings);
+
+} else {
+
 echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
 echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($idea_settings['i'], (isset($player_e['playerid']) ? $player_e['playerid'] : 0)) . '</div>';
 
@@ -346,3 +352,10 @@ echo '</table>';
             });
     });
 </script>
+
+
+<?php
+
+}
+
+?>
