@@ -419,6 +419,8 @@ class Links extends CIdea_cache
         $delete_element = null;
         $links_removed = -1;
         $status = 0;
+        $delete_redirect = '';
+        $delete_element = '';
 
         if ($element_id == 4486 && $linkid > 0) {
 

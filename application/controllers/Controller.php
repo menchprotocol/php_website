@@ -702,7 +702,8 @@ class Controller extends CI_Controller
             $migrate_s__id = $valid_handle[0]['ideaid'];
         }
 
-
+        $delete_redirect = '';
+        $delete_element = '';
         //Determine what to do after deleted:
         if ($_POST['ideaid'] == $_POST['focus__id']) {
 
@@ -790,6 +791,9 @@ class Controller extends CI_Controller
 
 
         //Determine what to do after deleted:
+        $delete_redirect = '';
+        $delete_element = '';
+
         if ($_POST['playerid'] == $_POST['focus__id']) {
 
             //Find Published Followings:
