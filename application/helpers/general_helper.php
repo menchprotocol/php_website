@@ -605,6 +605,14 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, sort__player());
 
+            print_r(array(
+                'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
+                'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
+                'linkplayertype !=' => 4250, //TODO Figure this out...
+                'linkidearight !=' => $i['ideaid'],
+            ));
+            die();
+
             foreach ($CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
