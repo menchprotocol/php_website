@@ -136,7 +136,7 @@ table td { border: none !important; }
 .texttype_lg { font-size:2.3em; }
 
 h1 {
-    padding:21px 8px !important;
+    padding:0 8px 34px !important;
     margin:0;
     font-size:4.55em;
     text-align: center;
