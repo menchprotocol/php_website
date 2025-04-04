@@ -2852,61 +2852,6 @@ function view_more($href, $is_current, $linkplayertype, $o__type, $o__title, $li
 }
 
 
-function view_player_body($linkplayertype, $counter, $playerid, $js_request_uri)
-{
-
-
-    $CI =& get_instance();
-    $limit = view_memory(6404, 11064);
-    $player_e = superpower_unlocked();
-
-    //Check Permission:
-    if (in_array($linkplayertype, $CI->config->item('playerids___42376')) && !player_access_level(null, $playerid)) {
-        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
-    }
-
-    $list_results = view_player_cards($linkplayertype, $playerid, 1);
-    $focus_playerid = ($playerid > 0 ? $playerid : ($player_e ? $player_e['playerid'] : 0));
-    $es = $CI->Players->read(array(
-        'playerid' => $playerid,
-    ));
-    if (!count($es) || !$list_results) {
-        return false;
-    }
-    $ui = '';
-
-    if (in_array($linkplayertype, $CI->config->item('playerids___42261'))) {
-
-        //Ideas:
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
-        foreach ($list_results as $i) {
-            $ui .= view_idea($linkplayertype, $i, null, null, $focus_playerid);
-        }
-        $ui .= '</div>';
-
-    } elseif (in_array($linkplayertype, $CI->config->item('playerids___11028'))) {
-
-        //Players:
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
-        foreach ($list_results as $e) {
-            $ui .= view_player($linkplayertype, $e, null);
-        }
-        $ui .= '</div>';
-
-    } elseif (in_array($linkplayertype, $CI->config->item('playerids___12144'))) {
-
-        //Discoveries:
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $linkplayertype . '">';
-        foreach ($list_results as $i) {
-            $ui .= view_idea($linkplayertype, $i, null, null, $focus_playerid);
-        }
-        $ui .= '</div>';
-
-    }
-
-    return $ui;
-
-}
 
 function view_google_tag($google_analytics_code)
 {

@@ -683,7 +683,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (idea_access_level(null, $_POST['ideaid'])<3) {
+        } elseif (idea_access_level(null, $_POST['ideaid']) < 3) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
@@ -696,7 +696,7 @@ class Controller extends CI_Controller
             if (!count($valid_handle)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'].' is not an active hashtag',
+                    'message' => $_POST['migrate_s__handle'] . ' is not an active hashtag',
                 ));
             }
             $migrate_s__id = $valid_handle[0]['ideaid'];
@@ -744,15 +744,13 @@ class Controller extends CI_Controller
         $links_removed = $this->Ideas->delete($_POST['ideaid'], $player_e['playerid'], $migrate_s__id);
 
         return view_json(array(
-            'status' => ( $links_removed>0 ? 1 : 0 ),
+            'status' => ($links_removed > 0 ? 1 : 0),
             'message' => 'Idea successfully removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
         ));
 
     }
-
-
 
 
     function player_delete()
@@ -771,7 +769,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (player_access_level(null, $_POST['playerid'])<3) {
+        } elseif (player_access_level(null, $_POST['playerid']) < 3) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
@@ -784,7 +782,7 @@ class Controller extends CI_Controller
             if (!count($valid_handle)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'].' is not an active handle',
+                    'message' => $_POST['migrate_s__handle'] . ' is not an active handle',
                 ));
             }
             $migrate_s__id = $valid_handle[0]['playerid'];
@@ -819,7 +817,7 @@ class Controller extends CI_Controller
         $links_removed = $this->Players->delete($_POST['playerid'], $player_e['playerid'], $migrate_s__id);
 
         return view_json(array(
-            'status' => ( $links_removed>0 ? 1 : 0 ),
+            'status' => ($links_removed > 0 ? 1 : 0),
             'message' => 'Player successfully removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
@@ -1157,9 +1155,9 @@ class Controller extends CI_Controller
         ), $player_e['playerid']);
 
 
-        foreach($this->Ideas->read(array(
+        foreach ($this->Ideas->read(array(
             'ideaid' => $ref['ideaid'],
-        )) as $new_i){
+        )) as $new_i) {
             //Update Search Index:
             update_algolia(12273, $new_i['ideaid']);
 
@@ -1324,12 +1322,63 @@ class Controller extends CI_Controller
 
     function view_player_body()
     {
+
         //Authenticate Member:
         if (!isset($_POST['playerid']) || intval($_POST['playerid']) < 1 || !isset($_POST['linkplayertype']) || intval($_POST['linkplayertype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
-        } else {
-            echo view_player_body($_POST['linkplayertype'], $_POST['counter'], $_POST['playerid'], $_POST['js_request_uri']);
+            return false;
         }
+
+        $limit = view_memory(6404, 11064);
+        $player_e = superpower_unlocked();
+
+        //Check Permission:
+        if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access_level(null, $_POST['playerid'])) {
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
+            return false;
+        }
+
+        $list_results = view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1);
+        $focus_playerid = ($_POST['playerid'] > 0 ? $_POST['playerid'] : ($player_e ? $player_e['playerid'] : 0));
+        $es = $this->Players->read(array(
+            'playerid' => $_POST['playerid'],
+        ));
+        if (!count($es) || !$list_results) {
+            return false;
+        }
+        $ui = '';
+
+        if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42261'))) {
+
+            //Ideas:
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
+            foreach ($list_results as $i) {
+                $ui .= view_idea($_POST['linkplayertype'], $i, null, null, $focus_playerid);
+            }
+            $ui .= '</div>';
+
+        } elseif (in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
+
+            //Players:
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
+            foreach ($list_results as $e) {
+                $ui .= view_player($_POST['linkplayertype'], $e, null);
+            }
+            $ui .= '</div>';
+
+        } elseif (in_array($_POST['linkplayertype'], $this->config->item('playerids___12144'))) {
+
+            //Discoveries:
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['linkplayertype'] . '">';
+            foreach ($list_results as $i) {
+                $ui .= view_idea($_POST['linkplayertype'], $i, null, null, $focus_playerid);
+            }
+            $ui .= '</div>';
+
+        }
+
+        echo $ui;
+
     }
 
     function player_load_cover()
@@ -3009,7 +3058,6 @@ class Controller extends CI_Controller
             }
         }
 
-
         //Display message:
         view_json(array(
             'status' => 1,
@@ -3044,7 +3092,6 @@ class Controller extends CI_Controller
         if (!isset($_POST['next_idea_data'])) {
             $_POST['next_idea_data'] = array();
         }
-
 
         //Discover Focus Idea:
         $primary_ideaid = null;
