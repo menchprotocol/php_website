@@ -397,7 +397,7 @@ class Controller extends CI_Controller
 
         //App title?
         if ($memory_detected && in_array($app_playerid, $this->config->item('playerids___42928'))) {
-            $ui = '<h1>' . $players___6287[$app_playerid]['m__cover'] . ' ' . $players___6287[$app_playerid]['m__title'] . '</h1>' . $ui;
+            $ui = '<h1><span class="icon-block" style="font-size:3em !important;">' . $players___6287[$app_playerid]['m__cover'] . '</span> ' . $players___6287[$app_playerid]['m__title'] . '</h1>' . $ui;
         }
 
 
