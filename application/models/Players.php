@@ -184,7 +184,7 @@ class Players extends CIdea_cache
     function delete($playerid, $linkplayercreator = 0, $migrate_s__id = 0)
     {
 
-        if (!count($this->Players->read(array( 'plyerid' => $playerid )))) {
+        if (!count($this->Players->read(array( 'playerid' => $playerid )))) {
             return array(
                 'status' => 0,
                 'message' => $playerid . ' is not a valid ID',
