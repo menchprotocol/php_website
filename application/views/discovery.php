@@ -9,23 +9,23 @@ $target_ideahashtag = (count($target_i) && $linkplayercreator ? $target_i['ideah
 $breadcrum_content = null;
 if ($linkplayercreator && $target_ideahashtag != $focus_i['ideahashtag']) {
 
-    $find_previous = $this->Ledger->find_previous($linkplayercreator, $target_ideahashtag, $focus_i['ideaid']);
-    if (count($find_previous)) {
+    $previous = $this->Links->previousidea($linkplayercreator, $target_ideahashtag, $focus_i['ideaid']);
+    if (count($previous)) {
 
         $nav_list = array();
         $main_branch = array(intval($focus_i['ideaid']));
-        foreach ($find_previous as $followings_i) {
+        foreach ($previous as $followings_i) {
             //First add-up the main branch:
             array_push($main_branch, intval($followings_i['ideaid']));
         }
 
         $level = 0;
-        foreach ($find_previous as $followings_i) {
+        foreach ($previous as $followings_i) {
 
             $level++;
 
             //Does this have a follower list?
-            $query_subset = $this->Ledger->fetch(array(
+            $query_subset = $this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
                 'linkidealeft' => $followings_i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
@@ -43,7 +43,7 @@ if ($linkplayercreator && $target_ideahashtag != $focus_i['ideahashtag']) {
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_' . $followings_i['ideaid'] . '">';
                 foreach ($query_subset as $idea_subset) {
 
-                    if (count($this->Ledger->fetch(array(
+                    if (count($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkplayercreator' => $linkplayercreator,
                         'linkidealeft' => $idea_subset['ideaid'],
@@ -75,22 +75,22 @@ if ($breadcrum_content) {
 
 //Progress?
 if ($player_e) {
-    $tree_progress = $this->Ledger->tree_progress($linkplayercreator, $target_i);
-    $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
+    $progress = $this->Links->progress($linkplayercreator, $target_i);
+    $target_completed = $progress['fixed_completed_percentage'] >= 100;
     if ($target_completed) {
-        echo '<div class="alert alert-success" role="alert" title="' . $tree_progress['fixed_total'] . '/' . $tree_progress['fixed_discovered'] . ' ' . $tree_progress['fixed_completed_percentage'] . '% ' . $tree_progress['fixed_discovered'] . ': ' . join(',', $tree_progress['list_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
+        echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_discovered'] . ': ' . join(',', $progress['list_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
         //Hide next navigation and allow them to browse the tree:
         echo '<script> $(document).ready(function () { setTimeout(function () { $(\'.fixed-bottom .card_cards\').addClass(\'hidden\'); }, 233); }); </script>';
     } else {
         echo '<div class="progress">
-<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $tree_progress['fixed_discovered'] . '/' . $tree_progress['fixed_total'] . ' Ideas Discovered ' . $tree_progress['fixed_completed_percentage'] . '%" style="width: ' . $tree_progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $tree_progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_discovered'] . '/' . $progress['fixed_total'] . ' Ideas Discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
 </div>';
     }
 }
 
 $x_completes = array();
 if ($player_e) {
-    $x_completes = $this->Ledger->fetch(array(
+    $x_completes = $this->Links->read(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkplayercreator' => $linkplayercreator,
         'linkidealeft' => $focus_i['ideaid'],

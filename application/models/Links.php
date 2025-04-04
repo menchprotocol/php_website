@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Ledger extends CIdea_cache
+class Links extends CIdea_cache
 {
 
     /*
@@ -18,12 +18,12 @@ class Ledger extends CIdea_cache
     {
 
         //Required field:
-        if (!isset($add_fields['linkplayertype']) || intval($add_fields['linkplayertype']) < 1 || !in_array($add_fields['linkplayertype'], $this->config->item('playerids___4593'))) {
-            $this->Ledger->create(array(
+        if (!isset($add_fields['linkplayertype']) || !in_array($add_fields['linkplayertype'], $this->config->item('playerids___4593'))) {
+            $this->Links->create(array(
                 'linkplayertype' => 44179, //Triggered
                 'linkplayerup' => 4246, //Platform Bug Reports
                 'linkplayerdown' => $add_fields['linkplayertype'],
-                'linktext' => 'x->create() failed to create because of invalid transaction type @' . $add_fields['linkplayertype'],
+                'linktext' => 'x->create() failed to create because of invalid Link type @' . $add_fields['linkplayertype'],
                 'linkplayercreator' => $add_fields['linkplayercreator'],
             ));
             return false;
@@ -68,42 +68,39 @@ class Ledger extends CIdea_cache
         //Fetch inserted id:
         $add_fields['linkid'] = $this->db->insert_id();
 
-        //All good huh?
+        //All good?
         if ($add_fields['linkid'] < 1) {
-
-            //This should not happen:
-            $this->Ledger->create(array(
+            $this->Links->create(array(
                 'linkplayertype' => 44179, //Triggered
                 'linkplayerup' => 4246, //Platform Bug Reports
                 'linkplayerdown' => $add_fields['linkplayercreator'],
                 'linkplayercreator' => $add_fields['linkplayercreator'],
                 'linktext' => 'create() Failed to create',
             ));
-
             return false;
         }
 
         //Sync algolia?
         if ($external_sync) {
             if ($add_fields['linkplayerup'] > 0) {
-                flag_for_search_indexing(12274, $add_fields['linkplayerup']);
+                update_algolia(12274, $add_fields['linkplayerup']);
             }
 
             if ($add_fields['linkplayerdown'] > 0) {
-                flag_for_search_indexing(12274, $add_fields['linkplayerdown']);
+                update_algolia(12274, $add_fields['linkplayerdown']);
             }
 
             if ($add_fields['linkidealeft'] > 0) {
-                flag_for_search_indexing(12273, $add_fields['linkidealeft']);
+                update_algolia(12273, $add_fields['linkidealeft']);
             }
 
             if ($add_fields['linkidearight'] > 0) {
-                flag_for_search_indexing(12273, $add_fields['linkidearight']);
+                update_algolia(12273, $add_fields['linkidearight']);
             }
         }
 
 
-        //See if this transaction type has any followers that are essentially subscribed to it:
+        //See if this Link type has any followers that are essentially subscribed to it:
         $tr_watchers = $this->Players->tree(42381, $add_fields['linkplayertype'], $this->config->item('playerids___30820'), array(), 1);
         if (is_array($tr_watchers) && count($tr_watchers)) {
 
@@ -111,7 +108,7 @@ class Ledger extends CIdea_cache
             $u_name = 'Unknown';
             if ($add_fields['linkplayercreator'] > 0) {
                 //Fetch member details:
-                $add_e = $this->Players->fetch(array(
+                $add_e = $this->Players->read(array(
                     'playerid' => $add_fields['linkplayercreator'],
                 ));
                 if (count($add_e)) {
@@ -121,28 +118,28 @@ class Ledger extends CIdea_cache
 
 
             //Email Subject:
-            $players___4593 = $this->config->item('players___4593'); //Transaction Types
-            $subject = 'Notification: ' . $u_name . ' ' . $players___4593[$add_fields['linkplayertype']]['m__title'];
+            $players___4593 = $this->config->item('players___4593'); //Link Types
+            $subject = $u_name . ' ' . $players___4593[$add_fields['linkplayertype']]['m__title'];
 
-            //Compose email body, start with transaction content:
+            //Compose email body, start with Link content:
             $html_message = (strlen($add_fields['linktext']) > 0 ? $add_fields['linktext'] : '') . "\n";
 
             $players___32088 = $this->config->item('players___32088'); //Platform Variables
 
-            //Append transaction object transactions:
+            //Append Link object Links:
             foreach ($this->config->item('players___4341') as $playerid => $m) {
 
                 if (in_array(6202, $m['m__following'])) {
 
                     //IDEA
-                    foreach ($this->Ideas->fetch(array('ideaid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_i) {
+                    foreach ($this->Ideas->read(array('ideaid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_i) {
                         $html_message .= $m['m__title'] . ': ' . view_idea_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['ideahashtag'] . "\n\n";
                     }
 
                 } elseif (in_array(6160, $m['m__following'])) {
 
                     //SOURCE
-                    foreach ($this->Players->fetch(array('playerid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_e) {
+                    foreach ($this->Players->read(array('playerid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_e) {
                         $html_message .= $m['m__title'] . ': ' . $this_e['playertext'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['playerhandle'] . "\n\n";
                     }
 
@@ -156,18 +153,17 @@ class Ledger extends CIdea_cache
             }
 
             //Finally append DISCOVERY ID:
-            $html_message .= 'TRANSACTION: #' . $add_fields['linkid'] . "\n" . $this->config->item('base_url') . view_app_link(12722) . '?linkid=' . $add_fields['linkid'] . "\n\n";
+            $html_message .= 'Link: #' . $add_fields['linkid'] . "\n" . $this->config->item('base_url') . view_app_link(12722) . '?linkid=' . $add_fields['linkid'] . "\n\n";
 
             //Send to all Watchers:
             foreach ($tr_watchers as $tr_watcher) {
                 //Do not inform the member who just took the action:
                 if ($tr_watcher['playerid'] != $add_fields['linkplayercreator']) {
-                    $this->Ledger->send_dm($tr_watcher['playerid'], $subject, $html_message, array(
+                    $this->Links->message($tr_watcher['playerid'], $subject, $html_message, array(
                         'linkidearight' => $add_fields['linkidearight'],
                         'linkidealeft' => $add_fields['linkidealeft'],
                         'linkplayerdown' => $add_fields['linkplayerdown'],
                         'linkplayerup' => $add_fields['linkplayerup'],
-                        // Save $add_fields['linkid'] ?
                     ));
                 }
             }
@@ -179,37 +175,7 @@ class Ledger extends CIdea_cache
     }
 
 
-    function fetchold($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('link_id' => 'DESC'), $select = '*', $group_by = null)
-    {
-
-        $this->dbold->select($select);
-        $this->dbold->from('mench_ledger');
-
-        foreach ($query_filters as $key => $value) {
-            if (!is_null($value)) {
-                $this->dbold->where($key, $value);
-            } else {
-                $this->dbold->where($key);
-            }
-        }
-
-        if ($group_by) {
-            $this->dbold->group_by($group_by);
-        }
-
-        foreach ($order_columns as $key => $value) {
-            $this->dbold->order_by($key, $value);
-        }
-
-        if ($limit > 0) {
-            $this->dbold->limit($limit, $limit_offset);
-        }
-        $q = $this->dbold->get();
-        return $q->result_array();
-
-    }
-
-    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null)
+    function read($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -220,6 +186,8 @@ class Ledger extends CIdea_cache
             $this->db->join('nodeideas', 'linkidealeft=ideaid', 'left');
         } elseif (in_array('linkidearight', $joins_objects)) {
             $this->db->join('nodeideas', 'linkidearight=ideaid', 'left');
+        } elseif (in_array('linkideaid', $joins_objects)) {
+            $this->db->join('nodeideas', 'linkid=ideaid', 'left');
         }
 
         //SOURCE JOIN?
@@ -231,6 +199,10 @@ class Ledger extends CIdea_cache
             $this->db->join(' nodeplayers', 'linkplayertype=playerid', 'left');
         } elseif (in_array('linkplayercreator', $joins_objects)) {
             $this->db->join(' nodeplayers', 'linkplayercreator=playerid', 'left');
+        } elseif (in_array('linkplayerdomain', $joins_objects)) {
+            $this->db->join(' nodeplayers', 'linkplayerdomain=playerid', 'left');
+        } elseif (in_array('linkplayerid', $joins_objects)) {
+            $this->db->join(' nodeplayers', 'linkid=playerid', 'left');
         }
 
         $link_void_found = false;
@@ -273,14 +245,14 @@ class Ledger extends CIdea_cache
                 //Idea results:
                 $player_e = superpower_unlocked();
                 foreach ($results as $key => $value) {
-                    if (!access_level_idea(null, $value['ideaid'], $value)) {
+                    if (!idea_access_level(null, $value['ideaid'], $value)) {
                         unset($results[$key]); //Remove this option
                     }
                 }
             } elseif (array_intersect(array('linkplayerup', 'linkplayerdown'), $joins_objects)) {
                 //Player results:
                 foreach ($results as $key => $value) {
-                    if (!access_level_player(null, $value['playerid'], $value)) {
+                    if (!player_access_level(null, $value['playerid'], $value)) {
                         unset($results[$key]); //Remove this option
                     }
                 }
@@ -295,77 +267,128 @@ class Ledger extends CIdea_cache
     function update($id, $update_columns, $linkplayercreator = 0)
     {
 
-        //Fetch transaction before updating:
-        $before_data = $this->Ledger->fetch(array(
+        //Fetch Link before updating:
+        foreach($this->Links->read(array(
             'linkid' => $id,
-        ));
-        if (!count($before_data)) {
-            //Invalid link:
-            return 0;
+        )) as $old_x){
+            
+            if (!$linkplayercreator) {
+                //Fetch session player:
+                $player_e = superpower_unlocked();
+                $linkplayercreator = ($player_e ? $player_e['playerid'] : ($old_x['linkplayercreator'] > 0 ? $old_x['linkplayercreator'] : 14068 /* Guest Member */));
+            }
+
+            //Override Player
+            $update_columns['linkplayercreator'] = $linkplayercreator;
+
+            //Create New Link
+            $new_x = $this->Links->create(array_merge($old_x, $update_columns));
+
+            if($new_x['linkid']>0){
+                //Void Old Link:
+                return $this->Links->update($id, array(
+                    'linkplayercreator' => $linkplayercreator,
+                    'linkvoid' => $new_x['linkid'], //We insert as void since this is a void link only
+                ));
+            }
         }
 
-        if (!$linkplayercreator) {
-            //Fetch session player:
-            $player_e = superpower_unlocked();
-            $linkplayercreator = ($player_e ? $player_e['playerid'] : ($before_data[0]['linkplayercreator'] > 0 ? $before_data[0]['linkplayercreator'] : 14068 /* Guest Member */));
-        }
-
-        //Override Player
-        $update_columns['linkplayercreator'] = $linkplayercreator;
-
-        //Return update column:
-        return $this->Ledger->create(array_merge($before_data[0], $update_columns));
+        //Invalid link:
+        return 0;
+        
     }
 
 
-    function void($linkid, $linkplayercreator = 0)
+    function delete($linkid, $linkplayercreator = 0)
     {
 
         //Validate $linkid
-        $before_data = $this->Ledger->fetch(array(
+        foreach($this->Links->read(array(
             'linkid' => $linkid,
-        ));
-        if (!count($before_data)) {
-            //Invalid link:
-            return 0;
+        )) as $old_x){
+            //Set default player:
+            if (!$linkplayercreator) {
+                //Fetch session player:
+                $player_e = superpower_unlocked();
+                $linkplayercreator = ($player_e ? $player_e['playerid'] : ($old_x['linkplayercreator'] > 0 ? $old_x['linkplayercreator'] : 14068 /* Guest Member */));
+            }
+
+            //Determine VOID link type in 1 of the 4 link groups:
+            if (in_array($old_x['linkplayertype'], $this->config->item('playerids___31777'))) {
+                //Discovery
+                $linkplayertype = 44397;
+            } elseif (in_array($old_x['linkplayertype'], $this->config->item('playerids___4486'))) {
+                //Ideation
+                $linkplayertype = 44396;
+            } elseif (in_array($old_x['linkplayertype'], $this->config->item('playerids___13550'))) {
+                //Contribution
+                $linkplayertype = 44399; //TODO Adjust this
+            } elseif (in_array($old_x['linkplayertype'], $this->config->item('playerids___32292'))) {
+                //Sourcing
+                $linkplayertype = 44399; //TODO Adjust this
+            } else {
+                //Should not happen:
+                return 0;
+            }
+
+            $this->Links->create(array(
+                'linkplayercreator' => $player_e['playerid'],
+                'linknumber' => $x['linknumber'],
+                'linkplayertype' => $x['linkplayertype'],
+                'linkplayerup' => $x['linkplayerup'],
+                'linkplayerdown' => $focus_e['playerid'],
+                'linktext' => $x['linktext'],
+            ));
+
+            //Void this Link:
+            $this->db->query("UPDATE menchledger SET linkvoid = ".$linkid." WHERE linkid = " . $linkid . ";");
+
+            
+            
+            return $this->Links->update($linkid, array(
+                'linkplayercreator' => $linkplayercreator,
+                'linkplayertype' => $linkplayertype,
+                'linkvoid' => $linkid, //We insert as void since this is a void link only
+            ));
+        }
+        
+        //Invalid link:
+        return 0;
+
+    }
+
+    function readalt($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('link_id' => 'DESC'), $select = '*', $group_by = null)
+    {
+
+        $this->dbold->select($select);
+        $this->dbold->from('mench_ledger');
+
+        foreach ($query_filters as $key => $value) {
+            if (!is_null($value)) {
+                $this->dbold->where($key, $value);
+            } else {
+                $this->dbold->where($key);
+            }
         }
 
-        //Set default player:
-        if (!$linkplayercreator) {
-            //Fetch session player:
-            $player_e = superpower_unlocked();
-            $linkplayercreator = ($player_e ? $player_e['playerid'] : ($before_data[0]['linkplayercreator'] > 0 ? $before_data[0]['linkplayercreator'] : 14068 /* Guest Member */));
+        if ($group_by) {
+            $this->dbold->group_by($group_by);
         }
 
-        //Determine VOID link type in 1 of the 4 link groups:
-        if (in_array($before_data[0]['linkplayertype'], $this->config->item('playerids___31777'))) {
-            //Discovery
-            $linkplayertype = 44397;
-        } elseif (in_array($before_data[0]['linkplayertype'], $this->config->item('playerids___4486'))) {
-            //Ideation
-            $linkplayertype = 44396;
-        } elseif (in_array($before_data[0]['linkplayertype'], $this->config->item('playerids___13550'))) {
-            //Contribution
-            $linkplayertype = 44399; //TODO Adjust this
-        } elseif (in_array($before_data[0]['linkplayertype'], $this->config->item('playerids___32292'))) {
-            //Sourcing
-            $linkplayertype = 44399; //TODO Adjust this
-        } else {
-            //Should not happen:
-            return 0;
+        foreach ($order_columns as $key => $value) {
+            $this->dbold->order_by($key, $value);
         }
 
-        //Void this transaction:
-        return $this->Ledger->update($linkid, array(
-            'linkplayercreator' => $linkplayercreator,
-            'linkplayertype' => $linkplayertype,
-            'linkvoid' => $linkid, //We insert as void since this is a void link only
-        ));
+        if ($limit > 0) {
+            $this->dbold->limit($limit, $limit_offset);
+        }
+        $q = $this->dbold->get();
+        return $q->result_array();
 
     }
 
 
-    function x_update_instant_select($focus__id, $o__id, $element_id, $new_playerid, $migrate_s__handle, $linkid = 0)
+    function select($focus__id, $o__id, $element_id, $new_playerid, $migrate_s__handle, $linkid = 0)
     {
 
         //Authenticate Member:
@@ -375,7 +398,7 @@ class Ledger extends CIdea_cache
         if (!$player_e) {
             return array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             );
         } elseif (intval($o__id) < 1) {
             return array(
@@ -397,7 +420,7 @@ class Ledger extends CIdea_cache
 
         //See if anything is being deleted:
         $auto_open_idea_editor_modal = 0;
-        $deletion_redirect = null;
+        $delete_redirect = null;
         $delete_element = null;
         $links_removed = -1;
         $status = 0;
@@ -405,7 +428,7 @@ class Ledger extends CIdea_cache
         if ($element_id == 4486 && $linkid > 0) {
 
             //IDEA LINK TYPE
-            $status = $this->Ledger->update($linkid, array(
+            $status = $this->Links->update($linkid, array(
                 'linkplayercreator' => $player_e['playerid'],
                 'linkplayertype' => $new_playerid,
             ));
@@ -413,7 +436,7 @@ class Ledger extends CIdea_cache
         } elseif ($element_id == 13550 && $linkid > 0) {
 
             //SOURCE LINK TYPE
-            $status = $this->Ledger->update($linkid, array(
+            $status = $this->Links->update($linkid, array(
                 'linkplayertype' => $new_playerid,
                 'linkplayercreator' => $player_e['playerid'],
             ));
@@ -421,7 +444,7 @@ class Ledger extends CIdea_cache
         } elseif ($element_id == 32292 && $linkid > 0) {
 
             //SOURCE/SOURCE LINK
-            $status = $this->Ledger->update($linkid, array(
+            $status = $this->Links->update($linkid, array(
                 'linkplayertype' => $new_playerid,
                 'linkplayercreator' => $player_e['playerid'],
             ));
@@ -430,7 +453,7 @@ class Ledger extends CIdea_cache
 
             if (!$linkid) {
                 //Double check database as it may be updating newly selected value:
-                foreach ($this->Ledger->fetch(array(
+                foreach ($this->Links->read(array(
                     'linkplayerup' => $o__id,
                     'linkplayerdown' => $player_e['playerid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42795')) . ')' => null, //Follow
@@ -444,16 +467,16 @@ class Ledger extends CIdea_cache
                 //Updating reaction:
                 if (in_array($new_playerid, $this->config->item('playerids___42850'))) {
                     //Unsubscribe
-                    $status = $this->Ledger->void($linkid, $player_e['playerid']); //Media Removed
+                    $status = $this->Links->delete($linkid, $player_e['playerid']); //Media Removed
                 } else {
-                    $status = $this->Ledger->update($linkid, array(
+                    $status = $this->Links->update($linkid, array(
                         'linkplayertype' => $new_playerid,
                         'linkplayercreator' => $player_e['playerid'],
                     ));
                 }
             } else {
                 //Inserting new reaction:
-                $status = count($this->Ledger->create(array(
+                $status = count($this->Links->create(array(
                     'linkplayercreator' => $player_e['playerid'],
                     'linkplayerup' => $o__id,
                     'linkplayerdown' => $player_e['playerid'],
@@ -466,7 +489,7 @@ class Ledger extends CIdea_cache
             //Check if current value?
             if (!$linkid) {
                 //Double check database as it may be updating newly selected value:
-                foreach ($this->Ledger->fetch(array(
+                foreach ($this->Links->read(array(
                     'linkplayerup' => $player_e['playerid'],
                     'linkidearight' => $o__id,
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42260')) . ')' => null, //Reactions
@@ -478,17 +501,17 @@ class Ledger extends CIdea_cache
             //Reactions...
             if ($linkid > 0) {
                 if (in_array($new_playerid, $this->config->item('playerids___42850'))) {
-                    $status = $this->Ledger->void($linkid, $player_e['playerid']); //Removed
+                    $status = $this->Links->delete($linkid, $player_e['playerid']); //Removed
                 } else {
                     //Updating reaction:
-                    $status = $this->Ledger->update($linkid, array(
+                    $status = $this->Links->update($linkid, array(
                         'linkplayertype' => $new_playerid,
                         'linkplayercreator' => $player_e['playerid'],
                     ));
                 }
             } else {
                 //Inserting new reaction:
-                $status = count($this->Ledger->create(array(
+                $status = count($this->Links->create(array(
                     'linkplayercreator' => $player_e['playerid'],
                     'linkplayerup' => $player_e['playerid'],
                     'linkidearight' => $o__id,
@@ -532,7 +555,7 @@ class Ledger extends CIdea_cache
                 if (in_array($data_type, $this->config->item('playerids___42188'))) {
 
                     //Single or Multiple Choice:
-                    $already_responded = count($this->Ledger->fetch(array(
+                    $already_responded = count($this->Links->read(array(
                         'linkplayerup IN (' . join(',', $this->config->item('playerids___' . $dynamic_playerid)) . ')' => null, //All possible answers
                         'linkidearight' => $o__id,
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
@@ -540,7 +563,7 @@ class Ledger extends CIdea_cache
 
                 } else {
 
-                    $already_responded = count($this->Ledger->fetch(array(
+                    $already_responded = count($this->Links->read(array(
                         'linkplayerup' => $dynamic_playerid,
                         'linkidearight' => $o__id,
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
@@ -560,26 +583,26 @@ class Ledger extends CIdea_cache
         return array(
             'status' => intval($status) && ($links_removed < 0 || $links_removed > 0),
             'message' => 'Delete status [' . $status . '] with ' . $links_removed . ' Links removed',
-            'deletion_redirect' => $deletion_redirect,
+            'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
             'auto_open_idea_editor_modal' => $auto_open_idea_editor_modal,
         );
 
     }
 
-    function send_dm($playerid, $subject, $html_message, $x_data = array(), $template_ideaid = 0, $linkplayerdomain = 0, $log_tr = true, $demo_only = false)
+    function message($playerid, $subject, $html_message, $x_data = array(), $template_ideaid = 0, $linkplayerdomain = 0, $log_tr = true, $demo_only = false)
     {
 
         $sms_subscriber = false;
 
         //Bypass notifications?
-        if (!count($this->Ledger->fetch(array(
+        if (!count($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42256')) . ')' => null, //Writes
             'linkplayerup' => 31779, //Mandatory Emails
             'linkidearight' => $template_ideaid,
         )))) {
 
-            $notification_levels = $this->Ledger->fetch(array(
+            $notification_levels = $this->Links->read(array(
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___30820')) . ')' => null, //Active Subscriber
                 'linkplayerdown' => $playerid,
                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
@@ -598,14 +621,14 @@ class Ledger extends CIdea_cache
          * Did not work with subscription notifications which could happen back to back...
          *
         $minutes_limit = 60;
-        foreach($this->Ledger->fetch(array(
+        foreach($this->Links->read(array(
             'linkplayertype' => 29399,
             'linkplayercreator' => $playerid,
             'linktime >=' => date("Y-m-d H:i:s", strtotime('-'.$minutes_limit.' minutes')),
         )) as $recent_email){
 
             //Log Report:
-            $this->Ledger->create(array(
+            $this->Links->create(array(
                 'linkplayertype' => 44179, //Triggered
                 'linkplayerup' => 4246, //Platform Bug Reports
                 'linkplayerdown' => 29399,
@@ -628,14 +651,14 @@ class Ledger extends CIdea_cache
 
 
         //Send Emails:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => 3288, //Email
             'linkplayerdown' => $playerid,
         )) as $player_data) {
 
             if (!filter_var($player_data['linktext'], FILTER_VALIDATE_EMAIL)) {
-                $this->Ledger->void($player_data['linkid'], $playerid);
+                $this->Links->delete($player_data['linkid'], $playerid);
                 continue;
             }
 
@@ -662,7 +685,7 @@ class Ledger extends CIdea_cache
             $sms_message = str_replace("\n", " ", $sms_message);
 
             //Send SMS
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 'linkplayerup' => 4783, //Phone
                 'linkplayerdown' => $playerid,
@@ -674,7 +697,7 @@ class Ledger extends CIdea_cache
 
                     if (!$sms_sent) {
                         //bad number, remove it:
-                        $this->Ledger->void($player_data['linkid'], $playerid);
+                        $this->Links->delete($player_data['linkid'], $playerid);
                     }
 
                 }
@@ -695,7 +718,7 @@ class Ledger extends CIdea_cache
     }
 
 
-    function send_idea_mass_dm($list_of_playerid, $i, $linkplayerdomain = 0, $ensure_undiscovered = true, $demo_only = false)
+    function broadcast($list_of_playerid, $i, $linkplayerdomain = 0, $ensure_undiscovered = true, $demo_only = false)
     {
 
         $total_sent = 0;
@@ -707,11 +730,11 @@ class Ledger extends CIdea_cache
 
             if (in_array($x['playerhandle'], $wacth_repeat_handles)) {
                 //This should not happen! Report bug:
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayertype' => 44179, //Triggered
                     'linkplayerup' => 4246, //Platform Bug Reports
                     'linkplayerdown' => $x['playerid'],
-                    'linktext' => 'send_idea_mass_dm() Detected duplicate Player Handle Bug: ' . $x['playerhandle'],
+                    'linktext' => 'broadcast() Detected duplicate Player Handle Bug: ' . $x['playerhandle'],
                 ));
                 break; //Stop sending more messages!
             }
@@ -722,14 +745,14 @@ class Ledger extends CIdea_cache
 
             if (!isset($x['playerid'])) {
                 //Invalid input for sending:
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayertype' => 44179, //Triggered
                     'linkplayerup' => 4246, //Platform Bug Reports
                     'linkplayerdown' => 26582, //Messener
-                    'linktext' => 'send_idea_mass_dm() Invalid user row',
+                    'linktext' => 'broadcast() Invalid user row',
                 ));
                 continue;
-            } elseif ($ensure_undiscovered && count($this->Ledger->fetch(array(
+            } elseif ($ensure_undiscovered && count($this->Links->read(array(
                     'linkidealeft' => $i['ideaid'],
                     'linkplayercreator' => $x['playerid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -747,7 +770,7 @@ class Ledger extends CIdea_cache
 
             //Append children as options:
             $html_message = '';
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $down_or) {
@@ -764,13 +787,13 @@ class Ledger extends CIdea_cache
                 $content_message = $content_message . $html_message;
             }
 
-            $send_dm = $this->Ledger->send_dm($x['playerid'], $subject_line, $content_message, array(
+            $message = $this->Links->message($x['playerid'], $subject_line, $content_message, array(
                 'linkidealeft' => $i['ideaid'],
             ), $i['ideaid'], $linkplayerdomain, true, $demo_only);
 
             //Mark as discovered:
-            if ($send_dm['status'] && !$demo_only) {
-                $this->Ledger->mark_complete(43142, $x['playerid'], 0, $i);
+            if ($message['status'] && !$demo_only) {
+                $this->Links->discovered(43142, $x['playerid'], 0, $i);
                 $total_sent++;
             }
 
@@ -780,7 +803,7 @@ class Ledger extends CIdea_cache
     }
 
 
-    function find_previous($playerid, $target_ideahashtag, $focus_ideaid, $loop_breaker_ids = array())
+    function previousidea($playerid, $target_ideahashtag, $focus_ideaid, $loop_breaker_ids = array())
     {
 
         //echo 'Previous:'.$playerid.'/'.$target_ideahashtag.'/'.$focus_ideaid;
@@ -791,14 +814,14 @@ class Ledger extends CIdea_cache
         array_push($loop_breaker_ids, intval($focus_ideaid));
 
         //Fetch followings:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //Active Sequence Up
             'linkidearight' => $focus_ideaid,
         ), array('linkidealeft')) as $idea_previous) {
 
             //Validate Selection:
             $input__selection = in_array($idea_previous['ideatype'], $this->config->item('playerids___7712'));
-            $is_selected = count($this->Ledger->fetch(array(
+            $is_selected = count($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansion
                 'linkidealeft' => $idea_previous['ideaid'],
                 'linkidearight' => $focus_ideaid,
@@ -815,7 +838,7 @@ class Ledger extends CIdea_cache
             }
 
             //Keep looking further up:
-            $website_finder = $this->Ledger->find_previous($playerid, $target_ideahashtag, $idea_previous['ideaid'], $loop_breaker_ids);
+            $website_finder = $this->Links->previousidea($playerid, $target_ideahashtag, $idea_previous['ideaid'], $loop_breaker_ids);
             if (count($website_finder)) {
                 array_push($website_finder, $idea_previous);
                 return $website_finder;
@@ -828,7 +851,7 @@ class Ledger extends CIdea_cache
     }
 
 
-    function find_previous_discovered($focus_ideaid, $linkplayercreator, $loop_breaker_ids = array())
+    function previousdiscovered($focus_ideaid, $linkplayercreator, $loop_breaker_ids = array())
     {
 
         /*
@@ -842,12 +865,12 @@ class Ledger extends CIdea_cache
         }
         array_push($loop_breaker_ids, intval($focus_ideaid));
 
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //Active Sequence Up
             'linkidearight' => $focus_ideaid,
         ), array('linkidealeft')) as $prev_i) {
 
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linkplayercreator' => $linkplayercreator,
                 'linkidealeft' => $prev_i['ideaid'],
@@ -855,7 +878,7 @@ class Ledger extends CIdea_cache
                 return $x['ideahashtag'];
             }
 
-            return $this->Ledger->find_previous_discovered($prev_i['ideaid'], $linkplayercreator, $loop_breaker_ids);
+            return $this->Links->previousideadiscovered($prev_i['ideaid'], $linkplayercreator, $loop_breaker_ids);
         }
 
         //Did not find!
@@ -864,11 +887,11 @@ class Ledger extends CIdea_cache
     }
 
 
-    function find_next($playerid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
+    function nextidea($playerid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
         /*
-        foreach ($this->Ideas->fetch(array(
+        foreach ($this->Ideas->read(array(
             'LOWER(ideahashtag)' => strtolower($target_ideahashtag),
         )) as $i_new) {
             $i = $i_new;
@@ -883,7 +906,7 @@ class Ledger extends CIdea_cache
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $found_trigger = null;
 
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkidealeft' => $i['ideaid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
         ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $next_i) {
@@ -897,7 +920,7 @@ class Ledger extends CIdea_cache
             }
 
             //Validate Selection:
-            $is_selected = count($this->Ledger->fetch(array(
+            $is_selected = count($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansion
                 'linkidealeft' => $i['ideaid'],
                 'linkidearight' => $next_i['ideaid'],
@@ -909,7 +932,7 @@ class Ledger extends CIdea_cache
 
 
             //Return this if everything is completed, or if this is incomplete:
-            if ($target_completed || !count($this->Ledger->fetch(array(
+            if ($target_completed || !count($this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'linkplayercreator' => $playerid,
                     'linkidealeft' => $next_i['ideaid'],
@@ -918,7 +941,7 @@ class Ledger extends CIdea_cache
             }
 
             //Keep looking deeper:
-            $next__url = $this->Ledger->find_next($playerid, $target_ideahashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
+            $next__url = $this->Links->nextidea($playerid, $target_ideahashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
             if ($next__url) {
                 return $next__url;
             }
@@ -929,9 +952,9 @@ class Ledger extends CIdea_cache
         if ($search_up && $target_ideahashtag != $i['ideahashtag']) {
             //Check Previous/Up
             $current_previous = $i['ideaid'];
-            foreach (array_reverse($this->Ledger->find_previous($playerid, $target_ideahashtag, $i['ideaid'])) as $p_i) {
+            foreach (array_reverse($this->Links->previousidea($playerid, $target_ideahashtag, $i['ideaid'])) as $p_i) {
                 //Find the next siblings:
-                $next__url = $this->Ledger->find_next($playerid, $target_ideahashtag, $p_i, $current_previous, false, $target_completed);
+                $next__url = $this->Links->nextidea($playerid, $target_ideahashtag, $p_i, $current_previous, false, $target_completed);
                 if ($next__url) {
                     return $next__url;
                 }
@@ -945,16 +968,16 @@ class Ledger extends CIdea_cache
     }
 
 
-    function mark_complete($linkplayertype, $linkplayercreator, $target_ideaid = 0, $i, $player_submitted_data = array(), $x_data = array())
+    function discovered($linkplayertype, $linkplayercreator, $target_ideaid = 0, $i, $player_submitted_data = array(), $x_data = array())
     {
 
         if (!$linkplayercreator || !in_array($linkplayertype, $this->config->item('playerids___31777' /* DISCOVERIES */))) {
-            $this->Ledger->create(array(
+            $this->Links->create(array(
                 'linkplayertype' => 44179, //Triggered
                 'linkplayerup' => 4246, //Platform Bug Reports8
                 'linkplayerdown' => $linkplayercreator,
                 'linkplayercreator' => $linkplayercreator,
-                'linktext' => 'mark_complete() Invalid linkplayertype @' . $linkplayertype . ' missing in @31777 OR Missing $linkplayercreator',
+                'linktext' => 'discovered() Invalid linkplayertype @' . $linkplayertype . ' missing in @31777 OR Missing $linkplayercreator',
             ));
             return array(
                 'status' => 0,
@@ -966,7 +989,7 @@ class Ledger extends CIdea_cache
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $input__upload = in_array($i['ideatype'], $this->config->item('playerids___43004'));
         $input__text = in_array($i['ideatype'], $this->config->item('playerids___43002')) || in_array($i['ideatype'], $this->config->item('playerids___43003'));
-        $is_required = count($this->Ledger->fetch(array(
+        $is_required = count($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $i['ideaid'],
             'linkplayerup' => 28239, //Required
@@ -1004,7 +1027,7 @@ class Ledger extends CIdea_cache
             }
 
             //Find most recent answers by this user:
-            $player_private_replies = $this->Ledger->fetch(array(
+            $player_private_replies = $this->Links->read(array(
                 'linkplayertype' => 33532, //Private Reply
                 'linkidealeft' => $i['ideaid'],
                 'linkplayercreator' => $linkplayercreator,
@@ -1018,25 +1041,31 @@ class Ledger extends CIdea_cache
 
                     //Update existing response if different:
                     if ($player_submitted_data['new_ideatext'] != $player_private_replies[0]['ideatext']) {
-                        $view_sync_links = view_sync_links($player_submitted_data['new_ideatext'], true, $player_private_replies[0]['ideaid']);
+
+                        $this->Ideas->update($player_private_replies[0]['ideaid'], array(
+                            'ideatext' => $player_submitted_data['new_ideatext'],
+                        ), $linkplayercreator);
+
                     }
+
                     $this_ideaid = $player_private_replies[0]['ideaid'];
 
                 } else {
 
-                    //Create a new response:
+                    //Create a new idea:
                     $idea_new = $this->Ideas->create(array(
                         'ideatext' => $player_submitted_data['new_ideatext'],
+                        'ideatype' => 6677,
                     ), $linkplayercreator);
 
-                    $this_ideaid = $idea_new['ideaid'];
+                    $this_ideaid = $idea_new['new_idea']['ideaid'];
 
                     //Link to this idea:
-                    $this->Ledger->create(array(
+                    $this->Links->create(array(
                         'linkplayertype' => 33532, //Private Reply
                         'linkplayercreator' => $linkplayercreator,
                         'linkidealeft' => $i['ideaid'],
-                        'linkidearight' => $idea_new['ideaid'],
+                        'linkidearight' => $idea_new['new_idea']['ideaid'],
                     ));
 
                 }
@@ -1053,7 +1082,7 @@ class Ledger extends CIdea_cache
                     );
                 } else {
                     //Delete Links
-                    $links_removed = $this->Ideas->void($player_private_replies[0]['ideaid'], $linkplayercreator);
+                    $links_removed = $this->Ideas->delete($player_private_replies[0]['ideaid'], $linkplayercreator);
                 }
 
             }
@@ -1073,12 +1102,12 @@ class Ledger extends CIdea_cache
             $x_data['linktext'] = null;
         }
 
-        $es_creator = $this->Players->fetch(array(
+        $es_creator = $this->Players->read(array(
             'playerid' => $linkplayercreator,
         ));
 
         //Make sure not duplicate:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkidealeft' => (isset($x_data['linkidealeft']) ? $x_data['linkidealeft'] : 0),
             'linkidearight' => (isset($x_data['linkidearight']) ? $x_data['linkidearight'] : 0),
@@ -1087,7 +1116,7 @@ class Ledger extends CIdea_cache
         )) as $already_discovered) {
 
             //Update:
-            $this->Ledger->update($already_discovered['linkid'], $x_data);
+            $this->Links->update($already_discovered['linkid'], $x_data);
 
             //Already discovered!
             return array(
@@ -1097,15 +1126,15 @@ class Ledger extends CIdea_cache
             );
         }
 
-        //Add new transaction:
+        //Add new Link:
         $domain_url = get_domain('m__message', $linkplayercreator);
 
-        //Create Transaction:
-        $new_x = $this->Ledger->create($x_data);
+        //Create Link:
+        $new_x = $this->Links->create($x_data);
 
         //Auto Complete OR Answers:
         if ($input__selection) {
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansion
                 'linkplayercreator' => $x_data['linkplayercreator'],
                 'linkidealeft' => $i['ideaid'],
@@ -1115,14 +1144,14 @@ class Ledger extends CIdea_cache
                     continue;
                 }
 
-                $has_children = count($this->Ledger->fetch(array(
+                $has_children = count($this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
                     'linkidealeft' => $next_i['ideaid'],
                 ), array('linkidearight'), 0, 0));
 
                 if (!$has_children) {
                     //Mark as complete:
-                    $this->Ledger->mark_complete(idea_discovery_link($next_i), $x_data['linkplayercreator'], $target_ideaid, $next_i, $x_data);
+                    $this->Links->discovered(idea_discovery_link($next_i), $x_data['linkplayercreator'], $target_ideaid, $next_i, $x_data);
                 }
             }
         }
@@ -1131,7 +1160,7 @@ class Ledger extends CIdea_cache
 
             //Discovery Triggers?
             $clone_urls = '';
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___32275')) . ')' => null, //DISCOVERY TRIGGERS
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $clone_i) {
@@ -1144,7 +1173,7 @@ class Ledger extends CIdea_cache
                     if ($result['status']) {
 
                         //Add as watcher:
-                        $this->Ledger->create(array(
+                        $this->Links->create(array(
                             'linkplayertype' => 10573, //WATCHERS
                             'linkplayercreator' => $x_data['linkplayercreator'],
                             'linkplayerup' => $x_data['linkplayercreator'],
@@ -1158,12 +1187,12 @@ class Ledger extends CIdea_cache
                 } elseif ($clone_i['linkplayertype'] == 32304) {
 
                     //Discovery Forget: Remove all Discoveries made by this user:
-                    foreach ($this->Ledger->fetch(array(
+                    foreach ($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
                         'linkidealeft' => $i['ideaid'],
                         'linkplayercreator' => $x_data['linkplayercreator'],
                     )) as $remove_x) {
-                        $this->Ledger->void($remove_x['linkid'], $x_data['linkplayercreator']);
+                        $this->Links->delete($remove_x['linkid'], $x_data['linkplayercreator']);
                     }
 
                 }
@@ -1174,19 +1203,19 @@ class Ledger extends CIdea_cache
                 //Send DM with all the new clone idea URLs:
                 $clone_urls = $clone_urls . 'You have been added as a subscriber so you will be notified when anyone start using your link.';
                 $idea_title = view_idea_title($i, true);
-                $this->Ledger->send_dm($x_data['linkplayercreator'], $idea_title, $clone_urls);
+                $this->Links->message($x_data['linkplayercreator'], $idea_title, $clone_urls);
                 //Also DM all watchers of the idea:
-                foreach ($this->Ledger->fetch(array(
+                foreach ($this->Links->read(array(
                     'linkplayertype' => 10573, //WATCHERS
                     'linkidearight' => $i['ideaid'],
                 ), array(), 0) as $watcher) {
-                    $this->Ledger->send_dm($watcher['linkplayerup'], $idea_title, $clone_urls);
+                    $this->Links->message($watcher['linkplayerup'], $idea_title, $clone_urls);
                 }
             }
 
 
             //ADD PROFILE?
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype' => 7545, //Following Add
                 'linkidearight' => $i['ideaid'],
             ), array('linkplayerup')) as $this_tag) {
@@ -1223,7 +1252,7 @@ class Ledger extends CIdea_cache
 
                 } else {
 
-                    //Assign tag if following/follower transaction NOT previously assigned:
+                    //Assign tag if following/follower Link NOT previously assigned:
                     $append_player = append_player($this_tag['linkplayerup'], $x_data['linkplayercreator'], (isset($player_submitted_data['new_ideatext']) ? $player_submitted_data['new_ideatext'] : null), $i['ideaid']);
 
                     //See if Session needs to be updated:
@@ -1237,19 +1266,19 @@ class Ledger extends CIdea_cache
 
 
             //REMOVE PROFILE?
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype' => 26599, //Following Remove
                 'linkidearight' => $i['ideaid'],
             )) as $this_tag) {
 
                 //Remove Following IF previously assigned:
-                foreach ($this->Ledger->fetch(array(
+                foreach ($this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $this_tag['linkplayerup'], //CERTIFICATES saved here
                     'linkplayerdown' => $x_data['linkplayercreator'],
                 )) as $existing_x) {
 
-                    $this->Ledger->void($existing_x['linkid'], $x_data['linkplayercreator']);
+                    $this->Links->delete($existing_x['linkid'], $x_data['linkplayercreator']);
 
                     //See if Session needs to be updated:
                     if ($player_e && $player_e['playerid'] == $x_data['linkplayercreator']) {
@@ -1261,13 +1290,13 @@ class Ledger extends CIdea_cache
 
 
             //Notify watchers IF any:
-            $watchers = $this->Ledger->fetch(array(
+            $watchers = $this->Links->read(array(
                 'linkplayertype' => 10573, //WATCHERS
                 'linkidearight' => $i['ideaid'],
             ), array(), 0);
             if (count($watchers)) {
 
-                $es_discoverer = $this->Players->fetch(array(
+                $es_discoverer = $this->Players->read(array(
                     'playerid' => $x_data['linkplayercreator'],
                 ));
                 if (count($es_discoverer)) {
@@ -1275,7 +1304,7 @@ class Ledger extends CIdea_cache
                     //Fetch Discoverer contact:
                     $discoverer_contact = '';
                     foreach ($this->config->item('players___34541') as $linkplayertype => $m) {
-                        foreach ($this->Ledger->fetch(array(
+                        foreach ($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerdown' => $x_data['linkplayercreator'],
                             'linkplayerup' => $linkplayertype,
@@ -1291,7 +1320,7 @@ class Ledger extends CIdea_cache
                         if (!in_array(intval($watcher['linkplayerup']), $sent_watchers)) {
                             array_push($sent_watchers, intval($watcher['linkplayerup']));
 
-                            $this->Ledger->send_dm($watcher['linkplayerup'], $es_discoverer[0]['playertext'] . ' Discovered: ' . view_idea_title($i, true),
+                            $this->Links->message($watcher['linkplayerup'], $es_discoverer[0]['playertext'] . ' Discovered: ' . view_idea_title($i, true),
                                 //Message Body:
                                 view_idea_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['ideahashtag'] . "\n\n" .
                                 (strlen($x_data['linktext']) ? $x_data['linktext'] . "\n\n" : '') .
@@ -1313,7 +1342,7 @@ class Ledger extends CIdea_cache
     }
 
 
-    function tree_full_history($i, $playerid, $idea_level = 0)
+    function history($i, $playerid, $idea_level = 0)
     {
 
         unset($i['ideaexternal']);
@@ -1340,13 +1369,13 @@ class Ledger extends CIdea_cache
         $idea_level++;
 
         //Append media if any:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42294')) . ')' => null, //Media
             'linkidearight' => $i['ideaid'],
         ), array('linkplayerup'), 0, 0, array('linknumber' => 'ASC')) as $media) {
 
             //Get metadata:
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___44393')) . ')' => null, //Media JSON
                 'linkplayerdown' => $media['playerid'],
                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
@@ -1375,7 +1404,7 @@ class Ledger extends CIdea_cache
         }
 
         //Append Discovery if any:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkidealeft' => $i['ideaid'],
             'linkplayercreator' => $playerid,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -1397,7 +1426,7 @@ class Ledger extends CIdea_cache
 
             if ($input__text) {
                 //Since it has been discovered and its a text input, lots fetch the written response:
-                foreach ($this->Ledger->fetch(array(
+                foreach ($this->Links->read(array(
                     'linkplayertype' => 33532, //Private Reply
                     'linkidealeft' => $i['ideaid'],
                     'linkplayercreator' => $playerid,
@@ -1409,11 +1438,11 @@ class Ledger extends CIdea_cache
 
 
         if ($i['user_discovered']) {
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $next_i) {
-                array_push($i['idea_next'], $this->Ledger->tree_full_history($next_i, $playerid, $idea_level));
+                array_push($i['idea_next'], $this->Links->history($next_i, $playerid, $idea_level));
             }
         }
 
@@ -1422,7 +1451,7 @@ class Ledger extends CIdea_cache
 
     }
 
-    function tree_discovered_history($i, $playerid, $idea_level = 0)
+    function historydiscovered($i, $playerid, $idea_level = 0)
     {
 
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
@@ -1434,7 +1463,7 @@ class Ledger extends CIdea_cache
         $idea_level++;
 
         //Append Discovery if any:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkidealeft' => $i['ideaid'],
             'linkplayercreator' => $playerid,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -1443,7 +1472,7 @@ class Ledger extends CIdea_cache
         }
 
         if ($input__text) {
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype' => 33532, //Private Reply
                 'linkidealeft' => $i['ideaid'],
                 'linkplayercreator' => $playerid,
@@ -1454,15 +1483,15 @@ class Ledger extends CIdea_cache
 
 
         if ($i['user_discovered']) {
-            foreach (($input__selection ? $this->Ledger->fetch(array(
+            foreach (($input__selection ? $this->Links->read(array(
                 'linkplayertype' => 7712, //Input Choice
                 'linkplayercreator' => $playerid,
                 'linkidealeft' => $i['ideaid'],
-            ), array('linkidearight')) : $this->Ledger->fetch(array(
+            ), array('linkidearight')) : $this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'))) as $next_i) {
-                array_push($i['idea_next'], $this->Ledger->tree_discovered_history($next_i, $playerid, $idea_level));
+                array_push($i['idea_next'], $this->Links->historydiscovered($next_i, $playerid, $idea_level));
             }
         }
 
@@ -1471,19 +1500,19 @@ class Ledger extends CIdea_cache
 
     }
 
-    function tree_doc($i, $idea_level = 0)
+    function flat($i, $idea_level = 0)
     {
 
         $i['idea_level'] = $idea_level;
         $idea_level++;
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $single_choice = in_array($i['ideatype'], $this->config->item('playerids___33331'));
-        $is_required = count($this->Ledger->fetch(array(
+        $is_required = count($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $i['ideaid'],
             'linkplayerup' => 28239, //Required
         )));
-        $total_next = $this->Ledger->fetch(array(
+        $total_next = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
             'linkidealeft' => $i['ideaid'],
         ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
@@ -1497,7 +1526,7 @@ class Ledger extends CIdea_cache
         $i['idea_next'] = array();
 
         //Append Total Discoveries if any:
-        $sub_counter = $this->Ledger->fetch(array(
+        $sub_counter = $this->Links->read(array(
             'linkidealeft' => $i['ideaid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
@@ -1506,7 +1535,7 @@ class Ledger extends CIdea_cache
 
         foreach ($total_next as $next_i) {
 
-            $result_i = $this->Ledger->tree_doc($next_i, $idea_level);
+            $result_i = $this->Links->flat($next_i, $idea_level);
             array_push($i['idea_next'], $result_i);
 
             if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
@@ -1526,7 +1555,7 @@ class Ledger extends CIdea_cache
     }
 
 
-    function tree_progress($playerid, $i, $idea_level = 0, $loop_breaker_ids = array())
+    function progress($playerid, $i, $idea_level = 0, $loop_breaker_ids = array())
     {
 
         if (count($loop_breaker_ids) > 0 && in_array($i['ideaid'], $loop_breaker_ids)) {
@@ -1543,7 +1572,7 @@ class Ledger extends CIdea_cache
 
         //Count completed:
         $list_discovered = array();
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkplayercreator' => $playerid, //Belongs to this Member
             'linkidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
@@ -1564,21 +1593,21 @@ class Ledger extends CIdea_cache
 
         //Now let's check possible expansions:
         if (count($copy['recursive_idea_ids'])) {
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansion
                 'linkplayercreator' => $playerid, //Belongs to this Member
                 'linkidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
             ), array('linkidearight')) as $expansion_in) {
 
                 //Fetch recursive:
-                $tree_progress = $this->Ledger->tree_progress($playerid, $expansion_in, $idea_level, $loop_breaker_ids);
+                $progress = $this->Links->progress($playerid, $expansion_in, $idea_level, $loop_breaker_ids);
 
-                if (!$tree_progress && !count($this->Ledger->fetch(array(
+                if (!$progress && !count($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkplayercreator' => $playerid, //Belongs to this Member
                         'linkidealeft' => $expansion_in['ideaid'],
                     )))) {
-                    $tree_progress = array(
+                    $progress = array(
                         'fixed_total' => 1,
                         'list_total' => array($expansion_in['ideaid']),
                         'fixed_discovered' => 0,
@@ -1587,19 +1616,19 @@ class Ledger extends CIdea_cache
                 }
 
                 //Addup completion stats for this:
-                $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
-                $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
+                $metadata_this['fixed_total'] += $progress['fixed_total'];
+                $metadata_this['fixed_discovered'] += $progress['fixed_discovered'];
 
-                if ($tree_progress['list_total'] && count($tree_progress['list_total'])) {
-                    foreach ($tree_progress['list_total'] as $tree_id) {
+                if ($progress['list_total'] && count($progress['list_total'])) {
+                    foreach ($progress['list_total'] as $tree_id) {
                         if (!in_array($tree_id, $metadata_this['list_total'])) {
                             array_push($metadata_this['list_total'], $tree_id);
                         }
                     }
                 }
 
-                if ($tree_progress['list_discovered'] && count($tree_progress['list_discovered'])) {
-                    foreach ($tree_progress['list_discovered'] as $tree_id) {
+                if ($progress['list_discovered'] && count($progress['list_discovered'])) {
+                    foreach ($progress['list_discovered'] as $tree_id) {
                         if (!in_array($tree_id, $metadata_this['list_discovered'])) {
                             array_push($metadata_this['list_discovered'], $tree_id);
                         }
@@ -1638,17 +1667,6 @@ class Ledger extends CIdea_cache
         //Return results:
         return $metadata_this;
 
-    }
-
-
-    function i_has_started($playerid, $ideahashtag)
-    {
-        return count($this->Ledger->fetch(array(
-            'linkidealeft = linkidearight' => NULL,
-            'LOWER(ideahashtag)' => strtolower($ideahashtag),
-            'linkplayercreator' => $playerid,
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        ), array('linkidearight')));
     }
 
 

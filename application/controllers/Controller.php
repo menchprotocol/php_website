@@ -48,7 +48,7 @@ class Controller extends CI_Controller
 
             if ($is_login_verified) {
 
-                foreach ($this->Players->fetch(array(
+                foreach ($this->Players->read(array(
                     'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
                 )) as $player_e) {
 
@@ -136,7 +136,7 @@ class Controller extends CI_Controller
 
         if ($target_hashtag && strlen($target_hashtag)) {
             //Verify:
-            foreach ($this->Ideas->fetch(array(
+            foreach ($this->Ideas->read(array(
                 'LOWER(ideahashtag)' => strtolower($target_hashtag),
             )) as $idea_found) {
                 $target_i = $idea_found;
@@ -155,7 +155,7 @@ class Controller extends CI_Controller
 
             } else {
 
-                foreach ($this->Ideas->fetch(array(
+                foreach ($this->Ideas->read(array(
                     'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
                 )) as $idea_found) {
                     $focus_i = $idea_found;
@@ -166,7 +166,7 @@ class Controller extends CI_Controller
             if (!$focus_i) {
                 //See if we can find via ID?
                 if (is_numeric($_GET['ideahashtag'])) {
-                    foreach ($this->Ideas->fetch(array(
+                    foreach ($this->Ideas->read(array(
                         'ideaid' => $_GET['ideahashtag'],
                     )) as $idea_found) {
                         $focus_i = $idea_found;
@@ -176,13 +176,13 @@ class Controller extends CI_Controller
 
             if ($app_playerid == 33286 && $focus_i && $focus_i['ideahashtag'] !== $_GET['ideahashtag']) {
                 //Adjust URL Case Sensitive:
-                return redirect_message(view_memory(42903, 33286) . $focus_i['ideahashtag']);
+                return get_redirected(view_memory(42903, 33286) . $focus_i['ideahashtag']);
             }
         }
 
 
         if (isset($_GET['playerhandle']) && strlen($_GET['playerhandle'])) {
-            foreach ($this->Players->fetch(array(
+            foreach ($this->Players->read(array(
                 'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
             )) as $player_found) {
                 $focus_e = $player_found;
@@ -191,7 +191,7 @@ class Controller extends CI_Controller
                 //See if we need to lookup the ID:
                 if (is_numeric($_GET['playerhandle'])) {
                     //Maybe its an ID?
-                    foreach ($this->Players->fetch(array(
+                    foreach ($this->Players->read(array(
                         'playerid' => $_GET['playerhandle'],
                     )) as $player_found) {
                         $focus_e = $player_found;
@@ -200,22 +200,22 @@ class Controller extends CI_Controller
             }
             if ($app_playerid == 42902 && $focus_e && $focus_e['playerhandle'] !== $_GET['playerhandle']) {
                 //Adjust URL Case Sensitive:
-                return redirect_message(view_memory(42903, 42902) . $focus_e['playerhandle']);
+                return get_redirected(view_memory(42903, 42902) . $focus_e['playerhandle']);
             }
         }
 
 
         if ($memory_detected && !in_array($app_playerid, $this->config->item('playerids___6287'))) {
             //Invalid App:
-            return redirect_message(view_memory(42903, 42902) . $players___6287[$app_playerid]['m__handle'], '<div class="alert alert-danger" role="alert">@' . $players___6287[$app_playerid]['m__handle'] . ' Is not an APP, yet 🤔</div>');
+            return get_redirected(view_memory(42903, 42902) . $players___6287[$app_playerid]['m__handle'], '<div class="alert alert-danger" role="alert">@' . $players___6287[$app_playerid]['m__handle'] . ' Is not an APP, yet 🤔</div>');
         } elseif ($memory_detected && !in_array($app_playerid, $this->config->item('playerids___42922'))) {
             //Validate Required App input:
             if (in_array($app_playerid, $this->config->item('playerids___42905')) && !$focus_e) {
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['playerhandle'] . ' is not a valid Player handle.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['playerhandle'] . ' is not a valid Player handle.</div>');
             } elseif (in_array($app_playerid, $this->config->item('playerids___44329')) && (!$focus_i || !$target_i)) {
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['ideahashtag'] . ' & #' . $target_hashtag . ' must be valid hashtags.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['ideahashtag'] . ' & #' . $target_hashtag . ' must be valid hashtags.</div>');
             } elseif (in_array($app_playerid, $this->config->item('playerids___42911')) && !$focus_i) {
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['ideahashtag'] . ' is not a valid idea hashtag.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['ideahashtag'] . ' is not a valid idea hashtag.</div>');
             }
         }
 
@@ -253,11 +253,11 @@ class Controller extends CI_Controller
                         if (idea_is_startable($focus_i)) {
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this idea. Scroll to the bottom & go next to continue.</div>';
                         } else {
-                            $this->Ledger->mark_complete(idea_discovery_link($focus_i), $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
-                            $this->Ledger->mark_complete(29393, $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
+                            $this->Links->discovered(idea_discovery_link($focus_i), $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
+                            $this->Links->discovered(29393, $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
 
                             //Inform user of changes:
-                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Idea has been discovered</div>';
+                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Ideas has been discovered</div>';
                         }
                     }
 
@@ -277,9 +277,9 @@ class Controller extends CI_Controller
         $cache_linktime = null;
         $linkplayercreator = ($player_http_request ? ($player_e ? $player_e['playerid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
         $skip_idea_privacy_check = !$memory_detected || in_array($app_playerid, $this->config->item('playerids___43388'));
-        $access_level_e = access_level_player(null, $focus_e['playerid'], $focus_e);
-        $access_level_idea = access_level_idea(null, $focus_i['ideaid'], $focus_i);
-        $target_access_level_idea = access_level_idea(null, $target_i['ideaid'], $target_i);
+        $player_access_level = player_access_level(null, $focus_e['playerid'], $focus_e);
+        $idea_access_level = idea_access_level(null, $focus_i['ideaid'], $focus_i);
+        $target_idea_access_level = idea_access_level(null, $target_i['ideaid'], $target_i);
 
         //MEMBER REDIRECT?
         if ($player_http_request && $memory_detected) {
@@ -289,25 +289,25 @@ class Controller extends CI_Controller
             $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___6287[$app_playerid]['m__following']);
             if ($player_e && in_array($app_playerid, $this->config->item('playerids___14639'))) {
                 //Should redirect them:
-                return redirect_message(view_memory(42903, 42902) . $player_e['playerhandle']);
+                return get_redirected(view_memory(42903, 42902) . $player_e['playerhandle']);
             } elseif (!$player_e && in_array($app_playerid, $this->config->item('playerids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
             } elseif (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
                 $players___10957 = $this->config->item('players___10957');
                 $missing_access = 'Error: You Cannot Access ' . $players___6287[$app_playerid]['m__title'] . ' as it requires the superpower of ' . $players___10957[end($superpowers_required)]['m__title'] . '.';
-            } elseif ($focus_e && !$access_level_e) {
+            } elseif ($focus_e && !$player_access_level) {
                 $missing_access = 'Error: You Cannot Access @' . $focus_e['playerhandle'] . ' due to Privacy Settings.';
-            } elseif (!$skip_idea_privacy_check && $focus_i && !$access_level_idea) {
+            } elseif (!$skip_idea_privacy_check && $focus_i && !$idea_access_level) {
                 $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['ideahashtag'] . ' due to Privacy Settings.';
-            } elseif (!$skip_idea_privacy_check && $target_i && !$target_access_level_idea) {
+            } elseif (!$skip_idea_privacy_check && $target_i && !$target_idea_access_level) {
                 $missing_access = 'Error: You Cannot Access Target #' . $target_i['ideahashtag'] . ' due to Privacy Settings.';
             }
 
 
             if ($missing_access) {
                 //Redirect:
-                return redirect_message((!$player_e ? view_app_link(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
+                return get_redirected((!$player_e ? view_app_link(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
             }
         }
 
@@ -318,7 +318,7 @@ class Controller extends CI_Controller
 
                 if (!isset($_GET['reset_cache'])) {
                     //Fetch Most Recent Cache:
-                    foreach ($this->Ledger->fetch(array(
+                    foreach ($this->Links->read(array(
                         'linkplayerdomain' => website_setting(0),
                         'linkplayertype' => 44179, //Triggered
                         'linkplayerup' => 14599, //Cache App
@@ -326,7 +326,7 @@ class Controller extends CI_Controller
                     ), array(), 1, 0, array('linktime' => 'DESC')) as $latest_cache) {
                         if (strtotime($latest_cache['linktime']) <= (time() - view_memory(6404, 14599))) {
                             //Its expired, void it:
-                            $this->Ledger->void($latest_cache['linkid']);
+                            $this->Links->delete($latest_cache['linkid']);
                         } else {
                             $ui = $latest_cache['linktext'];
                             $cache_linktime = '<div class="texttransparent center main__title">Updated ' . view_time_difference($latest_cache['linktime']) . ' Ago</div>';
@@ -371,9 +371,9 @@ class Controller extends CI_Controller
             'focus_i' => $focus_i,
             'target_i' => $target_i,
 
-            '$access_level_e' => $access_level_e,
-            '$access_level_idea' => $access_level_idea,
-            '$target_access_level_idea' => $target_access_level_idea,
+            '$player_access_level' => $player_access_level,
+            '$idea_access_level' => $idea_access_level,
+            '$target_idea_access_level' => $target_idea_access_level,
 
             'title' => $title,
             'flash_message' => $flash_message,
@@ -388,7 +388,7 @@ class Controller extends CI_Controller
 
 
         if ($new_cache) {
-            $cache_x = $this->Ledger->create(array(
+            $cache_x = $this->Links->create(array(
                 'linkplayerdomain' => website_setting(0),
                 'linkplayertype' => 44179, //Triggered
                 'linkplayerup' => 14599, //Cache App
@@ -415,19 +415,19 @@ class Controller extends CI_Controller
             if (!idea_is_startable($target_i)) {
 
                 //Not a valid starting point:
-                return redirect_message(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['ideahashtag'] . ' is not an active starting point.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['ideahashtag'] . ' is not an active starting point.</div>');
 
-            } elseif (!$this->Ledger->i_has_started($player_e['playerid'], $target_i['ideahashtag'])) {
+            } elseif (!idea_started($player_e['playerid'], $target_i['ideahashtag'])) {
 
                 //Not yet started, add to their starting point:
-                $completion_status = $this->Ledger->mark_complete(4235, $player_e['playerid'], 0, $target_i);
+                $completion_status = $this->Links->discovered(4235, $player_e['playerid'], 0, $target_i);
 
                 //Now return next idea:
-                $next__url = $this->Ledger->find_next($player_e['playerid'], $target_i['ideahashtag'], $target_i);
+                $next__url = $this->Links->nextidea($player_e['playerid'], $target_i['ideahashtag'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
-                    return redirect_message(view_memory(42903, 30795) . $target_i['ideahashtag'] . '/' . $next__url);
+                    return get_redirected(view_memory(42903, 30795) . $target_i['ideahashtag'] . '/' . $next__url);
                 }
 
             }
@@ -472,14 +472,14 @@ class Controller extends CI_Controller
     {
         if (isset($_POST['handle_string']) && strlen($_POST['handle_string']) > 1 && in_array(substr($_POST['handle_string'], 0, 1), array('#', '@'))) {
             if (substr($_POST['handle_string'], 0, 1) == '#') {
-                foreach ($this->Ideas->fetch(array(
+                foreach ($this->Ideas->read(array(
                     'LOWER(ideahashtag)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $i) {
                     echo view_idea(6255, $i);
                     return true;
                 }
             } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
-                foreach ($this->Players->fetch(array(
+                foreach ($this->Players->read(array(
                     'LOWER(playerhandle)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $e) {
                     echo view_player(12274, $e);
@@ -505,7 +505,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['ideaid']) || !isset($_POST['linkid']) || !isset($_POST['current_ideatype'])) {
             return view_json(array(
@@ -521,7 +521,7 @@ class Controller extends CI_Controller
 
         if ($_POST['ideaid'] > 0) {
 
-            $is = $this->Ideas->fetch(array(
+            $is = $this->Ideas->read(array(
                 'ideaid' => $_POST['ideaid'],
             ));
             if (!count($is)) {
@@ -529,7 +529,7 @@ class Controller extends CI_Controller
                     'status' => 0,
                     'message' => 'Idea is no longer active',
                 ));
-            } elseif (!access_level_idea($is[0]['ideahashtag'], 0, $is[0])) {
+            } elseif (!idea_access_level($is[0]['ideahashtag'], 0, $is[0])) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You are missing permission to edit this idea',
@@ -550,7 +550,7 @@ class Controller extends CI_Controller
                 'ideatype' => $_POST['current_ideatype'],
             ), $player_e['playerid']);
 
-            $ideaid = $idea_new['ideaid'];
+            $ideaid = $idea_new['new_idea']['ideaid'];
             $created_ideaid = $ideaid;
 
         }
@@ -574,7 +574,7 @@ class Controller extends CI_Controller
 
             if (count($data_types) != 1) {
                 //This is strange, we are expecting 1 match only report this:
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayertype' => 44179, //Triggered
                     'linkplayerup' => 4246, //Platform Bug Reports
                     'linkplayercreator' => $player_e['playerid'],
@@ -616,7 +616,7 @@ class Controller extends CI_Controller
                 $counted = 0;
                 $unique_values = array();
                 if ($ideaid > 0) { //Must have an original ID to possibly have a value...
-                    foreach ($this->Ledger->fetch(array(
+                    foreach ($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
                         'linkidearight' => $ideaid,
                         'linkplayerup' => $dynamic_playerid,
@@ -640,7 +640,7 @@ class Controller extends CI_Controller
 
 
                 if (!$counted) {
-                    foreach ($this->Players->fetch(array(
+                    foreach ($this->Players->read(array(
                         'playerid' => $dynamic_playerid,
                     )) as $selected_e) {
                         array_push($return_inputs, array(
@@ -670,86 +670,175 @@ class Controller extends CI_Controller
     }
 
 
-    function i_void()
+    function idea_delete()
     {
 
-        //TODO Must get going...
-        //Delete all transactions:
-        $links_removed = $this->Ideas->void($o__id, $player_e['playerid'], $migrate_s__id);
-
-    }
-
-    function e_void()
-    {
-
-        //TODO Must get going...
-
-        //Validate migration handle, if any:
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         $migrate_s__id = 0;
-        if (strlen($migrate_s__handle) > 0) {
-            $valid_handle = $this->Players->fetch(array(
-                'LOWER(playerhandle)' => strtolower($migrate_s__handle),
+
+        if (!$player_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => blocked_reasoning(),
+            ));
+        } elseif (!isset($_POST['ideaid']) || !isset($_POST['focus__id']) || !isset($_POST['migrate_s__handle'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Core IDs',
+            ));
+        } elseif (idea_access_level(null, $_POST['ideaid'])<3) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Access to delete this idea',
+            ));
+        } elseif (strlen($_POST['migrate_s__handle'])) {
+            $valid_handle = $this->Ideas->read(array(
+                'ideaid !=' => $_POST['ideaid'],
+                'LOWER(ideahashtag)' => strtolower($_POST['migrate_s__handle']),
             ));
             if (!count($valid_handle)) {
-                return array(
+                return view_json(array(
                     'status' => 0,
-                    'message' => '@' . $migrate_s__handle . ' is an Invalid Player Handle!',
-                );
-            } elseif ($valid_handle[0]['playerid'] == $o__id) {
-                return array(
-                    'status' => 0,
-                    'message' => 'You cannot migrate this Player to itself! Choose a different Player to migrate.',
-                );
+                    'message' => $_POST['migrate_s__handle'].' is not an active hashtag',
+                ));
             }
-            $migrate_s__id = $valid_handle[0]['playerid'];
+            $migrate_s__id = $valid_handle[0]['ideaid'];
         }
 
+
         //Determine what to do after deleted:
-        if ($o__id == $focus__id) {
+        if ($_POST['ideaid'] == $_POST['focus__id']) {
 
             //Find Published Followings:
-            foreach ($this->Ledger->fetch(array(
-                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
-                'linkplayerdown' => $o__id,
-            ), array('linkplayerup'), 1, 0, array('playertext' => 'DESC')) as $up_e) {
-                $deletion_redirect = view_memory(42903, 42902) . $up_e['playerhandle'];
+            foreach ($this->Links->read(array(
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //IDEA LINKS
+                'linkidearight' => $_POST['ideaid'],
+            ), array('linkidealeft'), 1) as $previous_i) {
+                $delete_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
+            }
+
+            //If not found, find active followings:
+            if (!$delete_redirect) {
+                foreach ($this->Links->read(array(
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //IDEA LINKS
+                    'linkidearight' => $_POST['ideaid'],
+                ), array('linkidealeft'), 1) as $previous_i) {
+                    $delete_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
+                }
             }
 
             //If still not found, go to main page if no followings found:
-            if (!$deletion_redirect) {
-                foreach ($this->Players->fetch(array('playerid' => $o__id)) as $e2) {
-                    $deletion_redirect = view_memory(42903, 42902) . e2['playerhandle'];
+            if (!$delete_redirect) {
+                foreach ($this->Ideas->read(array(
+                    'ideaid' => $_POST['ideaid'],
+                )) as $i) {
+                    $delete_redirect = view_memory(42903, 33286) . $i['ideahashtag'];
                 }
             }
 
         } else {
 
             //Just delete from UI using JS:
-            $delete_element = '.s__12274_' . $o__id;
+            $delete_element = '.s__12273_' . $_POST['ideaid'];
 
         }
 
-        //Delete all transactions:
-        $links_removed = $this->Players->void($o__id, $player_e['playerid'], $migrate_s__id);
+        //Delete all Links:
+        $links_removed = $this->Ideas->delete($_POST['ideaid'], $player_e['playerid'], $migrate_s__id);
 
-        //Remove:
-        $status = $this->Players->void($o__id, $player_e['playerid']);
-
-        //Update Search Index:
-        flag_for_search_indexing(12274, $o__id);
+        return view_json(array(
+            'status' => ( $links_removed>0 ? 1 : 0 ),
+            'message' => 'Idea successfully removed',
+            'delete_redirect' => $delete_redirect,
+            'delete_element' => $delete_element,
+        ));
 
     }
 
-    function i_editor_save()
+
+
+
+    function player_delete()
     {
 
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
+        $migrate_s__id = 0;
+
+        if (!$player_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => blocked_reasoning(),
+            ));
+        } elseif (!isset($_POST['playerid']) || !isset($_POST['focus__id']) || !isset($_POST['migrate_s__handle'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Core IDs',
+            ));
+        } elseif (player_access_level(null, $_POST['playerid'])<3) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Access to delete this idea',
+            ));
+        } elseif (strlen($_POST['migrate_s__handle'])) {
+            $valid_handle = $this->Players->read(array(
+                'playerid !=' => $_POST['playerid'],
+                'LOWER(playerhandle)' => strtolower($_POST['migrate_s__handle']),
+            ));
+            if (!count($valid_handle)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => $_POST['migrate_s__handle'].' is not an active handle',
+                ));
+            }
+            $migrate_s__id = $valid_handle[0]['playerid'];
+        }
+
+
+        //Determine what to do after deleted:
+        if ($_POST['playerid'] == $_POST['focus__id']) {
+
+            //Find Published Followings:
+            foreach ($this->Links->read(array(
+                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayerdown' => $_POST['playerid'],
+            ), array('linkplayerup'), 1, 0, array('playertext' => 'DESC')) as $up_e) {
+                $delete_redirect = view_memory(42903, 42902) . $up_e['playerhandle'];
+            }
+
+            //If still not found, go to main page if no followings found:
+            if (!$delete_redirect) {
+                foreach ($this->Players->read(array('playerid' => $_POST['playerid'])) as $e2) {
+                    $delete_redirect = view_memory(42903, 42902) . e2['playerhandle'];
+                }
+            }
+        } else {
+
+            //Just delete from UI using JS:
+            $delete_element = '.s__12274_' . $_POST['playerid'];
+
+        }
+
+        //Delete all Links:
+        $links_removed = $this->Players->delete($_POST['playerid'], $player_e['playerid'], $migrate_s__id);
+
+        return view_json(array(
+            'status' => ( $links_removed>0 ? 1 : 0 ),
+            'message' => 'Player successfully removed',
+            'delete_redirect' => $delete_redirect,
+            'delete_element' => $delete_element,
+        ));
+
+    }
+
+    function idea_update()
+    {
 
         $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
 
         } elseif (!isset($_POST['save_ideatext'])) {
@@ -791,7 +880,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Transaction Data',
+                'message' => 'Missing Link Data',
             ));
 
         } elseif (!isset($_POST['save_ideatype']) || !in_array($_POST['save_ideatype'], $this->config->item('playerids___4737'))) {
@@ -807,7 +896,7 @@ class Controller extends CI_Controller
         }
 
 
-        $is = $this->Ideas->fetch(array(
+        $is = $this->Ideas->read(array(
             'ideaid' => $_POST['save_ideaid'],
         ));
         if (!count($is)) {
@@ -835,7 +924,7 @@ class Controller extends CI_Controller
                     $found_hashtag = false;
                     if (substr($word, 0, 1) == '#') {
                         $valid_hashtag = false;
-                        foreach ($this->Ideas->fetch(array(
+                        foreach ($this->Ideas->read(array(
                             'LOWER(ideahashtag)' => strtolower(substr($word, 1)),
                         )) as $idea_found) {
                             $found_hashtag = true;
@@ -858,7 +947,7 @@ class Controller extends CI_Controller
                 if ($all_hashtags && count($idea_references) && $_POST['save_linkplayertype'] > 0) {
 
                     //Return success:
-                    foreach ($this->Ideas->fetch(array(
+                    foreach ($this->Ideas->read(array(
                         'ideaid' => (intval($_POST['next_ideaid']) > 0 ? intval($_POST['next_ideaid']) : intval($_POST['previous_ideaid'])),
                     )) as $focus_i) {
 
@@ -879,7 +968,6 @@ class Controller extends CI_Controller
 
                         return view_json(array(
                             'status' => 1,
-                            'return_ideacache' => '',
                             'return_ideacache_links' => '',
                             'return_ideacache_full' => view_idea($_POST['focus_group'], $return_i),
                             'redirect_idea' => view_memory(42903, 33286) . $return_i['ideahashtag'],
@@ -889,12 +977,12 @@ class Controller extends CI_Controller
                 }
             }
 
-
             //Update new idea fields:
             $this->Ideas->update($is[0]['ideaid'], array(
                 'ideatype' => $_POST['save_ideatype'],
             ), $player_e['playerid']);
             $is[0]['ideatype'] = trim($_POST['save_ideatype']);
+
         }
 
 
@@ -948,16 +1036,15 @@ class Controller extends CI_Controller
                     }
                 }
 
-
                 //Fetch the current value:
                 if ($d_linkid > 0) {
-                    $values = $this->Ledger->fetch(array(
+                    $values = $this->Links->read(array(
                         'linkid' => $d_linkid,
                     ));
                 }
 
                 if (!$d_linkid || !count($values)) {
-                    $values = $this->Ledger->fetch(array(
+                    $values = $this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
                         'linkidearight' => $is[0]['ideaid'],
                         'linkplayerup' => $dynamic_playerid,
@@ -970,13 +1057,13 @@ class Controller extends CI_Controller
 
                     //Remove Link if we have one:
                     if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key links that should not be removed */) {
-                        $this->Ledger->void($values[0]['linkid'], $player_e['playerid']);
+                        $this->Links->delete($values[0]['linkid'], $player_e['playerid']);
                     }
 
                 } elseif (!count($values)) {
 
                     //Create New Link:
-                    $this->Ledger->create(array(
+                    $this->Links->create(array(
                         'linkplayercreator' => $player_e['playerid'],
                         'linkplayertype' => 4983, //Co-Author
                         'linkplayerup' => $dynamic_playerid,
@@ -988,7 +1075,7 @@ class Controller extends CI_Controller
                 } elseif ($values[0]['linktext'] != $dynamic_value) {
 
                     //Update Link:
-                    $this->Ledger->update($values[0]['linkid'], array(
+                    $this->Links->update($values[0]['linkid'], array(
                         'linktext' => $dynamic_value,
                         'linkplayercreator' => $player_e['playerid'],
                     ));
@@ -1014,11 +1101,15 @@ class Controller extends CI_Controller
             ), $player_e['playerid']);
 
             //Now Handles everywhere they are referenced:
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkidealeft' => $is[0]['ideaid'],
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42341')) . ')' => null, //Idea References
             ), array('linkidearight')) as $ref) {
-                view_sync_links(str_replace('#' . $is[0]['ideahashtag'], '#' . trim($_POST['save_ideahashtag']), $ref['ideatext']), true, $ref['ideaid']);
+
+                $this->Ideas->update($ref['ideaid'], array(
+                    'ideatext' => str_replace('#' . $is[0]['ideahashtag'], '#' . trim($_POST['save_ideahashtag']), $ref['ideatext']),
+                ), $player_e['playerid']);
+
             }
 
             //Assign new value:
@@ -1029,14 +1120,14 @@ class Controller extends CI_Controller
 
         //Also have to add as a comment to another idea?
         if (intval($_POST['next_ideaid']) > 0 && $_POST['save_linkplayertype'] > 0) {
-            $this->Ledger->create(array(
+            $this->Links->create(array(
                 'linkplayercreator' => $player_e['playerid'],
                 'linkidealeft' => $_POST['next_ideaid'],
                 'linkidearight' => $is[0]['ideaid'],
                 'linkplayertype' => $_POST['save_linkplayertype'],
             ));
         } elseif (intval($_POST['previous_ideaid']) > 0 && $_POST['save_linkplayertype'] > 0) {
-            $this->Ledger->create(array(
+            $this->Links->create(array(
                 'linkplayercreator' => $player_e['playerid'],
                 'linkidealeft' => $is[0]['ideaid'],
                 'linkidearight' => $_POST['previous_ideaid'],
@@ -1047,15 +1138,15 @@ class Controller extends CI_Controller
 
         //Do we have a link reference message that need to be saved?
         if ($_POST['save_linkid'] > 0 && $_POST['save_linktext'] != 'IGNORE_INPUT') {
-            //Fetch transaction:
-            foreach ($this->Ledger->fetch(array(
+            //Fetch Link:
+            foreach ($this->Links->read(array(
                 'linkid' => $_POST['save_linkid'],
             )) as $this_x) {
 
                 $is[0] = array_merge($is[0], $this_x);
 
                 if ($this_x['linktext'] != trim($_POST['save_linktext'])) {
-                    $this->Ledger->update($this_x['linkid'], array(
+                    $this->Links->update($this_x['linkid'], array(
                         'linktext' => trim($_POST['save_linktext']),
                         'linkplayercreator' => $player_e['playerid'],
                     ));
@@ -1063,25 +1154,26 @@ class Controller extends CI_Controller
             }
         }
 
-
-        //Update Links based on save_ideatext / Sync Idea Synonym & Player References links:
-        $view_sync_links = view_sync_links($_POST['save_ideatext'], true, $is[0]['ideaid']);
-        $is[0]['ideatext'] = trim($_POST['save_ideatext']);
-        $is[0]['ideacache'] = $view_sync_links['ideacache'];
-
-
-        //Update Search Index:
-        flag_for_search_indexing(12273, $is[0]['ideaid']);
+        //Update Text:
+        $this->Ideas->update($ref['ideaid'], array(
+            'ideatext' => trim($_POST['save_ideatext']),
+        ), $player_e['playerid']);
 
 
-        return view_json(array(
-            'status' => 1,
-            'return_ideacache' => $view_sync_links['ideacache'],
-            'return_ideacache_links' => view_idea_links($is[0], $player_e['playerid'], $focus__node, $focus__node),
-            'return_ideacache_full' => view_idea($_POST['focus_group'], $is[0]),
-            'redirect_idea' => (isset($is[0]['ideahashtag']) ? view_memory(42903, 33286) . $is[0]['ideahashtag'] : null),
-            'message' => $media_stats['total_current'] . ' current & ' . $media_stats['total_submitted'] . ' submitted media: ' . $media_stats['total_submitted'] . ' Created, ' . $media_stats['adjust_updated'] . ' Updated & ' . $media_stats['adjust_removed'] . ' Removed while detected ' . $media_stats['adjust_duplicated'] . ' duplicate uploads. ' . $view_sync_links['sync_stats']['old_links_removed'] . ' old links removed, ' . $view_sync_links['sync_stats']['old_links_kept'] . ' old links kept, ' . $view_sync_links['sync_stats']['new_links_added'] . ' new links added.',
-        ));
+        foreach($this->Ideas->read(array(
+            'ideaid' => $ref['ideaid'],
+        )) as $new_i){
+            //Update Search Index:
+            update_algolia(12273, $new_i['ideaid']);
+
+            return view_json(array(
+                'status' => 1,
+                'return_ideacache_links' => view_idea_links($new_i, $player_e['playerid'], $focus__node, $focus__node),
+                'return_ideacache_full' => view_idea($_POST['focus_group'], $new_i),
+                'redirect_idea' => (isset($new_i['ideahashtag']) ? view_memory(42903, 33286) . $new_i['ideahashtag'] : null),
+                'message' => $media_stats['total_current'] . ' current & ' . $media_stats['total_submitted'] . ' submitted media: ' . $media_stats['total_submitted'] . ' Created, ' . $media_stats['adjust_updated'] . ' Updated & ' . $media_stats['adjust_removed'] . ' Removed while detected ' . $media_stats['adjust_duplicated'] . ' duplicate uploads.',
+            ));
+        }
 
     }
 
@@ -1094,7 +1186,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'messagCloe' => view_unauthorized_message(10939),
+                'messagCloe' => blocked_reasoning(10939),
             ));
         } elseif (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1) {
             return view_json(array(
@@ -1119,20 +1211,20 @@ class Controller extends CI_Controller
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !access_level_idea(null, $_POST['ideaid'])) {
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !idea_access_level(null, $_POST['ideaid'])) {
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
             } else {
 
-                $target_disccovery = target_disccovery();
+                $discover_linkplayertype = discover_linkplayertype();
 
                 $ui = '';
                 $listed_items = 0;
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284'))) {
 
                     //SOURCES
-                    $players___4593 = $this->config->item('players___4593'); //Transaction Types
+                    $players___4593 = $this->config->item('players___4593'); //Link Types
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
                     foreach (view_idea_query($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $player_e) {
                         if (isset($player_e['playerid'])) {
@@ -1145,12 +1237,12 @@ class Controller extends CI_Controller
 
                     //IDEAS
                     $players___4737 = $this->config->item('players___4737'); //Idea Types
-                    $players___4593 = $this->config->item('players___4593'); //Transaction Types
+                    $players___4593 = $this->config->item('players___4593'); //Link Types
                     $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
                     foreach (view_idea_query($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
-                            $ui .= view_card($target_disccovery . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
+                            $ui .= view_card($discover_linkplayertype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
                             $listed_items++;
                         }
                     }
@@ -1159,10 +1251,10 @@ class Controller extends CI_Controller
 
                 if ($listed_items < $_POST['counter']) {
                     //We have more to show:
-                    foreach ($this->Ideas->fetch(array(
+                    foreach ($this->Ideas->read(array(
                         'ideaid' => $_POST['ideaid'],
                     )) as $i) {
-                        $ui .= view_more($target_disccovery . view_memory(42903, 33286) . $i['ideahashtag'], false, '&nbsp;', '&nbsp;', 'View All');
+                        $ui .= view_more($discover_linkplayertype . view_memory(42903, 33286) . $i['ideahashtag'], false, '&nbsp;', '&nbsp;', 'View All');
                     }
                 }
 
@@ -1187,7 +1279,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['new_x_order']) || !is_array($_POST['new_x_order']) || count($_POST['new_x_order']) < 1) {
             return view_json(array(
@@ -1197,7 +1289,7 @@ class Controller extends CI_Controller
         } elseif (!isset($_POST['linkplayertype']) || !in_array($_POST['linkplayertype'], $this->config->item('playerids___4603'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Transaction Type',
+                'message' => 'Invalid Link Type',
             ));
         }
 
@@ -1205,8 +1297,8 @@ class Controller extends CI_Controller
         $updated = 0;
         foreach ($_POST['new_x_order'] as $linknumber => $linkid) {
             if (intval($linkid) > 0 && intval($linknumber) > 0) {
-                //Update order of this transaction:
-                if ($this->Ledger->update(intval($linkid), array(
+                //Update order of this Link:
+                if ($this->Links->update(intval($linkid), array(
                     'linknumber' => $linknumber,
                     'linkplayercreator' => $player_e['playerid'],
                 ))) {
@@ -1252,7 +1344,7 @@ class Controller extends CI_Controller
 
         } else {
 
-            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !access_level_player(null, $_POST['playerid'])) {
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access_level(null, $_POST['playerid'])) {
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
@@ -1265,7 +1357,7 @@ class Controller extends CI_Controller
 
                     //SOURCES
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
-                    $players___4593 = $this->config->item('players___4593'); //Transaction Types
+                    $players___4593 = $this->config->item('players___4593'); //Link Types
 
                     foreach (view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $player_e) {
                         if (isset($player_e['playerid'])) {
@@ -1279,12 +1371,12 @@ class Controller extends CI_Controller
                     //IDEAS
                     $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
                     $players___4737 = $this->config->item('players___4737'); //Idea Types
-                    $players___4593 = $this->config->item('players___4593'); //Transaction Types
-                    $target_disccovery = target_disccovery();
+                    $players___4593 = $this->config->item('players___4593'); //Link Types
+                    $discover_linkplayertype = discover_linkplayertype();
 
                     foreach (view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
-                            $ui .= view_card($target_disccovery . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
+                            $ui .= view_card($discover_linkplayertype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
                             $listed_items++;
                         }
                     }
@@ -1293,7 +1385,7 @@ class Controller extends CI_Controller
 
                 if ($listed_items < $_POST['counter']) {
                     //We have more to show:
-                    foreach ($this->Players->fetch(array(
+                    foreach ($this->Players->read(array(
                         'playerid' => $_POST['playerid'],
                     )) as $player_this) {
                         $ui .= view_more(view_memory(42903, 42902) . $player_this['playerhandle'], false, '&nbsp;', '&nbsp;', 'View All');
@@ -1314,7 +1406,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => blocked_reasoning(10939),
             ));
         } elseif (!isset($_POST['playerid']) || intval($_POST['playerid']) < 1) {
             return view_json(array(
@@ -1329,12 +1421,12 @@ class Controller extends CI_Controller
         } else {
 
             //Validate Player:
-            $es = $this->Players->fetch(array(
+            $es = $this->Players->read(array(
                 'playerid' => $_POST['playerid'],
             ));
 
             //Count followers:
-            $listplayer_count = $this->Ledger->fetch(array(
+            $listplayer_count = $this->Links->read(array(
                 'linkplayerup' => $_POST['playerid'],
                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(playerid) as totals');
@@ -1357,7 +1449,7 @@ class Controller extends CI_Controller
 
                 //Update them all:
                 foreach ($_POST['new_linknumber'] as $rank => $linkid) {
-                    $this->Ledger->update($linkid, array(
+                    $this->Links->update($linkid, array(
                         'linknumber' => intval($rank),
                     ));
                 }
@@ -1380,17 +1472,17 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => blocked_reasoning(10939),
             ));
         } elseif (!isset($_POST['linkid'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Transaction ID',
+                'message' => 'Invalid Link ID',
             ));
         }
 
-        //Archive Transaction:
-        $this->Ledger->void($_POST['linkid'], $player_e['playerid']);
+        //Archive Link:
+        $this->Links->delete($_POST['linkid'], $player_e['playerid']);
 
         return view_json(array(
             'status' => 1,
@@ -1407,7 +1499,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => blocked_reasoning(10939),
             ));
         } elseif (intval($_POST['playerid']) < 1) {
             return view_json(array(
@@ -1422,7 +1514,7 @@ class Controller extends CI_Controller
         }
 
         //Validate Player:
-        $fetch_o = $this->Players->fetch(array(
+        $fetch_o = $this->Players->read(array(
             'playerid' => $_POST['playerid'],
         ));
         if (count($fetch_o) < 1) {
@@ -1445,19 +1537,19 @@ class Controller extends CI_Controller
 
 
         //Followers:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayerup' => $_POST['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Links
         ), array(), 0) as $x) {
 
             //Make sure none existent in new Player:
-            if (!count($this->Ledger->fetch(array(
+            if (!count($this->Links->read(array(
                 'linkplayertype' => $x['linkplayertype'],
                 'linkplayerup' => $focus_e['playerid'],
                 'linkplayerdown' => $x['linkplayerdown'],
                 'linktext' => $x['linktext'],
             )))) {
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayercreator' => $player_e['playerid'],
                     'linknumber' => $x['linknumber'],
                     'linkplayertype' => $x['linkplayertype'],
@@ -1470,7 +1562,7 @@ class Controller extends CI_Controller
 
 
         //Followings:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayerdown' => $_POST['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Links
         ), array(), 0) as $x) {
@@ -1480,13 +1572,13 @@ class Controller extends CI_Controller
                 continue;
             }
 
-            if (!count($this->Ledger->fetch(array(
+            if (!count($this->Links->read(array(
                 'linkplayertype' => $x['linkplayertype'],
                 'linkplayerup' => $x['linkplayerup'],
                 'linkplayerdown' => $focus_e['playerid'],
                 'linktext' => $x['linktext'],
             )))) {
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayercreator' => $player_e['playerid'],
                     'linknumber' => $x['linknumber'],
                     'linkplayertype' => $x['linkplayertype'],
@@ -1498,11 +1590,11 @@ class Controller extends CI_Controller
         }
 
         //Ideas:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41302')) . ')' => null, //Clone Idea Player Links
             'linkplayerup' => $_POST['playerid'],
         ), array(), 0) as $x) {
-            if (!count($this->Ledger->fetch(array(
+            if (!count($this->Links->read(array(
                 'linkplayertype' => $x['linkplayertype'],
                 'linkplayerup' => $focus_e['playerid'],
                 'linkplayerdown' => $x['linkplayerdown'],
@@ -1510,7 +1602,7 @@ class Controller extends CI_Controller
                 'linkidearight' => $x['linkidearight'],
                 'linktext' => $x['linktext'],
             )))) {
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayercreator' => $player_e['playerid'],
                     'linknumber' => $x['linknumber'],
                     'linkplayertype' => $x['linkplayertype'],
@@ -1536,8 +1628,8 @@ class Controller extends CI_Controller
 
         /*
          *
-         * Either creates a IDEA transaction between focus_id & link_ideaid
-         * OR will create a new idea with outcome ideatext and then transaction it
+         * Either creates a IDEA Link between focus_id & link_ideaid
+         * OR will create a new idea with outcome ideatext and then Link it
          * to focus_id (In this case link_ideaid=0)
          *
          * */
@@ -1547,7 +1639,7 @@ class Controller extends CI_Controller
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => blocked_reasoning(10939),
             ));
         } elseif (!isset($_POST['linkplayertype']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
             return view_json(array(
@@ -1569,7 +1661,7 @@ class Controller extends CI_Controller
 
 
         if (!$_POST['link_ideaid'] && view_valid_handle_idea($_POST['new_ideatext'])) {
-            foreach ($this->Ideas->fetch(array(
+            foreach ($this->Ideas->read(array(
                 'LOWER(ideahashtag)' => strtolower(view_valid_handle_idea($_POST['new_ideatext'])),
             )) as $i) {
                 $_POST['link_ideaid'] = $i['ideaid'];
@@ -1579,8 +1671,8 @@ class Controller extends CI_Controller
         $x_i = array();
 
         if ($_POST['link_ideaid'] > 0) {
-            //Fetch transaction idea to determine idea type:
-            $x_i = $this->Ideas->fetch(array(
+            //Fetch Link idea to determine idea type:
+            $x_i = $this->Ideas->read(array(
                 'ideaid' => intval($_POST['link_ideaid']),
             ));
             if (count($x_i) == 0) {
@@ -1607,7 +1699,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => blocked_reasoning(10939),
             ));
         } elseif (intval($_POST['focus__id']) < 1) {
             return view_json(array(
@@ -1631,7 +1723,7 @@ class Controller extends CI_Controller
         if ($adding_to_i) {
 
             //Validate Idea:
-            $fetch_o = $this->Ideas->fetch(array(
+            $fetch_o = $this->Ideas->read(array(
                 'ideaid' => $_POST['focus__id'],
             ));
             if (count($fetch_o) < 1) {
@@ -1644,7 +1736,7 @@ class Controller extends CI_Controller
         } else {
 
             //Validate Player:
-            $fetch_o = $this->Players->fetch(array(
+            $fetch_o = $this->Players->read(array(
                 'playerid' => $_POST['focus__id'],
             ));
             if (count($fetch_o) < 1) {
@@ -1663,7 +1755,7 @@ class Controller extends CI_Controller
         $is_upwards = in_array($_POST['linkplayertype'], $this->config->item('playerids___14686'));
 
         if (!intval($_POST['player_existing_id']) && view_valid_handle_player($_POST['player_new_string'])) {
-            foreach ($this->Players->fetch(array(
+            foreach ($this->Players->read(array(
                 'LOWER(playerhandle)' => strtolower(substr($_POST['player_new_string'], 1)),
             )) as $e) {
                 $_POST['player_existing_id'] = $e['playerid'];
@@ -1675,7 +1767,7 @@ class Controller extends CI_Controller
         if ($adding_to_existing) {
 
             //Validate this existing Player:
-            $es = $this->Players->fetch(array(
+            $es = $this->Players->read(array(
                 'playerid' => $_POST['player_existing_id'],
             ));
 
@@ -1704,13 +1796,13 @@ class Controller extends CI_Controller
         }
 
 
-        //We need to check to ensure this is not a duplicate transaction if adding an existing Player:
+        //We need to check to ensure this is not a duplicate Link if adding an existing Player:
         $ur2 = array();
 
         if ($adding_to_i) {
 
             //Add Reference:
-            $ur2 = $this->Ledger->create(array(
+            $ur2 = $this->Links->create(array(
                 'linkplayercreator' => $player_e['playerid'],
                 'linkplayertype' => 4983, //Co-Author
                 'linkplayerup' => $focus_e['playerid'],
@@ -1721,7 +1813,7 @@ class Controller extends CI_Controller
 
             //Add Up/Down Player:
 
-            //Add transactions only if not previously added by the URL function:
+            //Add Links only if not previously added by the URL function:
             if ($is_upwards) {
 
                 //Following
@@ -1741,8 +1833,8 @@ class Controller extends CI_Controller
 
             $linktext = null;
 
-            //Create transaction:
-            $ur2 = $this->Ledger->create(array(
+            //Create Link:
+            $ur2 = $this->Links->create(array(
                 'linkplayercreator' => $player_e['playerid'],
                 'linkplayertype' => 4230,
                 'linktext' => $linktext,
@@ -1771,7 +1863,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['playerid']) || !isset($_POST['linkid'])) {
             return view_json(array(
@@ -1780,7 +1872,7 @@ class Controller extends CI_Controller
             ));
         }
 
-        $es = $this->Players->fetch(array(
+        $es = $this->Players->read(array(
             'playerid' => $_POST['playerid'],
         ));
         if (!count($es)) {
@@ -1788,7 +1880,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Player is no longer active',
             ));
-        } elseif (!access_level_player($es[0]['playerhandle'], 0, $es[0])) {
+        } elseif (!player_access_level($es[0]['playerhandle'], 0, $es[0])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are missing permission to edit this Player',
@@ -1804,7 +1896,7 @@ class Controller extends CI_Controller
         $profile_header = '';
 
         //Fetch Player Templates, if any:
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___42178')) . ')' => null, //Dynamic Players
             'linkplayerdown' => $es[0]['playerid'],
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
@@ -1815,7 +1907,7 @@ class Controller extends CI_Controller
             }
             array_push($scanned_players, $player_group['playerid']);
 
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayerdown' => $player_group['playerid'],
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___42145')) . ')' => null, //Dynamic Input Templates
                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
@@ -1827,7 +1919,7 @@ class Controller extends CI_Controller
                 //Load template:
                 if (!is_array($this->config->item('players___' . $player_template['playerid']))) {
                     //Report Error:
-                    $this->Ledger->create(array(
+                    $this->Links->create(array(
                         'linkplayertype' => 44179, //Triggered
                         'linkplayerup' => 4246, //Platform Bug Reports
                         'linkplayerdown' => $player_template['playerid'],
@@ -1856,7 +1948,7 @@ class Controller extends CI_Controller
                     if (count($data_types) != 1) {
 
                         //This is strange, we are expecting 1 match only report this:
-                        $this->Ledger->create(array(
+                        $this->Links->create(array(
                             'linkplayertype' => 44179, //Triggered
                             'linkplayerup' => 4246, //Platform Bug Reports
                             'linkplayerdown' => $dynamic_playerid,
@@ -1867,7 +1959,7 @@ class Controller extends CI_Controller
 
                     } elseif ($input_pointer >= view_memory(6404, 42206)) {
                         //Monitor if we ever reach the maximum:
-                        $this->Ledger->create(array(
+                        $this->Links->create(array(
                             'linkplayertype' => 44179, //Triggered
                             'linkplayerup' => 4246, //Platform Bug Reports
                             'linkplayerdown' => $dynamic_playerid,
@@ -1907,7 +1999,7 @@ class Controller extends CI_Controller
                         //Fetch the current value(s):
                         $counted = 0;
                         $unique_values = array();
-                        foreach ($this->Ledger->fetch(array(
+                        foreach ($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                             'linkplayerdown' => $es[0]['playerid'],
                             'linkplayerup' => $dynamic_playerid,
@@ -1929,7 +2021,7 @@ class Controller extends CI_Controller
                         }
 
                         if (!$counted) {
-                            foreach ($this->Players->fetch(array(
+                            foreach ($this->Players->read(array(
                                 'playerid' => $dynamic_playerid,
                             )) as $selected_e) {
                                 array_push($return_inputs, array(
@@ -1952,12 +2044,12 @@ class Controller extends CI_Controller
 
         //Add universal inputs only if missing bio profiles:
         if (!array_intersect($scanned_players, $this->config->item('playerids___42885'))) {
-            foreach ($this->Players->fetch(array(
+            foreach ($this->Players->read(array(
                 'playerid IN (' . join(',', $this->config->item('playerids___42776')) . ')' => null, //Universal Dynamic Inputs
             )) as $selected_e) {
                 foreach (array_intersect($players___42776[$selected_e['playerid']]['m__following'], $this->config->item('playerids___4592')) as $data_type) {
                     //Any value?
-                    $values = $this->Ledger->fetch(array(
+                    $values = $this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                         'linkplayerdown' => $es[0]['playerid'],
                         'linkplayerup' => $selected_e['playerid'],
@@ -1992,7 +2084,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['save_playerid'])) {
             return view_json(array(
@@ -2017,12 +2109,12 @@ class Controller extends CI_Controller
         } elseif (!isset($_POST['save_linkid']) || !isset($_POST['save_linktext'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Transaction Data',
+                'message' => 'Missing Link Data',
             ));
         }
 
 
-        $es = $this->Players->fetch(array(
+        $es = $this->Players->read(array(
             'playerid' => $_POST['save_playerid'],
         ));
         if (!count($es)) {
@@ -2074,13 +2166,13 @@ class Controller extends CI_Controller
 
             //Fetch the current value:
             if ($d_linkid > 0) {
-                $values = $this->Ledger->fetch(array(
+                $values = $this->Links->read(array(
                     'linkid' => $d_linkid,
                 ));
             }
 
             if (!$d_linkid || !count($values)) {
-                $values = $this->Ledger->fetch(array(
+                $values = $this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $dynamic_playerid,
                     'linkplayerdown' => $es[0]['playerid'],
@@ -2093,13 +2185,13 @@ class Controller extends CI_Controller
 
                 //Remove Link if we have one:
                 if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key links that should not be removed */) {
-                    $this->Ledger->void($values[0]['linkid'], $player_e['playerid']);
+                    $this->Links->delete($values[0]['linkid'], $player_e['playerid']);
                 }
 
             } elseif (!count($values)) {
 
                 //Create Link:
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayercreator' => $player_e['playerid'],
                     'linkplayertype' => 4230,
                     'linkplayerup' => $dynamic_playerid,
@@ -2111,7 +2203,7 @@ class Controller extends CI_Controller
             } elseif ($values[0]['linktext'] != $dynamic_value) {
 
                 //Update Link:
-                $this->Ledger->update($values[0]['linkid'], array(
+                $this->Links->update($values[0]['linkid'], array(
                     'linktext' => $dynamic_value,
                     'linkplayercreator' => $player_e['playerid'],
                 ));
@@ -2164,12 +2256,13 @@ class Controller extends CI_Controller
         }
 
         //Update Handles everywhere they are referenced:
-        $CI =& get_instance();
-        foreach ($CI->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayerup' => $es[0]['playerid'],
             'linkplayertype' => 31835, //Player Mention
         ), array('linkidearight')) as $ref) {
-            view_sync_links(str_replace('@' . $es[0]['playerhandle'], '@' . $new_handle_string, $ref['ideatext']), true, $ref['ideaid']);
+            $this->Ideas->update($ref['ideaid'], array(
+                'ideatext' => str_replace('@' . $es[0]['playerhandle'], '@' . $new_handle_string, $ref['ideatext']),
+            ), $player_e['playerid']);
         }
         $es[0]['playerhandle'] = $new_handle_string;
 
@@ -2177,15 +2270,15 @@ class Controller extends CI_Controller
         //Do we have a link reference message that need to be saved?
         if ($_POST['save_linkid'] > 0 && $_POST['save_linktext'] != 'IGNORE_INPUT') {
 
-            //Fetch transaction:
-            foreach ($this->Ledger->fetch(array(
+            //Fetch Link:
+            foreach ($this->Links->read(array(
                 'linkid' => $_POST['save_linkid'],
             )) as $this_x) {
 
                 $es[0] = array_merge($es[0], $this_x);
 
                 if ($this_x['linktext'] != trim($_POST['save_linktext'])) {
-                    $this->Ledger->update($this_x['linkid'], array(
+                    $this->Links->update($this_x['linkid'], array(
                         'linktext' => trim($_POST['save_linktext']),
                         'linkplayercreator' => $player_e['playerid'],
                     ));
@@ -2220,7 +2313,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
             return view_json(array(
@@ -2256,17 +2349,17 @@ class Controller extends CI_Controller
 
             //Dispatch Any Emails Necessary:
             if (isset($_POST['selected_playerid']) && intval($_POST['selected_playerid']) > 0) {
-                foreach ($this->Ledger->fetch(array(
+                foreach ($this->Links->read(array(
                     'linkplayertype' => 33600, //Draft
                     'linkplayerup' => $_POST['selected_playerid'],
                 ), array('linkidearight'), 0) as $i) {
-                    if (count($this->Ledger->fetch(array(
+                    if (count($this->Links->read(array(
                         'linkplayertype' => 33600, //Draft
                         'linkplayerup' => 31065, //Choice Update Email Templates
                         'linkidearight' => $i['ideaid'], //Is this the template?
                     )))) {
                         //Found the email template to send:
-                        $total_sent = $this->Ledger->send_idea_mass_dm(array($player_e), $i, website_setting(0), false);
+                        $total_sent = $this->Links->broadcast(array($player_e), $i, website_setting(0), false);
                         break; //Just the first template match
                     }
                 }
@@ -2292,20 +2385,20 @@ class Controller extends CI_Controller
 
             //List all possible answers:
             $possible_answers = array();
-            foreach ($this->Ledger->fetch($query_filters, array('linkplayerdown'), 0, 0) as $answer_e) {
+            foreach ($this->Links->read($query_filters, array('linkplayerdown'), 0, 0) as $answer_e) {
                 $stats['total']++;
                 array_push($possible_answers, $answer_e['playerid']);
             }
 
             //Delete previously selected options:
             if ($_POST['down_playerid']) {
-                $delete_query = $this->Ledger->fetch(array(
+                $delete_query = $this->Links->read(array(
                     'linkplayerup IN (' . join(',', $possible_answers) . ')' => null,
                     'linkplayerdown' => $_POST['down_playerid'],
                     'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                 ));
             } elseif ($_POST['right_ideaid']) {
-                $delete_query = $this->Ledger->fetch(array(
+                $delete_query = $this->Links->read(array(
                     'linkplayerup IN (' . join(',', $possible_answers) . ')' => null,
                     'linkidearight' => $_POST['right_ideaid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
@@ -2315,7 +2408,7 @@ class Controller extends CI_Controller
             foreach ($delete_query as $delete) {
                 $stats['deleted']++;
                 //Should usually delete a single option:
-                $this->Ledger->void($delete['linkid'], $player_e['playerid']);
+                $this->Links->delete($delete['linkid'], $player_e['playerid']);
             }
 
         }
@@ -2324,7 +2417,7 @@ class Controller extends CI_Controller
         if ((!$_POST['enable_mulitiselect'] && $is_required) || !$_POST['was_previously_selected']) {
             if ($_POST['down_playerid']) {
                 $stats['added']++;
-                $this->Ledger->create(array(
+                $this->Links->create(array(
                     'linkplayercreator' => $player_e['playerid'],
                     'linkplayerup' => $_POST['selected_playerid'],
                     'linkplayertype' => 4230,
@@ -2332,13 +2425,13 @@ class Controller extends CI_Controller
                 ));
             } elseif ($_POST['right_ideaid']) {
 
-                if (!count($this->Ledger->fetch(array(
+                if (!count($this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
                     'linkplayerup' => $_POST['selected_playerid'],
                     'linkidearight' => $_POST['right_ideaid'],
                 )))) {
                     $stats['added']++;
-                    $this->Ledger->create(array(
+                    $this->Links->create(array(
                         'linkplayercreator' => $player_e['playerid'],
                         'linkplayertype' => 4983, //Co-Author
                         'linkplayerup' => $_POST['selected_playerid'],
@@ -2399,7 +2492,7 @@ class Controller extends CI_Controller
         //Validate member ID
         if ($_POST['account_id'] > 0) {
 
-            $es = $this->Players->fetch(array(
+            $es = $this->Players->read(array(
                 'playerid' => $_POST['account_id'],
             ));
             if (!count($es)) {
@@ -2424,21 +2517,21 @@ class Controller extends CI_Controller
 
         //Auth Code:
         $is_authenticated = false;
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linkplayertype' => 44179, //Triggered
             'linkplayerup' => 32078, //Sign In Key
             'LOWER(linktext) LIKE \'' . strtolower($_POST['account_email_phone']) . '%\'' => null,
         ), array(), 1, 0, array('linktime' => 'DESC')) as $sent_key) {
             if (strtotime($sent_key['linktime']) <= (time() - 86400)) {
                 //Expired
-                $this->Ledger->void($sent_key['linkid'], $_POST['account_id']); //Code Verified
+                $this->Links->delete($sent_key['linkid'], $_POST['account_id']); //Code Verified
                 break;
             }
             $session_key = $this->session->userdata('session_key');
             $key_parts = explode('/', $sent_key['linktext'], 2);
             if (strlen($session_key) && $key_parts[1] == md5($session_key . $_POST['input_code'])) {
                 //Void access code:
-                $is_authenticated = $this->Ledger->void($sent_key['linkid'], $_POST['account_id']); //Code Verified
+                $is_authenticated = $this->Links->delete($sent_key['linkid'], $_POST['account_id']); //Code Verified
             }
         }
         if (!$is_authenticated) {
@@ -2452,7 +2545,7 @@ class Controller extends CI_Controller
         //Validate member ID
         if ($_POST['account_id'] > 0) {
 
-            //Assign session & log transaction:
+            //Assign session & log Link:
             $this->Players->activate($es[0]);
 
         } else {
@@ -2478,7 +2571,7 @@ class Controller extends CI_Controller
 
         //See if we can find a better one:
         if (intval($_POST['sign_ideaid']) > 0) {
-            foreach ($this->Ideas->fetch(array(
+            foreach ($this->Ideas->read(array(
                 'ideaid' => $_POST['sign_ideaid'],
             )) as $i) {
                 $sign_url = $i['ideahashtag'] . '/' . view_memory(6404, 4235);
@@ -2502,7 +2595,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => blocked_reasoning(10939),
             ));
 
         } elseif (!isset($_POST['linkplayercreator']) || !isset($_POST['playerid']) || !isset($_POST['ideaid']) || !isset($_POST['linkid'])) {
@@ -2516,7 +2609,7 @@ class Controller extends CI_Controller
 
             $_POST['require_writing'] = intval($_POST['require_writing']);
 
-            $already_added = $this->Ledger->fetch(array(
+            $already_added = $this->Links->read(array(
                 'linkplayerup' => $_POST['playerid'],
                 'linkplayerdown' => $_POST['linkplayercreator'],
                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
@@ -2528,12 +2621,12 @@ class Controller extends CI_Controller
 
                     //Updating current value if changed:
                     if (strlen($_POST['written_answer']) && trim($_POST['written_answer']) != $already_added[0]['linktext']) {
-                        $this->Ledger->update($already_added[0]['linkid'], array(
+                        $this->Links->update($already_added[0]['linkid'], array(
                             'linktext' => $_POST['written_answer'],
                             'linkplayercreator' => $player_e['playerid'],
                         ));
                     } elseif (!strlen($_POST['written_answer'])) {
-                        $this->Ledger->void($already_added[0]['linkid'], $player_e['playerid']);
+                        $this->Links->delete($already_added[0]['linkid'], $player_e['playerid']);
                     }
 
                     return view_json(array(
@@ -2544,7 +2637,7 @@ class Controller extends CI_Controller
                 } else {
 
                     //Already exists, let's remove:
-                    $this->Ledger->void($already_added[0]['linkid'], $player_e['playerid']);
+                    $this->Links->delete($already_added[0]['linkid'], $player_e['playerid']);
 
                     return view_json(array(
                         'status' => 1,
@@ -2565,12 +2658,12 @@ class Controller extends CI_Controller
 
                 } else {
 
-                    foreach ($this->Players->fetch(array(
+                    foreach ($this->Players->read(array(
                         'playerid' => $_POST['playerid'],
                     )) as $e) {
 
                         //Does not exist, Add:
-                        $this->Ledger->create(array(
+                        $this->Links->create(array(
                             'linkplayerup' => $_POST['playerid'],
                             'linkplayerdown' => $_POST['linkplayercreator'],
                             'linkplayercreator' => $player_e['playerid'],
@@ -2623,7 +2716,7 @@ class Controller extends CI_Controller
 
         if (intval($_POST['sign_ideaid']) > 0) {
             //Fetch the idea:
-            $referrer_i = $this->Ideas->fetch(array(
+            $referrer_i = $this->Ideas->read(array(
                 'ideaid' => $_POST['sign_ideaid'],
             ));
         } else {
@@ -2633,7 +2726,7 @@ class Controller extends CI_Controller
 
         //Search for email/phone to see if it exists
         $linkplayercreator = 0;
-        foreach ($this->Ledger->fetch(array(
+        foreach ($this->Links->read(array(
             'linktext' => $_POST['account_email_phone'],
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
@@ -2668,7 +2761,7 @@ class Controller extends CI_Controller
         }
 
         //Log new key:
-        $this->Ledger->create(array(
+        $this->Links->create(array(
             'linkplayertype' => 44179, //Triggered
             'linkplayerup' => 32078, //Sign In Key
             'linkplayerdown' => $linkplayercreator, //Member making request
@@ -2698,7 +2791,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
                 'original_val' => '',
             ));
 
@@ -2712,7 +2805,7 @@ class Controller extends CI_Controller
 
         } elseif ($_POST['cache_playerid'] == 6197 /* SOURCE FULL NAME */) {
 
-            $es = $this->Players->fetch(array(
+            $es = $this->Players->read(array(
                 'playerid' => $_POST['s__id'],
             ));
             if (!count($es)) {
@@ -2792,7 +2885,7 @@ class Controller extends CI_Controller
             } elseif ($_POST['apply_id'] == 12589) {
 
                 //idea list:
-                $is_next = $this->Ledger->fetch(array(
+                $is_next = $this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
                     'linkidealeft' => $_POST['s__id'],
                 ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
@@ -2832,7 +2925,7 @@ class Controller extends CI_Controller
         if ($_POST['focus__node'] == 12274) {
 
             //SOURCE
-            $focus_es = $this->Players->fetch(array(
+            $focus_es = $this->Players->read(array(
                 'playerid' => $_POST['focus__id'],
             ));
             $focus_e = $focus_es[0];
@@ -2850,7 +2943,7 @@ class Controller extends CI_Controller
         } elseif ($_POST['focus__node'] == 12273) {
 
             //IDEA
-            $previous_is = $this->Ideas->fetch(array(
+            $previous_is = $this->Ideas->read(array(
                 'ideaid' => $_POST['focus__id'],
             ));
             $previous_i = $previous_is[0];
@@ -2881,7 +2974,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => blocked_reasoning(10939),
             ));
         } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('playerids___28956'))) {
             return view_json(array(
@@ -2898,22 +2991,22 @@ class Controller extends CI_Controller
         if ($_POST['focus__node'] == 12273) {
             //Ideas order based on alphabetical order
             $order = 0;
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
                 'linkidealeft' => $_POST['focus__id'],
             ), array('linkidearight'), 0, 0, array('ideatext' => 'ASC')) as $x) {
                 $order++;
-                $this->Ledger->update($x['linkid'], array(
+                $this->Links->update($x['linkid'], array(
                     'linknumber' => $order,
                 ));
             }
         } elseif ($_POST['focus__node'] == 12274) {
             //Players reset order
-            foreach ($this->Ledger->fetch(array(
+            foreach ($this->Links->read(array(
                 'linkplayerup' => $_POST['focus__id'],
                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0) as $x) {
-                $this->Ledger->update($x['linkid'], array(
+                $this->Links->update($x['linkid'], array(
                     'linknumber' => 0,
                 ));
             }
@@ -2933,7 +3026,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['target_ideahashtag']) || !isset($_POST['target_ideaid']) || !isset($_POST['player_submitted_data']) || !isset($_POST['do_skip'])) {
             return view_json(array(
@@ -2958,7 +3051,7 @@ class Controller extends CI_Controller
 
         //Discover Focus Idea:
         $primary_ideaid = null;
-        foreach ($this->Ideas->fetch(array(
+        foreach ($this->Ideas->read(array(
             'ideaid' => $_POST['player_submitted_data']['ideaid'],
         )) as $focus_i) {
 
@@ -2999,7 +3092,7 @@ class Controller extends CI_Controller
 
                     //How about the min selection?
                     if ($idea_required) {
-                        foreach ($this->Ledger->fetch(array(
+                        foreach ($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'linkidearight' => $focus_i['ideaid'],
                             'linkplayerup' => 40834, //Min Selection
@@ -3014,7 +3107,7 @@ class Controller extends CI_Controller
                     }
 
                     //How about max selection?
-                    foreach ($this->Ledger->fetch(array(
+                    foreach ($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'linkidearight' => $focus_i['ideaid'],
                         'linkplayerup' => 40833, //Max Selection
@@ -3032,7 +3125,7 @@ class Controller extends CI_Controller
 
                 //Delete ALL previous answers that are not currently selected, if any:
                 $already_answered = array();
-                foreach ($this->Ledger->fetch(array(
+                foreach ($this->Links->read(array(
                     'linkplayertype' => 7712, //Input Choice
                     'linkplayercreator' => $player_e['playerid'],
                     'linkidealeft' => $focus_i['ideaid'],
@@ -3044,16 +3137,16 @@ class Controller extends CI_Controller
                         continue; //Nothing we need to do here...
                     }
 
-                    $this->Ledger->void($x_selection['linkid'], $player_e['playerid']);
+                    $this->Links->delete($x_selection['linkid'], $player_e['playerid']);
 
                     //Remove discovery if we can:
                     if (!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))) {
-                        foreach ($this->Ledger->fetch(array(
+                        foreach ($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                             'linkidealeft' => $x_selection['ideaid'],
                             'linkplayercreator' => $player_e['playerid'],
                         ), array(), 0) as $x_discovery) {
-                            $this->Ledger->void($x_discovery['linkid'], $player_e['playerid']);
+                            $this->Links->delete($x_discovery['linkid'], $player_e['playerid']);
                         }
                     }
                 }
@@ -3061,7 +3154,7 @@ class Controller extends CI_Controller
                 //Save New Answers if not already:
                 foreach ($_POST['selection_ideaid'] as $answer_ideaid) {
                     if (!in_array($answer_ideaid, $already_answered)) {
-                        $this->Ledger->create(array(
+                        $this->Links->create(array(
                             'linkplayertype' => 7712, //Input Choice
                             'linkplayercreator' => $player_e['playerid'],
                             'linkidealeft' => $focus_i['ideaid'],
@@ -3073,7 +3166,7 @@ class Controller extends CI_Controller
             }
 
             //Issue DISCOVERY/IDEA COIN:
-            $completion_status = $this->Ledger->mark_complete(idea_discovery_link($focus_i, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
+            $completion_status = $this->Links->discovered(idea_discovery_link($focus_i, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
                 'linknumber' => $_POST['player_submitted_data']['ideanumber'],
             ));
             if (!$completion_status['status']) {
@@ -3094,7 +3187,7 @@ class Controller extends CI_Controller
                     $next_idea_data['uploaded_media'] = array();
                 }
 
-                foreach ($this->Ideas->fetch(array(
+                foreach ($this->Ideas->read(array(
                     'ideaid' => $next_idea_data['ideaid'],
                 )) as $idea_next) {
 
@@ -3121,7 +3214,7 @@ class Controller extends CI_Controller
                     }
 
                     //Try to complete:
-                    $completion_status = $this->Ledger->mark_complete(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
+                    $completion_status = $this->Links->discovered(idea_discovery_link($idea_next, $trying_to_skip), $player_e['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
                         'linknumber' => $next_idea_data['ideanumber'],
                     ));
                     if ($idea_required && !$completion_status['status']) {
@@ -3133,20 +3226,20 @@ class Controller extends CI_Controller
 
             //Find Next:
             $idea_redirect_url = false;
-            foreach ($this->Ideas->fetch(array(
+            foreach ($this->Ideas->read(array(
                 'ideaid' => $primary_ideaid,
             )) as $primary_i) {
                 $idea_redirect_url = idea_redirect_url($primary_i);
             }
             if (!$idea_redirect_url) {
-                $find_next = $this->Ledger->find_next($player_e['playerid'], $_POST['target_ideahashtag'], $focus_i);
+                $nextidea = $this->Links->nextidea($player_e['playerid'], $_POST['target_ideahashtag'], $focus_i);
             }
 
             //All good:
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next__url' => ($idea_redirect_url ? $idea_redirect_url : ($find_next ? $find_next : 'start')),
+                'next__url' => ($idea_redirect_url ? $idea_redirect_url : ($nextidea ? $nextidea : 'start')),
             ));
 
         }
@@ -3159,7 +3252,7 @@ class Controller extends CI_Controller
 
     }
 
-    function x_update_instant_select()
+    function selector()
     {
 
         if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_playerid']) || !isset($_POST['migrate_s__handle']) || !isset($_POST['linkid'])) {
@@ -3173,7 +3266,7 @@ class Controller extends CI_Controller
         $_POST['migrate_s__handle'] = trim($_POST['migrate_s__handle']);
         $first_letter = substr($_POST['migrate_s__handle'], 0, 1);
         if ($first_letter == '@' && strlen($_POST['migrate_s__handle']) > 1) {
-            if (!count($this->Players->fetch(array(
+            if (!count($this->Players->read(array(
                 'LOWER(playerhandle)' => strtolower(substr($_POST['migrate_s__handle'], 1)),
             )))) {
                 return view_json(array(
@@ -3182,7 +3275,7 @@ class Controller extends CI_Controller
                 ));
             }
         } elseif ($first_letter == '#' && strlen($_POST['migrate_s__handle']) > 1) {
-            if (!count($this->Ideas->fetch(array(
+            if (!count($this->Ideas->read(array(
                 'LOWER(ideahashtag)' => strtolower(substr($_POST['migrate_s__handle'], 1)),
             )))) {
                 return view_json(array(
@@ -3197,17 +3290,17 @@ class Controller extends CI_Controller
         if (is_array($_POST['o__id'])) {
             $mass_result = array();
             foreach ($_POST['o__id'] as $o__id) {
-                array_push($mass_result, $this->Ledger->x_update_instant_select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['new_playerid'], $_POST['migrate_s__handle'], $_POST['linkid']));
+                array_push($mass_result, $this->Links->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['new_playerid'], $_POST['migrate_s__handle'], $_POST['linkid']));
             }
             return view_json($mass_result);
         } else {
-            return view_json($this->Ledger->x_update_instant_select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['new_playerid'], $_POST['migrate_s__handle'], $_POST['linkid']));
+            return view_json($this->Links->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['new_playerid'], $_POST['migrate_s__handle'], $_POST['linkid']));
         }
 
     }
 
 
-    function x_remove()
+    function link_delete()
     {
 
         /*
@@ -3224,7 +3317,7 @@ class Controller extends CI_Controller
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['linkid']) || intval($_POST['linkid']) < 1) {
             return view_json(array(
@@ -3234,18 +3327,18 @@ class Controller extends CI_Controller
         }
 
         //Remove Idea
-        $this->Ledger->void($_POST['linkid'], $player_e['playerid']);
+        $this->Links->delete($_POST['linkid'], $player_e['playerid']);
 
         return view_json(array(
             'status' => 1,
         ));
     }
 
-    function x_4341()
+    function link_load()
     {
 
         /*
-         * Loads the list of transactions based on the
+         * Loads the list of Links based on the
          * filters passed on.
          *
          * */
@@ -3259,9 +3352,9 @@ class Controller extends CI_Controller
 
         $message = '';
 
-        //Fetch transactions and total transaction counts:
-        $x = $this->Ledger->fetch($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
-        $x_count = $this->Ledger->fetch($query_filters, $joined_by, 0, 0, array(), 'COUNT(linkid) as total_count');
+        //Fetch Links and total Link counts:
+        $x = $this->Links->read($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
+        $x_count = $this->Links->read($query_filters, $joined_by, 0, 0, array(), 'COUNT(linkid) as total_count');
         $total_items_loaded = ($query_offset + count($x));
         $has_more_x = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 
@@ -3270,7 +3363,7 @@ class Controller extends CI_Controller
         if ($total_items_loaded > 0) {
 
             //Subsequent messages:
-            $message .= '<div class="main__title x-info grey">' . ($x_count[0]['total_count'] > $total_items_loaded ? ($has_more_x && $query_offset == 0 ? 'FIRST ' : ($query_offset + 1) . ' - ') . ($total_items_loaded >= ($query_offset + 1) ? $total_items_loaded . ' OF ' : '') : '') . number_format($x_count[0]['total_count'], 0) . ' TRANSACTIONS:</div>';
+            $message .= '<div class="main__title x-info grey">' . ($x_count[0]['total_count'] > $total_items_loaded ? ($has_more_x && $query_offset == 0 ? 'FIRST ' : ($query_offset + 1) . ' - ') . ($total_items_loaded >= ($query_offset + 1) ? $total_items_loaded . ' OF ' : '') : '') . number_format($x_count[0]['total_count'], 0) . ' LinkS:</div>';
 
         }
 
@@ -3286,7 +3379,7 @@ class Controller extends CI_Controller
 
                     $new_content = str_replace($_POST['linktext_find'], trim($_POST['linktext_replace']), $x['linktext']);
 
-                    $this->Ledger->update($x['linkid'], array(
+                    $this->Links->update($x['linkid'], array(
                         'linktext' => $new_content,
                         'linkplayercreator' => $player_e['playerid'],
                     ));
@@ -3300,17 +3393,17 @@ class Controller extends CI_Controller
 
             //Do we have more to show?
             if ($has_more_x) {
-                $message .= '<div id="x_page_' . $next_page . '"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn" onclick="x_4341(x_filters, x_joined_by, ' . $next_page . ');"><span class="icon-block"><i class="far fa-search-plus"></i></span>Page ' . $next_page . '</a></div>';
+                $message .= '<div id="x_page_' . $next_page . '"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn" onclick="link_load(x_filters, x_joined_by, ' . $next_page . ');"><span class="icon-block"><i class="far fa-search-plus"></i></span>Page ' . $next_page . '</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' transactions have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Links have been loaded</div>';
 
             }
 
         } else {
 
-            //Show no transaction warning:
-            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
+            //Show no Link warning:
+            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
 
         }
 
@@ -3335,7 +3428,7 @@ class Controller extends CI_Controller
         if ($has_handle) {
 
             //See stats for this Player:
-            $es = $this->Players->fetch(array(
+            $es = $this->Players->read(array(
                 'LOWER(playerhandle)' => strtolower($_POST['playerhandle']),
             ));
             if (!count($es)) {
@@ -3348,7 +3441,7 @@ class Controller extends CI_Controller
         } elseif ($has_hashtag) {
 
             //See stats for this idea:
-            $is = $this->Ideas->fetch(array(
+            $is = $this->Ideas->read(array(
                 'LOWER(ideahashtag)' => strtolower($_POST['ideahashtag']),
             ));
             if (!count($is)) {
@@ -3366,7 +3459,7 @@ class Controller extends CI_Controller
         }
 
 
-        //Count transactions:
+        //Count Links:
         $return_array = array();
         foreach ($this->config->item('players___33292') as $linkplayertype1 => $m1) { //Gameplay
             $level1_total = 0;
@@ -3383,7 +3476,7 @@ class Controller extends CI_Controller
 
                         if ($has_handle) {
 
-                            $sub_counter = $this->Ledger->fetch(array(
+                            $sub_counter = $this->Links->read(array(
                                 'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
                                 'linkplayerup' => $es[0]['playerid'],
                             ), array('linkidearight'), 0, 0, array(), 'COUNT(linkid) as totals');
@@ -3391,13 +3484,13 @@ class Controller extends CI_Controller
                         } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
                             //See stats for this idea:
-                            $sub_counter = $this->Ideas->fetch(array(
+                            $sub_counter = $this->Ideas->read(array(
                                 'ideaid IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
                             ), 0, 0, array(), 'COUNT(ideaid) as totals');
 
                         } else {
 
-                            $sub_counter = $this->Ideas->fetch(array(), 0, 0, array(), 'COUNT(ideaid) as totals');
+                            $sub_counter = $this->Ideas->read(array(), 0, 0, array(), 'COUNT(ideaid) as totals');
 
                         }
 
@@ -3405,7 +3498,7 @@ class Controller extends CI_Controller
 
                         if ($has_handle) {
 
-                            $sub_counter = $this->Ledger->fetch(array(
+                            $sub_counter = $this->Links->read(array(
                                 'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
                                 'linkplayerup' => $es[0]['playerid'],
                             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
@@ -3413,14 +3506,14 @@ class Controller extends CI_Controller
                         } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
                             //See stats for this idea:
-                            $sub_counter = $this->Ledger->fetch(array(
+                            $sub_counter = $this->Links->read(array(
                                 'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
                                 'linkidearight IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
                             ), array('linkplayerup'), 0, 0, array(), 'COUNT(linkid) as totals');
 
                         } else {
 
-                            $sub_counter = $this->Players->fetch(array(), 0, 0, array(), 'COUNT(playerid) as totals');
+                            $sub_counter = $this->Players->read(array(), 0, 0, array(), 'COUNT(playerid) as totals');
 
                         }
 
@@ -3428,21 +3521,21 @@ class Controller extends CI_Controller
 
                         if ($has_handle) {
 
-                            $sub_counter = $this->Ledger->fetch(array(
+                            $sub_counter = $this->Links->read(array(
                                 'linkplayertype' => $linkplayertype3,
                                 '( linkplayerdown = ' . $es[0]['playerid'] . ' OR linkplayerup = ' . $es[0]['playerid'] . ' OR linkplayercreator = ' . $es[0]['playerid'] . ' )' => null,
                             ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
                         } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
-                            $sub_counter = $this->Ledger->fetch(array(
+                            $sub_counter = $this->Links->read(array(
                                 'linkplayertype' => $linkplayertype3,
                                 '( linkidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ') OR linkidearight IN (' . join(',', $copy['recursive_idea_ids']) . '))' => null,
                             ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
                         } else {
 
-                            $sub_counter = $this->Ledger->fetch(array(
+                            $sub_counter = $this->Links->read(array(
                                 'linkplayertype' => $linkplayertype3,
                             ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 

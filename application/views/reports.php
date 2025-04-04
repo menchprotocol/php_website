@@ -58,9 +58,9 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Ledger->fetch($subscriber_filters, array('linkplayerdown')) as $subscribed_u){
+    foreach($this->Links->read($subscriber_filters, array('linkplayerdown')) as $subscribed_u){
 
-        $this->Ledger->send_dm($subscribed_u['playerid'], $subject, $html_message);
+        $this->Links->message($subscribed_u['playerid'], $subject, $html_message);
         $email_recipients++;
 
     }

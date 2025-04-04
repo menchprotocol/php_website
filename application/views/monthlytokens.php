@@ -10,26 +10,26 @@ foreach ($this->config->item('players___14874') as $linkplayertype => $m) {
     if ($linkplayertype == 12273) {
 
         //IDEAS
-        $unique = $this->Ledger->fetch(array(
+        $unique = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('linkidearight'), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif ($linkplayertype == 12274) {
 
         //SOURCE
-        $unique = $this->Ledger->fetch(array(
+        $unique = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
         ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif (in_array($linkplayertype, $this->config->item('playerids___42284'))) {
 
-        $unique = $this->Ledger->fetch(array(
+        $unique = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___' . $linkplayertype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
     } elseif ($linkplayertype == 6255) {
 
-        $unique = $this->Ledger->fetch(array(
+        $unique = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
@@ -56,7 +56,7 @@ foreach ($this->config->item('players___14874') as $linkplayertype => $m) {
         if ($linkplayertype == 12273) {
 
             //IDEAS
-            $query = $this->Ledger->fetch(array(
+            $query = $this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,
@@ -65,7 +65,7 @@ foreach ($this->config->item('players___14874') as $linkplayertype => $m) {
         } elseif ($linkplayertype == 12274) {
 
             //SOURCE
-            $query = $this->Ledger->fetch(array(
+            $query = $this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //UNIQUE SOURCES
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,
@@ -73,7 +73,7 @@ foreach ($this->config->item('players___14874') as $linkplayertype => $m) {
 
         } elseif ($linkplayertype == 6255) {
 
-            $query = $this->Ledger->fetch(array(
+            $query = $this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'linktime >=' => $time_start,
                 'linktime <' => $time_end,

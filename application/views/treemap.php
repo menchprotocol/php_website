@@ -7,5 +7,5 @@ echo '</div>';
 
 //Idea Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Ledger->tree_discovered_history($focus_i, $focus_e['playerid']));
+view_tree($this->Links->historydiscovered($focus_i, $focus_e['playerid']));
 echo '</div>';

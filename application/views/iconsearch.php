@@ -8,7 +8,7 @@ if(isset($_GET['search_for'])){
 
 } elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']){
 
-    $es = $this->Players->fetch(array(
+    $es = $this->Players->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
     if(!count($es)){
@@ -46,7 +46,7 @@ echo '<input type="submit" class="btn" value="Search">';
 
 if($icon_keyword){
 
-    $matching_results = $this->Players->fetch(array(
+    $matching_results = $this->Players->read(array(
         'LOWER(playercover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 

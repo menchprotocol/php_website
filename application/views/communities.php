@@ -2,9 +2,9 @@
 
 $community_pills = '';
 
-foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Players->fetch(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Players->scissor(website_setting(0), 13207)) as $player_item) {
+foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Players->read(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Players->scissor(website_setting(0), 13207)) as $player_item) {
 
-    foreach ($this->Ledger->fetch(array(
+    foreach ($this->Links->read(array(
         'linkplayerup' => $player_item['playerid'],
         'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {

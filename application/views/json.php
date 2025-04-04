@@ -1,5 +1,7 @@
 <?php
 
+error_log('Testing');
+
 $playersids_joined = array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486'));
 $list_links_joined = array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation);
 
@@ -32,48 +34,48 @@ $var = array(
     */
 );
 
-$var['stats_sourcing'] = $this->Ledger->fetch(array(
+$var['stats_sourcing'] = $this->Links->read(array(
     'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['stats_discovery'] = $this->Ledger->fetch(array(
+$var['stats_discovery'] = $this->Links->read(array(
     'linkplayertype IN (' . join(',', $this->list_link_discovery) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['stats_contribution'] = $this->Ledger->fetch(array(
+$var['stats_contribution'] = $this->Links->read(array(
     'linkplayertype IN (' . join(',', $this->list_link_contribution) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['stats_ideation'] = $this->Ledger->fetch(array(
+$var['stats_ideation'] = $this->Links->read(array(
     'linkplayertype IN (' . join(',', $this->list_link_ideation) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 
 
 
-$var['playersids_count'] = $this->Ledger->fetch(array(
+$var['playersids_count'] = $this->Links->read(array(
     'linkplayertype IN (' . join(',', $playersids_joined) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['playersids_count_reverse'] = $this->Ledger->fetch(array(
+$var['playersids_count_reverse'] = $this->Links->read(array(
     'linkplayertype NOT IN (' . join(',', $playersids_joined) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
-$var['list_links_count'] = $this->Ledger->fetch(array(
+$var['list_links_count'] = $this->Links->read(array(
     'linkplayertype IN (' . join(',', $list_links_joined) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['list_links_count_reverse'] = $this->Ledger->fetch(array(
+$var['list_links_count_reverse'] = $this->Links->read(array(
     'linkplayertype NOT IN (' . join(',', $list_links_joined) . ')' => null,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
 
 
-$var['playersids_MISSING'] = $this->Ledger->fetch(array(
+$var['playersids_MISSING'] = $this->Links->read(array(
     'linkplayertype NOT IN (' . join(',', $playersids_joined) . ')' => null,
 ), array(), 0, 0, array(), 'linkplayertype, COUNT(*) as total', 'linkplayertype');
 
-$var['list_links_MISSING'] = $this->Ledger->fetch(array(
+$var['list_links_MISSING'] = $this->Links->read(array(
     'linkplayertype NOT IN (' . join(',', $list_links_joined) . ')' => null,
 ), array(), 0, 0, array(), 'linkplayertype, COUNT(*) as total', 'linkplayertype');
 
 
-$var['stats_void_xxxxxxxxxxxxxxxxxxxxxxxxxx'] = $this->Ledger->fetch(array(
+$var['stats_void_xxxxxxxxxxxxxxxxxxxxxxxxxx'] = $this->Links->read(array(
     'linkvoid > ' => 0,
 ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
 
@@ -82,7 +84,7 @@ view_json($var);
 
 
 /*
-view_json($this->Ledger->tree_full_history($focus_i, $focus_e['playerid']));
+view_json($this->Links->history($focus_i, $focus_e['playerid']));
 
 die('pending...');
 
@@ -100,12 +102,12 @@ boost_power();
 
 $count = 0;
 $missing = 0;
-foreach ($this->Ledger->fetchold(array(
+foreach ($this->Links->readold(array(
     'link_type IN (' . join(',', $list_link_contribution) . ')' => null, //Active Writes
 ), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
 
     $count++;
-    $is_missing = !count($this->Ledger->fetch(array(
+    $is_missing = !count($this->Links->read(array(
         'linkplayertype' => $x['link_type'],
         'linkplayerup' => $x['link_up'],
         'linkplayerdown' => $x['link_down'],
@@ -116,7 +118,7 @@ foreach ($this->Ledger->fetchold(array(
         $missing++;
         echo print_r($x, true);
         echo 'WAS MISSING <hr />';
-        $this->Ledger->create(array(
+        $this->Links->create(array(
             'linktime' => $x['link_time'],
             'linkplayercreator' => $x['link_player'],
             'linkplayertype' => $x['link_type'],

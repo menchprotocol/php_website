@@ -689,7 +689,7 @@ function e_copy(playerid){
 
 
 
-function js_view_shuffle_message(playerid){
+function js_randomize_text(playerid){
     var messages = js_players___12687[playerid]['m__message'].split("\n");
     if(messages.length==1){
         //Return message:
@@ -715,20 +715,20 @@ function loadtab(linkplayertype, tab_data_id){
 
 
 var init_in_process = 0;
-function x_remove(linkid, linkplayertype, ideahashtag){
+function link_delete(linkid, linkplayertype, ideahashtag){
 
     if(init_in_process==linkid){
         return false;
     }
     init_in_process = linkid;
 
-    var r = confirm("Remove idea #"+ideahashtag+"?");
+    var r = confirm("Unlink #"+ideahashtag+"?");
     if (!(r==true)) {
         return false;
     }
 
     //Save changes:
-    $.post("/controller/x_remove", {
+    $.post("/controller/link_delete", {
         linkid:linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -1572,7 +1572,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
     if(linkid){
         $('#modal31911 .save_linkid').val(linkid);
 
-        //Idea<>Idea links do not have an interaction message
+        //Idea<>Ideas links do not have an interaction message
         if(parseInt($('#focus__node').val())!=12273 || ($('.ui_linktext_'+linkid+':first') && $('.ui_linktext_'+linkid+':first').text().length>0)){
             $('#modal31911 .save_linktext').val($('.ui_linktext_'+linkid+':first').text());
             $('#modal31911 .save_frame').removeClass('hidden');
@@ -1717,14 +1717,14 @@ function load_idea_dynamic(ideaid, linkid, current_ideatype, initial_loading){
 
 
 var i_saving = false; //Prevent double saving
-function i_editor_save(){
+function idea_update(){
 
     if(i_saving){
         return false;
     }
 
     i_saving = true;
-    $(".i_editor_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".idea_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
     var current_ideaid = parseInt($('#modal31911 .save_ideaid').val());
@@ -1734,7 +1734,7 @@ function i_editor_save(){
     var gather_media_result = gather_media('#modal31911 .media_frame .media_item', 13572);
     if(!gather_media_result['upload_completed']){
         i_saving = false;
-        $(".i_editor_save").html('SAVE');
+        $(".idea_update").html('SAVE');
         $("#modal31911 .save_results").html('<span class="icon-block"><i class="far fa-exclamation-circle"></i></span> Error: '+gather_media_result['error_message']);
         return false;
     }
@@ -1766,11 +1766,11 @@ function i_editor_save(){
         }
     }
 
-    $.post("/controller/i_editor_save", modify_data, function (data) {
+    $.post("/controller/idea_update", modify_data, function (data) {
 
         //Load Images:
         i_saving = false;
-        $(".i_editor_save").html('SAVE');
+        $(".idea_update").html('SAVE');
 
         if (!data.status) {
 
@@ -1778,8 +1778,6 @@ function i_editor_save(){
             $("#modal31911 .save_results").html('<span class="icon-block"><i class="far fa-exclamation-circle"></i></span> Error: '+data.message);
 
         } else {
-
-            console.log(data.message);
 
             if(data.redirect_idea){
                 //Give option to open the post:
@@ -2477,7 +2475,7 @@ function toggle_max_view(css_class){
 }
 
 
-//Adds OR transactions Players to Players
+//Adds OR links Players to Players
 var e_is_adding = false;
 function new_player(linkplayertype, player_existing_id) {
 
@@ -2562,8 +2560,8 @@ function new_idea(linkplayertype, link_ideaid) {
 
     /*
      *
-     * Either creates an IDEA transaction between focus_id & link_ideaid
-     * OR will create a new idea based on input text and then transaction it
+     * Either creates an IDEA link between focus_id & link_ideaid
+     * OR will create a new idea based on input text and then link it
      * to #focus_id (In this case link_ideaid=0)
      *
      * */
@@ -2579,7 +2577,7 @@ function new_idea(linkplayertype, link_ideaid) {
     var new_ideatext = input_field.val();
 
 
-    //We either need the idea name (to create a new idea) or the link_ideaid>0 to create an IDEA transaction:
+    //We either need the idea name (to create a new idea) or the link_ideaid>0 to create an IDEA link:
     if (!link_ideaid && new_ideatext.length < 1) {
         alert('Missing Idea');
         input_field.focus();
@@ -2985,53 +2983,25 @@ function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_na
 
 }
 
-function e_void(){
-
-    //Deleting Player:
-    if(js_session_superpowers_unlocked.includes(10939)){
-        var migrate_s__handle = prompt("Are you sure you want to permanently delete this Player?\nYou can reference @anotherPlayer to migrate to or leave blank to delete permanently...", "@");
-        if(migrate_s__handle === null){
-            return false;
-        }
-    } else {
-        //Confirm deletion:
-        var r = confirm("Are you sure you want to permanently delete this Player?");
-        if (!(r==true)) {
-            return false;
-        }
-    }
-
-}
-
-function i_void(){
-
-    //TODO must complete
-    return false;
+function idea_delete(ideaid){
 
     var migrate_s__handle = prompt("Are you sure you want to permanently delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
     if(migrate_s__handle === null){
         return false;
     }
 
-
-    $.post("/controller/i_void", {
+    $.post("/controller/idea_delete", {
         focus__id:parseInt($('#focus__id').val()),
-        o__id: o__id,
-        element_id: element_id,
-        new_playerid: new_playerid,
+        ideaid: ideaid,
         migrate_s__handle: migrate_s__handle,
-        linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
-            //Update on page:
-            ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_name);
-
-            if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
+            if( data.delete_redirect && data.delete_redirect.length > 0 ){
 
                 //Go to main idea page:
-                js_redirect(data.deletion_redirect);
+                js_redirect(data.delete_redirect);
 
             } else if( data.delete_element && data.delete_element.length > 0 ){
 
@@ -3047,9 +3017,49 @@ function i_void(){
 
             }
 
-            if( data.auto_open_idea_editor_modal ){
-                //We need to show idea modal:
-                i_editor_load(o__id, $('.s__12273_'+o__id).attr('linkid'));
+        } else {
+
+            //Show error:
+            alert(data.message);
+
+        }
+    });
+
+}
+
+
+function player_delete(playerid){
+
+    var migrate_s__handle = prompt("Are you sure you want to permanently delete this Player?\nYou can reference @anotherPlayer to migrate to or leave blank to delete permanently...", "@");
+    if(migrate_s__handle === null){
+        return false;
+    }
+
+    $.post("/controller/player_delete", {
+        focus__id:parseInt($('#focus__id').val()),
+        playerid: playerid,
+        migrate_s__handle: migrate_s__handle,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
+    }, function (data) {
+        if (data.status) {
+
+            if( data.delete_redirect && data.delete_redirect.length > 0 ){
+
+                //Go to main idea page:
+                js_redirect(data.delete_redirect);
+
+            } else if( data.delete_element && data.delete_element.length > 0 ){
+
+                //Go to main idea page:
+                setTimeout(function () {
+                    //Restore background:
+                    $( data.delete_element ).fadeOut();
+                    setTimeout(function () {
+                        //Restore background:
+                        $( data.delete_element ).remove();
+                    }, 55);
+                }, 377);
+
             }
 
         } else {
@@ -3062,7 +3072,8 @@ function i_void(){
 
 }
 
-function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0, show_full_name = false){
+
+function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_name = false){
 
     /*
     *
@@ -3099,7 +3110,7 @@ function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0
     }
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/x_update_instant_select", {
+    $.post("/controller/selector", {
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
@@ -3113,10 +3124,10 @@ function x_update_instant_select(element_id, new_playerid, o__id = 0, linkid = 0
             //Update on page:
             ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_name);
 
-            if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
+            if( data.delete_redirect && data.delete_redirect.length > 0 ){
 
                 //Go to main idea page:
-                js_redirect(data.deletion_redirect);
+                js_redirect(data.delete_redirect);
 
             } else if( data.delete_element && data.delete_element.length > 0 ){
 

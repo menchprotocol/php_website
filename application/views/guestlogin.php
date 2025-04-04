@@ -9,8 +9,8 @@ if($player_e['playerid']){
 
 } else {
 
-    $random_cover = random_cover(12279);
-    $player_result = $this->Players->join(view_random_title(), null, null, $random_cover);
+    $playercover_generator = playercover_generator(12279);
+    $player_result = $this->Players->join(view_random_title(), null, null, $playercover_generator);
     js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$player_result['e']['playerhandle'] ), 13);
 
 }

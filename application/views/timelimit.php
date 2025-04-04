@@ -9,7 +9,7 @@ $filters = array(
 $buffer_time = 300;
 
 if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
-    foreach($this->Ideas->fetch(array(
+    foreach($this->Ideas->read(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $i){
         $filters['linkidearight'] = $i['ideaid'];
@@ -21,16 +21,16 @@ $links_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds ideas:
-foreach($this->Ledger->fetch($filters, array('linkidearight'), 0) as $expires){
+foreach($this->Links->read($filters, array('linkidearight'), 0) as $expires){
 
     //Now go through everyone who discovered this selection:
-    foreach($this->Ledger->fetch(array(
+    foreach($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
         'linkidealeft' => $expires['ideaid'],
     ), array('linkplayercreator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
-        $answer_completed = $this->Ledger->fetch(array(
+        $answer_completed = $this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
             'linkidealeft' => $x_progress['linkidearight'],
             'linkplayercreator' => $x_progress['playerid'],
@@ -41,14 +41,14 @@ foreach($this->Ledger->fetch($filters, array('linkidearight'), 0) as $expires){
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
-            foreach($this->Ledger->fetch(array(
+            foreach($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
                 'linkidealeft' => $expires['ideaid'],
                 'linkplayercreator' => $x_progress['playerid'],
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->Ledger->void($delete['linkid'], $player_e['playerid']); //Time Expired
+                $this->Links->delete($delete['linkid'], $player_e['playerid']); //Time Expired
 
             }
 
@@ -70,7 +70,7 @@ foreach($this->Ledger->fetch($filters, array('linkidearight'), 0) as $expires){
 echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
 
 if(isset($filters['linkidearight'])){
-    foreach($this->Ideas->fetch(array('ideaid' => $filters['linkidearight'])) as $i){
+    foreach($this->Ideas->read(array('ideaid' => $filters['linkidearight'])) as $i){
         //We were deleting a single item, redirect back:
         js_php_redirect(timelimit . phpview_memory(42903, 33286) . $i['ideahashtag'], 0);
     }

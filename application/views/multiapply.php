@@ -10,7 +10,7 @@ if ($_GET['focus__id']==12273 && superpower_unlocked(12700) && isset($_POST['s__
     //Pass-on results to UI:
     $this->session->set_flashdata('flash_message', '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>');
 
-    foreach($this->Ideas->fetch(array('ideaid' => $_POST['s__id'])) as $i){
+    foreach($this->Ideas->read(array('ideaid' => $_POST['s__id'])) as $i){
         header("Location: /" . $i['ideahashtag'] );
     }
 
@@ -22,7 +22,7 @@ if ($_GET['focus__id']==12273 && superpower_unlocked(12700) && isset($_POST['s__
     //Pass-on results to UI:
     $this->session->set_flashdata('flash_message', '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="far fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>');
 
-    foreach($this->Players->fetch(array('playerid' => $_POST['s__id'])) as $e){
+    foreach($this->Players->read(array('playerid' => $_POST['s__id'])) as $e){
         header("Location: " . view_memory(42903,42902) . $e['playerhandle'] );
     }
 

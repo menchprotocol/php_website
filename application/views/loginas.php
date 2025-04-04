@@ -1,7 +1,7 @@
 <?php
 
 //Make sure member:
-if(!count($this->Ledger->fetch(array(
+if(!count($this->Links->read(array(
     'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
     'linkplayerup IN (' . join(',', $this->config->item('playerids___32537')) . ')' => null, //Interested Member
     'linkplayerdown' => $focus_e['playerid'],
@@ -16,7 +16,7 @@ if(!count($this->Ledger->fetch(array(
 
     session_delete();
 
-    //Assign session & log transaction:
+    //Assign session & log Link:
     $this->Players->activate($focus_e);
 
     js_php_redirect(loginas . phpview_memory(42903, 42902) . $focus_e['playerhandle'], 1597);

@@ -11,8 +11,8 @@ if(!isset($_GET['confirm'])){
 
 } else {
 
-    //Fetch their current progress transactions:
-    $progress_x = $this->Ledger->fetch(array(
+    //Fetch their current progress links:
+    $progress_x = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
         'linkplayercreator' => $focus_e['playerid'],
     ), array(), 0);
@@ -24,7 +24,7 @@ if(!isset($_GET['confirm'])){
 
         //Delete all progressions:
         foreach($progress_x as $progress_x){
-            $this->Ledger->void($progress_x['linkid'], $focus_e['playerid']);
+            $this->Links->delete($progress_x['linkid'], $focus_e['playerid']);
         }
 
     } else {
@@ -37,7 +37,7 @@ if(!isset($_GET['confirm'])){
     //Show basic UI for now:
     echo $message;
 
-    //return redirect_message(view_memory(42903,42902).$focus_e['playerhandle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
+    //return get_redirected(view_memory(42903,42902).$focus_e['playerhandle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
 
 
 }

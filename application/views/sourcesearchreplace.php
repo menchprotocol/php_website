@@ -14,7 +14,7 @@ $replace_with_confirmed = false;
 
 if($search_for_set){
 
-    $matching_results = $this->Players->fetch(array(
+    $matching_results = $this->Players->read(array(
             'playertext LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 

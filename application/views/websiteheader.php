@@ -13,7 +13,7 @@ $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
 $logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : 'https://s3foundation.s3.us-west-2.amazonaws.com/yin-yang-solid.svg' ));
 $bgVideo = null;
 
-//Transaction Website
+// Website
 $domain_cover = get_domain('m__cover');
 $domain_logo = ( substr_count($domain_cover, '"')>0 ? one_two_explode('"','"', $domain_cover) : $domain_cover );
 $is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !string_is_icon($domain_logo) );
@@ -564,7 +564,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 } elseif($action_playerid==42804){
 
-                                    //Transaction Type update:
+                                    //Link Type update:
 
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_playerid.'" class="form-control border">';
@@ -709,7 +709,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
         <!-- Edit Idea Modal -->
-        <div class="i_footer_note hidden">Idea saved. <a href=""><b>View</b></a></div>
+        <div class="i_footer_note hidden">Ideas saved. <a href=""><b>View</b></a></div>
         <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
@@ -735,7 +735,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         </div>
-                        <button type="button" class="btn btn-default i_editor_save post_button" onclick="i_editor_save()">POST</button>
+                        <button type="button" class="btn btn-default idea_update post_button" onclick="idea_update()">POST</button>
                     </div>
 
                     <div class="modal-body">
@@ -760,7 +760,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Creator(s) -->
                         <div class="creator_box">
                             <?php
-                            foreach($this->Ledger->fetch(array(
+                            foreach($this->Links->read(array(
                                 'linkplayerup' => $player_e['playerid'],
                                 'linkplayertype' => 41011, //PINNED FOLLOWER
                                             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {

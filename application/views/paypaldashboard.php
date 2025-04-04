@@ -2,7 +2,7 @@
 
 $commission_rate = intval(website_setting(27017))/100;
 $players___6287 = $this->config->item('players___6287'); //APP
-$gross_transactions = 0;
+$gross_links = 0;
 $gross_sales = 0;
 $gross_revenue = 0;
 $gross_paypal_fee = 0;
@@ -29,12 +29,12 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     //Show header:
     echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$players___6287[27004]['m__title'].'</b></a></div>';
 
-    $es = $this->Players->fetch(array(
+    $es = $this->Players->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
     echo '<h2>'.$es[0]['playertext'].' @'.$es[0]['playerhandle'].'</h2>';
 
-    $idea_query = $this->Ledger->fetch(array(
+    $idea_query = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
         'ideatype IN (' . join(',', $this->config->item('playerids___41055')) . ')' => null, //Payment Ideas
         'linkplayerup' => $es[0]['playerid'],
@@ -49,20 +49,20 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     foreach($idea_query as $i){
 
         //Total earnings:
-        $transaction_content = '';
-        $total_transactions = 0;
+        $link_content = '';
+        $total_links = 0;
         $total_sales = 0;
         $total_revenue = 0;
         $total_paypal_fee = 0;
         $currencies = array();
 
-        foreach($this->Ledger->fetch(array(
+        foreach($this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkidealeft' => $i['ideaid'],
         ), array(), 0, 0, array('linkplayercreator' => 'ASC')) as $x){
 
             $linktext = unserialize($x['linktext']);
-            $total_transactions++;
+            $total_links++;
             $this_quantity = 1;//Default assumption:
 
             //Player for quantity?
@@ -114,24 +114,24 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
             $item_parts = explode('-',$linktext['item_number']);
             $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['linkplayercreator'] );
             array_push($all_e, $this_e);
-            $es = $this->Players->fetch(array(
+            $es = $this->Players->read(array(
                 'playerid' => $this_e,
             ));
 
 
-            $transaction_content .= '<tr class="transaction_columns transactions_'.$i['ideaid'].' hidden">';
-            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['playertext'].'</u></a> ' : '' ).$linktext['first_name'].' '.$linktext['last_name'].'</td>';
-            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $linktext['mc_gross']!=0 && strlen($linktext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$linktext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?linkid='.$x['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
-            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
-            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($linktext['mc_gross'], 2).'</td>';
-            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">$'.number_format($this_commission, 2).'</td>';
-            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $linktext['mc_gross'] > 0 ? ($linktext['mc_fee']/$linktext['mc_gross']*100) : 0 ).'%">$'.number_format($linktext['mc_fee'], 2).'</td>';
-            $transaction_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
-            $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
-            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$linktext['mc_currency'].'</td>';
+            $link_content .= '<tr class="link_columns links_'.$i['ideaid'].' hidden">';
+            $link_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['playertext'].'</u></a> ' : '' ).$linktext['first_name'].' '.$linktext['last_name'].'</td>';
+            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $linktext['mc_gross']!=0 && strlen($linktext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$linktext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Link"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?linkid='.$x['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
+            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $link_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
+            $link_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($linktext['mc_gross'], 2).'</td>';
+            $link_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">$'.number_format($this_commission, 2).'</td>';
+            $link_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $linktext['mc_gross'] > 0 ? ($linktext['mc_fee']/$linktext['mc_gross']*100) : 0 ).'%">$'.number_format($linktext['mc_fee'], 2).'</td>';
+            $link_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
+            $link_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
+            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$linktext['mc_currency'].'</td>';
 
-            $transaction_content .= '</tr>';
+            $link_content .= '</tr>';
 
             if($this_payout > 0){
                 $date = date("md", strtotime($x['linktime']));
@@ -155,32 +155,32 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $payout = $total_revenue-$total_commission-$total_paypal_fee;
 
 
-        if($i['ideatype']==6183 && !$total_transactions){
+        if($i['ideatype']==6183 && !$total_links){
             continue;
         }
 
         $gross_sales += $total_sales;
-        $gross_transactions += $total_transactions;
+        $gross_links += $total_links;
         $gross_revenue += $total_revenue;
         $gross_paypal_fee += $total_paypal_fee;
         $gross_commission += $total_commission;
         $gross_payout += $payout;
 
-        $max_available = $this->Ledger->fetch(array(
+        $max_available = $this->Links->read(array(
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $i['ideaid'],
             'linkplayerup' => 26189,
         ), array(), 1);
-        $available_transactions = (count($max_available) && is_numeric($max_available[0]['linktext']) ? intval($max_available[0]['linktext']) : '∞');
+        $available_links = (count($max_available) && is_numeric($max_available[0]['linktext']) ? intval($max_available[0]['linktext']) : '∞');
 
-        if(fmod($total_transactions, 2)==1){
-            $transaction_content .= '<tr class="transaction_columns hidden"></tr>';
+        if(fmod($total_links, 2)==1){
+            $link_content .= '<tr class="link_columns hidden"></tr>';
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_idea_title($i).'</u></a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_transactions.'</td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.links_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_idea_title($i).'</u></a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_links.'</td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_links.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
         $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales!=0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
         $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales!=0 ? '$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
@@ -189,7 +189,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $sale_type_content .= '<td style="text-align: right;"><b>'.( $total_sales!=0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
         $sale_type_content .= '</tr>';
-        $sale_type_content .= $transaction_content;
+        $sale_type_content .= $link_content;
 
     }
 
@@ -207,7 +207,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
     $other_es = array();
 
-    foreach($this->Players->fetch(array(
+    foreach($this->Players->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e){
         $filters = array(
@@ -217,7 +217,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         if(count($all_e)){
             $filters[ 'linkplayerdown NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Ledger->fetch($filters, array('linkplayerdown'), 0);
+        $other_es = $this->Links->read($filters, array('linkplayerdown'), 0);
     }
 
 
@@ -245,11 +245,11 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
         //Doo We Have other?
         foreach($other_es as $other_e){
-            $otherplayer_content .= '<tr class="transaction_columns thr_e hidden">';
+            $otherplayer_content .= '<tr class="link_columns thr_e hidden">';
             $otherplayer_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['playercover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['playertext'].'</u></a></td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?linkid='.$other_e['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
+            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?linkid='.$other_e['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
@@ -270,7 +270,7 @@ if(count($idea_query)){
 
     echo '<table id="sortable_table" class="table table-sm image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
     echo '<tr style="vertical-align: baseline;" class="main__title">';
-    echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="far fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="toggle_max_view(\'advance_columns\')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="far fa-arrows-h"></i></a></th>';
+    echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.link_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Links"><i class="far fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="toggle_max_view(\'advance_columns\')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="far fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Payments</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
@@ -287,7 +287,7 @@ if(count($idea_query)){
 
     echo '<tr class="main__title">';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
-    echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_transactions.'</th>';
+    echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_links.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right; font-weight: bold;">'.$gross_sales.'&nbsp;x</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.'$'.number_format($gross_revenue, 2).'</th>';
@@ -348,7 +348,7 @@ if(count($idea_query)){
                 <?php
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
-                    if(($sales/$gross_revenue)>=0.5 || count($this->Ledger->fetch(array(
+                    if(($sales/$gross_revenue)>=0.5 || count($this->Links->read(array(
                                                     'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'linkidearight' => $origin,
                             'linkplayerup' => 30564, //None Promoter
@@ -358,7 +358,7 @@ if(count($idea_query)){
                     }
                     if($sales > 0){
                         //Fetch this origin:
-                        $is = $this->Ideas->fetch(array(
+                        $is = $this->Ideas->read(array(
                             'ideaid' => $origin,
                         ));
                         echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_idea_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
@@ -411,7 +411,7 @@ if(count($idea_query)){
         padding: 5px 0 !important;
         font-size: 1.01em;
     }
-    .transaction_columns td{
+    .link_columns td{
         padding: 1px 0 !important;
         font-size: 0.9em;
     }

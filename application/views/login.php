@@ -3,7 +3,7 @@
 $sign_i = array();
 
 if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
-    $sign_i = $this->Ideas->fetch(array(
+    $sign_i = $this->Ideas->read(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     ));
 }
@@ -24,12 +24,12 @@ if(superpower_unlocked()) {
 
 } elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash']){
 
-    $es = $this->Players->fetch(array(
+    $es = $this->Players->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
 
     if(count($es)){
-        //Assign session & log transaction:
+        //Assign session & log Link:
         $this->Players->activate($es[0], false, true);
     }
 

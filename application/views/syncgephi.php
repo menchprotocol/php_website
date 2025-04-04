@@ -22,7 +22,7 @@ $id_prefix = array(
 );
 
 //Add Ideas:
-$is = $this->Ideas->fetch(array());
+$is = $this->Ideas->read(array());
 foreach ($is as $in) {
 
     //Add Idea node:
@@ -34,7 +34,7 @@ foreach ($is as $in) {
     ));
 
     //Fetch Next Ideas:
-    foreach ($this->Ledger->fetch(array(
+    foreach ($this->Links->read(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
         'linkidealeft' => $in['ideaid'],
     ), array('linkidearight'), 0, 0) as $next_i) {
@@ -52,7 +52,7 @@ foreach ($is as $in) {
 
 
 //Transfer Players:
-$es = $this->Players->fetch(array());
+$es = $this->Players->read(array());
 foreach ($es as $en) {
 
     //Transfer Player node:
@@ -64,7 +64,7 @@ foreach ($es as $en) {
     ));
 
     //Fetch followers:
-    foreach ($this->Ledger->fetch(array(
+    foreach ($this->Links->read(array(
         'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
         'linkplayerup' => $en['playerid'],
     ), array('linkplayerdown'), 0, 0) as $player_down) {

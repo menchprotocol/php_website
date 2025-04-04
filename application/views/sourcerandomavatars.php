@@ -12,14 +12,14 @@ if(isset($_GET['update_u_icons'])){
     }
 
     $updated = 0;
-    foreach($this->Ledger->fetch($base_filters, array('linkplayerdown'), 0) as $x){
+    foreach($this->Links->read($base_filters, array('linkplayerdown'), 0) as $x){
         $updated += $this->Players->update($x['playerid'], array(
-            'playercover' => random_cover(12279),
+            'playercover' => playercover_generator(12279),
         ));
     }
     echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>'.$updated.' Member following updated with new random animal icons';
 }
 
 for($i=0;$i<750;$i++){
-    echo '<span class="icon-block">'.view_cover(random_cover(12279), true).'</span>';
+    echo '<span class="icon-block">'.view_cover(playercover_generator(12279), true).'</span>';
 }

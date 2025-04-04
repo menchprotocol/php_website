@@ -11,7 +11,7 @@ $input_i = ( isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) > 0 );
 $focus_i = false;
 
 if($input_e){
-    foreach($this->Players->fetch(array(
+    foreach($this->Players->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $player_found){
         $focus_e = $player_found;
@@ -24,7 +24,7 @@ if($input_e){
 }
 
 if($input_i){
-    foreach($this->Ideas->fetch(array(
+    foreach($this->Ideas->read(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $idea_found){
         $focus_i = $idea_found;
@@ -135,7 +135,7 @@ if(isset($_GET['end_range']) && string_is_date($_GET['end_range'])){
 
 
 
-//Fetch unique transaction types recorded so far:
+//Fetch unique Link types recorded so far:
 $ini_filter = array();
 foreach($query_filters as $key => $value){
     $ini_filter[$key] = $value;
@@ -170,19 +170,19 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
     $(document).ready(function () {
 
-        //Load first page of transactions:
-        x_4341(x_filters, x_joined_by, 1);
+        //Load first page of Links:
+        link_load(x_filters, x_joined_by, 1);
 
     });
 
 
-    function x_4341(x_filters, x_joined_by, page_num){
+    function link_load(x_filters, x_joined_by, page_num){
 
         //Show spinner:
-        $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
+        $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_randomize_text(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
-        $.post("/controller/x_4341", {
+        $.post("/controller/link_load", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
             linktext_find:linktext_find,
@@ -264,11 +264,11 @@ echo '<table class="table table-sm maxout"><tr>';
 
 //ANY DISCOVERY
 echo '<td><div>';
-echo '<span class="mini-header">ANY TRANSACTION:</span>';
+echo '<span class="mini-header">ANY Link:</span>';
 echo '<input type="text" name="any_linkid" value="' . ((isset($_GET['any_linkid'])) ? $_GET['any_linkid'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" name="linkid" value="' . ((isset($_GET['linkid'])) ? $_GET['linkid'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Link ID:</span><input type="text" name="linkid" value="' . ((isset($_GET['linkid'])) ? $_GET['linkid'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -282,14 +282,14 @@ echo '<table class="table table-sm maxout"><tr>';
 
 //Search
 echo '<td><div>';
-echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
+echo '<span class="mini-header">Link MESSAGE SEARCH:</span>';
 echo '<input type="text" name="linktext_find" value="' . ((isset($_GET['linktext_find'])) ? $_GET['linktext_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
 if(isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 && superpower_unlocked(12701)){
     //Give Option to Replace:
     echo '<td><div>';
-    echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
+    echo '<span class="mini-header">Link MESSAGE REPLACE:</span>';
     echo '<input type="text" name="linktext_replace" value="' . ((isset($_GET['linktext_replace'])) ? $_GET['linktext_replace'] : '') . '" class="form-control border">';
     echo '</div></td>';
 }
@@ -319,11 +319,11 @@ echo '</div></td>';
 
 echo '<td>';
 echo '<div>';
-echo '<span class="mini-header">TRANSACTION TYPE:</span>';
+echo '<span class="mini-header">Link TYPE:</span>';
 
 if(isset($_GET['linkplayertype']) && substr_count($_GET['linkplayertype'], ',')>0){
 
-    //We have multiple predefined transaction types, so we must use a text input:
+    //We have multiple predefined Link types, so we must use a text input:
     echo '<input type="text" name="linkplayertype" value="' . $_GET['linkplayertype'] . '" class="form-control border">';
 
 } else {
@@ -335,7 +335,7 @@ if(isset($_GET['linkplayertype']) && substr_count($_GET['linkplayertype'], ',')>
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->Ledger->fetch($ini_filter, array('linkplayertype'), 0, 0, sort__player(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
+        foreach($this->Links->read($ini_filter, array('linkplayertype'), 0, 0, sort__player(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['linkplayertype'] . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype']==$x['linkplayertype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
@@ -348,7 +348,7 @@ if(isset($_GET['linkplayertype']) && substr_count($_GET['linkplayertype'], ',')>
     } else {
 
         //Load all fast:
-        echo '<option value="0">ALL TRANSACTION TYPES</option>';
+        echo '<option value="0">ALL Link TYPES</option>';
         foreach($this->config->item('players___4593') /* DISCOVERY Types */ as $playerid => $m){
             //Echo drop down:
             echo '<option value="' . $playerid . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype']==$playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
