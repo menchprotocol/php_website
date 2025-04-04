@@ -691,7 +691,7 @@ class Controller extends CI_Controller
         } elseif (strlen($_POST['migrate_s__handle'])) {
             $valid_handle = $this->Ideas->read(array(
                 'ideaid !=' => $_POST['ideaid'],
-                'LOWER(ideahashtag)' => strtolower($_POST['migrate_s__handle']),
+                'LOWER(ideahashtag)' => strtolower(str_replace('#','',$_POST['migrate_s__handle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
@@ -777,7 +777,7 @@ class Controller extends CI_Controller
         } elseif (strlen($_POST['migrate_s__handle'])) {
             $valid_handle = $this->Players->read(array(
                 'playerid !=' => $_POST['playerid'],
-                'LOWER(playerhandle)' => strtolower($_POST['migrate_s__handle']),
+                'LOWER(playerhandle)' => strtolower(str_replace('@','',$_POST['migrate_s__handle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
