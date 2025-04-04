@@ -397,7 +397,7 @@ class Controller extends CI_Controller
 
         //App title?
         if ($memory_detected && in_array($app_playerid, $this->config->item('playerids___42928'))) {
-            $ui = '<h1>' . $players___6287[$app_playerid]['m__title'] . '</h1>' . $ui;
+            $ui = '<h1>' . $players___6287[$app_playerid]['m__cover'] . ' ' . $players___6287[$app_playerid]['m__title'] . '</h1>' . $ui;
         }
 
 
@@ -1560,7 +1560,6 @@ class Controller extends CI_Controller
 
                 //Display message:
                 return view_json(array(
-                    'status' => 1,
                     'status' => 1,
                 ));
 
