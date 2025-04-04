@@ -984,7 +984,6 @@ class Controller extends CI_Controller
 
         }
 
-
         //Process Media:
         $media_stats = process_media($is[0]['ideaid'], $_POST['uploaded_media']);
 
@@ -1898,7 +1897,6 @@ class Controller extends CI_Controller
                 'linknumber' => $linknumber,
             ));
         }
-
 
         //Return Player:
         return view_json(array(
