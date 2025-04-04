@@ -25,7 +25,7 @@ echo '<div class="center miscstats hideIfEmpty"></div>';
 
 foreach($this->config->item('players___33292') as $playerid1 => $m1) {
 
-    echo '<div class="mid-text-line compact-midline"><span><b class="card_count_'.$playerid1.'"><i class="fas fa-yin-yang fa-spin"></i></b>'.$m1['m__title'].'  '.$m1['m__cover'].'</span></div>';
+    echo '<div class="mid-text-line compact-midline"><span><b class="card_count_'.$playerid1.'"><i class="fas fa-yin-yang fa-spin"></i></b>'.$m1['m__title'].' '.$m1['m__cover'].'</span></div>';
 
     echo '<div class="row justify-content list-covers">';
     
