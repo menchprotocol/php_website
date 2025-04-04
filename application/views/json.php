@@ -1,6 +1,5 @@
 <?php
 
-error_log('Testing');
 
 $playersids_joined = array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486'));
 $list_links_joined = array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation);

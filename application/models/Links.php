@@ -360,29 +360,30 @@ class Links extends CIdea_cache
     function readalt($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('link_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        $this->dbold->select($select);
-        $this->dbold->from('mench_ledger');
+        $this->dbalt = $this->load->database('alt', TRUE);
+        $this->dbalt->select($select);
+        $this->dbalt->from('mench_ledger');
 
         foreach ($query_filters as $key => $value) {
             if (!is_null($value)) {
-                $this->dbold->where($key, $value);
+                $this->dbalt->where($key, $value);
             } else {
-                $this->dbold->where($key);
+                $this->dbalt->where($key);
             }
         }
 
         if ($group_by) {
-            $this->dbold->group_by($group_by);
+            $this->dbalt->group_by($group_by);
         }
 
         foreach ($order_columns as $key => $value) {
-            $this->dbold->order_by($key, $value);
+            $this->dbalt->order_by($key, $value);
         }
 
         if ($limit > 0) {
-            $this->dbold->limit($limit, $limit_offset);
+            $this->dbalt->limit($limit, $limit_offset);
         }
-        $q = $this->dbold->get();
+        $q = $this->dbalt->get();
         return $q->result_array();
 
     }

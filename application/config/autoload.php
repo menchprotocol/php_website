@@ -103,7 +103,7 @@ $autoload['helper'] = array('general','cookie');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('mench_memory','credentials');
+$autoload['config'] = array('credentials'); //'mench_memory',
 
 /*
 | -------------------------------------------------------------------

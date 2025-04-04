@@ -84,9 +84,6 @@ class Controller extends CI_Controller
 
         }
 
-
-        //$this->dbold = $this->load->database('old', TRUE); //TODO Remove later
-
     }
 
     function index()
