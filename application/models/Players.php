@@ -133,9 +133,9 @@ class Players extends CIdea_cache
     }
 
 
-    function update($id, $update_columns, $linkplayercreator = 0)
+    function update($linkid, $update_columns, $linkplayercreator = 0)
     {
-        if (count($update_columns) == 0 || !count($this->Links->read(array('linkid' => $id )))) {
+        if (count($update_columns) == 0 || !count($this->Links->read(array('linkid' => $linkid )))) {
             return false;
         }
 
@@ -155,7 +155,7 @@ class Players extends CIdea_cache
                     'linkplayertype' => 44176, //Viewed
                     'linkplayerup' => $must_sync_ledger[$key], //Idea Hashtag
                     'linktext' => $value,
-                    'linkplayerdown' => $id,
+                    'linkplayerdown' => $linkid,
                 ));
                 $must_sync_found = true;
             } elseif(in_array($key, $skip_sync_ledger)){
@@ -167,13 +167,13 @@ class Players extends CIdea_cache
         }
 
         //Update:
-        $this->db->where('playerid', intval($id));
+        $this->db->where('playerid', $linkid);
         $this->db->update('nodeplayers', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         if($must_sync_found){
             //Sync algolia:
-            update_algolia(12274, intval($id));
+            update_algolia(12274, intval($linkid));
         }
 
         return $affected_rows;

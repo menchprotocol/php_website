@@ -171,7 +171,7 @@ class Ideas extends CIdea_cache
         $this->db->where('ideaid', $linkid);
         $this->db->update('nodeideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
-        
+
         if($must_sync_found){
             //Sync algolia:
             update_algolia(12273, $linkid);
