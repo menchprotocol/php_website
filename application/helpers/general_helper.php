@@ -4143,10 +4143,6 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
         'linkplayerup' => 28239, //Required
     )));
 
-    if ($is_locked) {
-        //$ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['ideaid'].' .first_line\').prepend(\''.$players___11035[43010]['m__cover'].' \'); }); </script>';
-    }
-
     if ($is_required) {
         //Add required icon:
         $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_' . $i['ideaid'] . ' .first_line\').append(\'<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' asterisk" title="Required">*</span>\'); }); </script>';
