@@ -211,7 +211,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e){
         $filters = array(
-                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $e['playerid'], //Member
         );
         if(count($all_e)){

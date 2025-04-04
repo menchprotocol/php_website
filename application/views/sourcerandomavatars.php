@@ -4,7 +4,7 @@ if(isset($_GET['update_u_icons'])){
 
     $base_filters = array(
         'linkplayerup IN (' . join(',', $this->config->item('playerids___30820')) . ')' => null, //Active Member
-        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
         );
 
     if(!isset($_GET['force'])) {

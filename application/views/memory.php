@@ -155,7 +155,7 @@ $routes_text .= '//APPS:' . "\n\n";
 
 foreach ($this->Links->read(array(
     'linkplayerup' => 6287, //Apps
-    'linkplayertype IN (' . join(',', ($memory_detected ? $this->list_player_links_intentional : $playerids___33337)) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', ($memory_detected ? $this->list_link_sourcing : $playerids___33337)) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if (!$memory_detected) {

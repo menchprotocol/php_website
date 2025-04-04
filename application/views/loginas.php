@@ -2,7 +2,7 @@
 
 //Make sure member:
 if(!count($this->Links->read(array(
-    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
     'linkplayerup IN (' . join(',', $this->config->item('playerids___32537')) . ')' => null, //Interested Member
     'linkplayerdown' => $focus_e['playerid'],
 )))){

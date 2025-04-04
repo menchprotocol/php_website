@@ -164,7 +164,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
                     'linkplayerup' => $player_append['playerid'],
                     'linkplayerdown' => $x['linkplayercreator'],
                     'linktext' => $x['linktext'],
-                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     )))){
                     //Increment Player link:
                     $completed++;

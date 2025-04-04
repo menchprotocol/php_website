@@ -794,7 +794,7 @@ class Controller extends CI_Controller
 
             //Find Published Followings:
             foreach ($this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 'linkplayerdown' => $_POST['playerid'],
             ), array('linkplayerup'), 1, 0, array('playertext' => 'DESC')) as $up_e) {
                 $delete_redirect = view_memory(42903, 42902) . $up_e['playerhandle'];
@@ -1530,7 +1530,7 @@ class Controller extends CI_Controller
             //Count followers:
             $listplayer_count = $this->Links->read(array(
                 'linkplayerup' => $_POST['playerid'],
-                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(playerid) as totals');
 
             if (count($es) < 1) {
@@ -2000,7 +2000,7 @@ class Controller extends CI_Controller
         foreach ($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___42178')) . ')' => null, //Dynamic Players
             'linkplayerdown' => $es[0]['playerid'],
-            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0, 0, sort_by(42178)) as $player_group) {
 
             if (in_array($player_group['playerid'], $scanned_players)) {
@@ -2011,7 +2011,7 @@ class Controller extends CI_Controller
             foreach ($this->Links->read(array(
                 'linkplayerdown' => $player_group['playerid'],
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___42145')) . ')' => null, //Dynamic Input Templates
-                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'), 0, 0, $order_42145) as $player_template) {
 
                 $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($player_template['playercover']) . '</span>' . $player_template['playertext'] . '<a href="' . view_memory(42903, 42902) . $player_group['playerhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $player_group['playertext'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($player_group['playercover']) . '</span></a></div>';
@@ -2101,7 +2101,7 @@ class Controller extends CI_Controller
                         $counted = 0;
                         $unique_values = array();
                         foreach ($this->Links->read(array(
-                            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                             'linkplayerdown' => $es[0]['playerid'],
                             'linkplayerup' => $dynamic_playerid,
                         ), array('linkplayerup')) as $selected_e) {
@@ -2151,7 +2151,7 @@ class Controller extends CI_Controller
                 foreach (array_intersect($players___42776[$selected_e['playerid']]['m__following'], $this->config->item('playerids___4592')) as $data_type) {
                     //Any value?
                     $values = $this->Links->read(array(
-                        'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                         'linkplayerdown' => $es[0]['playerid'],
                         'linkplayerup' => $selected_e['playerid'],
                     ));
@@ -2274,7 +2274,7 @@ class Controller extends CI_Controller
 
             if (!$d_linkid || !count($values)) {
                 $values = $this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $dynamic_playerid,
                     'linkplayerdown' => $es[0]['playerid'],
                 ));
@@ -2476,7 +2476,7 @@ class Controller extends CI_Controller
             //Fetch all possible answers based on followings Player:
             $query_filters = array(
                 'linkplayerup' => $_POST['focus__id'],
-                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
             );
 
             if ((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']) {
@@ -2496,7 +2496,7 @@ class Controller extends CI_Controller
                 $delete_query = $this->Links->read(array(
                     'linkplayerup IN (' . join(',', $possible_answers) . ')' => null,
                     'linkplayerdown' => $_POST['down_playerid'],
-                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 ));
             } elseif ($_POST['right_ideaid']) {
                 $delete_query = $this->Links->read(array(
@@ -2713,7 +2713,7 @@ class Controller extends CI_Controller
             $already_added = $this->Links->read(array(
                 'linkplayerup' => $_POST['playerid'],
                 'linkplayerdown' => $_POST['linkplayercreator'],
-                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'));
 
             if (count($already_added)) {
@@ -2829,7 +2829,7 @@ class Controller extends CI_Controller
         $linkplayercreator = 0;
         foreach ($this->Links->read(array(
             'LOWER(linktext)' => strtolower($_POST['account_email_phone']),
-            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
             'linkplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
         ), array('linkplayerdown'), 1, 0, array('linkid' => 'ASC')) as $map_e) {
             $u = $map_e;
@@ -3104,7 +3104,7 @@ class Controller extends CI_Controller
             //Players reset order
             foreach ($this->Links->read(array(
                 'linkplayerup' => $_POST['focus__id'],
-                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0) as $x) {
                 $this->Links->update($x['linkid'], array(
                     'linknumber' => 0,
@@ -3597,7 +3597,7 @@ class Controller extends CI_Controller
                         if ($has_handle) {
 
                             $sub_counter = $this->Links->read(array(
-                                'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                                 'linkplayerup' => $es[0]['playerid'],
                             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 

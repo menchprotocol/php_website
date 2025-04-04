@@ -4,7 +4,7 @@
 $longest_time = 0;
 $longest_id = 0;
 $cron_jobs = $this->Links->read(array(
-    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
     'linkplayerup' => 7274,
 ), array('linkplayerdown'), view_memory(6404,11064), 0, array('linknumber' => 'ASC'));
 foreach($cron_jobs as $cron_job){

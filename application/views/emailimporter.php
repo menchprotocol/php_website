@@ -16,7 +16,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             //echo $email.'<hr />';
 
             foreach($this->Links->read(array(
-                            'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 'linkplayerup' => 3288, //Email
                 'linktext' => trim(strtolower($email)),
             )) as $player_data){
@@ -25,7 +25,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 
                 //Do we need to add?
                 if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Links->read(array(
-                                    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $_POST['import_playerid'],
                     'linkplayerdown' => $player_data['linkplayerdown'],
                 )))){

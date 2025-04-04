@@ -9,7 +9,7 @@ echo '<div class="row">';
 foreach ($this->Links->read(array(
     'linkplayerup' => 30841, //Featured Apps
     'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, sort__player()) as $app) {
 
     if (!in_array($app['playerid'], $this->config->item('playerids___6287')) || in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?
@@ -33,7 +33,7 @@ echo '<div class="row">';
 foreach ($this->Links->read(array(
     'linkplayerup' => 6287, //Featured Apps
     'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, sort__player()) as $app) {
 
     if (in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?

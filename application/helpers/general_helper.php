@@ -248,7 +248,7 @@ function idea_spots_remaining($ideaid)
                 if (count($must_follow) == count($CI->Links->read(array(
                         'linkplayerdown' => $e['linkplayercreator'],
                         'linkplayerup IN (' . join(',', $must_follow) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     )))) {
                     $current_discoveries++;
                 }
@@ -513,7 +513,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             //Include If Has ANY
             $query_string_all = $CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $list_config[27984]) . ')' => null,
-                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
         } elseif (count($list_config[43513])) {
@@ -521,7 +521,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             //Include If Has ALL
             $query_string_all = $CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $list_config[43513]) . ')' => null,
-                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
         } else {
@@ -547,21 +547,21 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 (count($list_config[27984]) && !count($CI->Links->read(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup IN (' . join(',', $list_config[27984]) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     )))) ||
 
                 //Exclude If Has ALL
                 (count($list_config[26600]) && count($CI->Links->read(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup IN (' . join(',', $list_config[26600]) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     ))) == count($list_config[26600])) ||
 
                 //Exclude If Has ANY
                 (count($list_config[43514]) && count($CI->Links->read(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup IN (' . join(',', $list_config[43514]) . ')' => null,
-                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     ))) > 0) ||
 
                 //If Not Discovered Any
@@ -582,7 +582,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                     $total_found_43513 += (count($CI->Links->read(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup' => $CI_filter,
-                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     ))) ? 1 : 0);
                 }
                 if ($total_found_43513 < count($list_config[43513])) {
@@ -602,7 +602,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
             $player_column = $CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $list_config[34513]) . ')' => null,
-                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, sort__player());
 
             foreach ($CI->Links->read(array(
@@ -623,17 +623,17 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 $fetch_names = $CI->Links->read(array(
                     'linkplayerup' => 42584, //First Name
                     'linkplayerdown' => $x['playerid'],
-                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 ));
                 $fetch_emails = $CI->Links->read(array(
                     'linkplayerup' => 3288, //Email
                     'linkplayerdown' => $x['playerid'],
-                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 ));
                 $fetch_phones = $CI->Links->read(array(
                     'linkplayerup' => 4783, //Phone
                     'linkplayerdown' => $x['playerid'],
-                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 ));
 
                 $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['linktext']) ? $fetch_names[0]['linktext'] : $x['playertext']);
@@ -943,7 +943,7 @@ function process_media($ideaid, $uploaded_media)
                     //We we already have this asset, link to that Player without giving this new Player the authority over it...
                     //First person to upload a Player will get authority over its created Player...
                     foreach ($CI->Links->read(array(
-                        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                         'linkplayerup' => 42662, //etag
                         'linktext' => $upload_media['media_cache']['etag'],
                     ), array('linkplayerdown'), 1) as $existing_media) {
@@ -1003,7 +1003,7 @@ function process_media($ideaid, $uploaded_media)
                             //Single select that needs auto creation of Players if missing:
                             $child_id = 0;
                             foreach ($CI->Links->read(array(
-                                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                                 'linkplayerup' => $linkplayertype,
                                 'playertext' => $target_variable,
                             ), array('linkplayerdown'), 1, 0, array('linkid' => 'ASC')) as $child_player) {
@@ -1145,7 +1145,7 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid)
 
     //First validate data type to ensure it matches:
     foreach ($CI->Links->read(array(
-        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
         'linkplayerup IN (' . join(',', $CI->config->item('playerids___4592')) . ')' => null, //Data Types
         'linkplayerdown' => $linkplayerup,
     )) as $data_type) {
@@ -1628,7 +1628,7 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
             $fetch_emails = $CI->Links->read(array(
                 'linkplayerup' => 3288, //Email
                 'linkplayerdown' => $playerid,
-                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
             ));
             if (count($fetch_emails) && filter_var($fetch_emails[0]['linktext'], FILTER_VALIDATE_EMAIL)) {
                 array_push($ReplyToAddresses, trim($fetch_emails[0]['linktext']));
@@ -2063,7 +2063,7 @@ function idea_access_level($ideahashtag = null, $ideaid = 0, $i = false, $is_cah
             if ($player_e) {
                 foreach ($fetch_27984 as $player_pre) {
                     if ((($player_e && $player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Links->read(array(
-                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         ))))) {
@@ -2088,7 +2088,7 @@ function idea_access_level($ideahashtag = null, $ideaid = 0, $i = false, $is_cah
             if ($player_e) {
                 foreach ($fetch_43513 as $player_pre) {
                     if ((($player_e && $player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Links->read(array(
-                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         ))))) {
@@ -2112,7 +2112,7 @@ function idea_access_level($ideahashtag = null, $ideaid = 0, $i = false, $is_cah
             if ($player_e) {
                 foreach ($fetch_43514 as $player_pre) {
                     if (($player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Links->read(array(
-                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         )))) {
@@ -2137,7 +2137,7 @@ function idea_access_level($ideahashtag = null, $ideaid = 0, $i = false, $is_cah
             if ($player_e) {
                 foreach ($fetch_26600 as $player_pre) {
                     if (($player_e['playerid'] == $player_pre['linkplayerup']) || count($CI->Links->read(array(
-                            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $player_pre['linkplayerup'],
                             'linkplayerdown' => $player_e['playerid'],
                         )))) {
@@ -2405,7 +2405,7 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                 //Fetch Following:
                 foreach ($CI->Links->read(array(
-                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                     'linkplayerdown' => $s['playerid'], //This follower Player
                 ), array('linkplayerup'), 0, 0, array('playertext' => 'DESC')) as $x) {
 
@@ -2904,7 +2904,7 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
         $joins_objects = array('linkplayerdown');
         $query_filters = array(
             'linkplayerup' => $playerid,
-            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
         );
 
     } elseif (in_array($linkplayertype, $CI->config->item('playerids___42261'))) {
@@ -3157,7 +3157,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
     $selection_ids = array();
     $selection_options = $CI->Links->read(array(
         'linkplayerup' => $focus__id,
-        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC'));
     foreach ($selection_options as $list_item) {
         array_push($selection_ids, $list_item['playerid']);
@@ -3177,7 +3177,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
             foreach ($CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
                 'linkplayerdown' => $down_playerid,
-                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
             )) as $sel) {
                 array_push($already_selected, $sel['linkplayerup']);
             }
@@ -3340,7 +3340,7 @@ function view_single_select_instant($cache_playerid, $selected_playerid, $idea_a
         foreach($CI->Links->read(array(
             'linkplayerup IN (' . join(',', $CI->config->item('playerids___'.$cache_playerid)) . ')' => null, //SOURCE LINKS
             'linkplayerdown' => $player_e['playerid'],
-            'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
         )) as $x) {
             //Supports one for now
             $selected_playerid = $x['linkplayerup'];
@@ -3505,7 +3505,7 @@ function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node 
             foreach ($CI->Links->read(array(
                 'linkplayerup' => $message_references['playerid'],
                 'linkplayerdown' => $playerid,
-                'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 'LENGTH(linktext) > 0' => null,
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['linktext'])) {
@@ -5046,7 +5046,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
             } elseif (0 && $linkplayertype_target_bar == 42795 && $player_e && $player_e['playerid'] != $e['playerid'] && count($CI->Links->read(array(
                     'linkplayerdown' => $e['playerid'],
                     'linkplayerup' => 4430, //Active Member
-                    'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                 )))) {
 
                 //Allow to follow fellow players:
@@ -5176,7 +5176,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
     foreach ($CI->Links->read(array(
         'linkplayerup IN (' . join(',', $CI->config->item('playerids___14036')) . ')' => null, //Featured Players
         'linkplayerdown' => $e['playerid'],
-        'linkplayertype IN (' . join(',', $CI->list_player_links_intentional) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
     ), array(), 0, 0, $order_columns) as $social_link) {
 
         if (in_array($social_link['linkplayerup'], $CI->config->item('playerids___32172'))) {
