@@ -24,10 +24,10 @@ $idea_settings = idea_settings($_GET['ideahashtag']);
 if(1){
 
     print_r(array(
-        'player_column_count' => count($player_column['player_column']),
-        'idea_column_count' => count($player_column['idea_column']),
-        'player_column' => $player_column['player_column'],
-        'idea_column' => $player_column['idea_column'],
+        'player_column_count' => count($idea_settings['player_column']),
+        'idea_column_count' => count($idea_settings['idea_column']),
+        'player_column' => $idea_settings['player_column'],
+        'idea_column' => $idea_settings['idea_column'],
     ));
 
 } else {
