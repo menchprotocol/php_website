@@ -19,7 +19,7 @@ class Controller extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         $this->player_e = superpower_unlocked();
-        $this->list_player_links_intentional = array(4151, 4230, 42659, 42849);
+        $this->list_player_links_intentional = array(4151, 4230, 4251, 42659, 42849);
         $this->list_link_ideation = array(4228, 31834, 42337, 33532, 44161, 40791, 44162, 40793, 32247, 32304, 33344, 30901, 42244, 42243);
         $this->list_link_sourcing = array(41011, 4251, 44399, 33335, 42659, 42849, 44176, 44179, 42897, 32486, 4230, 32489, 42579, 42581, 42580, 42283, 42335, 42516, 42554, 42570, 42427, 42518, 42440, 42791);
         $this->list_link_contribution = array(34513, 4250, 4983, 44396, 42292, 33600, 42272, 42274, 31840, 42275, 42282, 32488, 4258, 4260, 4259, 31835, 41949, 43941, 4256, 12896, 10573, 27984, 43513, 43514, 26600, 7545, 26599, 32235);
@@ -2778,10 +2778,10 @@ class Controller extends CI_Controller
         //Search for email/phone to see if it exists
         $linkplayercreator = 0;
         foreach ($this->Links->read(array(
-            'linktext' => $_POST['account_email_phone'],
+            'LOWER(linktext)' => strtolower($_POST['account_email_phone']),
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
-        ), array('linkplayerdown'), 1, 0, array('linkid' => 'DESC')) as $map_e) {
+        ), array('linkplayerdown'), 1, 0, array('linkid' => 'ASC')) as $map_e) {
             $u = $map_e;
             $linkplayercreator = $map_e['playerid'];
         }
