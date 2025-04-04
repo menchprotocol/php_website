@@ -2877,11 +2877,11 @@ function log_error($error_message, $error_data = array(), $log_error = true){
             .( count($player_active) ? ' | ERROR DATA: '.print_r($error_data, true) : '' )
         );
 
-        $CI->Links->create(array_merge($log_error, array(
+        $CI->Links->create(array_merge($error_data, array(
             'linkplayerup' => 4246, //Platform Bug Reports
             'linkplayertype' => 44179, //Triggered
             'linktext' => $error_message,
-            'linkplayercreator' => ( isset($log_error['linkplayercreator']) && $log_error['linkplayercreator']>0 ? $log_error['linkplayercreator'] : ( $player_active ? $player_active['playerid'] : 0 ) ),
+            'linkplayercreator' => ( isset($error_data['linkplayercreator']) && $error_data['linkplayercreator']>0 ? $error_data['linkplayercreator'] : ( $player_active ? $player_active['playerid'] : 0 ) ),
         )));
 
     }
