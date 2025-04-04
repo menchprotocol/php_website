@@ -2877,11 +2877,8 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if(!in_array($linkplayertype, $CI->config->item('playerids___4527'))){
-        die($linkplayertype.' Not in Cache @4527');
-    } elseif(!is_array($CI->config->item('playerids___' . $linkplayertype)) || !count($CI->config->item('playerids___' . $linkplayertype))){
-        log_message('error', $linkplayertype.' Empty Array in Cache @4527');
-        die('asdas');
+    if(!in_array($linkplayertype, $CI->config->item('playerids___4527')) || !is_array($CI->config->item('playerids___' . $linkplayertype)) || !count($CI->config->item('playerids___' . $linkplayertype))){
+        log_message('error', 'MENCH ERROR: @'.$linkplayertype.' Empty Array in Cache @4527');
     }
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
