@@ -552,7 +552,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
             if(focus__node==12273){
 
-                var loading_url = "/controller/view_idea_body";
+                var loading_url = "/controller/ideas_list";
                 var loading_data = {
                     focus__node:focus__node,
                     linkplayertype:linkplayertype,

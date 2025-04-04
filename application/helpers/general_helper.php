@@ -2851,8 +2851,6 @@ function view_more($href, $is_current, $linkplayertype, $o__type, $o__title, $li
         '</a>';
 }
 
-
-
 function view_google_tag($google_analytics_code)
 {
     return '<script async src="https://www.googletagmanager.com/gtag/js?id=' . $google_analytics_code . '"></script>
@@ -2865,12 +2863,10 @@ function view_google_tag($google_analytics_code)
 </script>';
 }
 
-function view_idea_body($linkplayertype, $counter, $ideaid)
+function ideas_list($linkplayertype, $counter, $ideaid)
 {
 
     $CI =& get_instance();
-
-
     $list_results = view_idea_query($linkplayertype, $ideaid, 1);
     $ui = '';
     $is = $CI->Ideas->read(array(
@@ -2925,7 +2921,7 @@ function view_idea_body($linkplayertype, $counter, $ideaid)
 
 }
 
-function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
+function players_list($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
 {
 
     /*
@@ -2936,9 +2932,6 @@ function view_player_cards($linkplayertype, $playerid, $page_num = 0, $append_ca
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-
-    //if (!in_array($linkplayertype, $CI->config->item('playerids___6404'))) { return null; }
-
 
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
 
@@ -5319,7 +5312,7 @@ function view_player($linkplayertype, $e, $extra_class = null)
                 }
 
                 $ui .= '<span class="hideIfEmpty">';
-                $ui .= view_player_cards($playerid_bottom_bar, $e['playerid']);
+                $ui .= players_list($playerid_bottom_bar, $e['playerid']);
                 $ui .= '</span>';
             }
         }

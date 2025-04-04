@@ -21,7 +21,7 @@ foreach($this->config->item('players___31916') as $linkplayertype => $m) {
         continue;
     }
 
-    $coins_count[$linkplayertype] = view_player_cards($linkplayertype, $focus_e['playerid'], 0, false);
+    $coins_count[$linkplayertype] = players_list($linkplayertype, $focus_e['playerid'], 0, false);
     if(!$coins_count[$linkplayertype] && in_array($linkplayertype, $this->config->item('playerids___12144'))){ continue; }
 
     $input_content = '';

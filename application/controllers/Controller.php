@@ -1309,13 +1309,13 @@ class Controller extends CI_Controller
         ));
     }
 
-    function view_idea_body()
+    function ideas_list()
     {
         //Authenticate Member:
         if (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1 || !isset($_POST['counter']) || !isset($_POST['linkplayertype']) || intval($_POST['linkplayertype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
-            echo view_idea_body($_POST['linkplayertype'], $_POST['counter'], $_POST['ideaid']);
+            echo ideas_list($_POST['linkplayertype'], $_POST['counter'], $_POST['ideaid']);
         }
     }
 
@@ -1338,7 +1338,7 @@ class Controller extends CI_Controller
             return false;
         }
 
-        $list_results = view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1);
+        $list_results = players_list($_POST['linkplayertype'], $_POST['playerid'], 1);
         $es = $this->Players->read(array(
             'playerid' => $_POST['playerid'],
         ));
@@ -1410,7 +1410,7 @@ class Controller extends CI_Controller
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
                     $players___4593 = $this->config->item('players___4593'); //Link Types
 
-                    foreach (view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $player_e) {
+                    foreach (players_list($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $player_e) {
                         if (isset($player_e['playerid'])) {
                             $ui .= view_card(view_memory(42903, 42902) . $player_e['playerhandle'], $player_e['playerhandle'] == $current_playerhandle, $player_e['linkplayertype'], view_cover($player_e['playercover'], true), $player_e['playertext'], $player_e['linktext']);
                             $listed_items++;
@@ -1425,7 +1425,7 @@ class Controller extends CI_Controller
                     $players___4593 = $this->config->item('players___4593'); //Link Types
                     $discover_linkplayertype = discover_linkplayertype();
 
-                    foreach (view_player_cards($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $next_i) {
+                    foreach (players_list($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
                             $ui .= view_card($discover_linkplayertype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['linkplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['linktext']);
                             $listed_items++;
@@ -2733,7 +2733,7 @@ class Controller extends CI_Controller
         }
     }
 
-    function e_verify_contact()
+    function player_verify()
     {
 
         if (!isset($_POST['account_email_phone'])) {
@@ -2781,10 +2781,9 @@ class Controller extends CI_Controller
             'linktext' => $_POST['account_email_phone'],
             'linkplayertype IN (' . join(',', $this->list_player_links_intentional) . ')' => null, //SOURCE LINKS
             'linkplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
-        ), array('linkplayerdown')) as $map_e) {
+        ), array('linkplayerdown'), 1, 0, array('linkid' => 'ASC')) as $map_e) {
             $u = $map_e;
             $linkplayercreator = $map_e['playerid'];
-            break;
         }
 
         //Send Sign In Key
@@ -2918,14 +2917,14 @@ class Controller extends CI_Controller
             if ($_POST['apply_id'] == 4997) {
 
                 //Player list:
-                $counter = view_player_cards(12274, $_POST['s__id'], 0, false);
+                $counter = players_list(12274, $_POST['s__id'], 0, false);
                 if (!$counter) {
                     echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Players yet</div>';
                 } else {
                     echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Player' . view_s($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach (view_player_cards(12274, $_POST['s__id'], 1, true) as $e) {
+                    foreach (players_list(12274, $_POST['s__id'], 1, true) as $e) {
                         array_push($ids, $e['playerid']);
                         echo view_player(12274, $e);
                     }
@@ -2981,7 +2980,7 @@ class Controller extends CI_Controller
             ));
             $focus_e = $focus_es[0];
 
-            foreach (view_player_cards($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+            foreach (players_list($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
                     echo view_player($_POST['linkplayertype'], $s);
                     $success = true;

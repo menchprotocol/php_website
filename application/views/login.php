@@ -130,7 +130,7 @@ if(superpower_unlocked()) {
                 //Watch for action keys:
                 if (e.keyCode==13) {
                     if(step_count==2){
-                        e_verify_contact();
+                        player_verify();
                     } else if(step_count==3){
                         e_contact_auth();
                     }
@@ -154,7 +154,7 @@ if(superpower_unlocked()) {
 
 
         var verifying_contact = false;
-        function e_verify_contact(){
+        function player_verify(){
 
             if(verifying_contact){
                 return false;
@@ -169,7 +169,7 @@ if(superpower_unlocked()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/controller/e_verify_contact", {
+            $.post("/controller/player_verify", {
 
                 account_email_phone: account_email_phone,
                 sign_ideaid: sign_ideaid,
@@ -285,7 +285,7 @@ if(superpower_unlocked()) {
 
 
                 <span>
-                    <a href="javascript:void(0)" onclick="e_verify_contact()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="player_verify()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
                 </span>
 
 
