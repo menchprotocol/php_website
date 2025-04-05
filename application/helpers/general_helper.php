@@ -1871,7 +1871,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
 
 
     $CI =& get_instance();
-    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || strlen($CI->CI->uri->segment(2)) ? true : false );
+    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || strlen($CI->uri->segment(2)) ? true : false );
 
     if ($is_cahce) {
         return 1;
