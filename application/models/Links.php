@@ -298,7 +298,7 @@ class Links extends CIdea_cache
 
             //Make sure something changed:
             $something_changed = false;
-            foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight') as $must_change){
+            foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight','linknumber','linktext','linkvoid') as $must_change){
                 if(isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change]){
                     $something_changed = true;
                 }
