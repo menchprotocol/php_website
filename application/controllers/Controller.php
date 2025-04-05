@@ -20,7 +20,7 @@ class Controller extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         $this->player_active = superpower_unlocked();
-        $this->sort_playersdown = array('linknumber' => 'ASC', 'linktime' => 'DESC'); //'linkplayertype = \'41011\' DESC' => null,
+        $this->sort_playersdown = array('linkplayertype = \'41011\' DESC' => null,'linknumber' => 'ASC', 'linktime' => 'DESC');
 
         $this->list_player_links_intentional = array(4151, 4230, 42659, 42849);
         $this->list_link_ideation = array(4228, 31834, 42337, 33532, 44161, 40791, 44162, 40793, 32247, 32304, 33344, 30901, 42244, 42243);
