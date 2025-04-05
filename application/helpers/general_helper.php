@@ -1855,7 +1855,7 @@ function player_access($playerhandle = null, $playerid = 0, $e = false)
 
 }
 
-function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = false, $discovery_mode = false)
+function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = false)
 {
 
     /*
@@ -1868,6 +1868,9 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
      * 3 EDIT
      *
      * */
+
+
+    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || strlen($this->CI->uri->segment(2)) ? true : false );
 
     if ($is_cahce) {
         return 1;
@@ -4049,7 +4052,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
     $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
     $discovery_mode = $linkplayercreator && ($discovery_uri || $discovery_seg);
-    $idea_access = idea_access($i['ideahashtag'], 0, $i, $is_cache, $discovery_mode);
+    $idea_access = idea_access($i['ideahashtag'], 0, $i, $is_cache);
     $focus_idea_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_idea_seg = ($discovery_seg ? $CI->uri->segment(2) : false);
     $focus_ideahashtag = ($focus_idea_uri ? $focus_idea_uri : ($focus_idea_seg ? $focus_idea_seg : false));
