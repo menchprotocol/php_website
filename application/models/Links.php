@@ -296,14 +296,10 @@ class Links extends CIdea_cache
             'linkid' => $linkid,
         )) as $old_x) {
 
-            if (!$linkplayercreator) {
+            if (!isset($update_columns['linkplayercreator'])) {
                 //Fetch session player:
-                $player_active = superpower_unlocked();
-                $linkplayercreator = ($player_active ? $player_active['playerid'] : ($old_x['linkplayercreator'] > 0 ? $old_x['linkplayercreator'] : 14068 /* Guest Member */));
+                $update_columns['linkplayercreator'] = ($linkplayercreator > 0 ? $linkplayercreator : $old_x['linkplayercreator'] );
             }
-
-            //Override Player
-            $update_columns['linkplayercreator'] = $linkplayercreator;
 
             //Create New Link
             $new_x = $this->Links->create(array_merge($old_x, $update_columns), true, false);
