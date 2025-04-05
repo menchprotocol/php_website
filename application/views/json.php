@@ -7,22 +7,22 @@ $duplicate = 0;
 $previous = false;
 
 echo '<table>';
-foreach($this->Links->fetch(array(
-    'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //SUCCESSFUL DISCOVERIES
+foreach($this->Links->read(array(
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //SUCCESSFUL DISCOVERIES
 ), array(), 0, 0, array(
-    'linkcreator' => 'ASC',
-    'linktype' => 'ASC',
-    'linkright' => 'ASC',
-    'linkleft' => 'ASC',
+    'linkplayercreator' => 'ASC',
+    'linkplayertype' => 'ASC',
+    'linkidearight' => 'ASC',
+    'linkidealeft' => 'ASC',
     'linktext' => 'ASC',
     'linkid' => 'DESC',
 )) as $discover){
 
     $count++;
-    if($previous && $previous['linktype']==$discover['linktype'] && $previous['linkcreator']==$discover['linkcreator'] && $previous['linkright']==$discover['linkright'] && $previous['linkleft']==$discover['linkleft'] && $previous['linktext']==$discover['linktext']){
+    if($previous && $previous['linkplayertype']==$discover['linkplayertype'] && $previous['linkplayercreator']==$discover['linkplayercreator'] && $previous['linkidearight']==$discover['linkidearight'] && $previous['linkidealeft']==$discover['linkidealeft'] && $previous['linktext']==$discover['linktext']){
         $duplicate++;
-        echo '<tr><td>'.$previous['linktype'].'</td><td>'.$previous['linktime'].'</td><td>'.$previous['linkcreator'].'</td><td>'.$previous['linkright'].'</td><td>'.$previous['linkleft'].'</td><td>'.$previous['linktext'].'</td><td>'.$previous['linktype'].'</td><td>'.$previous['linktype'].'</td></tr>';
-        echo '<tr style="background-color: #CCC;"><td>'.$discover['linktype'].'</td><td>'.$discover['linktime'].'</td><td>'.$discover['linkcreator'].'</td><td>'.$discover['linkright'].'</td><td>'.$discover['linkleft'].'</td><td>'.$discover['linktext'].'</td><td>'.$discover['linktype'].'</td><td>'.$discover['linktype'].'</td></tr>';
+        echo '<tr><td>'.$previous['linkplayertype'].'</td><td>'.$previous['linktime'].'</td><td>'.$previous['linkplayercreator'].'</td><td>'.$previous['linkidearight'].'</td><td>'.$previous['linkidealeft'].'</td><td>'.$previous['linktext'].'</td><td>'.$previous['linkplayertype'].'</td><td>'.$previous['linkplayertype'].'</td></tr>';
+        echo '<tr style="background-color: #CCC;"><td>'.$discover['linkplayertype'].'</td><td>'.$discover['linktime'].'</td><td>'.$discover['linkplayercreator'].'</td><td>'.$discover['linkidearight'].'</td><td>'.$discover['linkidealeft'].'</td><td>'.$discover['linktext'].'</td><td>'.$discover['linkplayertype'].'</td><td>'.$discover['linkplayertype'].'</td></tr>';
 
         //$this->db->query("DELETE FROM menchledger WHERE linkid=".$discover['linkid'].";");
 
