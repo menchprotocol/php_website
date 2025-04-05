@@ -2412,6 +2412,7 @@ input.form-control {
     margin:0 0 !important;
     padding: 0 !important;
     border-top:0;
+    overflow:hidden;
 }
 .flip-content .card_cover.card-12273{
     border-top: 0;
