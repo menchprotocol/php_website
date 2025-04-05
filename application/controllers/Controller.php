@@ -1550,9 +1550,10 @@ class Controller extends CI_Controller
             } else {
 
                 //Update them all:
+                $updated = 0;
                 foreach ($_POST['new_linknumber'] as $rank => $linkid) {
                     if($linkid>0){
-                        $this->Links->update($linkid, array(
+                        $updated += $this->Links->update($linkid, array(
                             'linknumber' => intval($rank),
                         ));
                     }
@@ -1561,6 +1562,7 @@ class Controller extends CI_Controller
                 //Display message:
                 return view_json(array(
                     'status' => 1,
+                    'message' => $updated.' Links updated',
                 ));
 
             }
