@@ -118,7 +118,6 @@ if ($player_active || isset($_GET['open'])) {
 
     $(document).ready(function () {
 
-        $('textarea:first').focus();
 
         load_hashtag_menu('Next');
 
@@ -143,6 +142,8 @@ if ($player_active || isset($_GET['open'])) {
             if (total_discoveries) {
                 $(".fixed-bottom").removeClass('hidden');
             }
+
+            $('textarea:first').focus();
 
             if (focus_ideatype == 43758) {
                 invoice_update();
