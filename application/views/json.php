@@ -7,7 +7,7 @@ $duplicate = 0;
 $previous = false;
 
 echo '<table>';
-foreach($this->Menchledger->fetch(array(
+foreach($this->Links->fetch(array(
     'linktype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //SUCCESSFUL DISCOVERIES
 ), array(), 0, 0, array(
     'linkcreator' => 'ASC',
