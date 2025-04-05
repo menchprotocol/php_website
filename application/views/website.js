@@ -618,7 +618,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
                     pills_loading = null;
 
-                }, 233);
+                }, 611);
 
                 loading_in_progress = false;
 
