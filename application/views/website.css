@@ -2396,9 +2396,9 @@ input.form-control {
     text-align: center;
 }
 
-.modal-backdrop{
+.modal.show{
     background-color: #FFF;
-    opacity: 1;
+    opacity: 1 !important;
 }
 
 .card_cover.card-12274,
