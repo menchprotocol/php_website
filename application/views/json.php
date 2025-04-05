@@ -1,89 +1,10 @@
 <?php
 
+view_json($this->Links->history($focus_i, $focus_e['playerid']));
 
-$playersids_joined = array_merge($this->config->item('playerids___32292'), $this->config->item('playerids___31777'),$this->config->item('playerids___13550'),$this->config->item('playerids___4486'));
-$list_links_joined = array_merge($this->list_link_sourcing,$this->list_link_discovery,$this->list_link_contribution,$this->list_link_ideation);
-
-$var = array(
-
-    'count_list_link_sourcing' => count($this->list_link_sourcing),
-    'count_playerids___32292' => count($this->config->item('playerids___32292')),
-    'count_list_link_discovery' => count($this->list_link_discovery),
-    'count_playerids___31777' => count($this->config->item('playerids___31777')),
-    'count_list_link_contribution' => count($this->list_link_contribution),
-    'count_playerids___13550' => count($this->config->item('playerids___13550')),
-    'count_list_link_ideation' => count($this->list_link_ideation),
-    'count_playerids___4486' => count($this->config->item('playerids___4486')),
-    'count_playersids_joined' => count($playersids_joined),
-    'count_list_links_joined' => count($list_links_joined),
-
-    /*
-    'list_link_sourcing' => $this->list_link_sourcing,
-    'playerids___32292' => $this->config->item('playerids___32292'),
-    'list_link_discovery' => $this->list_link_discovery,
-    'playerids___31777' => $this->config->item('playerids___31777'),
-    'list_link_contribution' => $this->list_link_contribution,
-    'playerids___13550' => $this->config->item('playerids___13550'),
-    'list_link_ideation' => $this->list_link_ideation,
-    'playerids___4486' => $this->config->item('playerids___4486'),
-
-
-    'list_links_joined' => $list_links_joined,
-    'playersids_joined' => $playersids_joined,
-    */
-);
-
-$var['stats_sourcing'] = $this->Links->read(array(
-    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['stats_discovery'] = $this->Links->read(array(
-    'linkplayertype IN (' . join(',', $this->list_link_discovery) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['stats_contribution'] = $this->Links->read(array(
-    'linkplayertype IN (' . join(',', $this->list_link_contribution) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['stats_ideation'] = $this->Links->read(array(
-    'linkplayertype IN (' . join(',', $this->list_link_ideation) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-
-
-
-
-$var['playersids_count'] = $this->Links->read(array(
-    'linkplayertype IN (' . join(',', $playersids_joined) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['playersids_count_reverse'] = $this->Links->read(array(
-    'linkplayertype NOT IN (' . join(',', $playersids_joined) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-
-$var['list_links_count'] = $this->Links->read(array(
-    'linkplayertype IN (' . join(',', $list_links_joined) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-$var['list_links_count_reverse'] = $this->Links->read(array(
-    'linkplayertype NOT IN (' . join(',', $list_links_joined) . ')' => null,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-
-
-
-$var['playersids_MISSING'] = $this->Links->read(array(
-    'linkplayertype NOT IN (' . join(',', $playersids_joined) . ')' => null,
-), array(), 0, 0, array(), 'linkplayertype, COUNT(*) as total', 'linkplayertype');
-
-$var['list_links_MISSING'] = $this->Links->read(array(
-    'linkplayertype NOT IN (' . join(',', $list_links_joined) . ')' => null,
-), array(), 0, 0, array(), 'linkplayertype, COUNT(*) as total', 'linkplayertype');
-
-
-$var['stats_void_xxxxxxxxxxxxxxxxxxxxxxxxxx'] = $this->Links->read(array(
-    'linkvoid > ' => 0,
-), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-
-
-view_json($var);
 
 
 /*
-view_json($this->Links->history($focus_i, $focus_e['playerid']));
 
 die('pending...');
 
