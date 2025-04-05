@@ -19,12 +19,13 @@ foreach($this->Links->read(array(
 )) as $discover){
 
     $count++;
-    if($previous && $previous['linkplayertype']==$discover['linkplayertype'] && $previous['linkplayercreator']==$discover['linkplayercreator'] && $previous['linkidearight']==$discover['linkidearight'] && $previous['linkidealeft']==$discover['linkidealeft'] && $previous['linktext']==$discover['linktext']){
+    if($previous && $previous['linkplayercreator']==$discover['linkplayercreator'] && $previous['linkplayertype']==$discover['linkplayertype'] && $previous['linkidearight']==$discover['linkidearight'] && $previous['linkidealeft']==$discover['linkidealeft'] && $previous['linktext']==$discover['linktext']){
+
         $duplicate++;
         echo '<tr><td>'.$previous['linkplayertype'].'</td><td>'.$previous['linktime'].'</td><td>'.$previous['linkplayercreator'].'</td><td>'.$previous['linkidearight'].'</td><td>'.$previous['linkidealeft'].'</td><td>'.$previous['linktext'].'</td><td>'.$previous['linkplayertype'].'</td><td>'.$previous['linkplayertype'].'</td></tr>';
         echo '<tr style="background-color: #CCC;"><td>'.$discover['linkplayertype'].'</td><td>'.$discover['linktime'].'</td><td>'.$discover['linkplayercreator'].'</td><td>'.$discover['linkidearight'].'</td><td>'.$discover['linkidealeft'].'</td><td>'.$discover['linktext'].'</td><td>'.$discover['linkplayertype'].'</td><td>'.$discover['linkplayertype'].'</td></tr>';
 
-        //$this->db->query("DELETE FROM menchledger WHERE linkid=".$discover['linkid'].";");
+        $this->db->query("DELETE FROM menchledger WHERE linkid=".$discover['linkid'].";");
 
     }
 
