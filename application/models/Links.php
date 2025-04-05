@@ -296,6 +296,16 @@ class Links extends CIdea_cache
             'linkid' => $linkid,
         )) as $old_x) {
 
+            //Make sure something changed:
+            $something_changed = false;
+            foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight') as $must_change){
+                if(isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change]){
+                    $something_changed = true;
+                }
+            }
+            if(!$something_changed){
+                return 0; //Nothing changed
+            }
             if (!isset($update_columns['linkplayercreator'])) {
                 //Fetch session player:
                 $update_columns['linkplayercreator'] = ($linkplayercreator > 0 ? $linkplayercreator : $old_x['linkplayercreator'] );
