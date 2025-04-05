@@ -1874,7 +1874,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
     $player_active = superpower_unlocked();
     $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || strlen($CI->uri->segment(2)) ? true : false );
 
-    if($player_active && $player_active['playerid']==1){
+    if($player_active && $player_active['playerid']==1 && $discovery_mode){
         die('DIE ['.$_POST['js_request_uri'].']['.$CI->uri->segment(2).']');
     }
 
