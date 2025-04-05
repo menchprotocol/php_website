@@ -10,7 +10,7 @@ class Controller extends CI_Controller
     public $list_link_sourcing;
     public $list_link_contribution;
     public $list_link_discovery;
-    public $sort_playersdowny;
+    public $sort_playersdown;
 
     function __construct()
     {
