@@ -2916,7 +2916,7 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
 
         //Down Player Link Groups:
-        $order_columns = $CI->sort_playersdown;
+        $order_columns = $CI->sort_players;
         $joins_objects = array('linkplayerdown');
         $query_filters = array(
             'linkplayerup' => $playerid,
@@ -2926,7 +2926,7 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
     } elseif (in_array($linkplayertype, $CI->config->item('playerids___42276'))) {
 
         //Up Player Link Groups:
-        $order_columns = $CI->sort_playersdown;
+        $order_columns = $CI->sort_players;
         $joins_objects = array('linkplayerup');
         $query_filters = array(
             'linkplayerdown' => $playerid,
@@ -4155,7 +4155,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
 
     //Top action menu:
-    $ui = '<div ideaid="' . $i['ideaid'] . '" ideahashtag="' . $i['ideahashtag'] . '" ideatype="' . $i['ideatype'] . '" linkid="' . $linkid . '" href="' . $href . '" class="card_cover card_idea_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div '.$discovery_mode.'/'.$has_discovered.'/'.$focus__node.' ideaid="' . $i['ideaid'] . '" ideahashtag="' . $i['ideahashtag'] . '" ideatype="' . $i['ideatype'] . '" linkid="' . $linkid . '" href="' . $href . '" class="card_cover card_idea_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['ideaid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_idea_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($linkid ? ' cover_x_' . $linkid . ' ' : '') . '">';
 
     if ($discovery_mode && $linkplayercreator && $focus__node) {
