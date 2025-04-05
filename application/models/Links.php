@@ -264,7 +264,7 @@ class Links extends CIdea_cache
 
 
         //Verify Access to each item:
-        if ($select == '*' && isset($_SERVER['SERVER_NAME'])) {
+        if (0 && $select == '*' && isset($_SERVER['SERVER_NAME'])) {
             if (array_intersect(array('linkidealeft', 'linkidearight'), $joins_objects)) {
                 //Idea results:
                 $player_active = superpower_unlocked();
