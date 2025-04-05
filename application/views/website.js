@@ -614,6 +614,8 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
                     setup_popover();
 
+                    $('textarea:first').focus();
+
                     pills_loading = null;
 
                 }, 233);

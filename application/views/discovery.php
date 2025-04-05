@@ -143,8 +143,6 @@ if ($player_active || isset($_GET['open'])) {
                 $(".fixed-bottom").removeClass('hidden');
             }
 
-            $('.headlinebody textarea:first').focus();
-
             if (focus_ideatype == 43758) {
                 invoice_update();
                 $(".fixed-bottom").removeClass('hidden');
