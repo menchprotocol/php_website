@@ -1870,7 +1870,8 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
      * */
 
 
-    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || strlen($this->CI->uri->segment(2)) ? true : false );
+    $CI =& get_instance();
+    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || strlen($CI->CI->uri->segment(2)) ? true : false );
 
     if ($is_cahce) {
         return 1;
@@ -1880,7 +1881,6 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
         return 3;
     }
 
-    $CI =& get_instance();
     $player_active = superpower_unlocked();
 
     if (strlen($ideahashtag)) {
