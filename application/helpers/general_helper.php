@@ -1855,7 +1855,7 @@ function player_access($playerhandle = null, $playerid = 0, $e = false)
 
 }
 
-function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = false)
+function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = false, $discovery_mode = false)
 {
 
     /*
@@ -1873,7 +1873,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
         return 1;
     }
 
-    if (superpower_unlocked(12700)) {
+    if (!$discovery_mode && superpower_unlocked(12700)) {
         return 3;
     }
 
@@ -1897,7 +1897,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
     }
 
     $is_author = false;
-    if ($player_active) {
+    if (!$discovery_mode && $player_active) {
         $is_author = count($CI->Links->read(array( //IDEA SOURCE
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
             'linkplayerup' => $player_active['playerid'],
@@ -1905,7 +1905,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
         )));
     }
 
-    if ($is_author) {
+    if (!$discovery_mode && $is_author) {
         //Authors can always edit:
         return 3;
     } elseif (count($CI->Links->read(array(
@@ -1913,8 +1913,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
         'linkplayerup' => $player_active['playerid'],
         'linkidearight' => $i['ideaid'],
     )))) {
+
         //Mentioned can always reply:
         return 2;
+
     } else {
 
         //Inventory Limits:
@@ -4040,7 +4042,6 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     $goto_start = in_array($linkplayertype, $CI->config->item('playerids___42988'));
     $player_active = superpower_unlocked();
     $superpower_10939 = !$is_cache && superpower_unlocked(10939);
-    $idea_access = idea_access($i['ideahashtag'], 0, $i, $is_cache);
     $idea_startable = idea_is_startable($i);
     $linkplayercreator = ($focus_playerid > 0 ? $focus_playerid : ($player_active ? $player_active['playerid'] : 0));
     $link_creator = isset($i['linkplayercreator']) && $i['linkplayercreator'] == $linkplayercreator;
@@ -4048,6 +4049,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
     $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
     $discovery_mode = $linkplayercreator && ($discovery_uri || $discovery_seg);
+    $idea_access = idea_access($i['ideahashtag'], 0, $i, $is_cache, $discovery_mode);
     $focus_idea_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_idea_seg = ($discovery_seg ? $CI->uri->segment(2) : false);
     $focus_ideahashtag = ($focus_idea_uri ? $focus_idea_uri : ($focus_idea_seg ? $focus_idea_seg : false));
