@@ -2396,6 +2396,11 @@ input.form-control {
     text-align: center;
 }
 
+.modal-backdrop{
+    background-color: #FFF;
+    opacity: 1;
+}
+
 .card_cover.card-12274,
 .card_cover.card-6287{
     border-radius: 0px !important;

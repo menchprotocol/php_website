@@ -345,11 +345,8 @@ function get_redirected($url, $message = null, $log_error = false)
     if ($log_error) {
         $player_id = ($player_active ? $player_active['playerid'] : 14068);
         //Log thie error:
-        $CI->Links->create(array(
-            'linkplayertype' => 44179, //Triggered
-            'linkplayerup' => 4246, //Platform Bug Reports
+        log_error($url . ' ' . stripslashes($message), array(
             'linkplayerdown' => $player_id,
-            'linktext' => $url . ' ' . stripslashes($message),
             'linkplayercreator' => $player_id,
         ));
     }
@@ -960,11 +957,8 @@ function process_media($ideaid, $uploaded_media)
                     //Create Player for this new media:
                     $added_e = $CI->Players->create($upload_media['playertext'], $player_active['playerid'], ($upload_media['media_playerid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['playercover']));
                     if (!$added_e['status']) {
-                        $CI->Links->create(array(
-                            'linkplayertype' => 44179, //Triggered
-                            'linkplayerup' => 4246, //Platform Bug Reports
+                        log_error('Failed to create a new Player for [' . $upload_media['playertext'] . '] with cover [' . $upload_media['playercover'] . ']', array(
                             'linkplayerdown' => $upload_media['playerid'],
-                            'linktext' => 'Failed to create a new Player for [' . $upload_media['playertext'] . '] with cover [' . $upload_media['playercover'] . ']',
                         ));
                         continue;
                     }
@@ -1014,11 +1008,8 @@ function process_media($ideaid, $uploaded_media)
                             if (!$child_id) {
                                 $added_child = $CI->Players->create($target_variable, 14068);
                                 if (!$added_child['status']) {
-                                    $CI->Links->create(array(
-                                        'linkplayertype' => 44179, //Triggered
-                                        'linkplayerup' => 4246, //Platform Bug Reports
+                                    log_error('Failed to create a new Player for [' . $target_variable . ']', array(
                                         'linkplayerdown' => $linkplayertype,
-                                        'linktext' => 'Failed to create a new Player for [' . $target_variable . ']',
                                     ));
                                     continue;
                                 }
@@ -1244,11 +1235,8 @@ function data_type_validate($data_type, $data_value, $data_title = null)
         );
     } elseif (in_array($data_type, $CI->config->item('playerids___42188'))) {
         //Single Choice of Multi Choice Player types should not be validated here
-        $CI->Links->create(array(
-            'linkplayertype' => 44179, //Triggered
-            'linkplayerup' => 4246, //Platform Bug Reports
+        log_error('data_type_validate() was asked to validate choice options for @' . $data_type . ' [' . $data_value . '] [' . $data_title . ']', array(
             'linkplayerdown' => $data_type,
-            'linktext' => 'data_type_validate() was asked to validate choice options for @' . $data_type . ' [' . $data_value . '] [' . $data_title . ']',
         ));
     }
 
@@ -1518,11 +1506,8 @@ function dispatch_sms($to_phone, $single_message, $playerid = 0, $x_data = array
 
         //No way to send an SMS:
         if ($log_tr) {
-            $CI->Links->create(array(
-                'linkplayertype' => 44179, //Triggered
-                'linkplayerup' => 4246, //Platform Bug Reports
+            log_error('dispatch_sms() missing either: ' . $twilio_account_sid . ' / ' . $twilio_auth_token . ' / ' . $twilio_from_number, array(
                 'linkplayerdown' => $playerid,
-                'linktext' => 'dispatch_sms() missing either: ' . $twilio_account_sid . ' / ' . $twilio_auth_token . ' / ' . $twilio_from_number,
                 'linkplayercreator' => $playerid,
                 'linkplayerdomain' => $linkplayerdomain,
             ));
@@ -1603,11 +1588,8 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
     if (!strlen($domain_email)) {
         $domain_name = 'MENCH';
         $domain_name = 'support@mench.com';
-        $CI->Links->create(array(
-            'linkplayertype' => 44179, //Triggered
-            'linkplayerup' => 4246, //Platform Bug Reports
+        log_error('Domain email is missing! (' . $domain_name . ') (' . $domain_email . ') (' . join(' & ', $to_emails) . ')', array(
             'linkplayerdown' => $playerid,
-            'linktext' => 'Domain email is missing! (' . $domain_name . ') (' . $domain_email . ') (' . join(' & ', $to_emails) . ')',
         ));
     }
 
@@ -2784,12 +2766,6 @@ function view_memory($following, $follower, $filed = 'm__message')
         return $memory_tree[$follower][$filed];
     } else {
         return null;
-        $CI->Links->create(array(
-            'linkplayertype' => 44179, //Triggered
-            'linkplayerup' => 4246, //Platform Bug Reports
-            'linkplayerdown' => $following,
-            'linktext' => 'view_memory() Failed to load [' . $filed . '] @' . $following . ' for @' . $follower,
-        ));
     }
 }
 
@@ -2992,11 +2968,8 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
 
         $players___11035 = $CI->config->item('players___11035');
         if (!isset($players___11035[$linkplayertype]['m__title'])) {
-            $CI->Links->create(array(
-                'linkplayertype' => 44179, //Triggered
-                'linkplayerup' => 4246, //Platform Bug Reports
+            log_error('@' . $linkplayertype . ' Missing from Nav @11035', array(
                 'linkplayerdown' => $linkplayertype,
-                'linktext' => '@' . $linkplayertype . ' Missing from Nav @11035',
             ));
             $players___11035[$linkplayertype] = array(
                 'm__title' => '',
@@ -3179,11 +3152,8 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
 
     if (!$single_select && !$multi_select) {
         //Must be either:
-        $CI->Links->create(array(
-            'linkplayertype' => 44179, //Triggered
-            'linkplayerup' => 4246, //Platform Bug Reports
+        log_error('view_instant_select() @' . $focus__id . ' not in single select @33331 or multi select 33332', array(
             'linkplayerdown' => $focus__id,
-            'linktext' => 'view_instant_select() @' . $focus__id . ' not in single select @33331 or multi select 33332',
             'linkidearight' => $right_ideaid,
         ));
         return false;
@@ -4958,11 +4928,8 @@ function player_view($linkplayertype, $e, $extra_class = null)
     $CI =& get_instance();
 
     if (!isset($e['playerid']) || !isset($e['playertext'])) {
-        $CI->Links->create(array(
-            'linkplayertype' => 44179, //Triggered
-            'linkplayerup' => 4246, //Platform Bug Reports
+        log_error('player_view() Missing core variables', array(
             'linkplayerdown' => $linkplayertype,
-            'linktext' => 'player_view() Missing core variables',
         ));
         return 'Missing core variables';
     }

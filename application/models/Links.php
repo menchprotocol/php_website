@@ -984,17 +984,10 @@ class Links extends CIdea_cache
     {
 
         if (!$linkplayercreator || !in_array($linkplayertype, $this->config->item('playerids___31777' /* DISCOVERIES */))) {
-            $this->Links->create(array(
-                'linkplayertype' => 44179, //Triggered
-                'linkplayerup' => 4246, //Platform Bug Reports8
+            return log_error('discovered() Invalid linkplayertype @' . $linkplayertype . ' missing in @31777 OR Missing $linkplayercreator', array(
                 'linkplayerdown' => $linkplayercreator,
                 'linkplayercreator' => $linkplayercreator,
-                'linktext' => 'discovered() Invalid linkplayertype @' . $linkplayertype . ' missing in @31777 OR Missing $linkplayercreator',
             ));
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Date',
-            );
         }
 
         //Do we need to save text/upload ?

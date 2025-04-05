@@ -570,13 +570,10 @@ class Controller extends CI_Controller
 
             if (count($data_types) != 1) {
                 //This is strange, we are expecting 1 match only report this:
-                $this->Links->create(array(
-                    'linkplayertype' => 44179, //Triggered
-                    'linkplayerup' => 4246, //Platform Bug Reports
+                log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong', array(
                     'linkplayercreator' => $player_active['playerid'],
                     'linkplayerdown' => $dynamic_playerid,
                     'linkidearight' => $ideaid,
-                    'linktext' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong',
                 ));
                 continue; //Go to the next dynamic data type
             }
@@ -2027,11 +2024,8 @@ class Controller extends CI_Controller
                 //Load template:
                 if (!is_array($this->config->item('players___' . $player_template['playerid']))) {
                     //Report Error:
-                    $this->Links->create(array(
-                        'linkplayertype' => 44179, //Triggered
-                        'linkplayerup' => 4246, //Platform Bug Reports
+                    log_error('player_activeditor_load() ERROR: @' . $player_template['playerid'] . ' is NOT in memory cache', array(
                         'linkplayerdown' => $player_template['playerid'],
-                        'linktext' => 'player_activeditor_load() ERROR: @' . $player_template['playerid'] . ' is NOT in memory cache',
                     ));
                     continue;
                 } elseif (in_array($player_template['playerid'], $scanned_players)) {
@@ -2056,24 +2050,18 @@ class Controller extends CI_Controller
                     if (count($data_types) != 1) {
 
                         //This is strange, we are expecting 1 match only report this:
-                        $this->Links->create(array(
-                            'linkplayertype' => 44179, //Triggered
-                            'linkplayerup' => 4246, //Platform Bug Reports
+                        log_error('Found ' . count($data_types) . ' Data Types (@' . $es[0]['playerid'] . ') (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong', array(
                             'linkplayerdown' => $dynamic_playerid,
                             'linkplayercreator' => $player_active['playerid'],
-                            'linktext' => 'Found ' . count($data_types) . ' Data Types (@' . $es[0]['playerid'] . ') (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong',
                         ));
                         continue; //Go to the next dynamic data type
 
                     } elseif ($input_pointer >= view_memory(6404, 42206)) {
                         //Monitor if we ever reach the maximum:
-                        $this->Links->create(array(
-                            'linkplayertype' => 44179, //Triggered
-                            'linkplayerup' => 4246, //Platform Bug Reports
+                        log_error('Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion', array(
                             'linkplayerdown' => $dynamic_playerid,
                             'linkplayercreator' => $player_active['playerid'],
                             'linkidearight' => $_POST['playerid'],
-                            'linktext' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion',
                         ));
                     }
 

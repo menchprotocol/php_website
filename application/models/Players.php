@@ -35,17 +35,10 @@ class Players extends CIdea_cache
         ));
 
         if (!$new_x['linkid']) {
-            $this->Links->create(array(
-                'linkplayertype' => 44179, //Triggered
-                'linkplayerup' => 4246, //Platform Bug Reports
+            return log_error('create() failed to create a new Player', array(
                 'linkplayerdown' => $linkplayercreator,
-                'linktext' => 'create() failed to create a new Player',
                 'linkplayercreator' => $linkplayercreator,
             ));
-            return array(
-                'status' => 0,
-                'message' => 'Error trying to create Player',
-            );
         }
 
         //Handle Generation
