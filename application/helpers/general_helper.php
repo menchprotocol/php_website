@@ -4082,7 +4082,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     $link_creator = isset($i['linkplayercreator']) && $i['linkplayercreator'] == $linkplayercreator;
     $focus__node = in_array($linkplayertype, $CI->config->item('playerids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
-    $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'app' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
+    $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
     $discovery_mode = $linkplayercreator && ($discovery_uri || $discovery_seg);
     $focus_idea_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_idea_seg = ($discovery_seg ? $CI->uri->segment(2) : false);
@@ -4155,7 +4155,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
 
     //Top action menu:
-    $ui = '<div wowval="'.($discovery_mode  ? 1 : 0).'/'.( $has_discovered ? 1 : 0 ).'/'.( $focus__node ? 1 : 0 ).'" ideaid="' . $i['ideaid'] . '" ideahashtag="' . $i['ideahashtag'] . '" ideatype="' . $i['ideatype'] . '" linkid="' . $linkid . '" href="' . $href . '" class="card_cover card_idea_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div ideaid="' . $i['ideaid'] . '" ideahashtag="' . $i['ideahashtag'] . '" ideatype="' . $i['ideatype'] . '" linkid="' . $linkid . '" href="' . $href . '" class="card_cover card_idea_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['ideaid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_idea_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($linkid ? ' cover_x_' . $linkid . ' ' : '') . '">';
 
     if ($discovery_mode && $linkplayercreator && $focus__node) {
