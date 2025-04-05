@@ -115,7 +115,7 @@ class Players extends CIdea_cache
         //Make sure user has access to each item:
         if ($select == '*' && 0) {
             foreach ($results as $key => $value) {
-                if (!player_access_level(null, $value['playerid'], $value)) {
+                if (!player_access(null, $value['playerid'], $value)) {
                     unset($results[$key]); //Remove this option
                 }
             }

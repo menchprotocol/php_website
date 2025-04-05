@@ -118,7 +118,7 @@ class Ideas extends CIdea_cache
         //Make sure user has access to each item:
         if ($select == '*' && 0) {
             foreach ($results as $key => $value) {
-                if (!idea_access_level($value['ideahashtag'], 0, $value)) {
+                if (!idea_access($value['ideahashtag'], 0, $value)) {
                     unset($results[$key]); //Remove this option
                 }
             }

@@ -118,6 +118,8 @@ if ($player_active || isset($_GET['open'])) {
 
     $(document).ready(function () {
 
+        $('textarea:first').focus();
+
         load_hashtag_menu('Next');
 
         set_autosize($('.x_write'));

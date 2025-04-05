@@ -273,9 +273,9 @@ class Controller extends CI_Controller
         $cache_linktime = null;
         $linkplayercreator = ($player_http_request ? ($player_active ? $player_active['playerid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
         $skip_idea_privacy_check = !$memory_detected || in_array($app_playerid, $this->config->item('playerids___43388'));
-        $player_access_level = player_access_level(null, $focus_e['playerid'], $focus_e);
-        $idea_access_level = idea_access_level(null, $focus_i['ideaid'], $focus_i);
-        $target_idea_access_level = idea_access_level(null, $target_i['ideaid'], $target_i);
+        $player_access = player_access(null, $focus_e['playerid'], $focus_e);
+        $idea_access = idea_access(null, $focus_i['ideaid'], $focus_i);
+        $target_idea_access = idea_access(null, $target_i['ideaid'], $target_i);
 
         //MEMBER REDIRECT?
         if ($player_http_request && $memory_detected) {
@@ -292,11 +292,11 @@ class Controller extends CI_Controller
             } elseif (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
                 $players___10957 = $this->config->item('players___10957');
                 $missing_access = 'Error: You Cannot Access ' . $players___6287[$app_playerid]['m__title'] . ' as it requires the superpower of ' . $players___10957[end($superpowers_required)]['m__title'] . '.';
-            } elseif ($focus_e && !$player_access_level) {
+            } elseif ($focus_e && !$player_access) {
                 $missing_access = 'Error: You Cannot Access @' . $focus_e['playerhandle'] . ' due to Privacy Settings.';
-            } elseif (!$skip_idea_privacy_check && $focus_i && !$idea_access_level) {
+            } elseif (!$skip_idea_privacy_check && $focus_i && !$idea_access) {
                 $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['ideahashtag'] . ' due to Privacy Settings.';
-            } elseif (!$skip_idea_privacy_check && $target_i && !$target_idea_access_level) {
+            } elseif (!$skip_idea_privacy_check && $target_i && !$target_idea_access) {
                 $missing_access = 'Error: You Cannot Access Target #' . $target_i['ideahashtag'] . ' due to Privacy Settings.';
             }
 
@@ -367,9 +367,9 @@ class Controller extends CI_Controller
             'focus_i' => $focus_i,
             'target_i' => $target_i,
 
-            '$player_access_level' => $player_access_level,
-            '$idea_access_level' => $idea_access_level,
-            '$target_idea_access_level' => $target_idea_access_level,
+            '$player_access' => $player_access,
+            '$idea_access' => $idea_access,
+            '$target_idea_access' => $target_idea_access,
 
             'title' => $title,
             'flash_message' => $flash_message,
@@ -525,7 +525,7 @@ class Controller extends CI_Controller
                     'status' => 0,
                     'message' => 'Idea is no longer active',
                 ));
-            } elseif (!idea_access_level($is[0]['ideahashtag'], 0, $is[0])) {
+            } elseif (!idea_access($is[0]['ideahashtag'], 0, $is[0])) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You are missing permission to edit this idea',
@@ -679,7 +679,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (idea_access_level(null, $_POST['ideaid']) < 3) {
+        } elseif (idea_access(null, $_POST['ideaid']) < 3) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
@@ -766,7 +766,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (player_access_level(null, $_POST['playerid']) < 3) {
+        } elseif (player_access(null, $_POST['playerid']) < 3) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
@@ -1205,7 +1205,7 @@ class Controller extends CI_Controller
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !idea_access_level(null, $_POST['ideaid'])) {
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !idea_access(null, $_POST['ideaid'])) {
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
@@ -1324,7 +1324,7 @@ class Controller extends CI_Controller
                 return false;
             }
 
-            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !idea_access_level(null, $is[0]['ideaid'], $is[0])) {
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !idea_access(null, $is[0]['ideaid'], $is[0])) {
                 return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
             }
 
@@ -1384,7 +1384,7 @@ class Controller extends CI_Controller
         $player_active = superpower_unlocked();
 
         //Check Permission:
-        if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access_level(null, $_POST['playerid'])) {
+        if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access(null, $_POST['playerid'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
             return false;
         }
@@ -1446,7 +1446,7 @@ class Controller extends CI_Controller
 
         } else {
 
-            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access_level(null, $_POST['playerid'])) {
+            if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access(null, $_POST['playerid'])) {
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
@@ -1985,7 +1985,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Player is no longer active',
             ));
-        } elseif (!player_access_level($es[0]['playerhandle'], 0, $es[0])) {
+        } elseif (!player_access($es[0]['playerhandle'], 0, $es[0])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are missing permission to edit this Player',

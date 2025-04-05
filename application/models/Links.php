@@ -264,19 +264,19 @@ class Links extends CIdea_cache
 
 
         //Verify Access to each item:
-        if (0 && $select == '*' && isset($_SERVER['SERVER_NAME'])) {
+        if ($select == '*' && isset($_SERVER['SERVER_NAME'])) {
             if (array_intersect(array('linkidealeft', 'linkidearight'), $joins_objects)) {
                 //Idea results:
                 $player_active = superpower_unlocked();
                 foreach ($results as $key => $value) {
-                    if (!idea_access_level(null, $value['ideaid'], $value)) {
+                    if (!idea_access(null, $value['ideaid'], $value)) {
                         unset($results[$key]); //Remove this option
                     }
                 }
             } elseif (array_intersect(array('linkplayerup', 'linkplayerdown'), $joins_objects)) {
                 //Player results:
                 foreach ($results as $key => $value) {
-                    if (!player_access_level(null, $value['playerid'], $value)) {
+                    if (!player_access(null, $value['playerid'], $value)) {
                         unset($results[$key]); //Remove this option
                     }
                 }
