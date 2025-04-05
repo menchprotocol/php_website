@@ -2916,7 +2916,7 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
     if (in_array($linkplayertype, $CI->config->item('playerids___42377'))) {
 
         //Down Player Link Groups:
-        $order_columns = array('linkplayertype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+        $order_columns = $this->sort_playersdown;
         $joins_objects = array('linkplayerdown');
         $query_filters = array(
             'linkplayerup' => $playerid,
@@ -2926,7 +2926,7 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
     } elseif (in_array($linkplayertype, $CI->config->item('playerids___42276'))) {
 
         //Up Player Link Groups:
-        $order_columns = array('linkplayertype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+        $order_columns = $this->sort_playersdown;
         $joins_objects = array('linkplayerup');
         $query_filters = array(
             'linkplayerdown' => $playerid,

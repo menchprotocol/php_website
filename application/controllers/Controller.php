@@ -10,6 +10,7 @@ class Controller extends CI_Controller
     public $list_link_sourcing;
     public $list_link_contribution;
     public $list_link_discovery;
+    public $sort_playersdowny;
 
     function __construct()
     {
@@ -19,6 +20,8 @@ class Controller extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         $this->player_active = superpower_unlocked();
+        $this->sort_playersdown = array('linknumber' => 'ASC', 'linktime' => 'DESC'); //'linkplayertype = \'41011\' DESC' => null,
+
         $this->list_player_links_intentional = array(4151, 4230, 42659, 42849);
         $this->list_link_ideation = array(4228, 31834, 42337, 33532, 44161, 40791, 44162, 40793, 32247, 32304, 33344, 30901, 42244, 42243);
         $this->list_link_sourcing = array(41011, 4251, 44399, 33335, 42659, 42849, 44176, 44179, 42897, 32486, 4230, 32489, 42579, 42581, 42580, 42283, 42335, 42516, 42554, 42570, 42427, 42518, 42440, 42791);
@@ -1371,7 +1374,7 @@ class Controller extends CI_Controller
     }
 
 
-    function players_list()
+    function player_list()
     {
 
         //Authenticate Member:

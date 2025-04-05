@@ -800,7 +800,7 @@ class Players extends CIdea_cache
         if (in_array($linkplayertype, $this->config->item('playerids___42276'))) {
 
             //Up Player Link Groups:
-            $order_columns = array('linkplayertype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+            $order_columns = $this->sort_playersdown;
             $joins_objects = array('linkplayerup');
             $query_filters = array(
                 'linkplayerdown' => $playerid,
@@ -810,7 +810,7 @@ class Players extends CIdea_cache
         } elseif (in_array($linkplayertype, $this->config->item('playerids___42377'))) {
 
             //Down Player Link Groups:
-            $order_columns = array('linkplayertype = \'41011\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+            $order_columns = $this->sort_playersdown;
             $joins_objects = array('linkplayerdown');
             $query_filters = array(
                 'linkplayerup' => $playerid,
