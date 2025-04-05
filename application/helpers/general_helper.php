@@ -1874,10 +1874,6 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
     $player_active = superpower_unlocked();
     $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || strlen($CI->uri->segment(2)) ? true : false );
 
-    if($player_active && $player_active['playerid']==1 && $discovery_mode){
-        die('DIE ['.$_POST['js_request_uri'].']['.$CI->uri->segment(2).']');
-    }
-
     if ($is_cahce) {
         return 1;
     }
@@ -1887,15 +1883,14 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
     }
 
 
-    if (strlen($ideahashtag)) {
-        $filters['LOWER(ideahashtag)'] = strtolower($ideahashtag);
-    } elseif (intval($ideaid)) {
-        $filters['ideaid'] = $ideaid;
-    } elseif (!$i) {
-        return 0;
-    }
-
     if (!$i) {
+        if (strlen($ideahashtag)) {
+            $filters['LOWER(ideahashtag)'] = strtolower($ideahashtag);
+        } elseif (intval($ideaid)) {
+            $filters['ideaid'] = $ideaid;
+        } elseif (!$i) {
+            return 0;
+        }
         //Check privacy first:
         foreach ($CI->Ideas->read($filters) as $match_i) {
             $i = $match_i;
@@ -1915,7 +1910,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
     if (!$discovery_mode && $is_author) {
         //Authors can always edit:
         return 3;
-    } elseif (count($CI->Links->read(array(
+    } elseif (!$discovery_mode && count($CI->Links->read(array(
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___42953')) . ')' => null, //Mentioned Players
         'linkplayerup' => $player_active['playerid'],
         'linkidearight' => $i['ideaid'],
