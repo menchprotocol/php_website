@@ -2403,15 +2403,15 @@ input.form-control {
 .edge-cover.card-12274{
     padding: 1px 0 55px 0 !important;
 }
-.mini-cover.card-12273{
-    margin:0 0 !important;
-    padding: 0 !important;
-    border-top:0;
-}
 .card_cover.card-12273{
     margin:0 0 !important;
     padding:5px 0 !important;
     border-top: 1px solid #999999;
+}
+.mini-cover.card-12273{
+    margin:0 0 !important;
+    padding: 0 !important;
+    border-top:0;
 }
 .flip-content .card_cover.card-12273{
     border-top: 0;
