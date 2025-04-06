@@ -5010,6 +5010,52 @@ function player_view($linkplayertype, $e, $extra_class = null)
     $featured_players = '';
 
 
+    //Featured Players
+    $bio = null;
+    $players___14036 = $CI->config->item('players___14036');
+    $order_columns = array();
+    foreach ($players___14036 as $sort_id => $sort) {
+        $order_columns['linkplayerup = \'' . $sort_id . '\' DESC'] = null;
+    }
+    foreach ($CI->Links->read(array(
+        'linkplayerup IN (' . join(',', $CI->config->item('playerids___14036')) . ')' => null, //Featured Players
+        'linkplayerdown' => $e['playerid'],
+        'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    ), array(), 0, 0, $order_columns) as $social_link) {
+
+        if (in_array($social_link['linkplayerup'], $CI->config->item('playerids___32172'))) {
+            if (strlen($social_link['linktext'])) {
+                //Must always see, show content here:
+                $bio .= '<div class="player_bio grey center">' . $social_link['linktext'] . '</div>';
+            }
+            continue;
+        }
+
+        //Determine link type:
+        $social_url = false;
+
+        if (in_array(4256, $players___14036[$social_link['linkplayerup']]['m__following'])) {
+            //We made sure not the current website:
+            $social_url = 'href="' . $social_link['linktext'] . '" target="_blank"';
+        } elseif (in_array(32097, $players___14036[$social_link['linkplayerup']]['m__following'])) {
+            $social_url = 'href="mailto:' . $social_link['linktext'] . '"';
+        } elseif (in_array(42181, $players___14036[$social_link['linkplayerup']]['m__following'])) {
+            //Phone Number
+            $social_url = 'href="' . phone_href($social_link['linkplayerup'], $social_link['linktext']) . '"';
+        }
+
+        $info = (strlen($social_link['linktext']) && !$social_url ? $players___14036[$social_link['linkplayerup']]['m__title'] . ': ' . $social_link['linktext'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $players___14036[$social_link['linkplayerup']]['m__title']));
+
+        //Append to links:
+        $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $players___14036[$social_link['linkplayerup']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</span>')) . '</span>';
+
+    }
+
+
+
+
+
+
     //Start with top bar:
     if (!$is_app && $player_access >= 1) {
 
@@ -5169,46 +5215,8 @@ function player_view($linkplayertype, $e, $extra_class = null)
     }
 
 
-    //Featured Players
-    $bio = null;
-    $players___14036 = $CI->config->item('players___14036');
-    $order_columns = array();
-    foreach ($players___14036 as $sort_id => $sort) {
-        $order_columns['linkplayerup = \'' . $sort_id . '\' DESC'] = null;
-    }
-    foreach ($CI->Links->read(array(
-        'linkplayerup IN (' . join(',', $CI->config->item('playerids___14036')) . ')' => null, //Featured Players
-        'linkplayerdown' => $e['playerid'],
-        'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-    ), array(), 0, 0, $order_columns) as $social_link) {
 
-        if (in_array($social_link['linkplayerup'], $CI->config->item('playerids___32172'))) {
-            if (strlen($social_link['linktext'])) {
-                //Must always see, show content here:
-                $bio .= '<div class="player_bio grey center">' . $social_link['linktext'] . '</div>';
-            }
-            continue;
-        }
 
-        //Determine link type:
-        $social_url = false;
-
-        if (in_array(4256, $players___14036[$social_link['linkplayerup']]['m__following'])) {
-            //We made sure not the current website:
-            $social_url = 'href="' . $social_link['linktext'] . '" target="_blank"';
-        } elseif (in_array(32097, $players___14036[$social_link['linkplayerup']]['m__following'])) {
-            $social_url = 'href="mailto:' . $social_link['linktext'] . '"';
-        } elseif (in_array(42181, $players___14036[$social_link['linkplayerup']]['m__following'])) {
-            //Phone Number
-            $social_url = 'href="' . phone_href($social_link['linkplayerup'], $social_link['linktext']) . '"';
-        }
-
-        $info = (strlen($social_link['linktext']) && !$social_url ? $players___14036[$social_link['linkplayerup']]['m__title'] . ': ' . $social_link['linktext'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $players___14036[$social_link['linkplayerup']]['m__title']));
-
-        //Append to links:
-        $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $players___14036[$social_link['linkplayerup']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</span>')) . '</span>';
-
-    }
 
     if ($focus__node) {
         $ui .= '<div class="center-block">';
