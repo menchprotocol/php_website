@@ -12,12 +12,12 @@ foreach($this->Links->read(array(
     'linkplayertype IN (' . join(',', array_merge($this->list_link_sourcing,$this->list_link_contribution)) . ')' => null, //SUCCESSFUL DISCOVERIES
 ), array(), 0, 0, array(
     'linkplayertype' => 'ASC',
+    'linkplayercreator' => 'ASC',
     'linkplayerup' => 'ASC',
     'linkplayerdown' => 'ASC',
     'linkidearight' => 'ASC',
     'linkidealeft' => 'ASC',
     'linktext' => 'ASC',
-    'linkplayercreator' => 'ASC',
     'linkid' => 'DESC',
 )) as $discover){
 
