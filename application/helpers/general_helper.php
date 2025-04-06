@@ -5170,6 +5170,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
 
     //Featured Players
+    $bio = null;
     $players___14036 = $CI->config->item('players___14036');
     $order_columns = array();
     foreach ($players___14036 as $sort_id => $sort) {
@@ -5184,7 +5185,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
         if (in_array($social_link['linkplayerup'], $CI->config->item('playerids___32172'))) {
             if (strlen($social_link['linktext'])) {
                 //Must always see, show content here:
-                $ui .= '<div class="player_bio grey center">' . $social_link['linktext'] . '</div>';
+                $bio .= '<div class="player_bio grey center">' . $social_link['linktext'] . '</div>';
             }
             continue;
         }
@@ -5214,6 +5215,8 @@ function player_view($linkplayertype, $e, $extra_class = null)
         $ui .= $featured_players;
         $ui .= '</div>';
     }
+
+    $ui .= $bio;
 
     $ui .= '</div>';
     $ui .= '</div>';
