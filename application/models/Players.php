@@ -45,7 +45,7 @@ class Players extends CIdea_cache
         $new_handle = generate_handle(12274, $validate_playertext['playertext_clean']);
         $this->Links->create(array(
             'linkplayercreator' => $linkplayercreator,
-            'linkplayertype' => 44176, //Viewed
+            'linkplayertype' => 44179, //Trigerred
             'linkplayerup' => 32338, //Player Handle
             'linktext' => $new_handle,
             'linkplayerdown' => $new_x['linkid'],
@@ -55,7 +55,7 @@ class Players extends CIdea_cache
         if (strlen($playercover)) {
             $this->Links->create(array(
                 'linkplayercreator' => $linkplayercreator,
-                'linkplayertype' => 44176, //Viewed
+                'linkplayertype' => 44179, //Trigerred
                 'linkplayerup' => 6198, //Player Cover
                 'linktext' => $playercover,
                 'linkplayerdown' => $new_x['linkid'],
@@ -150,7 +150,7 @@ class Players extends CIdea_cache
                     if($value!=$old_x['linktext']){
                         $this->Links->create(array(
                             'linkplayercreator' => $linkplayercreator,
-                            'linkplayertype' => 44176, //Viewed
+                            'linkplayertype' => 44179, //Trigerred
                             'linkplayerup' => $must_sync_ledger[$key], //Idea Hashtag
                             'linktext' => $value,
                             'linkplayerdown' => $linkid,
