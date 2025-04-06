@@ -9,7 +9,7 @@ $previous = false;
 echo '<table>';
 foreach($this->Links->read(array(
     'linkplayertype IN (' . join(',', array_merge($this->list_link_sourcing,$this->list_link_contribution)) . ')' => null, //SUCCESSFUL DISCOVERIES
-), array(), 0, 0, array(
+), array(), 100000, 0, array(
     'linkplayertype' => 'ASC',
     'linkplayerup' => 'ASC',
     'linkplayerdown' => 'ASC',
