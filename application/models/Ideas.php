@@ -3,17 +3,10 @@
 class Ideas extends CIdea_cache
 {
 
-    /*
-     *
-     * Idea related database functions
-     *
-     * */
-
     function __construct()
     {
         parent::__construct();
     }
-
 
     function create($add_fields, $linkplayercreator = 14068 /* GUEST */)
     {
@@ -34,7 +27,7 @@ class Ideas extends CIdea_cache
             $add_fields['ideahashtag'] = random_string(13);
         }
         $this->Links->create(array(
-            'linkplayertype' => 42275, //Observed
+            'linkplayertype' => 42275, //Idea Trigger
             'linkplayerup' => 32337, //Idea Hashtag
             'linkplayercreator' => $linkplayercreator,
             'linkidearight' => $new_x['linkid'],
@@ -147,7 +140,7 @@ class Ideas extends CIdea_cache
         foreach($update_columns as $key => $value) {
             if(array_key_exists($key, $must_sync_ledger)){
                 $this->Links->create(array(
-                    'linkplayertype' => 42275, //Observed
+                    'linkplayertype' => 42275, //Idea Trigger
                     'linkplayerup' => $must_sync_ledger[$key], //Idea Hashtag
                     'linkplayercreator' => $linkplayercreator,
                     'linkidearight' => $linkid,
@@ -528,10 +521,6 @@ class Ideas extends CIdea_cache
         );
 
         foreach ($this->Links->read($filters, array(), 0) as $x) {
-            if (in_array($x['linkplayerup'],array(4736,32337)) && $x['linkplayertype']==42275) {
-                //Hashtag is a system link that does not to be replicated:
-                continue;
-            }
             $this->Links->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => $x['linkplayertype'],

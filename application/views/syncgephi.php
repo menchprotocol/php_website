@@ -65,7 +65,7 @@ foreach ($es as $en) {
 
     //Fetch followers:
     foreach ($this->Links->read(array(
-        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         'linkplayerup' => $en['playerid'],
     ), array('linkplayerdown'), 0, 0) as $player_down) {
 

@@ -6,7 +6,7 @@ foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
 
     foreach ($this->Links->read(array(
         'linkplayerup' => $player_item['playerid'],
-        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
     ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
 
         $total_count = players_query(12274, $x['playerid'], 0, false);

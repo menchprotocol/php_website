@@ -3,12 +3,6 @@
 class Links extends CIdea_cache
 {
 
-    /*
-     *
-     * Member related database functions
-     *
-     * */
-
     function __construct()
     {
         parent::__construct();
@@ -39,7 +33,7 @@ class Links extends CIdea_cache
         }
 
         //Is this an observation link that should replace an older observation, if any:
-        if($update_observed && in_array($add_fields['linkplayertype'], array(44176,44179,42275))){
+        if($update_observed && in_array($add_fields['linkplayertype'], $this->config->item('playerids___1308453'))){
             $read_fields = $add_fields;
             if(isset($read_fields['linktext'])){
                 unset($read_fields['linktext']);
@@ -632,7 +626,7 @@ class Links extends CIdea_cache
             $notification_levels = $this->Links->read(array(
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___30820')) . ')' => null, //Active Subscriber
                 'linkplayerdown' => $playerid,
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ));
             if (!count($notification_levels)) {
                 return array(
@@ -669,7 +663,7 @@ class Links extends CIdea_cache
 
         //Send Emails:
         foreach ($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => 3288, //Email
             'linkplayerdown' => $playerid,
         )) as $player_data) {
@@ -703,7 +697,7 @@ class Links extends CIdea_cache
 
             //Send SMS
             foreach ($this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 'linkplayerup' => 4783, //Phone
                 'linkplayerdown' => $playerid,
             )) as $player_data) {
@@ -1278,7 +1272,7 @@ class Links extends CIdea_cache
 
                 //Remove Following IF previously assigned:
                 foreach ($this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $this_tag['linkplayerup'], //CERTIFICATES saved here
                     'linkplayerdown' => $x_data['linkplayercreator'],
                 )) as $existing_x) {
@@ -1310,7 +1304,7 @@ class Links extends CIdea_cache
                     $discoverer_contact = '';
                     foreach ($this->config->item('players___34541') as $linkplayertype => $m) {
                         foreach ($this->Links->read(array(
-                            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                             'linkplayerdown' => $x_data['linkplayercreator'],
                             'linkplayerup' => $linkplayertype,
                             'LENGTH(linktext)>0' => null,
@@ -1383,7 +1377,7 @@ class Links extends CIdea_cache
             foreach ($this->Links->read(array(
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___44393')) . ')' => null, //Media JSON
                 'linkplayerdown' => $media['playerid'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'), 0) as $player_group) {
                 if (strlen($player_group['linktext'])) {
                     $media[$player_group['playerhandle']] = $player_group['linktext'];

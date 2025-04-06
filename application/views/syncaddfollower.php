@@ -17,7 +17,7 @@ foreach ($this->Links->read(array(
         //Make sure no previous removed link between these two Players:
         if(!count($this->Links->read(array(
             'linkvoid >' => 0,
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $addition_sync['linkplayerup'],
             'linkplayerdown' => $dicovered['linkplayercreator'],
         )))){

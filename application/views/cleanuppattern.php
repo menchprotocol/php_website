@@ -40,7 +40,7 @@ foreach($this->Ideas->read(array(
             )) as $e){
                 foreach($this->Links->read(array(
                     'linkplayerup' => $e['playerid'],
-                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                 ), array('linkplayerdown'), 0) as $x) {
 
                     $responses++;
@@ -63,7 +63,7 @@ foreach($this->Ideas->read(array(
                                     foreach($this->Links->read(array(
                                         'linkplayerup' => $apply_playerid,
                                         'linkplayerdown' => $x['linkplayercreator'],
-                                        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                                                         ), array(), 0) as $follow_appended) {
                                         $links_updated++;
                                         $this->Links->update($follow_appended['linkid'], array(
@@ -88,7 +88,7 @@ foreach($this->Ideas->read(array(
                                     foreach($this->Links->read(array(
                                         'linkplayerup' => $apply_playerid,
                                         'linkplayerdown' => $x['linkplayercreator'],
-                                        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                                             ), array(), 0) as $follow_appended) {
                                         $links_removed++;
                                         $this->Links->delete($follow_appended['linkid']);
@@ -140,7 +140,7 @@ foreach($this->Ideas->read(array(
                             foreach($this->Links->read(array(
                                 'linkplayerup' => $apply_playerid,
                                 'linkplayerdown' => $x['linkplayercreator'],
-                                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
                                 $this->Links->update($follow_appended['linkid'], array(
@@ -164,7 +164,7 @@ foreach($this->Ideas->read(array(
                             foreach($this->Links->read(array(
                                 'linkplayerup' => $apply_playerid,
                                 'linkplayerdown' => $x['linkplayercreator'],
-                                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
                                 $this->Links->delete($follow_appended['linkid']);

@@ -27,7 +27,7 @@ foreach ($this->Links->read(array(
     $down__e = $this->Links->read(array(
         'linkplayerup' => $en['linkplayerdown'],
         'linkplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
-    ), array('linkplayerdown'), 0, 0, sort__player());
+    ), array('linkplayerdown'), 0, 0, player_sort());
 
 
     $total_nodes += (1 + count($down__e));
@@ -155,7 +155,7 @@ $routes_text .= '//APPS:' . "\n\n";
 
 foreach ($this->Links->read(array(
     'linkplayerup' => 6287, //Apps
-    'linkplayertype IN (' . join(',', ($memory_detected ? $this->list_link_sourcing : $playerids___33337)) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', ($memory_detected ? $this->config->item('playerids___13548') : $playerids___33337)) . ')' => null, //SOURCE LINKS
 ), array('linkplayerdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if (!$memory_detected) {

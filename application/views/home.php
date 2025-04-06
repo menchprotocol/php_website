@@ -71,7 +71,7 @@ foreach($this->Players->scissor($website_id, 14903) as $player_item) {
     $info_item = null;
     foreach($this->Links->read(array(
         'linkplayerup' => $player_item['playerid'],
-        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
@@ -133,7 +133,7 @@ foreach($this->config->item('players___14036') as $playerid => $m){
     foreach($this->Links->read(array(
         'linkplayerup' => $playerid,
         'linkplayerdown' => $website_id,
-        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array(), 0, 0) as $social_link){
 
         //Determine link type:

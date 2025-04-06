@@ -4,10 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Controller extends CI_Controller
 {
 
-    public $player_active; // Declare the variable
-    public $list_link_sourcing;
-    public $sort_players;
-    public $sort_ideas;
+    public $player_active;
 
     function __construct()
     {
@@ -18,19 +15,13 @@ class Controller extends CI_Controller
 
         $this->player_active = superpower_unlocked();
 
-        //Default sorts:
-        $this->sort_players = array('linknumber' => 'ASC', 'linktime' => 'DESC'); //'linkplayertype = \'41011\' DESC' => null,
-        $this->sort_ideas = array('linkplayertype = \'34513\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
 
-        $this->list_link_sourcing = array(41011, 4251, 44399, 33335, 42659, 42849, 44176, 44179, 42897, 32486, 4230, 32489, 42579, 42581, 42580, 42283, 42335, 42516, 42554, 42570, 42427, 42518, 42440, 42791);
-
-
-        //AUTO Login player:
-        $is_ajax = false;
         date_default_timezone_set('America/Los_Angeles');
+
         @session_start();
 
-
+        //AUTO Login player if has cookie?
+        $is_ajax = false;
         $player_user = false;
         $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $this->uri->segment(1));
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
@@ -39,11 +30,10 @@ class Controller extends CI_Controller
         $is_login_verified = isset($_GET['playerhandle']) && $_GET['playerhandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['playerhandle']) && view_hash($_GET['time'] . $_GET['playerhandle']) == $_GET['hash'];
 
         if (
-            !$player_active //User must not be logged in
+            !$player_active
             && !array_key_exists(strtolower($first_segment), $this->config->item('handlplayers___14582'))
             && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
         ) {
-
 
             if ($is_login_verified) {
 
@@ -74,7 +64,6 @@ class Controller extends CI_Controller
                 }
             }
 
-
             //Log them in:
             if (!$is_ajax) {
                 header("Location: " . view_app_link(4269) . (strlen($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : ''), true, 307);
@@ -99,7 +88,6 @@ class Controller extends CI_Controller
             //Since we don't have the memory created we must load the app that does so:
             $app_playerid = 4527;
         }
-
 
         //Any ideas passed?
         $players___6287 = $this->config->item('players___6287'); //APP
@@ -680,7 +668,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
             ));
-        } elseif (strlen($_POST['migrate_s__handle'])>1) {
+        } elseif (strlen($_POST['migrate_s__handle']) > 1) {
             $valid_handle = $this->Ideas->read(array(
                 'ideaid !=' => $_POST['ideaid'],
                 'LOWER(ideahashtag)' => strtolower(str_replace('#', '', $_POST['migrate_s__handle'])),
@@ -767,7 +755,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
             ));
-        } elseif (strlen($_POST['migrate_s__handle'])>1) {
+        } elseif (strlen($_POST['migrate_s__handle']) > 1) {
             $valid_handle = $this->Players->read(array(
                 'playerid !=' => $_POST['playerid'],
                 'LOWER(playerhandle)' => strtolower(str_replace('@', '', $_POST['migrate_s__handle'])),
@@ -790,7 +778,7 @@ class Controller extends CI_Controller
 
             //Find Published Followings:
             foreach ($this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 'linkplayerdown' => $_POST['playerid'],
             ), array('linkplayerup'), 1, 0, array('playertext' => 'DESC')) as $up_e) {
                 $delete_redirect = view_memory(42903, 42902) . $up_e['playerhandle'];
@@ -1167,34 +1155,9 @@ class Controller extends CI_Controller
 
     }
 
-    function i_copy()
-    {
 
-        //Auth member and check required variables:
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
 
-        if (!$player_active) {
-            return view_json(array(
-                'status' => 0,
-                'messagCloe' => blocked_reasoning(10939),
-            ));
-        } elseif (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Following Player',
-            ));
-        } elseif (!isset($_POST['do_recursive'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing template parameter',
-            ));
-        }
-
-        return view_json($this->Ideas->copy(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_active['playerid']));
-
-    }
-
-    function i_load_cover()
+    function idea_cover()
     {
 
         if (!isset($_POST['ideaid']) || !isset($_POST['linkplayertype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
@@ -1433,7 +1396,7 @@ class Controller extends CI_Controller
 
     }
 
-    function player_load_cover()
+    function player_cover()
     {
 
         if (!isset($_POST['playerid']) || !isset($_POST['linkplayertype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
@@ -1526,7 +1489,7 @@ class Controller extends CI_Controller
             //Count followers:
             $listplayer_count = $this->Links->read(array(
                 'linkplayerup' => $_POST['playerid'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(playerid) as totals');
 
             if (count($es) < 1) {
@@ -1548,7 +1511,7 @@ class Controller extends CI_Controller
                 //Update them all:
                 $updated = 0;
                 foreach ($_POST['new_linknumber'] as $rank => $linkid) {
-                    if($linkid>0){
+                    if ($linkid > 0) {
                         $updated += $this->Links->update($linkid, array(
                             'linknumber' => intval($rank),
                         ));
@@ -1558,7 +1521,7 @@ class Controller extends CI_Controller
                 //Display message:
                 return view_json(array(
                     'status' => 1,
-                    'message' => $updated.' Links updated',
+                    'message' => $updated . ' Links updated',
                 ));
 
             }
@@ -1662,18 +1625,11 @@ class Controller extends CI_Controller
             }
         }
 
-
         //Followings:
         foreach ($this->Links->read(array(
             'linkplayerdown' => $_POST['playerid'],
             'linkplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Links
         ), array(), 0) as $x) {
-
-            if (in_array($x['linkplayerup'], array(32338, 6198, 6197)) && $x['linkplayertype'] == 44176) {
-                //Handle & COver is a system link that do not to be replicated:
-                continue;
-            }
-
             if (!count($this->Links->read(array(
                 'linkplayertype' => $x['linkplayertype'],
                 'linkplayerup' => $x['linkplayerup'],
@@ -2000,7 +1956,7 @@ class Controller extends CI_Controller
         foreach ($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___42178')) . ')' => null, //Dynamic Players
             'linkplayerdown' => $es[0]['playerid'],
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0, 0, sort_by(42178)) as $player_group) {
 
             if (in_array($player_group['playerid'], $scanned_players)) {
@@ -2011,7 +1967,7 @@ class Controller extends CI_Controller
             foreach ($this->Links->read(array(
                 'linkplayerdown' => $player_group['playerid'],
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___42145')) . ')' => null, //Dynamic Input Templates
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'), 0, 0, $order_42145) as $player_template) {
 
                 $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($player_template['playercover']) . '</span>' . $player_template['playertext'] . '<a href="' . view_memory(42903, 42902) . $player_group['playerhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $player_group['playertext'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($player_group['playercover']) . '</span></a></div>';
@@ -2092,7 +2048,7 @@ class Controller extends CI_Controller
                         $counted = 0;
                         $unique_values = array();
                         foreach ($this->Links->read(array(
-                            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                             'linkplayerdown' => $es[0]['playerid'],
                             'linkplayerup' => $dynamic_playerid,
                         ), array('linkplayerup')) as $selected_e) {
@@ -2142,7 +2098,7 @@ class Controller extends CI_Controller
                 foreach (array_intersect($players___42776[$selected_e['playerid']]['m__following'], $this->config->item('playerids___4592')) as $data_type) {
                     //Any value?
                     $values = $this->Links->read(array(
-                        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                         'linkplayerdown' => $es[0]['playerid'],
                         'linkplayerup' => $selected_e['playerid'],
                     ));
@@ -2265,7 +2221,7 @@ class Controller extends CI_Controller
 
             if (!$d_linkid || !count($values)) {
                 $values = $this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                     'linkplayerup' => $dynamic_playerid,
                     'linkplayerdown' => $es[0]['playerid'],
                 ));
@@ -2355,8 +2311,6 @@ class Controller extends CI_Controller
             }
             $es[0]['playerhandle'] = $new_handle_string;
         }
-
-
 
 
         //Do we have a link reference message that need to be saved?
@@ -2467,7 +2421,7 @@ class Controller extends CI_Controller
             //Fetch all possible answers based on followings Player:
             $query_filters = array(
                 'linkplayerup' => $_POST['focus__id'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             );
 
             if ((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']) {
@@ -2487,7 +2441,7 @@ class Controller extends CI_Controller
                 $delete_query = $this->Links->read(array(
                     'linkplayerup IN (' . join(',', $possible_answers) . ')' => null,
                     'linkplayerdown' => $_POST['down_playerid'],
-                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 ));
             } elseif ($_POST['right_ideaid']) {
                 $delete_query = $this->Links->read(array(
@@ -2704,7 +2658,7 @@ class Controller extends CI_Controller
             $already_added = $this->Links->read(array(
                 'linkplayerup' => $_POST['playerid'],
                 'linkplayerdown' => $_POST['linkplayercreator'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array('linkplayerup'));
 
             if (count($already_added)) {
@@ -2820,7 +2774,7 @@ class Controller extends CI_Controller
         $linkplayercreator = 0;
         foreach ($this->Links->read(array(
             'LOWER(linktext)' => strtolower($_POST['account_email_phone']),
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
         ), array('linkplayerdown'), 1, 0, array('linkid' => 'ASC')) as $map_e) {
             $u = $map_e;
@@ -3095,7 +3049,7 @@ class Controller extends CI_Controller
             //Players reset order
             foreach ($this->Links->read(array(
                 'linkplayerup' => $_POST['focus__id'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0) as $x) {
                 $this->Links->update($x['linkid'], array(
                     'linknumber' => 0,
@@ -3588,7 +3542,7 @@ class Controller extends CI_Controller
                         if ($has_handle) {
 
                             $sub_counter = $this->Links->read(array(
-                                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                 'linkplayerup' => $es[0]['playerid'],
                             ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
 

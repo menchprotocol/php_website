@@ -1,11 +1,19 @@
 <?php
 
+if($player_active){
+    //Log view:
+    $this->Links->create(array(
+        'linkplayertype' => 44176, //Player View
+        'linkplayerup' => $focus_e['playerid'],
+        'linkplayerdown' => $player_active['playerid'],
+        'linkplayercreator' => $player_active['playerid'],
+    ));
+}
 
 //Focus Player:
 echo '<div class="view_12274 row justify-content">';
 echo player_view(42287, $focus_e, null);
 echo '</div>';
-
 
 $players___focus = $this->config->item('players___32596');
 

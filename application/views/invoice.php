@@ -49,22 +49,22 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 $fetch_emails = $this->Links->read(array(
     'linkplayerup' => 3288, //Email
     'linkplayerdown' => $player_active['playerid'],
-    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_phones = $this->Links->read(array(
     'linkplayerup' => 4783, //Phone
     'linkplayerdown' => $player_active['playerid'],
-    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_first_names = $this->Links->read(array(
     'linkplayerup' => 42584, //First Name
     'linkplayerdown' => $player_active['playerid'],
-    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_last_names = $this->Links->read(array(
     'linkplayerup' => 30198, //Last Name
     'linkplayerdown' => $player_active['playerid'],
-    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 
 $set_email = false;

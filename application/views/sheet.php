@@ -83,7 +83,7 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
             if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Links->read(array(
                         'linkplayerdown' => $x['playerid'],
                         'linkplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
-                        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                     ))))) {
                 if (!isset($count_totals['i'][$idea_var['ideaid']])) {
                     $count_totals['i'][$idea_var['ideaid']] = 0;
@@ -105,12 +105,12 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
             $require_writing = count($this->Links->read(array(
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
                 'linkplayerdown' => $e['playerid'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             )));
 
             $fetch_data = $this->Links->read(array(
                 'linkplayerdown' => $x['playerid'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 'linkplayerup' => $e['playerid'],
             ));
 
@@ -155,7 +155,7 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
 
                 $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + (count($this->Links->read(array(
                         'linkplayerdown' => $e['playerid'],
-                        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                         'linkplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
                     ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1);
             }

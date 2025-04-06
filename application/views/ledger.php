@@ -335,7 +335,7 @@ if(isset($_GET['linkplayertype']) && substr_count($_GET['linkplayertype'], ',')>
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->Links->read($ini_filter, array('linkplayertype'), 0, 0, sort__player(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
+        foreach($this->Links->read($ini_filter, array('linkplayertype'), 0, 0, player_sort(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['linkplayertype'] . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype']==$x['linkplayertype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];

@@ -3,12 +3,6 @@
 class Players extends CIdea_cache
 {
 
-    /*
-     *
-     * Member related database functions
-     *
-     * */
-
     function __construct()
     {
         parent::__construct();
@@ -283,7 +277,7 @@ class Players extends CIdea_cache
         //Fetch all followers:
         $followers = $this->Links->read(array(
             'linkplayerup' => $playerid,
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerdown'), 0);
 
 
@@ -318,7 +312,7 @@ class Players extends CIdea_cache
 
                     //See if follower Player has searched followings Player:
                     $down_up_e = $this->Links->read(array(
-                        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                         'linkplayerdown' => $x['playerid'], //This follower Player
                         'linkplayerup' => $e['playerid'],
                     ));
@@ -427,7 +421,7 @@ class Players extends CIdea_cache
 
                 $applied_success++;
 
-            } elseif ($action_playerid == 42804 && ($action_command1 == '*' || $x['linkplayertype'] == $action_command1) && in_array($action_command2, $this->list_link_sourcing /* Player Link Types */)) { //Update Matching Interaction Type
+            } elseif ($action_playerid == 42804 && ($action_command1 == '*' || $x['linkplayertype'] == $action_command1) && in_array($action_command2, $this->config->item('playerids___13548') /* Player Link Types */)) { //Update Matching Interaction Type
 
                 $this->Links->update($x['linkid'], array(
                     'linkplayertype' => $action_command2,
@@ -464,7 +458,7 @@ class Players extends CIdea_cache
         //Make sure they also belong to this website's members:
         //Add if link not already there:
         if (!count($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $websiteplayerid,
             'linkplayerdown' => $e['playerid'],
         )))) {
@@ -483,7 +477,7 @@ class Players extends CIdea_cache
         foreach ($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___29648')) . ')' => null, //Unsubscribers
             'linkplayerdown' => $e['playerid'],
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         )) as $unsubscribe) {
             $resubscribed += $this->Links->delete($unsubscribe['linkid'], $e['playerid']);
         }
@@ -511,7 +505,7 @@ class Players extends CIdea_cache
         foreach ($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'linkplayerdown' => 6404, //Platform Default
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array(), 0) as $x) {
             array_push($platform_theme, intval($x['linkplayerup']));
         }
@@ -521,7 +515,7 @@ class Players extends CIdea_cache
         foreach ($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'linkplayerdown' => website_setting(0), //Website ID
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array(), 0) as $x) {
             array_push($website_theme, intval($x['linkplayerup']));
         }
@@ -531,7 +525,7 @@ class Players extends CIdea_cache
         $user_theme = array();
         foreach ($this->Links->read(array(
             'linkplayerdown' => $e['playerid'], //This follower Player
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0) as $player_up) {
 
             //Push to followings IDs:
@@ -601,7 +595,7 @@ class Players extends CIdea_cache
         foreach($this->Links->read(array(
             'linkplayerup IN (' . join(',', $this->config->item('playerids___31057')) . ')' => null, //Permanently Unsubscribed
             'linkplayerdown' => $e['playerid'], //This follower Player
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 ), array(), 0) as $unsubscribed){
             $unsubscribed_time = $unsubscribed['linktime'];
             $this->Links->delete($unsubscribed['linkid'], $e['playerid']); //Resubscribe
@@ -628,15 +622,15 @@ class Players extends CIdea_cache
 
         $all_results = $this->Links->read(array(
             'linkplayerup' => $linkplayerup,
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
-        ), array('linkplayerdown'), 0, 0, sort__player());
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        ), array('linkplayerdown'), 0, 0, player_sort());
 
         //Remove if not in the secondary group:
         foreach ($all_results as $key => $primary_list) {
             if (!count($this->Links->read(array(
                 'linkplayerup' => $sub_id,
                 'linkplayerdown' => $primary_list['playerid'],
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array(), 0))) {
                 unset($all_results[$key]);
             }
@@ -701,7 +695,7 @@ class Players extends CIdea_cache
 
             //Remove from Anonymous:
             foreach ($this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___32540')) . ')' => null, //Unsubscribers
                 'linkplayerdown' => $added_e['new_player']['playerid'],
             )) as $unsubscriber_x) {
@@ -739,7 +733,7 @@ class Players extends CIdea_cache
 
         //Add if link not already there:
         if (!count($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $linkplayerdomain,
             'linkplayerdown' => $added_e['new_player']['playerid'],
         )))) {
@@ -793,7 +787,7 @@ class Players extends CIdea_cache
         if (in_array($linkplayertype, $this->config->item('playerids___42276'))) {
 
             //Up Player Link Groups:
-            $order_columns = $this->sort_players;
+            $order_columns = player_sort();
             $joins_objects = array('linkplayerup');
             $query_filters = array(
                 'linkplayerdown' => $playerid,
@@ -803,7 +797,7 @@ class Players extends CIdea_cache
         } elseif (in_array($linkplayertype, $this->config->item('playerids___42377'))) {
 
             //Down Player Link Groups:
-            $order_columns = $this->sort_players;
+            $order_columns = player_sort();
             $joins_objects = array('linkplayerdown');
             $query_filters = array(
                 'linkplayerup' => $playerid,
@@ -824,7 +818,7 @@ class Players extends CIdea_cache
             if (count($include_any_e) && !count($this->Links->read(array(
                     'linkplayerup IN (' . join(',', $include_any_e) . ')' => null,
                     'linkplayerdown' => $player_down['playerid'],
-                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 )))) {
                 //Must include all Players, skip:
                 $qualified_e = false;
@@ -832,7 +826,7 @@ class Players extends CIdea_cache
             if (count($exclude_all_e) && count($this->Links->read(array(
                     'linkplayerup IN (' . join(',', $exclude_all_e) . ')' => null,
                     'linkplayerdown' => $player_down['playerid'],
-                    'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 )))) {
                 //Must Exclude If Has ALL Players, skip:
                 $qualified_e = false;

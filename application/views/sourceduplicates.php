@@ -9,7 +9,7 @@ if(isset($_GET['playerhandle'])){
     $duplicates_found = array();
     foreach($this->Links->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerup'), 0) as $x) {
         $linktext_md5 = substr(md5($x['linktext']), 0, 16);
         if(!isset($main_index[$linktext_md5])){

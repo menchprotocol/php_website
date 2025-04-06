@@ -783,7 +783,7 @@ function initiate_algolia(){
     });
 }
 
-function player_load_cover(linkplayertype, playerid, counter, first_segment){
+function player_cover(linkplayertype, playerid, counter, first_segment){
 
     if($('.coinsplayer_'+playerid+'_'+linkplayertype).html().length){
         //Already loaded:
@@ -792,7 +792,7 @@ function player_load_cover(linkplayertype, playerid, counter, first_segment){
 
     $('.coinsplayer_'+playerid+'_'+linkplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/player_load_cover", {
+    $.post("/controller/player_cover", {
         linkplayertype:linkplayertype,
         playerid:playerid,
         counter:counter,
@@ -804,7 +804,7 @@ function player_load_cover(linkplayertype, playerid, counter, first_segment){
 
 }
 
-function i_load_cover(linkplayertype, ideaid, counter, first_segment, current_e){
+function idea_cover(linkplayertype, ideaid, counter, first_segment, current_e){
 
     if($('.coins_idea_'+ideaid+'_'+linkplayertype).html().length){
         //Already loaded:
@@ -813,7 +813,7 @@ function i_load_cover(linkplayertype, ideaid, counter, first_segment, current_e)
 
     $('.coins_idea_'+ideaid+'_'+linkplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/i_load_cover", {
+    $.post("/controller/idea_cover", {
         linkplayertype:linkplayertype,
         ideaid:ideaid,
         counter:counter,
@@ -865,10 +865,10 @@ function load_cards(){
     $(".loadplayer_cards, .load_idea_cards").unbind();
 
     $(".loadplayer_cards").click(function(event) {
-        player_load_cover($(this).attr('load_linkplayertype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        player_cover($(this).attr('load_linkplayertype'),$(this).attr('load_playerid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
     $(".load_idea_cards").click(function(event) {
-        i_load_cover($(this).attr('load_linkplayertype'),$(this).attr('load_ideaid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        idea_cover($(this).attr('load_linkplayertype'),$(this).attr('load_ideaid'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
 

@@ -10,7 +10,7 @@ foreach($this->config->item('players___28917') as $linkplayertype => $m) {
 
         foreach($this->Links->read(array(
             'linkplayerup' => $linkplayertype,
-            'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SOURCE LINKS
+            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array('linkplayerdown'), 0) as $x) {
             $total_members++;
             if((time()-strtotime($x['linktime']))>(86400*intval($m['m__message']))){
