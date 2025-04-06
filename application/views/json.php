@@ -16,6 +16,7 @@ foreach($this->Links->read(array(
     'linkidearight' => 'ASC',
     'linkidealeft' => 'ASC',
     'linktext' => 'ASC',
+    'linkplayercreator' => 'ASC',
     'linkid' => 'DESC',
 )) as $discover){
 
