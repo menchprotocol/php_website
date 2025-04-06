@@ -48,6 +48,33 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
             }
             foreach ($this->config->item('players___' . $player_pinned) as $playerid3 => $m3) {
 
+                foreach(array_intersect($m3['m__following'], $this->config->item('players___42263')) as $headline_link){
+                    if ($headline_link > 0){
+                        if(!$focus_link_group || $focus_link_group!=$headline_link){
+
+                            echo '<tr class="mobile-shrink">';
+                            echo '<td class="center" colspan="2" title="@'.$players___42263[$headline_link]['m__handle'].'">';
+
+                            //Search for sibling if Has Family:
+                            if(in_array($playerid2, $this->config->item('n___42792'))){
+                                foreach($this->X_model->fetch(array(
+                                    'x__follower' => $headline_link,
+                                    'x__type' => 42570, //Family
+                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                ), array('x__following'), 1) as $sibling){
+                                    echo '<a href="'.view_memory(42903,42902).$sibling['e__handle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
+                                }
+                            }
+
+                            echo '<a href="'.view_memory(42903,42902).$players___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$players___42263[$headline_link]['m__cover'].'</span><b class="main__title grey"><u>'.$players___42263[$headline_link]['m__title'].'</u></a>:</b>';
+
+                            echo '</td>';
+                            echo '</tr>';
+                            $focus_link_group = $headline_link;
+                        }
+                    }
+                }
+
                 echo '<tr class="mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
                 echo '<td style="text-align: left;" title="@' . $playerid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><b class="card_count_' . $playerid3 . '"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
                 echo '</tr>';
