@@ -8,8 +8,8 @@ $previous = false;
 $players___4593 = $this->config->item('players___4593');
 
 echo '<table>';
-foreach($this->Links->read(array(
-    'linkplayertype IN (' . join(',', array_merge($this->list_link_sourcing,$this->list_link_contribution)) . ')' => null, //SUCCESSFUL DISCOVERIES
+foreach($this->Links->read(array( //IN (' . join(',', array_merge($this->list_link_sourcing,$this->list_link_contribution)) . ')
+    'linkplayertype >0' => null, //SUCCESSFUL DISCOVERIES
 ), array(), 0, 0, array(
     'linkplayertype' => 'ASC',
     'linkplayerup' => 'ASC',
@@ -28,7 +28,7 @@ foreach($this->Links->read(array(
         echo '<tr><td>'.$previous['linkplayercreator'].'</td><td>'.$players___4593[$previous['linkplayertype']]['m__title'].'</td><td>'.$previous['linktime'].'</td><td>'.$previous['linkplayercreator'].'</td><td>'.$previous['linkplayerup'].'</td><td>'.$previous['linkplayerdown'].'</td><td>'.$previous['linkidearight'].'</td><td>'.$previous['linkidealeft'].'</td><td>'.$previous['linktext'].'</td><td>'.$previous['linkplayertype'].'</td><td>'.$previous['linkplayertype'].'</td></tr>';
         echo '<tr style="background-color: #CCC;"><td>'.$discover['linkplayercreator'].'</td><td>'.$players___4593[$discover['linkplayertype']]['m__title'].'</td><td>'.$discover['linktime'].'</td><td>'.$discover['linkplayercreator'].'</td><td>'.$discover['linkplayerup'].'</td><td>'.$discover['linkplayerdown'].'</td><td>'.$discover['linkidearight'].'</td><td>'.$discover['linkidealeft'].'</td><td>'.$discover['linktext'].'</td><td>'.$discover['linkplayertype'].'</td><td>'.$discover['linkplayertype'].'</td></tr>';
 
-        $this->db->query("DELETE FROM menchledger WHERE linkid=".$discover['linkid'].";");
+        //$this->db->query("DELETE FROM menchledger WHERE linkid=".$discover['linkid'].";");
 
     }
 
