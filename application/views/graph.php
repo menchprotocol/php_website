@@ -59,9 +59,9 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                             //Search for sibling if Has Family:
                             if(in_array($playerid2, $this->config->item('playerids___42792'))){
                                 foreach($this->Links->read(array(
-                                    'linkplayerup' => $headline_link,
+                                    'linkplayerdown' => $headline_link,
                                     'linkplayertype' => 42570, //Family
-                                ), array('linkplayerdown'), 1) as $sibling){
+                                ), array('linkplayerup'), 1) as $sibling){
                                     echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="main__title grey"><u>'.$sibling['playertext'].'</u></b></a><b class="main__title grey"> & </b></b>';
                                 }
                             }
