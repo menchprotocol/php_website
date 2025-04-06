@@ -31,9 +31,9 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
     foreach ($this->config->item('players___' . $playerid1) as $playerid2 => $m2) {
 
         echo '<div class="card_cover no-padding col-6">';
-        echo '<div class="card_frame dropdown_d' . $playerid1 . ' dropdown_' . $playerid2 . '" playerid="' . $playerid2 . '">';
+        echo '<div class="card_frame dropdown_d' . $playerid1 . ' dropdown_' . $playerid2 . '">';
 
-        echo '<div title="' . $m2['m__message'] . '">';
+        echo '<div class="card_header" title="' . $m2['m__message'] . '" playerid="' . $playerid2 . '">';
         echo '<div class="large_cover">' . $m2['m__cover'] . '</div>';
         echo '<div class="main__title large_title"><b class="card_count_' . $playerid2 . '"><i class="fas fa-yin-yang fa-spin"></i></b></div>';
         echo '<div class="main__title large_title" title="@' . $playerid2 . ' @' . $m2['m__handle'] . '">' . $m2['m__title'] . '</div>';
@@ -60,7 +60,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                             if(in_array($playerid2, $this->config->item('playerids___42792'))){
                                 foreach($this->Links->read(array(
                                     'linkplayerdown' => $headline_link,
-                                    'linkplayertype' => 42570, //Family
+                                    'linkplayertype' => 41011, //Family
                                 ), array('linkplayerup'), 1) as $sibling){
                                     echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="main__title grey"><u>'.$sibling['playertext'].'</u></b></a><b class="main__title grey"> & </b></b>';
                                 }
@@ -125,7 +125,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
         refresh_wallet();
 
         //Watch for click to expand:
-        $(".card_frame").click(function (e) {
+        $(".card_header").click(function (e) {
             $('.card_subcat_' + $(this).attr('playerid')).toggleClass('hidden');
         });
 
