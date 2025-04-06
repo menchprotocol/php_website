@@ -125,7 +125,6 @@ class Links extends CIdea_cache
             //Compose email body, start with Link content:
             $html_message = (strlen($add_fields['linktext']) > 0 ? $add_fields['linktext'] : '') . "\n";
 
-            $players___32088 = $this->config->item('players___32088'); //Platform Variables
 
             //Append Link object Links:
             foreach ($this->config->item('players___4341') as $playerid => $m) {
@@ -133,21 +132,21 @@ class Links extends CIdea_cache
                 if (in_array(6202, $m['m__following'])) {
 
                     //IDEA
-                    foreach ($this->Ideas->read(array('ideaid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_i) {
+                    foreach ($this->Ideas->read(array('ideaid' => $add_fields[$m['m__handle']])) as $this_i) {
                         $html_message .= $m['m__title'] . ': ' . view_idea_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['ideahashtag'] . "\n\n";
                     }
 
                 } elseif (in_array(6160, $m['m__following'])) {
 
                     //SOURCE
-                    foreach ($this->Players->read(array('playerid' => $add_fields[$players___32088[$playerid]['m__message']])) as $this_e) {
+                    foreach ($this->Players->read(array('playerid' => $add_fields[$m['m__handle']])) as $this_e) {
                         $html_message .= $m['m__title'] . ': ' . $this_e['playertext'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['playerhandle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
 
                     //DISCOVERY
-                    $html_message .= $m['m__title'] . ':' . "\n" . $this->config->item('base_url') . view_app_link(12722) . '?linkid=' . $add_fields[$players___32088[$playerid]['m__message']] . "\n\n";
+                    $html_message .= $m['m__title'] . ':' . "\n" . $this->config->item('base_url') . view_app_link(12722) . '?linkid=' . $add_fields[$m['m__handle']] . "\n\n";
 
                 }
 
@@ -156,7 +155,7 @@ class Links extends CIdea_cache
             //Finally append DISCOVERY ID:
             $html_message .= 'Link: #' . $add_fields['linkid'] . "\n" . $this->config->item('base_url') . view_app_link(12722) . '?linkid=' . $add_fields['linkid'] . "\n\n";
 
-            //Send to all Watchers:
+            //Message Watchers:
             foreach ($tr_watchers as $tr_watcher) {
                 //Do not inform the member who just took the action:
                 if ($tr_watcher['playerid'] != $add_fields['linkplayercreator']) {

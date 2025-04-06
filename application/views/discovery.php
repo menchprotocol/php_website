@@ -3,11 +3,11 @@
 $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 $linkplayercreator = ($player_active ? $player_active['playerid'] : 0);
 $target_ideahashtag = (count($target_i) && $linkplayercreator ? $target_i['ideahashtag'] : null);
-
+$at_starting_point = $target_ideahashtag==$focus_i['ideahashtag'];
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-if ($linkplayercreator && $target_ideahashtag != $focus_i['ideahashtag']) {
+if ($linkplayercreator && !$at_starting_point) {
 
     $previous = $this->Links->previousidea($linkplayercreator, $target_ideahashtag, $focus_i['ideaid']);
     if (count($previous)) {
@@ -77,10 +77,14 @@ if ($breadcrum_content) {
 if ($player_active) {
     $progress = $this->Links->progress($linkplayercreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
-    if ($target_completed) {
-        echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_discovered'] . ': ' . join(',', $progress['list_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
+
+    if($target_completed && !in_array($focus_i['ideatype'], $this->config->item('playerids___43050'))){
         //Hide next navigation and allow them to browse the tree:
         echo '<script> $(document).ready(function () { setTimeout(function () { $(\'.fixed-bottom .card_cards\').addClass(\'hidden\'); }, 233); }); </script>';
+    }
+
+    if ($target_completed && $at_starting_point) {
+        echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_discovered'] . ': ' . join(',', $progress['list_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
     } else {
         echo '<div class="progress">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_discovered'] . '/' . $progress['fixed_total'] . ' Ideas Discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>

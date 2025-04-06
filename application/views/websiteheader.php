@@ -507,7 +507,9 @@ if($player_active && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-content long_flat">
                     <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12274">
                         <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="initial_header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
                             <button type="submit" class="btn btn-default">APPLY</button>
                         </div>
                         <div class="modal-body">
@@ -625,7 +627,9 @@ if($player_active && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12273">
 
                         <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="initial_header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
                             <button type="submit" class="btn btn-default">APPLY</button>
                         </div>
 

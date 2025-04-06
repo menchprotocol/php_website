@@ -1,14 +1,13 @@
 <?php
 
-if($player_active){
-    //Log view:
-    $this->Links->create(array(
-        'linkplayertype' => 44176, //Player View
-        'linkplayerup' => $focus_e['playerid'],
-        'linkplayerdown' => $player_active['playerid'],
-        'linkplayercreator' => $player_active['playerid'],
-    ));
-}
+$linkplayercreator = ( $player_active ? $player_active['playerid'] : 14068 /* GUEST */ );
+//Log view:
+$this->Links->create(array(
+    'linkplayertype' => 44176, //Player View
+    'linkplayerup' => $focus_e['playerid'],
+    'linkplayerdown' => $linkplayercreator,
+    'linkplayercreator' => $linkplayercreator,
+));
 
 //Focus Player:
 echo '<div class="view_12274 row justify-content">';

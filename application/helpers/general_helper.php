@@ -2651,26 +2651,24 @@ function view_link($x)
 {
 
     $CI =& get_instance();
-    $players___32088 = $CI->config->item('players___32088'); //Platform Variables
     $ui = '<div class="x-list">';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
-        if (in_array(6160, $m['m__following']) && isset($x[$players___32088[$playerid]['m__message']]) && intval($x[$players___32088[$playerid]['m__message']]) > 0) {
+        if (in_array(6160, $m['m__following']) && isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
 
             //SOURCE
-            foreach ($CI->Players->read(array('playerid' => $x[$players___32088[$playerid]['m__message']])) as $focus_e) {
+            foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
                 $ui .= '<div class="simple-line"><a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span>' . '<span class="icon-block">' . view_cover($focus_e['playercover'], true) . '</span>' . $focus_e['playertext'] . '</a></div>';
             }
 
-        } elseif (in_array(6202, $m['m__following']) && isset($x[$players___32088[$playerid]['m__message']]) && intval($x[$players___32088[$playerid]['m__message']]) > 0) {
+        } elseif (in_array(6202, $m['m__following']) && isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
 
             //IDEA
-            foreach ($CI->Ideas->read(array('ideaid' => $x[$players___32088[$playerid]['m__message']])) as $focus_i) {
+            foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
                 $ui .= '<div class="simple-line"><a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span><span class="icon-block">' . view_cache(4737 /* Player Reference */, $focus_i['ideatype'], true, 'right', $focus_i['ideaid']) . '</span>' . view_idea_title($focus_i) . '</a></div>';
             }
 
-
-        } elseif (in_array(4367, $m['m__following']) && isset($x[$players___32088[$playerid]['m__message']]) && intval($x[$players___32088[$playerid]['m__message']]) > 0) {
+        } elseif (in_array(4367, $m['m__following']) && isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
 
             //Link
             //Simple Reference to avoid Loop:
