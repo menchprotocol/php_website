@@ -5,12 +5,9 @@ class Controller extends CI_Controller
 {
 
     public $player_active; // Declare the variable
-    public $list_player_links_intentional;
-    public $list_link_ideation;
     public $list_link_sourcing;
-    public $list_link_contribution;
-    public $list_link_discovery;
     public $sort_players;
+    public $sort_ideas;
 
     function __construct()
     {
@@ -20,13 +17,12 @@ class Controller extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         $this->player_active = superpower_unlocked();
-        $this->sort_players = array('linknumber' => 'ASC', 'linktime' => 'DESC'); //'linkplayertype = \'41011\' DESC' => null,
 
-        $this->list_player_links_intentional = array(4151, 4230, 42659, 42849);
-        $this->list_link_ideation = array(4228, 31834, 42337, 33532, 44161, 40791, 44162, 40793, 32247, 32304, 33344, 30901, 42244, 42243);
+        //Default sorts:
+        $this->sort_players = array('linknumber' => 'ASC', 'linktime' => 'DESC'); //'linkplayertype = \'41011\' DESC' => null,
+        $this->sort_ideas = array('linkplayertype = \'34513\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+
         $this->list_link_sourcing = array(41011, 4251, 44399, 33335, 42659, 42849, 44176, 44179, 42897, 32486, 4230, 32489, 42579, 42581, 42580, 42283, 42335, 42516, 42554, 42570, 42427, 42518, 42440, 42791);
-        $this->list_link_contribution = array(34513, 4983, 4250,44396, 42292, 33600, 42272, 42274, 31840, 42275, 42282, 32488, 4258, 4260, 4259, 31835, 41949, 43941, 4256, 12896, 10573, 27984, 43513, 43514, 26600, 7545, 26599, 32235);
-        $this->list_link_discovery = array(44397, 44245, 43798, 43142, 42995, 42916, 42402, 42397, 29393, 42332, 41940, 39597, 35572, 32016, 4559, 31967, 31810, 31798, 31797, 7712, 6144, 31022, 6157, 26595, 4235, 12117, 4235, 7712, 27676, 27678, 29399);
 
 
         //AUTO Login player:

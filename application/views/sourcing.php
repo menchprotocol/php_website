@@ -39,8 +39,9 @@ foreach($this->config->item('players___31916') as $linkplayertype => $m) {
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { player_load_finder('.$linkplayertype.'); }); </script>';
 
-        } elseif(in_array($linkplayertype, $this->config->item('playerids___42261'))){
+        } elseif(0 && in_array($linkplayertype, $this->config->item('playerids___42261'))){
 
+            //TODO Activate Later?
             //ADD IDEAS
             $input_content .= '<div class="new_list new-list-'.$linkplayertype.'"><div class="col-12 container-center"><div class="dropdown_'.$linkplayertype.' list-adder">
                     <div class="input-group border">

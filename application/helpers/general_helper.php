@@ -937,8 +937,7 @@ function process_media($ideaid, $uploaded_media)
                 //Search eTag to see if we already have it:
                 $etag_detected = false;
                 if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
-                    //We we already have this asset, link to that Player without giving this new Player the authority over it...
-                    //First person to upload a Player will get authority over its created Player...
+                    //We already have this asset, return player:
                     foreach ($CI->Links->read(array(
                         'linkplayertype IN (' . join(',', $CI->list_link_sourcing) . ')' => null, //SOURCE LINKS
                         'linkplayerup' => 42662, //etag
@@ -2926,7 +2925,7 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
         );
 
         $joins_objects = array('linkidearight');
-        $order_columns = array('linkplayertype = \'34513\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+        $order_columns = $CI->sort_ideas;
 
     } elseif (in_array($linkplayertype, $CI->config->item('playerids___12144'))) {
 
@@ -3029,7 +3028,7 @@ function ideas_query($linkplayertype, $ideaid, $page_num = 0, $append_card_icon 
             $query_filters['linkplayerup NOT IN (' . join(',', $headline_authors) . ')'] = null;
         }
 
-        $order_columns = array('linkplayertype = \'34513\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
+        $order_columns = $CI->sort_ideas;
 
     } elseif (in_array($linkplayertype, $CI->config->item('playerids___42380'))) {
 
@@ -3808,7 +3807,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
                     </div></div></div></div>';
                 $body_content .= '<script> $(document).ready(function () { player_load_finder(' . $linkplayertype . '); }); </script>';
 
-            } elseif (in_array($linkplayertype, $CI->config->item('playerids___11020'))) {
+            } elseif (0 && in_array($linkplayertype, $CI->config->item('playerids___11020'))) {
 
                 //ADD IDEAS
                 $input_content .= '<div class="new_list new-list-' . $linkplayertype . '"><div class="col-12 container-center"><div class="dropdown_' . $linkplayertype . ' list-adder">
