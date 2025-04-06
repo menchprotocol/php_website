@@ -10,7 +10,7 @@ $players___4593 = $this->config->item('players___4593');
 echo '<table>';
 foreach($this->Links->read(array(
     'linkplayertype IN (' . join(',', array_merge($this->list_link_sourcing,$this->list_link_contribution)) . ')' => null, //SUCCESSFUL DISCOVERIES
-), array(), 100000, 0, array(
+), array(), 0, 0, array(
     'linkplayertype' => 'ASC',
     'linkplayerup' => 'ASC',
     'linkplayerdown' => 'ASC',
