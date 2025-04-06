@@ -12,7 +12,6 @@ foreach($this->Links->read(array(
     'linkplayertype IN (' . join(',', $this->list_link_sourcing) . ')' => null, //SUCCESSFUL DISCOVERIES
 ), array(), 0, 0, array(
     'linkplayertype' => 'ASC',
-    'linkplayercreator' => 'ASC',
     'linkplayerup' => 'ASC',
     'linkplayerdown' => 'ASC',
     'linkidearight' => 'ASC',
@@ -22,7 +21,7 @@ foreach($this->Links->read(array(
 )) as $discover){
 
     $count++;
-    if($previous && $previous['linkplayertype']==$discover['linkplayertype'] && $previous['linkplayerup']==$discover['linkplayerup'] && $previous['linkplayerdown']==$discover['linkplayerdown'] && $previous['linkidearight']==$discover['linkidearight'] && $previous['linkidealeft']==$discover['linkidealeft'] && $previous['linktext']==$discover['linktext']){
+    if($previous && $previous['linkplayertype']==$discover['linkplayertype'] && $previous['linkplayerup']==$discover['linkplayerup'] && $previous['linkplayerdown']==$discover['linkplayerdown'] && trim(strtolower($previous['linktext']))==trim(strtolower($discover['linktext']))){
 
         $duplicate++;
         echo '<tr><td>'.$previous['linkplayercreator'].'</td><td>'.$players___4593[$previous['linkplayertype']]['m__title'].'</td><td>'.$previous['linktime'].'</td><td>'.$previous['linkplayercreator'].'</td><td>'.$previous['linkplayerup'].'</td><td>'.$previous['linkplayerdown'].'</td><td>'.$previous['linkidearight'].'</td><td>'.$previous['linkidealeft'].'</td><td>'.$previous['linktext'].'</td><td>'.$previous['linkplayertype'].'</td><td>'.$previous['linkplayertype'].'</td></tr>';
