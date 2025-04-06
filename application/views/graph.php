@@ -48,11 +48,13 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
             }
             foreach ($this->config->item('players___' . $player_pinned) as $playerid3 => $m3) {
 
+                $cross = array_intersect($m3['m__following'], $this->config->item('players___42263'));
                 echo '['.$playerid3.']';
                 echo '['.( count($m3['m__following']) ).']';
                 echo '['.count($this->config->item('players___42263')).']';
+                echo '['.count($cross).']';
+                echo '['.print_r($cross).']';
 
-                $cross = array_intersect($m3['m__following'], $this->config->item('players___42263'));
                 if(count($cross)){
                     foreach($cross as $headline_link){
                         if ($headline_link > 0){
