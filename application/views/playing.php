@@ -42,7 +42,7 @@ foreach($this->config->item('players___31916') as $linkplayertype => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="Search or Link @Players">
+                               placeholder="Create New or Link Existing @Players">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { player_load_finder('.$linkplayertype.'); }); </script>';
 
@@ -55,7 +55,7 @@ foreach($this->config->item('players___31916') as $linkplayertype => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="Search or Link #ideas">
+                               placeholder="Create New or Link Existing #ideas">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { i_load_finder('.$linkplayertype.'); }); </script>';
 

@@ -3805,7 +3805,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404, 6197) . '"
-                               placeholder="Search or Link @Players">
+                               placeholder="Create New or Link Existing @Players">
                     </div></div></div></div>';
                 $body_content .= '<script> $(document).ready(function () { player_load_finder(' . $linkplayertype . '); }); </script>';
 
@@ -3817,7 +3817,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
                                maxlength="' . view_memory(6404, 6197) . '"
-                               placeholder="Search or Link #ideas">
+                               placeholder="Create New or Link Existing #ideas">
                     </div></div></div></div>';
                 $body_content .= '<script> $(document).ready(function () { i_load_finder(' . $linkplayertype . '); }); </script>';
             }
@@ -5218,13 +5218,14 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
 
 
+    $ui .= $bio;
+
     if ($focus__node) {
         $ui .= '<div class="center-block">';
         $ui .= $featured_players;
         $ui .= '</div>';
     }
 
-    $ui .= $bio;
 
     $ui .= '</div>';
     $ui .= '</div>';
