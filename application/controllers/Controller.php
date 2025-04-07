@@ -3505,6 +3505,7 @@ class Controller extends CI_Controller
         //Count Links:
         $return_array = array();
         foreach ($this->config->item('players___33292') as $linkplayertype1 => $m1) { //Gameplay
+
             $level1_total = 0;
 
             if($linkplayertype1==1309754){

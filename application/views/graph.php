@@ -24,12 +24,13 @@ echo '<div class="center miscstats hideIfEmpty"></div>';
 
 foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
-    echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <b class="card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></b> ' . $m1['m__title'] . ':</span></div>';
-
     if($playerid1==1309754){
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <b class="card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></b> ' . $m1['m__title'] . '</span></div>';
         //Void Links
         continue;
     }
+
+    echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <b class="card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></b> ' . $m1['m__title'] . ':</span></div>';
 
     echo '<div class="row justify-content list-covers">';
 
