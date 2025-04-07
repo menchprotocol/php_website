@@ -4334,7 +4334,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                         //Clone Single Idea:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="idea_copy(' . $i['ideaid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($playerid_dropdown == 28636 && $idea_access >= 3 && $linkid) {
+                    } elseif ($playerid_dropdown == 4341 && $idea_access >= 3 && $linkid) {
 
                         //Link Details
                         $action_buttons .= '<a href="' . view_app_link(4341) . '?linkid=' . $linkid . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';

@@ -437,7 +437,7 @@ class Links extends CIdea_cache
 
 
         //See if anything is being deleted:
-        $auto_open_idea_editor_modal = 0;
+        $auto_open_idea_modal = 0;
         $delete_redirect = null;
         $delete_element = null;
         $links_removed = -1;
@@ -593,7 +593,7 @@ class Links extends CIdea_cache
 
                 if (!$already_responded) {
                     //We are missing a required response, auto open modal:
-                    $auto_open_idea_editor_modal = 1;
+                    $auto_open_idea_modal = 1;
                 }
 
             }
@@ -605,7 +605,7 @@ class Links extends CIdea_cache
             'message' => 'Delete status [' . $status . '] with ' . $links_removed . ' Links removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
-            'auto_open_idea_editor_modal' => $auto_open_idea_editor_modal,
+            'auto_open_idea_modal' => $auto_open_idea_modal,
         );
 
     }
