@@ -13,7 +13,7 @@ $linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 //Email Body
 $html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view_s($last_x_days).':</div>';
 
-foreach($this->config->item('players___42263') as $linkplayertype => $m) {
+foreach($this->config->item('players___31770') as $linkplayertype => $m) {
 
     $unique = count_link_groups($linkplayertype, null, $linktime_end);
     $this_week = count_link_groups($linkplayertype, $linktime_start, $linktime_end);

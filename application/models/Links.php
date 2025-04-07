@@ -65,8 +65,9 @@ class Links extends CIdea_cache
             $add_fields['linktime'] = $d->format("Y-m-d H:i:s");
         }
 
-        //Lets log:
+        //Let's log, Always auto generated:
         unset($add_fields['linkid']);
+
         $this->db->insert('menchledger', $add_fields);
 
         //Fetch inserted id:
