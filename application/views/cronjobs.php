@@ -21,7 +21,7 @@ echo '<textarea class="mono-space" readonly style="background-color: #FFFFFF; co
 echo '# APPS WITH CRON JOBS:'."\n"."\n";
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['linktext'])){
-        echo str_pad($cron_job['linktext'], $longest_time, " ", STR_PAD_RIGHT) . ' cronjobs.php' .view_memory(6404,7274).' '.str_pad($cron_job['playerid'], $longest_id, " ", STR_PAD_RIGHT).' #'.$cron_job['playertext']."\n";
+        echo str_pad($cron_job['linktext'], $longest_time, " ", STR_PAD_RIGHT) . ' cronjobs.php /usr/bin/php /var/www/platform/index.php controller load '.str_pad($cron_job['playerid'], $longest_id, " ", STR_PAD_RIGHT).' #'.$cron_job['playertext']."\n";
     }
 }
 echo '</textarea>';
