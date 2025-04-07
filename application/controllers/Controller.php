@@ -3459,7 +3459,7 @@ class Controller extends CI_Controller
 
     }
 
-    function graph()
+    function graph_data()
     {
 
         $miscstats = '';
