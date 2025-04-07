@@ -3459,7 +3459,7 @@ class Controller extends CI_Controller
 
     }
 
-    function refresh_wallet()
+    function graph()
     {
 
         $miscstats = '';
@@ -3506,6 +3506,16 @@ class Controller extends CI_Controller
         $return_array = array();
         foreach ($this->config->item('players___33292') as $linkplayertype1 => $m1) { //Gameplay
             $level1_total = 0;
+
+            if($linkplayertype1==1309754){
+                //Void Links
+                $sub_counter = $this->Links->read(array(
+                    'linkvoid >' => 0, //Links that have been voided
+                ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+                $return_array[$linkplayertype1] = intval($sub_counter[0]['totals']);
+                continue;
+            }
+
             foreach ($this->config->item('players___' . $linkplayertype1) as $linkplayertype2 => $m2) { //Nodes/Links
 
                 $player_pinned = player_pinned($linkplayertype2, true);

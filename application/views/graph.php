@@ -26,6 +26,11 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
     echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <b class="card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></b> ' . $m1['m__title'] . ':</span></div>';
 
+    if($playerid1==1309754){
+        //Void Links
+        continue;
+    }
+
     echo '<div class="row justify-content list-covers">';
 
     foreach ($this->config->item('players___' . $playerid1) as $playerid2 => $m2) {
@@ -97,8 +102,8 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
 <script>
 
-    function refresh_wallet() {
-        $.post("/controller/refresh_wallet", {
+    function graph() {
+        $.post("/controller/graph", {
             playerhandle: '<?= $playerhandle ?>',
             ideahashtag: '<?= $ideahashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -122,7 +127,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
     $(document).ready(function () {
 
         //Load initial stats:
-        refresh_wallet();
+        graph();
 
         //Watch for click to expand:
         $(".card_header").click(function (e) {
@@ -131,7 +136,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
         //Update stats live:
         $(function () {
-            setInterval(refresh_wallet, js_players___6404[33292]['m__message']);
+            setInterval(graph, js_players___6404[33292]['m__message']);
         });
 
     });
