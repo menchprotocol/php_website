@@ -2979,15 +2979,15 @@ function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_na
 
 function idea_delete(ideaid){
 
-    var migrate_s__handle = prompt("Are you sure you want to permanently delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
-    if(migrate_s__handle === null){
+    var migratehandle = prompt("Are you sure you want to permanently delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
+    if(migratehandle === null){
         return false;
     }
 
     $.post("/controller/idea_delete", {
         focus__id:parseInt($('#focus__id').val()),
         ideaid: ideaid,
-        migrate_s__handle: migrate_s__handle,
+        migratehandle: migratehandle,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
@@ -3024,15 +3024,15 @@ function idea_delete(ideaid){
 
 function player_delete(playerid){
 
-    var migrate_s__handle = prompt("Are you sure you want to permanently delete this Player?\nYou can reference @anotherPlayer to migrate to or leave blank to delete permanently...", "@");
-    if(migrate_s__handle === null){
+    var migratehandle = prompt("Are you sure you want to permanently delete this Player?\nYou can reference @anotherPlayer to migrate to or leave blank to delete permanently...", "@");
+    if(migratehandle === null){
         return false;
     }
 
     $.post("/controller/player_delete", {
         focus__id:parseInt($('#focus__id').val()),
         playerid: playerid,
-        migrate_s__handle: migrate_s__handle,
+        migratehandle: migratehandle,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
@@ -3094,7 +3094,7 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
     //Deleting Anything?
     var main_object_type = 0;
     var main_object_update = false;
-    var migrate_s__handle = null;
+    var migratehandle = null;
 
     //Show Loading
     var data_object = eval('js_players___'+element_id);
@@ -3109,7 +3109,7 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
         o__id: o__id,
         element_id: element_id,
         new_playerid: new_playerid,
-        migrate_s__handle: migrate_s__handle,
+        migratehandle: migratehandle,
         linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {

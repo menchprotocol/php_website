@@ -127,10 +127,10 @@ class Players extends CIdea_cache
         }
 
         $affected_rows = 0;
-        foreach($this->Links->read(array('linkid' => $linkid )) as $old_x){
+        foreach ($this->Links->read(array('linkid' => $linkid)) as $old_x) {
 
             $must_sync_found = false;
-            $skip_sync_ledger = array('playerexternal','playernumber');
+            $skip_sync_ledger = array('playerexternal', 'playernumber');
             $must_sync_ledger = array(
                 'playerhandle' => 32338,
                 'playercover' => 6198,
@@ -138,10 +138,10 @@ class Players extends CIdea_cache
             );
 
             //See what is being updated:
-            foreach($update_columns as $key => $value) {
-                if(array_key_exists($key, $must_sync_ledger)){
+            foreach ($update_columns as $key => $value) {
+                if (array_key_exists($key, $must_sync_ledger)) {
                     //Update if anything changed:
-                    if($value!=$old_x['linktext']){
+                    if ($value != $old_x['linktext']) {
                         $this->Links->create(array(
                             'linkplayercreator' => $linkplayercreator,
                             'linkplayertype' => 44179, //Trigerred
@@ -154,7 +154,7 @@ class Players extends CIdea_cache
                         //Nothing changed:
                         unset($update_columns[$key]);
                     }
-                } elseif(in_array($key, $skip_sync_ledger)){
+                } elseif (in_array($key, $skip_sync_ledger)) {
                     //Nothing we need to do here
                 } else {
                     //Unknown not allowed:
@@ -167,7 +167,7 @@ class Players extends CIdea_cache
             $this->db->update('nodeplayers', $update_columns);
             $affected_rows = $this->db->affected_rows();
 
-            if($must_sync_found){
+            if ($must_sync_found) {
                 //Sync algolia:
                 update_algolia(12274, intval($linkid));
             }
@@ -179,7 +179,7 @@ class Players extends CIdea_cache
     }
 
 
-    function delete($playerid, $linkplayercreator = 0, $migrate_s__id = 0)
+    function delete($playerid, $linkplayercreator = 0, $migrateid = 0)
     {
 
         if (in_array($playerid, $this->config->item('playerids___4593'))) {
@@ -192,39 +192,39 @@ class Players extends CIdea_cache
                 'status' => 0,
                 'message' => 'Cannot Delete an active @linkplayerdomain - Unlink, update @memory and try again',
             );
-        } elseif (!count($this->Players->read(array( 'playerid' => $playerid )))) {
+        } elseif (!count($this->Players->read(array('playerid' => $playerid)))) {
             return array(
                 'status' => 0,
                 'message' => $playerid . ' is not a valid ID',
             );
-        } elseif ($migrate_s__id > 0 && !count($this->Players->read(array( 'playerid' => $migrate_s__id )))) {
+        } elseif ($migrateid > 0 && !count($this->Players->read(array('playerid' => $migrateid)))) {
             return array(
                 'status' => 0,
-                'message' => $migrate_s__id . ' is not a valid ID',
+                'message' => $migrateid . ' is not a valid ID',
             );
         }
 
         //Find all links to delete/migrate:
         $x_adjusted = 0;
         foreach ($this->Links->read(array(
-            '(linkid='.$playerid.' OR linkplayerup='.$playerid.' OR linkplayerdown='.$playerid.' OR linkplayercreator='.$playerid.' OR linkplayertype='.$playerid.' OR linkplayerdomain='.$playerid.')' => null,
+            '(linkid=' . $playerid . ' OR linkplayerup=' . $playerid . ' OR linkplayerdown=' . $playerid . ' OR linkplayercreator=' . $playerid . ' OR linkplayertype=' . $playerid . ' OR linkplayerdomain=' . $playerid . ')' => null,
         ), array(), 0) as $migrate) {
 
-            if ($migrate_s__id) {
-                
+            if ($migrateid) {
+
                 $new_array = array(
-                    'linkplayercreator' => ( $migrate['linkplayercreator']==$playerid ? $migrate_s__id : ( $linkplayercreator>0 ? $linkplayercreator : $migrate['linkplayercreator'] ) ),
-                    'linkplayertype' => ( $migrate['linkplayertype']==$playerid ? $migrate_s__id : $migrate['linkplayertype'] ),
-                    'linkplayerdomain' => ( $migrate['linkplayerdomain']==$playerid ? $migrate_s__id : $migrate['linkplayerdomain'] ),
-                    'linkplayerup' => ( $migrate['linkplayerup']==$playerid ? $migrate_s__id : $migrate['linkplayerup'] ),
-                    'linkplayerdown' => ( $migrate['linkplayerdown']==$playerid ? $migrate_s__id : $migrate['linkplayerdown'] ),
+                    'linkplayercreator' => ($migrate['linkplayercreator'] == $playerid ? $migrateid : ($linkplayercreator > 0 ? $linkplayercreator : $migrate['linkplayercreator'])),
+                    'linkplayertype' => ($migrate['linkplayertype'] == $playerid ? $migrateid : $migrate['linkplayertype']),
+                    'linkplayerdomain' => ($migrate['linkplayerdomain'] == $playerid ? $migrateid : $migrate['linkplayerdomain']),
+                    'linkplayerup' => ($migrate['linkplayerup'] == $playerid ? $migrateid : $migrate['linkplayerup']),
+                    'linkplayerdown' => ($migrate['linkplayerdown'] == $playerid ? $migrateid : $migrate['linkplayerdown']),
                     'linkidealeft' => $migrate['linkidealeft'],
                     'linkidearight' => $migrate['linkidearight'],
                 );
 
                 //Update if this new one is unique:
                 if (!count($this->Links->read($new_array))) {
-                    $x_adjusted += $this->Links->update($migrate['linkid'],$new_array);
+                    $x_adjusted += $this->Links->update($migrate['linkid'], $new_array);
                     continue;
                 }
             }
@@ -234,17 +234,26 @@ class Players extends CIdea_cache
 
         }
 
-        //Remove from Table:
-        $this->db->query("DELETE FROM nodeplayers WHERE playerid = " . $playerid . ";");
+        if ($x_adjusted) {
+            //Remove from Table:
+            $this->db->query("DELETE FROM nodeplayers WHERE playerid = " . $playerid . ";");
 
-        //Update Search Index?
-        update_algolia(12277, $playerid);
+            //Update Search Index?
+            update_algolia(12277, $playerid);
+        } else {
+            //Failed to remove
+            log_error('players->delete() Failed to remove @' . $playerid . ' Link ID', array(
+                'linkplayercreator' => $linkplayercreator,
+                'linkideaup' => $playerid,
+                'linkideadown' => $migrateid,
+            ));
+        }
+
 
         //Return Links deleted:
         return $x_adjusted;
 
     }
-
 
 
     function command($playerid, $action_playerid, $action_command1, $action_command2, $linkplayercreator)
@@ -450,8 +459,6 @@ class Players extends CIdea_cache
         );
 
     }
-
-
 
 
     function activate($e, $update_session = false, $is_cookie = false)
@@ -866,7 +873,6 @@ class Players extends CIdea_cache
 
         return $flat_items;
     }
-
 
 
 }

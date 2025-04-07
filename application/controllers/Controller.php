@@ -651,14 +651,14 @@ class Controller extends CI_Controller
     {
 
         $player_active = superpower_unlocked(null, 0, $this->player_active);
-        $migrate_s__id = 0;
+        $migrateid = 0;
 
         if (!$player_active) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['ideaid']) || !isset($_POST['focus__id']) || !isset($_POST['migrate_s__handle'])) {
+        } elseif (!isset($_POST['ideaid']) || !isset($_POST['focus__id']) || !isset($_POST['migratehandle'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -668,18 +668,18 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
             ));
-        } elseif (strlen($_POST['migrate_s__handle']) > 1) {
+        } elseif (strlen($_POST['migratehandle']) > 1) {
             $valid_handle = $this->Ideas->read(array(
                 'ideaid !=' => $_POST['ideaid'],
-                'LOWER(ideahashtag)' => strtolower(str_replace('#', '', $_POST['migrate_s__handle'])),
+                'LOWER(ideahashtag)' => strtolower(str_replace('#', '', $_POST['migratehandle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'] . ' is not an active hashtag',
+                    'message' => $_POST['migratehandle'] . ' is not an active hashtag',
                 ));
             }
-            $migrate_s__id = $valid_handle[0]['ideaid'];
+            $migrateid = $valid_handle[0]['ideaid'];
         }
 
         $delete_redirect = '';
@@ -722,7 +722,7 @@ class Controller extends CI_Controller
         }
 
         //Delete all Links:
-        $links_removed = $this->Ideas->delete($_POST['ideaid'], $player_active['playerid'], $migrate_s__id);
+        $links_removed = $this->Ideas->delete($_POST['ideaid'], $player_active['playerid'], $migrateid);
 
         return view_json(array(
             'status' => ($links_removed > 0 ? 1 : 0),
@@ -738,14 +738,14 @@ class Controller extends CI_Controller
     {
 
         $player_active = superpower_unlocked(null, 0, $this->player_active);
-        $migrate_s__id = 0;
+        $migrateid = 0;
 
         if (!$player_active) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['playerid']) || !isset($_POST['focus__id']) || !isset($_POST['migrate_s__handle'])) {
+        } elseif (!isset($_POST['playerid']) || !isset($_POST['focus__id']) || !isset($_POST['migratehandle'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -755,18 +755,18 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
             ));
-        } elseif (strlen($_POST['migrate_s__handle']) > 1) {
+        } elseif (strlen($_POST['migratehandle']) > 1) {
             $valid_handle = $this->Players->read(array(
                 'playerid !=' => $_POST['playerid'],
-                'LOWER(playerhandle)' => strtolower(str_replace('@', '', $_POST['migrate_s__handle'])),
+                'LOWER(playerhandle)' => strtolower(str_replace('@', '', $_POST['migratehandle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'] . ' is not an active handle',
+                    'message' => $_POST['migratehandle'] . ' is not an active handle',
                 ));
             }
-            $migrate_s__id = $valid_handle[0]['playerid'];
+            $migrateid = $valid_handle[0]['playerid'];
         }
 
 
@@ -798,7 +798,7 @@ class Controller extends CI_Controller
         }
 
         //Delete all Links:
-        $links_removed = $this->Players->delete($_POST['playerid'], $player_active['playerid'], $migrate_s__id);
+        $links_removed = $this->Players->delete($_POST['playerid'], $player_active['playerid'], $migrateid);
 
         return view_json(array(
             'status' => ($links_removed > 0 ? 1 : 0),
@@ -3298,7 +3298,7 @@ class Controller extends CI_Controller
     function player_select()
     {
 
-        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_playerid']) || !isset($_POST['migrate_s__handle']) || !isset($_POST['linkid'])) {
+        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_playerid']) || !isset($_POST['migratehandle']) || !isset($_POST['linkid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -3306,38 +3306,38 @@ class Controller extends CI_Controller
         }
 
         //Validate migration handles if any:
-        $_POST['migrate_s__handle'] = trim($_POST['migrate_s__handle']);
-        $first_letter = substr($_POST['migrate_s__handle'], 0, 1);
-        if ($first_letter == '@' && strlen($_POST['migrate_s__handle']) > 1) {
+        $_POST['migratehandle'] = trim($_POST['migratehandle']);
+        $first_letter = substr($_POST['migratehandle'], 0, 1);
+        if ($first_letter == '@' && strlen($_POST['migratehandle']) > 1) {
             if (!count($this->Players->read(array(
-                'LOWER(playerhandle)' => strtolower(substr($_POST['migrate_s__handle'], 1)),
+                'LOWER(playerhandle)' => strtolower(substr($_POST['migratehandle'], 1)),
             )))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'] . ' is an invalid Player Handle. Try again if you want to migrate this Player links or leave the field blank.',
+                    'message' => $_POST['migratehandle'] . ' is an invalid Player Handle. Try again if you want to migrate this Player links or leave the field blank.',
                 ));
             }
-        } elseif ($first_letter == '#' && strlen($_POST['migrate_s__handle']) > 1) {
+        } elseif ($first_letter == '#' && strlen($_POST['migratehandle']) > 1) {
             if (!count($this->Ideas->read(array(
-                'LOWER(ideahashtag)' => strtolower(substr($_POST['migrate_s__handle'], 1)),
+                'LOWER(ideahashtag)' => strtolower(substr($_POST['migratehandle'], 1)),
             )))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'] . ' is an invalid Idea Hashtag. Try again if you want to migrate this idea links or leave the field blank.',
+                    'message' => $_POST['migratehandle'] . ' is an invalid Idea Hashtag. Try again if you want to migrate this idea links or leave the field blank.',
                 ));
             }
         } else {
-            $_POST['migrate_s__handle'] = '';
+            $_POST['migratehandle'] = '';
         }
 
         if (is_array($_POST['o__id'])) {
             $mass_result = array();
             foreach ($_POST['o__id'] as $o__id) {
-                array_push($mass_result, $this->Links->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['new_playerid'], $_POST['migrate_s__handle'], $_POST['linkid']));
+                array_push($mass_result, $this->Links->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['new_playerid'], $_POST['migratehandle'], $_POST['linkid']));
             }
             return view_json($mass_result);
         } else {
-            return view_json($this->Links->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['new_playerid'], $_POST['migrate_s__handle'], $_POST['linkid']));
+            return view_json($this->Links->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['new_playerid'], $_POST['migratehandle'], $_POST['linkid']));
         }
 
     }

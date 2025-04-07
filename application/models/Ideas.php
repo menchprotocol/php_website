@@ -173,7 +173,7 @@ class Ideas extends CIdea_cache
         return $affected_rows;
     }
 
-    function delete($ideaid, $linkplayercreator = 0, $migrate_s__id = 0)
+    function delete($ideaid, $linkplayercreator = 0, $migrateid = 0)
     {
 
         if (!count($this->Ideas->read(array('ideaid' => $ideaid)))) {
@@ -181,10 +181,10 @@ class Ideas extends CIdea_cache
                 'status' => 0,
                 'message' => $ideaid . ' is not a valid ID',
             );
-        } elseif ($migrate_s__id > 0 && !count($this->Ideas->read(array('ideaid' => $migrate_s__id)))) {
+        } elseif ($migrateid > 0 && !count($this->Ideas->read(array('ideaid' => $migrateid)))) {
             return array(
                 'status' => 0,
-                'message' => $migrate_s__id . ' is not a valid ID',
+                'message' => $migrateid . ' is not a valid ID',
             );
         }
 
@@ -193,10 +193,10 @@ class Ideas extends CIdea_cache
             '(linkid = ' . $ideaid . ' OR linkidearight = ' . $ideaid . ' OR linkidealeft = ' . $ideaid . ')' => null,
         ), array(), 0) as $migrate) {
 
-            if ($migrate_s__id) {
+            if ($migrateid && $migrate['linkid']!=$ideaid) {
                 $new_array = array(
-                    'linkidealeft' => ($migrate['linkidealeft'] == $ideaid ? $migrate_s__id : $migrate['linkidealeft']),
-                    'linkidearight' => ($migrate['linkidearight'] == $ideaid ? $migrate_s__id : $migrate['linkidearight']),
+                    'linkidealeft' => ($migrate['linkidealeft'] == $ideaid ? $migrateid : $migrate['linkidealeft']),
+                    'linkidearight' => ($migrate['linkidearight'] == $ideaid ? $migrateid : $migrate['linkidearight']),
                     'linkplayercreator' => $migrate['linkplayercreator'],
                     'linkplayerdown' => $migrate['linkplayerdown'],
                     'linkplayerup' => $migrate['linkplayerup'],
@@ -208,22 +208,27 @@ class Ideas extends CIdea_cache
                     $x_adjusted += $this->Links->update($migrate['linkid'], $new_array);
                     continue;
                 }
+
             }
 
             //Just remove it:
             $x_adjusted += $this->Links->delete($migrate['linkid'], $linkplayercreator);
 
         }
-        
-        //Remove From Ledger:
-        $removed = $this->Links->delete($ideaid, $linkplayercreator);
-        
-        if($removed){
+
+        if($x_adjusted){
             //Remove from Table:
             $this->db->query("DELETE FROM nodeideas WHERE ideaid = " . $ideaid . ";");
 
             //Update Search Index?
             update_algolia(12273, $ideaid);
+        } else {
+            //Failed to remove
+            log_error('ideas->delete() Failed to remove #'.$ideaid.' Link ID', array(
+                'linkplayercreator' => $linkplayercreator,
+                'linkidearight' => $ideaid,
+                'linkidealeft' => $migrateid,
+            ));
         }
 
         //Return Links deleted:

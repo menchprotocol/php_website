@@ -407,12 +407,12 @@ class Links extends CIdea_cache
     }
 
 
-    function select($focus__id, $o__id, $element_id, $new_playerid, $migrate_s__handle, $linkid = 0)
+    function select($focus__id, $o__id, $element_id, $new_playerid, $migratehandle, $linkid = 0)
     {
 
         //Authenticate Member:
-        $migrate_s__handle = trim(substr($migrate_s__handle, 0, 1) == '@' ? trim(substr($migrate_s__handle, 1)) : $migrate_s__handle);
-        $migrate_s__handle = trim(substr($migrate_s__handle, 0, 1) == '#' ? trim(substr($migrate_s__handle, 1)) : $migrate_s__handle);
+        $migratehandle = trim(substr($migratehandle, 0, 1) == '@' ? trim(substr($migratehandle, 1)) : $migratehandle);
+        $migratehandle = trim(substr($migratehandle, 0, 1) == '#' ? trim(substr($migratehandle, 1)) : $migratehandle);
         $player_active = superpower_unlocked();
         if (!$player_active) {
             return array(
