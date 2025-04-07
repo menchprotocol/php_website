@@ -1719,6 +1719,7 @@ var i_saving = false; //Prevent double saving
 function idea_update(){
 
     if(i_saving){
+        console.log('Idea updating aborted');
         return false;
     }
 
@@ -1728,6 +1729,7 @@ function idea_update(){
 
     var current_ideaid = parseInt($('#modal31911 .save_ideaid').val());
     var created_ideaid = parseInt($('#modal31911 .created_ideaid').val());
+    console.log('Idea updating begins #'+current_ideaid);
 
     //Fetch Media
     var gather_media_result = gather_media('#modal31911 .media_frame .media_item', 13572);
