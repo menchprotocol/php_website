@@ -12,6 +12,7 @@ $linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 
 //Email Body
 $html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view_s($last_x_days).':</div>';
+$subject = 'Report for the Week of '.date("M jS", $linktime_start_timestamp);
 
 foreach($this->config->item('players___31770') as $linkplayertype => $m) {
 
@@ -26,11 +27,6 @@ foreach($this->config->item('players___31770') as $linkplayertype => $m) {
 
     //Add to UI:
     $html_message .= '<div class="line"><span style="display:inline-block; width: 55px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.view_number($unique).' '.$m['m__title'].'</div>';
-
-    //Primary Coin?
-    if(in_array($linkplayertype, $this->config->item('playerids___6404'))){
-        $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $linktime_start_timestamp);
-    }
 
 }
 
