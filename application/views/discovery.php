@@ -37,7 +37,7 @@ if ($linkplayercreator && !$at_starting_point) {
             if (count($query_subset) >= 2) {
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
-                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdown_instant_' . $followings_i['ideaid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $breadcrum_content .= '<button type="button" class="btn no-side-padding" style="margin-top:-5px;" id="dropdown_instant_' . $followings_i['ideaid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 $breadcrum_content .= '<span style="padding-left:5px;"><i class="far fa-sharp fa-chevron-square-up rotate180"></i></span>';
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_' . $followings_i['ideaid'] . '">';
