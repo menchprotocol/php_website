@@ -182,7 +182,17 @@ class Players extends CIdea_cache
     function delete($playerid, $linkplayercreator = 0, $migrate_s__id = 0)
     {
 
-        if (!count($this->Players->read(array( 'playerid' => $playerid )))) {
+        if (in_array($playerid, $this->config->item('playerids___4593'))) {
+            return array(
+                'status' => 0,
+                'message' => 'Cannot Delete an active @linkplayertype',
+            );
+        } elseif (in_array($playerid, $this->config->item('playerids___14870'))) {
+            return array(
+                'status' => 0,
+                'message' => 'Cannot Delete an active @linkplayerdomain',
+            );
+        } elseif (!count($this->Players->read(array( 'playerid' => $playerid )))) {
             return array(
                 'status' => 0,
                 'message' => $playerid . ' is not a valid ID',
