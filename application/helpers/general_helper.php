@@ -2240,7 +2240,7 @@ function update_algolia($focus__node = null, $s__id = 0)
     foreach ($fetch_objects as $loop_obj) {
 
         //Reset limits:
-        unset($filters);
+        $filters = array();
 
         //Fetch item(s) for updates including their followings:
         if ($loop_obj == 12273) {
