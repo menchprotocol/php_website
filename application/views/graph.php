@@ -9,13 +9,13 @@ if ($playerhandle) {
     foreach ($this->Players->read(array(
         'LOWER(playerhandle)' => strtolower($playerhandle),
     )) as $e) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $playerhandle . '"><span class="icon-block">' . view_cover($e['playercover']) . '</span> <u>' . $e['playertext'] . '</u></a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $playerhandle . '"><span class="icon-block">' . view_cover($e['playercover']) . '</span> ' . $e['playertext'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif ($ideahashtag) {
     foreach ($this->Ideas->read(array(
         'LOWER(ideahashtag)' => strtolower($ideahashtag),
     )) as $i) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 33286) . $ideahashtag . '"><u>' . view_idea_title($i, true) . '</u></a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="' . view_memory(42903, 33286) . $ideahashtag . '">' . view_idea_title($i, true) . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
     }
 }
 
@@ -68,11 +68,11 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                                     'linkplayerdown' => $headline_link,
                                     'linkplayertype' => 41011, //Family
                                 ), array('linkplayerup'), 1) as $sibling){
-                                    echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="main__title grey"><u>'.$sibling['playertext'].'</u></b></a><b class="main__title grey"> & </b></b>';
+                                    echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="main__title grey">'.$sibling['playertext'].'</b></a><b class="main__title grey"> & </b></b>';
                                 }
                             }
 
-                            echo '<a href="'.view_memory(42903,42902).$players___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$players___42263[$headline_link]['m__cover'].'</span><b class="main__title grey"><u>'.$players___42263[$headline_link]['m__title'].'</u></a>:</b>';
+                            echo '<a href="'.view_memory(42903,42902).$players___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$players___42263[$headline_link]['m__cover'].'</span><b class="main__title grey">'.$players___42263[$headline_link]['m__title'].'</a>:</b>';
 
                             echo '</td>';
                             echo '</tr>';

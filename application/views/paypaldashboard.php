@@ -120,7 +120,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
 
             $link_content .= '<tr class="link_columns links_'.$i['ideaid'].' hidden">';
-            $link_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['playertext'].'</u></a> ' : '' ).$linktext['first_name'].' '.$linktext['last_name'].'</td>';
+            $link_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['playertext'].'</a> ' : '' ).$linktext['first_name'].' '.$linktext['last_name'].'</td>';
             $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $linktext['mc_gross']!=0 && strlen($linktext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$linktext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Link"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?linkid='.$x['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
             $link_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $link_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
@@ -178,7 +178,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.links_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_idea_title($i).'</u></a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.links_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;">'.view_idea_title($i).'</a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_links.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_links.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
@@ -230,7 +230,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
         //Show Other Players:
         $otherplayer_content .= '<tr class="main__title">';
-        $otherplayer_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_e\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$players___4593[29393]['m__title'].'</u></a></td>';
+        $otherplayer_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_e\').toggleClass(\'hidden\');" style="font-weight:bold;">'.$players___4593[29393]['m__title'].'</a></td>';
         $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
         $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
         $otherplayer_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
@@ -246,7 +246,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         //Doo We Have other?
         foreach($other_es as $other_e){
             $otherplayer_content .= '<tr class="link_columns thr_e hidden">';
-            $otherplayer_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['playercover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['playerhandle'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['playertext'].'</u></a></td>';
+            $otherplayer_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['playercover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['playertext'].'</a></td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?linkid='.$other_e['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';

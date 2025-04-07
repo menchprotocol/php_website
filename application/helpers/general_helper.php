@@ -2689,7 +2689,7 @@ function view_link($x)
         } elseif ($playerid == 4372 && strlen($x['linktext']) > 0) {
 
             //Message
-            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><div class="title-block">' . (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');"><u>View HTML Message</u></a>') . '</div></div>';
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><div class="title-block">' . (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>') . '</div></div>';
 
         }
     }
@@ -4449,7 +4449,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     $quantity = ($x_complete['linknumber'] >= 2 ? $x_complete['linknumber'] : (isset($linktext['quantity']) && $linktext['quantity'] >= 2 ? $linktext['quantity'] : 1));
 
                     if ($linktext['mc_gross'] != 0) {
-                        $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>' . ($linktext['mc_gross'] > 0 ? 'You paid ' : 'You got a refund of ') . str_replace('.00', '', $linktext['mc_gross']) . ' ' . $linktext['mc_currency'] . ($quantity > 1 ? ' for ' . $quantity . ' tickets' : '') . ' & should receive a <u>Paypal Email Receipt</u> shortly.</div>';
+                        $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>' . ($linktext['mc_gross'] > 0 ? 'You paid ' : 'You got a refund of ') . str_replace('.00', '', $linktext['mc_gross']) . ' ' . $linktext['mc_currency'] . ($quantity > 1 ? ' for ' . $quantity . ' tickets' : '') . ' & should receive a Paypal Email Receipt shortly.</div>';
                     }
 
                 }
@@ -4517,7 +4517,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $linkplayercreator)) + doubleval(website_setting(27017, $linkplayercreator))) / 100), 2, ".", "");
 
                     //Append information to cart about Paypal:
-                    $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_link(14373) . '" target="_blank"><u>Terms of Use</u></a>.</div>';
+                    $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_link(14373) . '" target="_blank">Terms of Use</a>.</div>';
 
                 } elseif (filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $previous_i['ideatype'] == 43758 && count($total_dues) && $total_dues[0]['linktext'] > 0) {
 

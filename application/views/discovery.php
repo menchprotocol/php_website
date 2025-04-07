@@ -31,7 +31,7 @@ if ($linkplayercreator && !$at_starting_point) {
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_ideahashtag . '/' . ($followings_i['ideahashtag'] == $target_ideahashtag ? 'start' : $followings_i['ideahashtag']) . '"><u>' . view_idea_title($followings_i, true) . '</u></a>';
+            $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_ideahashtag . '/' . ($followings_i['ideahashtag'] == $target_ideahashtag ? 'start' : $followings_i['ideahashtag']) . '">' . view_idea_title($followings_i, true) . '</a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if (count($query_subset) >= 2) {

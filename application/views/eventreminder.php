@@ -15,7 +15,7 @@ if(isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']
             foreach($this->Ideas->read(array(
                 'ideaid' => $x['linkidearight'],
             )) as $idea_from){
-                echo '<h1><a href="'.view_memory(42903,33286).$idea_from['ideahashtag'].'"><u>' . view_idea_title($idea_from, true) . '</u></a></h1>';
+                echo '<h1><a href="'.view_memory(42903,33286).$idea_from['ideahashtag'].'">' . view_idea_title($idea_from, true) . '</a></h1>';
             }
 
             if(isset($_GET['submit'])){
