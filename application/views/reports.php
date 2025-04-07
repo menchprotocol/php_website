@@ -11,7 +11,7 @@ $linktime_start = date("Y-m-d H:i:s", $linktime_start_timestamp);
 $linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 
 //Email Body
-$html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view_s($last_x_days).':</div>';
+$html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view_s($last_x_days).':</div><br />';
 $subject = 'Report for the Week of '.date("M jS", $linktime_start_timestamp);
 
 foreach($this->config->item('players___31770') as $linkplayertype => $m) {
