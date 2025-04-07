@@ -1426,7 +1426,7 @@ function display_media(mediaframe_id, uploader_id, ideaid){
 function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
 
 
-    $(".idea_link_direction, .link_idea_unlink, .idea_linkplayertype").addClass('hidden');
+    $(".link_idea_unlink, .idea_linkplayertype").addClass('hidden');
     var focus_idea_id = ( parseInt($('#focus__node').val())==12273 ? parseInt($('#focus__id').val()) : 0 );
     $("#modal31911 .save_results").html('');
 
@@ -1494,9 +1494,6 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
             });
             $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_ideacache_'+next_ideaid).html() + '</div>');
 
-            //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea__editor_switch('+link_linkplayertype+',0,'+next_ideaid+',1)');
-
         } else if(is_prev){
 
             //Generate content:
@@ -1505,9 +1502,6 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
                 $("#modal31911 .idea_list_previous .creator_box").append('<div class="creator_headline">'+$(this).html()+'</div>');
             });
             $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_ideacache_'+previous_ideaid).html() + '</div>');
-
-            //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','idea__editor_switch('+link_linkplayertype+','+previous_ideaid+',0,1)');
 
         }
 

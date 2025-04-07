@@ -732,12 +732,6 @@ if($player_active && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
                             </div>
 
-                            <!-- Toggle Direction -->
-                            <div class="dynamic_editing_input no_padde idea_link_direction hidden hidden_superpower__42817">
-                                <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="far fa-arrow-up-arrow-down"></i></a>
-                            </div>
-
-
                         </div>
                         <button type="button" class="btn btn-default idea_update post_button" onclick="idea_update()">POST</button>
                     </div>
