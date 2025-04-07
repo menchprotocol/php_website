@@ -689,11 +689,9 @@ function count_link_groups($linkplayertype, $linktime_start = null, $linktime_en
 {
 
     $CI =& get_instance();
-    if (!is_array($CI->config->item('playerids___' . $linkplayertype))) {
-        return 0;
-    }
+
     $query_filters = array(
-        'linkplayertype IN (' . join(',', $CI->config->item('playerids___' . $linkplayertype)) . ')' => null,
+        'linkplayertype IN (' . join(',', ( is_array($CI->config->item('playerids___' . $linkplayertype)) ? $CI->config->item('playerids___' . $linkplayertype) : array($linkplayertype) )) . ')' => null,
     );
 
     if (strtotime($linktime_start) > 0) {
