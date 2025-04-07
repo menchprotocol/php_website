@@ -1,5 +1,7 @@
 <?php
 
+boost_power();
+
 foreach ($this->Links->read(array(
     'linkplayertype' => 33600, //Draft
     'linkplayerup' => 26582,
