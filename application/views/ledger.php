@@ -141,6 +141,7 @@ foreach($query_filters as $key => $value){
     $ini_filter[$key] = $value;
 }
 
+$query_filters['linkvoid >='] = 0;
 
 
 //Make sure its a valid type considering other filters:
