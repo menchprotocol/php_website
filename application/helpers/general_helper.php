@@ -4182,7 +4182,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$linkplayercreator) ? ' hidden ' : '') . '">#<span class="ui_ideahashtag_' . $i['ideaid'] . '">' . $i['ideahashtag'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="'.$i['ideaid'].'" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$linkplayercreator) ? ' hidden ' : '') . '">#<span class="ui_ideahashtag_' . $i['ideaid'] . '">' . $i['ideahashtag'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
