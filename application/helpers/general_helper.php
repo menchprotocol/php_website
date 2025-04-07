@@ -2168,8 +2168,6 @@ function idea_started($playerid, $ideahashtag)
 function update_algolia($focus__node = null, $s__id = 0)
 {
 
-    return false; //TODO remove later
-
     if (!search_enabled()) {
         console . log("Search engine is disabled!");
         return false;
