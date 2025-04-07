@@ -62,6 +62,12 @@ if(!$basic_header_footer){
     <meta name="theme-color" content="#FFFFFF">
     <link rel="icon" id="favicon" href="<?= $logo ?>">
     <?php
+
+    //Block search engines from indexing anything other than the home page:
+    if($app_playerid!=14565){
+        echo '<meta name="robots" content="noindex, nofollow">';
+    }
+
     if($is_emoji){
         echo '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>'.$domain_logo.'</text></svg>">';
     } else {

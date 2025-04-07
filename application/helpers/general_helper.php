@@ -1,11 +1,13 @@
 <?php
 
 
-function idea_sort(){
+function idea_sort()
+{
     return array('linkplayertype = \'34513\' DESC' => null, 'linknumber' => 'ASC', 'linktime' => 'DESC');
 }
 
-function player_sort(){
+function player_sort()
+{
     return array('linknumber' => 'ASC', 'linktime' => 'DESC'); //'linkplayertype = \'41011\' DESC' => null,
 }
 
@@ -463,7 +465,6 @@ function view_tree($i)
 }
 
 
-
 function idea_settings($ideahashtag, $fetch_contact = false)
 {
 
@@ -778,8 +779,6 @@ function superpower_unlocked($superpower_playerid = null, $force_redirect = 0, $
     }
 
 }
-
-
 
 
 function get_server($var_name)
@@ -1875,7 +1874,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
 
     $CI =& get_instance();
     $player_active = superpower_unlocked();
-    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2))) ? true : false );
+    $discovery_mode = ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2))) ? true : false);
 
     if ($is_cahce) {
         return 1;
@@ -1914,10 +1913,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $is_cahce = f
         //Authors can always edit:
         return 3;
     } elseif (!$discovery_mode && count($CI->Links->read(array(
-        'linkplayertype IN (' . join(',', $CI->config->item('playerids___42953')) . ')' => null, //Mentioned Players
-        'linkplayerup' => $player_active['playerid'],
-        'linkidearight' => $i['ideaid'],
-    )))) {
+            'linkplayertype IN (' . join(',', $CI->config->item('playerids___42953')) . ')' => null, //Mentioned Players
+            'linkplayerup' => $player_active['playerid'],
+            'linkidearight' => $i['ideaid'],
+        )))) {
 
         //Mentioned can always reply:
         return 2;
@@ -2556,8 +2555,6 @@ function idea_creation_time($ideaid)
 }
 
 
-
-
 function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 {
 
@@ -2839,24 +2836,25 @@ function view_google_tag($google_analytics_code)
 }
 
 
-function log_error($error_message, $error_data = array(), $log_error = true){
+function log_error($error_message, $error_data = array(), $log_error = true)
+{
 
     //Log in PHP File:
     $player_active = superpower_unlocked();
 
-    if($log_error){
+    if ($log_error) {
 
         $CI =& get_instance();
-        log_message('error','MENCH ERROR: '.$error_message
-            .( $player_active ? ' | PLAYER: '.print_r($player_active, true) : '' )
-            .( count($player_active) ? ' | ERROR DATA: '.print_r($error_data, true) : '' )
+        log_message('error', 'MENCH ERROR: ' . $error_message
+            . ($player_active ? ' | PLAYER: ' . print_r($player_active, true) : '')
+            . (count($player_active) ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
         $CI->Links->create(array_merge($error_data, array(
             'linkplayerup' => 4246, //Platform Bug Reports
             'linkplayertype' => 44179, //Triggered
             'linktext' => $error_message,
-            'linkplayercreator' => ( isset($error_data['linkplayercreator']) && $error_data['linkplayercreator']>0 ? $error_data['linkplayercreator'] : ( $player_active ? $player_active['playerid'] : 0 ) ),
+            'linkplayercreator' => (isset($error_data['linkplayercreator']) && $error_data['linkplayercreator'] > 0 ? $error_data['linkplayercreator'] : ($player_active ? $player_active['playerid'] : 0)),
         )));
 
     }
@@ -2883,8 +2881,8 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if(!in_array($linkplayertype, $CI->config->item('playerids___4527')) || !is_array($CI->config->item('playerids___' . $linkplayertype)) || !count($CI->config->item('playerids___' . $linkplayertype))){
-        log_error('players_query() @'.$linkplayertype.' Empty Array in Cache @4527');
+    if (!in_array($linkplayertype, $CI->config->item('playerids___4527')) || !is_array($CI->config->item('playerids___' . $linkplayertype)) || !count($CI->config->item('playerids___' . $linkplayertype))) {
+        log_error('players_query() @' . $linkplayertype . ' Empty Array in Cache @4527');
         return false;
     }
 
@@ -3429,7 +3427,6 @@ function blocked_reasoning($superpower_playerid = 0)
     }
 
 }
-
 
 
 function view_hash($string)
@@ -4919,8 +4916,6 @@ function view_pill($focus__node, $linkplayertype, $counter, $m, $ui = null, $is_
 }
 
 
-
-
 function player_view($linkplayertype, $e, $extra_class = null)
 {
 
@@ -5050,10 +5045,6 @@ function player_view($linkplayertype, $e, $extra_class = null)
         $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $players___14036[$social_link['linkplayerup']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['linkplayerup']]['m__cover'] . '</span>')) . '</span>';
 
     }
-
-
-
-
 
 
     //Start with top bar:
@@ -5213,9 +5204,6 @@ function player_view($linkplayertype, $e, $extra_class = null)
             }
         }
     }
-
-
-
 
 
     $ui .= $bio;
