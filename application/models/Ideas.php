@@ -190,7 +190,7 @@ class Ideas extends CIdea_cache
 
         $x_adjusted = 0;
         foreach ($this->Links->read(array(
-            '(linkidearight = ' . $ideaid . ' OR linkidealeft = ' . $ideaid . ')' => null,
+            '(linkid = ' . $ideaid . ' OR linkidearight = ' . $ideaid . ' OR linkidealeft = ' . $ideaid . ')' => null,
         ), array(), 0) as $migrate) {
 
             if ($migrate_s__id) {

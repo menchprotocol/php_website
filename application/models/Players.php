@@ -207,7 +207,7 @@ class Players extends CIdea_cache
         //Find all links to delete/migrate:
         $x_adjusted = 0;
         foreach ($this->Links->read(array(
-            '(linkplayerup='.$playerid.' OR linkplayerdown='.$playerid.' OR linkplayercreator='.$playerid.' OR linkplayertype='.$playerid.' OR linkplayerdomain='.$playerid.')' => null,
+            '(linkid='.$playerid.' OR linkplayerup='.$playerid.' OR linkplayerdown='.$playerid.' OR linkplayercreator='.$playerid.' OR linkplayertype='.$playerid.' OR linkplayerdomain='.$playerid.')' => null,
         ), array(), 0) as $migrate) {
 
             if ($migrate_s__id) {
