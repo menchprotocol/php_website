@@ -2642,7 +2642,7 @@ function view_number($number)
 }
 
 
-function view_link($x)
+function link_view($x)
 {
 
     $CI =& get_instance();
@@ -2681,13 +2681,18 @@ function view_link($x)
 
         } elseif ($playerid == 4370 && $x['linknumber'] > 0) {
 
-            //Order
+            //Number
             $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span>' . view_ordinal($x['linknumber']) . '</span></div>';
 
         } elseif ($playerid == 4372 && strlen($x['linktext']) > 0) {
 
             //Message
             $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><div class="title-block">' . (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>') . '</div></div>';
+
+        } elseif ($playerid == 44395) {
+
+            //Void
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><div class="title-block">' . $x['linkvoid'] . '</div></div>';
 
         }
     }

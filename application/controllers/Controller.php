@@ -3414,7 +3414,7 @@ class Controller extends CI_Controller
             $message .= '<div class="list-group list-grey">';
             foreach ($x as $x) {
 
-                $message .= view_link($x);
+                $message .= link_view($x);
 
                 if ($player_active && strlen($x['linktext']) > 0 && strlen($_POST['linktext_find']) > 0 && strlen($_POST['linktext_replace']) > 0 && substr_count($x['linktext'], $_POST['linktext_find']) > 0) {
 
