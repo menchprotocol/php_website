@@ -185,12 +185,12 @@ class Players extends CIdea_cache
         if (in_array($playerid, $this->config->item('playerids___4593'))) {
             return array(
                 'status' => 0,
-                'message' => 'Cannot Delete an active @linkplayertype',
+                'message' => 'Cannot Delete an active @linkplayertype - First Unlink and try again',
             );
         } elseif (in_array($playerid, $this->config->item('playerids___14870'))) {
             return array(
                 'status' => 0,
-                'message' => 'Cannot Delete an active @linkplayerdomain',
+                'message' => 'Cannot Delete an active @linkplayerdomain - First Unlink and try again',
             );
         } elseif (!count($this->Players->read(array( 'playerid' => $playerid )))) {
             return array(
@@ -204,10 +204,10 @@ class Players extends CIdea_cache
             );
         }
 
-        //Find all sources to migrate:
+        //Find all links to delete/migrate:
         $x_adjusted = 0;
         foreach ($this->Links->read(array(
-            '(linkplayerup='.$playerid.' OR linkplayerdown='.$playerid.' OR linkplayercreator='.$playerid.' OR linkplayertype='.$playerid.')' => null,
+            '(linkplayerup='.$playerid.' OR linkplayerdown='.$playerid.' OR linkplayercreator='.$playerid.' OR linkplayertype='.$playerid.' OR linkplayerdomain='.$playerid.')' => null,
         ), array(), 0) as $migrate) {
 
             if ($migrate_s__id) {
@@ -215,6 +215,7 @@ class Players extends CIdea_cache
                 $new_array = array(
                     'linkplayercreator' => ( $migrate['linkplayercreator']==$playerid ? $migrate_s__id : ( $linkplayercreator>0 ? $linkplayercreator : $migrate['linkplayercreator'] ) ),
                     'linkplayertype' => ( $migrate['linkplayertype']==$playerid ? $migrate_s__id : $migrate['linkplayertype'] ),
+                    'linkplayerdomain' => ( $migrate['linkplayerdomain']==$playerid ? $migrate_s__id : $migrate['linkplayerdomain'] ),
                     'linkplayerup' => ( $migrate['linkplayerup']==$playerid ? $migrate_s__id : $migrate['linkplayerup'] ),
                     'linkplayerdown' => ( $migrate['linkplayerdown']==$playerid ? $migrate_s__id : $migrate['linkplayerdown'] ),
                     'linkidealeft' => $migrate['linkidealeft'],
