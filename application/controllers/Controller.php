@@ -3507,9 +3507,6 @@ class Controller extends CI_Controller
             $level1_total = 0;
 
             if($linkplayertype1==1309754){
-
-
-
                 //Void Links
                 $void_filter = array(
                     'linkvoid >' => 0, //Links that have been voided
@@ -3519,6 +3516,8 @@ class Controller extends CI_Controller
                 } elseif ($has_hashtag) {
                     $void_filter['( linkidealeft = ' . $is[0]['ideaid'] . ' OR linkidearight = ' . $is[0]['ideaid'] . ' )'] = null;
                 }
+                prin_r($void_filter);
+                die();
                 $sub_counter = $this->Links->read($void_filter, array(), 0, 0, array(), 'COUNT(linkid) as totals');
                 $return_array[$linkplayertype1] = intval($sub_counter[0]['totals']);
                 continue;
