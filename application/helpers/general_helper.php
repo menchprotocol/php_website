@@ -586,6 +586,10 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             array_push($pinned_columns, intval($setting_link['playerid']));
         }
         if (count($pinned_columns)) {
+
+            //Add to results:
+            $idea_list_config[34513] = $pinned_columns;
+
             $player_column = $CI->Links->read(array(
                 'linkplayerup IN (' . join(',', $pinned_columns) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
