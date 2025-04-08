@@ -39,10 +39,10 @@ if($search_for_set){
 
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $en['playertext'] = Playersearchreplace . phpstr_ireplace($_GET['search_for'], $_GET['replace_with'], $en['playertext']) . $append_text;
+                $en['playertext'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['e__title']) . $append_text;
 
                 if($replace_with_confirmed){
-                    //Update idea:
+                    //Update player:
                     $res = $this->Players->update($en['playerid'], array(
                         'playertext' => $en['playertext'],
                     ), $player_active['playerid']);
