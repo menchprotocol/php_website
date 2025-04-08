@@ -1579,7 +1579,7 @@ class Controller extends CI_Controller
             ));
         }
 
-        return view__json($this->Cacheideas->recursive_clone(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_active['playerid']));
+        return view_json($this->Ideas->copy(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_active['playerid']));
 
     }
 
