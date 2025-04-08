@@ -527,6 +527,14 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             ), array('linkplayercreator'), 0, 0, array('linkid' => 'DESC'));
 
+        } elseif (count($idea_list_config[44161])) {
+
+            //If Discovered All
+            $query_string_all = $CI->Links->read(array(
+                'linkidealeft IN (' . join(',', $idea_list_config[44161]) . ')' => null,
+                'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            ), array('linkplayercreator'), 0, 0, array('linkid' => 'DESC'));
+
         } elseif (count($idea_list_config[27984])) {
 
             //Include If Has ANY
