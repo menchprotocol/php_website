@@ -550,7 +550,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             if (in_array(intval($x['playerid']), $unique_users_count)) {
                 continue;
             } elseif (!idea_access(null, $i['ideaid'], $i, $x['playerid'], $list_config)) {
-                continue;
+                //continue;
             } else {
                 //Passed all filters:
                 array_push($query_string_filtered, $x);
@@ -1882,7 +1882,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //Inventory Limits:
-        if (idea_spots_remaining($ideaid) == 0) {
+        if (!count($list_config) && idea_spots_remaining($ideaid) == 0) {
             return 0;
         }
 
