@@ -3240,6 +3240,11 @@ class Controller extends CI_Controller
                         continue;
                     }
                     $input__text = in_array($idea_next['ideatype'], $this->config->item('playerids___43002')) || in_array($idea_next['ideatype'], $this->config->item('playerids___43003'));
+                    $input__phone = ($input__text && count($this->Links->read(array(
+                            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                            'linkidearight' => $idea_next['ideaid'],
+                            'linkplayerup' => 42181, //Phone
+                        ))));
                     $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
                     $skipping_not_allowed = in_array($idea_next['ideatype'], $this->config->item('playerids___43009'));
                     $trying_to_skip = (
@@ -3252,7 +3257,7 @@ class Controller extends CI_Controller
                     if ($idea_required && $trying_to_skip) {
                         return view_json(array(
                             'status' => 0,
-                            'message' => 'We require a valid response for: '.view_idea_title($idea_next, true),
+                            'message' => 'We require a valid response for '.view_idea_title($idea_next, true).' Instead of "'.$next_idea_data['new_ideatext'].'"',
                         ));
                     }
 
