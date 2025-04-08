@@ -1148,6 +1148,7 @@ class Controller extends CI_Controller
                 'status' => 1,
                 'return_ideacache_links' => view_idea_links($new_i, $player_active['playerid'], $focus__node, $focus__node),
                 'return_ideacache_full' => idea_view($_POST['focus_group'], $new_i),
+                'save_ideaid' => $is[0]['ideaid'],
                 'save_ideatext' => trim($_POST['save_ideatext']),
                 'text_updated' => $text_updated,
                 'redirect_idea' => (isset($new_i['ideahashtag']) ? view_memory(42903, 33286) . $new_i['ideahashtag'] : null),

@@ -141,7 +141,7 @@ class Ideas extends CIdea_cache
             if(array_key_exists($key, $must_sync_ledger)){
                 $this->Links->create(array(
                     'linkplayertype' => 42275, //Idea Trigger
-                    'linkplayerup' => $must_sync_ledger[$key], //Idea Hashtag
+                    'linkplayerup' => $must_sync_ledger[$key],
                     'linkplayercreator' => $linkplayercreator,
                     'linkidearight' => $linkid,
                     'linktext' => $value,
