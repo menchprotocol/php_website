@@ -4369,11 +4369,10 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     $ui .= '</div>';
 
 
-    if ($linkplayercreator) {
+    if ($linkplayercreator && isset($previous_i['ideatype'])) {
 
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
-
 
         //Any inputs for this idea?
         if ($previous_i['ideatype'] == 43758 || (in_array($i['ideatype'], $CI->config->item('playerids___41055')) && $focus__node && $i['ideatype'] != 43758)) {
