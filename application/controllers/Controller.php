@@ -3252,7 +3252,7 @@ class Controller extends CI_Controller
                     if ($idea_required && $trying_to_skip) {
                         return view_json(array(
                             'status' => 0,
-                            'message' => 'You must respond to this required idea',
+                            'message' => 'We require a valid response for: '.view_idea_title($idea_next, true),
                         ));
                     }
 
