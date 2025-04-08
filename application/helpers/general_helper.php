@@ -467,25 +467,29 @@ function view_tree($i)
 function idea_list_config($ideaid){
 
     $CI =& get_instance();
-    $players___1499227 = $CI->config->item('players___1499227'); //Player List Controllers
+
     $list_config = array(); //To compile the settings of this sheet:
-    foreach ($players___1499227 as $linkplayertype => $m) {
+
+    foreach ($CI->config->item('players___40792') as $linkplayertype => $m) {
+        $list_config[intval($linkplayertype)] = array(); //Assume no links for this type
+    }
+    foreach ($CI->config->item('players___43006') as $linkplayertype => $m) {
         $list_config[intval($linkplayertype)] = array(); //Assume no links for this type
     }
 
     //Now search for these settings across Players:
     foreach ($CI->Links->read(array(
         'linkidearight' => $ideaid,
-        'linkplayertype IN (' . join(',', $CI->config->item('playerids___1499227')) . ')' => null, //Player List Controllers
+        'linkplayertype IN (' . join(',', $CI->config->item('playerids___43006')) . ')' => null,
     ), array('linkplayerup'), 0) as $setting_link) {
         array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['playerid']));
     }
 
     //Now search for these settings across ideas:
     foreach ($CI->Links->read(array(
-        'linkidearight' => $ideaid,
-        'linkplayertype IN (' . join(',', $CI->config->item('playerids___1499227')) . ')' => null, //Player List Controllers
-    ), array('linkidealeft'), 0) as $setting_link) {
+        'linkidealeft' => $ideaid,
+        'linkplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
+    ), array('linkidearight'), 0) as $setting_link) {
         array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['ideaid']));
     }
 
