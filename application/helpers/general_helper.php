@@ -550,7 +550,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             if (in_array(intval($x['playerid']), $unique_users_count)) {
                 continue;
             } elseif (!idea_access(null, $i['ideaid'], $i, $x['playerid'], $list_config)) {
-                //continue;
+                continue;
             } else {
                 //Passed all filters:
                 array_push($query_string_filtered, $x);
@@ -1887,19 +1887,32 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
 
         // IDEA RELATION CHECK:
+        //Now search for these settings across Players:
+        foreach ($CI->Links->read(array(
+            'linkidearight' => $ideaid,
+            'linkplayertype IN (' . join(',', $CI->config->item('playerids___40946')) . ')' => null, //Player List Controllers
+        ), array('linkplayerup'), 0) as $setting_link) {
+            array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['playerid']));
+        }
+
+        //Now search for these settings across ideas:
+        foreach ($CI->Links->read(array(
+            'linkidearight' => $ideaid,
+            'linkplayertype IN (' . join(',', $CI->config->item('playerids___40946')) . ')' => null, //Player List Controllers
+        ), array('linkidealeft'), 0) as $setting_link) {
+            array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['ideaid']));
+        }
+
+
 
         //If Discovered All
-        $list_config[44161] = (isset($list_config[44161]) ? $list_config[44161] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 44161,
-        ), array(), 0));
-        if (count($list_config[44161])) {
+        if (isset($list_config[44161])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[44161] as $player_pre) {
+                foreach ($list_config[44161] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
-                        'linkidealeft' => $player_pre['linkidealeft'],
+                        'linkidealeft' => $thisideaid,
                         'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     )))) {
                         $the_counter++;
@@ -1912,17 +1925,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
 
         //If Discovered Any
-        $list_config[40791] = (isset($list_config[40791]) ? $list_config[40791] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 40791, //If Discovered Any
-        ), array(), 0));
-        if (count($list_config[40791])) {
+        if (isset($list_config[40791])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[40791] as $player_pre) {
+                foreach ($list_config[40791] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
-                        'linkidealeft' => $player_pre['linkidealeft'],
+                        'linkidealeft' => $thisideaid,
                         'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     )))) {
                         $the_counter++;
@@ -1937,17 +1946,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //If Not Discovered All
-        $list_config[44162] = (isset($list_config[44162]) ? $list_config[44162] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 44162, //If Not Discovered All
-        ), array(), 0));
-        if (count($list_config[44162])) {
+        if (isset($list_config[44162])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[44162] as $player_pre) {
+                foreach ($list_config[44162] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
-                        'linkidealeft' => $player_pre['linkidealeft'],
+                        'linkidealeft' => $thisideaid,
                         'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     )))) {
                         $the_counter++;
@@ -1963,17 +1968,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //If Not Discovered Any
-        $list_config[40793] = (isset($list_config[40793]) ? $list_config[40793] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 40793, //If Not Discovered Any
-        ), array(), 0));
-        if (count($list_config[40793])) {
+        if (isset($list_config[40793])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[40793] as $player_pre) {
+                foreach ($list_config[40793] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
-                        'linkidealeft' => $player_pre['linkidealeft'],
+                        'linkidealeft' => $thisideaid,
                         'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     )))) {
                         $the_counter++;
@@ -1993,17 +1994,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //Include If Has ANY
-        $list_config[27984] = (isset($list_config[27984]) ? $list_config[27984] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 27984, //Include If Has Any
-        ), array(), 0));
-        if (count($list_config[27984])) {
+        if (isset($list_config[27984])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[27984] as $player_pre) {
-                    if ((($linkplayercreator && $linkplayercreator == $player_pre['linkplayerup']) || count($CI->Links->read(array(
+                foreach ($list_config[27984] as $thisplayerid) {
+                    if ((($linkplayercreator && $linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                            'linkplayerup' => $player_pre['linkplayerup'],
+                            'linkplayerup' => $thisplayerid,
                             'linkplayerdown' => $linkplayercreator,
                         ))))) {
                         $the_counter++;
@@ -2018,17 +2015,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //Include If Has ALL
-        $list_config[43513] = (isset($list_config[43513]) ? $list_config[43513] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 43513, //Must Include All
-        ), array(), 0));
-        if (count($list_config[43513])) {
+        if (isset($list_config[43513])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[43513] as $player_pre) {
-                    if ((($linkplayercreator && $linkplayercreator == $player_pre['linkplayerup']) || count($CI->Links->read(array(
+                foreach ($list_config[43513] as $thisplayerid) {
+                    if ((($linkplayercreator && $linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                            'linkplayerup' => $player_pre['linkplayerup'],
+                            'linkplayerup' => $thisplayerid,
                             'linkplayerdown' => $linkplayercreator,
                         ))))) {
                         $the_counter++;
@@ -2042,17 +2035,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //Exclude If Has ANY
-        $list_config[43514] = (isset($list_config[43514]) ? $list_config[43514] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 43514, //Must Exclude All
-        ), array(), 0));
-        if (count($list_config[43514])) {
+        if (isset($list_config[43514])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[43514] as $player_pre) {
-                    if (($linkplayercreator == $player_pre['linkplayerup']) || count($CI->Links->read(array(
+                foreach ($list_config[43514] as $thisplayerid) {
+                    if (($linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                            'linkplayerup' => $player_pre['linkplayerup'],
+                            'linkplayerup' => $thisplayerid,
                             'linkplayerdown' => $linkplayercreator,
                         )))) {
                         //Found an exclusion, so skip this:
@@ -2067,17 +2056,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
 
         //Exclude If Has ALL
-        $list_config[26600] = (isset($list_config[26600]) ? $list_config[26600] : $CI->Links->read(array(
-            'linkidearight' => $ideaid,
-            'linkplayertype' => 26600, //Must Exclude All
-        ), array(), 0));
-        if (count($list_config[26600])) {
+        if (isset($list_config[26600])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[26600] as $player_pre) {
-                    if (($linkplayercreator == $player_pre['linkplayerup']) || count($CI->Links->read(array(
+                foreach ($list_config[26600] as $thisplayerid) {
+                    if (($linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                            'linkplayerup' => $player_pre['linkplayerup'],
+                            'linkplayerup' => $thisplayerid,
                             'linkplayerdown' => $linkplayercreator,
                         )))) {
                         //Found an exclusion, so skip this:
