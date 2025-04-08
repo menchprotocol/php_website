@@ -10,28 +10,28 @@ foreach ($this->Links->read(array(
     $is_found = false;
     //Fetch everyone who has discovered this idea:
     foreach ($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkidealeft' => $addition_sync['linkidearight'],
     ), array('linkplayercreator'), 0, 0, array('linkid' => 'DESC')) as $dicovered) {
 
-        //Make sure no previous removed link between these two Players:
-        if(!count($this->Links->read(array(
-            'linkvoid >' => 0,
+        //Make sure no previous/current removed link between these two Players:
+        if (!count($this->Links->read(array(
+            'linkvoid >=' => 0, //Any Link
             'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $addition_sync['linkplayerup'],
             'linkplayerdown' => $dicovered['linkplayercreator'],
-        )))){
+        )))) {
             //We would not recreate a removed link:
             continue;
         }
 
         //Any responses by this user?
         $set_linktext = $dicovered['linktext'];
-        foreach($this->Links->read(array(
-                    'linkplayertype' => 33532, //Private Reply
+        foreach ($this->Links->read(array(
+            'linkplayertype' => 33532, //Private Reply
             'linkidealeft' => $addition_sync['linkidearight'],
             'linkplayercreator' => $dicovered['linkplayercreator'],
-        ), array('linkidearight'), 0, 1, array('linkid' => 'DESC')) as $response){
+        ), array('linkidearight'), 0, 1, array('linkid' => 'DESC')) as $response) {
             $set_linktext = $response['ideatext'];
         }
 
