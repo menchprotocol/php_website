@@ -2995,7 +2995,7 @@ class Controller extends CI_Controller
 
             foreach (ideas_query($_POST['linkplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['linkplayertype'], $this->config->item('playerids___11020'))) {
-                    echo idea_view($_POST['linkplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                    echo idea_view($_POST['linkplayertype'], $s, $previous_i);
                     $success = true;
                 } else if ($_POST['linkplayertype'] == 6255 || in_array($_POST['linkplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['linkplayertype'], $this->config->item('playerids___11028'))) {
                     echo player_view($_POST['linkplayertype'], $s);
