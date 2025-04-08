@@ -2912,14 +2912,14 @@ class Controller extends CI_Controller
             if ($_POST['apply_id'] == 4997) {
 
                 //Player list:
-                $counter = players_query(12274, $_POST['s__id'], 0, false);
+                $counter = players_query(11029, $_POST['s__id'], 0, false);
                 if (!$counter) {
                     echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Players yet</div>';
                 } else {
                     echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Player' . view_s($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach (players_query(12274, $_POST['s__id'], 1, true) as $e) {
+                    foreach (players_query(11029, $_POST['s__id'], 1, true) as $e) {
                         array_push($ids, $e['playerid']);
                         echo player_view(12274, $e);
                     }
