@@ -1057,7 +1057,6 @@ function setup_popover(){
             }, function (data) {
                 $('.popover-body').html(data);
                 load_cards();
-                x_set_start_text();
                 load_card_clickers();
             });
             return '<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>';
@@ -1089,17 +1088,7 @@ var index_algolia = false;
 $(document).ready(function () {
 
     //Look for power editor updates:
-    $('.x_set_class_text').keypress(function(e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code==13) {
-            x_set_text(this);
-            e.preventDefault();
-        }
-    }).change(function() {
-        x_set_text(this);
-    });
-
-
+    x_set_start_text();
 
     setup_popover();
 
@@ -2703,8 +2692,15 @@ function update_text_name(cache_playerid, playerid, playertext){
     set_autosize($(target_element));
 }
 
+
+var setting_text = false;
 function x_set_text(this_grabr){
 
+    if(setting_text){
+        return false;
+    }
+
+    setting_text = true;
     var modify_data = {
         s__id: parseInt($(this_grabr).attr('s__id')),
         cache_playerid: parseInt($(this_grabr).attr('cache_playerid')),
@@ -2736,6 +2732,8 @@ function x_set_text(this_grabr){
             update_text_name(modify_data['cache_playerid'], modify_data['s__id'], modify_data['new_ideatext']);
 
         }
+
+        setting_text = false;
 
     });
 }
