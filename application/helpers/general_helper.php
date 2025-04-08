@@ -495,7 +495,7 @@ function idea_list_config($ideaid){
         array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
     }
 
-    prin_r($list_config);
+    print_r($list_config);
     die('sdasd');
 
     return $list_config;
