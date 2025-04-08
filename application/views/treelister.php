@@ -10,7 +10,7 @@ $idea_settings = idea_settings($_GET['ideahashtag'], true);
 echo '<h1 class="no-print">' . view_idea_title($idea_settings['i']) . '</h1>';
 
 
-if(!count($idea_settings['list_config'][34513])){
+if(!isset($idea_settings['list_config'][34513]) || !count($idea_settings['list_config'][34513])){
     die('Missing Pin Link @34513');
 }
 
