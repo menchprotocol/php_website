@@ -3507,14 +3507,17 @@ class Controller extends CI_Controller
             $level1_total = 0;
 
             if($linkplayertype1==1309754){
-                //Void Links
-                $void_filter = array(
-                    'linkvoid >' => 0, //Links that have been voided
-                );
+
+
                 if ($has_handle) {
-                    $void_filter['( linkplayerdown = ' . $es[0]['playerid'] . ' OR linkplayerup = ' . $es[0]['playerid'] . ' OR linkplayercreator = ' . $es[0]['playerid'] . ' )'] = null;
+                    $void_filter['(linkvoid >0 AND ( linkplayerdown = ' . $es[0]['playerid'] . ' OR linkplayerup = ' . $es[0]['playerid'] . ' OR linkplayercreator = ' . $es[0]['playerid'] . ' ))'] = null;
                 } elseif ($has_hashtag) {
-                    $void_filter['( linkidealeft = ' . $is[0]['ideaid'] . ' OR linkidearight = ' . $is[0]['ideaid'] . ' )'] = null;
+                    $void_filter['(linkvoid >0 AND ( linkidealeft = ' . $is[0]['ideaid'] . ' OR linkidearight = ' . $is[0]['ideaid'] . ' ))'] = null;
+                } else {
+                    //Void Links
+                    $void_filter = array(
+                        'linkvoid >' => 0, //Links that have been voided
+                    );
                 }
                 $sub_counter = $this->Links->read($void_filter, array(), 0, 0, array(), 'COUNT(linkid) as totals');
                 $return_array[$linkplayertype1] = intval($sub_counter[0]['totals']);
