@@ -1560,9 +1560,9 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_e = superpower_unlocked(10939, 0, $this->player_e);
+        $player_active = superpower_unlocked(10939, 0, $this->player_active);
 
-        if (!$player_e) {
+        if (!$player_active) {
             return view__json(array(
                 'status' => 0,
                 'messagCloe' => view__unauthorized_message(10939),
@@ -1579,7 +1579,7 @@ class Controller extends CI_Controller
             ));
         }
 
-        return view__json($this->Cacheideas->recursive_clone(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_e['playerid']));
+        return view__json($this->Cacheideas->recursive_clone(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_active['playerid']));
 
     }
 
