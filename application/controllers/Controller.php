@@ -3521,11 +3521,6 @@ class Controller extends CI_Controller
                 }
                 $sub_counter = $this->Links->read($void_filter, array(), 0, 0, array(), 'COUNT(linkid) as totals');
                 $return_array[$linkplayertype1] = intval($sub_counter[0]['totals']);
-
-                print_r($this->db->last_query());
-                print_r($void_filter);
-                die();
-
                 continue;
             }
 
