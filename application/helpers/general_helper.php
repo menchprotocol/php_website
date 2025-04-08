@@ -479,19 +479,24 @@ function idea_list_config($ideaid){
 
     //Now search for these settings across Players:
     foreach ($CI->Links->read(array(
+        'linkplayerup >' => 0,
         'linkidearight' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___43006')) . ')' => null,
-    ), array('linkplayerup'), 0) as $setting_link) {
-        array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['playerid']));
+    ), array(), 0) as $setting_link) {
+        array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkplayerup']));
     }
 
     //Now search for these settings across ideas:
     foreach ($CI->Links->read(array(
+        'linkidearight >' => 0,
         'linkidealeft' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
-    ), array('linkidearight'), 0) as $setting_link) {
-        array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['ideaid']));
+    ), array(), 0) as $setting_link) {
+        array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
     }
+
+    prin_r($list_config);
+    die('sdasd');
 
     return $list_config;
 }
