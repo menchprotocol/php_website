@@ -1555,6 +1555,35 @@ class Controller extends CI_Controller
 
     }
 
+
+    function idea_copy()
+    {
+
+        //Auth member and check required variables:
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
+
+        if (!$player_e) {
+            return view__json(array(
+                'status' => 0,
+                'messagCloe' => view__unauthorized_message(10939),
+            ));
+        } elseif (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1) {
+            return view__json(array(
+                'status' => 0,
+                'message' => 'Invalid Following Player',
+            ));
+        } elseif (!isset($_POST['do_recursive'])) {
+            return view__json(array(
+                'status' => 0,
+                'message' => 'Missing template parameter',
+            ));
+        }
+
+        return view__json($this->Cacheideas->recursive_clone(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_e['playerid']));
+
+    }
+
+
     function player_copy()
     {
 
