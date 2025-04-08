@@ -2825,7 +2825,7 @@ class Controller extends CI_Controller
 
     }
 
-    function x_set_text()
+    function text_updater()
     {
 
         //Authenticate Member:
@@ -2840,7 +2840,7 @@ class Controller extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif (!isset($_POST['s__id']) || !isset($_POST['cache_playerid']) || !isset($_POST['new_ideatext'])) {
+        } elseif (!isset($_POST['playerid']) || !isset($_POST['cache_playerid']) || !isset($_POST['new_ideatext'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -2851,7 +2851,7 @@ class Controller extends CI_Controller
         } elseif ($_POST['cache_playerid'] == 6197 /* SOURCE FULL NAME */) {
 
             $es = $this->Players->read(array(
-                'playerid' => $_POST['s__id'],
+                'playerid' => $_POST['playerid'],
             ));
             if (!count($es)) {
                 return view_json(array(
@@ -3507,10 +3507,19 @@ class Controller extends CI_Controller
             $level1_total = 0;
 
             if($linkplayertype1==1309754){
+
+
+
                 //Void Links
-                $sub_counter = $this->Links->read(array(
+                $void_filter = array(
                     'linkvoid >' => 0, //Links that have been voided
-                ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+                );
+                if ($has_handle) {
+                    $void_filter['( linkplayerdown = ' . $es[0]['playerid'] . ' OR linkplayerup = ' . $es[0]['playerid'] . ' OR linkplayercreator = ' . $es[0]['playerid'] . ' )'] = null;
+                } elseif ($has_hashtag) {
+                    $void_filter['( linkidealeft = ' . $is[0]['ideaid'] . ' OR linkidearight = ' . $is[0]['ideaid'] . ' )'] = null;
+                }
+                $sub_counter = $this->Links->read($void_filter, array(), 0, 0, array(), 'COUNT(linkid) as totals');
                 $return_array[$linkplayertype1] = intval($sub_counter[0]['totals']);
                 continue;
             }

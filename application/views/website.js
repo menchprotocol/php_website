@@ -2678,11 +2678,11 @@ function x_set_start_text(){
     $('.x_set_class_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code==13) {
-            x_set_text(this);
+            text_updater(this);
             e.preventDefault();
         }
     }).change(function() {
-        x_set_text(this);
+        text_updater(this);
     });
 }
 
@@ -2694,7 +2694,7 @@ function update_text_name(cache_playerid, playerid, playertext){
 
 
 var setting_text = false;
-function x_set_text(this_grabr){
+function text_updater(this_grabr){
 
     if(setting_text){
         return false;
@@ -2702,7 +2702,7 @@ function x_set_text(this_grabr){
 
     setting_text = true;
     var modify_data = {
-        s__id: parseInt($(this_grabr).attr('s__id')),
+        playerid: parseInt($(this_grabr).attr('playerid')),
         cache_playerid: parseInt($(this_grabr).attr('cache_playerid')),
         new_ideatext: $(this_grabr).val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2716,7 +2716,7 @@ function x_set_text(this_grabr){
 
     //Grey background to indicate saving
     var target_element = '.text__'+modify_data['cache_playerid']+'_'+modify_data['s__id'];
-    $.post("/controller/x_set_text", modify_data, function (data) {
+    $.post("/controller/text_updater", modify_data, function (data) {
 
         if (!data.status) {
 
