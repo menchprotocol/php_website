@@ -3516,10 +3516,13 @@ class Controller extends CI_Controller
                 } elseif ($has_hashtag) {
                     $void_filter['( linkidealeft = ' . $is[0]['ideaid'] . ' OR linkidearight = ' . $is[0]['ideaid'] . ' )'] = null;
                 }
-                print_r($void_filter);
-                die();
                 $sub_counter = $this->Links->read($void_filter, array(), 0, 0, array(), 'COUNT(linkid) as totals');
                 $return_array[$linkplayertype1] = intval($sub_counter[0]['totals']);
+
+                print_r($sub_counter);
+                print_r($void_filter);
+                die();
+
                 continue;
             }
 
