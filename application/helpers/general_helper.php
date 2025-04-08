@@ -496,9 +496,6 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 {
 
     $CI =& get_instance();
-    $players___6287 = $CI->config->item('players___6287'); //APP
-    $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
-    $players___40946 = $CI->config->item('players___40946'); //Player List Controllers
     $player_column = array();
     $idea_column = array();
     $contact_details = array(
