@@ -468,13 +468,13 @@ function idea_list_config($ideaid){
 
     $CI =& get_instance();
 
-    $list_config = array(); //To compile the settings of this sheet:
+    $idea_list_config = array(); //To compile the settings of this sheet:
 
     foreach ($CI->config->item('players___40792') as $linkplayertype => $m) {
-        $list_config[intval($linkplayertype)] = array(); //Assume no links for this type
+        $idea_list_config[intval($linkplayertype)] = array(); //Assume no links for this type
     }
     foreach ($CI->config->item('players___43006') as $linkplayertype => $m) {
-        $list_config[intval($linkplayertype)] = array(); //Assume no links for this type
+        $idea_list_config[intval($linkplayertype)] = array(); //Assume no links for this type
     }
 
     //Now search for these settings across Players:
@@ -483,7 +483,7 @@ function idea_list_config($ideaid){
         'linkidearight' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___43006')) . ')' => null,
     ), array(), 0) as $setting_link) {
-        array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkplayerup']));
+        array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkplayerup']));
     }
 
     //Now search for these settings across ideas:
@@ -492,10 +492,10 @@ function idea_list_config($ideaid){
         'linkidealeft' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
     ), array(), 0) as $setting_link) {
-        array_push($list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
+        array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
     }
 
-    return $list_config;
+    return $idea_list_config;
 }
 
 function idea_settings($ideahashtag, $fetch_contact = false)
@@ -515,31 +515,31 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         'LOWER(ideahashtag)' => strtolower($ideahashtag),
     )) as $i) {
 
-        $list_config = idea_list_config($i['ideaid']);
+        $idea_list_config = idea_list_config($i['ideaid']);
 
         //Generate filter:
         $query_string_all = array();
-        if (count($list_config[40791])) {
+        if (count($idea_list_config[40791])) {
 
             //If Discovered Any
             $query_string_all = $CI->Links->read(array(
-                'linkidealeft IN (' . join(',', $list_config[40791]) . ')' => null,
+                'linkidealeft IN (' . join(',', $idea_list_config[40791]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             ), array('linkplayercreator'), 0, 0, array('linkid' => 'DESC'));
 
-        } elseif (count($list_config[27984])) {
+        } elseif (count($idea_list_config[27984])) {
 
             //Include If Has ANY
             $query_string_all = $CI->Links->read(array(
-                'linkplayerup IN (' . join(',', $list_config[27984]) . ')' => null,
+                'linkplayerup IN (' . join(',', $idea_list_config[27984]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
-        } elseif (count($list_config[43513])) {
+        } elseif (count($idea_list_config[43513])) {
 
             //Include If Has ALL
             $query_string_all = $CI->Links->read(array(
-                'linkplayerup IN (' . join(',', $list_config[43513]) . ')' => null,
+                'linkplayerup IN (' . join(',', $idea_list_config[43513]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC'));
 
@@ -559,7 +559,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         foreach ($query_string_all as $key => $x) {
             if (in_array(intval($x['playerid']), $unique_users_count)) {
                 continue;
-            } elseif (!idea_access(null, $i['ideaid'], $i, $x['playerid'], $list_config)) {
+            } elseif (!idea_access(null, $i['ideaid'], $i, $x['playerid'], $idea_list_config)) {
                 continue;
             } else {
                 //Passed all filters:
@@ -645,7 +645,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
         return array(
             'i' => $i,
-            'list_config' => $list_config,
+            'list_config' => $idea_list_config,
             'player_column' => $player_column,
             'idea_column' => $idea_column,
             'query_string_filtered' => $query_string_filtered,
@@ -1826,7 +1826,7 @@ function player_access($playerhandle = null, $playerid = 0, $e = false, $replace
 }
 
 
-function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_playerid = false, $list_config = array(), $is_cahce = false)
+function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_playerid = false, $idea_list_config = array(), $is_cahce = false)
 {
 
     /*
@@ -1897,20 +1897,20 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //Inventory Limits:
-        if (!count($list_config) && idea_spots_remaining($ideaid) == 0) {
+        if (!count($idea_list_config) && idea_spots_remaining($ideaid) == 0) {
             return 0;
         }
 
 
         // IDEA RELATION CHECK:
-        $list_config = idea_list_config($ideaid);
+        $idea_list_config = idea_list_config($ideaid);
 
 
         //If Discovered All
-        if (count($list_config[44161])) {
+        if (count($idea_list_config[44161])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[44161] as $thisideaid) {
+                foreach ($idea_list_config[44161] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
                         'linkidealeft' => $thisideaid,
@@ -1920,16 +1920,16 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if ($the_counter < count($list_config[44161])) {
+            if ($the_counter < count($idea_list_config[44161])) {
                 return 0;
             }
         }
 
         //If Discovered Any
-        if (count($list_config[40791])) {
+        if (count($idea_list_config[40791])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[40791] as $thisideaid) {
+                foreach ($idea_list_config[40791] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
                         'linkidealeft' => $thisideaid,
@@ -1947,10 +1947,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //If Not Discovered All
-        if (count($list_config[44162])) {
+        if (count($idea_list_config[44162])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[44162] as $thisideaid) {
+                foreach ($idea_list_config[44162] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
                         'linkidealeft' => $thisideaid,
@@ -1959,7 +1959,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                         $the_counter++;
                     }
                 }
-                if ($the_counter >= count($list_config[44162])) {
+                if ($the_counter >= count($idea_list_config[44162])) {
                     return 0;
                 }
             } else {
@@ -1969,10 +1969,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //If Not Discovered Any
-        if (count($list_config[40793])) {
+        if (count($idea_list_config[40793])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[40793] as $thisideaid) {
+                foreach ($idea_list_config[40793] as $thisideaid) {
                     if (count($CI->Links->read(array(
                         'linkplayercreator' => $linkplayercreator,
                         'linkidealeft' => $thisideaid,
@@ -1995,10 +1995,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //Include If Has ANY
-        if (count($list_config[27984])) {
+        if (count($idea_list_config[27984])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[27984] as $thisplayerid) {
+                foreach ($idea_list_config[27984] as $thisplayerid) {
                     if ((($linkplayercreator && $linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $thisplayerid,
@@ -2016,10 +2016,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
         //Include If Has ALL
-        if (count($list_config[43513])) {
+        if (count($idea_list_config[43513])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[43513] as $thisplayerid) {
+                foreach ($idea_list_config[43513] as $thisplayerid) {
                     if ((($linkplayercreator && $linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $thisplayerid,
@@ -2029,17 +2029,17 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if ($the_counter < count($list_config[43513])) {
+            if ($the_counter < count($idea_list_config[43513])) {
                 return 0;
             }
         }
 
 
         //Exclude If Has ANY
-        if (count($list_config[43514])) {
+        if (count($idea_list_config[43514])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[43514] as $thisplayerid) {
+                foreach ($idea_list_config[43514] as $thisplayerid) {
                     if (($linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $thisplayerid,
@@ -2057,10 +2057,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
 
         //Exclude If Has ALL
-        if (count($list_config[26600])) {
+        if (count($idea_list_config[26600])) {
             $the_counter = 0;
             if ($linkplayercreator) {
-                foreach ($list_config[26600] as $thisplayerid) {
+                foreach ($idea_list_config[26600] as $thisplayerid) {
                     if (($linkplayercreator == $thisplayerid) || count($CI->Links->read(array(
                             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                             'linkplayerup' => $thisplayerid,
@@ -2071,7 +2071,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if ($the_counter == count($list_config[26600])) {
+            if ($the_counter == count($idea_list_config[26600])) {
                 return 0;
             }
         }
