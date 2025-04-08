@@ -3240,13 +3240,25 @@ class Controller extends CI_Controller
                         continue;
                     }
                     $input__text = in_array($idea_next['ideatype'], $this->config->item('playerids___43002')) || in_array($idea_next['ideatype'], $this->config->item('playerids___43003'));
-                    $input__phone = ($input__text && count($this->Links->read(array(
+                    $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
+                    $skipping_not_allowed = in_array($idea_next['ideatype'], $this->config->item('playerids___43009'));
+
+
+                    //Cleanup phone number:
+                    if($input__text && strlen($next_idea_data['new_ideatext']) && !is_numeric($next_idea_data['new_ideatext']) && count($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'linkidearight' => $idea_next['ideaid'],
                             'linkplayerup' => 42181, //Phone
-                        ))));
-                    $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
-                    $skipping_not_allowed = in_array($idea_next['ideatype'], $this->config->item('playerids___43009'));
+                        )))){
+                        $next_idea_data['new_ideatext'] = preg_replace("/[^0-9]+/", "", $next_idea_data['new_ideatext']);
+                        if(strlen($next_idea_data['new_ideatext'])<10){
+                            return view_json(array(
+                                'status' => 0,
+                                'message' => 'Phone numbers cannot be less than 10 digits',
+                            ));
+                        }
+                    }
+
                     $trying_to_skip = (
                         ($input__text && !$input__upload && !strlen($next_idea_data['new_ideatext'])) ||
                         (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) ||
@@ -3257,7 +3269,7 @@ class Controller extends CI_Controller
                     if ($idea_required && $trying_to_skip) {
                         return view_json(array(
                             'status' => 0,
-                            'message' => 'We require a valid response for '.view_idea_title($idea_next, true).' Instead of "'.$next_idea_data['new_ideatext'].'"',
+                            'message' => 'Enter a valid response to '.view_idea_title($idea_next, true).' instead of "'.$next_idea_data['new_ideatext'].'"',
                         ));
                     }
 

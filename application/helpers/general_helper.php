@@ -4583,11 +4583,23 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
             } elseif (in_array($i['ideatype'], $CI->config->item('playerids___43003'))) {
 
                 //Input
+
                 if ($i['ideatype'] == 31794) {
 
                     //Number
-                    $input_type = 'number';
-                    $placeholder = 'Enter Number...';
+                    if(count($CI->Links->read(array(
+                        'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
+                        'linkidearight' => $i['ideaid'],
+                        'linkplayerup' => 42181, //Phone
+                    )))){
+                       //It's a phone number:
+                        $input_type = 'text';
+                        $placeholder = 'Enter Phone Number...';
+                    } else {
+                        //A regular number:
+                        $input_type = 'number';
+                        $placeholder = 'Enter Number...';
+                    }
 
                     //Steps
                     foreach ($CI->Links->read(array(
