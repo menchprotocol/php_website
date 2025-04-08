@@ -36,7 +36,7 @@ foreach ($this->Links->read(array(
         }
 
         //lets append this Player:
-        if (append_player($addition_sync['linkplayerup'], $dicovered['linkplayercreator'], $set_linktext, $addition_sync['linkidearight'])) {
+        if (append_player($addition_sync['linkplayerup'], $dicovered['linkplayercreator'], $set_linktext, $addition_sync['linkidearight'], false)) {
             $counter++;
         }
     }

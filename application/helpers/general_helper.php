@@ -1099,7 +1099,7 @@ function process_media($ideaid, $uploaded_media)
 }
 
 
-function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid)
+function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid, $update_if_existing = true)
 {
 
     $CI =& get_instance();
@@ -1133,10 +1133,12 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid)
         }
 
         //Content value has changed, update the Link:
-        $CI->Links->update($existing_x[0]['linkid'], array(
-            'linktext' => $linktext,
-            'linkplayercreator' => $linkplayercreator,
-        ));
+        if($update_if_existing){
+            $CI->Links->update($existing_x[0]['linkid'], array(
+                'linktext' => $linktext,
+                'linkplayercreator' => $linkplayercreator,
+            ));
+        }
 
     } else {
 
