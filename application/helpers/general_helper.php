@@ -1843,7 +1843,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
     $CI =& get_instance();
     $player_active = superpower_unlocked();
-    $discovery_mode = ($replacement_playerid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2))) ? true : false));
+    $discovery_mode = ($replacement_playerid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlplayers___6287'))) ? true : false));
 
     if ($is_cahce) {
         return 1;
