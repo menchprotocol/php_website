@@ -415,6 +415,8 @@ function verify_cookie()
 function view_tree($i)
 {
 
+    $CI =& get_instance();
+
     echo '<div class="slim_title">';
 
     echo '<div class="hideIfEmpty">';
@@ -454,20 +456,10 @@ function view_tree($i)
     echo '</div>';
 
 
-    $filters_ui = '';
-    $CI =& get_instance();
-    //Idea<>Idea Settings:
-    $players___40792 = $CI->config->item('players___40792');
-    foreach ($i['idea_list_config'] as $key => $filtered_ideas) {
-        if (substr_count($key, 'full_config_') == 1) {
-            $base_key = one_two_explode('full_config_', '', $key);
-            if (isset($players___40792[$base_key])) {
-                foreach ($filtered_ideas as $filtered_idea) {
-                }
-            }
-        }
-    }
 
+
+    //Idea Filters:
+    $filters_ui = '';
 
     //Idea<>Player Settings:
     foreach ($CI->config->item('players___43006') as $playerid => $m) {
@@ -476,13 +468,11 @@ function view_tree($i)
         }
     }
     //Idea<>Idea Settings:
-    foreach ($CI->config->item('players___43006') as $playerid => $m) {
+    foreach ($CI->config->item('players___40792') as $playerid => $m) {
         foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_idea) {
             $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_idea['ideahashtag'] . '">' . view_idea_title($filtered_idea) . '</a></div>';
         }
     }
-
-
     if ($filters_ui) {
         $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
         echo '<div class="hideIfEmpty filter_data">';
