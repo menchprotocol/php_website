@@ -492,9 +492,11 @@ function idea_list_config($ideaid){
 
     foreach ($CI->config->item('players___40792') as $linkplayertype => $m) {
         $idea_list_config[intval($linkplayertype)] = array(); //Assume no links for this type
+        $idea_list_config['full_config_'.$linkplayertype] = array(); //Assume no links for this type
     }
     foreach ($CI->config->item('players___43006') as $linkplayertype => $m) {
         $idea_list_config[intval($linkplayertype)] = array(); //Assume no links for this type
+        $idea_list_config['full_config_'.$linkplayertype] = array(); //Assume no links for this type
     }
 
     //Now search for these settings across Players:
