@@ -30,7 +30,7 @@ class Ideas extends CIdea_cache
 
         //Save hashtag
         if (!isset($add_fields['ideahashtag'])) {
-            $add_fields['ideahashtag'] = random_string(13);
+            $add_fields['ideahashtag'] = random_string(8);
         }
         $this->Links->create(array(
             'linkplayertype' => 42275, //Idea Trigger
