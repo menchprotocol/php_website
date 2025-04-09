@@ -150,6 +150,11 @@ class Players extends CIdea_cache
             foreach ($update_columns as $key => $value) {
                 if (array_key_exists($key, $must_sync_ledger)) {
                     //Update if anything changed:
+                    if($linkplayercreator==1){
+                        print_r($value);
+                        print_r($old_x['linktext']);
+                    }
+
                     if ($value != $old_x['linktext']) {
                         $this->Links->create(array(
                             'linkplayercreator' => $linkplayercreator,
@@ -171,10 +176,7 @@ class Players extends CIdea_cache
                 }
             }
 
-            if($linkplayercreator==1){
-                print_r($linkid);
-                print_r($update_columns);
-            }
+
 
             //Update:
             $this->db->where('playerid', $linkid);
