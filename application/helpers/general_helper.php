@@ -464,12 +464,18 @@ function view_tree($i)
     //Idea<>Player Settings:
     foreach ($CI->config->item('players___43006') as $playerid => $m) {
         foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_player) {
+            if(strlen($filters_ui)){
+                $filters_ui .= '<div class="and_filter">-AND-</div>';
+            }
             $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_player['playerhandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_player['playercover']) . '</span>' . $filtered_player['playertext'] . '</a></div>';
         }
     }
     //Idea<>Idea Settings:
     foreach ($CI->config->item('players___40792') as $playerid => $m) {
         foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_idea) {
+            if(strlen($filters_ui)){
+                $filters_ui .= '<div class="and_filter">-AND-</div>';
+            }
             $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_idea['ideahashtag'] . '">' . view_idea_title($filtered_idea) . '</a></div>';
         }
     }
