@@ -290,10 +290,12 @@ class Links extends CIdea_cache
         )) as $old_x) {
 
             //Make sure something changed:
+            $new_columns = array();
             $something_changed = false;
             foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight','linknumber','linktext','linkvoid') as $must_change){
                 if(isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change]){
                     $something_changed = true;
+                    $new_columns[$must_change] = $update_columns[$must_change];
                 }
             }
             if(!$something_changed){
@@ -305,8 +307,6 @@ class Links extends CIdea_cache
             }
 
             //Create New Link
-            $new_columns = array_merge($old_x, $update_columns);
-            unset($new_columns['linkid']);
             $new_x = $this->Links->create($new_columns, true, false);
 
             if ($new_x['linkid'] > 0) {
