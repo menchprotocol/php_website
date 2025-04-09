@@ -19,6 +19,6 @@ if(!count($this->Links->read(array(
     //Assign session & log Link:
     $this->Players->activate($focus_e);
 
-    js_php_redirect(loginas . phpview_memory(42903, 42902) . $focus_e['playerhandle'], 1597);
+    js_php_redirect( phpview_memory(42903, 42902) . $focus_e['playerhandle'], 1597);
 
 }
