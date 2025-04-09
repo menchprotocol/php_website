@@ -1518,7 +1518,7 @@ class Links extends CIdea_cache
             'linkidealeft' => $i['ideaid'],
         ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
 
-        $i['idea_list_config'] = idea_list_config($i['ideaid'], true);
+        $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
         $i['stats'] = array(
             'max_level' => $idea_level,
             'max_steps' => ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)),
