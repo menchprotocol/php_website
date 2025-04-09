@@ -3296,8 +3296,8 @@ h4.main__title{
 .filter_data{
     padding: 3px 3px 8px;
     margin:0 0 5px 0;
-    border-left: 1px dotted #FF0000;
-    border-bottom: 1px dotted #FF0000;
+    border-left: 1px solid #FF0000;
+    border-bottom: 1px solid #FF0000;
 }
 
 .filter_data .and_filter {
