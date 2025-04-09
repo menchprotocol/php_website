@@ -3297,7 +3297,7 @@ h4.main__title{
     padding: 8px 3px;
     margin-left: 0px;
     border-left: 3px solid #FF0000;
-    border-top: 3px solid #FF0000;
+    border-bottom: 3px solid #FF0000;
 }
 .filter_data h3{
     font-size: 1em;
