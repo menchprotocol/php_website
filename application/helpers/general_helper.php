@@ -465,6 +465,9 @@ function view_tree($i)
     $current_playerid = 0;
     foreach ($CI->config->item('players___43006') as $playerid => $m) {
         foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_player) {
+            if(!$current_playerid){
+                $current_playerid = $playerid;
+            }
             if(strlen($filters_ui) && $current_playerid!=$playerid){
                 $current_playerid = $playerid;
                 $filters_ui .= '<div class="and_filter">-AND-</div>';
@@ -475,6 +478,9 @@ function view_tree($i)
     //Idea<>Idea Settings:
     foreach ($CI->config->item('players___40792') as $playerid => $m) {
         foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_idea) {
+            if(!$current_playerid){
+                $current_playerid = $playerid;
+            }
             if(strlen($filters_ui) && $current_playerid!=$playerid){
                 $current_playerid = $playerid;
                 $filters_ui .= '<div class="and_filter">-AND-</div>';
