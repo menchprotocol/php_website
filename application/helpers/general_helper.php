@@ -454,40 +454,46 @@ function view_tree($i)
     echo '</div>';
 
 
-
     $filters_ui = '';
     $CI =& get_instance();
     //Idea<>Idea Settings:
     $players___40792 = $CI->config->item('players___40792');
-    foreach($i['idea_list_config'] as $key => $filtered_ideas){
-        if(substr_count($key, 'full_config_')==1){
-            $base_key = one_two_explode('full_config_','',$key);
-            if(isset($players___40792[$base_key])){
-                foreach($filtered_ideas as $filtered_idea){
-                    $filters_ui .= '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$filtered_idea['ideahashtag'].'">'.view_idea_title($filtered_idea).'</a></div>';
-                }
-            }
-        }
-    }
-    //Idea<>Player Settings:
-    $players___43006 = $CI->config->item('players___43006');
-    foreach($i['idea_list_config'] as $key => $filtered_players){
-        if(substr_count($key, 'full_config_')==1){
-            $base_key = one_two_explode('full_config_','',$key);
-            if(isset($players___43006[$base_key])){
-                foreach($filtered_players as $filtered_player){
-                    $filters_ui .= '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$filtered_player['playerhandle'].'"><span class="icon-block-sm">'.view_cover($filtered_player['playercover']).'</span>'.$filtered_player['playertext'].'</a></div>';
+    foreach ($i['idea_list_config'] as $key => $filtered_ideas) {
+        if (substr_count($key, 'full_config_') == 1) {
+            $base_key = one_two_explode('full_config_', '', $key);
+            if (isset($players___40792[$base_key])) {
+                foreach ($filtered_ideas as $filtered_idea) {
                 }
             }
         }
     }
 
-    if($filters_ui){
+
+    //Idea<>Player Settings:
+    foreach ($CI->config->item('players___43006') as $playerid => $m) {
+        foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_player) {
+            $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_player['playerhandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_player['playercover']) . '</span>' . $filtered_player['playertext'] . '</a></div>';
+        }
+    }
+    //Idea<>Idea Settings:
+    foreach ($CI->config->item('players___43006') as $playerid => $m) {
+        foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_idea) {
+            $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_idea['ideahashtag'] . '">' . view_idea_title($filtered_idea) . '</a></div>';
+        }
+    }
+
+    /*
+     *
+     * Before showing this we must enture all information is updated...
+     *
+    if ($filters_ui) {
+        $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
         echo '<div class="hideIfEmpty filter_data">';
-        echo '<h3>Applied Filters:</h3>';
+        echo '<h3>' . $players___11035[40946]['m__cover'] . ' ' . $players___11035[40946]['m__title'] . ':</h3>';
         echo $filters_ui;
         echo '</div>';
     }
+    */
 
     foreach ($i['idea_next'] as $next_i) {
         echo '<div class="sub_frame frame_id_' . $i['ideaid'] . '">';
@@ -498,7 +504,8 @@ function view_tree($i)
     echo '</div>';
 }
 
-function idea_list_config($ideaid, $access_limit=true){
+function idea_list_config($ideaid, $access_limit = true)
+{
 
     $CI =& get_instance();
 
@@ -506,11 +513,11 @@ function idea_list_config($ideaid, $access_limit=true){
 
     foreach ($CI->config->item('players___40792') as $linkplayertype => $m) {
         $idea_list_config[intval($linkplayertype)] = array(); //Assume no links for this type
-        $idea_list_config['full_config_'.$linkplayertype] = array(); //Assume no links for this type
+        $idea_list_config['full_config_' . $linkplayertype] = array(); //Assume no links for this type
     }
     foreach ($CI->config->item('players___43006') as $linkplayertype => $m) {
         $idea_list_config[intval($linkplayertype)] = array(); //Assume no links for this type
-        $idea_list_config['full_config_'.$linkplayertype] = array(); //Assume no links for this type
+        $idea_list_config['full_config_' . $linkplayertype] = array(); //Assume no links for this type
     }
 
     //Now search for these settings across Players:
@@ -520,7 +527,7 @@ function idea_list_config($ideaid, $access_limit=true){
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___43006')) . ')' => null,
     ), array('linkplayerup'), 0, 0, array(), '*', null, $access_limit) as $setting_link) {
         array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkplayerup']));
-        array_push($idea_list_config['full_config_'.$setting_link['linkplayertype']], $setting_link);
+        array_push($idea_list_config['full_config_' . $setting_link['linkplayertype']], $setting_link);
     }
 
     //Now search for these settings across ideas:
@@ -530,7 +537,7 @@ function idea_list_config($ideaid, $access_limit=true){
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
     ), array('linkidearight'), 0, 0, array(), '*', null, $access_limit) as $setting_link) {
         array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
-        array_push($idea_list_config['full_config_'.$setting_link['linkplayertype']], $setting_link);
+        array_push($idea_list_config['full_config_' . $setting_link['linkplayertype']], $setting_link);
     }
 
     return $idea_list_config;
@@ -1182,7 +1189,7 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid, $u
 
     if (count($existing_x)) {
 
-        if($existing_x[0]['linkvoid'] > 0){
+        if ($existing_x[0]['linkvoid'] > 0) {
             return false;
         } elseif (strtolower($existing_x[0]['linktext']) == strtolower($linktext)) {
             //Everything is the same, nothing to do here:
@@ -1190,7 +1197,7 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid, $u
         }
 
         //Content value has changed, update the Link:
-        if($update_if_existing){
+        if ($update_if_existing) {
             $CI->Links->update($existing_x[0]['linkid'], array(
                 'linktext' => $linktext,
                 'linkplayercreator' => $linkplayercreator,
@@ -4634,12 +4641,12 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 if ($i['ideatype'] == 31794) {
 
                     //Number
-                    if(count($CI->Links->read(array(
+                    if (count($CI->Links->read(array(
                         'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'linkidearight' => $i['ideaid'],
                         'linkplayerup' => 42181, //Phone
-                    )))){
-                       //It's a phone number:
+                    )))) {
+                        //It's a phone number:
                         $input_type = 'text';
                         $placeholder = 'Enter Phone Number...';
                     } else {
