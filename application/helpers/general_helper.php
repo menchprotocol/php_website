@@ -455,6 +455,7 @@ function view_tree($i)
 
 
     echo '<div class="hideIfEmpty filter_data">';
+    echo print_r($i['idea_list_config'], true);
     $CI =& get_instance();
     //Idea<>Idea Settings:
     $players___40792 = $CI->config->item('players___40792');
