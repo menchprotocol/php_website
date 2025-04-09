@@ -517,9 +517,9 @@ function idea_list_config($ideaid){
     //Now search for these settings across ideas:
     foreach ($CI->Links->read(array(
         'linkidearight >' => 0,
-        'linkidealeft' => $ideaid,
+        'linkidearight' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
-    ), array('linkidearight'), 0) as $setting_link) {
+    ), array('linkidealeft'), 0) as $setting_link) {
         array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
         array_push($idea_list_config['full_config_'.$setting_link['linkplayertype']], $setting_link);
     }
