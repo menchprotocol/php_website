@@ -1460,8 +1460,8 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    var is_next = next_ideaid && js_playerids___4486.includes(link_linkplayertype);
-    var is_prev = previous_ideaid && js_playerids___4486.includes(link_linkplayertype);
+    var is_next = next_ideaid && js_playerids___4486.includes(link_linkplayertype) && $('.ui_ideacache_'+next_ideaid);
+    var is_prev = previous_ideaid && js_playerids___4486.includes(link_linkplayertype) && $('.ui_ideacache_'+previous_ideaid);
 
     if(is_next || is_prev){
 
