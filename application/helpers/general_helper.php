@@ -482,10 +482,7 @@ function view_tree($i)
         }
     }
 
-    /*
-     *
-     * Before showing this we must enture all information is updated...
-     *
+
     if ($filters_ui) {
         $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
         echo '<div class="hideIfEmpty filter_data">';
@@ -493,7 +490,6 @@ function view_tree($i)
         echo $filters_ui;
         echo '</div>';
     }
-    */
 
     foreach ($i['idea_next'] as $next_i) {
         echo '<div class="sub_frame frame_id_' . $i['ideaid'] . '">';
@@ -5045,10 +5041,15 @@ function player_view($linkplayertype, $e, $extra_class = null)
     ), array(), 0, 0, $order_columns) as $social_link) {
 
         if (in_array($social_link['linkplayerup'], $CI->config->item('playerids___32172'))) {
+            /*
+             *
+             * Before showing this we must enture all information is updated...
+             *
             if (strlen($social_link['linktext'])) {
                 //Must always see, show content here:
                 $bio .= '<div class="player_bio grey center">' . $social_link['linktext'] . '</div>';
             }
+            */
             continue;
         }
 
