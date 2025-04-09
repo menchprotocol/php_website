@@ -168,6 +168,10 @@ class Ideas extends CIdea_cache
             $update_columns['ideacache'] = ideacache($linkid, $update_columns['ideatext']);
         }
 
+        if (count($update_columns) == 0) {
+            return false;
+        }
+
         //Update:
         $this->db->where('ideaid', $linkid);
         $this->db->update('nodeideas', $update_columns);
