@@ -417,7 +417,7 @@ function view_tree($i)
 
     echo '<div class="slim_title">';
 
-    echo '<div>';
+    echo '<div class="hideIfEmpty">';
 
     if (count($i['idea_next'])) {
         echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm hidden frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-plus"></i></span></a>';
@@ -450,8 +450,28 @@ function view_tree($i)
             echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . $i['stats']['or_steps'];
         }
     }
-
     echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">' . view_idea_links($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
+    echo '</div>';
+
+
+    echo '<div class="hideIfEmpty filter_data">';
+    $CI =& get_instance();
+    //Idea<>Idea Settings:
+    $players___40792 = $CI->config->item('players___40792');
+    foreach($i['idea_list_config'] as $key => $value){
+        if(substr_count($key, 'full_config_')==1){
+            $base_key = one_two_explode('full_config_','',$key);
+            echo '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$value['ideahashtag'].'">'.view_idea_title($value).'</a></div>';
+        }
+    }
+    //Idea<>Player Settings:
+    $players___43006 = $CI->config->item('players___43006');
+    foreach($i['idea_list_config'] as $key => $value){
+        if(substr_count($key, 'full_config_')==1){
+            $base_key = one_two_explode('full_config_','',$key);
+            echo '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$value['playerhandle'].'"><span class="icon-block-sm">'.view_cover($value['playercover']).'</span>'.$value['playertext'].'</a></div>';
+        }
+    }
     echo '</div>';
 
 
@@ -482,8 +502,9 @@ function idea_list_config($ideaid){
         'linkplayerup >' => 0,
         'linkidearight' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___43006')) . ')' => null,
-    ), array(), 0) as $setting_link) {
+    ), array('linkplayerup'), 0) as $setting_link) {
         array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkplayerup']));
+        array_push($idea_list_config['full_config_'.$setting_link['linkplayertype']], $setting_link);
     }
 
     //Now search for these settings across ideas:
@@ -491,8 +512,9 @@ function idea_list_config($ideaid){
         'linkidearight >' => 0,
         'linkidealeft' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
-    ), array(), 0) as $setting_link) {
+    ), array('linkidearight'), 0) as $setting_link) {
         array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
+        array_push($idea_list_config['full_config_'.$setting_link['linkplayertype']], $setting_link);
     }
 
     return $idea_list_config;

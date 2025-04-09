@@ -3293,7 +3293,13 @@ h4.main__title{
     font-size: 0.8em;
 }
 
-
+.filter_data{
+    padding: 5px;
+    margin-left:5px;
+    border-left:1px solid #CCCCCC;
+    border-down:1px solid #CCCCCC;
+    display:inline-block;
+}
 @media (max-width:610px) {
 
     .link_click a {
