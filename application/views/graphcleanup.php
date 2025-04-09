@@ -1,20 +1,5 @@
 <?php
 
-
-$missing = array();
-foreach($this->Ideas->read(array(), 0) as $idea_fix){
-
-    if(!count($this->Links->read(array('linkid' => $idea_fix['ideaid'])))){
-        array_push($missing, $idea_fix);
-    }
-
-}
-
-view_json(array(
-    'count' => count($missing),
-    'list' => $missing,
-));
-
 /*
  *
 
