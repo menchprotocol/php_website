@@ -43,7 +43,9 @@ class Ideas extends CIdea_cache
         //Save Idea
         $add_fields['ideaid'] = $new_x['linkid'];
         $add_fields['ideacache'] = ideacache($add_fields['ideaid'], $add_fields['ideatext']);
-        $this->db->insert('nodeideas', $add_fields);
+        if(!count($this->Ideas->read(array('ideaid' => $add_fields['ideaid'])))){
+            $this->db->insert('nodeideas', $add_fields);
+        }
 
         //Update Search Index:
         update_algolia(12273, $add_fields['ideaid']);

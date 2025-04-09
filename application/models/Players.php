@@ -63,12 +63,15 @@ class Players extends CIdea_cache
         }
 
         //Add to cache:
-        $this->db->insert(' nodeplayers', array(
-            'playerid' => $new_x['linkid'],
-            'playerhandle' => $add_fields['playerhandle'],
-            'playercover' => $add_fields['playercover'],
-            'playertext' => $validate_playertext['playertext_clean'],
-        ));
+        if(!count($this->Players->read(array('playerid' => $new_x['linkid'])))){
+            $this->db->insert('nodeplayers', array(
+                'playerid' => $new_x['linkid'],
+                'playerhandle' => $add_fields['playerhandle'],
+                'playercover' => $add_fields['playercover'],
+                'playertext' => $validate_playertext['playertext_clean'],
+            ));
+        }
+
 
         //Update Search Index:
         update_algolia(12274, $new_x['linkid']);

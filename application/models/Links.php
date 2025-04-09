@@ -198,22 +198,22 @@ class Links extends CIdea_cache
         $player_join = false;
         if (in_array('linkplayerup', $joins_objects)) {
             $player_join = true;
-            $this->db->join(' nodeplayers', 'linkplayerup=playerid', 'left');
+            $this->db->join('nodeplayers', 'linkplayerup=playerid', 'left');
         } elseif (in_array('linkplayerdown', $joins_objects)) {
             $player_join = true;
-            $this->db->join(' nodeplayers', 'linkplayerdown=playerid', 'left');
+            $this->db->join('nodeplayers', 'linkplayerdown=playerid', 'left');
         } elseif (in_array('linkplayertype', $joins_objects)) {
             $player_join = true;
-            $this->db->join(' nodeplayers', 'linkplayertype=playerid', 'left');
+            $this->db->join('nodeplayers', 'linkplayertype=playerid', 'left');
         } elseif (in_array('linkplayercreator', $joins_objects)) {
             $player_join = true;
-            $this->db->join(' nodeplayers', 'linkplayercreator=playerid', 'left');
+            $this->db->join('nodeplayers', 'linkplayercreator=playerid', 'left');
         } elseif (in_array('linkplayerdomain', $joins_objects)) {
             $player_join = true;
-            $this->db->join(' nodeplayers', 'linkplayerdomain=playerid', 'left');
+            $this->db->join('nodeplayers', 'linkplayerdomain=playerid', 'left');
         } elseif (in_array('linkplayerid', $joins_objects)) {
             $player_join = true;
-            $this->db->join(' nodeplayers', 'linkid=playerid', 'left');
+            $this->db->join('nodeplayers', 'linkid=playerid', 'left');
         }
 
         $link_void_found = false;
