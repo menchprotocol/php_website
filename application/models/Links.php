@@ -289,25 +289,29 @@ class Links extends CIdea_cache
             'linkid' => $linkid,
         )) as $old_x) {
 
-            //Make sure something changed:
-            $new_columns = array();
-            $something_changed = false;
-            foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight','linknumber','linktext','linkvoid') as $must_change){
-                if(isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change]){
-                    $something_changed = true;
-                    $new_columns[$must_change] = $update_columns[$must_change];
-                }
-            }
-            if(!$something_changed){
-                return 0; //Nothing changed
-            }
             if (!isset($update_columns['linkplayercreator'])) {
                 //Fetch session player:
                 $update_columns['linkplayercreator'] = ($linkplayercreator > 0 ? $linkplayercreator : $old_x['linkplayercreator'] );
             }
 
+            //Make sure something changed:
+            $something_changed = false;
+            foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight','linknumber','linktext','linkvoid') as $must_change){
+                $this_changed = isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change];
+                if(!isset($update_columns[$must_change])){
+                    $update_columns[$must_change] = $old_x[$must_change];
+                }
+                if($this_changed){
+                    $something_changed = true;
+                }
+            }
+            if(!$something_changed){
+                return 0; //Nothing changed
+            }
+
+
             //Create New Link
-            $new_x = $this->Links->create($new_columns, true, false);
+            $new_x = $this->Links->create($update_columns, true, false);
 
             if ($new_x['linkid'] > 0) {
                 //Void Old Link:
