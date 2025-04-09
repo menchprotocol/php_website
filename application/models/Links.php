@@ -223,10 +223,8 @@ class Links extends CIdea_cache
             } else {
                 $this->db->where($key);
             }
-
             if (substr_count($key, 'linkvoid')) {
                 $link_void_found = true;
-                break;
             }
         }
         if (!$link_void_found) {
