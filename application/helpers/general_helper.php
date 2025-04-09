@@ -221,7 +221,7 @@ function idea_spots_remaining($ideaid)
 {
 
     $CI =& get_instance();
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
@@ -237,9 +237,9 @@ function idea_spots_remaining($ideaid)
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkidealeft' => $ideaid,
         );
-        if ($player_active) {
+        if ($player_session) {
             //Do not count current user to give them option to edit & resubmit:
-            $query_filters['linkplayercreator !='] = $player_active['playerid'];
+            $query_filters['linkplayercreator !='] = $player_session['playerid'];
         }
 
         //Navigation?
@@ -346,14 +346,14 @@ function get_redirected($url, $message = null, $log_error = false)
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
     $CI =& get_instance();
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
 
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
     }
 
     if ($log_error) {
-        $player_id = ($player_active ? $player_active['playerid'] : 14068);
+        $player_id = ($player_session ? $player_session['playerid'] : 14068);
         //Log thie error:
         log_error($url . ' ' . stripslashes($message), array(
             'linkplayerdown' => $player_id,
@@ -693,8 +693,8 @@ function count_link_groups($linkplayertype, $linktime_start = null, $linktime_en
 function home_url()
 {
     $CI =& get_instance();
-    $player_active = superpower_unlocked();
-    return ($player_active ? view_memory(42903, 42902) . $player_active['playerhandle'] : view_memory(42903, 14565));
+    $player_session = superpower_unlocked();
+    return ($player_session ? view_memory(42903, 42902) . $player_session['playerhandle'] : view_memory(42903, 14565));
 }
 
 function idea_is_startable($i)
@@ -714,28 +714,28 @@ function remove_none_utf8($string)
 }
 
 
-function superpower_unlocked($superpower_playerid = null, $force_redirect = 0, $session_player_active = false)
+function superpower_unlocked($superpower_playerid = null, $force_redirect = 0, $session_player_session = false)
 {
 
-    if (isset($session_player_active['playerid'])) {
+    if (isset($session_player_session['playerid'])) {
         //We have the player!
-        return $session_player_active;
+        return $session_player_session;
     }
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $player_active = $CI->session->userdata('session_up');
-    $has_session = (is_array($player_active) && count($player_active) > 0 && $player_active);
+    $player_session = $CI->session->userdata('session_up');
+    $has_session = (is_array($player_session) && count($player_session) > 0 && $player_session);
 
     //Let's start checking various ways we can give member access:
     if ($has_session && !$superpower_playerid) {
 
         //No minimum level required, grant access IF member is logged in:
-        return $player_active;
+        return $player_session;
 
     } elseif ($has_session && in_array($superpower_playerid, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
-        return $player_active;
+        return $player_session;
 
     }
 
@@ -749,7 +749,7 @@ function superpower_unlocked($superpower_playerid = null, $force_redirect = 0, $
 
         //Block access:
         if ($has_session) {
-            $goto_url = view_memory(42903, 42902) . $player_active['playerhandle'];
+            $goto_url = view_memory(42903, 42902) . $player_session['playerhandle'];
         } else {
             $goto_url = view_app_link(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
         }
@@ -844,7 +844,7 @@ function process_media($ideaid, $uploaded_media)
 {
 
     $CI =& get_instance();
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
 
     //Update Media...
     $media_stats = array(
@@ -859,7 +859,7 @@ function process_media($ideaid, $uploaded_media)
     );
 
 
-    if (!$player_active) {
+    if (!$player_session) {
         return $media_stats;
     }
 
@@ -905,7 +905,7 @@ function process_media($ideaid, $uploaded_media)
                     $adjust_updated = true;
                     $CI->Players->update($upload_media['playerid'], array(
                         'playertext' => trim($upload_media['playertext']),
-                    ), $player_active['playerid']);
+                    ), $player_session['playerid']);
                 }
 
                 $media_stats['media_playercover'] = $upload_media['playercover'];
@@ -937,7 +937,10 @@ function process_media($ideaid, $uploaded_media)
                     $media_stats['media_playercover'] = $upload_media['playercover'];
 
                     //Create Player for this new media:
-                    $added_e = $CI->Players->create($upload_media['playertext'], $player_active['playerid'], ($upload_media['media_playerid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['playercover']));
+                    $added_e = $CI->Players->create(array(
+                        'playertext' => $upload_media['playertext'],
+                        'playercover' => ($upload_media['media_playerid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['playercover']),
+                    ), $player_session['playerid']);
                     if (!$added_e['status']) {
                         log_error('Failed to create a new Player for [' . $upload_media['playertext'] . '] with cover [' . $upload_media['playercover'] . ']', array(
                             'linkplayerdown' => $upload_media['playerid'],
@@ -988,7 +991,9 @@ function process_media($ideaid, $uploaded_media)
 
                             //If not found create the child:
                             if (!$child_id) {
-                                $added_child = $CI->Players->create($target_variable, 14068);
+                                $added_child = $CI->Players->create(array(
+                                    'playertext' => $target_variable,
+                                ));
                                 if (!$added_child['status']) {
                                     log_error('Failed to create a new Player for [' . $target_variable . ']', array(
                                         'linkplayerdown' => $linkplayertype,
@@ -998,7 +1003,7 @@ function process_media($ideaid, $uploaded_media)
 
                                 //Add links for this new Player:
                                 $CI->Links->create(array(
-                                    'linkplayercreator' => $player_active['playerid'],
+                                    'linkplayercreator' => $player_session['playerid'],
                                     'linkplayerup' => $linkplayertype,
                                     'linkplayerdown' => $added_child['new_player']['playerid'],
                                     'linkplayertype' => 4230,
@@ -1012,7 +1017,7 @@ function process_media($ideaid, $uploaded_media)
                             if ($child_id) {
                                 //Child Player found, simply link:
                                 $CI->Links->create(array(
-                                    'linkplayercreator' => $player_active['playerid'],
+                                    'linkplayercreator' => $player_session['playerid'],
                                     'linkplayerup' => $child_id,
                                     'linkplayerdown' => $upload_media['playerid'],
                                     'linkplayertype' => 4230,
@@ -1023,7 +1028,7 @@ function process_media($ideaid, $uploaded_media)
 
                             //Save variable as is:
                             $CI->Links->create(array(
-                                'linkplayercreator' => $player_active['playerid'],
+                                'linkplayercreator' => $player_session['playerid'],
                                 'linkplayerup' => $linkplayertype,
                                 'linkplayerdown' => $upload_media['playerid'],
                                 'linktext' => $target_variable,
@@ -1045,7 +1050,7 @@ function process_media($ideaid, $uploaded_media)
                         'linkplayertype' => $upload_media['media_playerid'],
                     )))) {
                         $CI->Links->create(array(
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                             'linkidearight' => $ideaid,
                             'linkplayerup' => $upload_media['playerid'],
                             'linkplayertype' => $upload_media['media_playerid'],
@@ -1057,13 +1062,13 @@ function process_media($ideaid, $uploaded_media)
 
                     //Link to Player as Uploader:
                     if (!count($CI->Links->read(array(
-                        'linkplayerup' => $player_active['playerid'],
+                        'linkplayerup' => $player_session['playerid'],
                         'linkplayerdown' => $upload_media['playerid'],
                         'linkplayertype IN (' . join(',', $CI->config->item('playerids___42657')) . ')' => null, //Uploads
                     )))) {
                         $CI->Links->create(array(
-                            'linkplayercreator' => $player_active['playerid'],
-                            'linkplayerup' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
+                            'linkplayerup' => $player_session['playerid'],
                             'linkplayerdown' => $upload_media['playerid'],
                             'linkplayertype' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
                             'linktext' => $upload_media['playback_code'],
@@ -1078,7 +1083,7 @@ function process_media($ideaid, $uploaded_media)
                         'linkplayertype' => 4230,
                     )))) {
                         $CI->Links->create(array(
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                             'linkplayerup' => $upload_media['media_playerid'],
                             'linkplayerdown' => $upload_media['playerid'],
                             'linkplayertype' => 4230,
@@ -1100,7 +1105,7 @@ function process_media($ideaid, $uploaded_media)
     //Remove current media missing from submitted (Removed during editing):
     foreach (array_diff($current_media_playerids, $upload_media_playerids) as $deleted_media_playerid) {
         $media_stats['adjust_removed']++;
-        $CI->Links->delete($full_media[$deleted_media_playerid]['linkid'], $player_active['playerid']); //Media Removed
+        $CI->Links->delete($full_media[$deleted_media_playerid]['linkid'], $player_session['playerid']); //Media Removed
     }
 
     //Calculate total media:
@@ -1281,7 +1286,7 @@ function validate_update_handle($str, $ideaid = null, $playerid = null)
 {
 
     $CI =& get_instance();
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
 
     //Validate:
     if (($ideaid && $playerid) || (!$ideaid && !$playerid)) {
@@ -1351,7 +1356,7 @@ function validate_update_handle($str, $ideaid = null, $playerid = null)
         //Since not found we can replace this:
         $CI->Ideas->update($ideaid, array(
             'ideahashtag' => change_handle($str),
-        ), $player_active['playerid']);
+        ), $player_session['playerid']);
 
     } elseif ($playerid > 0) {
 
@@ -1370,7 +1375,7 @@ function validate_update_handle($str, $ideaid = null, $playerid = null)
         //Since not active we can replace this:
         $CI->Players->update($playerid, array(
             'playerhandle' => change_handle($str),
-        ), $player_active['playerid']);
+        ), $player_session['playerid']);
 
     }
 
@@ -1531,8 +1536,8 @@ function dispatch_sms($to_phone, $single_message, $playerid = 0, $x_data = array
     if ($log_tr) {
 
         $target_player = ($sms_success ? 27676 : 27678);
-        $player_active = superpower_unlocked();
-        $playerid = ($playerid > 0 ? $playerid : ($player_active ? $player_active['playerid'] : 14068));
+        $player_session = superpower_unlocked();
+        $playerid = ($playerid > 0 ? $playerid : ($player_session ? $player_session['playerid'] : 14068));
         if ($template_ideaid && count($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
             )))) {
@@ -1685,8 +1690,8 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
     //Log Link:
     if ($log_tr) {
 
-        $player_active = superpower_unlocked();
-        $playerid = ($playerid > 0 ? $playerid : ($player_active ? $player_active['playerid'] : 14068));
+        $player_session = superpower_unlocked();
+        $playerid = ($playerid > 0 ? $playerid : ($player_session ? $player_session['playerid'] : 14068));
         if ($template_ideaid && count($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
             )))) {
@@ -1733,9 +1738,9 @@ function website_setting($setting_id = 0, $initiator_playerid = 0, $linkplayerdo
     $player_id = 0; //Assume no domain unless found below
 
     if (!$initiator_playerid) {
-        $player_active = superpower_unlocked();
-        if ($player_active && $player_active['playerid'] > 0) {
-            $initiator_playerid = $player_active['playerid'];
+        $player_session = superpower_unlocked();
+        if ($player_session && $player_session['playerid'] > 0) {
+            $initiator_playerid = $player_session['playerid'];
         }
     }
 
@@ -1802,10 +1807,10 @@ function player_access($playerhandle = null, $playerid = 0, $e = false, $replace
      * */
 
     $CI =& get_instance();
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
     if (!$replacement_playerid && superpower_unlocked(10939)) {
         return 3;
-    } elseif (!$replacement_playerid && $player_active && ($playerhandle == $player_active['playerhandle'] || $playerid == $player_active['playerid'])) {
+    } elseif (!$replacement_playerid && $player_session && ($playerhandle == $player_session['playerhandle'] || $playerid == $player_session['playerid'])) {
         return 3;
     }
 
@@ -1813,7 +1818,7 @@ function player_access($playerhandle = null, $playerid = 0, $e = false, $replace
         $filters['LOWER(playerhandle)'] = strtolower($playerhandle);
     } elseif (intval($playerid)) {
         $filters['playerid'] = $playerid;
-    } elseif (!$e || (!$player_active && !$replacement_playerid)) {
+    } elseif (!$e || (!$player_session && !$replacement_playerid)) {
         return 0;
     }
 
@@ -1827,10 +1832,10 @@ function player_access($playerhandle = null, $playerid = 0, $e = false, $replace
 
     $is_public = true;
     $is_author = false;
-    if ($player_active) {
+    if ($player_session) {
         $is_author = count($CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
-            'linkplayerup' => ($replacement_playerid > 0 ? $replacement_playerid : $player_active['playerid']),
+            'linkplayerup' => ($replacement_playerid > 0 ? $replacement_playerid : $player_session['playerid']),
             'linkplayerdown' => $e['playerid'],
         )));
     }
@@ -1856,7 +1861,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
     $CI =& get_instance();
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
     $discovery_mode = ($replacement_playerid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlplayers___6287'))) ? true : false));
 
     if ($is_cahce) {
@@ -1883,7 +1888,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
     }
 
-    $linkplayercreator = ($replacement_playerid > 0 ? $replacement_playerid : ($player_active ? $player_active['playerid'] : 0));
+    $linkplayercreator = ($replacement_playerid > 0 ? $replacement_playerid : ($player_session ? $player_session['playerid'] : 0));
     $is_author = false;
     if (!$discovery_mode && $linkplayercreator) {
         $is_author = count($CI->Links->read(array( //IDEA SOURCE
@@ -2126,7 +2131,7 @@ function idea_started($playerid, $ideahashtag)
 function update_algolia($focus__node = null, $s__id = 0)
 {
 
-    if (!search_enabled()) {
+    if (!search_enabled() || isset($_GET['disable_algolia'])) {
         console . log("Search engine is disabled!");
         return false;
     }
@@ -2801,21 +2806,21 @@ function log_error($error_message, $error_data = array(), $log_error = true)
 {
 
     //Log in PHP File:
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
 
     if ($log_error) {
 
         $CI =& get_instance();
         log_message('error', 'MENCH ERROR: ' . $error_message
-            . ($player_active ? ' | PLAYER: ' . print_r($player_active, true) : '')
-            . (count($player_active) ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
+            . ($player_session ? ' | PLAYER: ' . print_r($player_session, true) : '')
+            . (count($player_session) ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
         $CI->Links->create(array_merge($error_data, array(
             'linkplayerup' => 4246, //Platform Bug Reports
             'linkplayertype' => 44179, //Triggered
             'linktext' => $error_message,
-            'linkplayercreator' => (isset($error_data['linkplayercreator']) && $error_data['linkplayercreator'] > 0 ? $error_data['linkplayercreator'] : ($player_active ? $player_active['playerid'] : 0)),
+            'linkplayercreator' => (isset($error_data['linkplayercreator']) && $error_data['linkplayercreator'] > 0 ? $error_data['linkplayercreator'] : ($player_session ? $player_session['playerid'] : 0)),
         )));
 
     }
@@ -2823,7 +2828,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
     return array(
         'status' => 0,
         'message' => $error_message,
-        'player_active' => $player_active,
+        'player_session' => $player_session,
         'error_data' => $error_data,
     );
 
@@ -3288,7 +3293,7 @@ function view_single_select_instant($cache_playerid, $selected_playerid, $idea_a
 
     $CI =& get_instance();
     $players___this = $CI->config->item('players___' . $cache_playerid);
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $unselected_radio = in_array($cache_playerid, $CI->config->item('playerids___33331')) && !$selected_playerid;
     $players___4527 = $CI->config->item('players___4527'); //Memory
@@ -3298,12 +3303,12 @@ function view_single_select_instant($cache_playerid, $selected_playerid, $idea_a
         return false;
 
         /*
-    } elseif(!$selected_playerid && $idea_access && $player_active){
+    } elseif(!$selected_playerid && $idea_access && $player_session){
 
         //See if this user has any of these options:
         foreach($CI->Links->read(array(
             'linkplayerup IN (' . join(',', $CI->config->item('playerids___'.$cache_playerid)) . ')' => null, //SOURCE LINKS
-            'linkplayerdown' => $player_active['playerid'],
+            'linkplayerdown' => $player_session['playerid'],
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         )) as $x) {
             //Supports one for now
@@ -3615,7 +3620,7 @@ function ideacache($save_ideaid, $str)
 
         //Save Found references to remove the ones who exist in DB:
         $references_add_to_db = $idea_references;
-        $player_active = superpower_unlocked();
+        $player_session = superpower_unlocked();
         foreach ($CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___4736')) . ')' => null, //Idea Message Links 3x
             'linkidearight' => $save_ideaid,
@@ -3625,7 +3630,7 @@ function ideacache($save_ideaid, $str)
             if (!in_array($x['linktext'], $idea_references[$x['linkplayertype']])) {
 
                 //Not valid, must be removed:
-                $CI->Links->delete($x['linkid'], $player_active['playerid']);
+                $CI->Links->delete($x['linkid'], $player_session['playerid']);
 
             } else {
 
@@ -3672,8 +3677,8 @@ function ideacache($save_ideaid, $str)
                     }
                 } else {
                     $linkplayertype = $db_type; //Message URLs
-                    $player_active = superpower_unlocked();
-                    $linkplayerup = ($player_active ? $player_active['playerid'] : 14068);
+                    $player_session = superpower_unlocked();
+                    $linkplayerup = ($player_session ? $player_session['playerid'] : 14068);
                     foreach ($CI->Links->read(array(
                         'linkid' => $save_ideaid,
                     ), array()) as $x) {
@@ -3686,7 +3691,7 @@ function ideacache($save_ideaid, $str)
                 $CI->Links->create(array(
                     'linktime' => idea_creation_time($save_ideaid),
                     'linkplayertype' => $linkplayertype,
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linktext' => $linktext,
                     'linkidearight' => $save_ideaid,
                     'linkidealeft' => $linkidealeft,
@@ -3716,19 +3721,19 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
     $CI =& get_instance();
     $coins_count = array();
     $body_content = '';
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
     $ideation_pen = superpower_unlocked(10939);
     $players___loading_order = $CI->config->item('players___' . ($discovery_mode ? 26005 : 26005));
 
-    if ($player_active && !is_array($x_completes)) {
+    if ($player_session && !is_array($x_completes)) {
         $x_completes = $CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'linkplayercreator' => $player_active['playerid'],
+            'linkplayercreator' => $player_session['playerid'],
             'linkidealeft' => $focus_i['ideaid'],
         ), array('linkidearight'));
     }
 
-    $discovery_next_hide = $player_active && $discovery_mode && !count($x_completes) && count($CI->Links->read(array(
+    $discovery_next_hide = $player_session && $discovery_mode && !count($x_completes) && count($CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $focus_i['ideaid'],
             'linkplayerup' => 44250, //Hide Next Ideas
@@ -3742,7 +3747,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
         if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
             continue;
         }
-        if (in_array($linkplayertype, $CI->config->item('playerids___42376')) && !$player_active) {
+        if (in_array($linkplayertype, $CI->config->item('playerids___42376')) && !$player_session) {
             //Private content without being a member, so dont even show the counters:
             continue;
         }
@@ -3801,7 +3806,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
     }
 
 
-    if (in_array($focus_i['ideatype'], $CI->config->item('playerids___34826')) && $player_active && $discovery_mode && !count($x_completes)) {
+    if (in_array($focus_i['ideatype'], $CI->config->item('playerids___34826')) && $player_session && $discovery_mode && !count($x_completes)) {
         foreach ($CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $focus_i['ideaid'],
@@ -4001,10 +4006,10 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $is_cache = in_array($linkplayertype, $CI->config->item('playerids___14599'));
     $goto_start = in_array($linkplayertype, $CI->config->item('playerids___42988'));
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
     $superpower_10939 = !$is_cache && superpower_unlocked(10939);
     $idea_startable = idea_is_startable($i);
-    $linkplayercreator = ($focus_playerid > 0 ? $focus_playerid : ($player_active ? $player_active['playerid'] : 0));
+    $linkplayercreator = ($focus_playerid > 0 ? $focus_playerid : ($player_session ? $player_session['playerid'] : 0));
     $link_creator = isset($i['linkplayercreator']) && $i['linkplayercreator'] == $linkplayercreator;
     $focus__node = in_array($linkplayertype, $CI->config->item('playerids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
@@ -4186,7 +4191,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
             //Links
             $bottom_bar_ui .= $linkplayertype_ui;
 
-        } elseif ($linkplayertype_target_bar == 4362 && !$is_cache && !$discovery_mode && $player_active && isset($i['linktime']) && strtotime($i['linktime']) > 0 && $linkplayertype_ui && ($idea_access >= 3 || ($player_active && $linkplayercreator == $i['linkplayercreator']))) {
+        } elseif ($linkplayertype_target_bar == 4362 && !$is_cache && !$discovery_mode && $player_session && isset($i['linktime']) && strtotime($i['linktime']) > 0 && $linkplayertype_ui && ($idea_access >= 3 || ($player_session && $linkplayercreator == $i['linkplayercreator']))) {
 
             //Link Time / Creator
             $creator_details = '';
@@ -4282,7 +4287,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                         //Clone Idea Tree:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="idea_copy(' . $i['ideaid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($playerid_dropdown == 33292 && $player_active) {
+                    } elseif ($playerid_dropdown == 33292 && $player_session) {
 
                         //Stats
                         $action_buttons .= '<a href="' . view_app_link(33292) . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
@@ -4354,7 +4359,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     }
 
     //Link Message if any:
-    if ($linkid && $player_active) {
+    if ($linkid && $player_session) {
         $ui .= '<div class="linktext_headline grey hideIfEmpty ignore-click ui_linktext_' . $linkid . (in_array($i['linkplayertype'], $CI->config->item('playerids___42294')) ? ' hidden ' : '') . '" style="padding-left:40px;">' . htmlentities($i['linktext']) . '</div>';
     }
 
@@ -4497,7 +4502,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 $current_value = $min_allowed;
                 foreach ($CI->Links->read(array(
                     'linkplayertype' => 7712, //Input Choice
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linkidearight' => $i['ideaid'],
                 ), array(), 1) as $x_selection) {
                     $current_value = $x_selection['linknumber'];
@@ -4535,7 +4540,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
                     $input_ui .= '<input type="hidden" class="ideanumber" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
                     $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_idea_title($i, true)) . '">';
-                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_ideahashtag ? $target_ideahashtag . ' #' : '') . $i['ideahashtag'] . ' @' . get_domain('m__handle') . ' @' . $player_active['playerhandle'] . '">';
+                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_ideahashtag ? $target_ideahashtag . ' #' : '') . $i['ideahashtag'] . ' @' . get_domain('m__handle') . ' @' . $player_session['playerhandle'] . '">';
 
                     $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                     $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
@@ -4666,7 +4671,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
             //Uploader
             if (in_array($i['ideatype'], $CI->config->item('playerids___43004'))) {
 
-                if ($i['ideahashtag'] == 'ProfilePicture' && $player_active) {
+                if ($i['ideahashtag'] == 'ProfilePicture' && $player_session) {
 
                     //TODO REMOVE HACK: This is a profile picture hack:
                     $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="e_editor_load(' . $linkplayercreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['ideaid'] . '"><span class="icon-block-sm">' . $players___11035[7637]['m__cover'] . '</span>' . $players___11035[7637]['m__title'] . '</a></div>';
@@ -4710,7 +4715,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
         }
 
         //Determine hover state:
-        if ($linkplayertype_target_bar == 33532 && !$is_cache && $player_active && $idea_access >= 2 && !$is_locked) {
+        if ($linkplayertype_target_bar == 33532 && !$is_cache && $player_session && $idea_access >= 2 && !$is_locked) {
 
             //Private Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
@@ -4724,7 +4729,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
             $bottom_menu_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
-        } elseif ($linkplayertype_target_bar == 42260 && $player_active && !$is_locked && !$is_cache && 0) {
+        } elseif ($linkplayertype_target_bar == 42260 && $player_session && !$is_locked && !$is_cache && 0) {
 
             //Reactions... Check to see if they have any?
             $reactions = $CI->Links->read(array(
@@ -4733,7 +4738,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___42260')) . ')' => null, //Reactions
             ), array(), 1);
             $bottom_menu_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
-            $bottom_menu_ui .= view_single_select_instant(42260, (count($reactions) ? $reactions[0]['linkplayertype'] : 0), $player_active, 0 && $focus__node, $i['ideaid'], (count($reactions) ? $reactions[0]['linkid'] : 0));
+            $bottom_menu_ui .= view_single_select_instant(42260, (count($reactions) ? $reactions[0]['linkplayertype'] : 0), $player_session, 0 && $focus__node, $i['ideaid'], (count($reactions) ? $reactions[0]['linkid'] : 0));
             $bottom_menu_ui .= '</div></span>';
 
         } elseif ($linkplayertype_target_bar == 4235 && (!$discovery_mode && $idea_startable && $idea_access >= 1)) {
@@ -4748,7 +4753,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
             $focus_menu = ($has_discovered ? $m_target_bar : $players___6255[idea_discovery_link($i)]);
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
-        } elseif ($linkplayertype_target_bar == 31022 && $discovery_mode && $focus__node && $player_active && !count($x_completes) && !in_array($i['ideatype'], $CI->config->item('playerids___43009')) && !idea_required($i)) {
+        } elseif ($linkplayertype_target_bar == 31022 && $discovery_mode && $focus__node && $player_session && !count($x_completes) && !in_array($i['ideatype'], $CI->config->item('playerids___43009')) && !idea_required($i)) {
 
             //Skip
             $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
@@ -4766,7 +4771,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 continue;
             }
 
-            if (in_array($playerid_bottom_bar, $CI->config->item('playerids___42376')) && !$player_active) {
+            if (in_array($playerid_bottom_bar, $CI->config->item('playerids___42376')) && !$player_session) {
                 //Private content without being a member, so dont even show the counters:
                 continue;
             }
@@ -4904,7 +4909,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
     $linkid = (isset($e['linkid']) ? $e['linkid'] : 0);
     $player_access = player_access($e['playerhandle'], 0, $e);
     $superpower_10939 = superpower_unlocked(10939);
-    $player_active = superpower_unlocked();
+    $player_session = superpower_unlocked();
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $focus__node = in_array($linkplayertype, $CI->config->item('playerids___12149')); //NODE COIN
     $is_app = $linkplayertype == 6287;
@@ -5054,7 +5059,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
                 $featured_players .= $linkplayertype_ui;
 
-            } elseif (0 && $linkplayertype_target_bar == 42795 && $player_active && $player_active['playerid'] != $e['playerid'] && count($CI->Links->read(array(
+            } elseif (0 && $linkplayertype_target_bar == 42795 && $player_session && $player_session['playerid'] != $e['playerid'] && count($CI->Links->read(array(
                     'linkplayerdown' => $e['playerid'],
                     'linkplayerup' => 4430, //Active Member
                     'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
@@ -5063,12 +5068,12 @@ function player_view($linkplayertype, $e, $extra_class = null)
                 //Allow to follow fellow players:
                 $followings = $CI->Links->read(array(
                     'linkplayerup' => $e['playerid'],
-                    'linkplayerdown' => $player_active['playerid'],
+                    'linkplayerdown' => $player_session['playerid'],
                     'linkplayertype IN (' . join(',', $CI->config->item('playerids___42795')) . ')' => null, //Follow
                 ), array(), 1, 0, array('linknumber' => 'ASC'));
 
                 if (count($followings) || $player_access >= 3) {
-                    $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . view_single_select_instant(42795, (count($followings) ? $followings[0]['linkplayertype'] : 0), $player_active && $player_access >= 3, false, $e['playerid'], (count($followings) ? $followings[0]['linkid'] : 0)) . '</span>';
+                    $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . view_single_select_instant(42795, (count($followings) ? $followings[0]['linkplayertype'] : 0), $player_session && $player_access >= 3, false, $e['playerid'], (count($followings) ? $followings[0]['linkid'] : 0)) . '</span>';
                 }
 
             } elseif ($linkplayertype_target_bar == 41037 && $player_access >= 3 && !$focus__node) {
@@ -5206,7 +5211,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                 if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
                     continue;
                 }
-                if (in_array($playerid_bottom_bar, $CI->config->item('playerids___42376')) && !$player_active) {
+                if (in_array($playerid_bottom_bar, $CI->config->item('playerids___42376')) && !$player_session) {
                     //Private content without being a member, so dont even show the counters:
                     continue;
                 }

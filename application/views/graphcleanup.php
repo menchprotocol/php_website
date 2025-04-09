@@ -14,7 +14,7 @@ foreach($this->Ideas->read(array(
 
     $this->Ideas->update($idea_fix['ideaid'], array(
         'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideatext']),
-    ), $player_active['playerid']);
+    ), $player_session['playerid']);
 
 }
 
@@ -74,7 +74,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
 
         $this->Ideas->update($idea_fix['ideaid'], array(
             'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideatext']),
-        ), $player_active['playerid']);
+        ), $player_session['playerid']);
 
     }
 
@@ -104,7 +104,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
                     //Increment Player link:
                     $completed++;
                     $this->Links->create(array(
-                        'linkplayercreator' => ($player_active ? $player_active['playerid'] : $x['linkplayercreator']),
+                        'linkplayercreator' => ($player_session ? $player_session['playerid'] : $x['linkplayercreator']),
                         'linkplayerup' => $player_append['playerid'],
                         'linkplayerdown' => $x['linkplayercreator'],
                         'linktext' => $x['linktext'],

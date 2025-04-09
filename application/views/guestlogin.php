@@ -3,9 +3,9 @@
 $ideahashtag = (isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) ? $_GET['ideahashtag'] : false );
 
 //Make sure not logged in:
-if($player_active['playerid']){
+if($player_session['playerid']){
 
-    js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$player_active['playerhandle'] ), 13);
+    js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$player_session['playerhandle'] ), 13);
 
 } else {
 

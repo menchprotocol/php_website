@@ -48,7 +48,7 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     //Should we limit the scope?
     if($player_http_request){
-        $subscriber_filters['linkplayerdown'] = $player_active['playerid'];
+        $subscriber_filters['linkplayerdown'] = $player_session['playerid'];
     }
 
 

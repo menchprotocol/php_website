@@ -1,7 +1,7 @@
 <?php
 
-$player_active = superpower_unlocked(null, 0, $this->player_active);
-if(!$player_active){
+$player_session = superpower_unlocked(null, 0, $this->player_session);
+if(!$player_session){
     return view_json(array(
         'status' => 0,
         'message' => blocked_reasoning(),
@@ -48,22 +48,22 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 //Fetch User Data:
 $fetch_emails = $this->Links->read(array(
     'linkplayerup' => 3288, //Email
-    'linkplayerdown' => $player_active['playerid'],
+    'linkplayerdown' => $player_session['playerid'],
     'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_phones = $this->Links->read(array(
     'linkplayerup' => 4783, //Phone
-    'linkplayerdown' => $player_active['playerid'],
+    'linkplayerdown' => $player_session['playerid'],
     'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_first_names = $this->Links->read(array(
     'linkplayerup' => 42584, //First Name
-    'linkplayerdown' => $player_active['playerid'],
+    'linkplayerdown' => $player_session['playerid'],
     'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 $fetch_last_names = $this->Links->read(array(
     'linkplayerup' => 30198, //Last Name
-    'linkplayerdown' => $player_active['playerid'],
+    'linkplayerdown' => $player_session['playerid'],
     'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
 ));
 
@@ -79,8 +79,8 @@ if(count($fetch_phones) && strlen($fetch_phones[0]['linktext'])>=8) {
 if(!$set_email){
     //No Valid email:
     return view_json(log_error('Your account does not have a valid email address for us to send your invoice. Click on Edit Profile from Top/Right menu, edit your email address, and try again.', array(
-        'linkplayerdown' => $player_active['playerid'],
-        'linkplayercreator' => $player_active['playerid'],
+        'linkplayerdown' => $player_session['playerid'],
+        'linkplayercreator' => $player_session['playerid'],
         'linkidearight' => $_POST['focus__id'],
     )));
 }
@@ -116,7 +116,7 @@ foreach($this->Ideas->read(array(
                 'invoicer_given_name' => view_idea_title($idea_target, true),
                 'invoicer_address_line_1' => '', //Atlas Foundation; Non-Profit #774760508BC0001
                 'invoicer_address_line_2' => '', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
-                'invoicer_website' => 'https://'.get_domain('m__message', $player_active['playerid']),
+                'invoicer_website' => 'https://'.get_domain('m__message', $player_session['playerid']),
                 'invoicer_email' => website_setting(30882),
 
                 'note' => $i['ideatext'],
@@ -126,9 +126,9 @@ foreach($this->Ideas->read(array(
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['linktext']) ? $fetch_first_names[0]['linktext'] : $player_active['playertext'],
+                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['linktext']) ? $fetch_first_names[0]['linktext'] : $player_session['playertext'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['linktext'] : '',
-                'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_active['playerid']).'/@'.$player_active['playerhandle'],
+                'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_session['playerid']).'/@'.$player_session['playerhandle'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
             ];
@@ -153,36 +153,36 @@ foreach($this->Ideas->read(array(
         foreach($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkidealeft' => $i['ideaid'],
-            'linkplayercreator' => $player_active['playerid'],
+            'linkplayercreator' => $player_session['playerid'],
         ), array(), 0) as $x_discovery){
-            $this->Links->delete($x_discovery['linkid'], $player_active['playerid']);
+            $this->Links->delete($x_discovery['linkid'], $player_session['playerid']);
         }
 
         //Delete Old Child Answers:
         foreach($this->Links->read(array(
             'linkplayertype' => 7712, //Input Choice
-            'linkplayercreator' => $player_active['playerid'],
+            'linkplayercreator' => $player_session['playerid'],
             'linkidealeft' => $i['ideaid'],
         ), array('linkidearight')) as $x_selection){
 
             //Remove Selection:
-            $this->Links->delete($x_selection['linkid'], $player_active['playerid']);
+            $this->Links->delete($x_selection['linkid'], $player_session['playerid']);
 
             //Remove discovery if we can:
             if(!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))){
                 foreach($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'linkidealeft' => $x_selection['ideaid'],
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                 ), array(), 0) as $x_discovery){
-                    $this->Links->delete($x_discovery['linkid'], $player_active['playerid']);
+                    $this->Links->delete($x_discovery['linkid'], $player_session['playerid']);
                 }
             }
         }
 
 
         //Save New Invoice:
-        $this->Links->discovered(44245, $player_active['playerid'], $idea_target['ideaid'], $i);
+        $this->Links->discovered(44245, $player_session['playerid'], $idea_target['ideaid'], $i);
 
 
         //Save New Child Answers:
@@ -192,14 +192,14 @@ foreach($this->Ideas->read(array(
             )) as $this_i){
 
                 //Complete this item:
-                $this->Links->discovered(idea_discovery_link($this_i), $player_active['playerid'], $idea_target['ideaid'], $this_i, array(), array(
+                $this->Links->discovered(idea_discovery_link($this_i), $player_session['playerid'], $idea_target['ideaid'], $this_i, array(), array(
                     'linknumber' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
                 //Save Answer:
                 $this->Links->create(array(
                     'linkplayertype' => 7712, //Input Choice
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linkidealeft' => $_POST['focus__id'],
                     'linknumber' => $_POST['invoice_items'][$key]['quantity'],
                     'linkidearight' => $_POST['invoice_items'][$key]['ideaid'],
@@ -211,7 +211,7 @@ foreach($this->Ideas->read(array(
         //Find Next:
         $idea_redirect_url = idea_redirect_url($i);
         if(!$idea_redirect_url){
-            $nextidea = $this->Links->nextidea($player_active['playerid'], $_POST['target_ideahashtag'], $i);
+            $nextidea = $this->Links->nextidea($player_session['playerid'], $_POST['target_ideahashtag'], $i);
         }
 
 

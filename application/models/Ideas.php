@@ -11,12 +11,18 @@ class Ideas extends CIdea_cache
     function create($add_fields, $linkplayercreator = 14068 /* GUEST */)
     {
 
-        //Add if not added as the author:
-        $new_x = $this->Links->create(array(
+        $creation_data = array(
             'linkplayertype' => 4250,
             'linkplayercreator' => $linkplayercreator,
             'linktext' => (isset($add_fields['ideatext']) ? $add_fields['ideatext'] : null),
-        ));
+        );
+        if(isset($add_fields['ideaid']) && !count($this->Links->read(array('linkid' => $add_fields['ideaid'])))){
+            //Set the link ID since its not in the ledger:
+            $creation_data['linkid'] = $add_fields['ideaid'];
+        }
+
+        //Add if not added as the author:
+        $new_x = $this->Links->create($creation_data);
 
         if (!$new_x['linkid']) {
             return false;

@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Controller extends CI_Controller
 {
 
-    public $player_active;
+    public $player_session;
 
     function __construct()
     {
@@ -13,7 +13,7 @@ class Controller extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        $this->player_active = superpower_unlocked();
+        $this->player_session = superpower_unlocked();
 
 
         date_default_timezone_set('America/Los_Angeles');
@@ -26,11 +26,11 @@ class Controller extends CI_Controller
         $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $this->uri->segment(1));
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
         $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_link(4269));
-        $player_active = superpower_unlocked();
+        $player_session = superpower_unlocked();
         $is_login_verified = isset($_GET['playerhandle']) && $_GET['playerhandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['playerhandle']) && view_hash($_GET['time'] . $_GET['playerhandle']) == $_GET['hash'];
 
         if (
-            !$player_active
+            !$player_session
             && !array_key_exists(strtolower($first_segment), $this->config->item('handlplayers___14582'))
             && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
         ) {
@@ -39,10 +39,10 @@ class Controller extends CI_Controller
 
                 foreach ($this->Players->read(array(
                     'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-                )) as $player_active) {
+                )) as $player_session) {
 
                     //Login:
-                    $this->Players->activate($player_active, true);
+                    $this->Players->activate($player_session, true);
 
                     //Log them in:
                     if (!$is_ajax) {
@@ -54,8 +54,8 @@ class Controller extends CI_Controller
 
             } elseif (isset($_COOKIE['auth_cookie'])) {
 
-                $player_active = verify_cookie();
-                if ($player_active) {
+                $player_session = verify_cookie();
+                if ($player_session) {
                     //Log them in:
                     if (!$is_ajax) {
                         header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
@@ -205,7 +205,7 @@ class Controller extends CI_Controller
         $linkidealeft = ($target_i ? $target_i['ideaid'] : 0);
 
         //Run App
-        $player_active = false;
+        $player_session = false;
         $player_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
 
         if ($memory_detected && in_array($app_playerid, $this->config->item('playerids___42920'))) {
@@ -215,9 +215,9 @@ class Controller extends CI_Controller
         if ($memory_detected && $player_http_request) {
 
             //Needs superpowers?
-            $player_active = superpower_unlocked();
+            $player_session = superpower_unlocked();
 
-            if ($player_active && isset($player_active['e__id'])) {
+            if ($player_session && isset($player_session['e__id'])) {
                 //Old player, must log out:
                 header("Location: /logout", true, 301);
                 return false;
@@ -242,8 +242,8 @@ class Controller extends CI_Controller
                     }
 
                     //If not logged in, log them in:
-                    if (!$player_active) {
-                        $session_data = $this->Players->activate($player_active, true);
+                    if (!$player_session) {
+                        $session_data = $this->Players->activate($player_session, true);
                     }
 
                 }
@@ -255,7 +255,7 @@ class Controller extends CI_Controller
         $ui = null;
         $new_cache = false;
         $cache_linktime = null;
-        $linkplayercreator = ($player_http_request ? ($player_active ? $player_active['playerid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
+        $linkplayercreator = ($player_http_request ? ($player_session ? $player_session['playerid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
         $skip_idea_privacy_check = !$memory_detected || in_array($app_playerid, $this->config->item('playerids___43388'));
         $player_access = player_access(null, $focus_e['playerid'], $focus_e);
         $idea_access = idea_access(null, $focus_i['ideaid'], $focus_i);
@@ -267,10 +267,10 @@ class Controller extends CI_Controller
             //Missing App, Player or Idea Access?
             $missing_access = false; //Assume they have access
             $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___6287[$app_playerid]['m__following']);
-            if ($player_active && in_array($app_playerid, $this->config->item('playerids___14639'))) {
+            if ($player_session && in_array($app_playerid, $this->config->item('playerids___14639'))) {
                 //Should redirect them:
-                return get_redirected(view_memory(42903, 42902) . $player_active['playerhandle']);
-            } elseif (!$player_active && in_array($app_playerid, $this->config->item('playerids___14740'))) {
+                return get_redirected(view_memory(42903, 42902) . $player_session['playerhandle']);
+            } elseif (!$player_session && in_array($app_playerid, $this->config->item('playerids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
             } elseif (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
@@ -287,7 +287,7 @@ class Controller extends CI_Controller
 
             if ($missing_access) {
                 //Redirect:
-                return get_redirected((!$player_active ? view_app_link(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
+                return get_redirected((!$player_session ? view_app_link(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
             }
         }
 
@@ -343,7 +343,7 @@ class Controller extends CI_Controller
         $view_input = array(
             'app_playerid' => $app_playerid,
             'linkplayercreator' => $linkplayercreator,
-            'player_active' => $player_active,
+            'player_session' => $player_session,
             'player_http_request' => $player_http_request,
             'memory_detected' => $memory_detected,
 
@@ -389,7 +389,7 @@ class Controller extends CI_Controller
 
 
         //Check to ensure they have started:
-        if ($app_playerid == 30795 && $target_i && $focus_i && $player_active && $target_i['ideahashtag'] == $focus_i['ideahashtag']) {
+        if ($app_playerid == 30795 && $target_i && $focus_i && $player_session && $target_i['ideahashtag'] == $focus_i['ideahashtag']) {
 
             //Starting point, make sure all good:
             if (!idea_is_startable($target_i)) {
@@ -397,13 +397,13 @@ class Controller extends CI_Controller
                 //Not a valid starting point:
                 return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['ideahashtag'] . ' is not an active starting point.</div>');
 
-            } elseif (!idea_started($player_active['playerid'], $target_i['ideahashtag'])) {
+            } elseif (!idea_started($player_session['playerid'], $target_i['ideahashtag'])) {
 
                 //Not yet started, add to their starting point:
-                $completion_status = $this->Links->discovered(4235, $player_active['playerid'], 0, $target_i);
+                $completion_status = $this->Links->discovered(4235, $player_session['playerid'], 0, $target_i);
 
                 //Now return next idea:
-                $next__url = $this->Links->nextidea($player_active['playerid'], $target_i['ideahashtag'], $target_i);
+                $next__url = $this->Links->nextidea($player_session['playerid'], $target_i['ideahashtag'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
@@ -481,8 +481,8 @@ class Controller extends CI_Controller
     function i_editor_load()
     {
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
-        if (!$player_active) {
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -528,7 +528,7 @@ class Controller extends CI_Controller
             $idea_new = $this->Ideas->create(array(
                 'ideatext' => null,
                 'ideatype' => $_POST['current_ideatype'],
-            ), $player_active['playerid']);
+            ), $player_session['playerid']);
 
             $ideaid = $idea_new['new_idea']['ideaid'];
             $created_ideaid = $ideaid;
@@ -545,7 +545,7 @@ class Controller extends CI_Controller
         foreach (array_intersect($this->config->item('playerids___' . $ideatype), $this->config->item('playerids___42179')) as $dynamic_playerid) {
 
             $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___42179[$dynamic_playerid]['m__following']);
-            if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required), 0, $this->player_active)) {
+            if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required), 0, $this->player_session)) {
                 continue;
             }
 
@@ -555,7 +555,7 @@ class Controller extends CI_Controller
             if (count($data_types) != 1) {
                 //This is strange, we are expecting 1 match only report this:
                 log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong', array(
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linkplayerdown' => $dynamic_playerid,
                     'linkidearight' => $ideaid,
                 ));
@@ -650,10 +650,10 @@ class Controller extends CI_Controller
     function idea_delete()
     {
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
         $migrateid = 0;
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -722,7 +722,7 @@ class Controller extends CI_Controller
         }
 
         //Delete all Links:
-        $links_removed = $this->Ideas->delete($_POST['ideaid'], $player_active['playerid'], $migrateid);
+        $links_removed = $this->Ideas->delete($_POST['ideaid'], $player_session['playerid'], $migrateid);
 
         return view_json(array(
             'status' => ($links_removed > 0 ? 1 : 0),
@@ -737,10 +737,10 @@ class Controller extends CI_Controller
     function player_delete()
     {
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
         $migrateid = 0;
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -798,7 +798,7 @@ class Controller extends CI_Controller
         }
 
         //Delete all Links:
-        $links_removed = $this->Players->delete($_POST['playerid'], $player_active['playerid'], $migrateid);
+        $links_removed = $this->Players->delete($_POST['playerid'], $player_session['playerid'], $migrateid);
 
         return view_json(array(
             'status' => ($links_removed > 0 ? 1 : 0),
@@ -812,8 +812,8 @@ class Controller extends CI_Controller
     function idea_update()
     {
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
-        if (!$player_active) {
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        if (!$player_session) {
 
             return view_json(array(
                 'status' => 0,
@@ -910,7 +910,7 @@ class Controller extends CI_Controller
                             $valid_hashtag = true;
                             array_push($idea_references, $idea_found);
                         }
-                        if (!$valid_hashtag && superpower_unlocked(10939, 0, $this->player_active)) {
+                        if (!$valid_hashtag && superpower_unlocked(10939, 0, $this->player_session)) {
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'ERROR: ' . $word . ' is not a valid/active Idea',
@@ -933,9 +933,9 @@ class Controller extends CI_Controller
                         //Append all of these hashtags:
                         foreach ($idea_references as $reference_i) {
                             if (intval($_POST['next_ideaid']) > 0) {
-                                $status = $this->Ideas->link($focus_i, $_POST['save_linkplayertype'], $reference_i, $player_active['playerid']);
+                                $status = $this->Ideas->link($focus_i, $_POST['save_linkplayertype'], $reference_i, $player_session['playerid']);
                             } elseif (intval($_POST['previous_ideaid']) > 0) {
-                                $status = $this->Ideas->link($reference_i, $_POST['save_linkplayertype'], $focus_i, $player_active['playerid']);
+                                $status = $this->Ideas->link($reference_i, $_POST['save_linkplayertype'], $focus_i, $player_session['playerid']);
                             }
                             if (!$status['status']) {
                                 return view_json($status);
@@ -959,7 +959,7 @@ class Controller extends CI_Controller
             //Update new idea fields:
             $this->Ideas->update($is[0]['ideaid'], array(
                 'ideatype' => $_POST['save_ideatype'],
-            ), $player_active['playerid']);
+            ), $player_session['playerid']);
             $is[0]['ideatype'] = trim($_POST['save_ideatype']);
 
         }
@@ -1035,14 +1035,14 @@ class Controller extends CI_Controller
 
                     //Remove Link if we have one:
                     if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key links that should not be removed */) {
-                        $this->Links->delete($values[0]['linkid'], $player_active['playerid']);
+                        $this->Links->delete($values[0]['linkid'], $player_session['playerid']);
                     }
 
                 } elseif (!count($values)) {
 
                     //Create New Link:
                     $this->Links->create(array(
-                        'linkplayercreator' => $player_active['playerid'],
+                        'linkplayercreator' => $player_session['playerid'],
                         'linkplayertype' => 4983, //Co-Author
                         'linkplayerup' => $dynamic_playerid,
                         'linkidearight' => $is[0]['ideaid'],
@@ -1055,7 +1055,7 @@ class Controller extends CI_Controller
                     //Update Link:
                     $this->Links->update($values[0]['linkid'], array(
                         'linktext' => $dynamic_value,
-                        'linkplayercreator' => $player_active['playerid'],
+                        'linkplayercreator' => $player_session['playerid'],
                     ));
 
                 }
@@ -1076,7 +1076,7 @@ class Controller extends CI_Controller
             //Save hashtag since changed:
             $this->Ideas->update($is[0]['ideaid'], array(
                 'ideahashtag' => trim($_POST['save_ideahashtag']),
-            ), $player_active['playerid']);
+            ), $player_session['playerid']);
 
             //Now Handles everywhere they are referenced:
             foreach ($this->Links->read(array(
@@ -1086,7 +1086,7 @@ class Controller extends CI_Controller
 
                 $this->Ideas->update($ref['ideaid'], array(
                     'ideatext' => str_replace('#' . $is[0]['ideahashtag'], '#' . trim($_POST['save_ideahashtag']), $ref['ideatext']),
-                ), $player_active['playerid']);
+                ), $player_session['playerid']);
 
             }
 
@@ -1099,14 +1099,14 @@ class Controller extends CI_Controller
         //Also have to add as a comment to another idea?
         if (intval($_POST['next_ideaid']) > 0 && $_POST['save_linkplayertype'] > 0) {
             $this->Links->create(array(
-                'linkplayercreator' => $player_active['playerid'],
+                'linkplayercreator' => $player_session['playerid'],
                 'linkidealeft' => $_POST['next_ideaid'],
                 'linkidearight' => $is[0]['ideaid'],
                 'linkplayertype' => $_POST['save_linkplayertype'],
             ));
         } elseif (intval($_POST['previous_ideaid']) > 0 && $_POST['save_linkplayertype'] > 0) {
             $this->Links->create(array(
-                'linkplayercreator' => $player_active['playerid'],
+                'linkplayercreator' => $player_session['playerid'],
                 'linkidealeft' => $is[0]['ideaid'],
                 'linkidearight' => $_POST['previous_ideaid'],
                 'linkplayertype' => $_POST['save_linkplayertype'],
@@ -1126,7 +1126,7 @@ class Controller extends CI_Controller
                 if ($this_x['linktext'] != trim($_POST['save_linktext'])) {
                     $this->Links->update($this_x['linkid'], array(
                         'linktext' => trim($_POST['save_linktext']),
-                        'linkplayercreator' => $player_active['playerid'],
+                        'linkplayercreator' => $player_session['playerid'],
                     ));
                 }
             }
@@ -1135,7 +1135,7 @@ class Controller extends CI_Controller
         //Update Text:
         $text_updated = $this->Ideas->update($is[0]['ideaid'], array(
             'ideatext' => trim($_POST['save_ideatext']),
-        ), $player_active['playerid']);
+        ), $player_session['playerid']);
 
 
         foreach ($this->Ideas->read(array(
@@ -1146,7 +1146,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 1,
-                'return_ideacache_links' => view_idea_links($new_i, $player_active['playerid'], $focus__node, $focus__node),
+                'return_ideacache_links' => view_idea_links($new_i, $player_session['playerid'], $focus__node, $focus__node),
                 'return_ideacache_full' => idea_view($_POST['focus_group'], $new_i),
                 'save_ideaid' => $is[0]['ideaid'],
                 'save_ideatext' => trim($_POST['save_ideatext']),
@@ -1182,9 +1182,9 @@ class Controller extends CI_Controller
                     //SOURCES
                     $players___4593 = $this->config->item('players___4593'); //Link Types
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
-                    foreach (ideas_query($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $player_active) {
-                        if (isset($player_active['playerid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $player_active['playerhandle'], $current_playerhandle && $player_active['playerhandle'] == $current_playerhandle, $player_active['linkplayertype'], view_cover($player_active['playercover'], true), $player_active['playertext'], $player_active['linktext']);
+                    foreach (ideas_query($_POST['linkplayertype'], $_POST['ideaid'], 1, false) as $player_session) {
+                        if (isset($player_session['playerid'])) {
+                            $ui .= view_card(view_memory(42903, 42902) . $player_session['playerhandle'], $current_playerhandle && $player_session['playerhandle'] == $current_playerhandle, $player_session['linkplayertype'], view_cover($player_session['playercover'], true), $player_session['playertext'], $player_session['linktext']);
                             $listed_items++;
                         }
                     }
@@ -1230,9 +1230,9 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -1256,7 +1256,7 @@ class Controller extends CI_Controller
                 //Update order of this Link:
                 if ($this->Links->update(intval($linkid), array(
                     'linknumber' => $linknumber,
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                 ))) {
                     $updated++;
                 }
@@ -1343,7 +1343,7 @@ class Controller extends CI_Controller
         }
 
         $limit = view_memory(6404, 11064);
-        $player_active = superpower_unlocked();
+        $player_session = superpower_unlocked();
 
         //Check Permission:
         if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access(null, $_POST['playerid'])) {
@@ -1363,7 +1363,7 @@ class Controller extends CI_Controller
             return false;
         }
 
-        $focus_playerid = ($_POST['playerid'] > 0 ? $_POST['playerid'] : ($player_active ? $player_active['playerid'] : 0));
+        $focus_playerid = ($_POST['playerid'] > 0 ? $_POST['playerid'] : ($player_session ? $player_session['playerid'] : 0));
         $ui = '';
 
         if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42261'))) {
@@ -1423,9 +1423,9 @@ class Controller extends CI_Controller
                     $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
                     $players___4593 = $this->config->item('players___4593'); //Link Types
 
-                    foreach (players_query($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $player_active) {
-                        if (isset($player_active['playerid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $player_active['playerhandle'], $player_active['playerhandle'] == $current_playerhandle, $player_active['linkplayertype'], view_cover($player_active['playercover'], true), $player_active['playertext'], $player_active['linktext']);
+                    foreach (players_query($_POST['linkplayertype'], $_POST['playerid'], 1, false) as $player_session) {
+                        if (isset($player_session['playerid'])) {
+                            $ui .= view_card(view_memory(42903, 42902) . $player_session['playerhandle'], $player_session['playerhandle'] == $current_playerhandle, $player_session['linkplayertype'], view_cover($player_session['playercover'], true), $player_session['playertext'], $player_session['linktext']);
                             $listed_items++;
                         }
                     }
@@ -1466,8 +1466,8 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
-        if (!$player_active) {
+        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
@@ -1535,9 +1535,9 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
+        $player_session = superpower_unlocked(10939, 0, $this->player_session);
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
@@ -1550,7 +1550,7 @@ class Controller extends CI_Controller
         }
 
         //Archive Link:
-        $this->Links->delete($_POST['linkid'], $player_active['playerid']);
+        $this->Links->delete($_POST['linkid'], $player_session['playerid']);
 
         return view_json(array(
             'status' => 1,
@@ -1563,9 +1563,9 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
+        $player_session = superpower_unlocked(10939, 0, $this->player_session);
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view__json(array(
                 'status' => 0,
                 'messagCloe' => view__unauthorized_message(10939),
@@ -1582,7 +1582,7 @@ class Controller extends CI_Controller
             ));
         }
 
-        return view_json($this->Ideas->copy(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_active['playerid']));
+        return view_json($this->Ideas->copy(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_session['playerid']));
 
     }
 
@@ -1591,9 +1591,9 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
+        $player_session = superpower_unlocked(10939, 0, $this->player_session);
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
@@ -1623,7 +1623,10 @@ class Controller extends CI_Controller
 
 
         //Create:
-        $added_e = $this->Players->create($_POST['copy_player_title'], $player_active['playerid'], $fetch_o[0]['playercover']);
+        $added_e = $this->Players->create(array(
+            'playertext' => $_POST['copy_player_title'],
+            'playercover' => $fetch_o[0]['playercover'],
+        ), $player_session['playerid']);
         if (!$added_e['status']) {
             //We had an error, return it:
             return view_json($added_e);
@@ -1647,7 +1650,7 @@ class Controller extends CI_Controller
                 'linktext' => $x['linktext'],
             )))) {
                 $this->Links->create(array(
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linknumber' => $x['linknumber'],
                     'linkplayertype' => $x['linkplayertype'],
                     'linkplayerup' => $focus_e['playerid'],
@@ -1669,7 +1672,7 @@ class Controller extends CI_Controller
                 'linktext' => $x['linktext'],
             )))) {
                 $this->Links->create(array(
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linknumber' => $x['linknumber'],
                     'linkplayertype' => $x['linkplayertype'],
                     'linkplayerup' => $x['linkplayerup'],
@@ -1693,7 +1696,7 @@ class Controller extends CI_Controller
                 'linktext' => $x['linktext'],
             )))) {
                 $this->Links->create(array(
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linknumber' => $x['linknumber'],
                     'linkplayertype' => $x['linkplayertype'],
                     'linkplayerup' => $focus_e['playerid'],
@@ -1725,7 +1728,7 @@ class Controller extends CI_Controller
          * */
 
         //Authenticate Member:
-        $member_e = superpower_unlocked(10939, 0, $this->player_active);
+        $member_e = superpower_unlocked(10939, 0, $this->player_session);
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
@@ -1784,9 +1787,9 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
+        $player_session = superpower_unlocked(10939, 0, $this->player_session);
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
@@ -1874,7 +1877,9 @@ class Controller extends CI_Controller
         } else {
 
             //We are creating a new Player:
-            $added_e = $this->Players->create($_POST['player_new_string'], $player_active['playerid']);
+            $added_e = $this->Players->create(array(
+                'playertext' => $_POST['player_new_string'],
+            ), $player_session['playerid']);
             if (!$added_e['status']) {
                 //We had an error, return it:
                 return view_json($added_e);
@@ -1893,7 +1898,7 @@ class Controller extends CI_Controller
 
             //Add Reference:
             $ur2 = $this->Links->create(array(
-                'linkplayercreator' => $player_active['playerid'],
+                'linkplayercreator' => $player_session['playerid'],
                 'linkplayertype' => 4983, //Co-Author
                 'linkplayerup' => $focus_e['playerid'],
                 'linkidearight' => $fetch_o[0]['ideaid'],
@@ -1925,7 +1930,7 @@ class Controller extends CI_Controller
 
             //Create Link:
             $ur2 = $this->Links->create(array(
-                'linkplayercreator' => $player_active['playerid'],
+                'linkplayercreator' => $player_session['playerid'],
                 'linkplayertype' => 4230,
                 'linktext' => $linktext,
                 'linkplayerdown' => $linkplayerdown,
@@ -1945,11 +1950,11 @@ class Controller extends CI_Controller
     function e_editor_load()
     {
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
         $players___11035 = $this->config->item('players___11035');
         $players___42776 = $this->config->item('players___42776');
         $players___4592 = $this->config->item('players___4592'); //Data types
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -2008,7 +2013,7 @@ class Controller extends CI_Controller
                 //Load template:
                 if (!is_array($this->config->item('players___' . $player_template['playerid']))) {
                     //Report Error:
-                    log_error('player_activeditor_load() ERROR: @' . $player_template['playerid'] . ' is NOT in memory cache', array(
+                    log_error('player_sessionditor_load() ERROR: @' . $player_template['playerid'] . ' is NOT in memory cache', array(
                         'linkplayerdown' => $player_template['playerid'],
                     ));
                     continue;
@@ -2036,7 +2041,7 @@ class Controller extends CI_Controller
                         //This is strange, we are expecting 1 match only report this:
                         log_error('Found ' . count($data_types) . ' Data Types (@' . $es[0]['playerid'] . ') (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong', array(
                             'linkplayerdown' => $dynamic_playerid,
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                         ));
                         continue; //Go to the next dynamic data type
 
@@ -2044,7 +2049,7 @@ class Controller extends CI_Controller
                         //Monitor if we ever reach the maximum:
                         log_error('Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion', array(
                             'linkplayerdown' => $dynamic_playerid,
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                             'linkidearight' => $_POST['playerid'],
                         ));
                     }
@@ -2160,8 +2165,8 @@ class Controller extends CI_Controller
     function player_save_edit()
     {
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
-        if (!$player_active) {
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -2265,14 +2270,14 @@ class Controller extends CI_Controller
 
                 //Remove Link if we have one:
                 if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key links that should not be removed */) {
-                    $this->Links->delete($values[0]['linkid'], $player_active['playerid']);
+                    $this->Links->delete($values[0]['linkid'], $player_session['playerid']);
                 }
 
             } elseif (!count($values)) {
 
                 //Create Link:
                 $this->Links->create(array(
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linkplayertype' => 4230,
                     'linkplayerup' => $dynamic_playerid,
                     'linkplayerdown' => $es[0]['playerid'],
@@ -2285,7 +2290,7 @@ class Controller extends CI_Controller
                 //Update Link:
                 $this->Links->update($values[0]['linkid'], array(
                     'linktext' => $dynamic_value,
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                 ));
 
             }
@@ -2326,7 +2331,7 @@ class Controller extends CI_Controller
             'playertext' => $validate_playertext['playertext_clean'],
             'playercover' => trim($_POST['save_playercover']),
             'playerhandle' => trim($_POST['save_playerhandle']),
-        ), $player_active['playerid']);
+        ), $player_session['playerid']);
 
 
         //Sync handle reference:
@@ -2339,7 +2344,7 @@ class Controller extends CI_Controller
             ), array('linkidearight')) as $ref) {
                 $this->Ideas->update($ref['ideaid'], array(
                     'ideatext' => str_replace('@' . $es[0]['playerhandle'], '@' . $new_handle_string, $ref['ideatext']),
-                ), $player_active['playerid']);
+                ), $player_session['playerid']);
             }
             $es[0]['playerhandle'] = $new_handle_string;
         }
@@ -2358,7 +2363,7 @@ class Controller extends CI_Controller
                 if ($this_x['linktext'] != trim($_POST['save_linktext'])) {
                     $this->Links->update($this_x['linkid'], array(
                         'linktext' => trim($_POST['save_linktext']),
-                        'linkplayercreator' => $player_active['playerid'],
+                        'linkplayercreator' => $player_session['playerid'],
                     ));
                 }
             }
@@ -2366,7 +2371,7 @@ class Controller extends CI_Controller
 
 
         //Reset member session data if this data belongs to the logged-in member:
-        if ($_POST['save_playerid'] == $player_active['playerid']) {
+        if ($_POST['save_playerid'] == $player_session['playerid']) {
             $this->Players->activate($es[0], true);
         }
 
@@ -2387,8 +2392,8 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
-        if (!$player_active) {
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -2437,7 +2442,7 @@ class Controller extends CI_Controller
                         'linkidearight' => $i['ideaid'], //Is this the template?
                     )))) {
                         //Found the email template to send:
-                        $total_sent = $this->Links->broadcast(array($player_active), $i, website_setting(0), false);
+                        $total_sent = $this->Links->broadcast(array($player_session), $i, website_setting(0), false);
                         break; //Just the first template match
                     }
                 }
@@ -2486,7 +2491,7 @@ class Controller extends CI_Controller
             foreach ($delete_query as $delete) {
                 $stats['deleted']++;
                 //Should usually delete a single option:
-                $this->Links->delete($delete['linkid'], $player_active['playerid']);
+                $this->Links->delete($delete['linkid'], $player_session['playerid']);
             }
 
         }
@@ -2496,7 +2501,7 @@ class Controller extends CI_Controller
             if ($_POST['down_playerid']) {
                 $stats['added']++;
                 $this->Links->create(array(
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linkplayerup' => $_POST['selected_playerid'],
                     'linkplayertype' => 4230,
                     'linkplayerdown' => $_POST['down_playerid'],
@@ -2510,7 +2515,7 @@ class Controller extends CI_Controller
                 )))) {
                     $stats['added']++;
                     $this->Links->create(array(
-                        'linkplayercreator' => $player_active['playerid'],
+                        'linkplayercreator' => $player_session['playerid'],
                         'linkplayertype' => 4983, //Co-Author
                         'linkplayerup' => $_POST['selected_playerid'],
                         'linkidearight' => $_POST['right_ideaid'],
@@ -2522,8 +2527,8 @@ class Controller extends CI_Controller
 
 
         //Update Session:
-        if ($_POST['down_playerid'] && count($player_active)) {
-            $this->Players->activate($player_active, true);
+        if ($_POST['down_playerid'] && count($player_session)) {
+            $this->Players->activate($player_session, true);
         }
 
 
@@ -2668,8 +2673,8 @@ class Controller extends CI_Controller
     function e_toggle_player()
     {
 
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
-        if (!$player_active) {
+        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        if (!$player_session) {
 
             return view_json(array(
                 'status' => 0,
@@ -2701,10 +2706,10 @@ class Controller extends CI_Controller
                     if (strlen($_POST['written_answer']) && trim($_POST['written_answer']) != $already_added[0]['linktext']) {
                         $this->Links->update($already_added[0]['linkid'], array(
                             'linktext' => $_POST['written_answer'],
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                         ));
                     } elseif (!strlen($_POST['written_answer'])) {
-                        $this->Links->delete($already_added[0]['linkid'], $player_active['playerid']);
+                        $this->Links->delete($already_added[0]['linkid'], $player_session['playerid']);
                     }
 
                     return view_json(array(
@@ -2715,7 +2720,7 @@ class Controller extends CI_Controller
                 } else {
 
                     //Already exists, let's remove:
-                    $this->Links->delete($already_added[0]['linkid'], $player_active['playerid']);
+                    $this->Links->delete($already_added[0]['linkid'], $player_session['playerid']);
 
                     return view_json(array(
                         'status' => 1,
@@ -2744,7 +2749,7 @@ class Controller extends CI_Controller
                         $this->Links->create(array(
                             'linkplayerup' => $_POST['playerid'],
                             'linkplayerdown' => $_POST['linkplayercreator'],
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                             'linktext' => $_POST['written_answer'],
                             'linkplayertype' => 4230,
                         ));
@@ -2861,10 +2866,10 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
         $players___12112 = $this->config->item('players___12112');
 
-        if (!$player_active) {
+        if (!$player_session) {
 
             return view_json(array(
                 'status' => 0,
@@ -2904,10 +2909,10 @@ class Controller extends CI_Controller
             //All good, go ahead and update:
             $this->Players->update($es[0]['playerid'], array(
                 'playertext' => $validate_playertext['playertext_clean'],
-            ), $player_active['playerid']);
+            ), $player_session['playerid']);
 
             //Reset member session data if this data belongs to the logged-in member:
-            if ($es[0]['playerid'] == $player_active['playerid']) {
+            if ($es[0]['playerid'] == $player_session['playerid']) {
                 //set Session with new data:
                 $es[0]['playertext'] = $validate_playertext['playertext_clean'];
                 $this->Players->activate($es[0], true);
@@ -2936,7 +2941,7 @@ class Controller extends CI_Controller
         }
 
         //Log Modal View
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
 
         if (!isset($_POST['apply_id']) || !isset($_POST['s__id'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing Core Data</div>';
@@ -3046,9 +3051,9 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_active = superpower_unlocked(10939, 0, $this->player_active);
+        $player_session = superpower_unlocked(10939, 0, $this->player_session);
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
@@ -3098,8 +3103,8 @@ class Controller extends CI_Controller
     function go_next()
     {
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
-        if (!$player_active) {
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -3202,7 +3207,7 @@ class Controller extends CI_Controller
                 $already_answered = array();
                 foreach ($this->Links->read(array(
                     'linkplayertype' => 7712, //Input Choice
-                    'linkplayercreator' => $player_active['playerid'],
+                    'linkplayercreator' => $player_session['playerid'],
                     'linkidealeft' => $focus_i['ideaid'],
                 ), array('linkidearight')) as $x_selection) {
 
@@ -3212,16 +3217,16 @@ class Controller extends CI_Controller
                         continue; //Nothing we need to do here...
                     }
 
-                    $this->Links->delete($x_selection['linkid'], $player_active['playerid']);
+                    $this->Links->delete($x_selection['linkid'], $player_session['playerid']);
 
                     //Remove discovery if we can:
                     if (!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))) {
                         foreach ($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                             'linkidealeft' => $x_selection['ideaid'],
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                         ), array(), 0) as $x_discovery) {
-                            $this->Links->delete($x_discovery['linkid'], $player_active['playerid']);
+                            $this->Links->delete($x_discovery['linkid'], $player_session['playerid']);
                         }
                     }
                 }
@@ -3231,7 +3236,7 @@ class Controller extends CI_Controller
                     if (!in_array($answer_ideaid, $already_answered)) {
                         $this->Links->create(array(
                             'linkplayertype' => 7712, //Input Choice
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                             'linkidealeft' => $focus_i['ideaid'],
                             'linkidearight' => $answer_ideaid,
                         ));
@@ -3241,7 +3246,7 @@ class Controller extends CI_Controller
             }
 
             //Issue DISCOVERY/IDEA COIN:
-            $completion_status = $this->Links->discovered(idea_discovery_link($focus_i, $trying_to_skip), $player_active['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
+            $completion_status = $this->Links->discovered(idea_discovery_link($focus_i, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
                 'linknumber' => $_POST['player_submitted_data']['ideanumber'],
             ));
             if (!$completion_status['status']) {
@@ -3306,7 +3311,7 @@ class Controller extends CI_Controller
                     }
 
                     //Try to complete:
-                    $completion_status = $this->Links->discovered(idea_discovery_link($idea_next, $trying_to_skip), $player_active['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
+                    $completion_status = $this->Links->discovered(idea_discovery_link($idea_next, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
                         'linknumber' => $next_idea_data['ideanumber'],
                     ));
                     if ($idea_required && !$completion_status['status']) {
@@ -3324,7 +3329,7 @@ class Controller extends CI_Controller
                 $idea_redirect_url = idea_redirect_url($primary_i);
             }
             if (!$idea_redirect_url) {
-                $nextidea = $this->Links->nextidea($player_active['playerid'], $_POST['target_ideahashtag'], $focus_i);
+                $nextidea = $this->Links->nextidea($player_session['playerid'], $_POST['target_ideahashtag'], $focus_i);
             }
 
             //All good:
@@ -3404,9 +3409,9 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
 
-        if (!$player_active) {
+        if (!$player_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -3419,7 +3424,7 @@ class Controller extends CI_Controller
         }
 
         //Remove Idea
-        $this->Links->delete($_POST['linkid'], $player_active['playerid']);
+        $this->Links->delete($_POST['linkid'], $player_session['playerid']);
 
         return view_json(array(
             'status' => 1,
@@ -3440,7 +3445,7 @@ class Controller extends CI_Controller
         $page_num = (isset($_POST['page_num']) && intval($_POST['page_num']) >= 2 ? intval($_POST['page_num']) : 1);
         $next_page = ($page_num + 1);
         $query_offset = (($page_num - 1) * view_memory(6404, 11064));
-        $player_active = superpower_unlocked(null, 0, $this->player_active);
+        $player_session = superpower_unlocked(null, 0, $this->player_session);
 
         $message = '';
 
@@ -3465,13 +3470,13 @@ class Controller extends CI_Controller
 
                 $message .= link_view($x);
 
-                if ($player_active && strlen($x['linktext']) > 0 && strlen($_POST['linktext_find']) > 0 && strlen($_POST['linktext_replace']) > 0 && substr_count($x['linktext'], $_POST['linktext_find']) > 0) {
+                if ($player_session && strlen($x['linktext']) > 0 && strlen($_POST['linktext_find']) > 0 && strlen($_POST['linktext_replace']) > 0 && substr_count($x['linktext'], $_POST['linktext_find']) > 0) {
 
                     $new_content = str_replace($_POST['linktext_find'], trim($_POST['linktext_replace']), $x['linktext']);
 
                     $this->Links->update($x['linkid'], array(
                         'linktext' => $new_content,
-                        'linkplayercreator' => $player_active['playerid'],
+                        'linkplayercreator' => $player_session['playerid'],
                     ));
 
                     $message .= '<div class="alert alert-info" role="alert"><i class="far fa-check-circle"></i> Replaced [' . $_POST['linktext_find'] . '] with [' . trim($_POST['linktext_replace']) . ']</div>';

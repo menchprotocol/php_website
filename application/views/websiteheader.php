@@ -1,5 +1,5 @@
 <?php
-$player_active = superpower_unlocked();
+$player_session = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $player_segment = view_valid_handle_player($first_segment);
 $second_segment = $this->uri->segment(2);
@@ -21,7 +21,7 @@ $is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !string_is_icon(
 //Generate Body Class String:
 $body_class = ' app__'.$app_playerid.' '; //Always append current coin
 foreach($this->config->item('players___13890') as $playerid => $m){
-    if($player_active){
+    if($player_session){
         //Look at their session:
         $body_class .= ' custom_ui_'.$playerid.'_'.$this->session->userdata('session_custom_ui_'.$playerid).' ';
     } else {
@@ -108,13 +108,13 @@ if(!$basic_header_footer){
     //JS VARIABLES
 
     echo ' var insert_text = \'' . (isset($_GET['insert']) ? $_GET['insert'] : '')  . '\'; ';
-    echo ' var js_pl_id = ' . ( $player_active ? $player_active['playerid'] : '0' ) . '; ';
-    echo ' var js_pl_handle = \'' . ( $player_active ? $player_active['playerhandle'] : '' ) . '\'; ';
-    echo ' var js_pl_name = \'' . ( $player_active ? str_replace('\'','\\\'',trim($player_active['playertext'])) : '' ) . '\'; ';
+    echo ' var js_pl_id = ' . ( $player_session ? $player_session['playerid'] : '0' ) . '; ';
+    echo ' var js_pl_handle = \'' . ( $player_session ? $player_session['playerhandle'] : '' ) . '\'; ';
+    echo ' var js_pl_name = \'' . ( $player_session ? str_replace('\'','\\\'',trim($player_session['playertext'])) : '' ) . '\'; ';
     echo ' var js_request_uri = \'' . $_SERVER['REQUEST_URI'] . '\'; ';
     echo ' var universal_search_enabled = ' . intval($this->config->item('universal_search_enabled')) . '; ';
     echo ' var website_id = "' . $website_id . '"; ';
-    echo ' var js_session_superpowers_unlocked = ' . json_encode(($player_active ? $this->session->userdata('session_superpowers_unlocked') : array())) . ';';
+    echo ' var js_session_superpowers_unlocked = ' . json_encode(($player_session ? $this->session->userdata('session_superpowers_unlocked') : array())) . ';';
     echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:public_index \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORY
@@ -351,23 +351,23 @@ if ($focus_i){
                     echo '</div>';
                     echo '</td>';
 
-                    if(search_enabled() && $player_active){
+                    if(search_enabled() && $player_session){
                         echo '<td class="block-x icon_finder enlarge '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()">'.$players___11035[7256]['m__cover'].'</a></td>';
                         echo '<td class="block-x icon_finder enlarge hidden"><a href="javascript:void(0);" onclick="toggle_finder()">'.$players___11035[13401]['m__cover'].'</a></td>';
                     }
 
                     //New Idea?
-                    if($player_active){
+                    if($player_session){
                         echo '<td class="block-x enlarge add_idea"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$players___11035[44403]['m__title'].'">'.$players___11035[44403]['m__cover'].'</a></td>';
                     }
 
                     //MENU
-                    $menu_type = ( $player_active ? 12500 : 14372 );
+                    $menu_type = ( $player_session ? 12500 : 14372 );
                     echo '<td class="block-menu">';
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_active && strlen($player_active['playercover']) ? view_cover($player_active['playercover'], 1) : $players___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_session && strlen($player_session['playercover']) ? view_cover($player_session['playercover'], 1) : $players___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('players___'.$menu_type) as $linkplayertype => $m) {
@@ -385,17 +385,17 @@ if ($focus_i){
                         $extra_class = null;
                         $text_class = null;
 
-                        if($linkplayertype==26105 && $player_active) {
+                        if($linkplayertype==26105 && $player_session) {
 
                             //Profile View
-                            $m['m__cover'] = view_cover($player_active['playercover'], 1);
-                            $m['m__title'] = '<div class="type_head main__title">'.$player_active['playertext'].'</div><div class="grey type_handle">@'.$player_active['playerhandle'].'</div>';
-                            $href = 'href="'.view_memory(42903,42902).$player_active['playerhandle'].'" ';
+                            $m['m__cover'] = view_cover($player_session['playercover'], 1);
+                            $m['m__title'] = '<div class="type_head main__title">'.$player_session['playertext'].'</div><div class="grey type_handle">@'.$player_session['playerhandle'].'</div>';
+                            $href = 'href="'.view_memory(42903,42902).$player_session['playerhandle'].'" ';
 
-                        } elseif($linkplayertype==42246 && $player_active) {
+                        } elseif($linkplayertype==42246 && $player_session) {
 
                             //Profile Edit
-                            $href = 'href="javascript:void(0);" onclick="e_editor_load('.$player_active['playerid'].',0)" ';
+                            $href = 'href="javascript:void(0);" onclick="e_editor_load('.$player_session['playerid'].',0)" ';
 
                         } elseif($linkplayertype==28615){
 
@@ -482,16 +482,16 @@ if(strlen($flash_message) > 0) {
 
 
 
-$player_active = superpower_unlocked();
+$player_session = superpower_unlocked();
 
-if($player_active){
+if($player_session){
     //For profile editing only:
     echo '<div class="hidden">';
-    echo player_view(42287, $player_active, null);
+    echo player_view(42287, $player_session, null);
     echo '</div>';
 }
 
-if($player_active && ( !isset($basic_header_footer) || !$basic_header_footer )){
+if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
@@ -710,7 +710,7 @@ if($player_active && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <?php
     }
 
-    if($player_active){
+    if($player_session){
 
         $players___6201 = $this->config->item('players___6201'); //IDEA Cache
         $players___6206 = $this->config->item('players___6206'); //Player Cache
@@ -765,7 +765,7 @@ if($player_active && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="creator_box">
                             <?php
                             foreach($this->Links->read(array(
-                                'linkplayerup' => $player_active['playerid'],
+                                'linkplayerup' => $player_session['playerid'],
                                 'linkplayertype' => 41011, //PINNED FOLLOWER
                                             ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x_pinned) {
                                 echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['playercover']).'</span><b>'.$x_pinned['playertext'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['playerhandle'].'</span></div>';
@@ -773,7 +773,7 @@ if($player_active && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             }
 
                             //Always append current user:
-                            echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($player_active['playercover']).'</span></div>';
+                            echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($player_session['playercover']).'</span></div>';
                             ?>
                         </div>
 

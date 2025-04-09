@@ -8,25 +8,29 @@ class Players extends CIdea_cache
         parent::__construct();
     }
 
-    function create($playertext, $linkplayercreator = 0, $playercover = null)
+    function create($add_fields, $linkplayercreator = 0)
     {
 
         //Validate Title
-        $validate_playertext = validate_playertext($playertext);
+        $validate_playertext = validate_playertext($add_fields['playertext']);
         if (!$validate_playertext['status']) {
             return $validate_playertext;
         }
 
         //Log Link new Player:
-        $player_active = superpower_unlocked();
-        $linkplayercreator = ($linkplayercreator > 0 ? $linkplayercreator : ($player_active ? $player_active['playerid'] : 14068));
+        $player_session = superpower_unlocked();
+        $linkplayercreator = ($linkplayercreator > 0 ? $linkplayercreator : ($player_session ? $player_session['playerid'] : 14068));
 
-        //Create New Player:
-        $new_x = $this->Links->create(array(
+        $creation_data = array(
             'linkplayercreator' => $linkplayercreator,
             'linkplayertype' => 4251, //New Player Created
             'linktext' => $validate_playertext['playertext_clean'],
-        ));
+        );
+        if(isset($add_fields['playerid']) && !count($this->Links->read(array('linkid' => $add_fields['playerid'])))){
+            //Set the link ID since its not in the ledger:
+            $creation_data['linkid'] = $add_fields['playerid'];
+        }
+        $new_x = $this->Links->create($creation_data);
 
         if (!$new_x['linkid']) {
             return log_error('create() failed to create a new Player', array(
@@ -36,22 +40,24 @@ class Players extends CIdea_cache
         }
 
         //Handle Generation
-        $new_handle = generate_handle(12274, $validate_playertext['playertext_clean']);
+        if(!isset($add_fields['playerhandle'])){
+            $add_fields['playerhandle'] = generate_handle(12274, $validate_playertext['playertext_clean']);
+        }
         $this->Links->create(array(
             'linkplayercreator' => $linkplayercreator,
             'linkplayertype' => 44179, //Trigerred
             'linkplayerup' => 32338, //Player Handle
-            'linktext' => $new_handle,
+            'linktext' => $add_fields['playerhandle'],
             'linkplayerdown' => $new_x['linkid'],
         ));
 
         //Cover saving if any
-        if (strlen($playercover)) {
+        if (isset($add_fields['playercover'])) {
             $this->Links->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => 44179, //Trigerred
                 'linkplayerup' => 6198, //Player Cover
-                'linktext' => $playercover,
+                'linktext' => $add_fields['playercover'],
                 'linkplayerdown' => $new_x['linkid'],
             ));
         }
@@ -59,8 +65,8 @@ class Players extends CIdea_cache
         //Add to cache:
         $this->db->insert(' nodeplayers', array(
             'playerid' => $new_x['linkid'],
-            'playerhandle' => $new_handle,
-            'playercover' => $playercover,
+            'playerhandle' => $add_fields['playerhandle'],
+            'playercover' => $add_fields['playercover'],
             'playertext' => $validate_playertext['playertext_clean'],
         ));
 
@@ -669,7 +675,10 @@ class Players extends CIdea_cache
 
         //All good, create new Player:
         $new_private_users = in_array($linkplayerdomain, $this->config->item('playerids___44011'));
-        $added_e = $this->Players->create($full_name, 0, ($image_url ? $image_url : playercover_generator(12279)));
+        $added_e = $this->Players->create(array(
+            'playertext' => $full_name,
+            'playercover' => ($image_url ? $image_url : playercover_generator(12279)),
+        ));
         if (!$added_e['status']) {
             //We had an error, return it:
             return $added_e;

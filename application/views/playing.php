@@ -1,6 +1,6 @@
 <?php
 
-$linkplayercreator = ( $player_active ? $player_active['playerid'] : 14068 /* GUEST */ );
+$linkplayercreator = ( $player_session ? $player_session['playerid'] : 14068 /* GUEST */ );
 //Log view:
 $this->Links->create(array(
     'linkplayertype' => 44176, //Player View

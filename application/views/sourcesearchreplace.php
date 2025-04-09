@@ -45,7 +45,7 @@ if($search_for_set){
                     //Update player:
                     $res = $this->Players->update($en['playerid'], array(
                         'playertext' => $en['playertext'],
-                    ), $player_active['playerid']);
+                    ), $player_session['playerid']);
                     $replaced++;
                 }
             }

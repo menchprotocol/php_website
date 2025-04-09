@@ -1,6 +1,6 @@
 <?php
 
-$linkplayercreator = ( $player_active ? $player_active['playerid'] : 14068 /* GUEST */ );
+$linkplayercreator = ( $player_session ? $player_session['playerid'] : 14068 /* GUEST */ );
 //Log view:
 $this->Links->create(array(
     'linkplayertype' => 1309378, //Idea Viewed
@@ -10,8 +10,8 @@ $this->Links->create(array(
 ));
 
 //See if we need to redirect to starting point?
-if($player_active && !superpower_unlocked(10939) && count($this->Links->read(array(
-        'linkplayercreator' => $player_active['playerid'],
+if($player_session && !superpower_unlocked(10939) && count($this->Links->read(array(
+        'linkplayercreator' => $player_session['playerid'],
         'linkplayertype' => 4235, //Get started
         'linkidealeft' => $focus_i['ideaid'],
     )))){

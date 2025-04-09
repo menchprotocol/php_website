@@ -1,7 +1,7 @@
 <?php
 
 $players___11035 = $this->config->item('players___11035'); //Encyclopedia
-$linkplayercreator = ($player_active ? $player_active['playerid'] : 0);
+$linkplayercreator = ($player_session ? $player_session['playerid'] : 0);
 $target_ideahashtag = (count($target_i) && $linkplayercreator ? $target_i['ideahashtag'] : null);
 $at_starting_point = $target_ideahashtag==$focus_i['ideahashtag'];
 
@@ -74,7 +74,7 @@ if ($breadcrum_content) {
 
 
 //Progress?
-if ($player_active) {
+if ($player_session) {
     $progress = $this->Links->progress($linkplayercreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
@@ -93,7 +93,7 @@ if ($player_active) {
 }
 
 $x_completes = array();
-if ($player_active) {
+if ($player_session) {
     $x_completes = $this->Links->read(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkplayercreator' => $linkplayercreator,
@@ -109,7 +109,7 @@ echo '</div>';
 
 
 //Main Navigation
-if ($player_active || isset($_GET['open'])) {
+if ($player_session || isset($_GET['open'])) {
     echo view_idea_nav(true, $focus_i, $x_completes);
 }
 

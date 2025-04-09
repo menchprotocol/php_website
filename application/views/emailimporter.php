@@ -33,7 +33,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                     $added_emails++;
                     $this->Links->create(array(
                         'linkplayertype' => 4230,
-                        'linkplayercreator' => $player_active['playerid'],
+                        'linkplayercreator' => $player_session['playerid'],
                         'linkplayerup' => $_POST['import_playerid'],
                         'linkplayerdown' => $player_data['linkplayerdown'],
                     ));

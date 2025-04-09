@@ -56,7 +56,7 @@ foreach($this->Ideas->read(array(
 
                                 $this->Links->update($x['linkid'], array(
                                     'linktext' => $new_form,
-                                    'linkplayercreator' => $player_active['playerid'],
+                                    'linkplayercreator' => $player_session['playerid'],
                                 ));
 
                                 foreach($apply_to as $apply_playerid){
@@ -68,7 +68,7 @@ foreach($this->Ideas->read(array(
                                         $links_updated++;
                                         $this->Links->update($follow_appended['linkid'], array(
                                             'linktext' => $new_form,
-                                            'linkplayercreator' => $player_active['playerid'],
+                                            'linkplayercreator' => $player_session['playerid'],
                                         ));
                                     }
                                 }
@@ -133,7 +133,7 @@ foreach($this->Ideas->read(array(
 
                         $this->Links->update($x['linkid'], array(
                             'linktext' => $new_form,
-                            'linkplayercreator' => $player_active['playerid'],
+                            'linkplayercreator' => $player_session['playerid'],
                         ));
 
                         foreach($apply_to as $apply_playerid){
@@ -145,7 +145,7 @@ foreach($this->Ideas->read(array(
                                 $links_updated++;
                                 $this->Links->update($follow_appended['linkid'], array(
                                     'linktext' => $new_form,
-                                    'linkplayercreator' => $player_active['playerid'],
+                                    'linkplayercreator' => $player_session['playerid'],
                                 ));
                             }
                         }

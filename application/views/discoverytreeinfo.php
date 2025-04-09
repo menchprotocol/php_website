@@ -7,7 +7,7 @@ if(!isset($_GET['ideahashtag'])){
 
 //Define the user to fetch their discoveries for this idea:
 if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle'])){
-    $_GET['playerhandle'] = $player_active['playerhandle'];
+    $_GET['playerhandle'] = $player_session['playerhandle'];
 }
 
 

@@ -48,7 +48,7 @@ foreach($this->Links->read($filters, array('linkidearight'), 0) as $expires){
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->Links->delete($delete['linkid'], $player_active['playerid']); //Time Expired
+                $this->Links->delete($delete['linkid'], $player_session['playerid']); //Time Expired
 
             }
 
