@@ -458,18 +458,22 @@ function view_tree($i)
     $CI =& get_instance();
     //Idea<>Idea Settings:
     $players___40792 = $CI->config->item('players___40792');
-    foreach($i['idea_list_config'] as $key => $value){
+    foreach($i['idea_list_config'] as $key => $filtered_ideas){
         if(substr_count($key, 'full_config_')==1){
             $base_key = one_two_explode('full_config_','',$key);
-            echo '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$value['ideahashtag'].'">'.view_idea_title($value).'</a></div>';
+            foreach($filtered_ideas as $filtered_idea){
+                echo '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$filtered_idea['ideahashtag'].'">'.view_idea_title($filtered_idea).'</a></div>';
+            }
         }
     }
     //Idea<>Player Settings:
     $players___43006 = $CI->config->item('players___43006');
-    foreach($i['idea_list_config'] as $key => $value){
+    foreach($i['idea_list_config'] as $key => $filtered_players){
         if(substr_count($key, 'full_config_')==1){
             $base_key = one_two_explode('full_config_','',$key);
-            echo '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$value['playerhandle'].'"><span class="icon-block-sm">'.view_cover($value['playercover']).'</span>'.$value['playertext'].'</a></div>';
+            foreach($filtered_players as $filtered_player){
+                echo '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$filtered_player['playerhandle'].'"><span class="icon-block-sm">'.view_cover($filtered_player['playercover']).'</span>'.$filtered_player['playertext'].'</a></div>';
+            }
         }
     }
     echo '</div>';
