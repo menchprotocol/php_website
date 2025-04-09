@@ -2132,8 +2132,10 @@ function update_algolia($focus__node = null, $s__id = 0)
 {
 
     if (!search_enabled() || isset($_GET['disable_algolia'])) {
-        console . log("Search engine is disabled!");
-        return false;
+        return array(
+            'status' => 0,
+            'message' => 'Search engine disabled',
+        );
     }
 
     $CI =& get_instance();
