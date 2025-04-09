@@ -455,7 +455,6 @@ function view_tree($i)
 
 
     echo '<div class="hideIfEmpty filter_data">';
-    echo print_r($i['idea_list_config'], true);
     $CI =& get_instance();
     //Idea<>Idea Settings:
     $players___40792 = $CI->config->item('players___40792');
@@ -489,7 +488,7 @@ function view_tree($i)
     echo '</div>';
 }
 
-function idea_list_config($ideaid){
+function idea_list_config($ideaid, $access_limit=true){
 
     $CI =& get_instance();
 
@@ -509,7 +508,7 @@ function idea_list_config($ideaid){
         'linkplayerup >' => 0,
         'linkidearight' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___43006')) . ')' => null,
-    ), array('linkplayerup'), 0) as $setting_link) {
+    ), array('linkplayerup'), 0, 0, array(), '*', null, $access_limit) as $setting_link) {
         array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkplayerup']));
         array_push($idea_list_config['full_config_'.$setting_link['linkplayertype']], $setting_link);
     }
@@ -519,7 +518,7 @@ function idea_list_config($ideaid){
         'linkidearight >' => 0,
         'linkidealeft' => $ideaid,
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
-    ), array('linkidearight'), 0) as $setting_link) {
+    ), array('linkidearight'), 0, 0, array(), '*', null, $access_limit) as $setting_link) {
         array_push($idea_list_config[intval($setting_link['linkplayertype'])], intval($setting_link['linkidearight']));
         array_push($idea_list_config['full_config_'.$setting_link['linkplayertype']], $setting_link);
     }

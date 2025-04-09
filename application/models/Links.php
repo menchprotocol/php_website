@@ -175,7 +175,7 @@ class Links extends CIdea_cache
     }
 
 
-    function read($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null)
+    function read($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null, $access_limit = true)
     {
 
         $this->db->select($select);
@@ -255,10 +255,9 @@ class Links extends CIdea_cache
 
 
         //Verify Access to each item:
-        if ($select == '*' && isset($_SERVER['SERVER_NAME'])) {
+        if ($access_limit && $select == '*' && isset($_SERVER['SERVER_NAME'])) {
             if (array_intersect(array('linkidealeft', 'linkidearight'), $joins_objects)) {
                 //Idea results:
-                $player_session = superpower_unlocked();
                 foreach ($results as $key => $value) {
                     if (!idea_access(null, $value['ideaid'], $value)) {
                         unset($results[$key]); //Remove this option
@@ -1519,7 +1518,7 @@ class Links extends CIdea_cache
             'linkidealeft' => $i['ideaid'],
         ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
 
-        $i['idea_list_config'] = idea_list_config($i['ideaid']);
+        $i['idea_list_config'] = idea_list_config($i['ideaid'], true);
         $i['stats'] = array(
             'max_level' => $idea_level,
             'max_steps' => ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)),
