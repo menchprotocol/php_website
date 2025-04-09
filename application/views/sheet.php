@@ -137,9 +137,9 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
             if ($e['playerid'] == 44328) {
                 //Fetch primary filter:
                 foreach ($this->Links->read(array(
-                    'linkidearight' => $focus_i['ideaid'],
+                    'linkidealeft' => $focus_i['ideaid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___44344')) . ')' => null, //Idea Filter Additions
-                ), array('linkidealeft'), 1) as $target_i) {
+                ), array('linkidearight'), 1) as $target_i) {
                     //See History for this user:
                     $message_clean = '<a href="' . view_app_link(44328) . '/' . $target_i['ideahashtag'] . '@' . $x['playerhandle'] . '" target="_blank" title="' . $players___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $players___11035[44328]['m__cover'] . '</span></a>';
                 }
