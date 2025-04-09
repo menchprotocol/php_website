@@ -454,7 +454,8 @@ function view_tree($i)
     echo '</div>';
 
 
-    echo '<div class="hideIfEmpty filter_data">';
+
+    $filters_ui = '';
     $CI =& get_instance();
     //Idea<>Idea Settings:
     $players___40792 = $CI->config->item('players___40792');
@@ -463,7 +464,7 @@ function view_tree($i)
             $base_key = one_two_explode('full_config_','',$key);
             if(isset($players___40792[$base_key])){
                 foreach($filtered_ideas as $filtered_idea){
-                    echo '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$filtered_idea['ideahashtag'].'">'.view_idea_title($filtered_idea).'</a></div>';
+                    $filters_ui .= '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$filtered_idea['ideahashtag'].'">'.view_idea_title($filtered_idea).'</a></div>';
                 }
             }
         }
@@ -475,13 +476,18 @@ function view_tree($i)
             $base_key = one_two_explode('full_config_','',$key);
             if(isset($players___43006[$base_key])){
                 foreach($filtered_players as $filtered_player){
-                    echo '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$filtered_player['playerhandle'].'"><span class="icon-block-sm">'.view_cover($filtered_player['playercover']).'</span>'.$filtered_player['playertext'].'</a></div>';
+                    $filters_ui .= '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$filtered_player['playerhandle'].'"><span class="icon-block-sm">'.view_cover($filtered_player['playercover']).'</span>'.$filtered_player['playertext'].'</a></div>';
                 }
             }
         }
     }
-    echo '</div>';
 
+    if($filters_ui){
+        echo '<div class="hideIfEmpty filter_data">';
+        echo '<h3>Applied Filters:</h3>';
+        echo $filters_ui;
+        echo '</div>';
+    }
 
     foreach ($i['idea_next'] as $next_i) {
         echo '<div class="sub_frame frame_id_' . $i['ideaid'] . '">';
