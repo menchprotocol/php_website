@@ -51,6 +51,12 @@ class Players extends CIdea_cache
             'linkplayerdown' => $new_x['linkid'],
         ));
 
+        $update_data = array(
+            'playerid' => $new_x['linkid'],
+            'playerhandle' => $add_fields['playerhandle'],
+            'playertext' => $validate_playertext['playertext_clean'],
+        );
+
         //Cover saving if any
         if (isset($add_fields['playercover'])) {
             $this->Links->create(array(
@@ -60,16 +66,12 @@ class Players extends CIdea_cache
                 'linktext' => $add_fields['playercover'],
                 'linkplayerdown' => $new_x['linkid'],
             ));
+            $update_data['playercover'] = $add_fields['playercover'];
         }
 
         //Add to cache:
         if (!count($this->Players->read(array('playerid' => $new_x['linkid'])))) {
-            $this->db->insert('nodeplayers', array(
-                'playerid' => $new_x['linkid'],
-                'playerhandle' => $add_fields['playerhandle'],
-                'playercover' => $add_fields['playercover'],
-                'playertext' => $validate_playertext['playertext_clean'],
-            ));
+            $this->db->insert('nodeplayers', $update_data);
         }
 
 

@@ -20,7 +20,7 @@ if ($playerhandle) {
 }
 
 //Misc Stats, if any:
-echo '<div class="center miscstats hideIfEmpty"></div>';
+echo '<div class="center hideIfEmpty"></div>';
 
 foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
@@ -116,11 +116,6 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                     $(".card_count_" + key).removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
                 }
             });
-
-            //Load Misc Stats, if any:
-            if (data.miscstats != $('.miscstats').html()) {
-                $('.miscstats').html(data.miscstats).hide().fadeIn().hide().fadeIn();
-            }
 
         });
     }

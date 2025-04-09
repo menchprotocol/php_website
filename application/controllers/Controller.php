@@ -3514,8 +3514,6 @@ class Controller extends CI_Controller
     function graph_data()
     {
 
-        $miscstats = '';
-
         //See if we have any idea or Player targets to limit our stats:
         $has_handle = isset($_POST['playerhandle']) && strlen($_POST['playerhandle']) && $_POST['playerhandle'];
         $has_hashtag = isset($_POST['ideahashtag']) && strlen($_POST['ideahashtag']) && $_POST['ideahashtag'];
@@ -3547,10 +3545,6 @@ class Controller extends CI_Controller
             }
 
             $copy = $this->Ideas->ids($is[0], 'ALL');
-
-            //List stats:
-            $miscstats .= '<div>Tree Ideas: ' . number_format(count($copy['recursive_idea_ids']), 0) . '</div>';
-
         }
 
 
@@ -3678,7 +3672,6 @@ class Controller extends CI_Controller
         return view_json(array(
             'status' => 1,
             'return_array' => $return_array,
-            'miscstats' => $miscstats,
         ));
     }
 
