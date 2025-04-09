@@ -1537,7 +1537,7 @@ label {
     font-size:1em;
     color: #999;
     font-weight: normal;
-    margin-left:5px;
+    margin:21px 0 0 5px;
 }
 .slim_title .main__title{
     color: #000;
@@ -3766,9 +3766,7 @@ a,
 }
 
 
-.remove_first_line{
-    margin-bottom: 13px;
-}
+
 .remove_first_line .first_line{
     display: none;
 }
