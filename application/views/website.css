@@ -3296,7 +3296,8 @@ h4.main__title{
 .filter_data{
     padding: 8px 3px;
     margin-left: 0px;
-    border-left: 2px solid #FF0000;
+    border-left: 3px solid #FF0000;
+    border-top: 3px solid #FF0000;
 }
 .filter_data h3{
     font-size: 1em;
@@ -3304,7 +3305,6 @@ h4.main__title{
     color: #FF0000;
     margin: 0 0 8px 0;
     padding: 0;
-    text-decoration: underline;
 }
 @media (max-width:610px) {
 
