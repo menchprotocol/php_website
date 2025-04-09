@@ -1516,7 +1516,7 @@ class Links extends CIdea_cache
         $total_next = $this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
             'linkidealeft' => $i['ideaid'],
-        ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
+        ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'), '*', null, false);
 
         $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
         $i['stats'] = array(
