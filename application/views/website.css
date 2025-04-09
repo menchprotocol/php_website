@@ -3299,10 +3299,14 @@ h4.main__title{
     border-left: 3px solid #FF0000;
     border-bottom: 3px solid #FF0000;
 }
+
 .filter_data .and_filter {
     color: #FF0000;
     padding: 8px;
+    font-size: 0.8em;
+    font-weight: normal;
 }
+
 .filter_data h3{
     font-size: 1em;
     font-weight: bold;
