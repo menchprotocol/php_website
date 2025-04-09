@@ -461,8 +461,10 @@ function view_tree($i)
     foreach($i['idea_list_config'] as $key => $filtered_ideas){
         if(substr_count($key, 'full_config_')==1){
             $base_key = one_two_explode('full_config_','',$key);
-            foreach($filtered_ideas as $filtered_idea){
-                echo '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$filtered_idea['ideahashtag'].'">'.view_idea_title($filtered_idea).'</a></div>';
+            if(isset($players___40792[$base_key])){
+                foreach($filtered_ideas as $filtered_idea){
+                    echo '<div><span class="icon-block-sm" title="'.$players___40792[$base_key]['m__title'].'">'.$players___40792[$base_key]['m__cover'].'</span>'.$players___40792[$base_key]['m__title'].': <a href="/'.$filtered_idea['ideahashtag'].'">'.view_idea_title($filtered_idea).'</a></div>';
+                }
             }
         }
     }
@@ -471,8 +473,10 @@ function view_tree($i)
     foreach($i['idea_list_config'] as $key => $filtered_players){
         if(substr_count($key, 'full_config_')==1){
             $base_key = one_two_explode('full_config_','',$key);
-            foreach($filtered_players as $filtered_player){
-                echo '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$filtered_player['playerhandle'].'"><span class="icon-block-sm">'.view_cover($filtered_player['playercover']).'</span>'.$filtered_player['playertext'].'</a></div>';
+            if(isset($players___43006[$base_key])){
+                foreach($filtered_players as $filtered_player){
+                    echo '<div><span class="icon-block-sm" title="'.$players___43006[$base_key]['m__title'].'">'.$players___43006[$base_key]['m__cover'].'</span>'.$players___43006[$base_key]['m__title'].': <a href="/@'.$filtered_player['playerhandle'].'"><span class="icon-block-sm">'.view_cover($filtered_player['playercover']).'</span>'.$filtered_player['playertext'].'</a></div>';
+                }
             }
         }
     }
