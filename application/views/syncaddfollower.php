@@ -14,17 +14,6 @@ foreach ($this->Links->read(array(
         'linkidealeft' => $addition_sync['linkidearight'],
     ), array('linkplayercreator'), 0, 0, array('linkid' => 'DESC')) as $dicovered) {
 
-        //Make sure no previous/current removed link between these two Players:
-        if (!count($this->Links->read(array(
-            'linkvoid >=' => 0, //Any Link
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-            'linkplayerup' => $addition_sync['linkplayerup'],
-            'linkplayerdown' => $dicovered['linkplayercreator'],
-        )))) {
-            //We would not recreate a removed link:
-            continue;
-        }
-
         //Any responses by this user?
         $set_linktext = $dicovered['linktext'];
         foreach ($this->Links->read(array(

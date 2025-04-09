@@ -1454,8 +1454,6 @@ function i_editor_load(ideaid = 0, linkid = 0, linkplayertype = 0, next_ideaid =
     }
 
 
-
-
     //Load Link addition info, if any:
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');

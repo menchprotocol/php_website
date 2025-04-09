@@ -1136,15 +1136,17 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid, $u
 
     //Now check existing links:
     $existing_x = $CI->Links->read(array(
-        'linkplayertype' => 4230, //SOURCE LINKS
+        'linkvoid >=' => 0, //Any Link
+        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         'linkplayerup' => $linkplayerup,
         'linkplayerdown' => $linkplayercreator,
     ));
 
     if (count($existing_x)) {
 
-        //Link previously exists, see if content value is the same:
-        if (strtolower($existing_x[0]['linktext']) == strtolower($linktext)) {
+        if($existing_x[0]['linkvoid'] > 0){
+            return false;
+        } elseif (strtolower($existing_x[0]['linktext']) == strtolower($linktext)) {
             //Everything is the same, nothing to do here:
             return false;
         }
