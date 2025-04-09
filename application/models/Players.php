@@ -171,6 +171,11 @@ class Players extends CIdea_cache
                 }
             }
 
+            if($linkplayercreator==1){
+                print_r($linkid);
+                print_r($update_columns);
+            }
+
             //Update:
             $this->db->where('playerid', $linkid);
             $this->db->update('nodeplayers', $update_columns);
