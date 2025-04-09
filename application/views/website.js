@@ -1386,12 +1386,12 @@ function update_cover_mini(cover_code, target_css){
 
 
 
-function i_editor_switch(link_linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0){
+function i_editor_switch(linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0){
 
-    console.log('SWITCHING TO '+link_linkplayertype+'/'+next_ideaid+'/'+previous_ideaid+'/'+do_checks+'/'+$('#modal31911 .save_ideatext').val()+'/'+parseInt($('#modal31911 .created_ideaid').val()));
+    console.log('SWITCHING TO '+linkplayertype+'/'+next_ideaid+'/'+previous_ideaid+'/'+do_checks+'/'+$('#modal31911 .save_ideatext').val()+'/'+parseInt($('#modal31911 .created_ideaid').val()));
 
     /*
-    if(!next_ideaid && !previous_ideaid && !link_linkplayertype && !do_checks){
+    if(!next_ideaid && !previous_ideaid && !linkplayertype && !do_checks){
         var r = confirm("Are you sure you want to unlink this idea?");
         if (!(r==true)) {
             return false;
@@ -1400,7 +1400,7 @@ function i_editor_switch(link_linkplayertype = 0, next_ideaid = 0, previous_idea
     */
 
     //Will switch the nature/direction of the link:
-    return i_editor_load(0, 0, link_linkplayertype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
+    return i_editor_load(0, 0, linkplayertype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
 }
 
 function display_media(mediaframe_id, uploader_id, ideaid){
@@ -1412,7 +1412,7 @@ function display_media(mediaframe_id, uploader_id, ideaid){
     sort_media(mediaframe_id);
 }
 
-function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
+function i_editor_load(ideaid = 0, linkid = 0, linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
 
 
     $(".link_idea_unlink, .idea_linkplayertype").addClass('hidden');
@@ -1433,23 +1433,23 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
 
         //Are we adding an idea for a target action tab?
         console.log('i Modal loaded for '+focus_group);
-        if(focus_idea_id && do_checks && focus_group>0 && !next_ideaid && !previous_ideaid && !ideaid && !linkid && !link_linkplayertype){
+        if(focus_idea_id && do_checks && focus_group>0 && !next_ideaid && !previous_ideaid && !ideaid && !linkid && !linkplayertype){
             if(js_playerids___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)){
                 //Next idea group:
                 next_ideaid = focus_idea_id;
-                link_linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             } else if(js_playerids___42380.includes(focus_group)) {
                 //Previous idea group:
                 previous_ideaid = focus_idea_id;
-                link_linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             }
         }
 
 
-        if(!link_linkplayertype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id){
+        if(!linkplayertype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id){
             console.log('MATCH');
             next_ideaid = focus_idea_id;
-            link_linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
+            linkplayertype = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
         }
     }
 
@@ -1460,8 +1460,8 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    var is_next = next_ideaid && js_playerids___4486.includes(link_linkplayertype) && $('.ui_ideacache_'+next_ideaid);
-    var is_prev = previous_ideaid && js_playerids___4486.includes(link_linkplayertype) && $('.ui_ideacache_'+previous_ideaid);
+    var is_next = next_ideaid && js_playerids___4486.includes(linkplayertype) && $('.ui_ideacache_'+next_ideaid).length;
+    var is_prev = previous_ideaid && js_playerids___4486.includes(linkplayertype) && $('.ui_ideacache_'+previous_ideaid).length;
 
     if(is_next || is_prev){
 
@@ -1496,7 +1496,7 @@ function i_editor_load(ideaid = 0, linkid = 0, link_linkplayertype = 0, next_ide
 
         $('.link_idea_unlink, .idea_linkplayertype').removeClass('hidden');
         if(!passon_ideaid){
-            update_form_select(4486, link_linkplayertype, 1, false);
+            update_form_select(4486, linkplayertype, 1, false);
         }
     }
 
