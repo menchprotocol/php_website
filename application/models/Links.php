@@ -305,7 +305,9 @@ class Links extends CIdea_cache
             }
 
             //Create New Link
-            $new_x = $this->Links->create(array_merge($old_x, $update_columns), true, false);
+            $new_columns = array_merge($old_x, $update_columns);
+            unset($new_columns['linkid']);
+            $new_x = $this->Links->create($new_columns, true, false);
 
             if ($new_x['linkid'] > 0) {
                 //Void Old Link:
