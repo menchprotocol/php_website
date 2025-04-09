@@ -29,15 +29,15 @@ foreach($this->config->item('players___13890') as $playerid => $m){
         $this_class = '';
 
         //Fetch Website Defaults:
-        foreach(array_intersect($this->config->item('playerids___'.$playerid), $players___14870[$website_id]['m__following']) as $thisplayer_id) {
-            $this_class = ' custom_ui_'.$playerid.'_'.$thisplayer_id.' ';
+        foreach(array_intersect($this->config->item('playerids___'.$playerid), $players___14870[$website_id]['m__following']) as $focusplayer_id) {
+            $this_class = ' custom_ui_'.$playerid.'_'.$focusplayer_id.' ';
         }
 
         //If not found, fetch platform defaults:
         if(!strlen($this_class)){
             $players___4527 = $this->config->item('players___4527');
-            foreach(array_intersect($this->config->item('playerids___'.$playerid), $players___4527[6404]['m__following']) as $thisplayer_id) {
-                $this_class = ' custom_ui_'.$playerid.'_'.$thisplayer_id.' ';
+            foreach(array_intersect($this->config->item('playerids___'.$playerid), $players___4527[6404]['m__following']) as $focusplayer_id) {
+                $this_class = ' custom_ui_'.$playerid.'_'.$focusplayer_id.' ';
             }
         }
 
