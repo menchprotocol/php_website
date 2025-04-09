@@ -2507,10 +2507,10 @@ function new_player(linkplayertype, player_current_id) {
             //See if we previously have a list in place?
             if ($("#list-in-" + linkplayertype + " .card-12274").length > 0) {
                 //Downwards add to start"
-                $("#list-in-" + linkplayertype + " .card-12274:first").before(data.e_new_echo);
+                $("#list-in-" + linkplayertype + " .card-12274:first").before(data.player_new_echo);
             } else {
                 //Raw list, add before input filed:
-                $("#list-in-" + linkplayertype).prepend(data.e_new_echo);
+                $("#list-in-" + linkplayertype).prepend(data.player_new_echo);
             }
 
             //Allow inline editing if enabled:
