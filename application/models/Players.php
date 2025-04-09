@@ -26,7 +26,7 @@ class Players extends CIdea_cache
             'linkplayertype' => 4251, //New Player Created
             'linktext' => $validate_playertext['playertext_clean'],
         );
-        if(isset($add_fields['playerid']) && !count($this->Links->read(array('linkid' => $add_fields['playerid'])))){
+        if (isset($add_fields['playerid']) && !count($this->Links->read(array('linkid' => $add_fields['playerid'])))) {
             //Set the link ID since its not in the ledger:
             $creation_data['linkid'] = $add_fields['playerid'];
         }
@@ -40,7 +40,7 @@ class Players extends CIdea_cache
         }
 
         //Handle Generation
-        if(!isset($add_fields['playerhandle'])){
+        if (!isset($add_fields['playerhandle'])) {
             $add_fields['playerhandle'] = generate_handle(12274, $validate_playertext['playertext_clean']);
         }
         $this->Links->create(array(
@@ -63,7 +63,7 @@ class Players extends CIdea_cache
         }
 
         //Add to cache:
-        if(!count($this->Players->read(array('playerid' => $new_x['linkid'])))){
+        if (!count($this->Players->read(array('playerid' => $new_x['linkid'])))) {
             $this->db->insert('nodeplayers', array(
                 'playerid' => $new_x['linkid'],
                 'playerhandle' => $add_fields['playerhandle'],
@@ -131,12 +131,22 @@ class Players extends CIdea_cache
 
     function update($linkid, $update_columns, $linkplayercreator = 0)
     {
-        if (count($update_columns) == 0) {
+
+        if (!count($update_columns)) {
+            return false;
+        }
+
+        $players_found = $this->Players->read(array('playerid' => $linkid));
+        if (!count($players_found)) {
+            log_error('Player @' . $linkid . ' not found in Players table');
+            return false;
+        } elseif (!count($this->Links->read(array('linkid' => $linkid)))) {
+            log_error('Player @' . $linkid . ' not found in Links table');
             return false;
         }
 
         $affected_rows = 0;
-        foreach ($this->Links->read(array('linkid' => $linkid)) as $old_x) {
+        foreach ($players_found as $player_current) {
 
             $must_sync_found = false;
             $skip_sync_ledger = array('playerexternal', 'playernumber');
@@ -150,7 +160,7 @@ class Players extends CIdea_cache
             foreach ($update_columns as $key => $value) {
                 if (array_key_exists($key, $must_sync_ledger)) {
                     //Update if anything changed:
-                    if ($value != $old_x['linktext']) {
+                    if ($value != $player_current[$key]) {
                         $this->Links->create(array(
                             'linkplayercreator' => $linkplayercreator,
                             'linkplayertype' => 44179, //Trigerred
@@ -171,7 +181,7 @@ class Players extends CIdea_cache
                 }
             }
 
-            if (count($update_columns) == 0) {
+            if (!count($update_columns)) {
                 return false;
             }
 

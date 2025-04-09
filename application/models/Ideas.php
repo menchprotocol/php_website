@@ -16,7 +16,7 @@ class Ideas extends CIdea_cache
             'linkplayercreator' => $linkplayercreator,
             'linktext' => (isset($add_fields['ideatext']) ? $add_fields['ideatext'] : null),
         );
-        if(isset($add_fields['ideaid']) && !count($this->Links->read(array('linkid' => $add_fields['ideaid'])))){
+        if (isset($add_fields['ideaid']) && !count($this->Links->read(array('linkid' => $add_fields['ideaid'])))) {
             //Set the link ID since its not in the ledger:
             $creation_data['linkid'] = $add_fields['ideaid'];
         }
@@ -43,7 +43,7 @@ class Ideas extends CIdea_cache
         //Save Idea
         $add_fields['ideaid'] = $new_x['linkid'];
         $add_fields['ideacache'] = ideacache($add_fields['ideaid'], $add_fields['ideatext']);
-        if(!count($this->Ideas->read(array('ideaid' => $add_fields['ideaid'])))){
+        if (!count($this->Ideas->read(array('ideaid' => $add_fields['ideaid'])))) {
             $this->db->insert('nodeideas', $add_fields);
         }
 
@@ -133,56 +133,77 @@ class Ideas extends CIdea_cache
     function update($linkid, $update_columns, $linkplayercreator = 0)
     {
 
-        if (count($update_columns) == 0 || !count($this->Links->read(array('linkid' => $linkid )))) {
+        if (!count($update_columns)) {
             return false;
         }
 
-        $must_sync_found = false;
-        $skip_sync_ledger = array('ideacache','ideaexternal','ideanumber','ideatype');
-        $must_sync_ledger = array(
-            'ideatext' => 4736,
-            'ideahashtag' => 32337,
-        );
+        $ideas_found = $this->Ideas->read(array('ideaid' => $linkid));
+        if (!count($ideas_found)) {
+            log_error('Idea #' . $linkid . ' not found in Ideas table');
+            return false;
+        } elseif (!count($this->Links->read(array('linkid' => $linkid)))) {
+            log_error('Idea #' . $linkid . ' not found in Links table');
+            return false;
+        }
 
-        //See what is being updated:
-        foreach($update_columns as $key => $value) {
-            if(array_key_exists($key, $must_sync_ledger)){
-                $this->Links->create(array(
-                    'linkplayertype' => 42275, //Idea Trigger
-                    'linkplayerup' => $must_sync_ledger[$key],
-                    'linkplayercreator' => $linkplayercreator,
-                    'linkidearight' => $linkid,
-                    'linktext' => $value,
-                ));
-                $must_sync_found = true;
-            } elseif(in_array($key, $skip_sync_ledger)){
-                //Nothing we need to do here
-            } else {
-                //Remove this as its unknown:
-                unset($update_columns[$key]);
+        $affected_rows = 0;
+        foreach ($ideas_found as $idea_current) {
+
+            $must_sync_found = false;
+            $skip_sync_ledger = array('ideacache', 'ideaexternal', 'ideanumber', 'ideatype');
+            $must_sync_ledger = array(
+                'ideatext' => 4736,
+                'ideahashtag' => 32337,
+            );
+
+            //See what is being updated:
+            foreach ($update_columns as $key => $value) {
+                if (array_key_exists($key, $must_sync_ledger)) {
+                    //Update if anything changed:
+                    if ($value != $idea_current[$key]) {
+                        $this->Links->create(array(
+                            'linkplayertype' => 42275, //Idea Trigger
+                            'linkplayerup' => $must_sync_ledger[$key],
+                            'linkplayercreator' => $linkplayercreator,
+                            'linkidearight' => $linkid,
+                            'linktext' => $value,
+                        ));
+                        $must_sync_found = true;
+                    } else {
+                        //Nothing changed:
+                        unset($update_columns[$key]);
+                    }
+                } elseif (in_array($key, $skip_sync_ledger)) {
+                    //Nothing we need to do here
+                } else {
+                    //Unknown not allowed:
+                    unset($update_columns[$key]);
+                }
             }
-        }
 
-        if(isset($update_columns['ideatext']) && !isset($update_columns['ideacache'])){
-            //Update Idea Text:
-            $update_columns['ideacache'] = ideacache($linkid, $update_columns['ideatext']);
-        }
+            if (isset($update_columns['ideatext']) && !isset($update_columns['ideacache'])) {
+                //Update Idea Text:
+                $update_columns['ideacache'] = ideacache($linkid, $update_columns['ideatext']);
+            }
 
-        if (count($update_columns) == 0) {
-            return false;
-        }
+            if (!count($update_columns)) {
+                return false;
+            }
 
-        //Update:
-        $this->db->where('ideaid', $linkid);
-        $this->db->update('nodeideas', $update_columns);
-        $affected_rows = $this->db->affected_rows();
+            //Update:
+            $this->db->where('ideaid', $linkid);
+            $this->db->update('nodeideas', $update_columns);
+            $affected_rows = $this->db->affected_rows();
 
-        if($must_sync_found){
-            //Sync algolia:
-            update_algolia(12273, $linkid);
+            if ($must_sync_found) {
+                //Sync algolia:
+                update_algolia(12273, $linkid);
+            }
+
         }
 
         return $affected_rows;
+
     }
 
     function delete($ideaid, $linkplayercreator = 0, $migrateid = 0)
@@ -205,7 +226,7 @@ class Ideas extends CIdea_cache
             '(linkid = ' . $ideaid . ' OR linkidearight = ' . $ideaid . ' OR linkidealeft = ' . $ideaid . ')' => null,
         ), array(), 0) as $migrate) {
 
-            if ($migrateid && $migrate['linkid']!=$ideaid) {
+            if ($migrateid && $migrate['linkid'] != $ideaid) {
                 $new_array = array(
                     'linkidealeft' => ($migrate['linkidealeft'] == $ideaid ? $migrateid : $migrate['linkidealeft']),
                     'linkidearight' => ($migrate['linkidearight'] == $ideaid ? $migrateid : $migrate['linkidearight']),
@@ -228,7 +249,7 @@ class Ideas extends CIdea_cache
 
         }
 
-        if($x_adjusted){
+        if ($x_adjusted) {
             //Remove from Table:
             $this->db->query("DELETE FROM nodeideas WHERE ideaid = " . $ideaid . ";");
 
@@ -236,7 +257,7 @@ class Ideas extends CIdea_cache
             update_algolia(12273, $ideaid);
         } else {
             //Failed to remove
-            log_error('ideas->delete() Failed to remove #'.$ideaid.' Link ID', array(
+            log_error('ideas->delete() Failed to remove #' . $ideaid . ' Link ID', array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkidearight' => $ideaid,
                 'linkidealeft' => $migrateid,
