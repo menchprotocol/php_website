@@ -49,7 +49,7 @@ function player_pinned($playerid, $return_itself = false, $first_pin_only = true
 
 }
 
-function idea_discovery_link($i, $trying_to_skip = false)
+function idea_type_discovery($i, $trying_to_skip = false)
 {
 
     if ($trying_to_skip) {
@@ -427,8 +427,8 @@ function view_tree($i)
     }
 
 
-    echo '<a href="/' . $i['ideahashtag'] . '" target="_blank" class="' . (!isset($i['user_discovered']) || count($i['user_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true) . '</a>';
-    echo(isset($i['user_discovered']['linknumber']) && intval($i['user_discovered']['linknumber']) > 1 ? $i['user_discovered']['linknumber'] . 'x ' : '');
+    echo '<a href="/' . $i['ideahashtag'] . '" target="_blank" class="' . (!isset($i['user_idea_discovered']) || count($i['user_idea_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true) . '</a>';
+    echo(isset($i['user_idea_discovered']['linknumber']) && intval($i['user_idea_discovered']['linknumber']) > 1 ? $i['user_idea_discovered']['linknumber'] . 'x ' : '');
     echo(isset($i['user_written_response']['ideatext']) && strlen($i['user_written_response']['ideatext']) ? ' ' . $i['user_written_response']['ideatext'] : '');
 
 
@@ -567,7 +567,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         $query_string_all = array();
         if (count($idea_list_config[40791])) {
 
-            //If Discovered Any
+            //If idea_discovered Any
             $query_string_all = $CI->Links->read(array(
                 'linkidealeft IN (' . join(',', $idea_list_config[40791]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -575,7 +575,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
         } elseif (count($idea_list_config[44161])) {
 
-            //If Discovered All
+            //If idea_discovered All
             $query_string_all = $CI->Links->read(array(
                 'linkidealeft IN (' . join(',', $idea_list_config[44161]) . ')' => null,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -1592,7 +1592,7 @@ function dispatch_sms($to_phone, $single_message, $playerid = 0, $x_data = array
             foreach ($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
             )) as $idea_template) {
-                $CI->Links->discovered($target_player, $playerid, 0, $idea_template, array(), array(
+                $CI->Links->idea_discovered($target_player, $playerid, 0, $idea_template, array(), array(
                     'linktext' => $single_message,
                 ));
             }
@@ -1746,7 +1746,7 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
             foreach ($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
             )) as $idea_template) {
-                $CI->Links->discovered(29399, $playerid, 0, $idea_template, array(), array(
+                $CI->Links->idea_discovered(29399, $playerid, 0, $idea_template, array(), array(
                     'linktext' => $subject . "\n" . $email_message,
                 ));
             }
@@ -1767,7 +1767,7 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
             foreach ($CI->Ideas->read(array(
                 'ideaid' => $x_data['linkidealeft'],
             )) as $email_i) {
-                $CI->Links->discovered(idea_discovery_link($email_i), $playerid, $x_data['linkidearight'], $email_i, $x_data);
+                $CI->Links->idea_discovered(idea_type_discovery($email_i), $playerid, $x_data['linkidearight'], $email_i, $x_data);
             }
         }
 
@@ -1973,7 +1973,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         $idea_list_config = idea_list_config($ideaid);
 
 
-        //If Discovered All
+        //If idea_discovered All
         if (count($idea_list_config[44161])) {
             $the_counter = 0;
             if ($linkplayercreator) {
@@ -1992,7 +1992,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             }
         }
 
-        //If Discovered Any
+        //If idea_discovered Any
         if (count($idea_list_config[40791])) {
             $the_counter = 0;
             if ($linkplayercreator) {
@@ -2013,7 +2013,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
 
 
-        //If Not Discovered All
+        //If Not idea_discovered All
         if (count($idea_list_config[44162])) {
             $the_counter = 0;
             if ($linkplayercreator) {
@@ -2035,7 +2035,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
 
 
-        //If Not Discovered Any
+        //If Not idea_discovered Any
         if (count($idea_list_config[40793])) {
             $the_counter = 0;
             if ($linkplayercreator) {
@@ -3860,10 +3860,10 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
         foreach ($CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'linkidearight' => $focus_i['ideaid'],
-            'linkplayerup' => 44262, //Skip Next If Undiscovered
+            'linkplayerup' => 44262, //Skip Next If Unidea_discovered
         )) as $skip) {
-            //Not yet discovered, lets go next automatically:
-            $ui .= '<script> $(document).ready(function () { setTimeout(function () { idea_discover_next(0); }, ' . (is_numeric($skip['linktext']) && intval($skip['linktext']) > 0 ? intval($skip['linktext']) : '2584') . '); }); </script>';
+            //Not yet idea_discovered, lets go next automatically:
+            $ui .= '<script> $(document).ready(function () { setTimeout(function () { idea_discovered(0); }, ' . (is_numeric($skip['linktext']) && intval($skip['linktext']) > 0 ? intval($skip['linktext']) : '2584') . '); }); </script>';
             break;
         }
     }
@@ -4097,20 +4097,20 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     }
 
     $has_sortable = $linkid > 0 && !$focus__node && $idea_access >= 3 && in_array($linkplayertype, $CI->config->item('playerids___4603')) && ($linkplayertype != 42256 || $i['linkplayertype'] == 34513);
-    $has_discovered = 0;
+    $has_idea_discovered = 0;
     if (!$is_cache && $linkplayercreator) {
         $discoveries = $CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkplayercreator' => $linkplayercreator,
             'linkidealeft' => $i['ideaid'],
         ));
-        $has_discovered = count($discoveries);
+        $has_idea_discovered = count($discoveries);
     }
-    if ($has_discovered && $discovery_mode) {
+    if ($has_idea_discovered && $discovery_mode) {
         $i = array_merge($i, $discoveries[0]);
     }
 
-    if ($has_discovered && !$target_ideahashtag) {
+    if ($has_idea_discovered && !$target_ideahashtag) {
         foreach ($CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkplayercreator' => $linkplayercreator,
@@ -4121,7 +4121,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
         }
     }
 
-    $is_locked = ($discovery_mode && !$has_discovered && !$focus__node);
+    $is_locked = ($discovery_mode && !$has_idea_discovered && !$focus__node);
 
     if (($goto_start || !$superpower_10939) && $idea_startable) {
         $href = view_memory(42903, 30795) . $i['ideahashtag'] . '/' . view_memory(6404, 4235);
@@ -4605,7 +4605,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
                     $input_ui .= '</form>';
 
-                    $input_ui .= '<script> $(document).ready(function () { $(\'.idea_discover_next_btn\').hide(); }); </script>';
+                    $input_ui .= '<script> $(document).ready(function () { $(\'.idea_discovered_btn\').hide(); }); </script>';
 
                 } else {
 
@@ -4800,13 +4800,13 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
             //Next
             $players___6255 = $CI->config->item('players___6255');
-            $focus_menu = ($has_discovered ? $m_target_bar : $players___6255[idea_discovery_link($i)]);
-            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="idea_discover_next(0)" class="btn btn-sm post_button idea_discover_next_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
+            $focus_menu = ($has_idea_discovered ? $m_target_bar : $players___6255[idea_type_discovery($i)]);
+            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="idea_discovered(0)" class="btn btn-sm post_button idea_discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
         } elseif ($linkplayertype_target_bar == 31022 && $discovery_mode && $focus__node && $player_session && !count($x_completes) && !in_array($i['ideatype'], $CI->config->item('playerids___43009')) && !idea_required($i)) {
 
             //Skip
-            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="idea_discover_next(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="idea_discovered(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
         }
     }

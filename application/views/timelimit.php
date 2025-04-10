@@ -23,7 +23,7 @@ $counter = 0;
 //Go through all expire seconds ideas:
 foreach($this->Links->read($filters, array('linkidearight'), 0) as $expires){
 
-    //Now go through everyone who discovered this selection:
+    //Now go through everyone who idea_discovered this selection:
     foreach($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
         'linkidealeft' => $expires['ideaid'],

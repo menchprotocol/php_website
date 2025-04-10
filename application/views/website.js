@@ -925,7 +925,7 @@ function load_card_clickers(){
                     if(!$('.input_ui_'+$(this).attr('selection_ideaid'))[0]){
                         //Since there is no input for this single select, we can instantly go next:
                         setTimeout(function () {
-                            idea_discover_next(0);
+                            idea_discovered(0);
                         }, 89);
                     } else {
                         //Make button visible if hidden:
@@ -1011,7 +1011,7 @@ function invoice_update(){
 
 
     //Update UI:
-    $('.idea_discover_next_btn').html('Create Invoice: <span title="" class="small_font inline-block">'+total_currency+' '+total_price.toLocaleString('en-US', {
+    $('.idea_discovered_btn').html('Create Invoice: <span title="" class="small_font inline-block">'+total_currency+' '+total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
     })+' ['+total_count+']</span>');
@@ -3195,7 +3195,7 @@ function link_clicked(ideaid){
 
 
 var next_processing = false;
-function idea_discover_next(do_skip){
+function idea_discovered(do_skip){
 
     if(next_processing){
         return false;
@@ -3289,8 +3289,8 @@ function idea_discover_next(do_skip){
         if(total_count > 0){
 
             //Load:
-            var original_html = $('.idea_discover_next_btn').html();
-            $('.idea_discover_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+            var original_html = $('.idea_discovered_btn').html();
+            $('.idea_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
             //Submit to go next:
             $.post("/invoice", {
@@ -3309,7 +3309,7 @@ function idea_discover_next(do_skip){
                     js_redirect(data.next__url);
                 } else {
                     //Show error:
-                    $('.idea_discover_next_btn').html(original_html);
+                    $('.idea_discovered_btn').html(original_html);
                     alert(data.message);
                     next_processing = false;
                 }
@@ -3325,11 +3325,11 @@ function idea_discover_next(do_skip){
 
 
     //Load:
-    var original_html = $('.idea_discover_next_btn').html();
-    $('.idea_discover_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    var original_html = $('.idea_discovered_btn').html();
+    $('.idea_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
-    $.post("/controller/idea_discover_next", {
+    $.post("/controller/idea_discovered", {
         target_ideahashtag: $('#target_ideahashtag').val(),
         target_ideaid: parseInt($('#target_ideaid').val()),
         player_submitted_data: {
@@ -3349,7 +3349,7 @@ function idea_discover_next(do_skip){
         } else {
             next_processing = false;
             //Show error:
-            $('.idea_discover_next_btn').html(original_html);
+            $('.idea_discovered_btn').html(original_html);
             alert(data.message);
         }
     });

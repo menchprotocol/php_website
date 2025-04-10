@@ -106,7 +106,7 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
                     $title = view_idea_title($i, true);
                     $total_sent = 0;
 
-                    //The time is here! Send event reminders to those who successfully discovered this:
+                    //The time is here! Send event reminders to those who successfully idea_discovered this:
                     foreach ($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'linkidealeft' => $i['ideaid'],
@@ -224,7 +224,7 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
                 'linkplayercreator' => $x['playerid'],
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             )))) {
-                //Skip since they already discovered this idea:
+                //Skip since they already idea_discovered this idea:
                 continue;
             }
 
@@ -244,7 +244,7 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
                     'linkplayercreator' => $x['playerid'],
                     'linkidealeft' => $down_or['ideaid'],
                 ));
-                //Has this user discovered this idea or no?
+                //Has this user idea_discovered this idea or no?
                 $html_message .= view_idea_title($down_or, true) . ":\n";
                 $html_message .= 'https://' . get_domain('m__message', $x['playerid'], $i['linkplayerdomain']) . view_memory(42903, 33286) . $down_or['ideahashtag'] . (!count($discoveries) ? '?playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['playerhandle']) : '') . "\n\n";
 

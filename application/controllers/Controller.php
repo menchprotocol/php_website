@@ -233,11 +233,11 @@ class Controller extends CI_Controller
                         if (idea_is_startable($focus_i)) {
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this idea. Scroll to the bottom & go next to continue.</div>';
                         } else {
-                            $this->Links->discovered(idea_discovery_link($focus_i), $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
-                            $this->Links->discovered(29393, $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
+                            $this->Links->idea_discovered(idea_type_discovery($focus_i), $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
+                            $this->Links->idea_discovered(29393, $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
 
                             //Inform user of changes:
-                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Ideas has been discovered</div>';
+                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Ideas has been idea_discovered</div>';
                         }
                     }
 
@@ -400,10 +400,10 @@ class Controller extends CI_Controller
             } elseif (!idea_started($player_session['playerid'], $target_i['ideahashtag'])) {
 
                 //Not yet started, add to their starting point:
-                $completion_status = $this->Links->discovered(4235, $player_session['playerid'], 0, $target_i);
+                $completion_status = $this->Links->idea_discovered(4235, $player_session['playerid'], 0, $target_i);
 
                 //Now return next idea:
-                $next__url = $this->Links->nextidea($player_session['playerid'], $target_i['ideahashtag'], $target_i);
+                $next__url = $this->Links->idea_next($player_session['playerid'], $target_i['ideahashtag'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
@@ -3073,7 +3073,7 @@ class Controller extends CI_Controller
         ));
     }
 
-    function idea_discover_next()
+    function idea_discovered()
     {
 
         $player_session = superpower_unlocked(null, 0, $this->player_session);
@@ -3219,7 +3219,7 @@ class Controller extends CI_Controller
             }
 
             //Issue DISCOVERY/IDEA COIN:
-            $completion_status = $this->Links->discovered(idea_discovery_link($focus_i, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
+            $completion_status = $this->Links->idea_discovered(idea_type_discovery($focus_i, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
                 'linknumber' => $_POST['player_submitted_data']['ideanumber'],
             ));
             if (!$completion_status['status']) {
@@ -3284,7 +3284,7 @@ class Controller extends CI_Controller
                     }
 
                     //Try to complete:
-                    $completion_status = $this->Links->discovered(idea_discovery_link($idea_next, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
+                    $completion_status = $this->Links->idea_discovered(idea_type_discovery($idea_next, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
                         'linknumber' => $next_idea_data['ideanumber'],
                     ));
                     if ($idea_required && !$completion_status['status']) {
@@ -3302,14 +3302,14 @@ class Controller extends CI_Controller
                 $idea_redirect_url = idea_redirect_url($primary_i);
             }
             if (!$idea_redirect_url) {
-                $nextidea = $this->Links->nextidea($player_session['playerid'], $_POST['target_ideahashtag'], $focus_i);
+                $idea_next = $this->Links->idea_next($player_session['playerid'], $_POST['target_ideahashtag'], $focus_i);
             }
 
             //All good:
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next__url' => ($idea_redirect_url ? $idea_redirect_url : ($nextidea ? $nextidea : 'start')),
+                'next__url' => ($idea_redirect_url ? $idea_redirect_url : ($idea_next ? $idea_next : 'start')),
             ));
 
         }

@@ -42,7 +42,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             $linkplayertype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->Links->discovered($linkplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Links->idea_discovered($linkplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => intval($_POST['quantity']),
                 'linktext' => $_POST,
             ));
@@ -59,7 +59,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             ));
 
             //Log Refund:
-            $completion_status = $this->Links->discovered($linkplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Links->idea_discovered($linkplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
                 'linknumber' => (-1 * ( isset($original_payment[0]['linknumber']) ? $original_payment[0]['linknumber'] : 1 )),
                 'linktext' => $_POST,
                 'linkplayerdomain' => ( isset($original_payment[0]['linkplayerdomain']) && $original_payment[0]['linkplayerdomain']>0 ? $original_payment[0]['linkplayerdomain'] : 0 ),

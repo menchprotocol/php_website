@@ -84,10 +84,10 @@ if ($player_session) {
     }
 
     if ($target_completed && $at_starting_point) {
-        echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_discovered'] . ': ' . join(',', $progress['list_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
+        echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_idea_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_idea_discovered'] . ': ' . join(',', $progress['list_idea_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
     } else {
         echo '<div class="progress">
-<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_discovered'] . '/' . $progress['fixed_total'] . ' Ideas Discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_idea_discovered'] . '/' . $progress['fixed_total'] . ' Ideas idea_discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
 </div>';
     }
 }
@@ -136,7 +136,7 @@ if ($player_session || isset($_GET['open'])) {
 
         //Show percentage progress on next button:
         if (parseInt($('.progress-bar').attr('aria-valuenow')) > 0 && parseInt($('.progress-bar').attr('aria-valuenow')) < 100) {
-            $('.idea_discover_next_btn').append(' <span title="' + $('.progress-bar').attr('aria-valuenow') + '% Completed" class="small_font inline-block">[' + $('.progress-bar').attr('aria-valuenow') + '% Done]</span>');
+            $('.idea_discovered_btn').append(' <span title="' + $('.progress-bar').attr('aria-valuenow') + '% Completed" class="small_font inline-block">[' + $('.progress-bar').attr('aria-valuenow') + '% Done]</span>');
         }
 
         //Detect if no scroll bar, load instantly:

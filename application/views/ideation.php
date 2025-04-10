@@ -15,7 +15,7 @@ if($player_session && !superpower_unlocked(10939) && count($this->Links->read(ar
         'linkplayertype' => 4235, //Get started
         'linkidealeft' => $focus_i['ideaid'],
     )))){
-    //Player without editing superpowers has viewed an idea they have discovered already, so get them there:
+    //Player without editing superpowers has viewed an idea they have idea_discovered already, so get them there:
     js_php_redirect('/'.$focus_i['ideahashtag'].'/start', 13);
 }
 

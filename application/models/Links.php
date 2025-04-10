@@ -731,7 +731,7 @@ class Links extends CIdea_cache
     }
 
 
-    function broadcast($list_of_playerid, $i, $linkplayerdomain = 0, $ensure_undiscovered = true, $demo_only = false)
+    function broadcast($list_of_playerid, $i, $linkplayerdomain = 0, $ensure_unidea_discovered = true, $demo_only = false)
     {
 
         $total_sent = 0;
@@ -760,12 +760,12 @@ class Links extends CIdea_cache
                     'linkplayerdown' => 26582, //Messener
                 ));
                 continue;
-            } elseif ($ensure_undiscovered && count($this->Links->read(array(
+            } elseif ($ensure_unidea_discovered && count($this->Links->read(array(
                     'linkidealeft' => $i['ideaid'],
                     'linkplayercreator' => $x['playerid'],
                     'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 )))) {
-                //Already discovered:
+                //Already idea_discovered:
                 continue;
             }
 
@@ -782,7 +782,7 @@ class Links extends CIdea_cache
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $down_or) {
-                //Has this user discovered this idea or no?
+                //Has this user idea_discovered this idea or no?
                 $html_message .= '<div class="line">' . view_idea_title($down_or, true) . ':</div>';
                 $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['playerid'], $linkplayerdomain) . view_memory(42903, 33286) . $down_or['ideahashtag'] . (idea_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['playerhandle']) . '</div>';
             }
@@ -799,9 +799,9 @@ class Links extends CIdea_cache
                 'linkidealeft' => $i['ideaid'],
             ), $i['ideaid'], $linkplayerdomain, true, $demo_only);
 
-            //Mark as discovered:
+            //Mark as idea_discovered:
             if ($message['status'] && !$demo_only) {
-                $this->Links->discovered(43142, $x['playerid'], 0, $i);
+                $this->Links->idea_discovered(43142, $x['playerid'], 0, $i);
                 $total_sent++;
             }
 
@@ -859,12 +859,12 @@ class Links extends CIdea_cache
     }
 
 
-    function previousdiscovered($focus_ideaid, $linkplayercreator, $loop_breaker_ids = array())
+    function previousidea_discovered($focus_ideaid, $linkplayercreator, $loop_breaker_ids = array())
     {
 
         /*
          *
-         * Returns hashtag if discovered upwards
+         * Returns hashtag if idea_discovered upwards
          *
          * */
 
@@ -886,7 +886,7 @@ class Links extends CIdea_cache
                 return $x['ideahashtag'];
             }
 
-            return $this->Links->previousideadiscovered($prev_i['ideaid'], $linkplayercreator, $loop_breaker_ids);
+            return $this->Links->previousideaidea_discovered($prev_i['ideaid'], $linkplayercreator, $loop_breaker_ids);
         }
 
         //Did not find!
@@ -895,7 +895,7 @@ class Links extends CIdea_cache
     }
 
 
-    function nextidea($playerid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
+    function idea_next($playerid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
         /*
@@ -949,7 +949,7 @@ class Links extends CIdea_cache
             }
 
             //Keep looking deeper:
-            $next__url = $this->Links->nextidea($playerid, $target_ideahashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
+            $next__url = $this->Links->idea_next($playerid, $target_ideahashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
             if ($next__url) {
                 return $next__url;
             }
@@ -962,7 +962,7 @@ class Links extends CIdea_cache
             $current_previous = $i['ideaid'];
             foreach (array_reverse($this->Links->previousidea($playerid, $target_ideahashtag, $i['ideaid'])) as $p_i) {
                 //Find the next siblings:
-                $next__url = $this->Links->nextidea($playerid, $target_ideahashtag, $p_i, $current_previous, false, $target_completed);
+                $next__url = $this->Links->idea_next($playerid, $target_ideahashtag, $p_i, $current_previous, false, $target_completed);
                 if ($next__url) {
                     return $next__url;
                 }
@@ -976,11 +976,11 @@ class Links extends CIdea_cache
     }
 
 
-    function discovered($linkplayertype, $linkplayercreator, $target_ideaid = 0, $i, $player_submitted_data = array(), $x_data = array())
+    function idea_discovered($linkplayertype, $linkplayercreator, $target_ideaid = 0, $i, $player_submitted_data = array(), $x_data = array())
     {
 
         if (!$linkplayercreator || !in_array($linkplayertype, $this->config->item('playerids___31777' /* DISCOVERIES */))) {
-            return log_error('discovered() Invalid linkplayertype @' . $linkplayertype . ' missing in @31777 OR Missing $linkplayercreator', array(
+            return log_error('idea_discovered() Invalid linkplayertype @' . $linkplayertype . ' missing in @31777 OR Missing $linkplayercreator', array(
                 'linkplayerdown' => $linkplayercreator,
                 'linkplayercreator' => $linkplayercreator,
             ));
@@ -1114,16 +1114,16 @@ class Links extends CIdea_cache
             'linkidearight' => (isset($x_data['linkidearight']) ? $x_data['linkidearight'] : 0),
             'linkplayercreator' => $linkplayercreator,
             'linktext' => $x_data['linktext'],
-        )) as $already_discovered) {
+        )) as $already_idea_discovered) {
 
             //Update:
-            $this->Links->update($already_discovered['linkid'], $x_data);
+            $this->Links->update($already_idea_discovered['linkid'], $x_data);
 
-            //Already discovered!
+            //Already idea_discovered!
             return array(
                 'status' => 1,
-                'message' => 'Already Discovered',
-                'new_x' => $already_discovered,
+                'message' => 'Already idea_discovered',
+                'new_x' => $already_idea_discovered,
             );
         }
 
@@ -1152,7 +1152,7 @@ class Links extends CIdea_cache
 
                 if (!$has_children) {
                     //Mark as complete:
-                    $this->Links->discovered(idea_discovery_link($next_i), $x_data['linkplayercreator'], $target_ideaid, $next_i, $x_data);
+                    $this->Links->idea_discovered(idea_type_discovery($next_i), $x_data['linkplayercreator'], $target_ideaid, $next_i, $x_data);
                 }
             }
         }
@@ -1321,7 +1321,7 @@ class Links extends CIdea_cache
                         if (!in_array(intval($watcher['linkplayerup']), $sent_watchers)) {
                             array_push($sent_watchers, intval($watcher['linkplayerup']));
 
-                            $this->Links->message($watcher['linkplayerup'], $es_discoverer[0]['playertext'] . ' Discovered: ' . view_idea_title($i, true),
+                            $this->Links->message($watcher['linkplayerup'], $es_discoverer[0]['playertext'] . ' idea_discovered: ' . view_idea_title($i, true),
                                 //Message Body:
                                 view_idea_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['ideahashtag'] . "\n\n" .
                                 (strlen($x_data['linktext']) ? $x_data['linktext'] . "\n\n" : '') .
@@ -1363,7 +1363,7 @@ class Links extends CIdea_cache
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $input__text = in_array($i['ideatype'], $this->config->item('playerids___43002'));
         $i['uploaded_media'] = array();
-        $i['user_discovered'] = array();
+        $i['user_idea_discovered'] = array();
         $i['user_written_response'] = array();
         $i['idea_level'] = $idea_level;
         $i['idea_next'] = array();
@@ -1423,10 +1423,10 @@ class Links extends CIdea_cache
             unset($x['linktext']);
             unset($x['linkid']);
 
-            $i['user_discovered'] = $x;
+            $i['user_idea_discovered'] = $x;
 
             if ($input__text) {
-                //Since it has been discovered and its a text input, lots fetch the written response:
+                //Since it has been idea_discovered and its a text input, lots fetch the written response:
                 foreach ($this->Links->read(array(
                     'linkplayertype' => 33532, //Private Reply
                     'linkidealeft' => $i['ideaid'],
@@ -1438,7 +1438,7 @@ class Links extends CIdea_cache
         }
 
 
-        if ($i['user_discovered']) {
+        if ($i['user_idea_discovered']) {
             foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
                 'linkidealeft' => $i['ideaid'],
@@ -1452,14 +1452,14 @@ class Links extends CIdea_cache
 
     }
 
-    function historydiscovered($i, $playerid, $idea_level = 0)
+    function historyidea_discovered($i, $playerid, $idea_level = 0)
     {
 
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $input__text = in_array($i['ideatype'], $this->config->item('playerids___43002'));
         $i['idea_level'] = $idea_level;
         $i['idea_next'] = array();
-        $i['user_discovered'] = array();
+        $i['user_idea_discovered'] = array();
         $i['user_written_response'] = array();
         $idea_level++;
 
@@ -1469,7 +1469,7 @@ class Links extends CIdea_cache
             'linkplayercreator' => $playerid,
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 1) as $x) {
-            $i['user_discovered'] = $x;
+            $i['user_idea_discovered'] = $x;
         }
 
         if ($input__text) {
@@ -1483,7 +1483,7 @@ class Links extends CIdea_cache
         }
 
 
-        if ($i['user_discovered']) {
+        if ($i['user_idea_discovered']) {
             foreach (($input__selection ? $this->Links->read(array(
                 'linkplayertype' => 7712, //Input Choice
                 'linkplayercreator' => $playerid,
@@ -1492,7 +1492,7 @@ class Links extends CIdea_cache
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'))) as $next_i) {
-                array_push($i['idea_next'], $this->Links->historydiscovered($next_i, $playerid, $idea_level));
+                array_push($i['idea_next'], $this->Links->historyidea_discovered($next_i, $playerid, $idea_level));
             }
         }
 
@@ -1573,14 +1573,14 @@ class Links extends CIdea_cache
         array_push($loop_breaker_ids, intval($i['ideaid']));
 
         //Count completed:
-        $list_discovered = array();
+        $list_idea_discovered = array();
         foreach ($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'linkplayercreator' => $playerid, //Belongs to this Member
             'linkidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
         ), array('linkidealeft'), 0) as $completed) {
-            if (!in_array($completed['ideahashtag'], $list_discovered)) {
-                array_push($list_discovered, $completed['ideahashtag']);
+            if (!in_array($completed['ideahashtag'], $list_idea_discovered)) {
+                array_push($list_idea_discovered, $completed['ideahashtag']);
             }
         }
 
@@ -1589,8 +1589,8 @@ class Links extends CIdea_cache
         $metadata_this = array(
             'fixed_total' => count($copy['recursive_idea_ids']),
             'list_total' => $copy['recursive_idea_ids'],
-            'fixed_discovered' => count($list_discovered),
-            'list_discovered' => $list_discovered,
+            'fixed_idea_discovered' => count($list_idea_discovered),
+            'list_idea_discovered' => $list_idea_discovered,
         );
 
         //Now let's check possible expansions:
@@ -1612,14 +1612,14 @@ class Links extends CIdea_cache
                     $progress = array(
                         'fixed_total' => 1,
                         'list_total' => array($expansion_in['ideaid']),
-                        'fixed_discovered' => 0,
-                        'list_discovered' => array(),
+                        'fixed_idea_discovered' => 0,
+                        'list_idea_discovered' => array(),
                     );
                 }
 
                 //Addup completion stats for this:
                 $metadata_this['fixed_total'] += $progress['fixed_total'];
-                $metadata_this['fixed_discovered'] += $progress['fixed_discovered'];
+                $metadata_this['fixed_idea_discovered'] += $progress['fixed_idea_discovered'];
 
                 if ($progress['list_total'] && count($progress['list_total'])) {
                     foreach ($progress['list_total'] as $tree_id) {
@@ -1629,10 +1629,10 @@ class Links extends CIdea_cache
                     }
                 }
 
-                if ($progress['list_discovered'] && count($progress['list_discovered'])) {
-                    foreach ($progress['list_discovered'] as $tree_id) {
-                        if (!in_array($tree_id, $metadata_this['list_discovered'])) {
-                            array_push($metadata_this['list_discovered'], $tree_id);
+                if ($progress['list_idea_discovered'] && count($progress['list_idea_discovered'])) {
+                    foreach ($progress['list_idea_discovered'] as $tree_id) {
+                        if (!in_array($tree_id, $metadata_this['list_idea_discovered'])) {
+                            array_push($metadata_this['list_idea_discovered'], $tree_id);
                         }
                     }
                 }
@@ -1660,7 +1660,7 @@ class Links extends CIdea_cache
 
             //Calculate completion rate based on estimated time cost:
             if ($metadata_this['fixed_total'] > 0) {
-                $metadata_this['fixed_completed_percentage'] = intval(floor($metadata_this['fixed_discovered'] / $metadata_this['fixed_total'] * 100));
+                $metadata_this['fixed_completed_percentage'] = intval(floor($metadata_this['fixed_idea_discovered'] / $metadata_this['fixed_total'] * 100));
             }
 
 

@@ -182,7 +182,7 @@ foreach($this->Ideas->read(array(
 
 
         //Save New Invoice:
-        $this->Links->discovered(44245, $player_session['playerid'], $idea_target['ideaid'], $i);
+        $this->Links->idea_discovered(44245, $player_session['playerid'], $idea_target['ideaid'], $i);
 
 
         //Save New Child Answers:
@@ -192,7 +192,7 @@ foreach($this->Ideas->read(array(
             )) as $this_i){
 
                 //Complete this item:
-                $this->Links->discovered(idea_discovery_link($this_i), $player_session['playerid'], $idea_target['ideaid'], $this_i, array(), array(
+                $this->Links->idea_discovered(idea_type_discovery($this_i), $player_session['playerid'], $idea_target['ideaid'], $this_i, array(), array(
                     'linknumber' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
@@ -211,14 +211,14 @@ foreach($this->Ideas->read(array(
         //Find Next:
         $idea_redirect_url = idea_redirect_url($i);
         if(!$idea_redirect_url){
-            $nextidea = $this->Links->nextidea($player_session['playerid'], $_POST['target_ideahashtag'], $i);
+            $idea_next = $this->Links->idea_next($player_session['playerid'], $_POST['target_ideahashtag'], $i);
         }
 
 
         //Return Data:
         return view_json(array(
             'status' => 1,
-            'next__url' => ( $idea_redirect_url ? $idea_redirect_url : ( $nextidea ? $nextidea : 'start' ) ),
+            'next__url' => ( $idea_redirect_url ? $idea_redirect_url : ( $idea_next ? $idea_next : 'start' ) ),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
         ));

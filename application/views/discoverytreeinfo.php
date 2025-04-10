@@ -21,7 +21,7 @@ foreach($this->Players->read(array(
 )) as $e){
     //List the idea:
     print_r(array(
-        'nextidea' => $this->Links->nextidea($e['playerid'], $idea_settings['i']['ideahashtag'], $idea_settings['i'], 0, false),
+        'idea_next' => $this->Links->idea_next($e['playerid'], $idea_settings['i']['ideahashtag'], $idea_settings['i'], 0, false),
         'progress' => $this->Links->progress($e['playerid'], $idea_settings['i']),
     ));
 }

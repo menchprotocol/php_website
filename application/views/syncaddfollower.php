@@ -8,7 +8,7 @@ foreach ($this->Links->read(array(
 ), array('linkplayerup'), 0) as $addition_sync) {
 
     $is_found = false;
-    //Fetch everyone who has discovered this idea:
+    //Fetch everyone who has idea_discovered this idea:
     foreach ($this->Links->read(array(
         'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'linkidealeft' => $addition_sync['linkidearight'],
