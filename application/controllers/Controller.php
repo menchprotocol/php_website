@@ -448,7 +448,7 @@ class Controller extends CI_Controller
      * */
 
 
-    function load_popover()
+    function link_popover()
     {
         if (isset($_POST['handle_string']) && strlen($_POST['handle_string']) > 1 && in_array(substr($_POST['handle_string'], 0, 1), array('#', '@'))) {
             if (substr($_POST['handle_string'], 0, 1) == '#') {
@@ -478,7 +478,7 @@ class Controller extends CI_Controller
 
     }
 
-    function i_editor_load()
+    function idea_editor()
     {
 
         $player_session = superpower_unlocked(null, 0, $this->player_session);
@@ -530,7 +530,7 @@ class Controller extends CI_Controller
                 'ideatype' => $_POST['current_ideatype'],
             ), $player_session['playerid']);
 
-            $ideaid = $idea_new['new_idea']['ideaid'];
+            $ideaid = $idea_new['idea_create']['ideaid'];
             $created_ideaid = $ideaid;
 
         }
@@ -1220,7 +1220,7 @@ class Controller extends CI_Controller
         }
     }
 
-    function i_sort_load()
+    function idea_sort_load()
     {
 
         /*
@@ -1270,7 +1270,7 @@ class Controller extends CI_Controller
         ));
     }
 
-    function ideas_list()
+    function idea_list()
     {
         //Authenticate Member:
         if (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1 || !isset($_POST['counter']) || !isset($_POST['linkplayertype']) || intval($_POST['linkplayertype']) < 1) {
@@ -1462,7 +1462,7 @@ class Controller extends CI_Controller
         }
     }
 
-    function e_sort_save()
+    function player_sort_save()
     {
 
         //Authenticate Member:
@@ -1529,33 +1529,6 @@ class Controller extends CI_Controller
 
             }
         }
-    }
-
-    function link_unlink()
-    {
-
-        //Auth member and check required variables:
-        $player_session = superpower_unlocked(10939, 0, $this->player_session);
-
-        if (!$player_session) {
-            return view_json(array(
-                'status' => 0,
-                'message' => blocked_reasoning(10939),
-            ));
-        } elseif (!isset($_POST['linkid'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Link ID',
-            ));
-        }
-
-        //Archive Link:
-        $this->Links->delete($_POST['linkid'], $player_session['playerid']);
-
-        return view_json(array(
-            'status' => 1,
-        ));
-
     }
 
 
@@ -1632,7 +1605,7 @@ class Controller extends CI_Controller
             return view_json($added_e);
         } else {
             //Assign new Player:
-            $focus_e = $added_e['new_player'];
+            $focus_e = $added_e['player_create'];
         }
 
 
@@ -1710,13 +1683,13 @@ class Controller extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'new_playerhandle' => $focus_e['playerhandle'],
+            'player_createhandle' => $focus_e['playerhandle'],
         ));
 
 
     }
 
-    function new_idea()
+    function idea_create()
     {
 
         /*
@@ -1739,23 +1712,23 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Core Variables',
             ));
-        } elseif (!isset($_POST['new_ideatext']) || !isset($_POST['link_ideaid'])) {
+        } elseif (!isset($_POST['idea_createtext']) || !isset($_POST['link_ideaid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Follower Idea ID',
             ));
         }
 
-        $validate_ideatext = validate_ideatext($_POST['new_ideatext']);
+        $validate_ideatext = validate_ideatext($_POST['idea_createtext']);
         if (!$validate_ideatext['status']) {
             //We had an error, return it:
             return view_json($validate_ideatext);
         }
 
 
-        if (!$_POST['link_ideaid'] && view_valid_handle_idea($_POST['new_ideatext'])) {
+        if (!$_POST['link_ideaid'] && view_valid_handle_idea($_POST['idea_createtext'])) {
             foreach ($this->Ideas->read(array(
-                'LOWER(ideahashtag)' => strtolower(view_valid_handle_idea($_POST['new_ideatext'])),
+                'LOWER(ideahashtag)' => strtolower(view_valid_handle_idea($_POST['idea_createtext'])),
             )) as $i) {
                 $_POST['link_ideaid'] = $i['ideaid'];
             }
@@ -1778,12 +1751,12 @@ class Controller extends CI_Controller
         }
 
         //All seems good, go ahead and try to create/link the Idea:
-        return view_json($this->Ideas->create_or_link($_POST['focus_card'], $_POST['linkplayertype'], trim($_POST['new_ideatext']), $member_e['playerid'], $_POST['focus_id'], $_POST['link_ideaid']));
+        return view_json($this->Ideas->create_or_link($_POST['focus_card'], $_POST['linkplayertype'], trim($_POST['idea_createtext']), $member_e['playerid'], $_POST['focus_id'], $_POST['link_ideaid']));
 
     }
 
 
-    function new_player()
+    function player_create()
     {
 
         //Auth member and check required variables:
@@ -1885,7 +1858,7 @@ class Controller extends CI_Controller
                 return view_json($added_e);
             } else {
                 //Assign new Player:
-                $focus_e = $added_e['new_player'];
+                $focus_e = $added_e['player_create'];
             }
 
         }
@@ -1947,7 +1920,7 @@ class Controller extends CI_Controller
 
     }
 
-    function e_editor_load()
+    function player_editor()
     {
 
         $player_session = superpower_unlocked(null, 0, $this->player_session);
@@ -2384,7 +2357,7 @@ class Controller extends CI_Controller
 
     }
 
-    function e_select_apply()
+    function player_select_apply()
     {
         /*
          *
@@ -2539,7 +2512,7 @@ class Controller extends CI_Controller
         ));
     }
 
-    function e_contact_auth()
+    function player_authenticate()
     {
 
 
@@ -2670,7 +2643,7 @@ class Controller extends CI_Controller
 
     }
 
-    function e_toggle_player()
+    function player_toggle_follow()
     {
 
         $player_session = superpower_unlocked(10939, 0, $this->player_session);
@@ -2862,7 +2835,7 @@ class Controller extends CI_Controller
 
     }
 
-    function text_updater()
+    function player_text_update()
     {
 
         //Authenticate Member:
@@ -2877,7 +2850,7 @@ class Controller extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif (!isset($_POST['playerid']) || !isset($_POST['cache_playerid']) || !isset($_POST['new_ideatext'])) {
+        } elseif (!isset($_POST['playerid']) || !isset($_POST['cache_playerid']) || !isset($_POST['idea_createtext'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -2899,7 +2872,7 @@ class Controller extends CI_Controller
             }
 
 
-            $validate_playertext = validate_playertext($_POST['new_ideatext']);
+            $validate_playertext = validate_playertext($_POST['idea_createtext']);
             if (!$validate_playertext['status']) {
                 return view_json(array_merge($validate_playertext, array(
                     'original_val' => $es[0]['playertext'],
@@ -2933,7 +2906,7 @@ class Controller extends CI_Controller
         }
     }
 
-    function x_mass_apply_preview()
+    function link_preview()
     {
 
         if (!isset($_POST['apply_id']) || !isset($_POST['s__id'])) {
@@ -2953,7 +2926,7 @@ class Controller extends CI_Controller
                 if (!$counter) {
                     echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Players yet</div>';
                 } else {
-                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Player' . view_s($counter) . ':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Player' . search($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
                     foreach (players_query(42373, $_POST['s__id'], 1, true) as $e) {
@@ -2976,7 +2949,7 @@ class Controller extends CI_Controller
                 if (!$counter) {
                     echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Ideas yet</div>';
                 } else {
-                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' idea' . view_s($counter) . ':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' idea' . search($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
                     foreach ($is_next as $i) {
@@ -2993,7 +2966,7 @@ class Controller extends CI_Controller
         }
     }
 
-    function x_view_load_page()
+    function link_page_load()
     {
 
         $focus_e = array();
@@ -3047,7 +3020,7 @@ class Controller extends CI_Controller
 
     }
 
-    function x_reset_sorting()
+    function link_sort_reset()
     {
 
         //Authenticate Member:
@@ -3100,7 +3073,7 @@ class Controller extends CI_Controller
         ));
     }
 
-    function go_next()
+    function idea_discover_next()
     {
 
         $player_session = superpower_unlocked(null, 0, $this->player_session);
@@ -3119,8 +3092,8 @@ class Controller extends CI_Controller
         if (!isset($_POST['selection_ideaid'])) {
             $_POST['selection_ideaid'] = array();
         }
-        if (!isset($_POST['player_submitted_data']['new_ideatext'])) {
-            $_POST['player_submitted_data']['new_ideatext'] = null;
+        if (!isset($_POST['player_submitted_data']['idea_createtext'])) {
+            $_POST['player_submitted_data']['idea_createtext'] = null;
         }
         if (!isset($_POST['player_submitted_data']['uploaded_media'])) {
             $_POST['player_submitted_data']['uploaded_media'] = array();
@@ -3144,9 +3117,9 @@ class Controller extends CI_Controller
                 (
                     intval($_POST['do_skip'])
                     || ($input__selection && !$total_selected)
-                    || ($input__text && !$input__upload && !strlen($_POST['player_submitted_data']['new_ideatext']))
+                    || ($input__text && !$input__upload && !strlen($_POST['player_submitted_data']['idea_createtext']))
                     || (!$input__text && $input__upload && !count($_POST['player_submitted_data']['uploaded_media']))
-                    || ($input__text && $input__upload && !count($_POST['player_submitted_data']['uploaded_media']) && !strlen($_POST['player_submitted_data']['new_ideatext']))
+                    || ($input__text && $input__upload && !count($_POST['player_submitted_data']['uploaded_media']) && !strlen($_POST['player_submitted_data']['idea_createtext']))
                 );
             $idea_required = idea_required($focus_i);
 
@@ -3282,13 +3255,13 @@ class Controller extends CI_Controller
 
 
                     //Cleanup phone number:
-                    if($input__text && strlen($next_idea_data['new_ideatext']) && !is_numeric($next_idea_data['new_ideatext']) && count($this->Links->read(array(
+                    if($input__text && strlen($next_idea_data['idea_createtext']) && !is_numeric($next_idea_data['idea_createtext']) && count($this->Links->read(array(
                             'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'linkidearight' => $idea_next['ideaid'],
                             'linkplayerup' => 42181, //Phone
                         )))){
-                        $next_idea_data['new_ideatext'] = preg_replace("/[^0-9]+/", "", $next_idea_data['new_ideatext']);
-                        if(strlen($next_idea_data['new_ideatext'])<10){
+                        $next_idea_data['idea_createtext'] = preg_replace("/[^0-9]+/", "", $next_idea_data['idea_createtext']);
+                        if(strlen($next_idea_data['idea_createtext'])<10){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'Phone numbers cannot be less than 10 digits',
@@ -3297,16 +3270,16 @@ class Controller extends CI_Controller
                     }
 
                     $trying_to_skip = (
-                        ($input__text && !$input__upload && !strlen($next_idea_data['new_ideatext'])) ||
+                        ($input__text && !$input__upload && !strlen($next_idea_data['idea_createtext'])) ||
                         (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) ||
-                        ($input__text && $input__upload && !count($next_idea_data['uploaded_media']) && !strlen($next_idea_data['new_ideatext']))
+                        ($input__text && $input__upload && !count($next_idea_data['uploaded_media']) && !strlen($next_idea_data['idea_createtext']))
                     );
                     $idea_required = !$skipping_not_allowed && idea_required($idea_next);
 
                     if ($idea_required && $trying_to_skip) {
                         return view_json(array(
                             'status' => 0,
-                            'message' => 'Enter a valid response to '.view_idea_title($idea_next, true).' instead of "'.$next_idea_data['new_ideatext'].'"',
+                            'message' => 'Enter a valid response to '.view_idea_title($idea_next, true).' instead of "'.$next_idea_data['idea_createtext'].'"',
                         ));
                     }
 
@@ -3352,7 +3325,7 @@ class Controller extends CI_Controller
     function player_select()
     {
 
-        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_playerid']) || !isset($_POST['migratehandle']) || !isset($_POST['linkid'])) {
+        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['player_createid']) || !isset($_POST['migratehandle']) || !isset($_POST['linkid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -3387,11 +3360,11 @@ class Controller extends CI_Controller
         if (is_array($_POST['o__id'])) {
             $mass_result = array();
             foreach ($_POST['o__id'] as $o__id) {
-                array_push($mass_result, $this->Links->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['new_playerid'], $_POST['migratehandle'], $_POST['linkid']));
+                array_push($mass_result, $this->Links->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['player_createid'], $_POST['migratehandle'], $_POST['linkid']));
             }
             return view_json($mass_result);
         } else {
-            return view_json($this->Links->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['new_playerid'], $_POST['migratehandle'], $_POST['linkid']));
+            return view_json($this->Links->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['player_createid'], $_POST['migratehandle'], $_POST['linkid']));
         }
 
     }
@@ -3511,7 +3484,7 @@ class Controller extends CI_Controller
 
     }
 
-    function graph_data()
+    function link_graph()
     {
 
         //See if we have any idea or Player targets to limit our stats:

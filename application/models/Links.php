@@ -409,7 +409,7 @@ class Links extends CIdea_cache
     }
 
 
-    function select($focus__id, $o__id, $element_id, $new_playerid, $migratehandle, $linkid = 0)
+    function select($focus__id, $o__id, $element_id, $player_createid, $migratehandle, $linkid = 0)
     {
 
         //Authenticate Member:
@@ -431,7 +431,7 @@ class Links extends CIdea_cache
                 'status' => 0,
                 'message' => 'Invalid Variable ID [' . $element_id . ']',
             );
-        } elseif (intval($new_playerid) < 1 || !in_array($new_playerid, $this->config->item('playerids___' . $element_id))) {
+        } elseif (intval($player_createid) < 1 || !in_array($player_createid, $this->config->item('playerids___' . $element_id))) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Value ID',
@@ -453,14 +453,14 @@ class Links extends CIdea_cache
             //IDEA LINK TYPE
             $status = $this->Links->update($linkid, array(
                 'linkplayercreator' => $player_session['playerid'],
-                'linkplayertype' => $new_playerid,
+                'linkplayertype' => $player_createid,
             ));
 
         } elseif ($element_id == 13550 && $linkid > 0) {
 
             //SOURCE LINK TYPE
             $status = $this->Links->update($linkid, array(
-                'linkplayertype' => $new_playerid,
+                'linkplayertype' => $player_createid,
                 'linkplayercreator' => $player_session['playerid'],
             ));
 
@@ -468,11 +468,11 @@ class Links extends CIdea_cache
 
             //SOURCE/SOURCE LINK
             $status = $this->Links->update($linkid, array(
-                'linkplayertype' => $new_playerid,
+                'linkplayertype' => $player_createid,
                 'linkplayercreator' => $player_session['playerid'],
             ));
 
-        } elseif (0 && $element_id == 42795 && $o__id > 0 && $new_playerid && $player_session) {
+        } elseif (0 && $element_id == 42795 && $o__id > 0 && $player_createid && $player_session) {
 
             if (!$linkid) {
                 //Double check database as it may be updating newly selected value:
@@ -488,12 +488,12 @@ class Links extends CIdea_cache
             //Follow
             if ($linkid > 0) {
                 //Updating reaction:
-                if (in_array($new_playerid, $this->config->item('playerids___42850'))) {
+                if (in_array($player_createid, $this->config->item('playerids___42850'))) {
                     //Unsubscribe
                     $status = $this->Links->delete($linkid, $player_session['playerid']); //Media Removed
                 } else {
                     $status = $this->Links->update($linkid, array(
-                        'linkplayertype' => $new_playerid,
+                        'linkplayertype' => $player_createid,
                         'linkplayercreator' => $player_session['playerid'],
                     ));
                 }
@@ -503,11 +503,11 @@ class Links extends CIdea_cache
                     'linkplayercreator' => $player_session['playerid'],
                     'linkplayerup' => $o__id,
                     'linkplayerdown' => $player_session['playerid'],
-                    'linkplayertype' => $new_playerid,
+                    'linkplayertype' => $player_createid,
                 )));
             }
 
-        } elseif ($element_id == 42260 && $o__id > 0 && $new_playerid && $player_session) {
+        } elseif ($element_id == 42260 && $o__id > 0 && $player_createid && $player_session) {
 
             //Check if current value?
             if (!$linkid) {
@@ -523,12 +523,12 @@ class Links extends CIdea_cache
 
             //Reactions...
             if ($linkid > 0) {
-                if (in_array($new_playerid, $this->config->item('playerids___42850'))) {
+                if (in_array($player_createid, $this->config->item('playerids___42850'))) {
                     $status = $this->Links->delete($linkid, $player_session['playerid']); //Removed
                 } else {
                     //Updating reaction:
                     $status = $this->Links->update($linkid, array(
-                        'linkplayertype' => $new_playerid,
+                        'linkplayertype' => $player_createid,
                         'linkplayercreator' => $player_session['playerid'],
                     ));
                 }
@@ -538,7 +538,7 @@ class Links extends CIdea_cache
                     'linkplayercreator' => $player_session['playerid'],
                     'linkplayerup' => $player_session['playerid'],
                     'linkidearight' => $o__id,
-                    'linkplayertype' => $new_playerid,
+                    'linkplayertype' => $player_createid,
                 )));
             }
 
@@ -546,13 +546,13 @@ class Links extends CIdea_cache
 
             //Player Reference
             $status = $this->Ideas->update($o__id, array(
-                'ideatype' => $new_playerid,
+                'ideatype' => $player_createid,
             ), $player_session['playerid']);
 
             //See if we need to popup the idea edit modal here:
 
             $players___42179 = $this->config->item('players___42179'); //Dynamic Input Fields
-            foreach (array_intersect($this->config->item('playerids___' . $new_playerid), $this->config->item('playerids___42179')) as $dynamic_playerid) {
+            foreach (array_intersect($this->config->item('playerids___' . $player_createid), $this->config->item('playerids___42179')) as $dynamic_playerid) {
 
                 $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___42179[$dynamic_playerid]['m__following']);
                 if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
@@ -999,27 +999,27 @@ class Links extends CIdea_cache
 
         if ($input__upload || $input__text) {
 
-            if (!isset($player_submitted_data['new_ideatext'])) {
-                $player_submitted_data['new_ideatext'] = null;
+            if (!isset($player_submitted_data['idea_createtext'])) {
+                $player_submitted_data['idea_createtext'] = null;
             }
             if (!isset($player_submitted_data['uploaded_media'])) {
                 $player_submitted_data['uploaded_media'] = array();
             }
 
             //Must add a new idea, but first let's validate the input:
-            if ($i['ideatype'] == 31794 && strlen($player_submitted_data['new_ideatext']) && !is_numeric($player_submitted_data['new_ideatext'])) {
+            if ($i['ideatype'] == 31794 && strlen($player_submitted_data['idea_createtext']) && !is_numeric($player_submitted_data['idea_createtext'])) {
                 //Number Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Number',
                 );
-            } elseif ($i['ideatype'] == 42915 && strlen($player_submitted_data['new_ideatext']) && !filter_var($player_submitted_data['new_ideatext'], FILTER_VALIDATE_URL)) {
+            } elseif ($i['ideatype'] == 42915 && strlen($player_submitted_data['idea_createtext']) && !filter_var($player_submitted_data['idea_createtext'], FILTER_VALIDATE_URL)) {
                 //Link Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid URL',
                 );
-            } elseif ($i['ideatype'] == 30350 && strlen($player_submitted_data['new_ideatext']) && !strtotime($player_submitted_data['new_ideatext'])) {
+            } elseif ($i['ideatype'] == 30350 && strlen($player_submitted_data['idea_createtext']) && !strtotime($player_submitted_data['idea_createtext'])) {
                 //Date Input
                 return array(
                     'status' => 0,
@@ -1036,15 +1036,15 @@ class Links extends CIdea_cache
 
 
             //All validated, lets create the new idea:
-            if (strlen($player_submitted_data['new_ideatext']) || count($player_submitted_data['uploaded_media'])) {
+            if (strlen($player_submitted_data['idea_createtext']) || count($player_submitted_data['uploaded_media'])) {
 
                 if (count($player_private_replies)) {
 
                     //Update existing response if different:
-                    if ($player_submitted_data['new_ideatext'] != $player_private_replies[0]['ideatext']) {
+                    if ($player_submitted_data['idea_createtext'] != $player_private_replies[0]['ideatext']) {
 
                         $this->Ideas->update($player_private_replies[0]['ideaid'], array(
-                            'ideatext' => $player_submitted_data['new_ideatext'],
+                            'ideatext' => $player_submitted_data['idea_createtext'],
                         ), $linkplayercreator);
 
                     }
@@ -1055,18 +1055,18 @@ class Links extends CIdea_cache
 
                     //Create a new idea:
                     $idea_new = $this->Ideas->create(array(
-                        'ideatext' => $player_submitted_data['new_ideatext'],
+                        'ideatext' => $player_submitted_data['idea_createtext'],
                         'ideatype' => 6677,
                     ), $linkplayercreator);
 
-                    $this_ideaid = $idea_new['new_idea']['ideaid'];
+                    $this_ideaid = $idea_new['idea_create']['ideaid'];
 
                     //Link to this idea:
                     $this->Links->create(array(
                         'linkplayertype' => 33532, //Private Reply
                         'linkplayercreator' => $linkplayercreator,
                         'linkidealeft' => $i['ideaid'],
-                        'linkidearight' => $idea_new['new_idea']['ideaid'],
+                        'linkidearight' => $idea_new['idea_create']['ideaid'],
                     ));
 
                 }
@@ -1178,11 +1178,11 @@ class Links extends CIdea_cache
                             'linkplayertype' => 10573, //WATCHERS
                             'linkplayercreator' => $x_data['linkplayercreator'],
                             'linkplayerup' => $x_data['linkplayercreator'],
-                            'linkidearight' => $result['new_ideaid'],
+                            'linkidearight' => $result['idea_createid'],
                         ));
 
                         //New link:
-                        $clone_urls .= $new_title . ':' . "\n" . 'https://' . get_domain('m__message', $x_data['linkplayercreator']) . view_memory(42903, 33286) . $result['new_ideahashtag'] . "\n\n";
+                        $clone_urls .= $new_title . ':' . "\n" . 'https://' . get_domain('m__message', $x_data['linkplayercreator']) . view_memory(42903, 33286) . $result['idea_createhashtag'] . "\n\n";
                     }
 
                 } elseif ($clone_i['linkplayertype'] == 32304) {
@@ -1254,7 +1254,7 @@ class Links extends CIdea_cache
                 } else {
 
                     //Assign tag if following/follower Link NOT previously assigned:
-                    $append_player = append_player($this_tag['linkplayerup'], $x_data['linkplayercreator'], (isset($player_submitted_data['new_ideatext']) ? $player_submitted_data['new_ideatext'] : null), $i['ideaid']);
+                    $append_player = append_player($this_tag['linkplayerup'], $x_data['linkplayercreator'], (isset($player_submitted_data['idea_createtext']) ? $player_submitted_data['idea_createtext'] : null), $i['ideaid']);
 
                     //See if Session needs to be updated:
                     $player_session = superpower_unlocked();

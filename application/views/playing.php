@@ -57,7 +57,7 @@ foreach($this->config->item('players___31916') as $linkplayertype => $m) {
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="Create New or Link Existing #ideas">
                     </div></div></div></div>';
-            $body_content .= '<script> $(document).ready(function () { i_load_finder('.$linkplayertype.'); }); </script>';
+            $body_content .= '<script> $(document).ready(function () { idea_load_search('.$linkplayertype.'); }); </script>';
 
         }
 

@@ -103,8 +103,8 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
 <script>
 
-    function graph_data() {
-        $.post("/controller/graph_data", {
+    function link_graph() {
+        $.post("/controller/link_graph", {
             playerhandle: '<?= $playerhandle ?>',
             ideahashtag: '<?= $ideahashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -123,7 +123,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
     $(document).ready(function () {
 
         //Load initial stats:
-        graph_data();
+        link_graph();
 
         //Watch for click to expand:
         $(".card_header").click(function (e) {
@@ -132,7 +132,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
         //Update stats live:
         $(function () {
-            setInterval(graph_data, js_players___6404[33292]['m__message']);
+            setInterval(link_graph, js_players___6404[33292]['m__message']);
         });
 
     });

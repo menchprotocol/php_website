@@ -190,7 +190,7 @@ function gather_media(target_el, uploader_id){
 
 
 
-function x_mass_apply_preview(apply_id, s__id){
+function link_preview(apply_id, s__id){
 
     //Select first:
     var first_id = $('#modal'+apply_id+' .mass_action_toggle option:first').val();
@@ -201,13 +201,13 @@ function x_mass_apply_preview(apply_id, s__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
-    $.post("/controller/x_mass_apply_preview", {
+    $('#modal'+apply_id+' .link_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
+    $.post("/controller/link_preview", {
         apply_id: apply_id,
         s__id: s__id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('#modal'+apply_id+' .x_mass_apply_preview').html(data);
+        $('#modal'+apply_id+' .link_preview').html(data);
     });
 
 }
@@ -248,7 +248,7 @@ function load_editor(){
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js_line(suggestion,'@');
+                return search_js_line(suggestion,'@');
             },
             empty: function (data) {
                 return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Players Found</div>';
@@ -280,7 +280,7 @@ function load_editor(){
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js_line(suggestion,'#');
+                return search_js_line(suggestion,'#');
             },
             empty: function (data) {
                 return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Ideas Found</div>';
@@ -291,18 +291,18 @@ function load_editor(){
 }
 
 
-function view_s__title(suggestion){
+function search_title(suggestion){
     var title = ( suggestion._highlightResult && suggestion._highlightResult.s__title.value ? suggestion._highlightResult.s__title.value : suggestion.s__title );
     var max_limit = 89;
     return htmlentitiesjs( title.length>=max_limit ? title.substring(0,max_limit)+'...' : title );
 }
 
 
-function view_s_js_line(suggestion, default_handle = '@'){
+function search_js_line(suggestion, default_handle = '@'){
     if(suggestion.s__type==12273){
-        return '<span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
+        return '<span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + search_title(suggestion) + '</span>';
     } else if(suggestion.s__type==12274){
-        return '<span class="icon-block-xs">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
+        return '<span class="icon-block-xs">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + search_title(suggestion) + '</span>';
     }
 }
 
@@ -314,26 +314,26 @@ function player_load_finder(linkplayertype) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            new_player(linkplayertype, 0);
+            player_create(linkplayertype, 0);
             return true;
         }
     });
 }
 
-function i_load_finder(linkplayertype) {
+function idea_load_search(linkplayertype) {
     //Load Search:
     var icons_listed = [];
     $('.new-list-'+linkplayertype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            new_idea(linkplayertype, 0);
+            idea_create(linkplayertype, 0);
             return true;
         }
     });
 }
 
-function view_s_js_cover(linkplayertype, suggestion, action_id){
+function search_js_cover(linkplayertype, suggestion, action_id){
 
     if(!js_playerids___26010.includes(linkplayertype)){
         alert('Missing type in JS UI');
@@ -359,11 +359,11 @@ function view_s_js_cover(linkplayertype, suggestion, action_id){
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' '+( search_only_app ? ' card-6287 ' : '' )+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+target_url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+target_url+'" class="main__title">'+(suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">'+suggestion.s__title+'</span>' )+'</a></div></div></div>';
     } else if(linkplayertype==26013){
         //Link Player
-        return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="new_player('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="new_player('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="player_create('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="player_create('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
     }
 
 }
-function view_s_mini_js(s__cover,s__title){
+function search_mini_js(s__cover,s__title){
     return '<span class="block-cover" title="'+s__title+'">'+ view_cover_js(s__cover) +'</span>';
 }
 
@@ -418,7 +418,7 @@ function toggle_headline(linkplayertype){
 }
 
 
-function e_sort_load(linkplayertype) {
+function player_sort_load(linkplayertype) {
 
     load_cards();
 
@@ -451,7 +451,7 @@ function e_sort_load(linkplayertype) {
             draggable: "#list-in-"+linkplayertype+" .sort_draggable", // Specifies which items inside the element should be sortable
             handle: "#list-in-"+linkplayertype+" .sortplayer_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                e_sort_save(linkplayertype);
+                player_sort_save(linkplayertype);
             }
         });
     }, 377);
@@ -551,7 +551,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
 
             if(focus__node==12273){
 
-                var loading_url = "/controller/ideas_list";
+                var loading_url = "/controller/idea_list";
                 var loading_data = {
                     focus__node:focus__node,
                     linkplayertype:linkplayertype,
@@ -599,7 +599,7 @@ function toggle_pills(linkplayertype_hash, is_first_load){
                     $win.scroll(function () {
                         //Download loading from bottom:
                         if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                            x_view_load_page();
+                            link_page_load();
                         }
                     });
                 });
@@ -607,9 +607,9 @@ function toggle_pills(linkplayertype_hash, is_first_load){
                 setTimeout(function () {
 
                     if(js_playerids___11020.includes(linkplayertype) || (focus__node==12274 && (js_playerids___42261.includes(linkplayertype) || js_playerids___42284.includes(linkplayertype)))){
-                        i_sort_load(linkplayertype);
+                        idea_sort_load(linkplayertype);
                     } else if(js_playerids___11028.includes(linkplayertype) || (focus__node==12273 && (js_playerids___42261.includes(linkplayertype) || js_playerids___42284.includes(linkplayertype)))) {
-                        e_sort_load(linkplayertype);
+                        player_sort_load(linkplayertype);
                     }
 
                     setup_popover();
@@ -642,7 +642,7 @@ function idea_copy(ideaid, do_recursive){
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
-            js_redirect(js_players___42903[33286]['m__message']+data.new_ideahashtag);
+            js_redirect(js_players___42903[33286]['m__message']+data.idea_createhashtag);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -675,7 +675,7 @@ function player_copy(playerid){
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
-            js_redirect(js_players___42903[42902]['m__message']+data.new_playerhandle);
+            js_redirect(js_players___42903[42902]['m__message']+data.player_createhandle);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -714,14 +714,14 @@ function loadtab(linkplayertype, tab_data_id){
 
 
 var init_in_process = 0;
-function link_delete(linkid, linkplayertype, ideahashtag){
+function link_delete(linkid, linkplayertype, ideahashtag = null){
 
     if(init_in_process==linkid){
         return false;
     }
     init_in_process = linkid;
 
-    var r = confirm("Unlink #"+ideahashtag+"?");
+    var r = confirm("Are you Sure You Want to Unlink"+( ideahashtag ? ' #'+ideahashtag : '' )+"?");
     if (!(r==true)) {
         return false;
     }
@@ -730,26 +730,18 @@ function link_delete(linkid, linkplayertype, ideahashtag){
     $.post("/controller/link_delete", {
         linkid:linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
+        ideahashtag: ideahashtag, //Always append to AJAX Calls
     }, function (data) {
         //Update UI to confirm with member:
         if (!data.status) {
-
             //There was some sort of an error returned!
             alert(data.message);
-
         } else {
-
-            adjust_counter(linkplayertype, -1);
-
-            //REMOVE BOOKMARK from UI:
-            $('.cover_x_'+linkid).fadeOut();
-
+            link_counter(linkplayertype, -1);
+            $(".cover_x_" + linkid).fadeOut();
             setTimeout(function () {
-
-                //Delete from body:
-                $('.cover_x_'+linkid).remove();
-
-            }, 233);
+                $(".cover_x_" + linkid).remove();
+            }, 610);
         }
     });
 
@@ -768,7 +760,7 @@ function updatplayercover(new_cover, changed = true){
     }
 }
 function image_cover(cover_preview, cover_apply, new_title){
-    return '<a href="javascript:void(0);" onclick="updatplayercover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
+    return '<a href="javascript:void(0);" onclick="updatplayercover(\''+cover_apply+'\')">' + search_mini_js(cover_preview, new_title) + '</a>';
 }
 
 
@@ -883,10 +875,6 @@ function js_redirect(url, timer = 0){
     return false;
 }
 
-function add_media(result_info){
-
-}
-
 
 function load_card_clickers(){
 
@@ -937,7 +925,7 @@ function load_card_clickers(){
                     if(!$('.input_ui_'+$(this).attr('selection_ideaid'))[0]){
                         //Since there is no input for this single select, we can instantly go next:
                         setTimeout(function () {
-                            go_next(0);
+                            idea_discover_next(0);
                         }, 89);
                     } else {
                         //Make button visible if hidden:
@@ -1023,7 +1011,7 @@ function invoice_update(){
 
 
     //Update UI:
-    $('.go_next_btn').html('Create Invoice: <span title="" class="small_font inline-block">'+total_currency+' '+total_price.toLocaleString('en-US', {
+    $('.idea_discover_next_btn').html('Create Invoice: <span title="" class="small_font inline-block">'+total_currency+' '+total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
     })+' ['+total_count+']</span>');
@@ -1051,7 +1039,7 @@ function setup_popover(){
         html: true,
         //title: '<a class="close" href="javascript:void(0);" style="display: block;">Close</a>',
         content: function (inner_content) {
-            $.post("/controller/load_popover", {
+            $.post("/controller/link_popover", {
                 handle_string:inner_content.innerText,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
@@ -1102,10 +1090,10 @@ $(document).ready(function () {
         if (e.ctrlKey) {
             if(String.fromCharCode(e.which).toLowerCase() === 'i'){
                 //Add Idea
-                i_editor_load();
+                idea_editor();
             } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
                 //Add Player:
-                e_editor_load(0,0);
+                player_editor(0,0);
             } else if(String.fromCharCode(e.which).toLowerCase() === 'f' && search_enabled()){
                 //Finder:
                 toggle_finder();
@@ -1198,7 +1186,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js_line(suggestion,'#');
+                    return search_js_line(suggestion,'#');
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {
@@ -1231,7 +1219,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js_line(suggestion,'@');
+                    return search_js_line(suggestion,'@');
                 },
                 replace: function (suggestion) {
                     return ' @' + suggestion.s__handle + ' ';
@@ -1332,7 +1320,7 @@ $(document).ready(function () {
                     var item_key = suggestion.s__type+'_'+suggestion.s__id;
                     if(!icons_listed.includes(item_key)) {
                         icons_listed.push(item_key);
-                        $("#container_finder .row").append(view_s_js_cover(26011, suggestion, 0));
+                        $("#container_finder .row").append(search_js_cover(26011, suggestion, 0));
                     }
                     return false;
                 },
@@ -1386,7 +1374,7 @@ function update_cover_mini(cover_code, target_css){
 
 
 
-function i_editor_switch(linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0){
+function idea_direction_switch(linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0){
 
     console.log('SWITCHING TO '+linkplayertype+'/'+next_ideaid+'/'+previous_ideaid+'/'+do_checks+'/'+$('#modal31911 .save_ideatext').val()+'/'+parseInt($('#modal31911 .created_ideaid').val()));
 
@@ -1400,7 +1388,7 @@ function i_editor_switch(linkplayertype = 0, next_ideaid = 0, previous_ideaid = 
     */
 
     //Will switch the nature/direction of the link:
-    return i_editor_load(0, 0, linkplayertype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
+    return idea_editor(0, 0, linkplayertype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
 }
 
 function display_media(mediaframe_id, uploader_id, ideaid){
@@ -1412,7 +1400,7 @@ function display_media(mediaframe_id, uploader_id, ideaid){
     sort_media(mediaframe_id);
 }
 
-function i_editor_load(ideaid = 0, linkid = 0, linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
+function idea_editor(ideaid = 0, linkid = 0, linkplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0){
 
 
     $(".link_idea_unlink, .idea_linkplayertype").addClass('hidden');
@@ -1590,7 +1578,7 @@ function load_idea_dynamic(ideaid, linkid, current_ideatype, initial_loading){
     $(".dynamic_editing_loading").removeClass('hidden');
     var created_ideaid = 0;
 
-    $.post("/controller/i_editor_load", {
+    $.post("/controller/idea_editor", {
         ideaid: ideaid,
         linkid: linkid,
         current_ideatype: current_ideatype,
@@ -1806,10 +1794,10 @@ function idea_update(){
 
                 $("#list-in-" + focus_group).append(data.return_ideacache_full);
 
-                adjust_counter(focus_group, 1);
+                link_counter(focus_group, 1);
 
                 setTimeout(function () {
-                    i_sort_load(focus_group);
+                    idea_sort_load(focus_group);
                 }, 987);
 
             } else {
@@ -2145,7 +2133,7 @@ function cloudinary_preplayer_view(uploader_id, info_id, media_playerid, playbac
 }
 
 
-function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = null){
+function player_editor(playerid = 0, linkid = 0, bar_title = null, linktext = null){
 
     $('#modal31912').modal('show');
 
@@ -2191,7 +2179,7 @@ function e_editor_load(playerid = 0, linkid = 0, bar_title = null, linktext = nu
 
 
 
-    $.post("/controller/e_editor_load", {
+    $.post("/controller/player_editor", {
         playerid: playerid,
         linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2395,7 +2383,7 @@ function player_save_edit(){
 
 var busy_loading = false;
 var current_page = [];
-function x_view_load_page() {
+function link_page_load() {
 
     if(!focus_group){
         return false;
@@ -2418,7 +2406,7 @@ function x_view_load_page() {
 
     current_page[focus_group]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_group);
-    $.post("/controller/x_view_load_page", {
+    $.post("/controller/link_page_load", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         linkplayertype: focus_group,
@@ -2457,16 +2445,16 @@ function toggle_max_view(css_class){
 
 
 //Adds OR links Players to Players
-var e_is_adding = false;
-function new_player(linkplayertype, player_current_id) {
+var player_is_adding = false;
+function player_create(linkplayertype, player_current_id) {
 
-    if(e_is_adding){
+    if(player_is_adding){
         return false;
     }
 
     //if player_current_id>0 it means we're adding an existing Player, in which case player_new_string should be null
     //If player_current_id=0 it means we are creating a new Player and then adding it, in which case player_new_string is required
-    e_is_adding = true;
+    player_is_adding = true;
 
     var input = $('.new-list-'+linkplayertype+' .add-input');
 
@@ -2483,7 +2471,7 @@ function new_player(linkplayertype, player_current_id) {
     }
 
     //Add via Ajax:
-    $.post("/controller/new_player", {
+    $.post("/controller/player_create", {
 
         focus__node: parseInt($('#focus__node').val()),
         linkplayertype: linkplayertype,
@@ -2494,7 +2482,7 @@ function new_player(linkplayertype, player_current_id) {
 
     }, function (data) {
 
-        e_is_adding = false;
+        player_is_adding = false;
 
         if (data.status) {
 
@@ -2502,7 +2490,7 @@ function new_player(linkplayertype, player_current_id) {
             //input.focus();
 
             //Add new object to list:
-            adjust_counter(linkplayertype, 1);
+            link_counter(linkplayertype, 1);
 
             //See if we previously have a list in place?
             if ($("#list-in-" + linkplayertype + " .card-12274").length > 0) {
@@ -2518,7 +2506,7 @@ function new_player(linkplayertype, player_current_id) {
 
             setTimeout(function () {
                 setup_popover();
-                e_sort_load(linkplayertype);
+                player_sort_load(linkplayertype);
             }, 987);
 
             //Hide Coin:
@@ -2534,7 +2522,7 @@ function new_player(linkplayertype, player_current_id) {
 
 
 var i_is_adding = false;
-function new_idea(linkplayertype, link_ideaid) {
+function idea_create(linkplayertype, link_ideaid) {
 
     alert('not up yet');
     return false;
@@ -2555,11 +2543,11 @@ function new_idea(linkplayertype, link_ideaid) {
     i_is_adding = true;
     var sort_idea_grabr = ".card_cover";
     var input_field = $('.new-list-'+linkplayertype+' .add-input');
-    var new_ideatext = input_field.val();
+    var idea_createtext = input_field.val();
 
 
     //We either need the idea name (to create a new idea) or the link_ideaid>0 to create an IDEA link:
-    if (!link_ideaid && new_ideatext.length < 1) {
+    if (!link_ideaid && idea_createtext.length < 1) {
         alert('Missing Idea');
         input_field.focus();
         return false;
@@ -2570,11 +2558,11 @@ function new_idea(linkplayertype, link_ideaid) {
     add_to_list(linkplayertype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
-    $.post("/controller/new_idea", {
+    $.post("/controller/idea_create", {
         linkplayertype: linkplayertype,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        new_ideatext: new_ideatext,
+        idea_createtext: idea_createtext,
         link_ideaid: link_ideaid
     }, function (data) {
 
@@ -2586,7 +2574,7 @@ function new_idea(linkplayertype, link_ideaid) {
         if (data.status) {
 
             //Add new
-            add_to_list(linkplayertype, sort_idea_grabr, data.new_idea_html, 1);
+            add_to_list(linkplayertype, sort_idea_grabr, data.idea_create_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -2607,34 +2595,6 @@ function new_idea(linkplayertype, link_ideaid) {
     return false;
 
 }
-
-
-function link_unlink(linkid, linkplayertype) {
-
-    var r = confirm("Unlink?");
-    if (r==true) {
-        $.post("/controller/link_unlink", {
-
-            linkid: linkid,
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-
-        }, function (data) {
-            if (data.status) {
-
-                adjust_counter(linkplayertype, -1);
-                $(".cover_x_" + linkid).fadeOut();
-                setTimeout(function () {
-                    $(".cover_x_" + linkid).remove();
-                }, 610);
-
-            } else {
-                //We had an error:
-                alert(data.message);
-            }
-        });
-    }
-}
-
 
 
 function validURL(str) {
@@ -2676,11 +2636,11 @@ function x_set_start_text(){
     $('.x_set_class_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code==13) {
-            text_updater(this);
+            player_text_update(this);
             e.preventDefault();
         }
     }).change(function() {
-        text_updater(this);
+        player_text_update(this);
     });
 }
 
@@ -2692,7 +2652,7 @@ function update_text_name(cache_playerid, playerid, playertext){
 
 
 var setting_text = false;
-function text_updater(this_grabr){
+function player_text_update(this_grabr){
 
     if(setting_text){
         return false;
@@ -2702,19 +2662,19 @@ function text_updater(this_grabr){
     var modify_data = {
         playerid: parseInt($(this_grabr).attr('playerid')),
         cache_playerid: parseInt($(this_grabr).attr('cache_playerid')),
-        new_ideatext: $(this_grabr).val().trim(),
+        idea_createtext: $(this_grabr).val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //See if anything changes:
-    if( $(this_grabr).attr('old-value')==modify_data['new_ideatext'] ){
+    if( $(this_grabr).attr('old-value')==modify_data['idea_createtext'] ){
         //Nothing changed:
         return false;
     }
 
     //Grey background to indicate saving
     var target_element = '.text__'+modify_data['cache_playerid']+'_'+modify_data['s__id'];
-    $.post("/controller/text_updater", modify_data, function (data) {
+    $.post("/controller/player_text_update", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -2727,7 +2687,7 @@ function text_updater(this_grabr){
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_playerid'], modify_data['s__id'], modify_data['new_ideatext']);
+            update_text_name(modify_data['cache_playerid'], modify_data['s__id'], modify_data['idea_createtext']);
 
         }
 
@@ -2739,7 +2699,7 @@ function text_updater(this_grabr){
 
 
 
-function adjust_counter(linkplayertype, adjustment_count){
+function link_counter(linkplayertype, adjustment_count){
     $('.xtypecounter'+linkplayertype).text((parseInt($('.headline_body_' + linkplayertype).attr('read-counter')) + adjustment_count));
 }
 
@@ -2764,7 +2724,7 @@ function set_autosize(theobject){
 
 
 
-function i_sort_load(linkplayertype){
+function idea_sort_load(linkplayertype){
 
     load_cards();
 
@@ -2814,7 +2774,7 @@ function i_sort_load(linkplayertype){
 
                     //Update order:
                     if(sort_rank > 0){
-                        $.post("/controller/i_sort_load", {
+                        $.post("/controller/idea_sort_load", {
                             new_x_order:new_x_order,
                             linkplayertype:linkplayertype,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2842,7 +2802,7 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function e_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_playerid, right_ideaid){
+function player_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_playerid, right_ideaid){
 
     //Any warning needed?
     if(js_playerids___31780.includes(selected_playerid) && !confirm(js_players___31780[selected_playerid]['m__message'])){
@@ -2887,7 +2847,7 @@ function e_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_
         $('.radio-'+focus__id+' .item-'+selected_playerid+' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
     }
 
-    $.post("/controller/e_select_apply", {
+    $.post("/controller/player_select_apply", {
         focus__id: focus__id,
         down_playerid: down_playerid,
         right_ideaid: right_ideaid,
@@ -2918,43 +2878,43 @@ function isNormalInteger(str) {
 }
 
 
-function update_form_select(element_id, new_playerid, initial_loading, show_title){
-    console.log('update_form_select: '+element_id+'/'+new_playerid);
+function update_form_select(element_id, player_createid, initial_loading, show_title){
+    console.log('update_form_select: '+element_id+'/'+player_createid);
 
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
-    $('.dropd_form_' + element_id + ' .optiond_'+new_playerid).addClass('active');
-    $('.dropd_form_' + element_id).attr('selected_value', new_playerid);
+    $('.dropd_form_' + element_id + ' .optiond_'+player_createid).addClass('active');
+    $('.dropd_form_' + element_id).attr('selected_value', player_createid);
     if(show_title){
-        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+new_playerid).html());
+        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+player_createid).html());
     } else {
         //Just replace icon:
-        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_'+new_playerid+' span').html());
+        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_'+player_createid+' span').html());
     }
     if(!initial_loading){
         if(element_id==4737){
             //Changing Player Reference would re-load dynamic fields based on type:
             has_unsaved_changes = true;
-            console.log('Reloading: '+element_id+' with value: '+' NEW ID '+new_playerid+' / '+$('#modal31911 .created_ideaid').val());
-            load_idea_dynamic($('#modal31911 .created_ideaid').val(), 0, new_playerid, false);
+            console.log('Reloading: '+element_id+' with value: '+' NEW ID '+player_createid+' / '+$('#modal31911 .created_ideaid').val());
+            load_idea_dynamic($('#modal31911 .created_ideaid').val(), 0, player_createid, false);
             //Add handle to text:
-            insertText($(".save_ideatext"), '@'+new_playerid);
+            insertText($(".save_ideatext"), '@'+player_createid);
         }
     }
 }
 
-function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_name){
+function ui_instant_select(element_id, player_createid, o__id, linkid, show_full_name){
 
     //Update x:
-    console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn' + new_playerid);
+    console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn' + player_createid);
     var data_object = eval('js_players___'+element_id);
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm">'+data_object[new_playerid]['m__cover']+'</span>' + ( show_full_name ? data_object[new_playerid]['m__title'] : '' ));
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm">'+data_object[player_createid]['m__cover']+'</span>' + ( show_full_name ? data_object[player_createid]['m__title'] : '' ));
 
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + linkid).removeClass('active');
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .optiond_' + new_playerid+'_'+o__id+ '_' + linkid).addClass('active');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .optiond_' + player_createid+'_'+o__id+ '_' + linkid).addClass('active');
 
     var selected_playerid = $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid).attr('selected_value');
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid).attr('selected_value' , new_playerid);
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid).attr('selected_value' , player_createid);
 
 
     var main_object_type = 0;
@@ -2962,13 +2922,13 @@ function ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_na
 
     if(element_id==4737){
         //Player Reference:
-        $('.s__12273_'+o__id).attr('ideatype', new_playerid);
+        $('.s__12273_'+o__id).attr('ideatype', player_createid);
         main_object_type = 12273;
         main_object_update = 'ideatype';
     }
 
     if(main_object_type>0 && main_object_update){
-        $('.s__'+main_object_type+'_'+o__id).attr(main_object_update, new_playerid);
+        $('.s__'+main_object_type+'_'+o__id).attr(main_object_update, player_createid);
     }
 
 }
@@ -3063,7 +3023,7 @@ function player_delete(playerid){
 }
 
 
-function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_name = false){
+function selector(element_id, player_createid, o__id = 0, linkid = 0, show_full_name = false){
 
     /*
     *
@@ -3083,9 +3043,9 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
         linkid = $('.dropmenu_instant_'+element_id+':first').attr('linkid');
     }
 
-    console.log('Attempt to update dropdown @'+element_id+' to @'+new_playerid);
+    console.log('Attempt to update dropdown @'+element_id+' to @'+player_createid);
 
-    new_playerid = parseInt(new_playerid);
+    player_createid = parseInt(player_createid);
 
     //Deleting Anything?
     var main_object_type = 0;
@@ -3094,8 +3054,8 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
 
     //Show Loading
     var data_object = eval('js_players___'+element_id);
-    if(!data_object[new_playerid]){
-        alert('Invalid element ID: '+element_id +'/'+ new_playerid +'/'+ o__id +'/'+ linkid +'/'+ show_full_name);
+    if(!data_object[player_createid]){
+        alert('Invalid element ID: '+element_id +'/'+ player_createid +'/'+ o__id +'/'+ linkid +'/'+ show_full_name);
         return false;
     }
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+linkid+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
@@ -3104,7 +3064,7 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
-        new_playerid: new_playerid,
+        player_createid: player_createid,
         migratehandle: migratehandle,
         linkid: linkid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3112,7 +3072,7 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
         if (data.status) {
 
             //Update on page:
-            ui_instant_select(element_id, new_playerid, o__id, linkid, show_full_name);
+            ui_instant_select(element_id, player_createid, o__id, linkid, show_full_name);
 
             if( data.delete_redirect && data.delete_redirect.length > 0 ){
 
@@ -3135,7 +3095,7 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
 
             if( data.auto_open_idea_modal ){
                 //We need to show idea modal:
-                i_editor_load(o__id, $('.s__12273_'+o__id).attr('linkid'));
+                idea_editor(o__id, $('.s__12273_'+o__id).attr('linkid'));
             }
 
         } else {
@@ -3154,7 +3114,7 @@ function selector(element_id, new_playerid, o__id = 0, linkid = 0, show_full_nam
 
 
 
-function e_sort_save(linkplayertype) {
+function player_sort_save(linkplayertype) {
 
     var new_linknumber = [];
     var sort_rank = 0;
@@ -3173,7 +3133,7 @@ function e_sort_save(linkplayertype) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/controller/e_sort_save", {
+        $.post("/controller/player_sort_save", {
             playerid: parseInt($('#focus__id').val()),
             linkplayertype:linkplayertype,
             new_linknumber: new_linknumber,
@@ -3190,7 +3150,7 @@ function e_sort_save(linkplayertype) {
 
 
 
-function x_reset_sorting(){
+function link_sort_reset(){
     var r = confirm("Reset sorting?");
     if (r==true) {
 
@@ -3199,7 +3159,7 @@ function x_reset_sorting(){
         var focus_handle = $('#focus_handle').val();
 
         //Update via call:
-        $.post("/controller/x_reset_sorting", {
+        $.post("/controller/link_sort_reset", {
             focus__node: focus__node,
             focus__id: focus__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3235,7 +3195,7 @@ function link_clicked(ideaid){
 
 
 var next_processing = false;
-function go_next(do_skip){
+function idea_discover_next(do_skip){
 
     if(next_processing){
         return false;
@@ -3274,7 +3234,7 @@ function go_next(do_skip){
 
         next_idea_data.push({
             ideaid: parseInt($(this).attr('ideaid')),
-            new_ideatext: ( $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() ? $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() : null ),
+            idea_createtext: ( $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() ? $('.s__12273_'+$(this).attr('ideaid')+' .x_write').val() : null ),
             ideanumber: ( $('.input_ui_'+$(this).attr('ideaid')+' .ideanumber').val() ? $('.input_ui_'+$(this).attr('ideaid')+' .ideanumber').val() : 0 ),
             uploaded_media: gather_media_result['uploaded_media'],
         });
@@ -3329,8 +3289,8 @@ function go_next(do_skip){
         if(total_count > 0){
 
             //Load:
-            var original_html = $('.go_next_btn').html();
-            $('.go_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+            var original_html = $('.idea_discover_next_btn').html();
+            $('.idea_discover_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
             //Submit to go next:
             $.post("/invoice", {
@@ -3349,7 +3309,7 @@ function go_next(do_skip){
                     js_redirect(data.next__url);
                 } else {
                     //Show error:
-                    $('.go_next_btn').html(original_html);
+                    $('.idea_discover_next_btn').html(original_html);
                     alert(data.message);
                     next_processing = false;
                 }
@@ -3365,16 +3325,16 @@ function go_next(do_skip){
 
 
     //Load:
-    var original_html = $('.go_next_btn').html();
-    $('.go_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    var original_html = $('.idea_discover_next_btn').html();
+    $('.idea_discover_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
-    $.post("/controller/go_next", {
+    $.post("/controller/idea_discover_next", {
         target_ideahashtag: $('#target_ideahashtag').val(),
         target_ideaid: parseInt($('#target_ideaid').val()),
         player_submitted_data: {
             ideaid: parseInt($('#focus__id').val()),
-            new_ideatext: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
+            idea_createtext: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
             ideanumber: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .ideanumber').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .ideanumber').val() : 0 ),
             uploaded_media: gather_media_result['uploaded_media'],
         },
@@ -3389,7 +3349,7 @@ function go_next(do_skip){
         } else {
             next_processing = false;
             //Show error:
-            $('.go_next_btn').html(original_html);
+            $('.idea_discover_next_btn').html(original_html);
             alert(data.message);
         }
     });

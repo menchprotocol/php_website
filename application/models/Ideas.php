@@ -85,7 +85,7 @@ class Ideas extends CIdea_cache
         //Return success:
         return array(
             'status' => 1,
-            'new_idea' => $is[0],
+            'idea_create' => $is[0],
         );
 
     }
@@ -542,8 +542,8 @@ class Ideas extends CIdea_cache
             return array(
                 'status' => 0,
                 'message' => 'Invalid idea ID',
-                'new_ideaid' => 0,
-                'new_ideahashtag' => '',
+                'idea_createid' => 0,
+                'idea_createhashtag' => '',
             );
         }
 
@@ -562,7 +562,7 @@ class Ideas extends CIdea_cache
             $this->Links->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => $x['linkplayertype'],
-                'linkidearight' => $idea_new['new_idea']['ideaid'],
+                'linkidearight' => $idea_new['idea_create']['ideaid'],
                 'linkplayerup' => $x['linkplayerup'],
                 'linkplayerdown' => $x['linkplayerdown'],
                 'linkidealeft' => $x['linkidealeft'],
@@ -580,7 +580,7 @@ class Ideas extends CIdea_cache
             $this->Links->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => $x['linkplayertype'],
-                'linkidearight' => $idea_new['new_idea']['ideaid'],
+                'linkidearight' => $idea_new['idea_create']['ideaid'],
                 'linkidealeft' => $x['linkidealeft'],
                 'linktext' => $x['linktext'],
                 'linknumber' => $x['linknumber'],
@@ -606,7 +606,7 @@ class Ideas extends CIdea_cache
                 $this->Links->create(array(
                     'linkplayercreator' => $linkplayercreator,
                     'linkplayertype' => $x['linkplayertype'],
-                    'linkidealeft' => $idea_new['new_idea']['ideaid'],
+                    'linkidealeft' => $idea_new['idea_create']['ideaid'],
                     'linkidearight' => $x['ideaid'],
                     'linktext' => $x['linktext'],
                     'linknumber' => $x['linknumber'],
@@ -616,8 +616,8 @@ class Ideas extends CIdea_cache
 
         return array(
             'status' => 1,
-            'new_ideaid' => $idea_new['new_idea']['ideaid'],
-            'new_ideahashtag' => $idea_new['new_idea']['ideahashtag'],
+            'idea_createid' => $idea_new['idea_create']['ideaid'],
+            'idea_createhashtag' => $idea_new['idea_create']['ideahashtag'],
         );
 
     }

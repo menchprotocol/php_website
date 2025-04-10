@@ -996,7 +996,7 @@ function process_media($ideaid, $uploaded_media)
 
                     //Create new media and assign ID:
                     $media_stats['adjust_created']++;
-                    $upload_media['playerid'] = $added_e['new_player']['playerid'];
+                    $upload_media['playerid'] = $added_e['player_create']['playerid'];
 
                     //new asset, create new Player and insert tags...
                     $players___32088 = $CI->config->item('players___32088'); //Platform Variables
@@ -1051,12 +1051,12 @@ function process_media($ideaid, $uploaded_media)
                                 $CI->Links->create(array(
                                     'linkplayercreator' => $player_session['playerid'],
                                     'linkplayerup' => $linkplayertype,
-                                    'linkplayerdown' => $added_child['new_player']['playerid'],
+                                    'linkplayerdown' => $added_child['player_create']['playerid'],
                                     'linkplayertype' => 4230,
                                 ));
 
                                 //Assign child Player:
-                                $child_id = $added_child['new_player']['playerid'];
+                                $child_id = $added_child['player_create']['playerid'];
 
                             }
 
@@ -3270,7 +3270,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
         }
 
         if (!$access_locked) {
-            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply(' . $focus__id . ',' . $list_item['playerid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_playerid . ',' . $right_ideaid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['playerid'] . ' ' . $exclude_fonts . ' item-' . $list_item['playerid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['playertext']) . '">' . $headline . '</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="player_select_apply(' . $focus__id . ',' . $list_item['playerid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_playerid . ',' . $right_ideaid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['playerid'] . ' ' . $exclude_fonts . ' item-' . $list_item['playerid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['playertext']) . '">' . $headline . '</a>';
         }
 
 
@@ -3290,7 +3290,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
 }
 
 
-function view_single_select_form($cache_playerid, $selected_playerid, $show_dropdown_arrow = false, $show_title = false)
+function searchingle_select_form($cache_playerid, $selected_playerid, $show_dropdown_arrow = false, $show_title = false)
 {
 
     $CI =& get_instance();
@@ -3338,7 +3338,7 @@ function view_single_select_form($cache_playerid, $selected_playerid, $show_drop
 }
 
 
-function view_single_select_instant($cache_playerid, $selected_playerid, $idea_access = 0, $show_title = true, $o__id = 0, $linkid = 0)
+function searchingle_select_instant($cache_playerid, $selected_playerid, $idea_access = 0, $show_title = true, $o__id = 0, $linkid = 0)
 {
 
     $CI =& get_instance();
@@ -3832,7 +3832,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
                                maxlength="' . view_memory(6404, 6197) . '"
                                placeholder="Create New or Link Existing #ideas">
                     </div></div></div></div>';
-                $body_content .= '<script> $(document).ready(function () { i_load_finder(' . $linkplayertype . '); }); </script>';
+                $body_content .= '<script> $(document).ready(function () { idea_load_search(' . $linkplayertype . '); }); </script>';
             }
 
         }
@@ -3863,7 +3863,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
             'linkplayerup' => 44262, //Skip Next If Undiscovered
         )) as $skip) {
             //Not yet discovered, lets go next automatically:
-            $ui .= '<script> $(document).ready(function () { setTimeout(function () { go_next(0); }, ' . (is_numeric($skip['linktext']) && intval($skip['linktext']) > 0 ? intval($skip['linktext']) : '2584') . '); }); </script>';
+            $ui .= '<script> $(document).ready(function () { setTimeout(function () { idea_discover_next(0); }, ' . (is_numeric($skip['linktext']) && intval($skip['linktext']) > 0 ? intval($skip['linktext']) : '2584') . '); }); </script>';
             break;
         }
     }
@@ -4189,7 +4189,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 'linkplayerdown' => $linkplayercreator,
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___42795')) . ')' => null, //Follow
             ), array(), 1, 0, array('linknumber' => 'ASC'));
-            $follow_btn = view_single_select_instant(42795, (count($followings) ? $followings[0]['linkplayertype'] : 0), $idea_access, false, $creator['playerid'], (count($followings) ? $followings[0]['linkid'] : 0));
+            $follow_btn = searchingle_select_instant(42795, (count($followings) ? $followings[0]['linkplayertype'] : 0), $idea_access, false, $creator['playerid'], (count($followings) ? $followings[0]['linkid'] : 0));
         }
 
         $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['playerhandle'] . '"><span class="icon-block">' . view_cover($creator['playercover']) . '</span><b class="hidden">' . $creator['playertext'] . '</b><span class="grey mini-font mini-frame">@' . $creator['playerhandle'] . '</span></a>' . (!in_array($creator['playerid'], $CI->config->item('playerids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['linktime'])) . ' PST">' . view_time_difference($creator['linktime'], true) . '</span>' : '') . $follow_btn . '</div>';
@@ -4213,7 +4213,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     'linkid' => $linkid,
                 ), array('linkplayercreator')) as $linker) {
                     $linkplayertype_ui .= '<span class="icon-block-sm">';
-                    $linkplayertype_ui .= view_single_select_instant($linkplayertype1, $i['linkplayertype'], $idea_access, false, $i['ideaid'], $linkid);
+                    $linkplayertype_ui .= searchingle_select_instant($linkplayertype1, $i['linkplayertype'], $idea_access, false, $i['ideaid'], $linkid);
                     $linkplayertype_ui .= '</span>';
                 }
                 $linkplayertype_id = $linkplayertype1;
@@ -4222,7 +4222,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
         }
         if (!$linkplayertype_ui) {
             $linkplayertype_ui .= '<span class="icon-block-sm">';
-            $linkplayertype_ui .= view_single_select_instant(4593, $i['linkplayertype'], false, false, $i['ideaid'], $linkid);
+            $linkplayertype_ui .= searchingle_select_instant(4593, $i['linkplayertype'], false, false, $i['ideaid'], $linkid);
             $linkplayertype_ui .= '</span>';
         }
     }
@@ -4262,7 +4262,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
             //Player Reference
             $bottom_bar_ui .= '<span>';
-            $bottom_bar_ui .= view_single_select_instant(4737, $i['ideatype'], $idea_access, false, $i['ideaid'], $linkid);
+            $bottom_bar_ui .= searchingle_select_instant(4737, $i['ideatype'], $idea_access, false, $i['ideaid'], $linkid);
             $bottom_bar_ui .= '</span>';
 
         } elseif (0 && $linkplayertype_target_bar == 41037 && $focus_idea_or && !$is_cache) {
@@ -4305,7 +4305,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     if ($playerid_dropdown == 12589 && $idea_access >= 3) {
 
                         //Mass Apply
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(12589,' . $i['ideaid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="link_preview(12589,' . $i['ideaid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 33286 && $discovery_mode && $idea_access >= 3) {
 
@@ -4315,17 +4315,17 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                     } elseif ($playerid_dropdown == 31911 && $idea_access >= 3) {
 
                         //Idea Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load(' . $i['ideaid'] . ',' . $linkid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_editor(' . $i['ideaid'] . ',' . $linkid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 13007 && $idea_access >= 3) {
 
                         //Reset Alphabetic order
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="link_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 31911 && $idea_access >= 3 && $discovery_mode) {
 
                         //Idea Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load(' . $i['ideaid'] . ',' . $linkid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_editor(' . $i['ideaid'] . ',' . $linkid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 10673 && $linkid && $idea_access >= 3) {
 
@@ -4605,7 +4605,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
                     $input_ui .= '</form>';
 
-                    $input_ui .= '<script> $(document).ready(function () { $(\'.go_next_btn\').hide(); }); </script>';
+                    $input_ui .= '<script> $(document).ready(function () { $(\'.idea_discover_next_btn\').hide(); }); </script>';
 
                 } else {
 
@@ -4724,7 +4724,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 if ($i['ideahashtag'] == 'ProfilePicture' && $player_session) {
 
                     //TODO REMOVE HACK: This is a profile picture hack:
-                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="e_editor_load(' . $linkplayercreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['ideaid'] . '"><span class="icon-block-sm">' . $players___11035[7637]['m__cover'] . '</span>' . $players___11035[7637]['m__title'] . '</a></div>';
+                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="player_editor(' . $linkplayercreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['ideaid'] . '"><span class="icon-block-sm">' . $players___11035[7637]['m__cover'] . '</span>' . $players___11035[7637]['m__title'] . '</a></div>';
 
                 } else {
                     $input_ui .= '<div class="media_outer_frame hideIfEmpty">
@@ -4769,14 +4769,14 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
             //Private Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="idea_editor(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
         } elseif (0 && $linkplayertype_target_bar == 42819 && !$is_cache && superpower_unlocked(10939) && $idea_access >= 3 && !$is_locked) {
 
             //New Player
             $bottom_menu_ui .= '<span class="mini_button main__title">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node ? $m_target_bar['m__title'] : '') . '</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" onclick="idea_editor(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
         } elseif ($linkplayertype_target_bar == 42260 && $player_session && !$is_locked && !$is_cache && 0) {
@@ -4788,7 +4788,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                 'linkplayertype IN (' . join(',', $CI->config->item('playerids___42260')) . ')' => null, //Reactions
             ), array(), 1);
             $bottom_menu_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
-            $bottom_menu_ui .= view_single_select_instant(42260, (count($reactions) ? $reactions[0]['linkplayertype'] : 0), $player_session, 0 && $focus__node, $i['ideaid'], (count($reactions) ? $reactions[0]['linkid'] : 0));
+            $bottom_menu_ui .= searchingle_select_instant(42260, (count($reactions) ? $reactions[0]['linkplayertype'] : 0), $player_session, 0 && $focus__node, $i['ideaid'], (count($reactions) ? $reactions[0]['linkid'] : 0));
             $bottom_menu_ui .= '</div></span>';
 
         } elseif ($linkplayertype_target_bar == 4235 && (!$discovery_mode && $idea_startable && $idea_access >= 1)) {
@@ -4801,12 +4801,12 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
             //Next
             $players___6255 = $CI->config->item('players___6255');
             $focus_menu = ($has_discovered ? $m_target_bar : $players___6255[idea_discovery_link($i)]);
-            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="idea_discover_next(0)" class="btn btn-sm post_button idea_discover_next_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
         } elseif ($linkplayertype_target_bar == 31022 && $discovery_mode && $focus__node && $player_session && !count($x_completes) && !in_array($i['ideatype'], $CI->config->item('playerids___43009')) && !idea_required($i)) {
 
             //Skip
-            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="idea_discover_next(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
         }
     }
@@ -5092,7 +5092,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                         'linkid' => $linkid,
                     ), array('linkplayercreator')) as $linker) {
                         $linkplayertype_ui .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
-                        $linkplayertype_ui .= view_single_select_instant($linkplayertype1, $e['linkplayertype'], $player_access, false, $e['playerid'], $linkid);
+                        $linkplayertype_ui .= searchingle_select_instant($linkplayertype1, $e['linkplayertype'], $player_access, false, $e['playerid'], $linkid);
                         $linkplayertype_ui .= '</span>';
                     }
                     $linkplayertype_id = $linkplayertype1;
@@ -5128,7 +5128,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                 ), array(), 1, 0, array('linknumber' => 'ASC'));
 
                 if (count($followings) || $player_access >= 3) {
-                    $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . view_single_select_instant(42795, (count($followings) ? $followings[0]['linkplayertype'] : 0), $player_session && $player_access >= 3, false, $e['playerid'], (count($followings) ? $followings[0]['linkid'] : 0)) . '</span>';
+                    $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . searchingle_select_instant(42795, (count($followings) ? $followings[0]['linkplayertype'] : 0), $player_session && $player_access >= 3, false, $e['playerid'], (count($followings) ? $followings[0]['linkid'] : 0)) . '</span>';
                 }
 
             } elseif ($linkplayertype_target_bar == 41037 && $player_access >= 3 && !$focus__node) {
@@ -5175,7 +5175,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
                         if ($playerid_dropdown == 4997) {
 
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(4997,' . $e['playerid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="link_preview(4997,' . $e['playerid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         } elseif ($playerid_dropdown == 6287) {
 
@@ -5187,7 +5187,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                         } elseif ($playerid_dropdown == 31912 && $player_access >= 3) {
 
                             //Edit Player
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_editor_load(' . $e['playerid'] . ',' . $linkid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="player_editor(' . $e['playerid'] . ',' . $linkid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         } elseif ($playerid_dropdown == 29771 && $player_access >= 3) {
 
@@ -5197,7 +5197,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                         } elseif ($playerid_dropdown == 10673 && $linkid > 0 && $player_access >= 3 && $superpower_10939) {
 
                             //UNLINK
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="link_unlink(' . $linkid . ', ' . $e['linkplayertype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="link_delete(' . $linkid . ', ' . $e['linkplayertype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
 
                         } elseif ($playerid_dropdown == 42649 && $player_access >= 3) {
 
@@ -5208,7 +5208,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
                         } elseif ($playerid_dropdown == 13007 && $player_access >= 3) {
 
                             //Reset Alphabetic order
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="link_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         } elseif (in_array($playerid_dropdown, $CI->config->item('playerids___6287')) && $player_access >= 3) {
 
@@ -5336,7 +5336,7 @@ function view_ordinal($number)
     }
 }
 
-function view_s($count, $has_e = 0)
+function search($count, $has_e = 0)
 {
     //A cute little function to either display the plural "s" or not based on $count
     return (intval($count) == 1 ? '' : ($has_e ? 'es' : 's'));

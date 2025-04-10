@@ -251,7 +251,7 @@ echo '</table>';
             var written_answer = '';
             if(require_writing){
 
-                //return e_editor_load(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayercreator')).text());
+                //return player_editor(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayercreator')).text());
 
                 written_answer = prompt($(this).attr('title') + ":", $('.linkplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayercreator')).text());
                 if(written_answer == null){
@@ -272,7 +272,7 @@ echo '</table>';
             $('.linkplayercreator_' + modify_data['playerid'] + '_' + modify_data['linkplayercreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
-            $.post("/controller/e_toggle_player", modify_data, function (data) {
+            $.post("/controller/player_toggle_follow", modify_data, function (data) {
 
                 if (data.status) {
 

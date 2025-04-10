@@ -25,7 +25,7 @@ foreach($this->Players->read(array(), 0) as $player_fix){
 view_json(array(
     'ideas_missing' => count($missing_ideas),
     'players_missing' => count($missing_players),
-    //'ideas_list' => $missing_ideas,
+    //'idea_list' => $missing_ideas,
     //'players_list' => $missing_players,
     //'idea_settings' => idea_settings($focus_i['ideahashtag'], false),
     //'history' => $this->Links->history($focus_i, $focus_e['playerid']),

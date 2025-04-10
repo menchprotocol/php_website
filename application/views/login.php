@@ -101,7 +101,7 @@ if(superpower_unlocked()) {
             //Watch for 4 digit code:
             $("#input_code").on("input", function() {
                 if($(this).val().length==4){
-                    e_contact_auth();
+                    player_authenticate();
                 }
             });
 
@@ -132,7 +132,7 @@ if(superpower_unlocked()) {
                     if(step_count==2){
                         player_verify();
                     } else if(step_count==3){
-                        e_contact_auth();
+                        player_authenticate();
                     }
                 }
             });
@@ -224,7 +224,7 @@ if(superpower_unlocked()) {
 
 
         var code_checking = false;
-        function e_contact_auth(){
+        function player_authenticate(){
 
             if(code_checking){
                 return false;
@@ -236,7 +236,7 @@ if(superpower_unlocked()) {
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:
-            $.post("/controller/e_contact_auth", {
+            $.post("/controller/player_authenticate", {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),
@@ -339,7 +339,7 @@ if(superpower_unlocked()) {
 
                 <div id="step3buttons">
                     <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $players___11035[12991]['m__title'] ?>"><?= $players___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="e_contact_auth()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="player_authenticate()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
                 </div>
 
                 <div class="doclear">&nbsp;</div>

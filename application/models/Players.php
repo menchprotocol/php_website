@@ -86,7 +86,7 @@ class Players extends CIdea_cache
         //Return success:
         return array(
             'status' => 1,
-            'new_player' => $es[0],
+            'player_create' => $es[0],
         );
 
     }
@@ -719,8 +719,8 @@ class Players extends CIdea_cache
                 'linkplayertype' => 4230,
                 'linktext' => trim(strtolower($email)),
                 'linkplayerup' => 3288, //Email
-                'linkplayercreator' => $added_e['new_player']['playerid'],
-                'linkplayerdown' => $added_e['new_player']['playerid'],
+                'linkplayercreator' => $added_e['player_create']['playerid'],
+                'linkplayerdown' => $added_e['player_create']['playerid'],
                 'linkplayerdomain' => $linkplayerdomain,
             ));
         }
@@ -731,8 +731,8 @@ class Players extends CIdea_cache
                 'linkplayerup' => 4783, //Phone
                 'linkplayertype' => 4230,
                 'linktext' => $phone_number,
-                'linkplayercreator' => $added_e['new_player']['playerid'],
-                'linkplayerdown' => $added_e['new_player']['playerid'],
+                'linkplayercreator' => $added_e['player_create']['playerid'],
+                'linkplayerdown' => $added_e['player_create']['playerid'],
                 'linkplayerdomain' => $linkplayerdomain,
             ));
         }
@@ -743,9 +743,9 @@ class Players extends CIdea_cache
             foreach ($this->Links->read(array(
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 'linkplayerup IN (' . join(',', $this->config->item('playerids___32540')) . ')' => null, //Unsubscribers
-                'linkplayerdown' => $added_e['new_player']['playerid'],
+                'linkplayerdown' => $added_e['player_create']['playerid'],
             )) as $unsubscriber_x) {
-                $this->Links->delete($unsubscriber_x['linkid'], $added_e['new_player']['playerid']);
+                $this->Links->delete($unsubscriber_x['linkid'], $added_e['player_create']['playerid']);
             }
 
             $session_data = $this->session->all_userdata();
@@ -755,8 +755,8 @@ class Players extends CIdea_cache
             $this->Links->create(array(
                 'linkplayerup' => 4430, //Subscriber
                 'linkplayertype' => 4230,
-                'linkplayercreator' => $added_e['new_player']['playerid'],
-                'linkplayerdown' => $added_e['new_player']['playerid'],
+                'linkplayercreator' => $added_e['player_create']['playerid'],
+                'linkplayerdown' => $added_e['player_create']['playerid'],
                 'linkplayerdomain' => $linkplayerdomain,
             ));
 
@@ -766,8 +766,8 @@ class Players extends CIdea_cache
             $this->Links->create(array(
                 'linkplayerup' => 14938, //Guest Login
                 'linkplayertype' => 4230,
-                'linkplayercreator' => $added_e['new_player']['playerid'],
-                'linkplayerdown' => $added_e['new_player']['playerid'],
+                'linkplayercreator' => $added_e['player_create']['playerid'],
+                'linkplayerdown' => $added_e['player_create']['playerid'],
                 'linkplayerdomain' => $linkplayerdomain,
             ));
 
@@ -781,13 +781,13 @@ class Players extends CIdea_cache
         if (!count($this->Links->read(array(
             'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             'linkplayerup' => $linkplayerdomain,
-            'linkplayerdown' => $added_e['new_player']['playerid'],
+            'linkplayerdown' => $added_e['player_create']['playerid'],
         )))) {
             $this->Links->create(array(
-                'linkplayercreator' => $added_e['new_player']['playerid'], //Belongs to this Member
+                'linkplayercreator' => $added_e['player_create']['playerid'], //Belongs to this Member
                 'linkplayertype' => 4230,
                 'linkplayerup' => $linkplayerdomain,
-                'linkplayerdown' => $added_e['new_player']['playerid'],
+                'linkplayerdown' => $added_e['player_create']['playerid'],
             ));
         }
 
@@ -803,23 +803,23 @@ class Players extends CIdea_cache
                     'linkidearight' => $i['ideaid'], //Is this the template?
                 )))) {
                     //Found the email template to send:
-                    $total_sent = $this->Links->broadcast(array($added_e['new_player']), $i, $linkplayerdomain);
+                    $total_sent = $this->Links->broadcast(array($added_e['player_create']), $i, $linkplayerdomain);
                     break; //Just the first template match
                 }
             }
         }
 
         //Update Search Index:
-        update_algolia(12274, $added_e['new_player']['playerid']);
+        update_algolia(12274, $added_e['player_create']['playerid']);
 
         //Assign session & log login Link:
-        $this->Players->activate($added_e['new_player']);
+        $this->Players->activate($added_e['player_create']);
 
 
         //Return Member:
         return array(
             'status' => 1,
-            'e' => $added_e['new_player'],
+            'e' => $added_e['player_create'],
         );
 
     }

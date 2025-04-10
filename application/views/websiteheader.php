@@ -358,7 +358,7 @@ if ($focus_i){
 
                     //New Idea?
                     if($player_session){
-                        echo '<td class="block-x enlarge add_idea"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$players___11035[44403]['m__title'].'">'.$players___11035[44403]['m__cover'].'</a></td>';
+                        echo '<td class="block-x enlarge add_idea"><a href="javascript:void(0);" onclick="idea_editor()" title="'.$players___11035[44403]['m__title'].'">'.$players___11035[44403]['m__cover'].'</a></td>';
                     }
 
                     //MENU
@@ -395,7 +395,7 @@ if ($focus_i){
                         } elseif($linkplayertype==42246 && $player_session) {
 
                             //Profile Edit
-                            $href = 'href="javascript:void(0);" onclick="e_editor_load('.$player_session['playerid'].',0)" ';
+                            $href = 'href="javascript:void(0);" onclick="player_editor('.$player_session['playerid'].',0)" ';
 
                         } elseif($linkplayertype==28615){
 
@@ -439,7 +439,7 @@ if ($focus_i){
 
                     //Add Player
                     if(superpower_unlocked(10939)){
-                        //echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$players___11035[42819]['m__title'].'">'.$players___11035[42819]['m__cover'].'</a></td>';
+                        //echo '<td class="block-x"><a href="javascript:void(0);" onclick="player_editor()" title="'.$players___11035[42819]['m__title'].'">'.$players___11035[42819]['m__cover'].'</a></td>';
                     }
 
                     ?>
@@ -613,7 +613,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             echo $input_options;
 
                             ?>
-                            <div class="x_mass_apply_preview"></div>
+                            <div class="link_preview"></div>
                         </div>
                 </div>
                 </form>
@@ -700,7 +700,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             echo $input_options;
 
                             ?>
-                            <div class="x_mass_apply_preview"></div>
+                            <div class="link_preview"></div>
                         </div>
                     </div>
                 </form>
@@ -730,12 +730,12 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                             <!-- Idea Links -->
                             <div class="dynamic_editing_input idea_linkplayertype hidden hidden_superpower__10939" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(4486, 4228); ?></div>
+                                <div class="dynamic_selector"><?= searchingle_select_form(4486, 4228); ?></div>
                             </div>
 
                             <!-- Unlink -->
                             <div class="dynamic_editing_input no_padded link_idea_unlink hidden">
-                                <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
+                                <a class="icon-block" href="javascript:void(0);" onclick="idea_direction_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
                             </div>
 
                         </div>
@@ -804,7 +804,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                                 } elseif($playerid==4737){ //Player Reference
 
                                     echo '<div class="dynamic_editing_input no_padded pull-right " style="margin: 0 !important;">
-                                        <div class="dynamic_selector">'.view_single_select_form(4737, 6677).'</div>
+                                        <div class="dynamic_selector">'.searchingle_select_form(4737, 6677).'</div>
                                     </div>';
 
                                 } elseif($playerid==13572){ //Upload File
