@@ -2686,20 +2686,27 @@ function link_view($x)
             $ui .= '</div>';
             $ui .= '</td>';
 
-        } elseif (in_array(4367, $m['m__following'])) {
+        } elseif ($playerid==4367) {
 
-            //Link:
-            $ui .= '<td style="width:65px !important;">';
+            //Link
             $playerhandle_sign = '';
-            if($playerid==4367){
-                //Determine the link group:
-                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
-                    if(in_array($x['linkplayertype'], $CI->config->item('playerids___'.$groupid))){
-                        $playerhandle_sign = '<span style="width:15px; display: inline-block; text-align: center;">'.$groupm['m__cover'].'</span>';
-                        break;
-                    }
+            foreach($CI->config->item('players___31770') as $groupid => $groupm) {
+                if(in_array($x['linkplayertype'], $CI->config->item('playerids___'.$groupid))){
+                    $playerhandle_sign = '<span style="width:15px; display: inline-block; text-align: center;">'.$groupm['m__cover'].'</span>';
+                    break;
                 }
             }
+
+            $ui .= '<td style="width:80px !important;">';
+            if($x[$m['m__handle']]>0){
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
+            }
+            $ui .= '</td>';
+
+        } elseif ($playerid==44395) {
+
+            //Void:
+            $ui .= '<td style="width:65px !important;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
             }
