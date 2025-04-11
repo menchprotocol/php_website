@@ -187,12 +187,14 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         }
 
         loading_new_page = true;
-        current_page++;
         if(has_more_links){
             console.log('Now loading page '+current_page);
         } else {
             console.log('No more pages to load: '+current_page);
+            return false;
         }
+
+        current_page++;
 
         //Show spinner:
         $('#x_page_'+current_page).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_randomize_text(12694) +  '</div>').hide().fadeIn();
