@@ -180,7 +180,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     var loading_new_page = false;
     var current_page = 0;
 
-    function link_load(x_filters, x_joined_by, page_num){
+    function link_load(){
 
         if(loading_new_page){
             return false;
