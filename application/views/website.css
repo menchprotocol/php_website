@@ -4299,26 +4299,26 @@ main {
     color:#FFFFFF !important;
 }
 
-.home_black_font h1,
-.home_black_font .logo_cover i,
-.home_black_font .block-x i,
-.home_black_font .menu-cover i,
-.home_black_font .logo_title {
+.app__14565.homecss_black_font h1,
+.app__14565.homecss_black_font .logo_cover i,
+.app__14565.homecss_black_font .block-x i,
+.app__14565.homecss_black_font .menu-cover i,
+.app__14565.homecss_black_font .logo_title {
     color:#000000;
 }
-.home_black_font h1 {
+.app__14565.homecss_black_font h1 {
     text-shadow: 1px 1px 3px #FFFFFF;
 }
 
 .social-footer i,
-.home_white_font h1,
-.home_white_font .logo_cover i,
-.home_white_font .block-x i,
-.home_white_font .menu-cover i,
-.home_white_font .logo_title {
+.app__14565.homecss_white_font h1,
+.app__14565.homecss_white_font .logo_cover i,
+.app__14565.homecss_white_font .block-x i,
+.app__14565.homecss_white_font .menu-cover i,
+.app__14565.homecss_white_font .logo_title {
     color:#FFFFFF;
 }
-.home_white_font h1 {
+.app__14565.homecss_white_font h1 {
     text-shadow: 1px 1px 3px #000000;
 }
 
@@ -4418,16 +4418,16 @@ main {
     font-size: 0.79em;
 }
 
-.home_black_font .logo_cover i,
-.home_black_font .menu-cover i,
-.home_black_font .block-x i,
-.home_black_font .logo_title {
+.app__14565.homecss_black_font .logo_cover i,
+.app__14565.homecss_black_font .menu-cover i,
+.app__14565.homecss_black_font .block-x i,
+.app__14565.homecss_black_font .logo_title {
     color:#FFFFFF !important;
 }
-.home_black_font .top-header-position .logo_cover i,
-.home_black_font .top-header-position .menu-cover i,
-.home_black_font .top-header-position .block-x i,
-.home_black_font .top-header-position .logo_title {
+.app__14565.homecss_black_font .top-header-position .logo_cover i,
+.app__14565.homecss_black_font .top-header-position .menu-cover i,
+.app__14565.homecss_black_font .top-header-position .block-x i,
+.app__14565.homecss_black_font .top-header-position .logo_title {
     color:#000000 !important;
 }
 
