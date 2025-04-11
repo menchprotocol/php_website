@@ -2706,8 +2706,8 @@ function link_view($x)
             }
 
 
-            $ui .= '<td style="width:80px !important;">';
-            $ui .= '<div style="width:80px !important; overflow:hidden;">';
+            $ui .= '<td style="width:75px !important;">';
+            $ui .= '<div style="width:75px !important; overflow:hidden;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
             }
@@ -2717,7 +2717,7 @@ function link_view($x)
         } elseif ($playerid==44395) {
 
             //Void:
-            $ui .= '<td style="width:65px !important;">';
+            $ui .= '<td style="width:70px !important;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' .$x[$m['m__handle']] . '</a>';
             }
@@ -2726,16 +2726,16 @@ function link_view($x)
         } elseif ($playerid == 4362) {
 
             //TIME
-            $ui .= '<td style="width:80px !important;">';
+            $ui .= '<td style="width:50px !important;">';
             $ui .= '<div style="width:80px !important; overflow:hidden;">';
-            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime']) . '</span>';
+            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
             $ui .= '</div>';
             $ui .= '</td>';
 
         } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<td style="width:60px !important;">';
+            $ui .= '<td style="width:70px !important;">';
             if($x['linknumber']>0){
                 $ui .= $x['linknumber'];
             }
