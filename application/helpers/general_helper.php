@@ -2690,13 +2690,21 @@ function link_view($x)
         } elseif ($playerid==4367) {
 
             //Link
+
+            //Determine link group:
+            $players___28956 = $this->config->item('players___28956'); //Nodes
             $playerhandle_sign = '';
-            foreach($CI->config->item('players___31770') as $groupid => $groupm) {
-                if(in_array($x['linkplayertype'], $CI->config->item('playerids___'.$groupid))){
-                    $playerhandle_sign = '<span style="width:15px; display: inline-block; text-align: center;">'.$groupm['m__cover'].'</span>';
-                    break;
+            if(array_key_exists($x['linkplayertype'], $players___28956)){
+                $playerhandle_sign = '<span class="group_sign" title="'.$players___28956[$x['linkplayertype']]['m__title'].'">'.$players___28956[$x['linkplayertype']]['m__cover'].'</span>';
+            } else {
+                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
+                    if(in_array($x['linkplayertype'], $CI->config->item('playerids___'.$groupid))){
+                        $playerhandle_sign = '<span class="group_sign" title="'.$groupm['m__title'].'">'.$groupm['m__cover'].'</span>';
+                        break;
+                    }
                 }
             }
+
 
             $ui .= '<td style="width:80px !important;">';
             $ui .= '<div style="width:80px !important; overflow:hidden;">';
