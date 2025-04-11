@@ -177,10 +177,16 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     var linktext_find = '<?= ( isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 ? $_GET['linktext_find'] : '' ) ?>';
     var linktext_replace = '<?= ( isset($_GET['linktext_replace']) && strlen($_GET['linktext_replace']) > 0 ? $_GET['linktext_replace'] : '' ) ?>';
     var has_more_links = 1; //We always assume this?
+    var loading_new_page = false;
 
 
     function link_load(x_filters, x_joined_by, page_num){
 
+        if(loading_new_page){
+            return false;
+        }
+
+        loading_new_page = true;
         //Show spinner:
         $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_randomize_text(12694) +  '</div>').hide().fadeIn();
 
@@ -193,6 +199,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
             page_num: page_num,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
+            loading_new_page = false;
             if (!data.status) {
                 //Show Error:
                 $('#x_page_'+page_num).html(data.message);
