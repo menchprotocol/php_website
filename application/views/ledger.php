@@ -250,9 +250,6 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 <?php
 
-if (superpower_unlocked(12701)) {
-    echo '<div class="inline-block margin-top-down" style="padding-left:7px;"><span class="icon-block">' . $players___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $players___11035[12707]['m__title'] . '</a></div>';
-}
 
 
 echo '<div class="show-filter ' . ($has_filters && 0 ? '' : 'hidden') . '">';
@@ -405,10 +402,13 @@ echo '</div>';
 
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
-echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="font-size: 0.7em;">'; //table-layout: fixed;
+
+echo '<div style="float:left; display: block; width:200px;">'.(superpower_unlocked(12701) ? '<span class="icon-block-xs">' . $players___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $players___11035[12707]['m__title'] . '</a>' : '').'</div>';
+
+echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="font-size: 0.8em;">';
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
-    echo '<th class="main__title">' . $m['m__title'] . '</th>';
+    echo '<th class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
 }
 echo '</tr>';
 echo '</table>';
