@@ -3,13 +3,8 @@
         margin-left: 8px;
         max-width: calc(100% - 16px) !important;
     }
-
     td{
         overflow: hidden;
-    }
-
-    .maxwidth {
-        max-width: 1200px !important;
     }
 </style>
 <?php
@@ -224,9 +219,16 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
                 }
                 has_more_links = data.has_more_links;
                 setup_popover();
+                load_at_bottom(); //Load more?
             }
         });
 
+    }
+
+    function load_at_bottom(){
+        if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
+            link_load();
+        }
     }
 
     $(document).ready(function () {
@@ -237,10 +239,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         $(function () {
             var $win = $(window);
             $win.scroll(function () {
-                //Download loading from bottom:
-                if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                    link_load();
-                }
+                load_at_bottom();
             });
         });
 
