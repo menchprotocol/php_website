@@ -2666,7 +2666,7 @@ function link_view($x)
             //SOURCE
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span>' . '<span class="icon-block">' . view_cover($focus_e['playercover'], true) . '</span>' . $focus_e['playertext'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . view_cover($focus_e['playercover'], true) . '</span>' . $focus_e['playertext'] . '</a>';
                 }
             }
 
@@ -2675,34 +2675,33 @@ function link_view($x)
             //IDEA
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span><span class="icon-block">' . view_cache(4737 /* Player Reference */, $focus_i['ideatype'], true, 'right', $focus_i['ideaid']) . '</span>' . view_idea_title($focus_i) . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . view_cache(4737 /* Player Reference */, $focus_i['ideatype'], true, 'right', $focus_i['ideaid']) . '</span>' . view_idea_title($focus_i) . '</a>';
                 }
             }
 
         } elseif (in_array(4367, $m['m__following'])) {
 
-            //Link Reference, Link Void:
-            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST"><span class="icon-block">' . $m['m__cover'] . '</span>' . $x['linktime'] . '</span>';
-
-        } elseif ($playerid == 4367) {
-
-            //ID
-            $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x['linkid'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="mono-space"><span class="icon-block">' . $m['m__cover'] . '</span>' . $x['linkid'] . '</a>';
+            //Link Reference:
+            if($x[$m['m__handle']]>0){
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="mono-space">' . $x[$m['m__handle']] . '</a>';
+            } else {
+                $ui .= $x[$m['m__handle']];
+            }
 
         } elseif ($playerid == 4362) {
 
             //TIME
-            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '"><span class="icon-block">' . $m['m__cover'] . '</span>' . view_time_difference($x['linktime']) . ' Ago</span>';
+            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '">' . view_time_difference($x['linktime']) . '</span>';
 
         } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span>' . $x['linknumber'] . '</span>';
+            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '">' . $x['linknumber'] . '</span>';
 
         } elseif ($playerid == 4372) {
 
             //Text
-            $ui .= '<div data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><div class="title-block">' . (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>') . '</div></div>';
+            $ui .= '<div data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="title-block">' . (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>') . '</div>';
 
         }
 
