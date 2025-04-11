@@ -2666,7 +2666,7 @@ function link_view($x)
             //SOURCE
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title">@' . $focus_e['playerhandle'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '">@' . $focus_e['playerhandle'] . '</a>';
                 }
             }
 
@@ -2675,7 +2675,7 @@ function link_view($x)
             //IDEA
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title">#' . $focus_i['ideahashtag'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '">#' . $focus_i['ideahashtag'] . '</a>';
                 }
             }
 
@@ -2683,7 +2683,7 @@ function link_view($x)
 
             //Link Reference:
             if($x[$m['m__handle']]>0){
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="mono-space">' . $x[$m['m__handle']] . '</a>';
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '">' . $x[$m['m__handle']] . '</a>';
             }
 
         } elseif ($playerid == 4362) {
