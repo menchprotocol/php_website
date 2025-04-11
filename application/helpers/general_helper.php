@@ -2657,7 +2657,7 @@ function link_view($x)
 {
 
     $CI =& get_instance();
-    $ui = '<tr>';
+    $ui = '<tr width="100%">';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
         if (in_array(6160, $m['m__following'])) {
