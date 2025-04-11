@@ -1214,11 +1214,6 @@ a.headline {
 .idea_response .btn.edit-locked{
     margin:-3px 0 0 0;
 }
-.title-block{
-    display: block;
-    padding:0 !important;
-    margin:-20px 5px 0 40px !important;
-}
 .title-no-right {
     padding-right:5px !important;
 }
@@ -3398,11 +3393,6 @@ h4.main__title{
 
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 30px; }
-
-
-    .title-block{
-        padding-bottom: 3px !important;
-    }
 
     .cover-title {
         padding-top: 6px;
