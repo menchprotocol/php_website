@@ -2660,51 +2660,61 @@ function link_view($x)
     $ui = '<tr>';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
-        $ui .= '<td>';
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
+            $ui .= '<td style="width: 150px;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
                     $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '">@' . $focus_e['playerhandle'] . '</a>';
                 }
             }
+            $ui .= '<td>';
 
         } elseif (in_array(6202, $m['m__following'])) {
 
             //IDEA
+            $ui .= '<td style="width: 150px;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
                     $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '">#' . $focus_i['ideahashtag'] . '</a>';
                 }
             }
+            $ui .= '</td>';
 
         } elseif (in_array(4367, $m['m__following'])) {
 
             //Link Reference:
+            $ui .= '<td style="width:89px;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $x[$m['m__handle']] . '</a>';
             }
+            $ui .= '</td>';
 
         } elseif ($playerid == 4362) {
 
             //TIME
+            $ui .= '<td style="width:89px;">';
             $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '">' . view_time_difference($x['linktime']) . '</span>';
+            $ui .= '</td>';
 
-        } elseif ($playerid == 4370 && $x['linknumber']>0) {
+        } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= $x['linknumber'];
+            $ui .= '<td style="width:89px;">';
+            if($x['linknumber']>0){
+                $ui .= $x['linknumber'];
+            }
+            $ui .= '</td>';
 
         } elseif ($playerid == 4372) {
 
             //Text
+            $ui .= '<td>';
             $ui .=  (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>');
+            $ui .= '</td>';
 
         }
-
-        $ui .= '</td>';
-
     }
 
     $ui .= '</tr>';
