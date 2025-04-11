@@ -25,15 +25,15 @@ echo '<div class="center hideIfEmpty"></div>';
 foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
     if($playerid1==1309754){
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a href="'.view_app_link(4341).'?linkvoid=1" class="card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . '</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a href="'.view_app_link(4341).'?linkvoid=1" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . '</span></div>';
         //Void Links
         continue;
     } elseif($playerid1==28956){
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a href="'.view_app_link(4341).'?linkplayertype=4250,4251&linkvoid=0" class="card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a href="'.view_app_link(4341).'?linkplayertype=4250,4251&linkvoid=0" class="grey ard_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
     } elseif($playerid1==31770){
         //Links
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a href="'.view_app_link(4341).'?linkvoid=0" class="card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a href="'.view_app_link(4341).'?linkvoid=0" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="javascript:void(0)" onclick="$(\'.headlines\').toggleClass(\'hidden\')" class="grey">' . $m1['m__title'] . '</a>:</span></div>';
     }
 
     echo '<div class="row justify-content list-covers">';
@@ -63,7 +63,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                     if ($headline_link > 0){
                         if(!$focus_link_group || $focus_link_group!=$headline_link){
 
-                            echo '<tr class="mobile-shrink">';
+                            echo '<tr class="mobile-shrink headlines hidden">';
                             echo '<td class="center" colspan="2" title="@'.$players___42263[$headline_link]['m__handle'].'">';
 
                             //Search for sibling if Has Family:
