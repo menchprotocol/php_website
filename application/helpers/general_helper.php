@@ -2681,7 +2681,7 @@ function link_view($x)
             $found_group = null;
             if($playerid==4593){
                 //Determine the link group:
-                foreach($this->config->item('players___31770') as $groupid => $groupm) {
+                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
                     if(in_array(6202, $groupm['m__following'])){
                         $found_group = $groupm;
                         break;
