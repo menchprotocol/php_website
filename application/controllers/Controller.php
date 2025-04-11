@@ -3463,7 +3463,7 @@ class Controller extends CI_Controller
             if ($has_more_links) {
                 $message .= '<div id="x_page_' . $next_page . '"></div>';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0; border-top:1px solid #999999;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Links have been loaded</div>';
+                $message .= '<div style="padding:21px 0 89px 0; border-top:1px solid #999999;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Links have been loaded</div>';
             }
 
         } else {
