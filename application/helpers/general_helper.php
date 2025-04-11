@@ -2663,7 +2663,7 @@ function link_view($x)
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
-            $ui .= '<td width="150px">';
+            $ui .= '<td width="144px">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
                     $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '">@' . $focus_e['playerhandle'] . '</a>';
@@ -2674,7 +2674,7 @@ function link_view($x)
         } elseif (in_array(6202, $m['m__following'])) {
 
             //IDEA
-            $ui .= '<td width="150px">';
+            $ui .= '<td width="144px">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
                     $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '">#' . $focus_i['ideahashtag'] . '</a>';
@@ -2685,7 +2685,7 @@ function link_view($x)
         } elseif (in_array(4367, $m['m__following'])) {
 
             //Link Reference:
-            $ui .= '<td width="89px">';
+            $ui .= '<td width="55px">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $x[$m['m__handle']] . '</a>';
             }
