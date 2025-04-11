@@ -3428,6 +3428,14 @@ class Controller extends CI_Controller
         $total_items_loaded = ($query_offset + count($x));
         $has_more_links = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 
+
+        //Display filter:
+        if ($total_items_loaded > 0 && $current_page==1) {
+            //Subsequent messages:
+            $message .= '<div class="main__title x-info grey">' . ($x_count[0]['total_count'] > $total_items_loaded ? ($has_more_links && $query_offset == 0 ? 'FIRST ' : ($query_offset + 1) . ' - ') . ($total_items_loaded >= ($query_offset + 1) ? $total_items_loaded . ' OF ' : '') : '') . number_format($x_count[0]['total_count'], 0) . ' LINKS:</div>';
+        }
+
+
         if (count($x) > 0) {
 
             $message .= '<div class="list-group list-grey">';
