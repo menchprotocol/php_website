@@ -2660,7 +2660,7 @@ function link_view($x)
     $ui = '<tr>';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
-        $ui .= '<td>';
+        $ui .= '<td width="(100/x)%">';
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
