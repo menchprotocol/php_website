@@ -220,10 +220,10 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
                 if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
                     load_page++;
                     if(has_more_links){
-                        consloe.log('Now loading page '+load_page);
+                        console.log('Now loading page '+load_page);
                         link_load(x_filters, x_joined_by, load_page);
                     } else {
-                        consloe.log('No more pages to load: '+load_page);
+                        console.log('No more pages to load: '+load_page);
                     }
                 }
             });
