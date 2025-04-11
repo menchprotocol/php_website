@@ -46,7 +46,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
         echo '</div>';
 
         if ($playerid2 != 12273 && $playerid2 != 12274) {
-            echo '<table class="table table-striped card_subcat card_subcat_' . $playerid2 . ' hidden" style="width:100%; margin-top:13px;">';
+            echo '<table class="table card_subcat card_subcat_' . $playerid2 . ' hidden" style="width:100%; margin-top:13px;">'; //table-striped
             $focus_link_group = 0;
             $player_pinned = player_pinned($playerid2, true);
             if (!$player_pinned || !is_array($this->config->item('players___' . $player_pinned)) || !count($this->config->item('players___' . $player_pinned))) {
@@ -68,11 +68,11 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                                     'linkplayerdown' => $headline_link,
                                     'linkplayertype' => 41011, //Family
                                 ), array('linkplayerup'), 1) as $sibling){
-                                    echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="main__title grey">'.$sibling['playertext'].'</b></a><b class="main__title grey"> & </b></b>';
+                                    echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="grey">'.$sibling['playertext'].'</b></a><b class="grey"> & </b></b>';
                                 }
                             }
 
-                            echo '<a href="'.view_memory(42903,42902).$players___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$players___42263[$headline_link]['m__cover'].'</span><b class="main__title grey">'.$players___42263[$headline_link]['m__title'].'</a>:</b>';
+                            echo '<a href="'.view_memory(42903,42902).$players___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$players___42263[$headline_link]['m__cover'].'</span><b class="grey">'.$players___42263[$headline_link]['m__title'].'</a>:</b>';
 
                             echo '</td>';
                             echo '</tr>';
@@ -82,8 +82,8 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                 }
 
 
-                echo '<tr class="mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
-                echo '<td style="text-align: left;" title="@' . $playerid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><b class="card_count_' . $playerid3 . '"><i class="fas fa-yin-yang fa-spin"></i></b></span></td>';
+                echo '<tr class="main__title mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
+                echo '<td style="text-align: left;" title="@' . $playerid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a href="'.view_app_link(4341).'?linkplayertype='.  $playerid3 . '" class="card_count_' . $playerid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
                 echo '</tr>';
 
             }
