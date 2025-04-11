@@ -9,7 +9,7 @@ $expanded_space = in_array($website_id , $this->config->item('playerids___31025'
 if(in_array($website_id, $this->config->item('playerids___30984'))){
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_black_font\'); }); </script> ';
 } else {
-    echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_white_font\'); }); </script> ';
+    //echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_white_font\'); }); </script> ';
 }
 
 
