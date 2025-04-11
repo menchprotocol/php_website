@@ -1527,6 +1527,9 @@ label {
     border-radius: 0px;
 }
 
+.title-block{
+    line-height:134%;
+}
 .slim_title {
     padding: 1px 0 0;
     font-size:1em;
