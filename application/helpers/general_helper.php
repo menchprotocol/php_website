@@ -2693,7 +2693,7 @@ function link_view($x)
             //TIME
             $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '">' . view_time_difference($x['linktime']) . '</span>';
 
-        } elseif ($playerid == 4370) {
+        } elseif ($playerid == 4370 && $x['linknumber']>0) {
 
             //Number
             $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '">' . $x['linknumber'] . '</span>';
