@@ -2718,7 +2718,9 @@ function link_view($x)
 
             //TIME
             $ui .= '<td style="width:80px !important;">';
+            $ui .= '<div style="width:80px !important; overflow:hidden;">';
             $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '">' . view_time_difference($x['linktime']) . '</span>';
+            $ui .= '</div>';
             $ui .= '</td>';
 
         } elseif ($playerid == 4370) {
