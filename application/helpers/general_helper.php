@@ -2698,14 +2698,14 @@ function link_view($x)
         } elseif ($playerid == 4362) {
 
             //TIME
-            $ui .= '<td style="width:75px !important;">';
+            $ui .= '<td style="width:80px !important;">';
             $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '">' . view_time_difference($x['linktime']) . '</span>';
             $ui .= '</td>';
 
         } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<td style="width:75px !important;">';
+            $ui .= '<td style="width:65px !important;">';
             if($x['linknumber']>0){
                 $ui .= $x['linknumber'];
             }
