@@ -2668,7 +2668,7 @@ function link_view($x)
             $ui .= '<div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" title="'.$focus_e['playertext'].'" class="icon-block-sm">' . view_cover($focus_e['playercover']) . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" target="_blank" data-toggle="tooltip" title="'.$focus_e['playertext'].'" class="icon-block-sm">' . view_cover($focus_e['playercover']) . '</a>';
                 }
             }
             $ui .= '</div>';
@@ -2708,7 +2708,7 @@ function link_view($x)
             $ui .= '<td style="width:72px !important;">';
             $ui .= '<div style="width:72px !important; overflow:hidden;">';
             if($x[$m['m__handle']]>0){
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
             }
             $ui .= '</div>';
             $ui .= '</td>';
@@ -2718,7 +2718,7 @@ function link_view($x)
             //Void:
             $ui .= '<td style="width:60px !important;">';
             if($x[$m['m__handle']]>0){
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' .$x[$m['m__handle']] . '</a>';
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' .$x[$m['m__handle']] . '</a>';
             }
             $ui .= '</td>';
 
