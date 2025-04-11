@@ -2662,25 +2662,32 @@ function link_view($x)
     $ui = '<tr>';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
-        if (in_array(6160, $m['m__following']) && isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
+        if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
-            foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                $ui .= '<td><a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span>' . '<span class="icon-block">' . view_cover($focus_e['playercover'], true) . '</span>' . $focus_e['playertext'] . '</a></td>';
+            $ui .= '<td>';
+            if(isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0){
+                foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span>' . '<span class="icon-block">' . view_cover($focus_e['playercover'], true) . '</span>' . $focus_e['playertext'] . '</a>';
+                }
             }
+            $ui .= '</td>';
 
-        } elseif (in_array(6202, $m['m__following']) && isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
+        } elseif (in_array(6202, $m['m__following'])) {
 
             //IDEA
-            foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                $ui .= '<td><a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span><span class="icon-block">' . view_cache(4737 /* Player Reference */, $focus_i['ideatype'], true, 'right', $focus_i['ideaid']) . '</span>' . view_idea_title($focus_i) . '</a></td>';
+            $ui .= '<td>';
+            if(isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0){
+                foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
+                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . $m['m__cover'] . '</span><span class="icon-block">' . view_cache(4737 /* Player Reference */, $focus_i['ideatype'], true, 'right', $focus_i['ideaid']) . '</span>' . view_idea_title($focus_i) . '</a>';
+                }
             }
+            $ui .= '</td>';
 
-        } elseif (in_array(4367, $m['m__following']) && isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
+        } elseif (in_array(4367, $m['m__following'])) {
 
-            //Link
-            //Simple Reference to avoid Loop:
-            $ui .= '<td><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST"><span class="icon-block">' . $m['m__cover'] . '</span>' . view_time_difference($x['linktime']) . ' Ago</span></td>';
+            //Link Reference, Link Void:
+            $ui .= '<td><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST"><span class="icon-block">' . $m['m__cover'] . '</span>' . $x['linktime'] . '</span></td>';
 
         } elseif ($playerid == 4367) {
 
@@ -2692,20 +2699,15 @@ function link_view($x)
             //TIME
             $ui .= '<td><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '"><span class="icon-block">' . $m['m__cover'] . '</span>' . view_time_difference($x['linktime']) . ' Ago</span></td>';
 
-        } elseif ($playerid == 4370 && $x['linknumber'] > 0) {
+        } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<td><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span>' . view_ordinal($x['linknumber']) . '</span></td>';
+            $ui .= '<td><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span>' . $x['linknumber'] . '</span></td>';
 
-        } elseif ($playerid == 4372 && strlen($x['linktext']) > 0) {
+        } elseif ($playerid == 4372) {
 
-            //Message
+            //Text
             $ui .= '<td data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><div class="title-block">' . (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>') . '</div></td>';
-
-        } elseif ($playerid == 44395) {
-
-            //Void
-            $ui .= '<td data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><div class="title-block">' . $x['linkvoid'] . '</div></td>';
 
         }
     }
