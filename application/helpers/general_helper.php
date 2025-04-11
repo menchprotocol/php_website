@@ -2706,8 +2706,8 @@ function link_view($x)
             }
 
 
-            $ui .= '<td style="width:75px !important;">';
-            $ui .= '<div style="width:75px !important; overflow:hidden;">';
+            $ui .= '<td style="width:72px !important;">';
+            $ui .= '<div style="width:72px !important; overflow:hidden;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
             }
@@ -2717,7 +2717,7 @@ function link_view($x)
         } elseif ($playerid==44395) {
 
             //Void:
-            $ui .= '<td style="width:70px !important;">';
+            $ui .= '<td style="width:60px !important;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' .$x[$m['m__handle']] . '</a>';
             }
@@ -2735,7 +2735,7 @@ function link_view($x)
         } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<td style="width:70px !important;">';
+            $ui .= '<td style="width:60px !important;">';
             if($x['linknumber']>0){
                 $ui .= $x['linknumber'];
             }
