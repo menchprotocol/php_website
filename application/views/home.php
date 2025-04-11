@@ -170,14 +170,14 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 ?>
 
 <style>
-    .creator_frame,
-    .mini_time {
+    .app__14565 .creator_frame,
+    .app__14565 .mini_time {
         display: none !important;
     }
-    .container_content .line {
+    .app__14565 .container_content .line {
         color: #FFFFFF !important;
     }
-    .cover-wrapper{
+    .app__14565 .cover-wrapper{
         background-color: #FFFFFF !important;
     }
 </style>
@@ -185,9 +185,9 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 <script>
     $(window).scroll(function() {
         if($(window).scrollTop()  > 110) {
-            $('.fixed-top').removeClass('top-header-position');
+            $('.app__14565 .fixed-top').removeClass('top-header-position');
         } else {
-            $('.fixed-top').addClass('top-header-position');
+            $('.app__14565 .fixed-top').addClass('top-header-position');
         }
     });
 </script>
