@@ -335,7 +335,7 @@ class Links extends CIdea_cache
             //Set default player:
             if (!$linkplayercreator) {
                 //Fetch session player:
-                $player_session = superpower_unlocked();
+                $player_session = player_session();
                 $linkplayercreator = ($player_session ? $player_session['playerid'] : ($old_x['linkplayercreator'] > 0 ? $old_x['linkplayercreator'] : 14068 /* Guest Member */));
             }
 
@@ -415,7 +415,7 @@ class Links extends CIdea_cache
         //Authenticate Member:
         $migratehandle = trim(substr($migratehandle, 0, 1) == '@' ? trim(substr($migratehandle, 1)) : $migratehandle);
         $migratehandle = trim(substr($migratehandle, 0, 1) == '#' ? trim(substr($migratehandle, 1)) : $migratehandle);
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
         if (!$player_session) {
             return array(
                 'status' => 0,
@@ -555,7 +555,7 @@ class Links extends CIdea_cache
             foreach (array_intersect($this->config->item('playerids___' . $player_createid), $this->config->item('playerids___42179')) as $dynamic_playerid) {
 
                 $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___42179[$dynamic_playerid]['m__following']);
-                if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+                if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                     continue;
                 }
 
@@ -1257,7 +1257,7 @@ class Links extends CIdea_cache
                     $append_player = append_player($this_tag['linkplayerup'], $x_data['linkplayercreator'], (isset($player_submitted_data['idea_createtext']) ? $player_submitted_data['idea_createtext'] : null), $i['ideaid']);
 
                     //See if Session needs to be updated:
-                    $player_session = superpower_unlocked();
+                    $player_session = player_session();
                     if ($player_session && $player_session['playerid']==$x_data['linkplayercreator'] && $append_player) {
                         $this->Players->activate($player_session, true);
                     }

@@ -13,7 +13,7 @@ class Controller extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        $this->player_session = superpower_unlocked();
+        $this->player_session = player_session();
 
 
         date_default_timezone_set('America/Los_Angeles');
@@ -26,7 +26,7 @@ class Controller extends CI_Controller
         $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $this->uri->segment(1));
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
         $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_link(4269));
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
         $is_login_verified = isset($_GET['playerhandle']) && $_GET['playerhandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['playerhandle']) && view_hash($_GET['time'] . $_GET['playerhandle']) == $_GET['hash'];
 
         if (
@@ -215,7 +215,7 @@ class Controller extends CI_Controller
         if ($memory_detected && $player_http_request) {
 
             //Needs superpowers?
-            $player_session = superpower_unlocked();
+            $player_session = player_session();
 
             if ($player_session && isset($player_session['e__id'])) {
                 //Old player, must log out:
@@ -273,7 +273,7 @@ class Controller extends CI_Controller
             } elseif (!$player_session && in_array($app_playerid, $this->config->item('playerids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
-            } elseif (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+            } elseif (count($superpowers_required) && !player_session(end($superpowers_required))) {
                 $players___10957 = $this->config->item('players___10957');
                 $missing_access = 'Error: You Cannot Access ' . $players___6287[$app_playerid]['m__title'] . ' as it requires the superpower of ' . $players___10957[end($superpowers_required)]['m__title'] . '.';
             } elseif ($focus_e && !$player_access) {
@@ -450,6 +450,7 @@ class Controller extends CI_Controller
 
     function link_popover()
     {
+
         if (isset($_POST['handle_string']) && strlen($_POST['handle_string']) > 1 && in_array(substr($_POST['handle_string'], 0, 1), array('#', '@'))) {
             if (substr($_POST['handle_string'], 0, 1) == '#') {
                 foreach ($this->Ideas->read(array(
@@ -481,7 +482,7 @@ class Controller extends CI_Controller
     function idea_editor()
     {
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         if (!$player_session) {
             return view_json(array(
                 'status' => 0,
@@ -545,7 +546,7 @@ class Controller extends CI_Controller
         foreach (array_intersect($this->config->item('playerids___' . $ideatype), $this->config->item('playerids___42179')) as $dynamic_playerid) {
 
             $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___42179[$dynamic_playerid]['m__following']);
-            if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required), 0, $this->player_session)) {
+            if (count($superpowers_required) && !player_session(end($superpowers_required), 0, $this->player_session)) {
                 continue;
             }
 
@@ -650,7 +651,7 @@ class Controller extends CI_Controller
     function idea_delete()
     {
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         $migrateid = 0;
 
         if (!$player_session) {
@@ -737,7 +738,7 @@ class Controller extends CI_Controller
     function player_delete()
     {
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         $migrateid = 0;
 
         if (!$player_session) {
@@ -812,7 +813,7 @@ class Controller extends CI_Controller
     function idea_update()
     {
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         if (!$player_session) {
 
             return view_json(array(
@@ -910,7 +911,7 @@ class Controller extends CI_Controller
                             $valid_hashtag = true;
                             array_push($idea_references, $idea_found);
                         }
-                        if (!$valid_hashtag && superpower_unlocked(10939, 0, $this->player_session)) {
+                        if (!$valid_hashtag && player_session(10939, 0, $this->player_session)) {
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'ERROR: ' . $word . ' is not a valid/active Idea',
@@ -1230,7 +1231,7 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
 
         if (!$player_session) {
             return view_json(array(
@@ -1343,7 +1344,7 @@ class Controller extends CI_Controller
         }
 
         $limit = view_memory(6404, 11064);
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
 
         //Check Permission:
         if (in_array($_POST['linkplayertype'], $this->config->item('playerids___42376')) && !player_access(null, $_POST['playerid'])) {
@@ -1466,7 +1467,7 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        $player_session = player_session(10939, 0, $this->player_session);
         if (!$player_session) {
             return view_json(array(
                 'status' => 0,
@@ -1536,7 +1537,7 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        $player_session = player_session(10939, 0, $this->player_session);
 
         if (!$player_session) {
             return view__json(array(
@@ -1564,7 +1565,7 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        $player_session = player_session(10939, 0, $this->player_session);
 
         if (!$player_session) {
             return view_json(array(
@@ -1701,7 +1702,7 @@ class Controller extends CI_Controller
          * */
 
         //Authenticate Member:
-        $member_e = superpower_unlocked(10939, 0, $this->player_session);
+        $member_e = player_session(10939, 0, $this->player_session);
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
@@ -1760,7 +1761,7 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        $player_session = player_session(10939, 0, $this->player_session);
 
         if (!$player_session) {
             return view_json(array(
@@ -1923,7 +1924,7 @@ class Controller extends CI_Controller
     function player_editor()
     {
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         $players___11035 = $this->config->item('players___11035');
         $players___42776 = $this->config->item('players___42776');
         $players___4592 = $this->config->item('players___4592'); //Data types
@@ -2138,7 +2139,7 @@ class Controller extends CI_Controller
     function player_save_edit()
     {
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         if (!$player_session) {
             return view_json(array(
                 'status' => 0,
@@ -2365,7 +2366,7 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         if (!$player_session) {
             return view_json(array(
                 'status' => 0,
@@ -2646,7 +2647,7 @@ class Controller extends CI_Controller
     function player_toggle_follow()
     {
 
-        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        $player_session = player_session(10939, 0, $this->player_session);
         if (!$player_session) {
 
             return view_json(array(
@@ -2839,7 +2840,7 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         $players___12112 = $this->config->item('players___12112');
 
         if (!$player_session) {
@@ -2914,7 +2915,7 @@ class Controller extends CI_Controller
         }
 
         //Log Modal View
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
 
         if (!isset($_POST['apply_id']) || !isset($_POST['s__id'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing Core Data</div>';
@@ -3024,7 +3025,7 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_session = superpower_unlocked(10939, 0, $this->player_session);
+        $player_session = player_session(10939, 0, $this->player_session);
 
         if (!$player_session) {
             return view_json(array(
@@ -3076,7 +3077,7 @@ class Controller extends CI_Controller
     function idea_discovered()
     {
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
         if (!$player_session) {
             return view_json(array(
                 'status' => 0,
@@ -3382,7 +3383,7 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
 
         if (!$player_session) {
             return view_json(array(
@@ -3418,7 +3419,7 @@ class Controller extends CI_Controller
         $current_page = (isset($_POST['current_page']) && intval($_POST['current_page']) >= 2 ? intval($_POST['current_page']) : 1);
         $next_page = ($current_page + 1);
         $query_offset = (($current_page - 1) * view_memory(6404, 11064));
-        $player_session = superpower_unlocked(null, 0, $this->player_session);
+        $player_session = player_session(null, 0, $this->player_session);
 
         $message = '';
         $overall_stats = '';

@@ -145,7 +145,7 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
                 }
             }
 
-            $body_content .= '<td title="' . $x['playertext'] . ' x ' . $e['playertext'] . '" class="' . (superpower_unlocked(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkplayercreator_' . $e['playerid'] . '_' . $x['playerid'] : '') . '" ideaid="0" playerid="' . $e['playerid'] . '" linkplayercreator="' . $x['playerid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" linkid="' . $x['linkid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
+            $body_content .= '<td title="' . $x['playertext'] . ' x ' . $e['playertext'] . '" class="' . (player_session(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkplayercreator_' . $e['playerid'] . '_' . $x['playerid'] : '') . '" ideaid="0" playerid="' . $e['playerid'] . '" linkplayercreator="' . $x['playerid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" linkid="' . $x['linkid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
 
             if (strlen($message_clean) > 0) {
 

@@ -18,7 +18,7 @@ class Players extends CIdea_cache
         }
 
         //Log Link new Player:
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
         $linkplayercreator = ($linkplayercreator > 0 ? $linkplayercreator : ($player_session ? $player_session['playerid'] : 14068));
 
         $creation_data = array(

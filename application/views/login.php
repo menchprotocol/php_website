@@ -11,7 +11,7 @@ $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ?
 $players___14870 = $this->config->item('players___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
-if(superpower_unlocked()) {
+if(player_session()) {
 
     //Lead member and above, go to console:
     js_php_redirect($next_url, 13);

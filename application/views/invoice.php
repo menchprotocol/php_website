@@ -1,6 +1,6 @@
 <?php
 
-$player_session = superpower_unlocked(null, 0, $this->player_session);
+$player_session = player_session(null, 0, $this->player_session);
 if(!$player_session){
     return view_json(array(
         'status' => 0,

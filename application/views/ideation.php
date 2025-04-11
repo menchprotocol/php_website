@@ -10,7 +10,7 @@ $this->Links->create(array(
 ));
 
 //See if we need to redirect to starting point?
-if($player_session && !superpower_unlocked(10939) && count($this->Links->read(array(
+if($player_session && !player_session(10939) && count($this->Links->read(array(
         'linkplayercreator' => $player_session['playerid'],
         'linkplayertype' => 4235, //Get started
         'linkidealeft' => $focus_i['ideaid'],
@@ -24,7 +24,7 @@ echo '<div class="view_12273 row justify-content">';
 echo idea_view(42288,  $focus_i);
 echo '</div>';
 
-if(superpower_unlocked(10939) || isset($_GET['open'])){
+if(player_session(10939) || isset($_GET['open'])){
     echo view_idea_nav(false, $focus_i);
 }
 

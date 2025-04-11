@@ -17,7 +17,7 @@ foreach ($this->Links->read(array(
     }
 
     $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___6287[$app['playerid']]['m__following']);
-    if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+    if (count($superpowers_required) && !player_session(end($superpowers_required))) {
         continue;
     }
 
@@ -42,7 +42,7 @@ foreach ($this->Links->read(array(
 
     if (isset($players___6287[$app['playerid']])) {
         $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___6287[$app['playerid']]['m__following']);
-        if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+        if (count($superpowers_required) && !player_session(end($superpowers_required))) {
             continue;
         }
     }

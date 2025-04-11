@@ -18,7 +18,7 @@ if(!isset($_GET['linkid']) || !intval($_GET['linkid'])){
 
         echo 'Invalid Link ID';
 
-    } elseif(!superpower_unlocked(12701)) {
+    } elseif(!player_session(12701)) {
 
         echo blocked_reasoning(12701);
 

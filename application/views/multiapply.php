@@ -2,7 +2,7 @@
 
 //TODO RETIRE
 
-if ($_GET['focus__id']==12273 && superpower_unlocked(12700) && isset($_POST['s__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
+if ($_GET['focus__id']==12273 && player_session(12700) && isset($_POST['s__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
 
     //Process mass action:
     $process_mass_action = $this->Ideas->command($_POST['s__id'], intval($_POST['mass_action_toggle']), $_POST['mass_value1_'.$_POST['mass_action_toggle']], $_POST['mass_value2_'.$_POST['mass_action_toggle']], $player_session['playerid']);
@@ -14,7 +14,7 @@ if ($_GET['focus__id']==12273 && superpower_unlocked(12700) && isset($_POST['s__
         header("Location: /" . $i['ideahashtag'] );
     }
 
-} elseif ($_GET['focus__id']==12274 && superpower_unlocked(12700) && isset($_POST['s__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
+} elseif ($_GET['focus__id']==12274 && player_session(12700) && isset($_POST['s__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
 
     //Process mass action:
     $process_mass_action = $this->Players->command($_POST['s__id'], intval($_POST['mass_action_toggle']), $_POST['mass_value1_'.$_POST['mass_action_toggle']], $_POST['mass_value2_'.$_POST['mass_action_toggle']], $player_session['playerid']);

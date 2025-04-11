@@ -221,7 +221,7 @@ function idea_spots_remaining($ideaid)
 {
 
     $CI =& get_instance();
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
@@ -315,7 +315,7 @@ function idea_redirect_url($i)
 
 function idea_popup_url($i)
 {
-    if (!superpower_unlocked()) {
+    if (!player_session()) {
         return false;
     }
     $CI =& get_instance();
@@ -346,7 +346,7 @@ function get_redirected($url, $message = null, $log_error = false)
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
     $CI =& get_instance();
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
 
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
@@ -737,7 +737,7 @@ function count_link_groups($linkplayertype, $linktime_start = null, $linktime_en
 function home_url()
 {
     $CI =& get_instance();
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
     return ($player_session ? view_memory(42903, 42902) . $player_session['playerhandle'] : view_memory(42903, 14565));
 }
 
@@ -758,7 +758,7 @@ function remove_none_utf8($string)
 }
 
 
-function superpower_unlocked($superpower_playerid = null, $force_redirect = 0, $session_player_session = false)
+function player_session($superpower_playerid = null, $force_redirect = 0, $session_player_session = false)
 {
 
     if (isset($session_player_session['playerid'])) {
@@ -888,7 +888,7 @@ function process_media($ideaid, $uploaded_media)
 {
 
     $CI =& get_instance();
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
 
     //Update Media...
     $media_stats = array(
@@ -1332,7 +1332,7 @@ function validate_update_handle($str, $ideaid = null, $playerid = null)
 {
 
     $CI =& get_instance();
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
 
     //Validate:
     if (($ideaid && $playerid) || (!$ideaid && !$playerid)) {
@@ -1582,7 +1582,7 @@ function dispatch_sms($to_phone, $single_message, $playerid = 0, $x_data = array
     if ($log_tr) {
 
         $target_player = ($sms_success ? 27676 : 27678);
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
         $playerid = ($playerid > 0 ? $playerid : ($player_session ? $player_session['playerid'] : 14068));
         if ($template_ideaid && count($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
@@ -1736,7 +1736,7 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
     //Log Link:
     if ($log_tr) {
 
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
         $playerid = ($playerid > 0 ? $playerid : ($player_session ? $player_session['playerid'] : 14068));
         if ($template_ideaid && count($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
@@ -1784,7 +1784,7 @@ function website_setting($setting_id = 0, $initiator_playerid = 0, $linkplayerdo
     $player_id = 0; //Assume no domain unless found below
 
     if (!$initiator_playerid) {
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
         if ($player_session && $player_session['playerid'] > 0) {
             $initiator_playerid = $player_session['playerid'];
         }
@@ -1853,8 +1853,8 @@ function player_access($playerhandle = null, $playerid = 0, $e = false, $replace
      * */
 
     $CI =& get_instance();
-    $player_session = superpower_unlocked();
-    if (!$replacement_playerid && superpower_unlocked(10939)) {
+    $player_session = player_session();
+    if (!$replacement_playerid && player_session(10939)) {
         return 3;
     } elseif (!$replacement_playerid && $player_session && ($playerhandle == $player_session['playerhandle'] || $playerid == $player_session['playerid'])) {
         return 3;
@@ -1907,14 +1907,14 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
 
     $CI =& get_instance();
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
     $discovery_mode = ($replacement_playerid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlplayers___6287'))) ? true : false));
 
     if ($is_cahce) {
         return 1;
     }
 
-    if (!$discovery_mode && superpower_unlocked(12700)) {
+    if (!$discovery_mode && player_session(12700)) {
         return 3;
     }
 
@@ -2857,7 +2857,7 @@ function view_card($href, $is_current, $linkplayertype, $o__type, $o__title, $li
         (in_array($linkplayertype, $CI->config->item('playerids___32172')) ? '<span class="icon-block-xs">' . $players___4593[$linkplayertype]['m__cover'] . '</span>' : '') .
         (strlen($o__type) ? '<span class="icon-block-xs">' . $o__type . '</span>' : '&nbsp;') . //Type or Cover
         $o__title .
-        (strlen($linktext) && superpower_unlocked(12701) ? '<div class="message2">' . strip_tags($linktext) . '</div>' : '') .
+        (strlen($linktext) && player_session(12701) ? '<div class="message2">' . strip_tags($linktext) . '</div>' : '') .
         '</a>';
 }
 
@@ -2867,7 +2867,7 @@ function view_more($href, $is_current, $linkplayertype, $o__type, $o__title, $li
         ($linkplayertype ? '<span class="icon-block-xs">' . $linkplayertype . '</span>' : '') .
         (strlen($o__type) ? '<span class="icon-block-xs">' . $o__type . '</span>' : '&nbsp;') . //Type or Cover
         $o__title .
-        (strlen($linktext) && superpower_unlocked(12701) ? '<div class="message2">' . strip_tags($linktext) . '</div>' : '') .
+        (strlen($linktext) && player_session(12701) ? '<div class="message2">' . strip_tags($linktext) . '</div>' : '') .
         '</a>';
 }
 
@@ -2888,7 +2888,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
 {
 
     //Log in PHP File:
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
 
     if ($log_error) {
 
@@ -3234,7 +3234,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
             }
         }
 
-        if (!count($already_selected) && $single_select && superpower_unlocked()) {
+        if (!count($already_selected) && $single_select && player_session()) {
             //FIND DEFAULT if set in session of this user:
             $var_id = @$CI->session->userdata('session_custom_ui_' . $focus__id);
             foreach ($selection_ids as $playerid2) {
@@ -3271,7 +3271,7 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
         //Has superpower?
         if (isset($players___42179[$list_item['playerid']]['m__following']) && count($players___42179[$list_item['playerid']]['m__following'])) {
             $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $players___42179[$list_item['playerid']]['m__following']);
-            if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+            if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                 continue;
             }
         }
@@ -3355,7 +3355,7 @@ function searchingle_select_form($cache_playerid, $selected_playerid, $show_drop
             continue; //Locked Dropdown
         }
         $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m['m__following']);
-        if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+        if (count($superpowers_required) && !player_session(end($superpowers_required))) {
             continue;
         }
 
@@ -3375,7 +3375,7 @@ function searchingle_select_instant($cache_playerid, $selected_playerid, $idea_a
 
     $CI =& get_instance();
     $players___this = $CI->config->item('players___' . $cache_playerid);
-    $player_session = superpower_unlocked();
+    $player_session = player_session();
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $unselected_radio = in_array($cache_playerid, $CI->config->item('playerids___33331')) && !$selected_playerid;
     $players___4527 = $CI->config->item('players___4527'); //Memory
@@ -3425,7 +3425,7 @@ function searchingle_select_instant($cache_playerid, $selected_playerid, $idea_a
                 continue; //Locked Dropdown
             }
             $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m['m__following']);
-            if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+            if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                 continue;
             }
 
@@ -3458,11 +3458,11 @@ function randomize_text($playerid)
 function blocked_reasoning($superpower_playerid = 0)
 {
 
-    if (!superpower_unlocked()) {
+    if (!player_session()) {
 
         return 'Sign-in to continue';
 
-    } elseif ($superpower_playerid && !superpower_unlocked($superpower_playerid)) {
+    } elseif ($superpower_playerid && !player_session($superpower_playerid)) {
 
         $CI =& get_instance();
         $players___10957 = $CI->config->item('players___10957');
@@ -3702,7 +3702,7 @@ function ideacache($save_ideaid, $str)
 
         //Save Found references to remove the ones who exist in DB:
         $references_add_to_db = $idea_references;
-        $player_session = superpower_unlocked();
+        $player_session = player_session();
         foreach ($CI->Links->read(array(
             'linkplayertype IN (' . join(',', $CI->config->item('playerids___4736')) . ')' => null, //Idea Message Links 3x
             'linkidearight' => $save_ideaid,
@@ -3759,7 +3759,7 @@ function ideacache($save_ideaid, $str)
                     }
                 } else {
                     $linkplayertype = $db_type; //Message URLs
-                    $player_session = superpower_unlocked();
+                    $player_session = player_session();
                     $linkplayerup = ($player_session ? $player_session['playerid'] : 14068);
                     foreach ($CI->Links->read(array(
                         'linkid' => $save_ideaid,
@@ -3803,8 +3803,8 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
     $CI =& get_instance();
     $coins_count = array();
     $body_content = '';
-    $player_session = superpower_unlocked();
-    $ideation_pen = superpower_unlocked(10939);
+    $player_session = player_session();
+    $ideation_pen = player_session(10939);
     $players___loading_order = $CI->config->item('players___' . ($discovery_mode ? 26005 : 26005));
 
     if ($player_session && !is_array($x_completes)) {
@@ -3826,7 +3826,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
     foreach ($CI->config->item('players___' . ($discovery_mode ? 42877 : 31890)) as $linkplayertype => $m) {
 
         $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m['m__following']);
-        if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+        if (count($superpowers_required) && !player_session(end($superpowers_required))) {
             continue;
         }
         if (in_array($linkplayertype, $CI->config->item('playerids___42376')) && !$player_session) {
@@ -4088,8 +4088,8 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $is_cache = in_array($linkplayertype, $CI->config->item('playerids___14599'));
     $goto_start = in_array($linkplayertype, $CI->config->item('playerids___42988'));
-    $player_session = superpower_unlocked();
-    $superpower_10939 = !$is_cache && superpower_unlocked(10939);
+    $player_session = player_session();
+    $superpower_10939 = !$is_cache && player_session(10939);
     $idea_startable = idea_is_startable($i);
     $linkplayercreator = ($focus_playerid > 0 ? $focus_playerid : ($player_session ? $player_session['playerid'] : 0));
     $link_creator = isset($i['linkplayercreator']) && $i['linkplayercreator'] == $linkplayercreator;
@@ -4108,6 +4108,15 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     if ($target_ideahashtag && $focus_ideahashtag && $focus_ideahashtag == $i['ideahashtag']) {
         $focus_ideahashtag = false;
     }
+
+    //Log Preview:
+    $linkplayercreator_id = ( $linkplayercreator>0 ? $linkplayercreator : 14068 /* GUEST */ );
+    $CI->Links->create(array(
+        'linkplayertype' => 1576044, //Idea Previewed
+        'linkplayercreator' => $linkplayercreator_id,
+        'linkplayerup' => $linkplayercreator_id,
+        'linkidealeft' => $i['ideaid'],
+    ));
 
     if ($linkplayercreator && !is_array($x_completes)) {
         //Fetch discovery
@@ -4263,7 +4272,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
         //See if missing superpower?
         $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m_target_bar['m__following']);
-        if (count($superpowers_required) && (!superpower_unlocked(end($superpowers_required)) || $is_cache)) {
+        if (count($superpowers_required) && (!player_session(end($superpowers_required)) || $is_cache)) {
             continue;
         }
 
@@ -4328,7 +4337,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
                     //Skip if missing superpower:
                     $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m_dropdown['m__following']);
-                    if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+                    if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                         continue;
                     }
 
@@ -4390,7 +4399,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
                         $action_buttons .= '<li><hr class="dropdown-divider"></li>';
                         $action_buttons .= '<a href="javascript:void();" onclick="idea_delete(' . $i['ideaid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($playerid_dropdown == 28637 && isset($i['linkplayertype']) && superpower_unlocked(12700)) {
+                    } elseif ($playerid_dropdown == 28637 && isset($i['linkplayertype']) && player_session(12700)) {
 
                         //Paypal Details
                         $linktext = @unserialize($i['linktext']);
@@ -4792,7 +4801,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
 
         //See if missing superpower?
         $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m_target_bar['m__following']);
-        if (count($superpowers_required) && (!superpower_unlocked(end($superpowers_required)) || $is_cache)) {
+        if (count($superpowers_required) && (!player_session(end($superpowers_required)) || $is_cache)) {
             continue;
         }
 
@@ -4804,7 +4813,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
             $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="idea_editor(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
-        } elseif (0 && $linkplayertype_target_bar == 42819 && !$is_cache && superpower_unlocked(10939) && $idea_access >= 3 && !$is_locked) {
+        } elseif (0 && $linkplayertype_target_bar == 42819 && !$is_cache && player_session(10939) && $idea_access >= 3 && !$is_locked) {
 
             //New Player
             $bottom_menu_ui .= '<span class="mini_button main__title">';
@@ -4849,7 +4858,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
         foreach ($CI->config->item('players___' . ($discovery_mode ? 42877 : 31890)) as $playerid_bottom_bar => $m_bottom_bar) {
 
             $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m_bottom_bar['m__following']);
-            if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+            if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                 continue;
             }
 
@@ -4987,11 +4996,10 @@ function player_view($linkplayertype, $e, $extra_class = null)
         return 'Missing core variables';
     }
 
-
     $linkid = (isset($e['linkid']) ? $e['linkid'] : 0);
     $player_access = player_access($e['playerhandle'], 0, $e);
-    $superpower_10939 = superpower_unlocked(10939);
-    $player_session = superpower_unlocked();
+    $superpower_10939 = player_session(10939);
+    $player_session = player_session();
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $focus__node = in_array($linkplayertype, $CI->config->item('playerids___12149')); //NODE COIN
     $is_app = $linkplayertype == 6287;
@@ -4999,6 +5007,15 @@ function player_view($linkplayertype, $e, $extra_class = null)
     $cover_is_image = filter_var($e['playercover'], FILTER_VALIDATE_URL);
     $has_sortable = $linkid > 0 && $player_access >= 3 && in_array($linkplayertype, $CI->config->item('playerids___13911'));
 
+
+    //Log preview view:
+    $linkplayercreator_id = ( $player_session ? $player_session['playerid'] : 14068 /* GUEST */ );
+    $this->Links->create(array(
+        'linkplayertype' => 1576051, //Player Popover
+        'linkplayerup' => $e['playerid'],
+        'linkplayerdown' => $linkplayercreator_id,
+        'linkplayercreator' => $linkplayercreator_id,
+    ));
 
     //Player UI
     $ui = '<div playerid="' . $e['playerid'] . '" playerhandle="' . $e['playerhandle'] . '" ' . (isset($e['linkid']) ? ' linkid="' . $e['linkid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardplayer_cover no-padding card-12274 s__12274_' . $e['playerid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['linkid']) ? ' cover_x_' . $e['linkid'] . ' ' : '') . '">';
@@ -5138,7 +5155,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
             //See if missing superpower?
             $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m_target_bar['m__following']);
-            if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+            if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                 continue;
             }
 
@@ -5198,7 +5215,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
                         //Skip if missing superpower:
                         $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m_dropdown['m__following']);
-                        if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+                        if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                             continue;
                         }
 
@@ -5295,7 +5312,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
             //Also Append bottom bar / main menu:
             foreach ($CI->config->item('players___31916') as $playerid_bottom_bar => $m_bottom_bar) {
                 $superpowers_required = array_intersect($CI->config->item('playerids___10957'), $m_bottom_bar['m__following']);
-                if (count($superpowers_required) && !superpower_unlocked(end($superpowers_required))) {
+                if (count($superpowers_required) && !player_session(end($superpowers_required))) {
                     continue;
                 }
                 if (in_array($playerid_bottom_bar, $CI->config->item('playerids___42376')) && !$player_session) {

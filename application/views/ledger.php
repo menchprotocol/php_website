@@ -310,7 +310,7 @@ echo '<span class="mini-header">Link MESSAGE SEARCH:</span>';
 echo '<input type="text" name="linktext_find" value="' . ((isset($_GET['linktext_find'])) ? $_GET['linktext_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if (isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 && superpower_unlocked(12701)) {
+if (isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 && player_session(12701)) {
     //Give Option to Replace:
     echo '<td><div>';
     echo '<span class="mini-header">Link MESSAGE REPLACE:</span>';
@@ -403,7 +403,7 @@ echo '</div>';
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
 
-echo '<div class="filter_right grey">'.(superpower_unlocked(12701) ? '<span class="icon-block-xs">' . $players___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $players___11035[12707]['m__title'] . '</a>' : '').'</div>';
+echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="icon-block-xs">' . $players___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $players___11035[12707]['m__title'] . '</a>' : '').'</div>';
 
 echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="font-size: 0.8em;">';
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';

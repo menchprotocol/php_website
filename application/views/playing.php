@@ -24,7 +24,7 @@ echo '<ul class="nav nav-tabs nav12274">';
 foreach($this->config->item('players___31916') as $linkplayertype => $m) {
 
     $superpowers_required = array_intersect($this->config->item('playerids___10957'), $m['m__following']);
-    if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+    if(count($superpowers_required) && !player_session(end($superpowers_required))){
         continue;
     }
 
@@ -32,7 +32,7 @@ foreach($this->config->item('players___31916') as $linkplayertype => $m) {
     if(!$coins_count[$linkplayertype] && in_array($linkplayertype, $this->config->item('playerids___12144'))){ continue; }
 
     $input_content = '';
-    if(superpower_unlocked(10939)){
+    if(player_session(10939)){
 
         if(in_array($linkplayertype, $this->config->item('playerids___11028'))){
 

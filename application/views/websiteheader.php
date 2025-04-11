@@ -1,5 +1,5 @@
 <?php
-$player_session = superpower_unlocked();
+$player_session = player_session();
 $first_segment = $this->uri->segment(1);
 $player_segment = view_valid_handle_player($first_segment);
 $second_segment = $this->uri->segment(2);
@@ -373,7 +373,7 @@ if ($focus_i){
                     foreach($this->config->item('players___'.$menu_type) as $linkplayertype => $m) {
 
                         $superpowers_required = array_intersect($this->config->item('playerids___10957'), $m['m__following']);
-                        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+                        if(count($superpowers_required) && !player_session(end($superpowers_required))){
                             continue;
                         }
 
@@ -438,7 +438,7 @@ if ($focus_i){
 
 
                     //Add Player
-                    if(superpower_unlocked(10939)){
+                    if(player_session(10939)){
                         //echo '<td class="block-x"><a href="javascript:void(0);" onclick="player_editor()" title="'.$players___11035[42819]['m__title'].'">'.$players___11035[42819]['m__cover'].'</a></td>';
                     }
 
@@ -482,7 +482,7 @@ if(strlen($flash_message) > 0) {
 
 
 
-$player_session = superpower_unlocked();
+$player_session = player_session();
 
 if($player_session){
     //For profile editing only:
@@ -506,7 +506,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
     }
 
     //Apply to All Players
-    if(superpower_unlocked(12700)){
+    if(player_session(12700)){
         ?>
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -624,7 +624,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
 
     //Apply to All Ideas
-    if(superpower_unlocked(12700)){
+    if(player_session(12700)){
         ?>
         <div class="modal fade" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
