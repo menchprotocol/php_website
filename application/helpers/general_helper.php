@@ -2885,7 +2885,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
 }
 
 
-function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_icon = true)
+function players_query($linkplayertype, $playerid, $current_page = 0, $append_card_icon = true)
 {
 
     /*
@@ -2971,10 +2971,10 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
 
 
     //Return Results:
-    if ($page_num > 0) {
+    if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        $query = $CI->Links->read($query_filters, $joins_objects, $limit, ($page_num - 1) * $limit, $order_columns);
+        $query = $CI->Links->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
         return $query;
 
     } else {
@@ -3019,7 +3019,7 @@ function players_query($linkplayertype, $playerid, $page_num = 0, $append_card_i
 }
 
 
-function ideas_query($linkplayertype, $ideaid, $page_num = 0, $append_card_icon = true, $headline_authors = array())
+function ideas_query($linkplayertype, $ideaid, $current_page = 0, $append_card_icon = true, $headline_authors = array())
 {
 
     /*
@@ -3084,10 +3084,10 @@ function ideas_query($linkplayertype, $ideaid, $page_num = 0, $append_card_icon 
 
 
     //Return Results:
-    if ($page_num > 0) {
+    if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        return $CI->Links->read($query_filters, $joins_objects, $limit, ($page_num - 1) * $limit, $order_columns);
+        return $CI->Links->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
 
     } else {
 

@@ -3415,9 +3415,9 @@ class Controller extends CI_Controller
 
         $query_filters = unserialize($_POST['x_filters']);
         $joined_by = unserialize($_POST['x_joined_by']);
-        $page_num = (isset($_POST['page_num']) && intval($_POST['page_num']) >= 2 ? intval($_POST['page_num']) : 1);
-        $next_page = ($page_num + 1);
-        $query_offset = (($page_num - 1) * view_memory(6404, 11064));
+        $current_page = (isset($_POST['current_page']) && intval($_POST['current_page']) >= 2 ? intval($_POST['current_page']) : 1);
+        $next_page = ($current_page + 1);
+        $query_offset = (($current_page - 1) * view_memory(6404, 11064));
         $player_session = superpower_unlocked(null, 0, $this->player_session);
 
         $message = '';

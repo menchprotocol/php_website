@@ -195,7 +195,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         }
 
         //Show spinner:
-        $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_randomize_text(12694) +  '</div>').hide().fadeIn();
+        $('#x_page_'+current_page).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_randomize_text(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
         $.post("/controller/link_load", {
@@ -203,17 +203,17 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
             x_joined_by: x_joined_by,
             linktext_find:linktext_find,
             linktext_replace:linktext_replace,
-            page_num: page_num,
+            current_page: current_page,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             loading_new_page = false;
             if (!data.status) {
                 //Show Error:
-                $('#x_page_'+page_num).html(data.message);
+                $('#x_page_'+current_page).html(data.message);
             } else {
                 //Load Report:
                 has_more_links = data.has_more_links;
-                $('#x_page_'+page_num).html(data.message);
+                $('#x_page_'+current_page).html(data.message);
                 setup_popover();
             }
         });
