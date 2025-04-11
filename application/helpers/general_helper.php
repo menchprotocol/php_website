@@ -2690,7 +2690,7 @@ function link_view($x)
             }
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover"><span class="icon-block-xs">'.$groupm['m__cover'].'</span>#' . $focus_i['ideahashtag'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover"><span class="icon-block-xs">'.$found_group['m__cover'].'</span>#' . $focus_i['ideahashtag'] . '</a>';
                 }
             }
             $ui .= '</div>';
