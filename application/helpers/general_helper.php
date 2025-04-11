@@ -3098,7 +3098,7 @@ function ideas_query($linkplayertype, $ideaid, $current_page = 0, $append_card_i
     if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        return $CI->Links->read($query_filters, $joins_objects, $limit, ($page_num - 1) * $limit, $order_columns);
+        return $CI->Links->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
 
     } else {
 
