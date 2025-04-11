@@ -178,7 +178,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     var linktext_replace = '<?= ( isset($_GET['linktext_replace']) && strlen($_GET['linktext_replace']) > 0 ? $_GET['linktext_replace'] : '' ) ?>';
     var has_more_links = 1; //We always assume this?
     var loading_new_page = false;
-
+    var current_page = 1;
 
     function link_load(x_filters, x_joined_by, page_num){
 
@@ -215,22 +215,20 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
     $(document).ready(function () {
 
-        load_page = 1;
-
         //Load first page of Links:
-        link_load(x_filters, x_joined_by, load_page);
+        link_load(x_filters, x_joined_by, current_page);
 
         $(function () {
             var $win = $(window);
             $win.scroll(function () {
                 //Download loading from bottom:
                 if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                    load_page++;
+                    current_page++;
                     if(has_more_links){
-                        console.log('Now loading page '+load_page);
-                        link_load(x_filters, x_joined_by, load_page);
+                        console.log('Now loading page '+current_page);
+                        link_load(x_filters, x_joined_by, current_page);
                     } else {
-                        console.log('No more pages to load: '+load_page);
+                        console.log('No more pages to load: '+current_page);
                     }
                 }
             });
