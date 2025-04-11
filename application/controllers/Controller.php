@@ -3414,6 +3414,10 @@ class Controller extends CI_Controller
          *
          * */
 
+        if(!isset($_POST['x_filters'])){
+            return false;
+        }
+
         $query_filters = unserialize($_POST['x_filters']);
         $joined_by = unserialize($_POST['x_joined_by']);
         $current_page = (isset($_POST['current_page']) && intval($_POST['current_page']) >= 2 ? intval($_POST['current_page']) : 1);

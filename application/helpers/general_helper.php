@@ -2692,10 +2692,10 @@ function link_view($x)
             //Link
 
             //Determine link group:
-            $players___28956 = $CI->config->item('players___28956'); //Nodes
             $playerhandle_sign = '';
-            if(array_key_exists($x['linkplayertype'], $players___28956)){
-                $playerhandle_sign = '<span class="group_sign" title="'.$players___28956[$x['linkplayertype']]['m__title'].'">'.$players___28956[$x['linkplayertype']]['m__cover'].'</span>';
+            if(in_array($x['linkplayertype'], array(4250,4251))){
+                $players___4593 = $CI->config->item('players___4593'); //Link Type
+                $playerhandle_sign = '<span class="group_sign" title="'.$players___4593[$x['linkplayertype']]['m__title'].'">'.$players___4593[$x['linkplayertype']]['m__cover'].'</span>';
             } else {
                 foreach($CI->config->item('players___31770') as $groupid => $groupm) {
                     if(in_array($x['linkplayertype'], $CI->config->item('playerids___'.$groupid))){
