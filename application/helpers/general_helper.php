@@ -2692,7 +2692,7 @@ function link_view($x)
             //Link
 
             //Determine link group:
-            $players___28956 = $this->config->item('players___28956'); //Nodes
+            $players___28956 = $CI->config->item('players___28956'); //Nodes
             $playerhandle_sign = '';
             if(array_key_exists($x['linkplayertype'], $players___28956)){
                 $playerhandle_sign = '<span class="group_sign" title="'.$players___28956[$x['linkplayertype']]['m__title'].'">'.$players___28956[$x['linkplayertype']]['m__cover'].'</span>';
