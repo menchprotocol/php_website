@@ -410,7 +410,7 @@ echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
     if(in_array($linkplayertype, $this->config->item('playerids___6160'))){
         //Player Cover:
-        echo '<th class="main__title"><a href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $m['m__cover'] . '</a></th>';
+        echo '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
         echo '<th class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
