@@ -120,6 +120,10 @@ if(isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0){
     $query_filters['LOWER(linktext) LIKE'] = '%'.$_GET['linktext_find'].'%';
 }
 
+if(isset($_GET['linkvoid']) && is_numeric($_GET['linkvoid'])){
+    $query_filters['linkvoid'] = $_GET['linkvoid'];
+}
+
 
 if(isset($_GET['start_range']) && string_is_date($_GET['start_range'])){
     $query_filters['linktime >='] = $_GET['start_range'].( strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '' );
