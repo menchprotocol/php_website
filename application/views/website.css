@@ -1547,7 +1547,13 @@ label {
     border-bottom:1px dotted #999;
     margin-bottom: 4px;
 }
-
+.filter_right{
+    float: right;
+    display: block;
+    width: 200px;
+    text-align: right;
+    margin-top: -25px;
+}
 .app__4341 .container_content .line {
     color: #000000 !important;
 }
