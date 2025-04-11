@@ -175,6 +175,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 <script>
 
+    var $win = $(window);
     var x_filters = '<?= serialize(count($query_filters) > 0 ? $query_filters : array()) ?>';
     var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
     var linktext_find = '<?= (isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 ? $_GET['linktext_find'] : '') ?>';
@@ -237,7 +238,6 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         link_load();
 
         $(function () {
-            var $win = $(window);
             $win.scroll(function () {
                 load_at_bottom();
             });
