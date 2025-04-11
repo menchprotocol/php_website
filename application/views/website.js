@@ -1483,7 +1483,7 @@ function idea_editor(ideaid = 0, linkid = 0, linkplayertype = 0, next_ideaid = 0
 
         //Editig an existing idea:
         $('#modal31911 .save_ideaid').val(ideaid);
-        $('#modal31911 .hash_group').removeClass('hidden');
+        //$('#modal31911 .hash_group').removeClass('hidden');
         $('#modal31911 .save_ideahashtag').val($('.ui_ideahashtag_' + ideaid + ':first').text());
         $('#modal31911 .save_ideatext').val($('.ui_ideatext_' + ideaid + ':first').text());
 
@@ -1500,7 +1500,7 @@ function idea_editor(ideaid = 0, linkid = 0, linkplayertype = 0, next_ideaid = 0
         var current_ideatype = 6677;
 
         //Hide hashtag:
-        $('#modal31911 .hash_group').addClass('hidden');
+        //$('#modal31911 .hash_group').addClass('hidden');
 
         //See where we are at and append anything needed to the idea:
         var insert_message = '';
