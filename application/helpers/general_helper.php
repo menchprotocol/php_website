@@ -2675,7 +2675,7 @@ function link_view($x)
             //IDEA
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title"><span class="icon-block">' . view_cache(4737 /* Player Reference */, $focus_i['ideatype'], true, 'right', $focus_i['ideaid']) . '</span>' . view_idea_title($focus_i) . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="main__title">#' . $focus_i['ideahashtag'] . '</a>';
                 }
             }
 
@@ -2684,8 +2684,6 @@ function link_view($x)
             //Link Reference:
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . '" class="mono-space">' . $x[$m['m__handle']] . '</a>';
-            } else {
-                $ui .= $x[$m['m__handle']];
             }
 
         } elseif ($playerid == 4362) {
