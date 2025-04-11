@@ -2708,7 +2708,7 @@ function link_view($x)
             //Void:
             $ui .= '<td style="width:65px !important;">';
             if($x[$m['m__handle']]>0){
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' .$x[$m['m__handle']] . '</a>';
             }
             $ui .= '</td>';
 
