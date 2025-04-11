@@ -3421,6 +3421,7 @@ class Controller extends CI_Controller
         $player_session = superpower_unlocked(null, 0, $this->player_session);
 
         $message = '';
+        $overall_stats = '';
 
         //Fetch Links and total Link counts:
         $x = $this->Links->read($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
@@ -3432,42 +3433,27 @@ class Controller extends CI_Controller
         //Display filter:
         if ($total_items_loaded > 0 && $current_page==1) {
             //Subsequent messages:
-            $message .= '<div class="main__title x-info grey">' . ($x_count[0]['total_count'] > $total_items_loaded ? ($has_more_links && $query_offset == 0 ? 'FIRST ' : ($query_offset + 1) . ' - ') . ($total_items_loaded >= ($query_offset + 1) ? $total_items_loaded . ' OF ' : '') : '') . number_format($x_count[0]['total_count'], 0) . ' LINKS:</div>';
+            $overall_stats = '<tr class="main__title x-info grey"><td colspan="100%">' . ($x_count[0]['total_count'] > $total_items_loaded ? ($has_more_links && $query_offset == 0 ? 'FIRST ' : ($query_offset + 1) . ' - ') . ($total_items_loaded >= ($query_offset + 1) ? $total_items_loaded . ' OF ' : '') : '') . number_format($x_count[0]['total_count'], 0) . ' LINKS:</td></tr>';
         }
 
 
         if (count($x) > 0) {
 
-            $message .= '<div class="list-group list-grey">';
             foreach ($x as $x) {
-
                 $message .= link_view($x);
-
-                if ($player_session && strlen($x['linktext']) > 0 && strlen($_POST['linktext_find']) > 0 && strlen($_POST['linktext_replace']) > 0 && substr_count($x['linktext'], $_POST['linktext_find']) > 0) {
-
-                    $new_content = str_replace($_POST['linktext_find'], trim($_POST['linktext_replace']), $x['linktext']);
-
-                    $this->Links->update($x['linkid'], array(
-                        'linktext' => $new_content,
-                        'linkplayercreator' => $player_session['playerid'],
-                    ));
-
-                    $message .= '<div class="alert alert-info" role="alert"><i class="far fa-check-circle"></i> Replaced [' . $_POST['linktext_find'] . '] with [' . trim($_POST['linktext_replace']) . ']</div>';
-
-                }
-
             }
-            $message .= '</div>';
 
             //Do we have more to show?
             if (!$has_more_links) {
-                $message .= '<div style="padding:21px 0 89px 0; border-top:1px solid #999999;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Links have been loaded</div>';
+                $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Links have been loaded</div></td></tr>';
+
+
             }
 
         } else {
 
             //Show no Link warning:
-            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Links found with the selected filters. Modify filters and try again.</div></td></tr>';
 
         }
 
@@ -3475,6 +3461,8 @@ class Controller extends CI_Controller
             'status' => 1,
             'message' => $message,
             'has_more_links' => $has_more_links,
+            'overall_stats' => $overall_stats,
+
         ));
 
 

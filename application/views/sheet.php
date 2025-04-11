@@ -273,7 +273,6 @@ if ((count($idea_settings['player_column']) + count($idea_settings['idea_column'
             width: 8px;
         }
 
-
     </style>
     <script>
 
