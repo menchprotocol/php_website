@@ -40,16 +40,18 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
     foreach ($this->config->item('players___' . $playerid1) as $playerid2 => $m2) {
 
+        $is_link = $playerid2 != 12273 && $playerid2 != 12274;
+
         echo '<div class="card_cover no-padding col-6">';
         echo '<div class="card_frame dropdown_d' . $playerid1 . ' dropdown_' . $playerid2 . '">';
 
         echo '<div class="card_header" title="' . $m2['m__message'] . '" playerid="' . $playerid2 . '">';
         echo '<div class="large_cover">' . $m2['m__cover'] . '</div>';
-        echo '<div class="main__title large_title"><a href="'.view_app_link(4341).'?linkplayertype=&linkvoid=0" class="card_count_' . $playerid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
+        echo '<div class="main__title large_title"><a href="'.view_app_link(4341).'?linkplayertype='.join(',',( $is_link ? $this->config->item('players___' . $player_pinned) : array(( $playerid2==12273 ? 4250 : 4251 )) )).'&linkvoid=0" class="card_count_' . $playerid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
         echo '<div class="main__title large_title" title="@' . $playerid2 . ' @' . $m2['m__handle'] . '">' . $m2['m__title'] . '</div>';
         echo '</div>';
 
-        if ($playerid2 != 12273 && $playerid2 != 12274) {
+        if ($is_link) {
             echo '<table class="table card_subcat card_subcat_' . $playerid2 . ' hidden" style="width:100%; margin-top:13px;">'; //table-striped
             $focus_link_group = 0;
             $player_pinned = player_pinned($playerid2, true);
