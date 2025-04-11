@@ -408,7 +408,13 @@ echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="ic
 echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="font-size: 0.8em;">';
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
-    echo '<th class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+    if(in_array($linkplayertype, $this->config->item('playerids___6160'))){
+        //Player Cover:
+        echo '<th class="main__title"><a href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $m['m__cover'] . '</a></th>';
+    } else {
+        //Else:
+        echo '<th class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+    }
 }
 echo '</tr>';
 echo '</table>';
