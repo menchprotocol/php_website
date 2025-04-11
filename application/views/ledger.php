@@ -402,7 +402,7 @@ echo '</div>';
 
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
-echo '<table id="table_menchledger" class="table table-sm table-striped image-mini">';
+echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="table-layout: fixed">';
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
     echo '<th><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . '</th>';
