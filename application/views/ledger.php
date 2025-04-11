@@ -177,19 +177,16 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     var linktext_find = '<?= ( isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 ? $_GET['linktext_find'] : '' ) ?>';
     var linktext_replace = '<?= ( isset($_GET['linktext_replace']) && strlen($_GET['linktext_replace']) > 0 ? $_GET['linktext_replace'] : '' ) ?>';
     var has_more_links = 1; //We always assume this?
-    var loading_new_page = false;
+    var loading_in_progress = false;
     var current_page = 0;
 
     function link_load(){
 
-        if(!has_more_links){
-            console.log('No more pages to load');
-            return false;
-        } else if(loading_new_page){
+        if(!has_more_links || loading_in_progress){
             return false;
         }
 
-        loading_new_page = true;
+        loading_in_progress = true;
         current_page++;
         console.log('Now loading page '+current_page);
 
@@ -205,7 +202,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
             current_page: current_page,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
-            loading_new_page = false;
+            loading_in_progress = false;
             if (!data.status) {
                 //Show Error:
                 $('#x_page_'+current_page).html(data.message);
