@@ -2663,8 +2663,8 @@ function link_view($x)
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
-            $ui .= '<td style="width:100px !important;">';
-            $ui .= '<div style="width:100px !important; overflow:hidden;">';
+            $ui .= '<td style="width:89px !important;">';
+            $ui .= '<div style="width:89px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
                     $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '">@' . $focus_e['playerhandle'] . '</a>';
