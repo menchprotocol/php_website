@@ -2701,7 +2701,7 @@ function link_view($x)
         } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<td width="89px">';
+            $ui .= '<td width="55px">';
             if($x['linknumber']>0){
                 $ui .= $x['linknumber'];
             }
