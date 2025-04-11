@@ -4,6 +4,10 @@
         max-width: calc(100% - 16px) !important;
     }
 
+    td{
+        overflow: hidden;
+    }
+
     .maxwidth {
         max-width: 1200px !important;
     }
