@@ -2663,7 +2663,7 @@ function link_view($x)
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
-            $ui .= '<td style="width:55px !important;">';
+            $ui .= '<td style="width:55px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
                     $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '">@' . $focus_e['playerhandle'] . '</a>';
@@ -2674,7 +2674,7 @@ function link_view($x)
         } elseif (in_array(6202, $m['m__following'])) {
 
             //IDEA
-            $ui .= '<td style="width:55px !important;">';
+            $ui .= '<td style="width:55px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
                     $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '">#' . $focus_i['ideahashtag'] . '</a>';
@@ -2685,7 +2685,7 @@ function link_view($x)
         } elseif (in_array(4367, $m['m__following'])) {
 
             //Link:
-            $ui .= '<td style="width:55px !important;">';
+            $ui .= '<td style="width:55px !important; overflow:hidden;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $x[$m['m__handle']] . '</a>';
             }
@@ -2694,14 +2694,14 @@ function link_view($x)
         } elseif ($playerid == 4362) {
 
             //TIME
-            $ui .= '<td style="width:89px !important;">';
+            $ui .= '<td style="width:89px !important; overflow:hidden;">';
             $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ': ' . $x['linktime'] . ' PST | ID ' . $x['linkid'] . '">' . view_time_difference($x['linktime']) . '</span>';
             $ui .= '</td>';
 
         } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<td style="width:65px !important;">';
+            $ui .= '<td style="width:65px !important; overflow:hidden;">';
             if($x['linknumber']>0){
                 $ui .= $x['linknumber'];
             }
