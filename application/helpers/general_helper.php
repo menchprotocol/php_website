@@ -2677,7 +2677,7 @@ function link_view($x)
             }
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="popover"><span class="icon-block-xs">'.$found_group.'</span>@' . $focus_e['playerhandle'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="popover">'.$found_group.'@' . $focus_e['playerhandle'] . '</a>';
                 }
             }
             $ui .= '</div>';
