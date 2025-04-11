@@ -2670,7 +2670,7 @@ function link_view($x)
                 //Determine the link group:
                 foreach($CI->config->item('players___31770') as $groupid => $groupm) {
                     if(in_array($x[$m['m__handle']], $CI->config->item('playerids___'.$groupid))){
-                        $playerhandle_sign = '<span style="width:30px; display: inline-block; text-align: center;">'.$groupm['m__cover'].'</span>';
+                        $playerhandle_sign = '<span style="width:16px; display: inline-block; text-align: center;">'.$groupm['m__cover'].'</span>';
                         break;
                     }
                 }
