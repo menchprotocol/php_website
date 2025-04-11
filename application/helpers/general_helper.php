@@ -2678,9 +2678,19 @@ function link_view($x)
             //IDEA
             $ui .= '<td style="width:100px !important;">';
             $ui .= '<div style="width:100px !important; overflow:hidden;">';
+            $found_group = null;
+            if($playerid==4593){
+                //Determine the link group:
+                foreach($this->config->item('players___14599') as $groupid => $groupm) {
+                    if(in_array(6202, $m['m__following'])){
+                        $found_group = $groupm;
+                        break;
+                    }
+                }
+            }
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover">#' . $focus_i['ideahashtag'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover"><span class="icon-block-xs">'.$groupm['m__cover'].'</span>#' . $focus_i['ideahashtag'] . '</a>';
                 }
             }
             $ui .= '</div>';
