@@ -2689,7 +2689,7 @@ function link_view($x)
         } elseif (in_array(4367, $m['m__following'])) {
 
             //Link:
-            $ui .= '<td style="width:89px !important;">';
+            $ui .= '<td style="width:55px !important;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $x[$m['m__handle']] . '</a>';
             }
