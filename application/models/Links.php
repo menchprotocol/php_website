@@ -178,6 +178,10 @@ class Links extends CIdea_cache
     function read($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('linkid' => 'DESC'), $select = '*', $group_by = null, $access_limit = true)
     {
 
+        if(!is_array($joins_objects)){
+            $joins_objects = array();
+        }
+
         $this->db->select($select);
         $this->db->from('menchledger');
 
