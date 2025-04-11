@@ -121,7 +121,11 @@ if(isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0){
 }
 
 if(isset($_GET['linkvoid']) && is_numeric($_GET['linkvoid'])){
-    $query_filters['linkvoid'] = $_GET['linkvoid'];
+    if($_GET['linkvoid']==1){
+        $query_filters['linkvoid >'] = 0;
+    } else {
+        $query_filters['linkvoid'] = $_GET['linkvoid'];
+    }
 }
 
 
