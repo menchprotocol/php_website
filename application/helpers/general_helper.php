@@ -458,32 +458,33 @@ function view_tree($i)
 
     //Idea Filters:
     $filters_ui = '';
-
-    //Idea<>Player Settings:
-    $current_playerid = 0;
-    foreach ($CI->config->item('players___43006') as $playerid => $m) {
-        foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_player) {
-            if (!$current_playerid) {
-                $current_playerid = $playerid;
+    if(isset($i['idea_list_config'])){
+        //Idea<>Player Settings:
+        $current_playerid = 0;
+        foreach ($CI->config->item('players___43006') as $playerid => $m) {
+            foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_player) {
+                if (!$current_playerid) {
+                    $current_playerid = $playerid;
+                }
+                if (strlen($filters_ui) && $current_playerid != $playerid) {
+                    $current_playerid = $playerid;
+                    $filters_ui .= '<div class="and_filter">-AND-</div>';
+                }
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_player['playerhandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_player['playercover']) . '</span>' . $filtered_player['playertext'] . '</a></div>';
             }
-            if (strlen($filters_ui) && $current_playerid != $playerid) {
-                $current_playerid = $playerid;
-                $filters_ui .= '<div class="and_filter">-AND-</div>';
-            }
-            $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_player['playerhandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_player['playercover']) . '</span>' . $filtered_player['playertext'] . '</a></div>';
         }
-    }
-    //Idea<>Idea Settings:
-    foreach ($CI->config->item('players___40792') as $playerid => $m) {
-        foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_idea) {
-            if (!$current_playerid) {
-                $current_playerid = $playerid;
+        //Idea<>Idea Settings:
+        foreach ($CI->config->item('players___40792') as $playerid => $m) {
+            foreach ($i['idea_list_config']['full_config_' . $playerid] as $filtered_idea) {
+                if (!$current_playerid) {
+                    $current_playerid = $playerid;
+                }
+                if (strlen($filters_ui) && $current_playerid != $playerid) {
+                    $current_playerid = $playerid;
+                    $filters_ui .= '<div class="and_filter">-AND-</div>';
+                }
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_idea['ideahashtag'] . '">' . view_idea_title($filtered_idea) . '</a></div>';
             }
-            if (strlen($filters_ui) && $current_playerid != $playerid) {
-                $current_playerid = $playerid;
-                $filters_ui .= '<div class="and_filter">-AND-</div>';
-            }
-            $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_idea['ideahashtag'] . '">' . view_idea_title($filtered_idea) . '</a></div>';
         }
     }
     if ($filters_ui) {
