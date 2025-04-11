@@ -2665,19 +2665,9 @@ function link_view($x)
             //SOURCE
             $ui .= '<td style="width:100px !important;">';
             $ui .= '<div style="width:100px !important; overflow:hidden;">';
-            $playerhandle_sign = '@';
-            if($playerid==4593){
-                //Determine the link group:
-                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
-                    if(in_array($x[$m['m__handle']], $CI->config->item('playerids___'.$groupid))){
-                        $playerhandle_sign = '<span style="width:16px; display: inline-block; text-align: center;">'.$groupm['m__cover'].'</span>';
-                        break;
-                    }
-                }
-            }
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="popover">'.$playerhandle_sign . $focus_e['playerhandle'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="popover">@' . $focus_e['playerhandle'] . '</a>';
                 }
             }
             $ui .= '</div>';
@@ -2700,8 +2690,18 @@ function link_view($x)
 
             //Link:
             $ui .= '<td style="width:65px !important;">';
+            $playerhandle_sign = '';
+            if($playerid==4367){
+                //Determine the link group:
+                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
+                    if(in_array($x['linkplayertype'], $CI->config->item('playerids___'.$groupid))){
+                        $playerhandle_sign = '<span style="width:15px; display: inline-block; text-align: center;">'.$groupm['m__cover'].'</span>';
+                        break;
+                    }
+                }
+            }
             if($x[$m['m__handle']]>0){
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $x[$m['m__handle']] . '</a>';
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
             }
             $ui .= '</td>';
 
