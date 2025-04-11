@@ -3460,16 +3460,14 @@ class Controller extends CI_Controller
             $message .= '</div>';
 
             //Do we have more to show?
-            if ($has_more_links) {
-                $message .= '<div id="x_page_' . $next_page . '"></div>';
-            } else {
+            if (!$has_more_links) {
                 $message .= '<div style="padding:21px 0 89px 0; border-top:1px solid #999999;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Links have been loaded</div>';
             }
 
         } else {
 
             //Show no Link warning:
-            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Links found with the selected filters. Modify filters and try again.</div>';
 
         }
 

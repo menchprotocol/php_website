@@ -1,3 +1,7 @@
+<style>
+    .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; }
+    .maxwidth { max-width: 1200px !important; }
+</style>
 <?php
 
 //Construct filters based on GET variables:
@@ -191,7 +195,8 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         console.log('Now loading page '+current_page);
 
         //Show spinner:
-        $('#x_page_'+current_page).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_randomize_text(12694) +  '</div>').hide().fadeIn();
+        $('.load_message').removeClass('hidden');
+        $('.random_message').text(js_randomize_text(12694));
 
         //Load report based on input fields:
         $.post("/controller/link_load", {
@@ -203,13 +208,14 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             loading_in_progress = false;
+            $('.load_message').addClass('hidden');
             if (!data.status) {
                 //Show Error:
-                $('#x_page_'+current_page).html(data.message);
+                alert(data.message);
             } else {
                 //Load Report:
+                $('#table_menchledger').append(data.message);
                 has_more_links = data.has_more_links;
-                $('#x_page_'+current_page).html(data.message);
                 setup_popover();
             }
         });
@@ -416,6 +422,12 @@ if($has_filters){
 echo '</form>';
 echo '</div>';
 
-
 //AJAX Would load content here:
-echo '<div id="x_page_1"></div>';
+echo '<table id="table_menchledger" class="table table-sm table-striped image-mini">';
+echo '<tr style="font-weight:bold; vertical-align: baseline;">';
+foreach($this->config->item('players___4341') as $linkplayertype => $m) {
+    echo '<th><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</th>';
+}
+echo '</tr>';
+echo '</table>';
+echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';
