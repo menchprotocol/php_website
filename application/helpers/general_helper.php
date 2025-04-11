@@ -2669,7 +2669,7 @@ function link_view($x)
                     $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '">@' . $focus_e['playerhandle'] . '</a>';
                 }
             }
-            $ui .= '<td>';
+            $ui .= '</td>';
 
         } elseif (in_array(6202, $m['m__following'])) {
 
