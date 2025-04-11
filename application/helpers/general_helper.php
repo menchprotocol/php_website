@@ -2665,9 +2665,19 @@ function link_view($x)
             //SOURCE
             $ui .= '<td style="width:100px !important;">';
             $ui .= '<div style="width:100px !important; overflow:hidden;">';
+            $found_group = null;
+            if($playerid==4593){
+                //Determine the link group:
+                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
+                    if(in_array($x[$m['m__handle']], $CI->config->item('playerids___'.$groupid))){
+                        $found_group = $groupm['m__cover'];
+                        break;
+                    }
+                }
+            }
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="popover">@' . $focus_e['playerhandle'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" data-toggle="popover"><span class="icon-block-xs">'.$found_group.'</span>@' . $focus_e['playerhandle'] . '</a>';
                 }
             }
             $ui .= '</div>';
@@ -2678,19 +2688,9 @@ function link_view($x)
             //IDEA
             $ui .= '<td style="width:100px !important;">';
             $ui .= '<div style="width:100px !important; overflow:hidden;">';
-            $found_group = null;
-            if($playerid==4593){
-                //Determine the link group:
-                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
-                    if(in_array($x[$m['m__handle']], $CI->config->item('playerids___'.$groupid))){
-                        $found_group = $groupm;
-                        break;
-                    }
-                }
-            }
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover"><span class="icon-block-xs">'.$found_group['m__cover'].'</span>#' . $focus_i['ideahashtag'] . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover">#' . $focus_i['ideahashtag'] . '</a>';
                 }
             }
             $ui .= '</div>';
