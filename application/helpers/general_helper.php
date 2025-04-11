@@ -5010,7 +5010,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
     //Log preview view:
     $linkplayercreator_id = ( $player_session ? $player_session['playerid'] : 14068 /* GUEST */ );
-    $this->Links->create(array(
+    $CI->Links->create(array(
         'linkplayertype' => 1576051, //Player Popover
         'linkplayerup' => $e['playerid'],
         'linkplayerdown' => $linkplayercreator_id,
