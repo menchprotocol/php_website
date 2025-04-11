@@ -214,7 +214,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
                 alert(data.message);
             } else {
                 //Load Report:
-                $('#table_menchledger').append(data.message);
+                $('#table_menchledger tr:last').after(data.message);
                 has_more_links = data.has_more_links;
                 setup_popover();
             }
