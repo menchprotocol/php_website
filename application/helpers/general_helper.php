@@ -2698,9 +2698,11 @@ function link_view($x)
             }
 
             $ui .= '<td style="width:80px !important;">';
+            $ui .= '<div style="width:80px !important; overflow:hidden;">';
             if($x[$m['m__handle']]>0){
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
             }
+            $ui .= '</div>';
             $ui .= '</td>';
 
         } elseif ($playerid==44395) {
