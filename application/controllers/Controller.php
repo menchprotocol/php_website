@@ -3426,13 +3426,13 @@ class Controller extends CI_Controller
         $x = $this->Links->read($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
         $x_count = $this->Links->read($query_filters, $joined_by, 0, 0, array(), 'COUNT(linkid) as total_count');
         $total_items_loaded = ($query_offset + count($x));
-        $has_more_x = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
+        $has_more_links = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 
 
         //Display filter:
         if ($total_items_loaded > 0) {
             //Subsequent messages:
-            $message .= '<div class="main__title x-info grey">' . ($x_count[0]['total_count'] > $total_items_loaded ? ($has_more_x && $query_offset == 0 ? 'FIRST ' : ($query_offset + 1) . ' - ') . ($total_items_loaded >= ($query_offset + 1) ? $total_items_loaded . ' OF ' : '') : '') . number_format($x_count[0]['total_count'], 0) . ' LinkS:</div>';
+            $message .= '<div class="main__title x-info grey">' . ($x_count[0]['total_count'] > $total_items_loaded ? ($has_more_links && $query_offset == 0 ? 'FIRST ' : ($query_offset + 1) . ' - ') . ($total_items_loaded >= ($query_offset + 1) ? $total_items_loaded . ' OF ' : '') : '') . number_format($x_count[0]['total_count'], 0) . ' LINKS:</div>';
         }
 
 
@@ -3460,10 +3460,7 @@ class Controller extends CI_Controller
             $message .= '</div>';
 
             //Do we have more to show?
-            if ($has_more_x) {
-                $message .= '<div id="x_page_' . $next_page . '"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn" onclick="link_load(x_filters, x_joined_by, ' . $next_page . ');"><span class="icon-block"><i class="far fa-search-plus"></i></span>Page ' . $next_page . '</a></div>';
-                $message .= '';
-            } else {
+            if (!$has_more_links) {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Links have been loaded</div>';
 
             }
@@ -3475,10 +3472,10 @@ class Controller extends CI_Controller
 
         }
 
-
         return view_json(array(
             'status' => 1,
             'message' => $message,
+            'has_more_links' => $has_more_links,
         ));
 
 

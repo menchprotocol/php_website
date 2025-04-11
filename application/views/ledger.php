@@ -176,13 +176,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
     var linktext_find = '<?= ( isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 ? $_GET['linktext_find'] : '' ) ?>';
     var linktext_replace = '<?= ( isset($_GET['linktext_replace']) && strlen($_GET['linktext_replace']) > 0 ? $_GET['linktext_replace'] : '' ) ?>';
-
-    $(document).ready(function () {
-
-        //Load first page of Links:
-        link_load(x_filters, x_joined_by, 1);
-
-    });
+    var has_more_links = 1; //We always assume this?
 
 
     function link_load(x_filters, x_joined_by, page_num){
@@ -204,12 +198,39 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
                 $('#x_page_'+page_num).html(data.message);
             } else {
                 //Load Report:
+                has_more_links = data.has_more_links;
                 $('#x_page_'+page_num).html(data.message);
                 setup_popover();
             }
         });
 
     }
+
+    $(document).ready(function () {
+
+        load_page = 1;
+
+        //Load first page of Links:
+        link_load(x_filters, x_joined_by, load_page);
+
+        $(function () {
+            var $win = $(window);
+            $win.scroll(function () {
+                //Download loading from bottom:
+                if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
+                    load_page++;
+                    if(has_more_links){
+                        consloe.log('Now loading page '+load_page);
+                        link_load(x_filters, x_joined_by, load_page);
+                    } else {
+                        consloe.log('No more pages to load: '+load_page);
+                    }
+                }
+            });
+        });
+
+    });
+
 
 </script>
 
