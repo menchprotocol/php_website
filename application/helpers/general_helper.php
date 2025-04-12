@@ -769,7 +769,7 @@ function player_session($superpower_playerid = null, $force_redirect = 0, $sessi
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
     $player_session = $CI->session->userdata('session_up');
-    $has_session = (is_array($player_session) && count($player_session) > 0 && $player_session);
+    $has_session = (is_array($player_session) && player_session && $player_session);
 
     //Let's start checking various ways we can give member access:
     if ($has_session && !$superpower_playerid) {
@@ -2903,7 +2903,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
         $CI =& get_instance();
         log_message('error', 'MENCH ERROR: ' . $error_message
             . ($player_session ? ' | PLAYER: ' . print_r($player_session, true) : '')
-            . (count($player_session) ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
+            . (player_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
         $CI->Links->create(array_merge($error_data, array(
