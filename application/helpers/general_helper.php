@@ -769,15 +769,14 @@ function player_session($superpower_playerid = null, $force_redirect = 0, $sessi
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
     $player_session = $CI->session->userdata('session_up');
-    $has_session = (is_array($player_session) && player_session && $player_session);
 
     //Let's start checking various ways we can give member access:
-    if ($has_session && !$superpower_playerid) {
+    if ($player_session && !$superpower_playerid) {
 
         //No minimum level required, grant access IF member is logged in:
         return $player_session;
 
-    } elseif ($has_session && in_array($superpower_playerid, $CI->session->userdata('session_superpowers_unlocked'))) {
+    } elseif ($player_session && in_array($superpower_playerid, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
         return $player_session;
@@ -793,7 +792,7 @@ function player_session($superpower_playerid = null, $force_redirect = 0, $sessi
     } else {
 
         //Block access:
-        if ($has_session) {
+        if ($player_session) {
             $goto_url = view_memory(42903, 42902) . $player_session['playerhandle'];
         } else {
             $goto_url = view_app_link(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
@@ -2903,7 +2902,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
         $CI =& get_instance();
         log_message('error', 'MENCH ERROR: ' . $error_message
             . ($player_session ? ' | PLAYER: ' . print_r($player_session, true) : '')
-            . (player_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
+            . ($player_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
         $CI->Links->create(array_merge($error_data, array(

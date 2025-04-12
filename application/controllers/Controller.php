@@ -2501,7 +2501,7 @@ class Controller extends CI_Controller
 
 
         //Update Session:
-        if ($_POST['down_playerid'] && player_session) {
+        if ($_POST['down_playerid'] && $player_session) {
             $this->Players->activate($player_session, true);
         }
 
