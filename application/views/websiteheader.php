@@ -508,7 +508,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
     //Apply to All Players
     if(player_session(12700)){
         ?>
-        <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
+        <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
                     <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12274">
@@ -626,7 +626,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
     //Apply to All Ideas
     if(player_session(12700)){
         ?>
-        <div class="modal fade" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
+        <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
 
@@ -720,7 +720,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
         <!-- Edit Idea Modal -->
         <div class="i_footer_note hidden">Ideas saved. <a href=""><b>View</b></a></div>
-        <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
+        <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
 
@@ -855,7 +855,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
 
         <!-- Edit Player Modal -->
-        <div class="modal fade" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
+        <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
 
