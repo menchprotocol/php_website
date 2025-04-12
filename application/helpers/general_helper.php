@@ -2724,8 +2724,8 @@ function link_view($x)
         } elseif ($playerid == 4362) {
 
             //TIME
-            $ui .= '<td style="width:45px !important;">';
-            $ui .= '<div style="width:45px !important; overflow:hidden;">';
+            $ui .= '<td style="width:34px !important;">';
+            $ui .= '<div style="width:34px !important; overflow:hidden;">';
             $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
             $ui .= '</div>';
             $ui .= '</td>';
@@ -2777,8 +2777,8 @@ function view_time_difference($t, $micro = false)
             604800 => 'w',
             86400 => 'd',
             3600 => 'h',
-            60 => 'min',
-            1 => 'sec'
+            60 => 'mi',
+            1 => 's'
         );
     } else {
         $time_units = array(
