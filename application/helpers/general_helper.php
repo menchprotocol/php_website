@@ -2761,8 +2761,8 @@ function link_view($x)
         } elseif (in_array($playerid, array(1579301,1579321))) {
 
             //HASH
-            $column_value .= '<td style="width:34px !important;">';
-            $column_value .= '<div style="width:34px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:55px !important;">';
+            $column_value .= '<div style="width:55px !important; overflow:hidden;">';
             $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x'.substr($x[$m['m__handle']], 4).'...' . substr($x[$m['m__handle']], -4) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
