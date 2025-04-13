@@ -611,8 +611,10 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         $unique_users_count = array();
         foreach ($query_string_all as $key => $x) {
             if (in_array(intval($x['playerid']), $unique_users_count)) {
+                //Already added:
                 continue;
             } elseif (!idea_access(null, $i['ideaid'], $i, $x['playerid'], $idea_list_config)) {
+                //Does not have access:
                 continue;
             } else {
                 //Passed all filters:

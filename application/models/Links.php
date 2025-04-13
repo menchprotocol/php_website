@@ -764,10 +764,10 @@ class Links extends CIdea_cache
                     'linkplayerdown' => 26582, //Messener
                 ));
                 continue;
-            } elseif ($ensure_unidea_discovered && count($this->Links->read(array(
+                } elseif ($ensure_unidea_discovered && count($this->Links->read(array(
                     'linkidealeft' => $i['ideaid'],
                     'linkplayercreator' => $x['playerid'],
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
                 )))) {
                 //Already idea_discovered:
                 continue;
