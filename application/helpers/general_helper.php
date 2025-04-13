@@ -2691,6 +2691,7 @@ function link_view($x)
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
         $column_value = null;
+
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE

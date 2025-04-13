@@ -410,13 +410,12 @@ echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="ic
 $row1 = '<tr style="font-weight:bold; vertical-align: baseline;">';
 $row2 = '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
-    $column_value = null;
     if(in_array($linkplayertype, $this->config->item('playerids___6160'))){
         //Player Cover:
-        $column_value .= '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
+        $column_value = '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
-        $column_value .= '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+        $column_value = '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
     }
     if(in_array($linkplayertype, $this->config->item('playerids___1579727'))) {
         //Second row:
