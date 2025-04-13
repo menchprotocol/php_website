@@ -2655,7 +2655,8 @@ function view_number($number)
 }
 
 
-function linkprevioushash(){
+function linkprevioushash()
+{
     $CI =& get_instance();
     foreach ($CI->Links->read(array(), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
         return $x['linkhash'];
@@ -2685,34 +2686,32 @@ function link_view($x)
 {
 
     $CI =& get_instance();
-    $ui = '<tr width="100%">';
+    $row1 = '<tr width="100%">';
+    $row2 = '<tr width="100%">';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
+        $column_value = null;
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
-            $ui .= '<td style="width:25px !important;">';
-            $ui .= '<div style="width:25px !important; overflow:hidden;">';
+            $column_value .= '<td '.( $playerid==4593 ? 'rowspan="2"' : '' ).' style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['playertext'] . '" class="icon-block-sm">' . view_cover($focus_e['playercover'], '<i class="far fa-at"></i>') . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['playertext'] . '" class="icon-block-sm">' . view_cover($focus_e['playercover'], '<i class="far fa-at"></i>') . '</a>';
                 }
             }
-            $ui .= '</div>';
-            $ui .= '</td>';
+            $column_value .= '</div></td>';
 
         } elseif (in_array(6202, $m['m__following'])) {
 
             //IDEA
-            $ui .= '<td style="width:89px !important;">';
-            $ui .= '<div style="width:89px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:89px !important;"><div style="width:89px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $ui .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover">#' . $focus_i['ideahashtag'] . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover">#' . $focus_i['ideahashtag'] . '</a>';
                 }
             }
-            $ui .= '</div>';
-            $ui .= '</td>';
+            $column_value .= '</div></td>';
 
         } elseif ($playerid == 4367) {
 
@@ -2732,54 +2731,62 @@ function link_view($x)
                 }
             }
 
-            $ui .= '<td style="width:72px !important;">';
-            $ui .= '<div style="width:72px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:72px !important;">';
+            $column_value .= '<div style="width:72px !important; overflow:hidden;">';
             if ($x[$m['m__handle']] > 0) {
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>';
+                $column_value .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>';
             }
-            $ui .= '</div>';
-            $ui .= '</td>';
+            $column_value .= '</div>';
+            $column_value .= '</td>';
 
         } elseif ($playerid == 44395) {
 
             //Void:
-            $ui .= '<td rowspan="2" style="width:60px !important;">';
+            $column_value .= '<td rowspan="2" style="width:60px !important;">';
             if ($x[$m['m__handle']] > 0) {
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>';
+                $column_value .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>';
             }
-            $ui .= '</td>';
+            $column_value .= '</td>';
 
         } elseif ($playerid == 4362) {
 
             //TIME
-            $ui .= '<td style="width:45px !important;">';
-            $ui .= '<div style="width:45px !important; overflow:hidden;">';
-            $ui .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
-            $ui .= '</div>';
-            $ui .= '</td>';
+            $column_value .= '<td style="width:45px !important;">';
+            $column_value .= '<div style="width:45px !important; overflow:hidden;">';
+            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
+            $column_value .= '</div>';
+            $column_value .= '</td>';
 
         } elseif ($playerid == 4370) {
 
             //Number
-            $ui .= '<td style="width:60px !important;">';
+            $column_value .= '<td style="width:60px !important;">';
             if ($x['linknumber'] > 0) {
-                $ui .= $x['linknumber'];
+                $column_value .= $x['linknumber'];
             }
-            $ui .= '</td>';
+            $column_value .= '</td>';
 
         } elseif ($playerid == 4372) {
 
             //Text
-            $ui .= '<td>';
-            $ui .= (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>');
-            $ui .= '</td>';
+            $column_value .= '<td>';
+            $column_value .= (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>');
+            $column_value .= '</td>';
 
         }
+
+        if(in_array($playerid, $CI->config->item('playerids___1579727'))) {
+            //Second row:
+            $row2 .= $column_value;
+        } else {
+            $row1 .= $column_value;
+        }
+
     }
+    $row1 .= '</tr>';
+    $row2 .= '</tr>';
 
-    $ui .= '</tr>';
-
-    return $ui;
+    return $row1.$row2;
 }
 
 

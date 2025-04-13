@@ -405,18 +405,29 @@ echo '<div class="overall_stats"></div>';
 
 echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="icon-block-xs">' . $players___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $players___11035[12707]['m__title'] . '</a>' : '').'</div>';
 
-echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="font-size: 0.8em;">';
-echo '<tr style="font-weight:bold; vertical-align: baseline;">';
+
+//Table Header
+$row1 = '<tr style="font-weight:bold; vertical-align: baseline;">';
+$row2 = '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
+    $column_value = null;
     if(in_array($linkplayertype, $this->config->item('playerids___6160'))){
         //Player Cover:
-        echo '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
+        $column_value .= '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
-        echo '<th class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+        $column_value .= '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+    }
+    if(in_array($linkplayertype, $this->config->item('playerids___1579727'))) {
+        //Second row:
+        $row2 .= $column_value;
+    } else {
+        $row1 .= $column_value;
     }
 }
-echo '</tr>';
-echo '</table>';
+$row1 = '</tr>';
+$row2 = '</tr>';
+echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
 
+//Table Data
 echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';
