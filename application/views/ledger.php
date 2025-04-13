@@ -424,8 +424,8 @@ foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
         $row1 .= $column_value;
     }
 }
-$row1 = '</tr>';
-$row2 = '</tr>';
+$row1 .= '</tr>';
+$row2 .= '</tr>';
 echo '<table id="table_menchledger" class="table table-sm table-striped image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
 
 //Table Data
