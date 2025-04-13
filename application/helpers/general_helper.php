@@ -2754,7 +2754,7 @@ function link_view($x)
             //TIME
             $column_value .= '<td style="width:45px !important;">';
             $column_value .= '<div style="width:45px !important; overflow:hidden;">';
-            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
+            $column_value .= '<span class="group_sign">&nbsp;</span><span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
 
