@@ -458,7 +458,7 @@ function view_tree($i)
 
     //Idea Filters:
     $filters_ui = '';
-    if(isset($i['idea_list_config'])){
+    if (isset($i['idea_list_config'])) {
         //Idea<>Player Settings:
         $current_playerid = 0;
         foreach ($CI->config->item('players___43006') as $playerid => $m) {
@@ -2655,6 +2655,31 @@ function view_number($number)
 }
 
 
+function linkprevioushash(){
+    foreach ($this->Links->read(array(), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
+        return $x['linkhash'];
+    }
+}
+
+
+function linkhash($x)
+{
+    return sha1(
+        $x['linkid'] .
+        substr(strtotime($x['linktime']), 0, 10) .
+        $x['linkplayerdomain'] .
+        $x['linkplayercreator'] .
+        $x['linkplayertype'] .
+        (isset($x['linkplayerup']) ? $x['linkplayerup'] : 0) .
+        (isset($x['linkplayerdown']) ? $x['linkplayerdown'] : 0) .
+        (isset($x['linkidealeft']) ? $x['linkidealeft'] : 0) .
+        (isset($x['linkidearight']) ? $x['linkidearight'] : 0) .
+        (isset($x['linktext']) ? $x['linktext'] : '') .
+        (isset($x['linknumber']) ? $x['linknumber'] : 0) .
+        $x['linkprevioushash']
+    );
+}
+
 function link_view($x)
 {
 
@@ -2669,7 +2694,7 @@ function link_view($x)
             $ui .= '<div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
-                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" target="_blank" data-toggle="tooltip" title="'.$focus_e['playertext'].'" class="icon-block-sm">' . view_cover($focus_e['playercover'], '<i class="far fa-at"></i>') . '</a>';
+                    $ui .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['playertext'] . '" class="icon-block-sm">' . view_cover($focus_e['playercover'], '<i class="far fa-at"></i>') . '</a>';
                 }
             }
             $ui .= '</div>';
@@ -2688,19 +2713,19 @@ function link_view($x)
             $ui .= '</div>';
             $ui .= '</td>';
 
-        } elseif ($playerid==4367) {
+        } elseif ($playerid == 4367) {
 
             //Link
 
             //Determine link group:
             $playerhandle_sign = '';
-            if(in_array($x['linkplayertype'], array(4250,4251))){
+            if (in_array($x['linkplayertype'], array(4250, 4251))) {
                 $players___4593 = $CI->config->item('players___4593'); //Link Type
-                $playerhandle_sign = '<span class="group_sign" title="'.$players___4593[$x['linkplayertype']]['m__title'].'">'.$players___4593[$x['linkplayertype']]['m__cover'].'</span>';
+                $playerhandle_sign = '<span class="group_sign" title="' . $players___4593[$x['linkplayertype']]['m__title'] . '">' . $players___4593[$x['linkplayertype']]['m__cover'] . '</span>';
             } else {
-                foreach($CI->config->item('players___31770') as $groupid => $groupm) {
-                    if(in_array($x['linkplayertype'], $CI->config->item('playerids___'.$groupid))){
-                        $playerhandle_sign = '<span class="group_sign" title="'.$groupm['m__title'].'">'.$groupm['m__cover'].'</span>';
+                foreach ($CI->config->item('players___31770') as $groupid => $groupm) {
+                    if (in_array($x['linkplayertype'], $CI->config->item('playerids___' . $groupid))) {
+                        $playerhandle_sign = '<span class="group_sign" title="' . $groupm['m__title'] . '">' . $groupm['m__cover'] . '</span>';
                         break;
                     }
                 }
@@ -2708,18 +2733,18 @@ function link_view($x)
 
             $ui .= '<td style="width:72px !important;">';
             $ui .= '<div style="width:72px !important; overflow:hidden;">';
-            if($x[$m['m__handle']]>0){
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign.$x[$m['m__handle']] . '</a>';
+            if ($x[$m['m__handle']] > 0) {
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>';
             }
             $ui .= '</div>';
             $ui .= '</td>';
 
-        } elseif ($playerid==44395) {
+        } elseif ($playerid == 44395) {
 
             //Void:
             $ui .= '<td style="width:60px !important;">';
-            if($x[$m['m__handle']]>0){
-                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' .$x[$m['m__handle']] . '</a>';
+            if ($x[$m['m__handle']] > 0) {
+                $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>';
             }
             $ui .= '</td>';
 
@@ -2736,7 +2761,7 @@ function link_view($x)
 
             //Number
             $ui .= '<td style="width:60px !important;">';
-            if($x['linknumber']>0){
+            if ($x['linknumber'] > 0) {
                 $ui .= $x['linknumber'];
             }
             $ui .= '</td>';
@@ -2745,7 +2770,7 @@ function link_view($x)
 
             //Text
             $ui .= '<td>';
-            $ui .=  (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>');
+            $ui .= (strip_tags($x['linktext']) == $x['linktext'] || strlen(strip_tags($x['linktext'])) < view_memory(6404, 6197) ? $x['linktext'] : '<span class="hidden html_message_' . $x['linkid'] . '">' . $x['linktext'] . '</span><a class="html_message_' . $x['linkid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['linkid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>');
             $ui .= '</td>';
 
         }
@@ -4119,7 +4144,7 @@ function idea_view($linkplayertype, $i, $previous_i = null, $target_ideahashtag 
     }
 
     //Log Preview:
-    $linkplayercreator_id = ( $linkplayercreator>0 ? $linkplayercreator : 14068 /* GUEST */ );
+    $linkplayercreator_id = ($linkplayercreator > 0 ? $linkplayercreator : 14068 /* GUEST */);
     $CI->Links->create(array(
         'linkplayertype' => 1576044, //Idea Previewed
         'linkplayercreator' => $linkplayercreator_id,
@@ -5018,7 +5043,7 @@ function player_view($linkplayertype, $e, $extra_class = null)
 
 
     //Log preview view:
-    $linkplayercreator_id = ( $player_session ? $player_session['playerid'] : 14068 /* GUEST */ );
+    $linkplayercreator_id = ($player_session ? $player_session['playerid'] : 14068 /* GUEST */);
     $CI->Links->create(array(
         'linkplayertype' => 1576051, //Player Popover
         'linkplayerup' => $e['playerid'],

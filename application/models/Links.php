@@ -71,6 +71,8 @@ class Links extends CIdea_cache
 
         //Fetch inserted id:
         $add_fields['linkid'] = ( $insert_link_id>0 ? $insert_link_id : $this->db->insert_id() );
+        $add_fields['linkprevioushash'] = linkprevioushash();
+        $add_fields['linkhash'] = linkhash($add_fields);
 
         //All good?
         if ($add_fields['linkid'] < 1) {
