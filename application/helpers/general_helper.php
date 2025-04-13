@@ -2656,7 +2656,8 @@ function view_number($number)
 
 
 function linkprevioushash(){
-    foreach ($this->Links->read(array(), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
+    $CI =& get_instance();
+    foreach ($CI->Links->read(array(), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
         return $x['linkhash'];
     }
 }
@@ -2742,7 +2743,7 @@ function link_view($x)
         } elseif ($playerid == 44395) {
 
             //Void:
-            $ui .= '<td style="width:60px !important;">';
+            $ui .= '<td rowspan="2" style="width:60px !important;">';
             if ($x[$m['m__handle']] > 0) {
                 $ui .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>';
             }
