@@ -1,7 +1,7 @@
 <?php
 
 boost_power();
-$starting_id = 1581000;
+$starting_id = 1;
 $previous = linkprevious($starting_id);
 
 
@@ -22,7 +22,7 @@ foreach ($this->Links->read(array(
     }
     $hash = linkhash($x);
     if($x['linkhash']!=$hash || $must_fix){
-        $this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
+        //$this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
         $fixed++;
     }
     $previous = $hash;
