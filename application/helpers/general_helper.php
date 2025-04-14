@@ -2655,13 +2655,17 @@ function view_number($number)
 }
 
 
-function linkprevious() {
+function linkprevious($starting_id = -1) {
     $CI =& get_instance();
-    $previous = '1111111111111111111111111111111111111111';
-    foreach ($CI->Links->read(array('(linkhash IS NOT NULL) AND (linkprevious IS NOT NULL)' => NULL), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
-        $previous = $x['linkhash'];
+    if($starting_id!=0){
+        foreach ($CI->Links->read(array(
+            '(linkhash IS NOT NULL) AND (linkprevious IS NOT NULL)' => NULL,
+            'linkid >=' => $starting_id,
+        ), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
+            return $x['linkhash'];
+        }
     }
-    return $previous;
+    return '1111111111111111111111111111111111111111';
 }
 
 

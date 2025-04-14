@@ -1,10 +1,17 @@
 <?php
 
 boost_power();
-$previous = ( 0 ? linkprevious() : '1111111111111111111111111111111111111111' );
+$starting_id = 0;
+$previous = linkprevious($starting_id);
+
+
+if($starting_id==0){
+    $this->db->query("UPDATE menchledger SET linkprevious = NULL, linkhash = NULL WHERE ((linkhash IS NOT NULL) OR (linkprevious IS NOT NULL)) AND linkid >=" . $starting_id . ";");
+}
+
 $count = 0;
 $fixed = 0;
-foreach ($this->Links->read(array(), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
+foreach ($this->Links->read(array('linkid >=' => $starting_id), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
     $must_fix = false;
     if($x['linkprevious']!=$previous){
         $x['linkprevious'] = $previous;
