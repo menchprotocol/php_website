@@ -30,5 +30,5 @@ foreach ($this->Links->read(array(
     $previous = $hash;
     $count++;
 }
-echo $fixed.'/'.($count+$starting_id) . ' hashes are out of sync.';
+echo $fixed.'/'.($count+$starting_id) . ' link hashes are out of sync.';
 
