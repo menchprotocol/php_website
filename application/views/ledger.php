@@ -256,7 +256,7 @@ echo '<div class="show-filter ' . ($has_filters && 0 ? '' : 'hidden') . '">';
 echo '<form action="" method="GET">';
 
 
-echo '<table class="table table-sm maxout"><tr>';
+echo '<table class="table table-sm maxout" style="vertical-align: top;"><tr>';
 
 //ANY IDEA
 echo '<td><div>';
