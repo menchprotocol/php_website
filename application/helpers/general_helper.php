@@ -2671,6 +2671,9 @@ function linkprevious($starting_id = -1) {
 
 function linkhash($x)
 {
+    if(!isset($x['linkid'])){
+        return null;
+    }
     return sha1(
         $x['linkid'] .
         substr(strtotime($x['linktime']), 0, 10) .
