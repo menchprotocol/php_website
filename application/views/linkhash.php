@@ -1,7 +1,7 @@
 <?php
 
 boost_power();
-$starting_id = 0; //1580000
+$starting_id = 0; //1580000 before
 $previous = linkprevious($starting_id);
 
 
