@@ -11,7 +11,7 @@ $linktime_start = date("Y-m-d H:i:s", $linktime_start_timestamp);
 $linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
 
 //Email Body
-$html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.search($last_x_days).':</div><br />';
+$html_message = '<div class="line">Here is what happened in the past '.$last_x_days.' day'.search($last_x_days).':</div><br />';
 $subject = 'Report for the Week of '.date("M jS", $linktime_start_timestamp);
 
 foreach($this->config->item('players___31770') as $linkplayertype => $m) {
@@ -26,7 +26,7 @@ foreach($this->config->item('players___31770') as $linkplayertype => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div class="line"><span style="display:inline-block; width: 55px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.view_number($unique).' '.$m['m__title'].'</div>';
+    $html_message .= '<div class="line"><span style="display:inline-block; width: 34px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.number_format($unique, 0).' '.$m['m__title'].'</div>';
 
 }
 

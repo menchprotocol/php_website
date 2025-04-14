@@ -2687,7 +2687,7 @@ function link_view($x)
 
     $CI =& get_instance();
     $row1 = '<tr width="100%">';
-    $row2 = '<tr width="100%">';
+    $row2 = '<tr width="100%" style="border-bottom: 1px solid #999999;">';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
         $column_value = null;
