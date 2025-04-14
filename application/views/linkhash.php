@@ -6,7 +6,7 @@ $previous = linkprevious($starting_id);
 
 
 if($starting_id==0){
-    $this->db->query("UPDATE menchledger SET linkprevious = NULL, linkhash = NULL WHERE ((linkhash IS NOT NULL) OR (linkprevious IS NOT NULL)) AND linkid >=" . $starting_id . ";");
+    $this->db->query("UPDATE menchledger SET linkprevious = NULL, linkhash = NULL WHERE ((linkhash IS NOT NULL) OR (linkprevious IS NOT NULL)) AND linkid >" . $starting_id . ";");
 }
 
 $count = 0;
