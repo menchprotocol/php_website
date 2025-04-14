@@ -407,8 +407,8 @@ echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="ic
 
 
 //Table Header
-$row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 1px solid #999999; border-bottom: 1px solid #FFFFFF !important;">';
-$row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 1px solid #FFFFFF !important; border-bottom: 1px solid #999999;">';
+$row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 3px solid #999999; border-bottom: 0px solid #FFFFFF !important;">';
+$row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 3px solid #999999;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
     if($linkplayertype==4362 || in_array($linkplayertype, $this->config->item('playerids___6160'))){
         //Player Cover:
