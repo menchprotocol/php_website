@@ -2740,8 +2740,8 @@ function link_view($x)
                 }
             }
 
-            $column_value .= '<td style="width:80px !important;">';
-            $column_value .= '<div style="width:80px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:75px !important;">';
+            $column_value .= '<div style="width:75px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
             $column_value .= '</div>';
             $column_value .= '</td>';
@@ -2749,8 +2749,8 @@ function link_view($x)
         } elseif ($playerid == 44395) {
 
             //Void:
-            $column_value .= '<td style="width:80px !important; vertical-align : middle;">';
-            $column_value .= '<div style="width:80px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:75px !important; vertical-align : middle;">';
+            $column_value .= '<div style="width:75px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
             $column_value .= '</div>';
             $column_value .= '</td>';
