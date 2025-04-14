@@ -1,7 +1,5 @@
 <?php
 
-
-
 $previous = linkprevious();
 $count = 0;
 $fixed = 0;
@@ -13,8 +11,8 @@ foreach ($this->Links->read(array(), array(), 0, 0, array('linkid' => 'ASC')) as
     }
     $hash = linkhash($x);
     if($x['linkhash']!=$hash || $x['linkprevious']!=$previous){
-        //$this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
-        echo $x['linkid'].': '.$x['linkhash'].'!='.$hash.' OR '.$x['linkprevious'].'!='.$previous.'<hr />';
+        $this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
+        //echo $x['linkid'].': '.$x['linkhash'].'!='.$hash.' OR '.$x['linkprevious'].'!='.$previous.'<hr />';
         $fixed++;
     }
     $previous = $hash;
