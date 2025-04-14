@@ -412,10 +412,10 @@ $row2 = '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
     if(in_array($linkplayertype, $this->config->item('playerids___6160'))){
         //Player Cover:
-        $column_value = '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title" style="width:25px !important; vertical-align : middle;text-align:center;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
+        $column_value = '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title" style="width:25px !important; vertical-align : middle;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
-        $column_value = '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title" style="vertical-align : middle;text-align:center;"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+        $column_value = '<th '.( in_array($linkplayertype, array(4593,44395)) ? ' rowspan="2" ' : '' ).' class="main__title" style="vertical-align : middle;"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
     }
     if(in_array($linkplayertype, $this->config->item('playerids___1579727'))) {
         //Second row:
