@@ -2776,7 +2776,7 @@ function link_view($x)
         } elseif ($playerid == 4370) {
 
             //Number
-            $column_value .= '<td style="width:60px !important;">';
+            $column_value .= '<td>';
             $column_value .= ( $x['linknumber'] > 0 ? $x['linknumber'] : '&nbsp;' );
             $column_value .= '</td>';
 
