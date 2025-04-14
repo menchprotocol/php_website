@@ -2749,15 +2749,17 @@ function link_view($x)
         } elseif ($playerid == 44395) {
 
             //Void:
-            $column_value .= '<td style="width:60px !important; vertical-align : middle;">';
+            $column_value .= '<td style="width:72px !important; vertical-align : middle;">';
+            $column_value .= '<div style="width:72px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
+            $column_value .= '</div>';
             $column_value .= '</td>';
 
         } elseif ($playerid == 4362) {
 
             //TIME
-            $column_value .= '<td style="width:45px !important;">';
-            $column_value .= '<div style="width:45px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:25px !important;">';
+            $column_value .= '<div style="width:25px !important; overflow:hidden;">';
             $column_value .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
