@@ -1,18 +1,21 @@
 <?php
 
+$previous = linkprevious();
 $count = 0;
-//Fetch current last hash:
-
-$previous = '1111111111111111111111111111111111111111';
-foreach($this->Links->read(array('(linkhash IS NOT NULL) AND (linkprevious IS NOT NULL)' => NULL), array(), 1, 0, array('linkid' => 'DESC')) as $x){
-    $previous = $x['linkhash'];
-}
-
-foreach($this->Links->read(array('(linkhash IS NULL) OR (linkprevious IS NULL)' => NULL), array(), 0, 0, array('linkid' => 'ASC')) as $x){
+$fixed = 0;
+foreach ($this->Links->read(array(), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
+    $must_fix = false;
+    if($x['linkprevious']!=$previous){
+        $x['linkprevious'] = $previous;
+        $must_fix = true;
+    }
     $hash = linkhash($x);
-    $this->db->query("UPDATE menchledger SET linkprevious = '".$previous."', linkhash = '".$hash."' WHERE linkid=".$x['linkid'].";");
+    if($x['linkhash']!=$hash || $must_fix){
+        $this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
+        $fixed++;
+    }
     $previous = $hash;
     $count++;
 }
-echo $count.' hashes synced';
+echo $fixed.'/'.$count . ' hashes fixed';
 
