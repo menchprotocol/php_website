@@ -2742,7 +2742,7 @@ function link_view($x)
 
             $column_value .= '<td style="width:72px !important;">';
             $column_value .= '<div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
             $column_value .= '</div>';
             $column_value .= '</td>';
 
@@ -2758,7 +2758,7 @@ function link_view($x)
             //TIME
             $column_value .= '<td style="width:45px !important;">';
             $column_value .= '<div style="width:45px !important; overflow:hidden;">';
-            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . view_time_difference($x['linktime'], true) . '</span>';
+            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="' . $x['linktime'] . ' PST">' . view_time_difference($x['linktime'], true) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
 
