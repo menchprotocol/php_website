@@ -2734,9 +2734,7 @@ function link_view($x)
 
             $column_value .= '<td style="width:72px !important;">';
             $column_value .= '<div style="width:72px !important; overflow:hidden;">';
-            if ($x[$m['m__handle']] > 0) {
-                $column_value .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>';
-            }
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
             $column_value .= '</div>';
             $column_value .= '</td>';
 
@@ -2744,9 +2742,7 @@ function link_view($x)
 
             //Void:
             $column_value .= '<td rowspan="2" style="width:60px !important;">';
-            if ($x[$m['m__handle']] > 0) {
-                $column_value .= '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>';
-            }
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
             $column_value .= '</td>';
 
         } elseif ($playerid == 4362) {
@@ -2771,9 +2767,7 @@ function link_view($x)
 
             //Number
             $column_value .= '<td style="width:60px !important;">';
-            if ($x['linknumber'] > 0) {
-                $column_value .= $x['linknumber'];
-            }
+            $column_value .= ( $x['linknumber'] > 0 ? $x['linknumber'] : '&nbsp;' );
             $column_value .= '</td>';
 
         } elseif ($playerid == 4372) {
