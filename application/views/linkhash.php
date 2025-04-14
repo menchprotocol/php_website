@@ -1,7 +1,7 @@
 <?php
 
 boost_power();
-$starting_id = 1580000;
+$starting_id = 0; //1580000
 $previous = linkprevious($starting_id);
 
 
@@ -11,7 +11,10 @@ if($starting_id==0){
 
 $count = 0;
 $fixed = 0;
-foreach ($this->Links->read(array('linkid >' => $starting_id), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
+foreach ($this->Links->read(array(
+    'linkid >' => $starting_id,
+    'linkvoid >=' => 0
+), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
     $must_fix = false;
     if($x['linkprevious']!=$previous){
         $x['linkprevious'] = $previous;
