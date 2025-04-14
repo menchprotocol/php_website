@@ -2710,7 +2710,7 @@ function link_view($x)
         if (in_array(6160, $m['m__following'])) {
 
             //SOURCE
-            $column_value .= '<td style="width:25px !important; vertical-align : middle;"><div style="width:25px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Players->read(array('playerid' => $x[$m['m__handle']])) as $focus_e) {
                     $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['playertext'] . '" class="icon-block-sm">' . view_cover($focus_e['playercover'], '<i class="far fa-at"></i>') . '</a>';
@@ -2754,7 +2754,7 @@ function link_view($x)
         } elseif ($playerid == 44395) {
 
             //Void:
-            $column_value .= '<td style="width:72px !important; vertical-align : middle;"><div style="width:72px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
             $column_value .= '</div></td>';
 
