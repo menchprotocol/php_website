@@ -2822,7 +2822,6 @@ function view_time_difference($t, $micro = false)
     if ($micro) {
         $time_units = array(
             31536000 => 'y',
-            2592000 => 'M',
             604800 => 'w',
             86400 => 'd',
             3600 => 'h',
