@@ -67,12 +67,12 @@ class Links extends CIdea_cache
 
         //Let's log, Always auto generated:
         $insert_link_id = ( isset($add_fields['linkid']) ? $add_fields['linkid'] : 0 );
+        $add_fields['linkprevioushash'] = linkprevioushash();
+        $add_fields['linkhash'] = linkhash($add_fields);
         $this->db->insert('menchledger', $add_fields);
 
         //Fetch inserted id:
         $add_fields['linkid'] = ( $insert_link_id>0 ? $insert_link_id : $this->db->insert_id() );
-        $add_fields['linkprevioushash'] = linkprevioushash();
-        $add_fields['linkhash'] = linkhash($add_fields);
 
         //All good?
         if ($add_fields['linkid'] < 1) {
