@@ -1,7 +1,7 @@
 <?php
 
 boost_power();
-$starting_id = 1;
+$starting_id = 1; //Will only check currrent hash to ensure its all valid...
 $previous = linkprevious($starting_id);
 
 
@@ -22,7 +22,9 @@ foreach ($this->Links->read(array(
     }
     $hash = linkhash($x);
     if($x['linkhash']!=$hash || $must_fix){
-        //$this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
+        if($starting_id!=1){
+            $this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
+        }
         $fixed++;
     }
     $previous = $hash;
