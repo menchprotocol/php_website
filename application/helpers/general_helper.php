@@ -2694,8 +2694,8 @@ function link_view($x)
 {
 
     $CI =& get_instance();
-    $row1 = '<tr width="100%">';
-    $row2 = '<tr width="100%" style="border-bottom: 1px solid #999999;">';
+    $row1 = '<tr width="100%" style="border-top: 1px solid #999999;">';
+    $row2 = '<tr width="100%">';
     foreach ($CI->config->item('players___4341') as $playerid => $m) {
 
         $column_value = null;
@@ -2822,12 +2822,12 @@ function view_time_difference($t, $micro = false)
     if ($micro) {
         $time_units = array(
             31536000 => 'y',
-            2592000 => 'mo',
+            2592000 => 'M',
             604800 => 'w',
             86400 => 'd',
             3600 => 'h',
-            60 => 'min',
-            1 => 'sec'
+            60 => 'm',
+            1 => 's'
         );
     } else {
         $time_units = array(
