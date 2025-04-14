@@ -2655,16 +2655,17 @@ function view_number($number)
 }
 
 
-function linkprevious($starting_id = -1) {
+function linkprevious($starting_id = -1)
+{
     $CI =& get_instance();
-    if($starting_id<0){
+    if ($starting_id < 0) {
         foreach ($CI->Links->read(array(
             '(linkhash IS NOT NULL) AND (linkprevious IS NOT NULL)' => NULL,
             'linkvoid >=' => 0,
         ), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
             return $x['linkhash'];
         }
-    } elseif($starting_id>0){
+    } elseif ($starting_id > 0) {
         foreach ($CI->Links->read(array(
             'linkid >=' => $starting_id,
             'linkvoid >=' => 0,
@@ -2678,19 +2679,7 @@ function linkprevious($starting_id = -1) {
 
 function linkhash($x)
 {
-    if(!isset($x['linkid'])){
-        //Fetch next inserted link:
-        $CI =& get_instance();
-        $query = $CI->db->query("SELECT nextval('menchledger_linkid_seq') AS next_id");
-        $row = $query->row();
-        $x['linkid'] = intval($row->next_id);
-        if(!$x['linkid']){
-            return false;
-        }
-    }
-
     return sha1(
-        intval($x['linkid']) .
         substr(strtotime($x['linktime']), 0, 10) .
         $x['linkplayerdomain'] .
         $x['linkplayercreator'] .
@@ -2756,14 +2745,14 @@ function link_view($x)
             }
 
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($playerid == 44395) {
 
             //Void:
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($playerid == 4362) {
@@ -2775,12 +2764,12 @@ function link_view($x)
             $column_value .= '</div>';
             $column_value .= '</td>';
 
-        } elseif (in_array($playerid, array(1579301,1579321))) {
+        } elseif (in_array($playerid, array(1579301, 1579321))) {
 
             //HASH
             $column_value .= '<td style="width:50px !important;">';
             $column_value .= '<div style="width:50px !important; overflow:hidden;">';
-            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x'. substr($x[$m['m__handle']], -4) . '</span>';
+            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x' . substr($x[$m['m__handle']], -4) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
 
@@ -2788,7 +2777,7 @@ function link_view($x)
 
             //Number
             $column_value .= '<td>';
-            $column_value .= ( $x['linknumber'] > 0 ? $x['linknumber'] : '&nbsp;' );
+            $column_value .= ($x['linknumber'] > 0 ? $x['linknumber'] : '&nbsp;');
             $column_value .= '</td>';
 
         } elseif ($playerid == 4372) {
@@ -2800,7 +2789,7 @@ function link_view($x)
 
         }
 
-        if(in_array($playerid, $CI->config->item('playerids___1579727'))) {
+        if (in_array($playerid, $CI->config->item('playerids___1579727'))) {
             //Second row:
             $row2 .= $column_value;
         } else {
@@ -2811,7 +2800,7 @@ function link_view($x)
     $row1 .= '</tr>';
     $row2 .= '</tr>';
 
-    return $row1.$row2;
+    return $row1 . $row2;
 }
 
 
