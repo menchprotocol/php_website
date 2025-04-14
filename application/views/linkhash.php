@@ -4,7 +4,7 @@ $count = 0;
 //Fetch current last hash:
 
 $previous = '1111111111111111111111111111111111111111';
-foreach($this->Links->read(array('(linkhash IS NOT NULL) AND (linkprevioushash IS NOT NULL)' => NULL), array(), 0, 0, array('linkid' => 'DESC')) as $x){
+foreach($this->Links->read(array('(linkhash IS NOT NULL) AND (linkprevioushash IS NOT NULL)' => NULL), array(), 1, 0, array('linkid' => 'DESC')) as $x){
     $previous = $x['linkhash'];
 }
 
