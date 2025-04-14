@@ -1,7 +1,7 @@
 <?php
 
 boost_power();
-$previous = linkprevious();
+$previous = ( 0 ? linkprevious() : '1111111111111111111111111111111111111111' );
 $count = 0;
 $fixed = 0;
 foreach ($this->Links->read(array(), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
