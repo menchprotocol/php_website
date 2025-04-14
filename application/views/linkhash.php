@@ -3,7 +3,7 @@
 $previous = null;
 $count = 0;
 $fixed = 0;
-foreach ($this->Links->read(array('linkid >' => 1550000), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
+foreach ($this->Links->read(array('linkid >' => 1570000), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
     if(!$previous){
         $previous = $x['linkhash'];
         continue;
