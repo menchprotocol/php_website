@@ -1,9 +1,13 @@
 <?php
 
-$previous = linkprevious();
+$previous = null;
 $count = 0;
 $fixed = 0;
-foreach ($this->Links->read(array('linkid >' => 1580000), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
+foreach ($this->Links->read(array('linkid >' => 1550000), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
+    if(!$previous){
+        $previous = $x['linkhash'];
+        continue;
+    }
     $must_fix = false;
     if($x['linkprevious']!=$previous){
         $x['linkprevious'] = $previous;
