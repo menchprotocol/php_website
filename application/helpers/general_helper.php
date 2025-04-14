@@ -2655,7 +2655,7 @@ function view_number($number)
 }
 
 
-function linkprevioushash()
+function linkprevious()
 {
     $CI =& get_instance();
     foreach ($CI->Links->read(array(), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
@@ -2678,7 +2678,7 @@ function linkhash($x)
         (isset($x['linkidearight']) ? $x['linkidearight'] : 0) .
         (isset($x['linktext']) ? $x['linktext'] : '') .
         (isset($x['linknumber']) ? $x['linknumber'] : 0) .
-        $x['linkprevioushash']
+        $x['linkprevious']
     );
 }
 
@@ -2757,9 +2757,9 @@ function link_view($x)
         } elseif (in_array($playerid, array(1579301,1579321))) {
 
             //HASH
-            $column_value .= '<td style="width:55px !important;">';
-            $column_value .= '<div style="width:55px !important; overflow:hidden;">';
-            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x'.substr($x[$m['m__handle']], 4).'...' . substr($x[$m['m__handle']], -4) . '</span>';
+            $column_value .= '<td style="width:50px !important;">';
+            $column_value .= '<div style="width:50px !important; overflow:hidden;">';
+            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x'. substr($x[$m['m__handle']], -4) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
 
