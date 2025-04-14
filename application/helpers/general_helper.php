@@ -2683,11 +2683,14 @@ function linkhash($x)
         $CI =& get_instance();
         $query = $CI->db->query("SELECT nextval('menchledger_linkid_seq') AS next_id");
         $row = $query->row();
-        $x['linkid'] = $row->next_id;
+        $x['linkid'] = intval($row->next_id);
+        if(!$x['linkid']){
+            return false;
+        }
     }
 
     return sha1(
-        $x['linkid'] .
+        intval($x['linkid']) .
         substr(strtotime($x['linktime']), 0, 10) .
         $x['linkplayerdomain'] .
         $x['linkplayercreator'] .
