@@ -2714,8 +2714,7 @@ function link_view($x)
         } elseif (in_array(6202, $m['m__following'])) {
 
             //IDEA
-            $column_value .= '<td style="width:100px !important;">
-                            <div style="width:100px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:89px !important;"><div style="width:89px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
                     $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover">#' . $focus_i['ideahashtag'] . '</a>';
@@ -2741,20 +2740,16 @@ function link_view($x)
                 }
             }
 
-            $column_value .= '<td style="width:75px !important;">';
-            $column_value .= '<div style="width:75px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
-            $column_value .= '</div>';
-            $column_value .= '</td>';
+            $column_value .= '</div></td>';
 
         } elseif ($playerid == 44395) {
 
             //Void:
-            $column_value .= '<td style="width:75px !important; vertical-align : middle;">';
-            $column_value .= '<div style="width:75px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:72px !important; vertical-align : middle;"><div style="width:72px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?linkid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;' );
-            $column_value .= '</div>';
-            $column_value .= '</td>';
+            $column_value .= '</div></td>';
 
         } elseif ($playerid == 4362) {
 
