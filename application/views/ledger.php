@@ -410,7 +410,7 @@ echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="ic
 $row1 = '<tr style="font-weight:bold; vertical-align: baseline;">';
 $row2 = '<tr style="font-weight:bold; vertical-align: baseline;">';
 foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
-    if(in_array($linkplayertype, $this->config->item('playerids___6160'))){
+    if($linkplayertype==4362 || in_array($linkplayertype, $this->config->item('playerids___6160'))){
         //Player Cover:
         $column_value = '<th class="main__title" style="width:25px !important; vertical-align : middle;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
