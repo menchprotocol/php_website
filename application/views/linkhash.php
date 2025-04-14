@@ -1,5 +1,6 @@
 <?php
 
+boost_power();
 $previous = linkprevious();
 $count = 0;
 $fixed = 0;
