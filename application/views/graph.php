@@ -119,8 +119,8 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
             $.each(data.return_array, function (key, val) {
                 var formatted = String(val).replace(/(.)(?=(\d{3})+$)/g, '$1,');
                 if (formatted != $(".card_count_" + key + ":first").text()) {
-                    $(".headlines_" + key).removeClass('hidden');
-                    $(".card_count_" + key).removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
+                    $(".card_count_" + key+ ":first").removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
+                    $(".headlines_" + key+ ":first").removeClass('hidden');
                 }
             });
 
