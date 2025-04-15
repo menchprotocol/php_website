@@ -88,7 +88,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                 }
 
 
-                echo '<tr class="main__title mobile-shrink headlines headlines_' . $playerid3 . ' hidden" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
+                echo '<tr class="main__title mobile-shrink headlines headlines_' . $playerid3 . ' " title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
                 echo '<td style="text-align: left;" title="@' . $playerid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype='.  $playerid3 . '&linkvoid=0" class="card_count_' . $playerid3 . ';">0</a></span></td>';
                 echo '</tr>';
 
@@ -120,7 +120,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                 var formatted = String(val).replace(/(.)(?=(\d{3})+$)/g, '$1,');
                 if (formatted != $(".card_count_" + key + ":first").text()) {
                     $(".card_count_" + key+ ":first").removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
-                    $(".headlines_" + key+ ":first").removeClass('hidden');
+                    //$(".headlines_" + key+ ":first").removeClass('hidden');
                 }
             });
 
