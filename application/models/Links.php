@@ -1527,8 +1527,9 @@ class Links extends CIdea_cache
         $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
         $i['stats'] = array(
             'max_level' => $idea_level,
-            'max_steps' => ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)),
+            'all_steps' => count($total_next), //Can be improved later...
             'min_steps' => ($input__selection ? ($is_required ? 1 : 0) : count($total_next)), //Can be improved later...
+            'max_steps' => ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)),
             'or_steps' => ($input__selection && count($total_next) ? 1 : 0),
         );
         $i['idea_next'] = array();
@@ -1546,15 +1547,17 @@ class Links extends CIdea_cache
             $result_i = $this->Links->flat($next_i, $idea_level);
             array_push($i['idea_next'], $result_i);
 
+
+            $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
+            $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
+            $i['stats']['or_steps'] += $result_i['stats']['or_steps'];
+
             if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
                 $i['stats']['max_level'] = $result_i['stats']['max_level'];
             }
-
-            $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
             if (!$input__selection || $is_required) {
                 $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
             }
-            $i['stats']['or_steps'] += $result_i['stats']['or_steps'];
 
         }
 

@@ -439,14 +439,14 @@ function view_tree($i)
         if ($i['stats']['max_level'] && $i['idea_level'] == 0) {
             echo '<span class="icon-block-sm"><i class="fas fa-layer-group"></i></span>' . $i['stats']['max_level'];
         }
+        if ($i['stats']['all_steps'] > 0) {
+            echo '<span class="icon-block-sm"><i class="far fa-sitemap"></i></span>' . $i['stats']['all_steps'];
+        }
         if ($i['idea_level'] > 0) {
             echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . $i['idea_level'];
         }
-        if ($i['stats']['min_steps'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>' . $i['stats']['min_steps'];
-        }
-        if ($i['stats']['max_steps'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-gauge-max"></i></span>' . $i['stats']['max_steps'];
+        if ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0) {
+            echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>' . $i['stats']['min_steps'].'-'.$i['stats']['max_steps'];
         }
         if ($i['stats']['or_steps'] > 0) {
             echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . $i['stats']['or_steps'];
