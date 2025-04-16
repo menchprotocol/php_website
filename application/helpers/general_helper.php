@@ -443,7 +443,7 @@ function view_tree($i)
             echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . $i['stats']['or_steps'];
         }
         if ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>' . ( $i['stats']['min_steps']!=$i['stats']['max_steps'] ? $i['stats']['min_steps'].'-'.$i['stats']['max_steps'] : $i['stats']['min_steps'] );
+            echo '<span class="inline-block"><span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>' . ( $i['stats']['min_steps']!=$i['stats']['max_steps'] ? $i['stats']['min_steps'].'-'.$i['stats']['max_steps'] : $i['stats']['min_steps'] ).'</span>';
         }
     }
     if (isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
