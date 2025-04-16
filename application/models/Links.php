@@ -1527,7 +1527,7 @@ class Links extends CIdea_cache
         $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
         $i['stats'] = array(
             'max_level' => $idea_level,
-            'all_steps' => count($total_next), //Can be improved later...
+            'all_steps' => 1,
             'min_steps' => ($input__selection ? ($is_required ? 1 : 0) : count($total_next)), //Can be improved later...
             'max_steps' => ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)),
             'or_steps' => ($input__selection && count($total_next) ? 1 : 0),

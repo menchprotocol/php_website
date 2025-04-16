@@ -437,13 +437,13 @@ function view_tree($i)
             echo '<span class="icon-block-sm"><i class="far fa-sitemap"></i></span>' . $i['stats']['all_steps'];
         }
         if ($i['idea_level'] > 0 || $i['stats']['max_level']>0) {
-            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . ( $i['idea_level']>0 ? $i['idea_level'].'/' : '' ).$i['stats']['max_level'];
+            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . $i['idea_level'].'/'.$i['stats']['max_level'];
         }
         if ($i['stats']['or_steps'] > 0) {
             echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . $i['stats']['or_steps'];
         }
         if ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0) {
-            echo '<span class="inline-block"><span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>' . ( $i['stats']['min_steps']!=$i['stats']['max_steps'] ? $i['stats']['min_steps'].'-'.$i['stats']['max_steps'] : $i['stats']['min_steps'] ).'</span>';
+            echo '<span class="inline-block"><span class="icon-block-sm"><i class="far fa-shoe-prints rotate90"></i></span>' . ( $i['stats']['min_steps']!=$i['stats']['max_steps'] ? $i['stats']['min_steps'].'-'.$i['stats']['max_steps'] : $i['stats']['min_steps'] ).'</span>';
         }
     }
     if (isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
