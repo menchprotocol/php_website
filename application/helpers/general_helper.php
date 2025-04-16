@@ -437,7 +437,7 @@ function view_tree($i)
             echo '<span class="icon-block-sm"><i class="far fa-sitemap"></i></span>' . $i['stats']['all_steps'];
         }
         if ($i['idea_level'] > 0 || $i['stats']['max_level']>0) {
-            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . $i['idea_level'].'|'.$i['stats']['max_level'];
+            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . $i['idea_level'].'/'.$i['stats']['max_level'];
         }
         if ($i['stats']['or_steps'] > 0) {
             echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . $i['stats']['or_steps'];

@@ -1511,7 +1511,6 @@ class Links extends CIdea_cache
     {
 
         $i['idea_level'] = $idea_level;
-        $idea_level++;
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $single_choice = in_array($i['ideatype'], $this->config->item('playerids___33331'));
         $is_required = count($this->Links->read(array(
@@ -1533,6 +1532,7 @@ class Links extends CIdea_cache
             'or_steps' => ($input__selection && count($total_next) ? 1 : 0),
         );
         $i['idea_next'] = array();
+        $idea_level++;
 
         //Append Total Discoveries if any:
         $sub_counter = $this->Links->read(array(
