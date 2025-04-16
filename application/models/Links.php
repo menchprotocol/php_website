@@ -1349,7 +1349,7 @@ class Links extends CIdea_cache
     }
 
 
-    function history($i, $playerid, $idea_level = 0)
+    function history($i, $playerid, $current_level = 0)
     {
 
         unset($i['ideaexternal']);
@@ -1371,9 +1371,9 @@ class Links extends CIdea_cache
         $i['uploaded_media'] = array();
         $i['user_idea_discovered'] = array();
         $i['user_written_response'] = array();
-        $i['idea_level'] = $idea_level;
+        $i['current_level'] = $current_level;
         $i['idea_next'] = array();
-        $idea_level++;
+        $current_level++;
 
         //Append media if any:
         foreach ($this->Links->read(array(
@@ -1449,7 +1449,7 @@ class Links extends CIdea_cache
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC')) as $next_i) {
-                array_push($i['idea_next'], $this->Links->history($next_i, $playerid, $idea_level));
+                array_push($i['idea_next'], $this->Links->history($next_i, $playerid, $current_level));
             }
         }
 
@@ -1458,16 +1458,16 @@ class Links extends CIdea_cache
 
     }
 
-    function historyidea_discovered($i, $playerid, $idea_level = 0)
+    function historyidea_discovered($i, $playerid, $current_level = 0)
     {
 
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $input__text = in_array($i['ideatype'], $this->config->item('playerids___43002'));
-        $i['idea_level'] = $idea_level;
+        $i['current_level'] = $current_level;
         $i['idea_next'] = array();
         $i['user_idea_discovered'] = array();
         $i['user_written_response'] = array();
-        $idea_level++;
+        $current_level++;
 
         //Append Discovery if any:
         foreach ($this->Links->read(array(
@@ -1498,7 +1498,7 @@ class Links extends CIdea_cache
                 'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
                 'linkidealeft' => $i['ideaid'],
             ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'))) as $next_i) {
-                array_push($i['idea_next'], $this->Links->historyidea_discovered($next_i, $playerid, $idea_level));
+                array_push($i['idea_next'], $this->Links->historyidea_discovered($next_i, $playerid, $current_level));
             }
         }
 
@@ -1507,10 +1507,10 @@ class Links extends CIdea_cache
 
     }
 
-    function flat($i, $idea_level = 0)
+    function flat($i, $current_level = 0, $previous_input__selection = false)
     {
 
-        $i['idea_level'] = $idea_level;
+        $i['current_level'] = $current_level;
         $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
         $single_choice = in_array($i['ideatype'], $this->config->item('playerids___33331'));
         $is_required = count($this->Links->read(array(
@@ -1523,16 +1523,19 @@ class Links extends CIdea_cache
             'linkidealeft' => $i['ideaid'],
         ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'), '*', null, false);
 
+        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
+        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
         $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
         $i['stats'] = array(
-            'max_level' => $idea_level,
+            'max_level' => $current_level,
             'all_steps' => 1,
-            'min_steps' => ($input__selection ? ($is_required ? 1 : 0) : count($total_next)), //Can be improved later...
-            'max_steps' => ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)),
-            'or_steps' => ($input__selection && count($total_next) ? 1 : 0),
+            'min_steps' => $min_steps,
+            'max_steps' => $max_steps,
+            'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
+            'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
         );
         $i['idea_next'] = array();
-        $idea_level++;
+        $current_level++;
 
         //Append Total Discoveries if any:
         $sub_counter = $this->Links->read(array(
@@ -1544,13 +1547,14 @@ class Links extends CIdea_cache
 
         foreach ($total_next as $next_i) {
 
-            $result_i = $this->Links->flat($next_i, $idea_level);
+            $result_i = $this->Links->flat($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
             array_push($i['idea_next'], $result_i);
 
 
             $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
             $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
-            $i['stats']['or_steps'] += $result_i['stats']['or_steps'];
+            $i['stats']['min_choices'] += $result_i['stats']['min_choices'];
+            $i['stats']['max_choices'] += $result_i['stats']['max_choices'];
 
             if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
                 $i['stats']['max_level'] = $result_i['stats']['max_level'];
@@ -1566,7 +1570,7 @@ class Links extends CIdea_cache
     }
 
 
-    function progress($playerid, $i, $idea_level = 0, $loop_breaker_ids = array())
+    function progress($playerid, $i, $current_level = 0, $loop_breaker_ids = array())
     {
 
         if (count($loop_breaker_ids) > 0 && in_array($i['ideaid'], $loop_breaker_ids)) {
@@ -1578,7 +1582,7 @@ class Links extends CIdea_cache
             return false;
         }
 
-        $idea_level++;
+        $current_level++;
         array_push($loop_breaker_ids, intval($i['ideaid']));
 
         //Count completed:
@@ -1611,7 +1615,7 @@ class Links extends CIdea_cache
             ), array('linkidearight')) as $expansion_in) {
 
                 //Fetch recursive:
-                $progress = $this->Links->progress($playerid, $expansion_in, $idea_level, $loop_breaker_ids);
+                $progress = $this->Links->progress($playerid, $expansion_in, $current_level, $loop_breaker_ids);
 
                 if (!$progress && !count($this->Links->read(array(
                         'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -1648,7 +1652,7 @@ class Links extends CIdea_cache
             }
         }
 
-        if ($idea_level == 1) {
+        if ($current_level == 1) {
 
             /*
              *

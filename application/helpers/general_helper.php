@@ -437,14 +437,14 @@ function view_tree($i)
         if ($i['stats']['all_steps'] > 0) {
             echo '<span class="icon-block-sm"><i class="far fa-sitemap"></i></span>' . $i['stats']['all_steps'];
         }
-        if ($i['idea_level'] > 0 || $i['stats']['max_level']>0) {
-            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . $i['idea_level'].'/'.$i['stats']['max_level'];
+        if ($i['current_level'] > 0 || $i['stats']['max_level']>0) {
+            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . $i['current_level'].'/'.$i['stats']['max_level'];
         }
-        if ($i['stats']['or_steps'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . $i['stats']['or_steps'];
+        if ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0) {
+            echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . ( $i['stats']['min_choices']>0 && $i['stats']['min_choices']!=$i['stats']['max_choices'] ? $i['stats']['min_choices'].'-' : '' ).$i['stats']['max_choices'];
         }
         if ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-stairs"></i></span>' . ( $i['stats']['min_steps']!=$i['stats']['max_steps'] ? $i['stats']['min_steps'].'-'.$i['stats']['max_steps'] : $i['stats']['min_steps'] );
+            echo '<span class="icon-block-sm"><i class="far fa-stairs"></i></span>' . ( $i['stats']['min_steps']!=$i['stats']['max_steps'] ? $i['stats']['min_steps'].'-' : '' ).$i['stats']['max_steps'];
         }
     }
     if (isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
