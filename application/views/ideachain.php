@@ -32,6 +32,15 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
         //Nodes
         echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a target="_blank" href="'.view_app_link(4341).'?linkplayertype=4250,4251&linkvoid=0" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
     } elseif($playerid1==31770){
+
+        //Legend
+        echo '<div class="row">';
+        echo '<div class="col-3 appender_32292"><i class="far fa-rotate-left"></i></div>';
+        echo '<div class="col-3 appender_4486"><i class="far arrow-right-long"></i></div>';
+        echo '<div class="col-3 appender_13550"><i class="far arrow-left-long"></i></div>';
+        echo '<div class="col-3 appender_31777"><i class="far fa-rotate-right"></i></div>';
+        echo '</div>';
+
         //Links
         echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a target="_blank" href="'.view_app_link(4341).'?linkvoid=0" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="javascript:void(0)" onclick="$(\'.headlines\').toggleClass(\'hidden\')" class="grey">' . $m1['m__title'] . '</a>:</span></div>';
     }
