@@ -104,7 +104,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
     if($playerid1==28956){
         //Legend of how nodes connect:
-        echo '<table class="table table-sm maxout center" style="width: 100%; table-layout: fixed; margin-bottom: 21px; margin-top: -144px;"><tr>';
+        echo '<table class="table table-sm maxout center" style="width: 100%; table-layout: fixed; margin-bottom: 21px; margin-top: -144px; font-size:1.4em;"><tr>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
         echo '<td style="width: 16.66%; text-align: center;" class="appender_32292"><i class="fas fa-rotate-left"></i></td>';
@@ -114,8 +114,8 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
         echo '</tr><tr>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;" class="appender_13550"><i class="fas fa-arrow-right-long"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;" class="appender_31777"><i class="fas fa-arrow-left-long"></i></td>';
+        echo '<td style="width: 16.66%; text-align: center;" class="appender_13550"><i class="fas fa-arrow-right"></i></td>';
+        echo '<td style="width: 16.66%; text-align: center;" class="appender_31777"><i class="fas fa-arrow-left"></i></td>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
         echo '</tr></table>';
