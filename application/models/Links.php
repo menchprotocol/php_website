@@ -191,35 +191,35 @@ class Links extends CIdea_cache
         $idea_join = false;
         if (in_array('linkidealeft', $joins_objects)) {
             $idea_join = true;
-            $this->db->join('nodeideas', 'linkidealeft=ideaid', 'left');
+            $this->db->join('cacheideas', 'linkidealeft=ideaid', 'left');
         } elseif (in_array('linkidearight', $joins_objects)) {
             $idea_join = true;
-            $this->db->join('nodeideas', 'linkidearight=ideaid', 'left');
+            $this->db->join('cacheideas', 'linkidearight=ideaid', 'left');
         } elseif (in_array('linkideaid', $joins_objects)) {
             $idea_join = true;
-            $this->db->join('nodeideas', 'linkid=ideaid', 'left');
+            $this->db->join('cacheideas', 'linkid=ideaid', 'left');
         }
 
         //PLAYER JOIN?
         $player_join = false;
         if (in_array('linkplayerup', $joins_objects)) {
             $player_join = true;
-            $this->db->join('nodeplayers', 'linkplayerup=playerid', 'left');
+            $this->db->join('cacheplayers', 'linkplayerup=playerid', 'left');
         } elseif (in_array('linkplayerdown', $joins_objects)) {
             $player_join = true;
-            $this->db->join('nodeplayers', 'linkplayerdown=playerid', 'left');
+            $this->db->join('cacheplayers', 'linkplayerdown=playerid', 'left');
         } elseif (in_array('linkplayertype', $joins_objects)) {
             $player_join = true;
-            $this->db->join('nodeplayers', 'linkplayertype=playerid', 'left');
+            $this->db->join('cacheplayers', 'linkplayertype=playerid', 'left');
         } elseif (in_array('linkplayercreator', $joins_objects)) {
             $player_join = true;
-            $this->db->join('nodeplayers', 'linkplayercreator=playerid', 'left');
+            $this->db->join('cacheplayers', 'linkplayercreator=playerid', 'left');
         } elseif (in_array('linkplayerdomain', $joins_objects)) {
             $player_join = true;
-            $this->db->join('nodeplayers', 'linkplayerdomain=playerid', 'left');
+            $this->db->join('cacheplayers', 'linkplayerdomain=playerid', 'left');
         } elseif (in_array('linkplayerid', $joins_objects)) {
             $player_join = true;
-            $this->db->join('nodeplayers', 'linkid=playerid', 'left');
+            $this->db->join('cacheplayers', 'linkid=playerid', 'left');
         }
 
         $link_void_found = false;

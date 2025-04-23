@@ -71,7 +71,7 @@ class Players extends CIdea_cache
 
         //Add to cache:
         if (!count($this->Players->read(array('playerid' => $new_x['linkid'])))) {
-            $this->db->insert('nodeplayers', $update_data);
+            $this->db->insert('cacheplayers', $update_data);
         }
 
 
@@ -96,7 +96,7 @@ class Players extends CIdea_cache
 
         //Fetch the target Players:
         $this->db->select($select);
-        $this->db->from('nodeplayers');
+        $this->db->from('cacheplayers');
         foreach ($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -189,7 +189,7 @@ class Players extends CIdea_cache
 
             //Update:
             $this->db->where('playerid', $linkid);
-            $this->db->update('nodeplayers', $update_columns);
+            $this->db->update('cacheplayers', $update_columns);
             $affected_rows = $this->db->affected_rows();
 
             if ($must_sync_found) {
@@ -261,7 +261,7 @@ class Players extends CIdea_cache
 
         if ($x_adjusted) {
             //Remove from Table:
-            $this->db->query("DELETE FROM nodeplayers WHERE playerid = " . $playerid . ";");
+            $this->db->query("DELETE FROM cacheplayers WHERE playerid = " . $playerid . ";");
 
             //Update Search Index?
             update_algolia(12277, $playerid);

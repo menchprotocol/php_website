@@ -44,7 +44,7 @@ class Ideas extends CIdea_cache
         $add_fields['ideaid'] = $new_x['linkid'];
         $add_fields['ideacache'] = ideacache($add_fields['ideaid'], $add_fields['ideatext']);
         if (!count($this->Ideas->read(array('ideaid' => $add_fields['ideaid'])))) {
-            $this->db->insert('nodeideas', $add_fields);
+            $this->db->insert('cacheideas', $add_fields);
         }
 
         //Update Search Index:
@@ -96,7 +96,7 @@ class Ideas extends CIdea_cache
 
         //The basic fetcher for Ideas
         $this->db->select($select);
-        $this->db->from('nodeideas');
+        $this->db->from('cacheideas');
 
         foreach ($query_filters as $key => $value) {
             $this->db->where($key, $value);
@@ -192,7 +192,7 @@ class Ideas extends CIdea_cache
 
             //Update:
             $this->db->where('ideaid', $linkid);
-            $this->db->update('nodeideas', $update_columns);
+            $this->db->update('cacheideas', $update_columns);
             $affected_rows = $this->db->affected_rows();
 
             if ($must_sync_found) {
@@ -251,7 +251,7 @@ class Ideas extends CIdea_cache
 
         if ($x_adjusted) {
             //Remove from Table:
-            $this->db->query("DELETE FROM nodeideas WHERE ideaid = " . $ideaid . ";");
+            $this->db->query("DELETE FROM cacheideas WHERE ideaid = " . $ideaid . ";");
 
             //Update Search Index?
             update_algolia(12273, $ideaid);
