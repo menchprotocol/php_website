@@ -1539,16 +1539,20 @@ label {
     margin:5px 0 0 5px;
 }
 
-.appender_32292 i {
+.appender_32292 i,
+.appender_32292{
     color: #007BFF !important;
 }
-.appender_13550 i {
+.appender_13550 i,
+.appender_13550{
     color: #28A745 !important;
 }
-.appender_4486 i {
+.appender_4486 i,
+.appender_4486{
     color: #FFD700 !important;
 }
-.appender_31777 i {
+.appender_31777 i,
+.appender_31777 {
     color: #FF4136 !important;
 }
 
@@ -2477,7 +2481,10 @@ input.form-control {
     padding-bottom:0 !important;
 }
 .card_cover .large_cover i{
-    font-size:5.5em !important;
+    font-size:8em !important;
+}
+.card_cover .medium_cover i{
+    font-size:3em !important;
 }
 .card_cover .large_title{
     font-size: 1.3em;

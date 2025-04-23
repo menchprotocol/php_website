@@ -152,7 +152,7 @@ class Ideas extends CIdea_cache
             $must_sync_found = false;
             $skip_sync_ledger = array('ideacache', 'ideaexternal', 'ideanumber', 'ideatype');
             $must_sync_ledger = array(
-                'ideatext' => 4736,
+                'ideatext' => 4736, //Idea Text
                 'ideahashtag' => 32337,
             );
 

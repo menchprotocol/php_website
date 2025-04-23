@@ -236,9 +236,7 @@ $routes_file = fopen($routes_location, "w+") or die("Unable to open file: " . $r
 fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
-
 echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached ' . $total_nodes . ' Players (' . $biggest_player_handle . ' had ' . $biggest_player_count . ') & removed ' . ($memory_detected ? reset_cache($linkplayercreator) : 'NONE') . '.</div><div></div></div>';
-
 
 //Show:
 echo '<div>' . $memory_location . ':</div>';

@@ -80,6 +80,10 @@ class Controller extends CI_Controller
         $this->load(14565);
     }
 
+    function passthrough($newhandle) {
+        redirect($newhandle, 'location', 301);
+    }
+
     function load($app_playerid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0)
     {
 

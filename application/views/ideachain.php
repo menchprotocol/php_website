@@ -1,166 +1,432 @@
+<style>
+    .container {
+        margin-left: 8px;
+        max-width: calc(100% - 16px) !important;
+    }
+    td{
+        overflow: hidden;
+    }
+</style>
 <?php
 
-$playerhandle = (isset($_GET['playerhandle']) ? $_GET['playerhandle'] : null);
-$ideahashtag = (!$playerhandle && isset($_GET['ideahashtag']) ? $_GET['ideahashtag'] : null);
-$players___11035 = $this->config->item('players___11035'); //Encyclopedia
-$players___42263 = $this->config->item('players___42263'); //Link Groups
+//Construct filters based on GET variables:
+$query_filters = array();
+$joined_by = array();
 
-if ($playerhandle) {
+//We have a special OR filter when combined with playerhandle & ideahashtag
+$input_e = (isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) > 0);
+$focus_e = false;
+$input_i = (isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) > 0);
+$focus_i = false;
+
+if ($input_e) {
     foreach ($this->Players->read(array(
-        'LOWER(playerhandle)' => strtolower($playerhandle),
-    )) as $e) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $playerhandle . '"><span class="icon-block">' . view_cover($e['playercover']) . '</span> ' . $e['playertext'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
+    )) as $player_found) {
+        $focus_e = $player_found;
+        $_GET['playerhandle'] = $player_found['playerhandle'];
     }
-} elseif ($ideahashtag) {
+    if (!$focus_e) {
+        //Invalid input!
+        $input_e = false;
+    }
+}
+
+if ($input_i) {
     foreach ($this->Ideas->read(array(
-        'LOWER(ideahashtag)' => strtolower($ideahashtag),
-    )) as $i) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 33286) . $ideahashtag . '">' . view_idea_title($i, true) . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
+    )) as $idea_found) {
+        $focus_i = $idea_found;
+        $_GET['ideahashtag'] = $idea_found['ideahashtag'];
+    }
+    if (!$focus_i) {
+        //Invalid input!
+        $input_i = false;
     }
 }
 
-//Misc Stats, if any:
-echo '<div class="center hideIfEmpty"></div>';
+$any_ideaplayer_set = $input_i || $input_e;
 
-foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
-    if($playerid1==1309754){
-        echo '<div class="mid-text-line compact-midline"><span class="hidden headlines">' . $m1['m__cover'] . ' <a target="_blank" href="'.view_app_link(4341).'?linkvoid=1" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . '</span></div>';
-        //Void Links
-        continue;
-    } elseif($playerid1==28956){
-        //Nodes
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span class="hidden headlines"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype=4250,4251&linkvoid=0" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> ' . $m1['m__title'] . ':</span></div>';
-    } elseif($playerid1==31770){
-
-        //Links
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span class="hidden headlines"><a target="_blank" href="'.view_app_link(4341).'?linkvoid=0" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> <a href="javascript:void(0)" onclick="$(\'.headlines\').toggleClass(\'hidden\')" class="grey">' . $m1['m__title'] . '</a>:</span></div>';
+if (isset($_GET['linkplayercreator']) && strlen($_GET['linkplayercreator']) > 0) {
+    if (substr_count($_GET['linkplayercreator'], ',') > 0) {
+        //This is multiple:
+        $query_filters['( linkplayercreator IN (' . $_GET['linkplayercreator'] . '))'] = null;
+    } elseif (intval($_GET['linkplayercreator']) > 0) {
+        $query_filters['linkplayercreator'] = $_GET['linkplayercreator'];
     }
-
-    echo '<div class="row justify-content list-covers">';
-
-    foreach ($this->config->item('players___' . $playerid1) as $playerid2 => $m2) {
-
-        $is_link = $playerid2 != 12273 && $playerid2 != 12274;
-
-        echo '<div class="card_cover no-padding col-6">';
-        echo '<div class="card_frame dropdown_d' . $playerid1 . ' dropdown_' . $playerid2 . '">';
-
-        echo '<div class="card_header" title="' . $m2['m__message'] . '" playerid="' . $playerid2 . '">';
-        echo '<div class="large_cover appender_'.$playerid2.'">' . $m2['m__cover'] . '</div>';
-        echo '<div class="main__title large_title"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype='.join(',',( $is_link ? $this->config->item('playerids___' . $playerid2) : array(( $playerid2==12273 ? 4250 : 4251 )) )).'&linkvoid=0" class="card_count_' . $playerid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title" title="@' . $playerid2 . ' @' . $m2['m__handle'] . '"><a href="'.view_memory(42903,42902).$m2['m__handle'].'">' . $m2['m__title'] . '</a></div>';
-        echo '</div>';
-
-        if ($is_link) {
-            echo '<table class="table card_subcat card_subcat_' . $playerid2 . ' hidden" style="width:100%; margin-top:13px;">'; //table-striped
-            $focus_link_group = 0;
-            $player_pinned = player_pinned($playerid2, true);
-            if (!$player_pinned || !is_array($this->config->item('players___' . $player_pinned)) || !count($this->config->item('players___' . $player_pinned))) {
-                continue;
-            }
-            foreach ($this->config->item('players___' . $player_pinned) as $playerid3 => $m3) {
-
-                //Determine link group:
-                foreach(array_intersect($m3['m__following'], $this->config->item('playerids___42263')) as $headline_link){
-                    if ($headline_link > 0){
-                        if(!$focus_link_group || $focus_link_group!=$headline_link){
-
-                            echo '<tr class="mobile-shrink headlines hidden">';
-                            echo '<td class="center" colspan="2" title="@'.$players___42263[$headline_link]['m__handle'].'">';
-
-                            //Search for sibling if Has Family:
-                            if(in_array($playerid2, $this->config->item('playerids___42792'))){
-                                foreach($this->Links->read(array(
-                                    'linkplayerdown' => $headline_link,
-                                    'linkplayertype' => 41011, //Family
-                                ), array('linkplayerup'), 1) as $sibling){
-                                    echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="grey">'.$sibling['playertext'].'</b></a><b class="grey"> & </b></b>';
-                                }
-                            }
-
-                            echo '<a href="'.view_memory(42903,42902).$players___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$players___42263[$headline_link]['m__cover'].'</span><b class="grey">'.$players___42263[$headline_link]['m__title'].'</a>:</b>';
-
-                            echo '</td>';
-                            echo '</tr>';
-                            $focus_link_group = $headline_link;
-                        }
-                    }
-                }
+}
 
 
-                echo '<tr class="main__title mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
-                echo '<td style="text-align: left;" title="@' . $playerid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype='.  $playerid3 . '&linkvoid=0" class="card_count_' . $playerid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
-                echo '</tr>';
-
-            }
-            echo '</table>';
-        }
-
-        echo '</div>';
-        echo '</div>';
-
+if (isset($_GET['linkplayerup']) && strlen($_GET['linkplayerup']) > 0) {
+    if (substr_count($_GET['linkplayerup'], ',') > 0) {
+        //This is multiple:
+        $query_filters['( linkplayerup IN (' . $_GET['linkplayerup'] . '))'] = null;
+    } elseif (intval($_GET['linkplayerup']) > 0) {
+        $query_filters['linkplayerup'] = $_GET['linkplayerup'];
     }
+}
 
-    if($playerid1==28956){
-        //Legend of how nodes connect:
-        echo '<table class="table table-sm maxout center" style="width: 100%; table-layout: fixed; margin-bottom: 21px; margin-top: -144px; font-size:1.4em;"><tr>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;" class="appender_32292"><i class="fas fa-rotate-left"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;" class="appender_4486"><i class="fas fa-rotate-right"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '</tr><tr>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;" class="appender_13550"><i class="fas fa-arrow-right"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;" class="appender_31777"><i class="fas fa-arrow-left"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '</tr></table>';
+if (isset($_GET['linkplayerdown']) && strlen($_GET['linkplayerdown']) > 0) {
+    if (substr_count($_GET['linkplayerdown'], ',') > 0) {
+        //This is multiple:
+        $query_filters['( linkplayerdown IN (' . $_GET['linkplayerdown'] . '))'] = null;
+    } elseif (intval($_GET['linkplayerdown']) > 0) {
+        $query_filters['linkplayerdown'] = $_GET['linkplayerdown'];
     }
+}
 
-    echo '</div>';
+if (isset($_GET['linkidealeft']) && strlen($_GET['linkidealeft']) > 0) {
+    if (substr_count($_GET['linkidealeft'], ',') > 0) {
+        //This is multiple:
+        $query_filters['( linkidealeft IN (' . $_GET['linkidealeft'] . '))'] = null;
+    } elseif (intval($_GET['linkidealeft']) > 0) {
+        $query_filters['linkidealeft'] = $_GET['linkidealeft'];
+    }
+}
+
+if (isset($_GET['linkidearight']) && strlen($_GET['linkidearight']) > 0) {
+    if (substr_count($_GET['linkidearight'], ',') > 0) {
+        //This is multiple:
+        $query_filters['( linkidearight IN (' . $_GET['linkidearight'] . '))'] = null;
+    } elseif (intval($_GET['linkidearight']) > 0) {
+        $query_filters['linkidearight'] = $_GET['linkidearight'];
+    }
+}
+
+if (isset($_GET['linkid']) && strlen($_GET['linkid']) > 0) {
+    if (substr_count($_GET['linkid'], ',') > 0) {
+        //This is multiple:
+        $query_filters['( linkid IN (' . $_GET['linkid'] . '))'] = null;
+    } elseif (intval($_GET['linkid']) > 0) {
+        $query_filters['linkid'] = $_GET['linkid'];
+    }
+}
+
+if ($input_e) {
+    //We need to look for both following/follower
+    $query_filters['( linkplayerdown = ' . $focus_e['playerid'] . ' OR linkplayerup = ' . $focus_e['playerid'] . ' OR linkplayercreator = ' . $focus_e['playerid'] . ' )'] = null;
+}
+
+
+if ($input_i) {
+    //We need to look for both following/follower
+    $query_filters['( linkidearight = ' . $focus_i['ideaid'] . ' OR linkidealeft = ' . $focus_i['ideaid'] . ')'] = null;
 
 }
+
+if (isset($_GET['any_linkid']) && strlen($_GET['any_linkid']) > 0) {
+    //We need to look for both following/follower
+    if (substr_count($_GET['any_linkid'], ',') > 0) {
+        //This is multiple:
+        $query_filters['linkid IN (' . $_GET['any_linkid'] . ')'] = null;
+    } elseif (intval($_GET['any_linkid']) > 0) {
+        $query_filters['linkid'] = $_GET['any_linkid'];
+    }
+}
+
+if (isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0) {
+    $query_filters['LOWER(linktext) LIKE'] = '%' . $_GET['linktext_find'] . '%';
+}
+
+if (isset($_GET['linkvoid']) && is_numeric($_GET['linkvoid'])) {
+    if ($_GET['linkvoid'] == 1) {
+        $query_filters['linkvoid >'] = 0;
+    } else {
+        $query_filters['linkvoid'] = $_GET['linkvoid'];
+    }
+}
+
+
+if (isset($_GET['start_range']) && string_is_date($_GET['start_range'])) {
+    $query_filters['linktime >='] = $_GET['start_range'] . (strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '');
+}
+if (isset($_GET['end_range']) && string_is_date($_GET['end_range'])) {
+    $query_filters['linktime <='] = $_GET['end_range'] . (strlen($_GET['end_range']) <= 10 ? ' 23:59:59' : '');
+}
+
+
+//Fetch unique Link types recorded so far:
+$ini_filter = array();
+foreach ($query_filters as $key => $value) {
+    $ini_filter[$key] = $value;
+}
+
+$query_filters['linkvoid >='] = 0;
+
+
+//Make sure its a valid type considering other filters:
+if (isset($_GET['linkplayertype'])) {
+
+    if (substr_count($_GET['linkplayertype'], ',') > 0) {
+        //This is multiple:
+        $query_filters['linkplayertype IN (' . $_GET['linkplayertype'] . ')'] = null;
+    } elseif (intval($_GET['linkplayertype']) > 0) {
+        $query_filters['linkplayertype'] = intval($_GET['linkplayertype']);
+    }
+
+}
+
+$has_filters = (count($_GET) > 0);
+
+$players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
 ?>
 
 <script>
 
-    function link_graph() {
-        $.post("/controller/link_graph", {
-            playerhandle: '<?= $playerhandle ?>',
-            ideahashtag: '<?= $ideahashtag ?>',
+    var $win = $(window);
+    var x_filters = '<?= serialize(count($query_filters) > 0 ? $query_filters : array()) ?>';
+    var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
+    var linktext_find = '<?= (isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 ? $_GET['linktext_find'] : '') ?>';
+    var linktext_replace = '<?= (isset($_GET['linktext_replace']) && strlen($_GET['linktext_replace']) > 0 ? $_GET['linktext_replace'] : '') ?>';
+    var has_more_links = 1; //We always assume this?
+    var loading_in_progress = false;
+    var current_page = 0;
+
+    function link_load() {
+
+        if (!has_more_links || loading_in_progress) {
+            return false;
+        }
+
+        loading_in_progress = true;
+        current_page++;
+        console.log('Now loading page ' + current_page);
+
+        //Show spinner:
+        $('.load_message').removeClass('hidden');
+        $('.random_message').text(js_randomize_text(12694));
+
+        //Load report based on input fields:
+        $.post("/controller/link_load", {
+            x_filters: x_filters,
+            x_joined_by: x_joined_by,
+            linktext_find: linktext_find,
+            linktext_replace: linktext_replace,
+            current_page: current_page,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
-
-            $.each(data.return_array, function (key, val) {
-                var formatted = String(val).replace(/(.)(?=(\d{3})+$)/g, '$1,');
-                if (formatted != $(".card_count_" + key + ":first").text()) {
-                    $(".card_count_" + key).removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
+            loading_in_progress = false;
+            $('.load_message').addClass('hidden');
+            if (!data.status) {
+                //Show Error:
+                alert(data.message);
+            } else {
+                //Load Report:
+                $('#table_menchledger tr:last').after(data.message);
+                if (data.overall_stats.length) {
+                    $('.overall_stats').html(data.overall_stats);
                 }
-            });
-
+                has_more_links = data.has_more_links;
+                setup_popover();
+                load_at_bottom(); //Load more?
+            }
         });
+
+    }
+
+    function load_at_bottom(){
+        if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
+            link_load();
+        }
     }
 
     $(document).ready(function () {
 
-        //Load initial stats:
-        link_graph();
+        //Load first page of Links:
+        link_load();
 
-        //Watch for click to expand:
-        $(".card_header").click(function (e) {
-            $('.card_subcat_' + $(this).attr('playerid')).toggleClass('hidden');
-        });
-
-        //Update stats live:
         $(function () {
-            setInterval(link_graph, js_players___6404[33292]['m__message']);
+            $win.scroll(function () {
+                load_at_bottom();
+            });
         });
 
     });
 
+
 </script>
+
+<?php
+
+
+
+echo '<div class="show-filter ' . ($has_filters && 0 ? '' : 'hidden') . '">';
+echo '<form action="" method="GET">';
+
+
+echo '<table class="table table-sm maxout" style="vertical-align: top;"><tr>';
+
+//ANY IDEA
+echo '<td><div>';
+echo '<span class="mini-header">ANY IDEA:</span>';
+echo '<input type="text" name="ideahashtag" value="' . ($input_i ? $_GET['ideahashtag'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="linkidealeft" value="' . ((isset($_GET['linkidealeft'])) ? $_GET['linkidealeft'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="linkidearight" value="' . ((isset($_GET['linkidearight'])) ? $_GET['linkidearight'] : '') . '" class="form-control border"></td>';
+
+echo '</tr></table>';
+
+
+echo '<table class="table table-sm maxout"><tr>';
+
+//ANY SOURCE
+echo '<td><div>';
+echo '<span class="mini-header">ANY SOURCE:</span>';
+echo '<input type="text" name="playerhandle" value="' . ($input_e ? $_GET['playerhandle'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="linkplayercreator" value="' . ((isset($_GET['linkplayercreator'])) ? $_GET['linkplayercreator'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="linkplayerup" value="' . ((isset($_GET['linkplayerup'])) ? $_GET['linkplayerup'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="linkplayerdown" value="' . ((isset($_GET['linkplayerdown'])) ? $_GET['linkplayerdown'] : '') . '" class="form-control border"></td>';
+
+echo '</tr></table>';
+
+
+echo '<table class="table table-sm maxout"><tr>';
+
+//ANY DISCOVERY
+echo '<td><div>';
+echo '<span class="mini-header">ANY Link:</span>';
+echo '<input type="text" name="any_linkid" value="' . ((isset($_GET['any_linkid'])) ? $_GET['any_linkid'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+echo '<td><span class="mini-header">Link ID:</span><input type="text" name="linkid" value="' . ((isset($_GET['linkid'])) ? $_GET['linkid'] : '') . '" class="form-control border"></td>';
+
+echo '</tr></table>';
+
+
+echo '<table class="table table-sm maxout"><tr>';
+
+
+//Search
+echo '<td><div>';
+echo '<span class="mini-header">Link MESSAGE SEARCH:</span>';
+echo '<input type="text" name="linktext_find" value="' . ((isset($_GET['linktext_find'])) ? $_GET['linktext_find'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+if (isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0 && player_session(12701)) {
+    //Give Option to Replace:
+    echo '<td><div>';
+    echo '<span class="mini-header">Link MESSAGE REPLACE:</span>';
+    echo '<input type="text" name="linktext_replace" value="' . ((isset($_GET['linktext_replace'])) ? $_GET['linktext_replace'] : '') . '" class="form-control border">';
+    echo '</div></td>';
+}
+
+
+//DISCOVERY Type Filter Groups
+echo '<td></td>';
+
+
+//Filters UI:
+echo '<table class="table table-sm maxout"><tr>';
+
+echo '<td valign="top" style="vertical-align: top;"><div>';
+echo '<span class="mini-header">START DATE:</span>';
+echo '<input type="date" class="form-control border" name="start_range" value="' . (isset($_GET['start_range']) ? $_GET['start_range'] : '') . '">';
+echo '</div></td>';
+
+echo '<td valign="top" style="vertical-align: top;"><div>';
+echo '<span class="mini-header">END DATE:</span>';
+echo '<input type="date" class="form-control border" name="end_range" value="' . (isset($_GET['end_range']) ? $_GET['end_range'] : '') . '">';
+echo '</div></td>';
+
+
+echo '<td>';
+echo '<div>';
+echo '<span class="mini-header">Link TYPE:</span>';
+
+if (isset($_GET['linkplayertype']) && substr_count($_GET['linkplayertype'], ',') > 0) {
+
+    //We have multiple predefined Link types, so we must use a text input:
+    echo '<input type="text" name="linkplayertype" value="' . $_GET['linkplayertype'] . '" class="form-control border">';
+
+} else {
+
+    echo '<select class="form-control border" name="linkplayertype" id="linkplayertype" class="border" style="width: 100% !important;">';
+
+    if (isset($_GET['linkplayercreator'])) {
+
+        //Fetch details for this member:
+        $all_x_count = 0;
+        $select_ui = '';
+        foreach ($this->Links->read($ini_filter, array('linkplayertype'), 0, 0, player_sort(), 'COUNT(linkplayertype) as total_count, playertext, linkplayertype', 'linkplayertype, playertext') as $x) {
+            //Echo drop down:
+            $select_ui .= '<option value="' . $x['linkplayertype'] . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype'] == $x['linkplayertype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
+            $all_x_count += $x['total_count'];
+        }
+
+        //Now that we know the total show:
+        echo '<option value="0">All (' . number_format($all_x_count, 0) . ')</option>';
+        echo $select_ui;
+
+    } else {
+
+        //Load all fast:
+        echo '<option value="0">ALL Link TYPES</option>';
+        foreach ($this->config->item('players___4593') /* DISCOVERY Types */ as $playerid => $m) {
+            //Echo drop down:
+            echo '<option value="' . $playerid . '" ' . ((isset($_GET['linkplayertype']) && $_GET['linkplayertype'] == $playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+        }
+
+    }
+
+    echo '</select>';
+
+
+}
+
+echo '</div>';
+
+echo '</td>';
+
+echo '</tr></table>';
+
+
+echo '</tr></table>';
+
+
+echo '<input type="submit" class="btn" value="Apply" />';
+
+if ($has_filters) {
+    echo ' &nbsp;<a href="' . view_app_link(4341) . '" style="font-size: 0.8em;">Remove Filters</a>';
+}
+
+echo '</form>';
+echo '</div>';
+
+//AJAX Would load content here:
+echo '<div class="overall_stats"></div>';
+
+echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="icon-block-xs">' . $players___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $players___11035[12707]['m__title'] . '</a>' : '').'</div>';
+
+
+//Table Header
+$row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 3px solid #999999; border-bottom: 0px solid #FFFFFF !important;">';
+$row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 3px solid #999999;">';
+foreach ($this->config->item('players___4341') as $linkplayertype => $m) {
+    if($linkplayertype==4362 || in_array($linkplayertype, $this->config->item('playerids___6160'))){
+        //Player Cover:
+        $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
+    } else {
+        //Else:
+        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+    }
+    if(in_array($linkplayertype, $this->config->item('playerids___1579727'))) {
+        //Second row:
+        $row2 .= $column_value;
+    } else {
+        $row1 .= $column_value;
+    }
+}
+$row1 .= '</tr>';
+$row2 .= '</tr>';
+echo '<table id="table_menchledger" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
+
+//Table Data
+echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';
