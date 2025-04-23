@@ -69,7 +69,7 @@ class Links extends CIdea_cache
         $insert_link_id = ( isset($add_fields['linkid']) ? $add_fields['linkid'] : 0 );
         $add_fields['linkprevious'] = linkprevious();
         $add_fields['linkhash'] = linkhash($add_fields);
-        $this->db->insert('menchledger', $add_fields);
+        $this->db->insert('ideachain', $add_fields);
 
         //Fetch inserted id:
         $add_fields['linkid'] = ( $insert_link_id>0 ? $insert_link_id : $this->db->insert_id() );
@@ -185,7 +185,7 @@ class Links extends CIdea_cache
         }
 
         $this->db->select($select);
-        $this->db->from('menchledger');
+        $this->db->from('ideachain');
 
         //IDEA JOIN?
         $idea_join = false;
@@ -318,7 +318,7 @@ class Links extends CIdea_cache
 
             if ($new_x['linkid'] > 0) {
                 //Void Old Link:
-                $this->db->query("UPDATE menchledger SET unchain = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
+                $this->db->query("UPDATE ideachain SET unchain = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
                 return $this->db->affected_rows();
             }
 
@@ -373,7 +373,7 @@ class Links extends CIdea_cache
             }
 
             //Void this Link:
-            $this->db->query("UPDATE menchledger SET unchain = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
+            $this->db->query("UPDATE ideachain SET unchain = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
             return $this->db->affected_rows();
 
         }

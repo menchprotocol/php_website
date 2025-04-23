@@ -6,7 +6,7 @@ $previous = linkprevious($starting_id);
 
 
 if($starting_id==0){
-    $this->db->query("UPDATE menchledger SET linkprevious = NULL, linkhash = NULL WHERE ((linkhash IS NOT NULL) OR (linkprevious IS NOT NULL)) AND linkid >" . $starting_id . ";");
+    $this->db->query("UPDATE ideachain SET linkprevious = NULL, linkhash = NULL WHERE ((linkhash IS NOT NULL) OR (linkprevious IS NOT NULL)) AND linkid >" . $starting_id . ";");
 }
 
 $count = 0;
@@ -23,7 +23,7 @@ foreach ($this->Links->read(array(
     $hash = linkhash($x);
     if($x['linkhash']!=$hash || $must_fix){
         if($starting_id!=1){
-            $this->db->query("UPDATE menchledger SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
+            $this->db->query("UPDATE ideachain SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
         }
         $fixed++;
     }
