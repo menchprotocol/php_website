@@ -17,9 +17,9 @@ if(in_array($website_id, $this->config->item('playerids___30984'))){
 $primary_i = array();
 $secondary_idea_list = array();
 foreach($this->Links->read(array(
-    'linkplayertype' => 34513, //Pinned
-    'linkplayerup' => $website_id,
-), array('linkidearight'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $this_i){
+    'chainplayertype' => 34513, //Pinned
+    'chainplayerup' => $website_id,
+), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
     } else {
@@ -70,9 +70,9 @@ foreach($this->Players->scissor($website_id, 14903) as $player_item) {
     //Any Followers?
     $info_item = null;
     foreach($this->Links->read(array(
-        'linkplayerup' => $player_item['playerid'],
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-        ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC')) as $info_element) {
+        'chainplayerup' => $player_item['playerid'],
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['playercover'], FILTER_VALIDATE_URL)){
@@ -82,8 +82,8 @@ foreach($this->Players->scissor($website_id, 14903) as $player_item) {
             $info_item .= '<div class="info_box_cover">'.view_cover($info_element['playercover']).'</div>';
             $info_item .= '<div class="info_box_title main__title">'.$info_element['playertext'].'</div>';
         }
-        if(strlen($info_element['linktext'])){
-            $info_item .= '<div class="info_box_message">'.$info_element['linktext'].'</div>';
+        if(strlen($info_element['chaintext'])){
+            $info_item .= '<div class="info_box_message">'.$info_element['chaintext'].'</div>';
         }
         $info_item .= '</div>';
         $info_item .= '</div>';
@@ -91,8 +91,8 @@ foreach($this->Players->scissor($website_id, 14903) as $player_item) {
 
     if($info_item){
         $messages .= '<h2 class="info-head">'.$player_item['playertext'].'</h2>';
-        if(strlen($player_item['linktext'])){
-            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$player_item['linktext'].'</div>';
+        if(strlen($player_item['chaintext'])){
+            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$player_item['chaintext'].'</div>';
         }
         $messages .= '<div class="row justify-content" style="margin-bottom: 89px; padding: 34px 0;">'.$info_item.'</div>';
     }
@@ -131,20 +131,20 @@ $social_ui = null;
 $players___14870 = $this->config->item('players___14870'); //Website Partner
 foreach($this->config->item('players___14036') as $playerid => $m){
     foreach($this->Links->read(array(
-        'linkplayerup' => $playerid,
-        'linkplayerdown' => $website_id,
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        'chainplayerup' => $playerid,
+        'chainplayerdown' => $website_id,
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         ), array(), 0, 0) as $social_link){
 
         //Determine link type:
-        if(filter_var($social_link['linktext'], FILTER_VALIDATE_URL) && view_url_clean($social_link['linktext'])!=view_url_clean($players___14870[$website_id]['m__message'])){
+        if(filter_var($social_link['chaintext'], FILTER_VALIDATE_URL) && view_url_clean($social_link['chaintext'])!=view_url_clean($players___14870[$website_id]['m__message'])){
             //We made sure not the current website:
-            $social_url = $social_link['linktext'];
-        } elseif(filter_var($social_link['linktext'], FILTER_VALIDATE_EMAIL)){
-            $social_url = 'mailto:'.$social_link['linktext'];
-        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['linktext'])) > 5){
+            $social_url = $social_link['chaintext'];
+        } elseif(filter_var($social_link['chaintext'], FILTER_VALIDATE_EMAIL)){
+            $social_url = 'mailto:'.$social_link['chaintext'];
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['chaintext'])) > 5){
             //Phone
-            $social_url = phone_href($playerid, $social_link['linktext']);
+            $social_url = phone_href($playerid, $social_link['chaintext']);
         } else {
             //Unknown!
             continue;

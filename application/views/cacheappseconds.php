@@ -12,14 +12,14 @@ foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
 
     //Fetch Last Cache
     $latest_cache = $this->Links->read(array(
-        'linkplayerdomain' => website_setting(0),
-        'linkplayertype' => 44179, //Triggered
-        'linkplayerup' => 14599, //Cache App
-        'linkplayerdown' => $app_playerid,
-        ), array(), 1, 0, array('linktime' => 'DESC'));
+        'chainplayerdomain' => website_setting(0),
+        'chainplayertype' => 44179, //Triggered
+        'chainplayerup' => 14599, //Cache App
+        'chainplayerdown' => $app_playerid,
+        ), array(), 1, 0, array('chaintime' => 'DESC'));
 
     echo '<div class="col-8 main__title"><span class="icon-block">'.$cache_apps['m__cover'].'</span>'.$cache_apps['m__title'].'</div>';
-    echo '<div class="col-4"><i class="far fa-history"></i> '.( count($latest_cache) ? view_time_difference($latest_cache[0]['linktime']) : 'NEVER' ).'</div>';
+    echo '<div class="col-4"><i class="far fa-history"></i> '.( count($latest_cache) ? view_time_difference($latest_cache[0]['chaintime']) : 'NEVER' ).'</div>';
 
     if(count($latest_cache)){
         $found_cache++;

@@ -9,14 +9,14 @@ $_GET['disable_algolia'] = true;
 
 $missing_ideas = array();
 foreach($this->Ideas->read(array(), 0) as $idea_fix){
-    if(!count($this->Links->read(array('linkid' => $idea_fix['ideaid'])))){
+    if(!count($this->Links->read(array('chainid' => $idea_fix['ideaid'])))){
         array_push($missing_ideas, $idea_fix);
         //$this->Ideas->create($idea_fix);
     }
 }
 $missing_players = array();
 foreach($this->Players->read(array(), 0) as $player_fix){
-    if(!count($this->Links->read(array('linkid' => $player_fix['playerid'])))){
+    if(!count($this->Links->read(array('chainid' => $player_fix['playerid'])))){
         array_push($missing_players, $player_fix);
         //$this->Players->create($player_fix);
     }
@@ -55,25 +55,25 @@ echo '<hr />Edited ['.$edited.']['.$edited_players.']<br />';
 
 echo '<table>';
 foreach($this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
 ), array(), 0, 0, array(
-    'linkplayertype' => 'ASC',
-    'linkplayerup' => 'ASC',
-    'linkplayerdown' => 'ASC',
-    'linkidearight' => 'ASC',
-    'linkidealeft' => 'ASC',
-    'linktext' => 'ASC',
-    'linkid' => 'DESC',
+    'chainplayertype' => 'ASC',
+    'chainplayerup' => 'ASC',
+    'chainplayerdown' => 'ASC',
+    'chainidearight' => 'ASC',
+    'chainidealeft' => 'ASC',
+    'chaintext' => 'ASC',
+    'chainid' => 'DESC',
 )) as $discover){
 
     $count++;
-    if($previous && $previous['linkplayertype']==$discover['linkplayertype'] && $previous['linkplayerup']==$discover['linkplayerup'] && $previous['linkplayerdown']==$discover['linkplayerdown'] && $previous['linkidearight']==$discover['linkidearight'] && $previous['linkidealeft']==$discover['linkidealeft'] && trim(strtolower($previous['linktext']))==trim(strtolower($discover['linktext']))){
+    if($previous && $previous['chainplayertype']==$discover['chainplayertype'] && $previous['chainplayerup']==$discover['chainplayerup'] && $previous['chainplayerdown']==$discover['chainplayerdown'] && $previous['chainidearight']==$discover['chainidearight'] && $previous['chainidealeft']==$discover['chainidealeft'] && trim(strtolower($previous['chaintext']))==trim(strtolower($discover['chaintext']))){
 
         $duplicate++;
-        echo '<tr><td>'.$previous['linkplayercreator'].'</td><td>'.$players___4593[$previous['linkplayertype']]['m__title'].'</td><td>'.$previous['linktime'].'</td><td>'.$previous['linkplayercreator'].'</td><td>'.$previous['linkplayerup'].'</td><td>'.$previous['linkplayerdown'].'</td><td>'.$previous['linkidearight'].'</td><td>'.$previous['linkidealeft'].'</td><td>'.$previous['linktext'].'</td><td>'.$previous['linkplayertype'].'</td><td>'.$previous['linkplayertype'].'</td></tr>';
-        echo '<tr style="background-color: #CCC;"><td>'.$discover['linkplayercreator'].'</td><td>'.$players___4593[$discover['linkplayertype']]['m__title'].'</td><td>'.$discover['linktime'].'</td><td>'.$discover['linkplayercreator'].'</td><td>'.$discover['linkplayerup'].'</td><td>'.$discover['linkplayerdown'].'</td><td>'.$discover['linkidearight'].'</td><td>'.$discover['linkidealeft'].'</td><td>'.$discover['linktext'].'</td><td>'.$discover['linkplayertype'].'</td><td>'.$discover['linkplayertype'].'</td></tr>';
+        echo '<tr><td>'.$previous['chainplayercreator'].'</td><td>'.$players___4593[$previous['chainplayertype']]['m__title'].'</td><td>'.$previous['chaintime'].'</td><td>'.$previous['chainplayercreator'].'</td><td>'.$previous['chainplayerup'].'</td><td>'.$previous['chainplayerdown'].'</td><td>'.$previous['chainidearight'].'</td><td>'.$previous['chainidealeft'].'</td><td>'.$previous['chaintext'].'</td><td>'.$previous['chainplayertype'].'</td><td>'.$previous['chainplayertype'].'</td></tr>';
+        echo '<tr style="background-color: #CCC;"><td>'.$discover['chainplayercreator'].'</td><td>'.$players___4593[$discover['chainplayertype']]['m__title'].'</td><td>'.$discover['chaintime'].'</td><td>'.$discover['chainplayercreator'].'</td><td>'.$discover['chainplayerup'].'</td><td>'.$discover['chainplayerdown'].'</td><td>'.$discover['chainidearight'].'</td><td>'.$discover['chainidealeft'].'</td><td>'.$discover['chaintext'].'</td><td>'.$discover['chainplayertype'].'</td><td>'.$discover['chainplayertype'].'</td></tr>';
 
-        $this->db->query("DELETE FROM ideachain WHERE linkid=".$discover['linkid'].";");
+        $this->db->query("DELETE FROM ideachain WHERE chainid=".$discover['chainid'].";");
 
     }
 
@@ -123,23 +123,23 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
         )) as $player_append){
             $completed = 0;
             foreach($this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                'linkidealeft' => $is[0]['ideaid'],
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainidealeft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
                 if(!count($this->Links->read(array(
-                    'linkplayerup' => $player_append['playerid'],
-                    'linkplayerdown' => $x['linkplayercreator'],
-                    'linktext' => $x['linktext'],
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayerup' => $player_append['playerid'],
+                    'chainplayerdown' => $x['chainplayercreator'],
+                    'chaintext' => $x['chaintext'],
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                     )))){
                     //Increment Player link:
                     $completed++;
                     $this->Links->create(array(
-                        'linkplayercreator' => ($player_session ? $player_session['playerid'] : $x['linkplayercreator']),
-                        'linkplayerup' => $player_append['playerid'],
-                        'linkplayerdown' => $x['linkplayercreator'],
-                        'linktext' => $x['linktext'],
-                        'linkplayertype' => 4230,
+                        'chainplayercreator' => ($player_session ? $player_session['playerid'] : $x['chainplayercreator']),
+                        'chainplayerup' => $player_append['playerid'],
+                        'chainplayerdown' => $x['chainplayercreator'],
+                        'chaintext' => $x['chaintext'],
+                        'chainplayertype' => 4230,
                     ));
                 }
             }

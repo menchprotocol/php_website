@@ -5,9 +5,9 @@ $community_pills = '';
 foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Players->read(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Players->scissor(website_setting(0), 13207)) as $player_item) {
 
     foreach ($this->Links->read(array(
-        'linkplayerup' => $player_item['playerid'],
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-    ), array('linkplayerdown'), 0, 0, array('linknumber' => 'ASC', 'linkid' => 'DESC')) as $x) {
+        'chainplayerup' => $player_item['playerid'],
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC')) as $x) {
 
         $total_count = players_query(42373, $x['playerid'], 0, false);
 
@@ -22,7 +22,7 @@ foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this-
             $community_pills .= view_pill(12274, $x['playerid'], $total_count, array(
                 'm__cover' => view_cover($x['playercover'], true),
                 'm__title' => $x['playertext'],
-                'm__message' => $x['linktext'],
+                'm__message' => $x['chaintext'],
                 'm__handle' => $x['playerhandle'],
             ), $ui);
 

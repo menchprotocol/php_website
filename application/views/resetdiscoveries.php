@@ -13,8 +13,8 @@ if (!isset($_GET['confirm'])) {
 
     //Fetch their current progress links:
     $progress_x = $this->Links->read(array(
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        'linkplayercreator' => $focus_e['playerid'],
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'chainplayercreator' => $focus_e['playerid'],
     ), array(), 0);
 
     if (count($progress_x) > 0) {
@@ -24,7 +24,7 @@ if (!isset($_GET['confirm'])) {
 
         //Delete all progressions:
         foreach ($progress_x as $progress_x) {
-            $this->Links->delete($progress_x['linkid'], $focus_e['playerid']);
+            $this->Links->delete($progress_x['chainid'], $focus_e['playerid']);
         }
 
     } else {

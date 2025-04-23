@@ -7,10 +7,10 @@ $players___6287 = $this->config->item('players___6287'); //APP
 //Start with Featured Apps
 echo '<div class="row">';
 foreach ($this->Links->read(array(
-    'linkplayerup' => 30841, //Featured Apps
-    'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-), array('linkplayerdown'), 0, 0, player_sort()) as $app) {
+    'chainplayerup' => 30841, //Featured Apps
+    'chainplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+), array('chainplayerdown'), 0, 0, player_sort()) as $app) {
 
     if (!in_array($app['playerid'], $this->config->item('playerids___6287')) || in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?
         continue;
@@ -31,10 +31,10 @@ echo '</div>';
 //List Regular Apps:
 echo '<div class="row">';
 foreach ($this->Links->read(array(
-    'linkplayerup' => 6287, //Featured Apps
-    'linkplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-), array('linkplayerdown'), 0, 0, player_sort()) as $app) {
+    'chainplayerup' => 6287, //Featured Apps
+    'chainplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+), array('chainplayerdown'), 0, 0, player_sort()) as $app) {
 
     if (in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?
         continue;

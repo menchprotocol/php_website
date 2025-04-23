@@ -2,28 +2,28 @@
 
 boost_power();
 $starting_id = 1; //Will only check currrent hash to ensure its all valid...
-$previous = linkprevious($starting_id);
+$previous = chainprevious($starting_id);
 
 
 if($starting_id==0){
-    $this->db->query("UPDATE ideachain SET linkprevious = NULL, linkhash = NULL WHERE ((linkhash IS NOT NULL) OR (linkprevious IS NOT NULL)) AND linkid >" . $starting_id . ";");
+    $this->db->query("UPDATE ideachain SET chainprevious = NULL, chainhash = NULL WHERE ((chainhash IS NOT NULL) OR (chainprevious IS NOT NULL)) AND chainid >" . $starting_id . ";");
 }
 
 $count = 0;
 $fixed = 0;
 foreach ($this->Links->read(array(
-    'linkid >' => $starting_id,
+    'chainid >' => $starting_id,
     'unchain >=' => 0
-), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
+), array(), 0, 0, array('chainid' => 'ASC')) as $x) {
     $must_fix = false;
-    if($x['linkprevious']!=$previous){
-        $x['linkprevious'] = $previous;
+    if($x['chainprevious']!=$previous){
+        $x['chainprevious'] = $previous;
         $must_fix = true;
     }
-    $hash = linkhash($x);
-    if($x['linkhash']!=$hash || $must_fix){
+    $hash = chainhash($x);
+    if($x['chainhash']!=$hash || $must_fix){
         if($starting_id!=1){
-            $this->db->query("UPDATE ideachain SET linkprevious = '" . $previous . "', linkhash = '" . $hash . "' WHERE linkid=" . $x['linkid'] . ";");
+            $this->db->query("UPDATE ideachain SET chainprevious = '" . $previous . "', chainhash = '" . $hash . "' WHERE chainid=" . $x['chainid'] . ";");
         }
         $fixed++;
     }

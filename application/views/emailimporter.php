@@ -16,26 +16,26 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             //echo $email.'<hr />';
 
             foreach($this->Links->read(array(
-                            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                'linkplayerup' => 3288, //Email
-                'linktext' => trim(strtolower($email)),
+                            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayerup' => 3288, //Email
+                'chaintext' => trim(strtolower($email)),
             )) as $player_data){
 
                 $found_emails++;
 
                 //Do we need to add?
                 if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Links->read(array(
-                                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                    'linkplayerup' => $_POST['import_playerid'],
-                    'linkplayerdown' => $player_data['linkplayerdown'],
+                                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayerup' => $_POST['import_playerid'],
+                    'chainplayerdown' => $player_data['chainplayerdown'],
                 )))){
 
                     $added_emails++;
                     $this->Links->create(array(
-                        'linkplayertype' => 4230,
-                        'linkplayercreator' => $player_session['playerid'],
-                        'linkplayerup' => $_POST['import_playerid'],
-                        'linkplayerdown' => $player_data['linkplayerdown'],
+                        'chainplayertype' => 4230,
+                        'chainplayercreator' => $player_session['playerid'],
+                        'chainplayerup' => $_POST['import_playerid'],
+                        'chainplayerdown' => $player_data['chainplayerdown'],
                     ));
 
                 }

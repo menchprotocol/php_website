@@ -1,8 +1,8 @@
 <?php
 
 $filters = array(
-    'linkplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
-    'linkplayerup' => 28199,
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
+    'chainplayerup' => 28199,
 );
 
 //Give it some extra time in case they are in Paypal making the payment
@@ -12,7 +12,7 @@ if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
     foreach($this->Ideas->read(array(
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     )) as $i){
-        $filters['linkidearight'] = $i['ideaid'];
+        $filters['chainidearight'] = $i['ideaid'];
         $buffer_time = 0;
     }
 }
@@ -21,40 +21,40 @@ $links_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds ideas:
-foreach($this->Links->read($filters, array('linkidearight'), 0) as $expires){
+foreach($this->Links->read($filters, array('chainidearight'), 0) as $expires){
 
     //Now go through everyone who idea_discovered this selection:
     foreach($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
-        'linkidealeft' => $expires['ideaid'],
-    ), array('linkplayercreator'), 0) as $x_progress){
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
+        'chainidealeft' => $expires['ideaid'],
+    ), array('chainplayercreator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
-            'linkidealeft' => $x_progress['linkidearight'],
-            'linkplayercreator' => $x_progress['playerid'],
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+            'chainidealeft' => $x_progress['chainidearight'],
+            'chainplayercreator' => $x_progress['playerid'],
         ));
-        $seconds_left = intval( intval( $expires['linktext']) + $buffer_time - (time() - strtotime($x_progress['linktime'])));
+        $seconds_left = intval( intval( $expires['chaintext']) + $buffer_time - (time() - strtotime($x_progress['chaintime'])));
 
-        if(!count($answer_completed) && intval( $expires['linktext'])>0 && $seconds_left <= 0){
+        if(!count($answer_completed) && intval( $expires['chaintext'])>0 && $seconds_left <= 0){
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
             foreach($this->Links->read(array(
-                            'linkplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
-                'linkidealeft' => $expires['ideaid'],
-                'linkplayercreator' => $x_progress['playerid'],
+                            'chainplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+                'chainidealeft' => $expires['ideaid'],
+                'chainplayercreator' => $x_progress['playerid'],
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->Links->delete($delete['linkid'], $player_session['playerid']); //Time Expired
+                $this->Links->delete($delete['chainid'], $player_session['playerid']); //Time Expired
 
             }
 
             if($deleted){
                 $links_deleted++;
-                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="'.view_memory(42903,42902).$x_progress['playerhandle'].'">'.$x_progress['playertext'].'</a>: '.$x_progress['linktime'].' ? '.$x_progress['linktext'].' / <a href="'.view_app_link(12722).'?linkid=' . $x_progress['linkid'] . '">'.$x_progress['linkid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['linktext']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['linktime'] ).' = '.$seconds_left.')</div>';
+                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="'.view_memory(42903,42902).$x_progress['playerhandle'].'">'.$x_progress['playertext'].'</a>: '.$x_progress['chaintime'].' ? '.$x_progress['chaintext'].' / <a href="'.view_app_link(12722).'?chainid=' . $x_progress['chainid'] . '">'.$x_progress['chainid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['chaintext']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['chaintime'] ).' = '.$seconds_left.')</div>';
             }
 
 
@@ -69,8 +69,8 @@ foreach($this->Links->read($filters, array('linkidearight'), 0) as $expires){
 
 echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
 
-if(isset($filters['linkidearight'])){
-    foreach($this->Ideas->read(array('ideaid' => $filters['linkidearight'])) as $i){
+if(isset($filters['chainidearight'])){
+    foreach($this->Ideas->read(array('ideaid' => $filters['chainidearight'])) as $i){
         //We were deleting a single item, redirect back:
         js_php_redirect(timelimit . phpview_memory(42903, 33286) . $i['ideahashtag'], 0);
     }

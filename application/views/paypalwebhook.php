@@ -39,30 +39,30 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
         if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
             //Paid:
-            $linkplayertype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
+            $chainplayertype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->Links->idea_discovered($linkplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
-                'linknumber' => intval($_POST['quantity']),
-                'linktext' => $_POST,
+            $completion_status = $this->Links->idea_discovered($chainplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+                'chainnumber' => intval($_POST['quantity']),
+                'chaintext' => $_POST,
             ));
 
         } else {
 
-            $linkplayertype = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
+            $chainplayertype = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
 
             //Find issued tickets:
             $original_payment = $this->Links->read(array(
-                'linkplayertype' => 26595,
-                'linkplayercreator' => $player_sessions[0]['playerid'],
-                'linkidealeft' => $next_is[0]['ideaid'],
+                'chainplayertype' => 26595,
+                'chainplayercreator' => $player_sessions[0]['playerid'],
+                'chainidealeft' => $next_is[0]['ideaid'],
             ));
 
             //Log Refund:
-            $completion_status = $this->Links->idea_discovered($linkplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
-                'linknumber' => (-1 * ( isset($original_payment[0]['linknumber']) ? $original_payment[0]['linknumber'] : 1 )),
-                'linktext' => $_POST,
-                'linkplayerdomain' => ( isset($original_payment[0]['linkplayerdomain']) && $original_payment[0]['linkplayerdomain']>0 ? $original_payment[0]['linkplayerdomain'] : 0 ),
+            $completion_status = $this->Links->idea_discovered($chainplayertype, $player_sessions[0]['playerid'], ( isset($target_is[0]['ideaid']) ? $target_is[0]['ideaid'] : 0 ), $next_is[0], array(), array(
+                'chainnumber' => (-1 * ( isset($original_payment[0]['chainnumber']) ? $original_payment[0]['chainnumber'] : 1 )),
+                'chaintext' => $_POST,
+                'chainplayerdomain' => ( isset($original_payment[0]['chainplayerdomain']) && $original_payment[0]['chainplayerdomain']>0 ? $original_payment[0]['chainplayerdomain'] : 0 ),
             ));
 
         }

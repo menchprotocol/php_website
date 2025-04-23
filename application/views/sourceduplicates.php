@@ -9,20 +9,20 @@ if(isset($_GET['playerhandle'])){
     $duplicates_found = array();
     foreach($this->Links->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-        ), array('linkplayerup'), 0) as $x) {
-        $linktext_md5 = substr(md5($x['linktext']), 0, 16);
-        if(!isset($main_index[$linktext_md5])){
-            $main_index[$linktext_md5] = array();
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        ), array('chainplayerup'), 0) as $x) {
+        $chaintext_md5 = substr(md5($x['chaintext']), 0, 16);
+        if(!isset($main_index[$chaintext_md5])){
+            $main_index[$chaintext_md5] = array();
         } else {
             //Found Duplicate!
-            if(!isset($duplicates_found[$linktext_md5])){
-                $duplicates_found[$linktext_md5] = $main_index[$linktext_md5];
+            if(!isset($duplicates_found[$chaintext_md5])){
+                $duplicates_found[$chaintext_md5] = $main_index[$chaintext_md5];
             }
-            array_push($duplicates_found[$linktext_md5], $x['linkplayerdown']);
+            array_push($duplicates_found[$chaintext_md5], $x['chainplayerdown']);
         }
 
-        array_push($main_index[$linktext_md5], $x['linkplayerdown']);
+        array_push($main_index[$chaintext_md5], $x['chainplayerdown']);
 
     }
 

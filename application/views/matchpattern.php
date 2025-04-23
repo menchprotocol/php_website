@@ -8,9 +8,9 @@ if (isset($_GET['ideahashtag'])) {
         echo '<h2>' . view_idea_title($i) . '</h2>';
 
         $preg_query = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkidearight' => $i['ideaid'],
-            'linkplayerup' => 26611,
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'chainidearight' => $i['ideaid'],
+            'chainplayerup' => 26611,
         ));
 
         if (count($preg_query)) {
@@ -18,22 +18,22 @@ if (isset($_GET['ideahashtag'])) {
             $responses = 0;
             $failed = 0;
 
-            echo '<p>Mismatches against [' . $preg_query[0]['linktext'] . '] are:</p>';
+            echo '<p>Mismatches against [' . $preg_query[0]['chaintext'] . '] are:</p>';
 
             foreach ($this->Links->read(array(
-                'linkplayertype' => 6144, //Written Response
-                'linkidealeft' => $i['ideaid'],
+                'chainplayertype' => 6144, //Written Response
+                'chainidealeft' => $i['ideaid'],
             ), array(), 0) as $x) {
                 $responses++;
-                if (!preg_match($preg_query[0]['linktext'], $x['linktext'])) {
+                if (!preg_match($preg_query[0]['chaintext'], $x['chaintext'])) {
                     $failed++;
                     if (isset($_GET['delete'])) {
-                        $this->Links->delete($x['linkid']);
+                        $this->Links->delete($x['chainid']);
                         echo 'Deleted! ';
                     } else {
                         echo 'Set ?delete=1? ';
                     }
-                    echo $x['linktext'] . '<hr />';
+                    echo $x['chaintext'] . '<hr />';
                 }
             }
 

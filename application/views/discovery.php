@@ -1,15 +1,15 @@
 <?php
 
 $players___11035 = $this->config->item('players___11035'); //Encyclopedia
-$linkplayercreator = ($player_session ? $player_session['playerid'] : 0);
-$target_ideahashtag = (count($target_i) && $linkplayercreator ? $target_i['ideahashtag'] : null);
+$chainplayercreator = ($player_session ? $player_session['playerid'] : 0);
+$target_ideahashtag = (count($target_i) && $chainplayercreator ? $target_i['ideahashtag'] : null);
 $at_starting_point = $target_ideahashtag==$focus_i['ideahashtag'];
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-if ($linkplayercreator && !$at_starting_point) {
+if ($chainplayercreator && !$at_starting_point) {
 
-    $previous = $this->Links->previousidea($linkplayercreator, $target_ideahashtag, $focus_i['ideaid']);
+    $previous = $this->Links->previousidea($chainplayercreator, $target_ideahashtag, $focus_i['ideaid']);
     if (count($previous)) {
 
         $nav_list = array();
@@ -26,9 +26,9 @@ if ($linkplayercreator && !$at_starting_point) {
 
             //Does this have a follower list?
             $query_subset = $this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
-                'linkidealeft' => $followings_i['ideaid'],
-            ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'), '*', null, true);
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
+                'chainidealeft' => $followings_i['ideaid'],
+            ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
             $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_ideahashtag . '/' . ($followings_i['ideahashtag'] == $target_ideahashtag ? 'start' : $followings_i['ideahashtag']) . '">' . view_idea_title($followings_i, true) . '</a>';
@@ -44,9 +44,9 @@ if ($linkplayercreator && !$at_starting_point) {
                 foreach ($query_subset as $idea_subset) {
 
                     if (count($this->Links->read(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'linkplayercreator' => $linkplayercreator,
-                        'linkidealeft' => $idea_subset['ideaid'],
+                        'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainplayercreator' => $chainplayercreator,
+                        'chainidealeft' => $idea_subset['ideaid'],
                     )))) {
                         $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_ideahashtag . '/' . $idea_subset['ideahashtag'] . '" class="dropdown-item ' . (in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '') . '">' . view_idea_title($idea_subset, true) . '</a>';
                     } else {
@@ -75,7 +75,7 @@ if ($breadcrum_content) {
 
 //Progress?
 if ($player_session) {
-    $progress = $this->Links->progress($linkplayercreator, $target_i);
+    $progress = $this->Links->progress($chainplayercreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
     if($target_completed && !in_array($focus_i['ideatype'], $this->config->item('playerids___43050'))){
@@ -95,10 +95,10 @@ if ($player_session) {
 $x_completes = array();
 if ($player_session) {
     $x_completes = $this->Links->read(array(
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        'linkplayercreator' => $linkplayercreator,
-        'linkidealeft' => $focus_i['ideaid'],
-    ), array('linkidearight'));
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'chainplayercreator' => $chainplayercreator,
+        'chainidealeft' => $focus_i['ideaid'],
+    ), array('chainidearight'));
 }
 
 

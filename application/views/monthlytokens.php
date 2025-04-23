@@ -5,33 +5,33 @@ $start_month = 01;
 
 echo '<table>';
 
-foreach ($this->config->item('players___14874') as $linkplayertype => $m) {
+foreach ($this->config->item('players___14874') as $chainplayertype => $m) {
 
-    if ($linkplayertype == 12273) {
+    if ($chainplayertype == 12273) {
 
         //IDEAS
         $unique = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
-        ), array('linkidearight'), 0, 0, array(), 'COUNT(linkid) as totals');
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
+        ), array('chainidearight'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif ($linkplayertype == 12274) {
+    } elseif ($chainplayertype == 12274) {
 
         //SOURCE
         $unique = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
-        ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
+        ), array('chainplayerdown'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif (in_array($linkplayertype, $this->config->item('playerids___42284'))) {
-
-        $unique = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___' . $linkplayertype)) . ')' => null,
-        ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
-
-    } elseif ($linkplayertype == 6255) {
+    } elseif (in_array($chainplayertype, $this->config->item('playerids___42284'))) {
 
         $unique = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___' . $chainplayertype)) . ')' => null,
+        ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+
+    } elseif ($chainplayertype == 6255) {
+
+        $unique = $this->Links->read(array(
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } else {
 
@@ -53,31 +53,31 @@ foreach ($this->config->item('players___14874') as $linkplayertype => $m) {
         $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i, 1, $start_year));
         $time_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i + 1, 1, $start_year));
 
-        if ($linkplayertype == 12273) {
+        if ($chainplayertype == 12273) {
 
             //IDEAS
             $query = $this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
-                'linktime >=' => $time_start,
-                'linktime <' => $time_end,
-            ), array('linkidearight'), 0, 0, array(), 'COUNT(linkid) as totals');
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
+                'chaintime >=' => $time_start,
+                'chaintime <' => $time_end,
+            ), array('chainidearight'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-        } elseif ($linkplayertype == 12274) {
+        } elseif ($chainplayertype == 12274) {
 
             //SOURCE
             $query = $this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //UNIQUE SOURCES
-                'linktime >=' => $time_start,
-                'linktime <' => $time_end,
-            ), array('linkplayerdown'), 0, 0, array(), 'COUNT(linkid) as totals');
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //UNIQUE SOURCES
+                'chaintime >=' => $time_start,
+                'chaintime <' => $time_end,
+            ), array('chainplayerdown'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-        } elseif ($linkplayertype == 6255) {
+        } elseif ($chainplayertype == 6255) {
 
             $query = $this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                'linktime >=' => $time_start,
-                'linktime <' => $time_end,
-            ), array(), 0, 0, array(), 'COUNT(linkid) as totals');
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chaintime >=' => $time_start,
+                'chaintime <' => $time_end,
+            ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
         }
 

@@ -30,7 +30,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
         continue;
     } elseif($playerid1==28956){
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span class="hidden headlines"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype=4250,4251&unchain=0" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span class="hidden headlines"><a target="_blank" href="'.view_app_link(4341).'?chainplayertype=4250,4251&unchain=0" class="grey card_count_' . $playerid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> ' . $m1['m__title'] . ':</span></div>';
     } elseif($playerid1==31770){
 
         //Links
@@ -48,7 +48,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
         echo '<div class="card_header" title="' . $m2['m__message'] . '" playerid="' . $playerid2 . '">';
         echo '<div class="'.( $is_link ? 'medium_cover' : 'large_cover' ).'">' . $m2['m__cover'] . '</div>';
-        echo '<div class="main__title large_title"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype='.join(',',( $is_link ? $this->config->item('playerids___' . $playerid2) : array(( $playerid2==12273 ? 4250 : 4251 )) )).'&unchain=0" class="card_count_' . $playerid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
+        echo '<div class="main__title large_title"><a target="_blank" href="'.view_app_link(4341).'?chainplayertype='.join(',',( $is_link ? $this->config->item('playerids___' . $playerid2) : array(( $playerid2==12273 ? 4250 : 4251 )) )).'&unchain=0" class="card_count_' . $playerid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
         echo '<div class="main__title large_title" title="@' . $playerid2 . ' @' . $m2['m__handle'] . '"><a href="'.view_memory(42903,42902).$m2['m__handle'].'">' . $m2['m__title'] . '</a></div>';
         echo '</div>';
 
@@ -72,9 +72,9 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
                             //Search for sibling if Has Family:
                             if(in_array($playerid2, $this->config->item('playerids___42792'))){
                                 foreach($this->Links->read(array(
-                                    'linkplayerdown' => $headline_link,
-                                    'linkplayertype' => 41011, //Family
-                                ), array('linkplayerup'), 1) as $sibling){
+                                    'chainplayerdown' => $headline_link,
+                                    'chainplayertype' => 41011, //Family
+                                ), array('chainplayerup'), 1) as $sibling){
                                     echo '<a href="'.view_memory(42903,42902).$sibling['playerhandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['playercover']).'</span><b class="grey">'.$sibling['playertext'].'</b></a><b class="grey"> & </b></b>';
                                 }
                             }
@@ -90,7 +90,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
 
                 echo '<tr class="main__title mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
-                echo '<td style="text-align: left;" title="@' . $playerid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype='.  $playerid3 . '&unchain=0" class="card_count_' . $playerid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
+                echo '<td style="text-align: left;" title="@' . $playerid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a target="_blank" href="'.view_app_link(4341).'?chainplayertype='.  $playerid3 . '&unchain=0" class="card_count_' . $playerid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
                 echo '</tr>';
 
             }

@@ -2,28 +2,28 @@
 
 //Auto unsnooze members who is time for them to get unsnoozed.
 
-foreach($this->config->item('players___28917') as $linkplayertype => $m) {
+foreach($this->config->item('players___28917') as $chainplayertype => $m) {
     if(isset($m['m__message']) && intval($m['m__message'])>0){
 
         $total_members = 0;
         $unsnooze_members = 0;
 
         foreach($this->Links->read(array(
-            'linkplayerup' => $linkplayertype,
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-        ), array('linkplayerdown'), 0) as $x) {
+            'chainplayerup' => $chainplayertype,
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        ), array('chainplayerdown'), 0) as $x) {
             $total_members++;
-            if((time()-strtotime($x['linktime']))>(86400*intval($m['m__message']))){
+            if((time()-strtotime($x['chaintime']))>(86400*intval($m['m__message']))){
 
                 //Remove from Snooze:
-                $this->Links->delete($x['linkid'], $x['linkplayercreator']);
+                $this->Links->delete($x['chainid'], $x['chainplayercreator']);
 
                 //Add to subscribers:
                 $this->Links->create(array(
-                    'linkplayertype' => 4230,
-                    'linkplayercreator' => $x['linkplayercreator'],
-                    'linkplayerup' => 4430, //Active Member
-                    'linkplayerdown' => $x['linkplayercreator'],
+                    'chainplayertype' => 4230,
+                    'chainplayercreator' => $x['chainplayercreator'],
+                    'chainplayerup' => 4430, //Active Member
+                    'chainplayerdown' => $x['chainplayercreator'],
                 ));
 
                 $unsnooze_members++;

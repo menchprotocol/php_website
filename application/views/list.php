@@ -39,26 +39,26 @@ foreach($idea_settings['query_string_filtered'] as $x){
     foreach($idea_settings['idea_column'] as $idea_var){
 
         $discoveries = $this->Links->read(array(
-            'linkidealeft' => $idea_var['ideaid'],
-            'linkplayercreator' => $x['playerid'],
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainidealeft' => $idea_var['ideaid'],
+            'chainplayercreator' => $x['playerid'],
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 ), array(), 1);
 
         if(count($discoveries)){
 
-            if($this_quantity<2 && intval($discoveries[0]['linknumber'])>=2){
-                $this_quantity = $discoveries[0]['linknumber'];
+            if($this_quantity<2 && intval($discoveries[0]['chainnumber'])>=2){
+                $this_quantity = $discoveries[0]['chainnumber'];
             }
 
 
         }
 
-        $idea_content .= '<td title="'.$x['playertext'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['linktext']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['linktext'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['linktext'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['linktext'].' ['.$discoveries[0]['linktime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['linktime'].']">✔️</span>' )  : '').'</td>';
+        $idea_content .= '<td title="'.$x['playertext'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chaintext']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chaintext'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chaintext'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chaintext'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
 
         if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Links->read(array(
-                    'linkplayerdown' => $x['playerid'],
-                    'linkplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayerdown' => $x['playerid'],
+                    'chainplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                 ))))){
             if(!isset($count_totals['i'][$idea_var['ideaid']])){
                 $count_totals['i'][$idea_var['ideaid']] = 0;
@@ -83,30 +83,30 @@ foreach($idea_settings['query_string_filtered'] as $x){
     foreach($idea_settings['player_column'] as $e){
 
         $require_writing = count($this->Links->read(array(
-            'linkplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
-            'linkplayerdown' => $e['playerid'],
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
+            'chainplayerdown' => $e['playerid'],
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                 )));
 
         $fetch_data = $this->Links->read(array(
-                    'linkplayerdown' => $x['playerid'],
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-            'linkplayerup' => $e['playerid'],
+                    'chainplayerdown' => $x['playerid'],
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayerup' => $e['playerid'],
         ));
 
         $message_clean = '';
         if(count($fetch_data)){
-            if(strlen($fetch_data[0]['linktext'])){
-                if(filter_var($fetch_data[0]['linktext'], FILTER_VALIDATE_URL)){
+            if(strlen($fetch_data[0]['chaintext'])){
+                if(filter_var($fetch_data[0]['chaintext'], FILTER_VALIDATE_URL)){
                     //Sheet Click to Expand
-                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['linktext'].'" target="_blank" title="Open in a New Window">'.view_cover($e['playercover'], '🔗️', ' ').'</a>';
+                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['chaintext'].'" target="_blank" title="Open in a New Window">'.view_cover($e['playercover'], '🔗️', ' ').'</a>';
                 } elseif(!isset($_GET['expand']) && in_array($e['playerid'], $this->config->item('playerids___40945'))){
                     //Sheet Click to Expand
-                    $message_clean = '<span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['linktext'].' [Click to Expand]">'.view_cover($e['playercover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['linkid'].' hidden">'.$fetch_data[0]['linktext'].'</span>';
+                    $message_clean = '<span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['chainid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['chainid'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['chaintext'].' [Click to Expand]">'.view_cover($e['playercover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['playerid'].'_'.$fetch_data[0]['chainid'].' hidden">'.$fetch_data[0]['chaintext'].'</span>';
                 } elseif(isset($_GET['expand']) || $require_writing){
-                    $message_clean = $fetch_data[0]['linktext'];
+                    $message_clean = $fetch_data[0]['chaintext'];
                 } else {
-                    $message_clean = '<span '.$underdot_class.' title="'.$fetch_data[0]['linktext'].'">'.view_cover($e['playercover'], '✔️', ' ').'</span>';
+                    $message_clean = '<span '.$underdot_class.' title="'.$fetch_data[0]['chaintext'].'">'.view_cover($e['playercover'], '✔️', ' ').'</span>';
                 }
             } else {
                 $message_clean = '<span class="icon-block-xs">'.view_cover($e['playercover'], '✔️', ' ').'</span>';
@@ -114,7 +114,7 @@ foreach($idea_settings['query_string_filtered'] as $x){
         }
 
 
-        $body_content .= '<td title="'.$x['playertext'].' x '.$e['playertext'].'" class="'.( player_session(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable linkplayercreator_'.$e['playerid'].'_'.$x['playerid'] : '' ).'" ideaid="0" playerid="'.$e['playerid'].'" linkplayercreator="'.$x['playerid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" linkid="'.$x['linkid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['playertext'].' x '.$e['playertext'].'" class="'.( player_session(10939) && !in_array($e['playerid'], $this->config->item('playerids___37695')) ? 'editable chainplayercreator_'.$e['playerid'].'_'.$x['playerid'] : '' ).'" ideaid="0" playerid="'.$e['playerid'].'" chainplayercreator="'.$x['playerid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" chainid="'.$x['chainid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
@@ -123,10 +123,10 @@ foreach($idea_settings['query_string_filtered'] as $x){
             }
 
             $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + ( count($this->Links->read(array(
-                                    'linkplayerdown' => $e['playerid'],
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                    'linkplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
-                ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['linktext'])) : 1 );
+                                    'chainplayerdown' => $e['playerid'],
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
+                ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['chaintext'])) : 1 );
         }
     }
 
@@ -151,16 +151,16 @@ foreach($idea_settings['player_column'] as $e){
 foreach($idea_settings['idea_column'] as $idea_var){
 
     $max_available = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linkidearight' => $idea_var['ideaid'],
-        'linkplayerup' => 26189,
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'chainidearight' => $idea_var['ideaid'],
+        'chainplayerup' => 26189,
     ), array(), 1);
     $current_x = ( isset($count_totals['i'][$idea_var['ideaid']]) ? $count_totals['i'][$idea_var['ideaid']] : 0 );
-    $max_limit = (count($max_available) && is_numeric($max_available[0]['linktext']) && intval($max_available[0]['linktext'])>0 ? intval($max_available[0]['linktext']) : 0 );
+    $max_limit = (count($max_available) && is_numeric($max_available[0]['chaintext']) && intval($max_available[0]['chaintext'])>0 ? intval($max_available[0]['chaintext']) : 0 );
 
     array_push($table_sortable, '#th_idea_'.$idea_var['ideaid']);
 
-    echo '<th id="th_idea_'.$idea_var['ideaid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$idea_var['ideahashtag'].'" target="_blank" title="Open in New Window">'.$players___4737[$idea_var['ideatype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($idea_var['linktext']) ? $idea_var['linktext'] : view_idea_title($idea_var, true) ).'</span></th>';
+    echo '<th id="th_idea_'.$idea_var['ideaid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$idea_var['ideahashtag'].'" target="_blank" title="Open in New Window">'.$players___4737[$idea_var['ideatype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($idea_var['chaintext']) ? $idea_var['chaintext'] : view_idea_title($idea_var, true) ).'</span></th>';
 
 }
 echo '</tr>';
@@ -251,9 +251,9 @@ echo '</table>';
             var written_answer = '';
             if(require_writing){
 
-                //return player_editor(playerid = 0, linkid = 0, $(this).attr('title'), $('.linkplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayercreator')).text());
+                //return player_editor(playerid = 0, chainid = 0, $(this).attr('title'), $('.chainplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('chainplayercreator')).text());
 
-                written_answer = prompt($(this).attr('title') + ":", $('.linkplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('linkplayercreator')).text());
+                written_answer = prompt($(this).attr('title') + ":", $('.chainplayercreator_' + $(this).attr('playerid') + '_' + $(this).attr('chainplayercreator')).text());
                 if(written_answer == null){
                     return false;
                 }
@@ -262,14 +262,14 @@ echo '</table>';
             var modify_data = {
                 ideaid: $(this).attr('ideaid'),
                 playerid: $(this).attr('playerid'),
-                linkplayercreator: $(this).attr('linkplayercreator'),
-                linkid: $(this).attr('linkid'),
+                chainplayercreator: $(this).attr('chainplayercreator'),
+                chainid: $(this).attr('chainid'),
                 require_writing: require_writing,
                 written_answer: written_answer,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             };
 
-            $('.linkplayercreator_' + modify_data['playerid'] + '_' + modify_data['linkplayercreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
+            $('.chainplayercreator_' + modify_data['playerid'] + '_' + modify_data['chainplayercreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
             $.post("/controller/player_toggle_follow", modify_data, function (data) {
@@ -277,7 +277,7 @@ echo '</table>';
                 if (data.status) {
 
                     //Update Player id IF existed previously:
-                    $('.linkplayercreator_' + modify_data['playerid'] + '_' + modify_data['linkplayercreator']).html(data.message);
+                    $('.chainplayercreator_' + modify_data['playerid'] + '_' + modify_data['chainplayercreator']).html(data.message);
 
                 } else {
                     alert('ERROR:' + data.message);

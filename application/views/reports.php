@@ -4,20 +4,20 @@
 $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 $last_x_days = 7;
 
-$linktime_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
-$linktime_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
+$chaintime_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
+$chaintime_end_timestamp = mktime(23, 59, 59, date("n"), date("j")-1, date("Y"));
 
-$linktime_start = date("Y-m-d H:i:s", $linktime_start_timestamp);
-$linktime_end = date("Y-m-d H:i:s", $linktime_end_timestamp);
+$chaintime_start = date("Y-m-d H:i:s", $chaintime_start_timestamp);
+$chaintime_end = date("Y-m-d H:i:s", $chaintime_end_timestamp);
 
 //Email Body
 $html_message = '<div class="line">Here is what happened in the past '.$last_x_days.' day'.search($last_x_days).':</div><br />';
-$subject = 'Report for the Week of '.date("M jS", $linktime_start_timestamp);
+$subject = 'Report for the Week of '.date("M jS", $chaintime_start_timestamp);
 
-foreach($this->config->item('players___31770') as $linkplayertype => $m) {
+foreach($this->config->item('players___31770') as $chainplayertype => $m) {
 
-    $unique = count_link_groups($linkplayertype, null, $linktime_end);
-    $this_week = count_link_groups($linkplayertype, $linktime_start, $linktime_end);
+    $unique = count_link_groups($chainplayertype, null, $chaintime_end);
+    $this_week = count_link_groups($chainplayertype, $chaintime_start, $chaintime_end);
     if(!$unique){
         continue;
     }
@@ -42,19 +42,19 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
 
     $subscriber_filters = array(
-        'linkplayerup' => 12114,
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        'chainplayerup' => 12114,
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
             );
 
     //Should we limit the scope?
     if($player_http_request){
-        $subscriber_filters['linkplayerdown'] = $player_session['playerid'];
+        $subscriber_filters['chainplayerdown'] = $player_session['playerid'];
     }
 
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Links->read($subscriber_filters, array('linkplayerdown')) as $subscribed_u){
+    foreach($this->Links->read($subscriber_filters, array('chainplayerdown')) as $subscribed_u){
 
         $this->Links->message($subscribed_u['playerid'], $subject, $html_message);
         $email_recipients++;

@@ -62,7 +62,7 @@ if(player_session()) {
         //See if any of the current sign-in attempts match this:
         foreach($current_sign_idea_attempts as $sign_idea_attempt){
             $all_match = true;
-            if(count($sign_i) && $sign_i[0]['ideaid'] != intval($sign_idea_attempt['linkidealeft'])){
+            if(count($sign_i) && $sign_i[0]['ideaid'] != intval($sign_idea_attempt['chainidealeft'])){
                 $all_match = false;
                 break;
             }

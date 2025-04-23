@@ -7,19 +7,19 @@ foreach($this->Ideas->read(array(
     echo '<h2>' . view_idea_title($i) . '</h2>';
 
     $preg_query = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linkidearight' => $i['ideaid'],
-        'linkplayerup' => 32103,
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'chainidearight' => $i['ideaid'],
+        'chainplayerup' => 32103,
     ));
 
 
     //See apply to Players:
     $apply_to = array();
     foreach($this->Links->read(array(
-            'linkplayertype' => 7545, //Following Add
-        'linkidearight' => $i['ideaid'],
-    ), array('linkplayerup')) as $this_tag){
-        array_push($apply_to, intval($this_tag['linkplayerup']));
+            'chainplayertype' => 7545, //Following Add
+        'chainidearight' => $i['ideaid'],
+    ), array('chainplayerup')) as $this_tag){
+        array_push($apply_to, intval($this_tag['chainplayerup']));
     }
 
 
@@ -33,42 +33,42 @@ foreach($this->Ideas->read(array(
             $updated = 0;
             $removed = 0;
 
-            echo '<p>SOURCES Applying against ['.$preg_query[0]['linktext'].'] results in:</p>';
+            echo '<p>SOURCES Applying against ['.$preg_query[0]['chaintext'].'] results in:</p>';
 
             foreach($this->Players->read(array(
                 'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
             )) as $e){
                 foreach($this->Links->read(array(
-                    'linkplayerup' => $e['playerid'],
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-                                ), array('linkplayerdown'), 0) as $x) {
+                    'chainplayerup' => $e['playerid'],
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                                ), array('chainplayerdown'), 0) as $x) {
 
                     $responses++;
-                    $new_form = preg_replace($preg_query[0]['linktext'], "", $x['linktext'] );
+                    $new_form = preg_replace($preg_query[0]['chaintext'], "", $x['chaintext'] );
                     $links_updated = 0;
                     $links_removed = 0;
-                    if(strlen($new_form) != strlen($x['linktext'])) {
+                    if(strlen($new_form) != strlen($x['chaintext'])) {
 
                         if(strlen($new_form)){
 
                             $updated++;
                             if(isset($_GET['update'])){
 
-                                $this->Links->update($x['linkid'], array(
-                                    'linktext' => $new_form,
-                                    'linkplayercreator' => $player_session['playerid'],
+                                $this->Links->update($x['chainid'], array(
+                                    'chaintext' => $new_form,
+                                    'chainplayercreator' => $player_session['playerid'],
                                 ));
 
                                 foreach($apply_to as $apply_playerid){
                                     foreach($this->Links->read(array(
-                                        'linkplayerup' => $apply_playerid,
-                                        'linkplayerdown' => $x['linkplayercreator'],
-                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                                        'chainplayerup' => $apply_playerid,
+                                        'chainplayerdown' => $x['chainplayercreator'],
+                                        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                                                         ), array(), 0) as $follow_appended) {
                                         $links_updated++;
-                                        $this->Links->update($follow_appended['linkid'], array(
-                                            'linktext' => $new_form,
-                                            'linkplayercreator' => $player_session['playerid'],
+                                        $this->Links->update($follow_appended['chainid'], array(
+                                            'chaintext' => $new_form,
+                                            'chainplayercreator' => $player_session['playerid'],
                                         ));
                                     }
                                 }
@@ -81,24 +81,24 @@ foreach($this->Ideas->read(array(
                             $removed++;
                             if(isset($_GET['update'])){
 
-                                $this->Links->delete($x['linkid']);
+                                $this->Links->delete($x['chainid']);
 
                                 //Also update follower link?
                                 foreach($apply_to as $apply_playerid){
                                     foreach($this->Links->read(array(
-                                        'linkplayerup' => $apply_playerid,
-                                        'linkplayerdown' => $x['linkplayercreator'],
-                                        'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                                        'chainplayerup' => $apply_playerid,
+                                        'chainplayerdown' => $x['chainplayercreator'],
+                                        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                                             ), array(), 0) as $follow_appended) {
                                         $links_removed++;
-                                        $this->Links->delete($follow_appended['linkid']);
+                                        $this->Links->delete($follow_appended['chainid']);
                                     }
                                 }
                                 echo 'Removed! ';
                             }
                         }
 
-                        echo 'Player ID '.$x['linkplayercreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                        echo 'Player ID '.$x['chainplayercreator'].' ['.$x['chaintext'].'] transforms to ['.$new_form.']<hr />';
                     }
                 }
             }
@@ -113,39 +113,39 @@ foreach($this->Ideas->read(array(
         $updated = 0;
         $removed = 0;
 
-        echo '<p>Applying against ['.$preg_query[0]['linktext'].'] results in:</p>';
+        echo '<p>Applying against ['.$preg_query[0]['chaintext'].'] results in:</p>';
 
         foreach($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'LENGTH(linktext)>0' => null,
-            'linkidealeft' => $i['ideaid'],
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'LENGTH(chaintext)>0' => null,
+            'chainidealeft' => $i['ideaid'],
         ), array(), 0) as $x) {
             $responses++;
-            $new_form = preg_replace($preg_query[0]['linktext'], "", $x['linktext'] );
+            $new_form = preg_replace($preg_query[0]['chaintext'], "", $x['chaintext'] );
             $links_updated = 0;
             $links_removed = 0;
-            if(strlen($new_form) != strlen($x['linktext'])) {
+            if(strlen($new_form) != strlen($x['chaintext'])) {
 
                 if(strlen($new_form)){
 
                     $updated++;
                     if(isset($_GET['update'])){
 
-                        $this->Links->update($x['linkid'], array(
-                            'linktext' => $new_form,
-                            'linkplayercreator' => $player_session['playerid'],
+                        $this->Links->update($x['chainid'], array(
+                            'chaintext' => $new_form,
+                            'chainplayercreator' => $player_session['playerid'],
                         ));
 
                         foreach($apply_to as $apply_playerid){
                             foreach($this->Links->read(array(
-                                'linkplayerup' => $apply_playerid,
-                                'linkplayerdown' => $x['linkplayercreator'],
-                                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                                'chainplayerup' => $apply_playerid,
+                                'chainplayerdown' => $x['chainplayercreator'],
+                                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_updated++;
-                                $this->Links->update($follow_appended['linkid'], array(
-                                    'linktext' => $new_form,
-                                    'linkplayercreator' => $player_session['playerid'],
+                                $this->Links->update($follow_appended['chainid'], array(
+                                    'chaintext' => $new_form,
+                                    'chainplayercreator' => $player_session['playerid'],
                                 ));
                             }
                         }
@@ -157,24 +157,24 @@ foreach($this->Ideas->read(array(
                     $removed++;
                     if(isset($_GET['update'])){
 
-                        $this->Links->delete($x['linkid']);
+                        $this->Links->delete($x['chainid']);
 
                         //Also update follower link?
                         foreach($apply_to as $apply_playerid){
                             foreach($this->Links->read(array(
-                                'linkplayerup' => $apply_playerid,
-                                'linkplayerdown' => $x['linkplayercreator'],
-                                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                                'chainplayerup' => $apply_playerid,
+                                'chainplayerdown' => $x['chainplayercreator'],
+                                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                                             ), array(), 0) as $follow_appended) {
                                 $links_removed++;
-                                $this->Links->delete($follow_appended['linkid']);
+                                $this->Links->delete($follow_appended['chainid']);
                             }
                         }
                         echo 'Removed! ';
                     }
                 }
 
-                echo 'Player ID '.$x['linkplayercreator'].' ['.$x['linktext'].'] transforms to ['.$new_form.']<hr />';
+                echo 'Player ID '.$x['chainplayercreator'].' ['.$x['chaintext'].'] transforms to ['.$new_form.']<hr />';
             }
         }
 

@@ -35,10 +35,10 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     echo '<h2>'.$es[0]['playertext'].' @'.$es[0]['playerhandle'].'</h2>';
 
     $idea_query = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
         'ideatype IN (' . join(',', $this->config->item('playerids___41055')) . ')' => null, //Payment Ideas
-        'linkplayerup' => $es[0]['playerid'],
-    ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
+        'chainplayerup' => $es[0]['playerid'],
+    ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'));
 
 
     //List all payment Ideas and their total earnings
@@ -57,62 +57,62 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $currencies = array();
 
         foreach($this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'linkidealeft' => $i['ideaid'],
-        ), array(), 0, 0, array('linkplayercreator' => 'ASC')) as $x){
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainidealeft' => $i['ideaid'],
+        ), array(), 0, 0, array('chainplayercreator' => 'ASC')) as $x){
 
-            $linktext = unserialize($x['linktext']);
+            $chaintext = unserialize($x['chaintext']);
             $total_links++;
             $this_quantity = 1;//Default assumption:
 
             //Player for quantity?
-            unset($linktext2);
+            unset($chaintext2);
 
-            if(isset($linktext2) && $linktext2['quantity']>1){
-                $this_quantity = $linktext2['quantity'];
-                $linktext['mc_fee'] = $linktext2['mc_fee'] * -1;
-            } elseif(isset($linktext['quantity']) && $linktext['quantity']>1){
-                $this_quantity = $linktext['quantity'];
-            } elseif(count($x2) && $x2['linknumber']>=2){
-                $this_quantity = $x2['linknumber'];
+            if(isset($chaintext2) && $chaintext2['quantity']>1){
+                $this_quantity = $chaintext2['quantity'];
+                $chaintext['mc_fee'] = $chaintext2['mc_fee'] * -1;
+            } elseif(isset($chaintext['quantity']) && $chaintext['quantity']>1){
+                $this_quantity = $chaintext['quantity'];
+            } elseif(count($x2) && $x2['chainnumber']>=2){
+                $this_quantity = $x2['chainnumber'];
             }
 
             //Count only if a TICKET idea:
-            if(!in_array($x['linkplayertype'], $this->config->item('playerids___30469'))){
-                $linktext['mc_gross'] = 0;
-                $linktext['mc_fee'] = 0;
-                $linktext['mc_currency'] = '';
-                $linktext['item_number'] = '';
-                $linktext['first_name'] = '';
-                $linktext['last_name'] = '';
+            if(!in_array($x['chainplayertype'], $this->config->item('playerids___30469'))){
+                $chaintext['mc_gross'] = 0;
+                $chaintext['mc_fee'] = 0;
+                $chaintext['mc_currency'] = '';
+                $chaintext['item_number'] = '';
+                $chaintext['first_name'] = '';
+                $chaintext['last_name'] = '';
             }
 
-            if(!isset($linktext['mc_currency'])){
+            if(!isset($chaintext['mc_currency'])){
                 continue;
             }
 
-            if(!isset($linktext['mc_fee'])){
-                $linktext['mc_fee'] = 0;
+            if(!isset($chaintext['mc_fee'])){
+                $chaintext['mc_fee'] = 0;
             }
 
-            $this_commission = $linktext['mc_gross']*$commission_rate;
-            $this_payout = $linktext['mc_gross']-$linktext['mc_fee']-$this_commission;
+            $this_commission = $chaintext['mc_gross']*$commission_rate;
+            $this_payout = $chaintext['mc_gross']-$chaintext['mc_fee']-$this_commission;
             if($this_payout < 0){
                 $this_quantity = $this_quantity * -1;
             }
 
             $total_sales += $this_quantity;
-            $total_paypal_fee += doubleval($linktext['mc_fee']);
-            $total_revenue += doubleval($linktext['mc_gross']);
-            if(!in_array($linktext['mc_currency'], $currencies) && strlen($linktext['mc_currency'])>0){
-                array_push($currencies, $linktext['mc_currency']);
+            $total_paypal_fee += doubleval($chaintext['mc_fee']);
+            $total_revenue += doubleval($chaintext['mc_gross']);
+            if(!in_array($chaintext['mc_currency'], $currencies) && strlen($chaintext['mc_currency'])>0){
+                array_push($currencies, $chaintext['mc_currency']);
             }
-            if(!in_array($linktext['mc_currency'], $gross_currencies) && strlen($linktext['mc_currency'])>0){
-                array_push($gross_currencies, $linktext['mc_currency']);
+            if(!in_array($chaintext['mc_currency'], $gross_currencies) && strlen($chaintext['mc_currency'])>0){
+                array_push($gross_currencies, $chaintext['mc_currency']);
             }
 
-            $item_parts = explode('-',$linktext['item_number']);
-            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['linkplayercreator'] );
+            $item_parts = explode('-',$chaintext['item_number']);
+            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['chainplayercreator'] );
             array_push($all_e, $this_e);
             $es = $this->Players->read(array(
                 'playerid' => $this_e,
@@ -120,28 +120,28 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
 
             $link_content .= '<tr class="link_columns links_'.$i['ideaid'].' hidden">';
-            $link_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['playertext'].'</a> ' : '' ).$linktext['first_name'].' '.$linktext['last_name'].'</td>';
-            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $linktext['mc_gross']!=0 && strlen($linktext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$linktext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Link"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?linkid='.$x['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
+            $link_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['playertext'].'</a> ' : '' ).$chaintext['first_name'].' '.$chaintext['last_name'].'</td>';
+            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $chaintext['mc_gross']!=0 && strlen($chaintext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$chaintext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Link"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?chainid='.$x['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
             $link_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $link_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
-            $link_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($linktext['mc_gross'], 2).'</td>';
+            $link_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($chaintext['mc_gross'], 2).'</td>';
             $link_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">$'.number_format($this_commission, 2).'</td>';
-            $link_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $linktext['mc_gross'] > 0 ? ($linktext['mc_fee']/$linktext['mc_gross']*100) : 0 ).'%">$'.number_format($linktext['mc_fee'], 2).'</td>';
+            $link_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $chaintext['mc_gross'] > 0 ? ($chaintext['mc_fee']/$chaintext['mc_gross']*100) : 0 ).'%">$'.number_format($chaintext['mc_fee'], 2).'</td>';
             $link_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
             $link_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
-            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$linktext['mc_currency'].'</td>';
+            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$chaintext['mc_currency'].'</td>';
 
             $link_content .= '</tr>';
 
             if($this_payout > 0){
-                $date = date("md", strtotime($x['linktime']));
+                $date = date("md", strtotime($x['chaintime']));
                 if(isset($daily_sales[$date])){
                     $daily_sales[$date] += $this_payout;
                 } else {
                     $daily_sales[$date] = $this_payout;
                 }
 
-                $origin_e = $x['linkidearight'];
+                $origin_e = $x['chainidearight'];
                 if(isset($origin_sales[$origin_e])){
                     $origin_sales[$origin_e] += number_format($this_payout, 0, '','');
                 } else {
@@ -167,11 +167,11 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $gross_payout += $payout;
 
         $max_available = $this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkidearight' => $i['ideaid'],
-            'linkplayerup' => 26189,
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'chainidearight' => $i['ideaid'],
+            'chainplayerup' => 26189,
         ), array(), 1);
-        $available_links = (count($max_available) && is_numeric($max_available[0]['linktext']) ? intval($max_available[0]['linktext']) : '∞');
+        $available_links = (count($max_available) && is_numeric($max_available[0]['chaintext']) ? intval($max_available[0]['chaintext']) : '∞');
 
         if(fmod($total_links, 2)==1){
             $link_content .= '<tr class="link_columns hidden"></tr>';
@@ -211,13 +211,13 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e){
         $filters = array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-            'linkplayerup' => $e['playerid'], //Member
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayerup' => $e['playerid'], //Member
         );
         if(count($all_e)){
-            $filters[ 'linkplayerdown NOT IN (' . join(',', $all_e) . ')'] = null;
+            $filters[ 'chainplayerdown NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Links->read($filters, array('linkplayerdown'), 0);
+        $other_es = $this->Links->read($filters, array('chainplayerdown'), 0);
     }
 
 
@@ -249,7 +249,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
             $otherplayer_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['playercover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['playertext'].'</a></td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?linkid='.$other_e['linkid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
+            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?chainid='.$other_e['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
@@ -349,9 +349,9 @@ if(count($idea_query)){
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->Links->read(array(
-                                                    'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-                            'linkidearight' => $origin,
-                            'linkplayerup' => 30564, //None Promoter
+                                                    'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                            'chainidearight' => $origin,
+                            'chainplayerup' => 30564, //None Promoter
                         )))){
                         //This item has more than 50% of sales, remove it:
                         continue;

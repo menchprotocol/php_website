@@ -1,19 +1,19 @@
 <?php
 
 //Event Reminder App running once an hour to dispatch pending reminders
-if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash']) && isset($_GET['time'])) {
+if (isset($_GET['chainid']) && isset($_GET['playerhandle']) && isset($_GET['hash']) && isset($_GET['time'])) {
 
     //This is a request to cancel, do so and redirect:
     if (view_hash($_GET['time'] . $_GET['playerhandle']) == $_GET['hash']) {
         foreach ($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'linkid' => $_GET['linkid'],
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainid' => $_GET['chainid'],
             'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        ), array('linkplayercreator'), 0) as $x) {
+        ), array('chainplayercreator'), 0) as $x) {
 
             //Show Header:
             foreach ($this->Ideas->read(array(
-                'ideaid' => $x['linkidearight'],
+                'ideaid' => $x['chainidearight'],
             )) as $idea_from) {
                 echo '<h1><a href="' . view_memory(42903, 33286) . $idea_from['ideahashtag'] . '">' . view_idea_title($idea_from, true) . '</a></h1>';
             }
@@ -21,15 +21,15 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
             if (isset($_GET['submit'])) {
 
                 //They have confirmed, remove:
-                $this->Links->update($x['linkid'], array(
-                    'linkplayertype' => 42333, //RSVP No
-                    'linkplayercreator' => $x['playerid'],
+                $this->Links->update($x['chainid'], array(
+                    'chainplayertype' => 42333, //RSVP No
+                    'chainplayercreator' => $x['playerid'],
                 ));
                 //TODO Copy th is elsewhere
 
                 //Notify and give option to go to starting point:
                 foreach ($this->Ideas->read(array(
-                    'ideaid' => $x['linkidealeft'],
+                    'ideaid' => $x['chainidealeft'],
                 )) as $idea_go) {
                     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="' . view_memory(42903, 33286) . $idea_go['ideahashtag'] . '">' . view_idea_title($idea_go, true) . '</a>.</div>';
                 }
@@ -39,7 +39,7 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
                 //Inform the user and give them option to confirm removal:
                 echo '<p>You can submit this form if you wish to cancel your attendance:</p>';
                 echo '<form action="" method="GET">';
-                echo '<textarea class="form-control border no-padding" name="linktext" data-lpignore="true" placeholder="Optional Note">' . (isset($_POST['list_emails']) ? $_POST['list_emails'] : '') . '</textarea><br /><br />';
+                echo '<textarea class="form-control border no-padding" name="chaintext" data-lpignore="true" placeholder="Optional Note">' . (isset($_POST['list_emails']) ? $_POST['list_emails'] : '') . '</textarea><br /><br />';
                 echo '<input type="submit" name="submit" class="btn" value="Cancel Event Attendance" />';
                 echo '</form>';
 
@@ -59,10 +59,10 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
     $idea_scanned = array();
 
     foreach ($this->Links->read(array(
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
-        'linkplayerup IN (' . join(',', $this->config->item('playerids___42216')) . ')' => null, //Event Reminder
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
+        'chainplayerup IN (' . join(',', $this->config->item('playerids___42216')) . ')' => null, //Event Reminder
         'ideatype' => 30874, //Events
-    ), array('linkidearight'), 0) as $i) {
+    ), array('chainidearight'), 0) as $i) {
 
         //Make sure not handled this idea with a different reminder:
         if (!in_array($i['ideaid'], $idea_scanned)) {
@@ -72,11 +72,11 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
             //Fetch Start time for this idea:
             $time_starts = 0;
             foreach ($this->Links->read(array(
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-                'linkidearight' => $i['ideaid'],
-                'linkplayerup' => 26556, //Time Starts
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                'chainidearight' => $i['ideaid'],
+                'chainplayerup' => 26556, //Time Starts
             )) as $time) {
-                $time_starts = strtotime($time['linktext']);
+                $time_starts = strtotime($time['chaintext']);
                 break;
             }
 
@@ -84,22 +84,22 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
             if ($time_starts > time()) {
 
                 //Let's see if this future event is less than X seconds away:
-                if (($time_starts - intval($players___42216[$i['linkplayerup']]['m__message'])) < time()) {
+                if (($time_starts - intval($players___42216[$i['chainplayerup']]['m__message'])) < time()) {
 
                     //End time?
                     $time_ends = $this->Links->read(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-                        'linkidearight' => $i['ideaid'],
-                        'linkplayerup' => 26557, //Time Ends
+                        'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                        'chainidearight' => $i['ideaid'],
+                        'chainplayerup' => 26557, //Time Ends
                     ), array(), 1);
 
                     //Navigation?
                     $must_follow = array();
                     foreach ($this->Links->read(array(
-                        'linkplayertype' => 32235, //Navigation
-                        'linkidearight' => $i['ideaid'],
+                        'chainplayertype' => 32235, //Navigation
+                        'chainidearight' => $i['ideaid'],
                     )) as $follow) {
-                        array_push($must_follow, $follow['linkplayerup']);
+                        array_push($must_follow, $follow['chainplayerup']);
                     }
 
                     array_push($idea_scanned, $i['ideaid']);
@@ -108,15 +108,15 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
 
                     //The time is here! Send event reminders to those who successfully idea_discovered this:
                     foreach ($this->Links->read(array(
-                        'linkplayertype IN (' . join(',', $this->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'linkidealeft' => $i['ideaid'],
-                    ), array('linkplayercreator'), 0) as $x) {
+                        'chainplayertype IN (' . join(',', $this->config->item('playerids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainidealeft' => $i['ideaid'],
+                    ), array('chainplayercreator'), 0) as $x) {
 
                         //Make sure this member qualified:
                         if (count($must_follow) > 0 && count($must_follow) != count($this->Links->read(array(
-                                'linkplayerdown' => $x['playerid'],
-                                'linkplayerup IN (' . join(',', $must_follow) . ')' => null,
-                                'linkplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                                'chainplayerdown' => $x['playerid'],
+                                'chainplayerup IN (' . join(',', $must_follow) . ')' => null,
+                                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
                             )))) {
                             //User does not have all navigation items, skip for now:
                             continue;
@@ -128,15 +128,15 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
                             "\n" .
                             "\n" . $i['ideatext'] .
                             "\n" . 'Start Time: ' . date("D M j G:i:s T", $time_starts) .
-                            (count($time_ends) && strtotime($time_ends[0]['linktext']) ? "\n" . 'End Time: ' . date("D M j G:i:s T", strtotime($time_ends[0]['linktext'])) : '') .
+                            (count($time_ends) && strtotime($time_ends[0]['chaintext']) ? "\n" . 'End Time: ' . date("D M j G:i:s T", strtotime($time_ends[0]['chaintext'])) : '') .
                             "\n" . 'https://' . get_domain('m__message', $x['playerid'], $user_website) . view_memory(42903, 33286) . $i['ideahashtag'] .
                             "\n" .
                             "\n" . 'If you cannot attend this event please inform us by cancelling here:' .
-                            "\n" . 'https://' . get_domain('m__message', $x['playerid'], $user_website) . view_app_link(42216) . '?linkid=' . $x['linkid'] . '&playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['playerhandle']);
+                            "\n" . 'https://' . get_domain('m__message', $x['playerid'], $user_website) . view_app_link(42216) . '?chainid=' . $x['chainid'] . '&playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['playerhandle']);
 
                         //Send message:
                         $message = $this->Links->message($x['playerid'], $subject, $html_message, array(
-                            'linkidealeft' => $i['ideaid'],
+                            'chainidealeft' => $i['ideaid'],
                         ), $i['ideaid'], $user_website);
 
                         $total_sent += ($message['status'] ? 1 : 0);
@@ -162,9 +162,9 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
 
         if ($remind_status < 0 || $remind_status > 0) {
             //We are done with this reminder request:
-            $this->Links->update($i['linkid'], array(
-                'linkplayertype' => ($remind_status > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
-                'linkplayercreator' => $player_session['playerid'],
+            $this->Links->update($i['chainid'], array(
+                'chainplayertype' => ($remind_status > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
+                'chainplayercreator' => $player_session['playerid'],
             ));
         }
 
@@ -172,20 +172,20 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
     }
 
     foreach ($this->Links->read(array(
-        'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-        'linknumber >' => time(), //Future event
-        'linkplayerup' => 26556, //Time Starts
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+        'chainnumber >' => time(), //Future event
+        'chainplayerup' => 26556, //Time Starts
         'ideatype' => 30874, //Events
-    ), array('linkidearight'), 0) as $i) {
+    ), array('chainidearight'), 0) as $i) {
 
         //Determine if it's time to send this message:
         $time_starts = 0;
         foreach ($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkidearight' => $i['ideaid'],
-            'linkplayerup' => 26556, //Time Starts
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'chainidearight' => $i['ideaid'],
+            'chainplayerup' => 26556, //Time Starts
         )) as $time) {
-            $time_starts = strtotime($time['linktext']);
+            $time_starts = strtotime($time['chaintext']);
             break;
         }
 
@@ -197,19 +197,19 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
         //Does it have an end time?
         $end_sending = 0;
         foreach ($this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-            'linkidearight' => $i['ideaid'],
-            'linkplayerup' => 26557, //Time Ends
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'chainidearight' => $i['ideaid'],
+            'chainplayerup' => 26557, //Time Ends
         )) as $time) {
-            $end_sending = strtotime($time['linktext']);
+            $end_sending = strtotime($time['chaintext']);
             break;
         }
 
 
         $children = $this->Links->read(array(
-            'linkplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
-            'linkidealeft' => $i['ideaid'],
-        ), array('linkidearight'), 0, 0, array('linknumber' => 'ASC'));
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
+            'chainidealeft' => $i['ideaid'],
+        ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'));
 
 
         //Now let's see who will receive this:
@@ -220,9 +220,9 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
         foreach ($idea_settings['query_string_filtered'] as $x) {
 
             if (count($this->Links->read(array(
-                'linkidealeft' => $i['ideaid'],
-                'linkplayercreator' => $x['playerid'],
-                'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainidealeft' => $i['ideaid'],
+                'chainplayercreator' => $x['playerid'],
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             )))) {
                 //Skip since they already idea_discovered this idea:
                 continue;
@@ -240,19 +240,19 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
             foreach ($children as $down_or) {
 
                 $discoveries = $this->Links->read(array(
-                    'linkplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                    'linkplayercreator' => $x['playerid'],
-                    'linkidealeft' => $down_or['ideaid'],
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'chainplayercreator' => $x['playerid'],
+                    'chainidealeft' => $down_or['ideaid'],
                 ));
                 //Has this user idea_discovered this idea or no?
                 $html_message .= view_idea_title($down_or, true) . ":\n";
-                $html_message .= 'https://' . get_domain('m__message', $x['playerid'], $i['linkplayerdomain']) . view_memory(42903, 33286) . $down_or['ideahashtag'] . (!count($discoveries) ? '?playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['playerhandle']) : '') . "\n\n";
+                $html_message .= 'https://' . get_domain('m__message', $x['playerid'], $i['chainplayerdomain']) . view_memory(42903, 33286) . $down_or['ideahashtag'] . (!count($discoveries) ? '?playerhandle=' . $x['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['playerhandle']) : '') . "\n\n";
 
             }
 
             $message = $this->Links->message($x['playerid'], $subject_line, $content_message . "\n" . trim($html_message), array(
-                'linkidealeft' => $i['ideaid'],
-            ), $i['ideaid'], $i['linkplayerdomain'], true);
+                'chainidealeft' => $i['ideaid'],
+            ), $i['ideaid'], $i['chainplayerdomain'], true);
             $total_sent += ($message['status'] ? 1 : 0);
 
 
@@ -261,9 +261,9 @@ if (isset($_GET['linkid']) && isset($_GET['playerhandle']) && isset($_GET['hash'
         //Mark this as complete?
         if (!$end_sending || $end_sending < time()) {
             //Ready to be done:
-            $this->Links->update($i['linkid'], array(
-                'linkplayertype' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
-                'linkplayercreator' => $player_session['playerid'],
+            $this->Links->update($i['chainid'], array(
+                'chainplayertype' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
+                'chainplayercreator' => $player_session['playerid'],
             ));
         }
 

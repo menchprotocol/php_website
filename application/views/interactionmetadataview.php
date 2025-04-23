@@ -1,8 +1,8 @@
 <?php
 
-if(!isset($_GET['linkid']) || !intval($_GET['linkid'])){
+if(!isset($_GET['chainid']) || !intval($_GET['chainid'])){
 
-    echo 'Missing link ID (Append ?linkid=link_ID in URL)';
+    echo 'Missing link ID (Append ?chainid=link_ID in URL)';
 
 } else {
 
@@ -11,7 +11,7 @@ if(!isset($_GET['linkid']) || !intval($_GET['linkid'])){
 
     //Fetch Link metadata and display it:
     $x = $this->Links->read(array(
-        'linkid' => $_GET['linkid'],
+        'chainid' => $_GET['chainid'],
     ));
 
     if (count($x) < 1) {
