@@ -46,7 +46,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
         echo '<div class="card_frame dropdown_d' . $playerid1 . ' dropdown_' . $playerid2 . '">';
 
         echo '<div class="card_header" title="' . $m2['m__message'] . '" playerid="' . $playerid2 . '">';
-        echo '<div class="large_cover">' . $m2['m__cover'] . '</div>';
+        echo '<div class="large_cover appender_'.$playerid2.'">' . $m2['m__cover'] . '</div>';
         echo '<div class="main__title large_title"><a target="_blank" href="'.view_app_link(4341).'?linkplayertype='.join(',',( $is_link ? $this->config->item('playerids___' . $playerid2) : array(( $playerid2==12273 ? 4250 : 4251 )) )).'&linkvoid=0" class="card_count_' . $playerid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
         echo '<div class="main__title large_title" title="@' . $playerid2 . ' @' . $m2['m__handle'] . '"><a href="'.view_memory(42903,42902).$m2['m__handle'].'">' . $m2['m__title'] . '</a></div>';
         echo '</div>';

@@ -1538,6 +1538,20 @@ label {
     font-weight: normal;
     margin:5px 0 0 5px;
 }
+
+.appender_32292 i {
+    color: #007BFF !important;
+}
+.appender_13550 i {
+    color: #28A745 !important;
+}
+.appender_4486 i {
+    color: #FFD700 !important;
+}
+.appender_31777 i {
+    color: #FF4136 !important;
+}
+
 .slim_title .main__title{
     color: #000;
     font-weight: bold;
