@@ -129,11 +129,11 @@ if (isset($_GET['linktext_find']) && strlen($_GET['linktext_find']) > 0) {
     $query_filters['LOWER(linktext) LIKE'] = '%' . $_GET['linktext_find'] . '%';
 }
 
-if (isset($_GET['linkvoid']) && is_numeric($_GET['linkvoid'])) {
-    if ($_GET['linkvoid'] == 1) {
-        $query_filters['linkvoid >'] = 0;
+if (isset($_GET['unchain']) && is_numeric($_GET['unchain'])) {
+    if ($_GET['unchain'] == 1) {
+        $query_filters['unchain >'] = 0;
     } else {
-        $query_filters['linkvoid'] = $_GET['linkvoid'];
+        $query_filters['unchain'] = $_GET['unchain'];
     }
 }
 
@@ -152,7 +152,7 @@ foreach ($query_filters as $key => $value) {
     $ini_filter[$key] = $value;
 }
 
-$query_filters['linkvoid >='] = 0;
+$query_filters['unchain >='] = 0;
 
 
 //Make sure its a valid type considering other filters:

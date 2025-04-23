@@ -1182,7 +1182,7 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid, $u
 
     //Now check existing links:
     $existing_x = $CI->Links->read(array(
-        'linkvoid >=' => 0, //Any Link
+        'unchain >=' => 0, //Any Link
         'linkplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         'linkplayerup' => $linkplayerup,
         'linkplayerdown' => $linkplayercreator,
@@ -1190,7 +1190,7 @@ function append_player($linkplayerup, $linkplayercreator, $linktext, $ideaid, $u
 
     if (count($existing_x)) {
 
-        if ($existing_x[0]['linkvoid'] > 0) {
+        if ($existing_x[0]['unchain'] > 0) {
             return false;
         } elseif (strtolower($existing_x[0]['linktext']) == strtolower($linktext)) {
             //Everything is the same, nothing to do here:
@@ -2661,14 +2661,14 @@ function linkprevious($starting_id = -1)
     if ($starting_id < 0) {
         foreach ($CI->Links->read(array(
             '(linkhash IS NOT NULL) AND (linkprevious IS NOT NULL)' => NULL,
-            'linkvoid >=' => 0,
+            'unchain >=' => 0,
         ), array(), 1, 0, array('linkid' => 'DESC')) as $x) {
             return $x['linkhash'];
         }
     } elseif ($starting_id > 0) {
         foreach ($CI->Links->read(array(
             'linkid >=' => $starting_id,
-            'linkvoid >=' => 0,
+            'unchain >=' => 0,
         ), array(), 1, 0, array('linkid' => 'ASC')) as $x) {
             return $x['linkhash'];
         }

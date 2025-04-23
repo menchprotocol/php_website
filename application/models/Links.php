@@ -229,13 +229,13 @@ class Links extends CIdea_cache
             } else {
                 $this->db->where($key);
             }
-            if (substr_count($key, 'linkvoid')) {
+            if (substr_count($key, 'unchain')) {
                 $link_void_found = true;
             }
         }
         if (!$link_void_found) {
             //Auto add:
-            $this->db->where('linkvoid', 0); //Not Void
+            $this->db->where('unchain', 0); //Not Void
         }
         if($idea_join){
             $this->db->where('ideaid >', 0);
@@ -299,7 +299,7 @@ class Links extends CIdea_cache
 
             //Make sure something changed:
             $something_changed = false;
-            foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight','linknumber','linktext','linkvoid') as $must_change){
+            foreach(array('linkplayertype','linkplayerup','linkplayerdown','linkidealeft','linkidearight','linknumber','linktext','unchain') as $must_change){
                 $this_changed = isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change];
                 if(!isset($update_columns[$must_change])){
                     $update_columns[$must_change] = $old_x[$must_change];
@@ -318,7 +318,7 @@ class Links extends CIdea_cache
 
             if ($new_x['linkid'] > 0) {
                 //Void Old Link:
-                $this->db->query("UPDATE menchledger SET linkvoid = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
+                $this->db->query("UPDATE menchledger SET unchain = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
                 return $this->db->affected_rows();
             }
 
@@ -365,7 +365,7 @@ class Links extends CIdea_cache
             $new_x = $this->Links->create(array(
                 'linkplayercreator' => $linkplayercreator,
                 'linkplayertype' => $linkplayertype,
-                'linkvoid' => $linkid, //We insert as void since this is a void link only
+                'unchain' => $linkid, //We insert as void since this is a void link only
             ));
 
             if (!isset($new_x['linkid'])) {
@@ -373,7 +373,7 @@ class Links extends CIdea_cache
             }
 
             //Void this Link:
-            $this->db->query("UPDATE menchledger SET linkvoid = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
+            $this->db->query("UPDATE menchledger SET unchain = " . $new_x['linkid'] . " WHERE linkid = " . $linkid . ";");
             return $this->db->affected_rows();
 
         }
@@ -1359,7 +1359,7 @@ class Links extends CIdea_cache
         unset($i['linkplayerdown']);
         unset($i['linknumber']);
         unset($i['linkplayerdomain']);
-        unset($i['linkvoid']);
+        unset($i['unchain']);
         unset($i['linkplayercreator']);
         unset($i['linkidealeft']);
         unset($i['linkidearight']);
@@ -1397,7 +1397,7 @@ class Links extends CIdea_cache
             unset($media['linkplayerdown']);
             unset($media['linknumber']);
             unset($media['linkplayerdomain']);
-            unset($media['linkvoid']);
+            unset($media['unchain']);
             unset($media['linkplayercreator']);
             unset($media['linkidealeft']);
             unset($media['linkidearight']);
@@ -1422,7 +1422,7 @@ class Links extends CIdea_cache
             unset($x['linkplayerdown']);
             unset($x['linknumber']);
             unset($x['linkplayerdomain']);
-            unset($x['linkvoid']);
+            unset($x['unchain']);
             unset($x['linkidealeft']);
             unset($x['linkidearight']);
             unset($x['linkplayercreator']);

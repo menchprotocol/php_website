@@ -13,7 +13,7 @@ $count = 0;
 $fixed = 0;
 foreach ($this->Links->read(array(
     'linkid >' => $starting_id,
-    'linkvoid >=' => 0
+    'unchain >=' => 0
 ), array(), 0, 0, array('linkid' => 'ASC')) as $x) {
     $must_fix = false;
     if($x['linkprevious']!=$previous){
