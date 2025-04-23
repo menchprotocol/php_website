@@ -1539,13 +1539,15 @@ label {
     margin:5px 0 0 5px;
 }
 
-.appender_32292 i {
+.appender_32292 i,
+.appender_12274 i{
     color: #007BFF !important;
 }
 .appender_13550 i {
     color: #28A745 !important;
 }
-.appender_4486 i {
+.appender_4486 i,
+.appender_12273 i{
     color: #FFD700 !important;
 }
 .appender_31777 i {
