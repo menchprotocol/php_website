@@ -34,7 +34,7 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
     } elseif($playerid1==31770){
 
         //Legend
-        echo '<div class="row">';
+        echo '<div class="row center">';
         echo '<div class="col-3 appender_32292"><i class="far fa-rotate-left"></i></div>';
         echo '<div class="col-3 appender_4486"><i class="far arrow-right-long"></i></div>';
         echo '<div class="col-3 appender_13550"><i class="far arrow-left-long"></i></div>';
