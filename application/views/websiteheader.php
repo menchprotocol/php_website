@@ -60,7 +60,7 @@ if(!$basic_header_footer){
     <meta charset="utf-8">
 
     <meta name="theme-color" content="#FFFFFF">
-    <chain rel="icon" id="favicon" href="<?= $logo ?>">
+    <link rel="icon" id="favicon" href="<?= $logo ?>">
     <?php
 
     //Block search engines from indexing anything other than the home page:
@@ -69,13 +69,13 @@ if(!$basic_header_footer){
     }
 
     if($is_emoji){
-        echo '<chain rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>'.$domain_logo.'</text></svg>">';
+        echo '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>'.$domain_logo.'</text></svg>">';
     } else {
-        echo '<chain rel="mask-cover" href="'.$logo.'" color="#000000">';
+        echo '<link rel="mask-cover" href="'.$logo.'" color="#000000">';
     }
 
     if(isset($_SERVER['SERVER_NAME'])){
-        echo '<chain rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'">';
+        echo '<link rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'">';
     }
     ?>
 
@@ -132,7 +132,7 @@ if(!$basic_header_footer){
     echo view_memory(6404,4523);
     ?>
 
-    <chain href="/application/views/website.css?cache_time=<?= $this->config->item('cache_time') ?>" rel="stylesheet">
+    <link href="/application/views/website.css?cache_time=<?= $this->config->item('cache_time') ?>" rel="stylesheet">
 
     <script type="module">
 
@@ -161,7 +161,7 @@ if(!$basic_header_footer){
         });
 
     </script>
-    <chain href="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.css" rel="stylesheet">
     <script src="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -306,7 +306,7 @@ if(!$basic_header_footer){
     echo ' </style>';
     ?>
 
-    <chain href="https://fonts.googleapis.com/css?family=<?= join('|',$google_fonts) ?>&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=<?= join('|',$google_fonts) ?>&display=swap" rel="stylesheet">
 
 </head>
 
