@@ -129,11 +129,11 @@ if (isset($_GET['chaintext_find']) && strlen($_GET['chaintext_find']) > 0) {
     $query_filters['LOWER(chaintext) LIKE'] = '%' . $_GET['chaintext_find'] . '%';
 }
 
-if (isset($_GET['unchain']) && is_numeric($_GET['unchain'])) {
-    if ($_GET['unchain'] == 1) {
-        $query_filters['unchain >'] = 0;
+if (isset($_GET['chainvoid']) && is_numeric($_GET['chainvoid'])) {
+    if ($_GET['chainvoid'] == 1) {
+        $query_filters['chainvoid >'] = 0;
     } else {
-        $query_filters['unchain'] = $_GET['unchain'];
+        $query_filters['chainvoid'] = $_GET['chainvoid'];
     }
 }
 
@@ -152,7 +152,7 @@ foreach ($query_filters as $key => $value) {
     $ini_filter[$key] = $value;
 }
 
-$query_filters['unchain >='] = 0;
+$query_filters['chainvoid >='] = 0;
 
 
 //Make sure its a valid type considering other filters:

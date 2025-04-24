@@ -1182,7 +1182,7 @@ function append_player($chainplayerup, $chainplayercreator, $chaintext, $ideaid,
 
     //Now check existing links:
     $existing_x = $CI->Links->read(array(
-        'unchain >=' => 0, //Any Link
+        'chainvoid >=' => 0, //Any Link
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
         'chainplayerup' => $chainplayerup,
         'chainplayerdown' => $chainplayercreator,
@@ -1190,7 +1190,7 @@ function append_player($chainplayerup, $chainplayercreator, $chaintext, $ideaid,
 
     if (count($existing_x)) {
 
-        if ($existing_x[0]['unchain'] > 0) {
+        if ($existing_x[0]['chainvoid'] > 0) {
             return false;
         } elseif (strtolower($existing_x[0]['chaintext']) == strtolower($chaintext)) {
             //Everything is the same, nothing to do here:
@@ -2661,14 +2661,14 @@ function chainprevious($starting_id = -1)
     if ($starting_id < 0) {
         foreach ($CI->Links->read(array(
             '(chainhash IS NOT NULL) AND (chainprevious IS NOT NULL)' => NULL,
-            'unchain >=' => 0,
+            'chainvoid >=' => 0,
         ), array(), 1, 0, array('chainid' => 'DESC')) as $x) {
             return $x['chainhash'];
         }
     } elseif ($starting_id > 0) {
         foreach ($CI->Links->read(array(
             'chainid >=' => $starting_id,
-            'unchain >=' => 0,
+            'chainvoid >=' => 0,
         ), array(), 1, 0, array('chainid' => 'ASC')) as $x) {
             return $x['chainhash'];
         }

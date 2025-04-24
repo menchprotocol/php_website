@@ -3524,13 +3524,13 @@ class Controller extends CI_Controller
 
 
                 if ($has_handle) {
-                    $void_filter['(unchain >0 AND ( chainplayerdown = ' . $es[0]['playerid'] . ' OR chainplayerup = ' . $es[0]['playerid'] . ' OR chainplayercreator = ' . $es[0]['playerid'] . ' ))'] = null;
+                    $void_filter['(chainvoid >0 AND ( chainplayerdown = ' . $es[0]['playerid'] . ' OR chainplayerup = ' . $es[0]['playerid'] . ' OR chainplayercreator = ' . $es[0]['playerid'] . ' ))'] = null;
                 } elseif ($has_hashtag) {
-                    $void_filter['(unchain >0 AND ( chainidealeft = ' . $is[0]['ideaid'] . ' OR chainidearight = ' . $is[0]['ideaid'] . ' ))'] = null;
+                    $void_filter['(chainvoid >0 AND ( chainidealeft = ' . $is[0]['ideaid'] . ' OR chainidearight = ' . $is[0]['ideaid'] . ' ))'] = null;
                 } else {
                     //Void Links
                     $void_filter = array(
-                        'unchain >' => 0, //Links that have been voided
+                        'chainvoid >' => 0, //Links that have been voided
                     );
                 }
                 $sub_counter = $this->Links->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');

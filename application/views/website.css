@@ -1539,22 +1539,7 @@ label {
     margin:5px 0 0 5px;
 }
 
-.appender_32292 i,
-.appender_32292{
-    color: #007BFF !important;
-}
-.appender_13550 i,
-.appender_13550{
-    color: #28A745 !important;
-}
-.appender_4486 i,
-.appender_4486{
-    color: #FFD700 !important;
-}
-.appender_31777 i,
-.appender_31777 {
-    color: #FF4136 !important;
-}
+
 
 .slim_title .main__title{
     color: #000;
@@ -1573,7 +1558,7 @@ label {
     margin-top: -25px;
 }
 .group_sign{
-    width:13px; display: inline-block; text-align: center;
+    width:14px; display: inline-block; text-align: left;
 }
 .app__4341 .container_content .line {
     color: #000000 !important;
@@ -4758,4 +4743,22 @@ h1 i.fad{
 .modal-content .no-border,
 .no-border{
     border: 0 !important;
+}
+
+
+.appender_32292 i,
+.appender_32292{
+    color: #007BFF !important;
+}
+.appender_13550 i,
+.appender_13550{
+    color: #28A745 !important;
+}
+.appender_4486 i,
+.appender_4486{
+    color: #FFD700 !important;
+}
+.appender_31777 i,
+.appender_31777 {
+    color: #FF4136 !important;
 }
