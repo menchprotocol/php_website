@@ -39,6 +39,26 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
 
     echo '<div class="row justify-content list-covers">';
 
+    if($playerid1==28956){
+        //Legend of how nodes connect:
+        echo '<table class="table table-sm maxout center" style="width: 100%; table-layout: fixed; margin-bottom: -89px; font-size:1.4em;"><tr>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-rotate-left appender_32292"></i></td>';
+        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-rotate-right appender_4486"></i></td>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '</tr><tr>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-arrow-right appender_13550"></i></td>';
+        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-arrow-left appender_31777"></i></td>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
+        echo '</tr></table>';
+    }
+
+
     foreach ($this->config->item('players___' . $playerid1) as $playerid2 => $m2) {
 
         $is_link = $playerid2 != 12273 && $playerid2 != 12274;
@@ -100,25 +120,6 @@ foreach ($this->config->item('players___33292') as $playerid1 => $m1) {
         echo '</div>';
         echo '</div>';
 
-    }
-
-    if($playerid1==28956){
-        //Legend of how nodes connect:
-        echo '<table class="table table-sm maxout center" style="width: 100%; table-layout: fixed; margin-bottom: 21px; margin-top: -144px; font-size:1.4em;"><tr>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-rotate-left appender_32292"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-rotate-right appender_4486"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '</tr><tr>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-arrow-right appender_13550"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-arrow-left appender_31777"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '</tr></table>';
     }
 
     echo '</div>';
