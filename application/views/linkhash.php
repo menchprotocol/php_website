@@ -11,7 +11,7 @@ if($starting_id==0){
 
 $count = 0;
 $fixed = 0;
-foreach ($this->Links->read(array(
+foreach ($this->Chains->read(array(
     'chainid >' => $starting_id,
     'chainvoid >=' => 0
 ), array(), 0, 0, array('chainid' => 'ASC')) as $x) {
@@ -30,5 +30,5 @@ foreach ($this->Links->read(array(
     $previous = $hash;
     $count++;
 }
-echo $fixed.'/'.($count+$starting_id) . ' link hashes are out of sync.';
+echo $fixed.'/'.($count+$starting_id) . ' chain hashes are out of sync.';
 

@@ -2,7 +2,7 @@
 
 $commission_rate = intval(website_setting(27017))/100;
 $players___6287 = $this->config->item('players___6287'); //APP
-$gross_links = 0;
+$gross_chains = 0;
 $gross_sales = 0;
 $gross_revenue = 0;
 $gross_paypal_fee = 0;
@@ -20,22 +20,22 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     
     echo '<h1>'.$players___6287[27004]['m__title'].'</h1>';
     foreach($this->Players->tree(11029, $player_session['playerid'], array(27004)) as $e){
-        echo '<div><a href="'.view_app_link(27004).view_memory(42903,42902).$e['playerhandle'].'" class="main__title">'.$e['playertext'].'</a></div>';
+        echo '<div><a href="'.view_app_chain(27004).view_memory(42903,42902).$e['playerhandle'].'" class="main__title">'.$e['playertext'].'</a></div>';
     }
 
 } else {
 
 
     //Show header:
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$players___6287[27004]['m__title'].'</b></a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_chain(27004).'"><b>'.$players___6287[27004]['m__title'].'</b></a></div>';
 
     $es = $this->Players->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     ));
     echo '<h2>'.$es[0]['playertext'].' @'.$es[0]['playerhandle'].'</h2>';
 
-    $idea_query = $this->Links->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+    $idea_query = $this->Chains->read(array(
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
         'ideatype IN (' . join(',', $this->config->item('playerids___41055')) . ')' => null, //Payment Ideas
         'chainplayerup' => $es[0]['playerid'],
     ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'));
@@ -49,20 +49,20 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
     foreach($idea_query as $i){
 
         //Total earnings:
-        $link_content = '';
-        $total_links = 0;
+        $chain_content = '';
+        $total_chains = 0;
         $total_sales = 0;
         $total_revenue = 0;
         $total_paypal_fee = 0;
         $currencies = array();
 
-        foreach($this->Links->read(array(
+        foreach($this->Chains->read(array(
                     'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainidealeft' => $i['ideaid'],
         ), array(), 0, 0, array('chainplayercreator' => 'ASC')) as $x){
 
             $chaintext = unserialize($x['chaintext']);
-            $total_links++;
+            $total_chains++;
             $this_quantity = 1;//Default assumption:
 
             //Player for quantity?
@@ -119,19 +119,19 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
             ));
 
 
-            $link_content .= '<tr class="link_columns links_'.$i['ideaid'].' hidden">';
-            $link_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['playertext'].'</a> ' : '' ).$chaintext['first_name'].' '.$chaintext['last_name'].'</td>';
-            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $chaintext['mc_gross']!=0 && strlen($chaintext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$chaintext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Link"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?chainid='.$x['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
-            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $link_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
-            $link_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($chaintext['mc_gross'], 2).'</td>';
-            $link_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">$'.number_format($this_commission, 2).'</td>';
-            $link_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $chaintext['mc_gross'] > 0 ? ($chaintext['mc_fee']/$chaintext['mc_gross']*100) : 0 ).'%">$'.number_format($chaintext['mc_fee'], 2).'</td>';
-            $link_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
-            $link_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
-            $link_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$chaintext['mc_currency'].'</td>';
+            $chain_content .= '<tr class="chain_columns chains_'.$i['ideaid'].' hidden">';
+            $chain_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['playercover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['playertext'].'</a> ' : '' ).$chaintext['first_name'].' '.$chaintext['last_name'].'</td>';
+            $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $chaintext['mc_gross']!=0 && strlen($chaintext['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$chaintext['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Chain"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_chain(4341).'?chainid='.$x['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';
+            $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $chain_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
+            $chain_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($chaintext['mc_gross'], 2).'</td>';
+            $chain_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">$'.number_format($this_commission, 2).'</td>';
+            $chain_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $chaintext['mc_gross'] > 0 ? ($chaintext['mc_fee']/$chaintext['mc_gross']*100) : 0 ).'%">$'.number_format($chaintext['mc_fee'], 2).'</td>';
+            $chain_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
+            $chain_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
+            $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$chaintext['mc_currency'].'</td>';
 
-            $link_content .= '</tr>';
+            $chain_content .= '</tr>';
 
             if($this_payout > 0){
                 $date = date("md", strtotime($x['chaintime']));
@@ -155,32 +155,32 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $payout = $total_revenue-$total_commission-$total_paypal_fee;
 
 
-        if($i['ideatype']==6183 && !$total_links){
+        if($i['ideatype']==6183 && !$total_chains){
             continue;
         }
 
         $gross_sales += $total_sales;
-        $gross_links += $total_links;
+        $gross_chains += $total_chains;
         $gross_revenue += $total_revenue;
         $gross_paypal_fee += $total_paypal_fee;
         $gross_commission += $total_commission;
         $gross_payout += $payout;
 
-        $max_available = $this->Links->read(array(
+        $max_available = $this->Chains->read(array(
                     'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
             'chainplayerup' => 26189,
         ), array(), 1);
-        $available_links = (count($max_available) && is_numeric($max_available[0]['chaintext']) ? intval($max_available[0]['chaintext']) : '∞');
+        $available_chains = (count($max_available) && is_numeric($max_available[0]['chaintext']) ? intval($max_available[0]['chaintext']) : '∞');
 
-        if(fmod($total_links, 2)==1){
-            $link_content .= '<tr class="link_columns hidden"></tr>';
+        if(fmod($total_chains, 2)==1){
+            $chain_content .= '<tr class="chain_columns hidden"></tr>';
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.links_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;">'.view_idea_title($i).'</a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_links.'</td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_links.'</td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.chains_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;">'.view_idea_title($i).'</a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_chains.'</td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_chains.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
         $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales!=0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
         $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales!=0 ? '$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
@@ -189,7 +189,7 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         $sale_type_content .= '<td style="text-align: right;"><b>'.( $total_sales!=0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
         $sale_type_content .= '</tr>';
-        $sale_type_content .= $link_content;
+        $sale_type_content .= $chain_content;
 
     }
 
@@ -211,13 +211,13 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
     )) as $e){
         $filters = array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             'chainplayerup' => $e['playerid'], //Member
         );
         if(count($all_e)){
             $filters[ 'chainplayerdown NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Links->read($filters, array('chainplayerdown'), 0);
+        $other_es = $this->Chains->read($filters, array('chainplayerdown'), 0);
     }
 
 
@@ -245,11 +245,11 @@ if(!isset($_GET['playerhandle']) || !strlen($_GET['playerhandle']) || !$_GET['pl
 
         //Doo We Have other?
         foreach($other_es as $other_e){
-            $otherplayer_content .= '<tr class="link_columns thr_e hidden">';
+            $otherplayer_content .= '<tr class="chain_columns thr_e hidden">';
             $otherplayer_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['playercover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['playerhandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['playertext'].'</a></td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherplayer_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?chainid='.$other_e['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Link"><i class="far fa-atlas"></i></a></td>';
+            $otherplayer_content .= '<td style="text-align: right;"><a href="'.view_app_chain(4341).'?chainid='.$other_e['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $otherplayer_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
@@ -270,7 +270,7 @@ if(count($idea_query)){
 
     echo '<table id="sortable_table" class="table table-sm image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
     echo '<tr style="vertical-align: baseline;" class="main__title">';
-    echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.link_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Links"><i class="far fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="toggle_max_view(\'advance_columns\')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="far fa-arrows-h"></i></a></th>';
+    echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.chain_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Chains"><i class="far fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="toggle_max_view(\'advance_columns\')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="far fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Payments</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
@@ -287,7 +287,7 @@ if(count($idea_query)){
 
     echo '<tr class="main__title">';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
-    echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_links.'</th>';
+    echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_chains.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right; font-weight: bold;">'.$gross_sales.'&nbsp;x</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.'$'.number_format($gross_revenue, 2).'</th>';
@@ -348,7 +348,7 @@ if(count($idea_query)){
                 <?php
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
-                    if(($sales/$gross_revenue)>=0.5 || count($this->Links->read(array(
+                    if(($sales/$gross_revenue)>=0.5 || count($this->Chains->read(array(
                                                     'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
                             'chainidearight' => $origin,
                             'chainplayerup' => 30564, //None Promoter
@@ -411,7 +411,7 @@ if(count($idea_query)){
         padding: 5px 0 !important;
         font-size: 1.01em;
     }
-    .link_columns td{
+    .chain_columns td{
         padding: 1px 0 !important;
         font-size: 0.9em;
     }

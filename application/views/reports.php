@@ -16,8 +16,8 @@ $subject = 'Report for the Week of '.date("M jS", $chaintime_start_timestamp);
 
 foreach($this->config->item('players___31770') as $chainplayertype => $m) {
 
-    $unique = count_link_groups($chainplayertype, null, $chaintime_end);
-    $this_week = count_link_groups($chainplayertype, $chaintime_start, $chaintime_end);
+    $unique = count_chain_groups($chainplayertype, null, $chaintime_end);
+    $this_week = count_chain_groups($chainplayertype, $chaintime_start, $chaintime_end);
     if(!$unique){
         continue;
     }
@@ -36,14 +36,14 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
     echo $html_message;
-    echo '<div style="padding: 21px 0;"><a href="'.view_app_link(12114).'?email_trigger=1">Email Me This Report</a></div>';
+    echo '<div style="padding: 21px 0;"><a href="'.view_app_chain(12114).'?email_trigger=1">Email Me This Report</a></div>';
 
 } else {
 
 
     $subscriber_filters = array(
         'chainplayerup' => 12114,
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             );
 
     //Should we limit the scope?
@@ -54,9 +54,9 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Links->read($subscriber_filters, array('chainplayerdown')) as $subscribed_u){
+    foreach($this->Chains->read($subscriber_filters, array('chainplayerdown')) as $subscribed_u){
 
-        $this->Links->message($subscribed_u['playerid'], $subject, $html_message);
+        $this->Chains->message($subscribed_u['playerid'], $subject, $html_message);
         $email_recipients++;
 
     }

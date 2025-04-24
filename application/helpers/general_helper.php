@@ -58,12 +58,12 @@ function idea_type_discovery($i, $trying_to_skip = false)
 
     $CI =& get_instance();
     if ($i['ideatype'] == 26560) {
-        $currency_types = $CI->Links->read(array(
+        $currency_types = $CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
             'chainplayerup IN (' . join(',', $CI->config->item('playerids___26661')) . ')' => null, //Currency
         ));
-        $total_dues = $CI->Links->read(array(
+        $total_dues = $CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
             'chainplayerup' => 26562, //Total Due
@@ -87,7 +87,7 @@ function idea_number_calculator($i)
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-    $count_x = $CI->Links->read(array(
+    $count_x = $CI->Chains->read(array(
         '(chainidealeft=' . $i['ideaid'] . ' OR chainidearight=' . $i['ideaid'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -107,7 +107,7 @@ function player_number_calculator($e)
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-    $count_x = $CI->Links->read(array(
+    $count_x = $CI->Chains->read(array(
         '(chainplayerdown=' . $e['playerid'] . ' OR chainplayerup=' . $e['playerid'] . ' OR chainplayercreator=' . $e['playerid'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -206,13 +206,13 @@ function reset_cache($chainplayercreator)
 {
     $CI =& get_instance();
     $count = 0;
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayertype' => 44179, //Triggered
         'chainplayerup' => 14599, //Cache App
         'chainplayerdown >' => 0,
     )) as $delete_cahce) {
         //Void:
-        $count += $CI->Links->delete($delete_cahce['chainid'], $chainplayercreator);
+        $count += $CI->Chains->delete($delete_cahce['chainid'], $chainplayercreator);
     }
     return $count;
 }
@@ -225,7 +225,7 @@ function idea_spots_remaining($ideaid)
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
-    $max_available = $CI->Links->read(array(
+    $max_available = $CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
         'chainidearight' => $ideaid,
         'chainplayerup' => 26189,
@@ -244,7 +244,7 @@ function idea_spots_remaining($ideaid)
 
         //Navigation?
         $must_follow = array();
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             'chainplayertype' => 32235, //Navigation
             'chainidearight' => $ideaid,
         )) as $follow) {
@@ -254,17 +254,17 @@ function idea_spots_remaining($ideaid)
         $current_discoveries = 0;
         if (count($must_follow)) {
             //We must qualify each discovery individually:
-            foreach ($CI->Links->read($query_filters) as $e) {
-                if (count($must_follow) == count($CI->Links->read(array(
+            foreach ($CI->Chains->read($query_filters) as $e) {
+                if (count($must_follow) == count($CI->Chains->read(array(
                         'chainplayerdown' => $e['chainplayercreator'],
                         'chainplayerup IN (' . join(',', $must_follow) . ')' => null,
-                        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                     )))) {
                     $current_discoveries++;
                 }
             }
         } else {
-            $query = $CI->Links->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
+            $query = $CI->Chains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
             $current_discoveries = $query[0]['totals'];
         }
 
@@ -297,7 +297,7 @@ function object_to_array($obj)
 function idea_redirect_url($i)
 {
     $CI =& get_instance();
-    if (strlen($i['ideatext']) && count($CI->Links->read(array(
+    if (strlen($i['ideatext']) && count($CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
             'chainplayerup' => 43871, //Redirect URL
@@ -319,7 +319,7 @@ function idea_popup_url($i)
         return false;
     }
     $CI =& get_instance();
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
         'chainidearight' => $i['ideaid'],
         'chainplayerup' => 44266, //Popup URL
@@ -334,7 +334,7 @@ function idea_popup_url($i)
 function idea_required($i)
 {
     $CI =& get_instance();
-    return count($CI->Links->read(array(
+    return count($CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
         'chainidearight' => $i['ideaid'],
         'chainplayerup' => 28239, //Required
@@ -397,7 +397,7 @@ function verify_cookie()
 
     if (count($es) && $cookie_parts[2] == view_hash($cookie_parts[0] . $cookie_parts[1])) {
 
-        //Assign session & log Link:
+        //Assign session & log Chain:
         $CI->Players->activate($es[0], false, true);
         return $es[0];
 
@@ -452,7 +452,7 @@ function view_tree($i)
     }
     echo '</span>';
 
-    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">' . view_idea_links($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
+    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
 
 
@@ -512,32 +512,32 @@ function idea_list_config($ideaid, $access_limit = true)
     $idea_list_config = array(); //To compile the settings of this sheet:
 
     foreach ($CI->config->item('players___40792') as $chainplayertype => $m) {
-        $idea_list_config[intval($chainplayertype)] = array(); //Assume no links for this type
-        $idea_list_config['full_config_' . $chainplayertype] = array(); //Assume no links for this type
+        $idea_list_config[intval($chainplayertype)] = array(); //Assume no chains for this type
+        $idea_list_config['full_config_' . $chainplayertype] = array(); //Assume no chains for this type
     }
     foreach ($CI->config->item('players___43006') as $chainplayertype => $m) {
-        $idea_list_config[intval($chainplayertype)] = array(); //Assume no links for this type
-        $idea_list_config['full_config_' . $chainplayertype] = array(); //Assume no links for this type
+        $idea_list_config[intval($chainplayertype)] = array(); //Assume no chains for this type
+        $idea_list_config['full_config_' . $chainplayertype] = array(); //Assume no chains for this type
     }
 
     //Now search for these settings across Players:
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayerup >' => 0,
         'chainidearight' => $ideaid,
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___43006')) . ')' => null,
-    ), array('chainplayerup'), 0, 0, array(), '*', null, $access_limit) as $setting_link) {
-        array_push($idea_list_config[intval($setting_link['chainplayertype'])], intval($setting_link['chainplayerup']));
-        array_push($idea_list_config['full_config_' . $setting_link['chainplayertype']], $setting_link);
+    ), array('chainplayerup'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($idea_list_config[intval($setting_chain['chainplayertype'])], intval($setting_chain['chainplayerup']));
+        array_push($idea_list_config['full_config_' . $setting_chain['chainplayertype']], $setting_chain);
     }
 
     //Now search for these settings across ideas:
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainidearight >' => 0,
         'chainidealeft' => $ideaid,
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___40792')) . ')' => null,
-    ), array('chainidearight'), 0, 0, array(), '*', null, $access_limit) as $setting_link) {
-        array_push($idea_list_config[intval($setting_link['chainplayertype'])], intval($setting_link['chainidearight']));
-        array_push($idea_list_config['full_config_' . $setting_link['chainplayertype']], $setting_link);
+    ), array('chainidearight'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($idea_list_config[intval($setting_chain['chainplayertype'])], intval($setting_chain['chainidearight']));
+        array_push($idea_list_config['full_config_' . $setting_chain['chainplayertype']], $setting_chain);
     }
 
     return $idea_list_config;
@@ -567,7 +567,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         if (count($idea_list_config[40791])) {
 
             //If idea_discovered Any
-            $query_string_all = $CI->Links->read(array(
+            $query_string_all = $CI->Chains->read(array(
                 'chainidealeft IN (' . join(',', $idea_list_config[40791]) . ')' => null,
                 'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             ), array('chainplayercreator'), 0, 0, array('chainid' => 'DESC'));
@@ -575,7 +575,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         } elseif (count($idea_list_config[44161])) {
 
             //If idea_discovered All
-            $query_string_all = $CI->Links->read(array(
+            $query_string_all = $CI->Chains->read(array(
                 'chainidealeft IN (' . join(',', $idea_list_config[44161]) . ')' => null,
                 'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             ), array('chainplayercreator'), 0, 0, array('chainid' => 'DESC'));
@@ -583,23 +583,23 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         } elseif (count($idea_list_config[27984])) {
 
             //Include If Has ANY
-            $query_string_all = $CI->Links->read(array(
+            $query_string_all = $CI->Chains->read(array(
                 'chainplayerup IN (' . join(',', $idea_list_config[27984]) . ')' => null,
-                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC'));
 
         } elseif (count($idea_list_config[43513])) {
 
             //Include If Has ALL
-            $query_string_all = $CI->Links->read(array(
+            $query_string_all = $CI->Chains->read(array(
                 'chainplayerup IN (' . join(',', $idea_list_config[43513]) . ')' => null,
-                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC'));
 
         } else {
 
             //All Discoveries:
-            $query_string_all = $CI->Links->read(array(
+            $query_string_all = $CI->Chains->read(array(
                 'chainidealeft' => $i['ideaid'],
                 'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             ), array('chainplayercreator'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC'));
@@ -626,28 +626,28 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
         //Determine columns if any:
         $pinned_columns = array();
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             'chainidearight' => $i['ideaid'],
             'chainplayertype' => 34513, //Pinned
-        ), array('chainplayerup'), 0) as $setting_link) {
-            array_push($pinned_columns, intval($setting_link['playerid']));
+        ), array('chainplayerup'), 0) as $setting_chain) {
+            array_push($pinned_columns, intval($setting_chain['playerid']));
         }
         if (count($pinned_columns)) {
 
             //Add to results:
             $idea_list_config[34513] = $pinned_columns;
 
-            $player_column = $CI->Links->read(array(
+            $player_column = $CI->Chains->read(array(
                 'chainplayerup IN (' . join(',', $pinned_columns) . ')' => null,
-                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             ), array('chainplayerdown'), 0, 0, player_sort());
 
-            foreach ($CI->Links->read(array(
+            foreach ($CI->Chains->read(array(
                 'chainplayerup IN (' . join(',', $pinned_columns) . ')' => null,
-                'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+                'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
                 'chainidearight !=' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC', 'ideatext' => 'ASC')) as $link_i) {
-                array_push($idea_column, $link_i);
+            ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC', 'ideatext' => 'ASC')) as $chain_i) {
+                array_push($idea_column, $chain_i);
             }
         }
 
@@ -656,20 +656,20 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             foreach ($query_string_filtered as $count => $x) {
 
                 //Fetch email & phone:
-                $fetch_names = $CI->Links->read(array(
+                $fetch_names = $CI->Chains->read(array(
                     'chainplayerup' => 42584, //First Name
                     'chainplayerdown' => $x['playerid'],
-                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 ));
-                $fetch_emails = $CI->Links->read(array(
+                $fetch_emails = $CI->Chains->read(array(
                     'chainplayerup' => 3288, //Email
                     'chainplayerdown' => $x['playerid'],
-                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 ));
-                $fetch_phones = $CI->Links->read(array(
+                $fetch_phones = $CI->Chains->read(array(
                     'chainplayerup' => 4783, //Phone
                     'chainplayerdown' => $x['playerid'],
-                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 ));
 
                 $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chaintext']) ? $fetch_names[0]['chaintext'] : $x['playertext']);
@@ -693,7 +693,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         //Append Navigation:
         foreach ($idea_column as $key => $idea_var) {
             $must_follow = array();
-            foreach ($CI->Links->read(array(
+            foreach ($CI->Chains->read(array(
                 'chainplayertype' => 32235, //Navigation
                 'chainidearight' => $idea_var['ideaid'],
             )) as $follow) {
@@ -714,7 +714,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 }
 
 
-function count_link_groups($chainplayertype, $chaintime_start = null, $chaintime_end = null)
+function count_chain_groups($chainplayertype, $chaintime_start = null, $chaintime_end = null)
 {
 
     $CI =& get_instance();
@@ -731,7 +731,7 @@ function count_link_groups($chainplayertype, $chaintime_start = null, $chaintime
     }
 
     //Fetch Results:
-    $query = $CI->Links->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
+    $query = $CI->Chains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
     return intval($query[0]['totals']);
 
 }
@@ -747,7 +747,7 @@ function home_url()
 function idea_is_startable($i)
 {
     $CI =& get_instance();
-    return count($CI->Links->read(array(
+    return count($CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
         'chainidearight' => $i['ideaid'],
         'chainplayerup' => 4235,
@@ -797,7 +797,7 @@ function player_session($superpower_playerid = null, $force_redirect = 0, $sessi
         if ($player_session) {
             $goto_url = view_memory(42903, 42902) . $player_session['playerhandle'];
         } else {
-            $goto_url = view_app_link(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
+            $goto_url = view_app_chain(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
         }
 
         //Now redirect:
@@ -914,7 +914,7 @@ function process_media($ideaid, $uploaded_media)
     $sort_count = 0;
 
     //Fetch current media:
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42294')) . ')' => null, //Media
         'chainidearight' => $ideaid,
     ), array('chainplayerup'), 0, 0, array('chainnumber' => 'ASC')) as $media) {
@@ -940,7 +940,7 @@ function process_media($ideaid, $uploaded_media)
                 if ($current_media_playerids[$sort_count] != $upload_media['playerid']) {
                     //Order has changed, update it:
                     $adjust_updated = true;
-                    $CI->Links->update($full_media[$upload_media['playerid']]['chainid'], array(
+                    $CI->Chains->update($full_media[$upload_media['playerid']]['chainid'], array(
                         'chainnumber' => $sort_count,
                     ));
                 }
@@ -967,8 +967,8 @@ function process_media($ideaid, $uploaded_media)
                 $etag_detected = false;
                 if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
                     //We already have this asset, return player:
-                    foreach ($CI->Links->read(array(
-                        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    foreach ($CI->Chains->read(array(
+                        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                         'chainplayerup' => 42662, //etag
                         'chaintext' => $upload_media['media_cache']['etag'],
                     ), array('chainplayerdown'), 1) as $existing_media) {
@@ -1027,8 +1027,8 @@ function process_media($ideaid, $uploaded_media)
 
                             //Single select that needs auto creation of Players if missing:
                             $child_id = 0;
-                            foreach ($CI->Links->read(array(
-                                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                            foreach ($CI->Chains->read(array(
+                                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                                 'chainplayerup' => $chainplayertype,
                                 'playertext' => $target_variable,
                             ), array('chainplayerdown'), 1, 0, array('chainid' => 'ASC')) as $child_player) {
@@ -1047,8 +1047,8 @@ function process_media($ideaid, $uploaded_media)
                                     continue;
                                 }
 
-                                //Add links for this new Player:
-                                $CI->Links->create(array(
+                                //Add chains for this new Player:
+                                $CI->Chains->create(array(
                                     'chainplayercreator' => $player_session['playerid'],
                                     'chainplayerup' => $chainplayertype,
                                     'chainplayerdown' => $added_child['player_create']['playerid'],
@@ -1061,8 +1061,8 @@ function process_media($ideaid, $uploaded_media)
                             }
 
                             if ($child_id) {
-                                //Child Player found, simply link:
-                                $CI->Links->create(array(
+                                //Child Player found, simply chain:
+                                $CI->Chains->create(array(
                                     'chainplayercreator' => $player_session['playerid'],
                                     'chainplayerup' => $child_id,
                                     'chainplayerdown' => $upload_media['playerid'],
@@ -1073,7 +1073,7 @@ function process_media($ideaid, $uploaded_media)
                         } else {
 
                             //Save variable as is:
-                            $CI->Links->create(array(
+                            $CI->Chains->create(array(
                                 'chainplayercreator' => $player_session['playerid'],
                                 'chainplayerup' => $chainplayertype,
                                 'chainplayerdown' => $upload_media['playerid'],
@@ -1086,16 +1086,16 @@ function process_media($ideaid, $uploaded_media)
                 }
 
 
-                //By now have the media Player, create necessary links:
+                //By now have the media Player, create necessary chains:
                 if ($upload_media['playerid'] && $upload_media['media_playerid']) {
 
-                    //Link to Idea:
-                    if (!count($CI->Links->read(array(
+                    //Chain to Idea:
+                    if (!count($CI->Chains->read(array(
                         'chainidearight' => $ideaid,
                         'chainplayerup' => $upload_media['playerid'],
                         'chainplayertype' => $upload_media['media_playerid'],
                     )))) {
-                        $CI->Links->create(array(
+                        $CI->Chains->create(array(
                             'chainplayercreator' => $player_session['playerid'],
                             'chainidearight' => $ideaid,
                             'chainplayerup' => $upload_media['playerid'],
@@ -1106,13 +1106,13 @@ function process_media($ideaid, $uploaded_media)
                     }
 
 
-                    //Link to Player as Uploader:
-                    if (!count($CI->Links->read(array(
+                    //Chain to Player as Uploader:
+                    if (!count($CI->Chains->read(array(
                         'chainplayerup' => $player_session['playerid'],
                         'chainplayerdown' => $upload_media['playerid'],
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42657')) . ')' => null, //Uploads
                     )))) {
-                        $CI->Links->create(array(
+                        $CI->Chains->create(array(
                             'chainplayercreator' => $player_session['playerid'],
                             'chainplayerup' => $player_session['playerid'],
                             'chainplayerdown' => $upload_media['playerid'],
@@ -1122,13 +1122,13 @@ function process_media($ideaid, $uploaded_media)
                     }
 
 
-                    //Link to Media Type:
-                    if (!count($CI->Links->read(array(
+                    //Chain to Media Type:
+                    if (!count($CI->Chains->read(array(
                         'chainplayerup' => $upload_media['media_playerid'],
                         'chainplayerdown' => $upload_media['playerid'],
                         'chainplayertype' => 4230,
                     )))) {
-                        $CI->Links->create(array(
+                        $CI->Chains->create(array(
                             'chainplayercreator' => $player_session['playerid'],
                             'chainplayerup' => $upload_media['media_playerid'],
                             'chainplayerdown' => $upload_media['playerid'],
@@ -1151,7 +1151,7 @@ function process_media($ideaid, $uploaded_media)
     //Remove current media missing from submitted (Removed during editing):
     foreach (array_diff($current_media_playerids, $upload_media_playerids) as $deleted_media_playerid) {
         $media_stats['adjust_removed']++;
-        $CI->Links->delete($full_media[$deleted_media_playerid]['chainid'], $player_session['playerid']); //Media Removed
+        $CI->Chains->delete($full_media[$deleted_media_playerid]['chainid'], $player_session['playerid']); //Media Removed
     }
 
     //Calculate total media:
@@ -1168,8 +1168,8 @@ function append_player($chainplayerup, $chainplayercreator, $chaintext, $ideaid,
     $CI =& get_instance();
 
     //First validate data type to ensure it matches:
-    foreach ($CI->Links->read(array(
-        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    foreach ($CI->Chains->read(array(
+        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         'chainplayerup IN (' . join(',', $CI->config->item('playerids___4592')) . ')' => null, //Data Types
         'chainplayerdown' => $chainplayerup,
     )) as $data_type) {
@@ -1180,10 +1180,10 @@ function append_player($chainplayerup, $chainplayercreator, $chaintext, $ideaid,
         }
     }
 
-    //Now check existing links:
-    $existing_x = $CI->Links->read(array(
-        'chainvoid >=' => 0, //Any Link
-        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    //Now check existing chains:
+    $existing_x = $CI->Chains->read(array(
+        'chainvoid >=' => 0, //Any Chain
+        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         'chainplayerup' => $chainplayerup,
         'chainplayerdown' => $chainplayercreator,
     ));
@@ -1197,9 +1197,9 @@ function append_player($chainplayerup, $chainplayercreator, $chaintext, $ideaid,
             return false;
         }
 
-        //Content value has changed, update the Link:
+        //Content value has changed, update the Chain:
         if ($update_if_existing) {
-            $CI->Links->update($existing_x[0]['chainid'], array(
+            $CI->Chains->update($existing_x[0]['chainid'], array(
                 'chaintext' => $chaintext,
                 'chainplayercreator' => $chainplayercreator,
             ));
@@ -1207,8 +1207,8 @@ function append_player($chainplayerup, $chainplayercreator, $chaintext, $ideaid,
 
     } else {
 
-        //Create Link:
-        $CI->Links->create(array(
+        //Create Chain:
+        $CI->Chains->create(array(
             'chainplayertype' => 4230, //Follow Player
             'chaintext' => $chaintext,
             'chainplayercreator' => $chainplayercreator,
@@ -1508,13 +1508,13 @@ function delete_all_between($beginning, $end, $string)
 function user_website($chainplayercreator)
 {
     $CI =& get_instance();
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayerdown' => $chainplayercreator,
         'chainplayertype' => 4230, //New Player Created
     ), array(), 1) as $player_created) {
         return $player_created['chainplayerdomain'];
     }
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayercreator' => $chainplayercreator,
     ), array(), 1) as $player_created) {
         return $player_created['chainplayerdomain'];
@@ -1580,7 +1580,7 @@ function dispatch_sms($to_phone, $single_message, $playerid = 0, $x_data = array
     }
     $sms_success = !substr_count($y, '"status": 400');
 
-    //Log Link:
+    //Log Chain:
     if ($log_tr) {
 
         $target_player = ($sms_success ? 27676 : 27678);
@@ -1592,13 +1592,13 @@ function dispatch_sms($to_phone, $single_message, $playerid = 0, $x_data = array
             foreach ($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
             )) as $idea_template) {
-                $CI->Links->idea_discovered($target_player, $playerid, 0, $idea_template, array(), array(
+                $CI->Chains->idea_discovered($target_player, $playerid, 0, $idea_template, array(), array(
                     'chaintext' => $single_message,
                 ));
             }
         } elseif ($playerid > 0) {
 
-            $CI->Links->create(array_merge($x_data, array(
+            $CI->Chains->create(array_merge($x_data, array(
                 'chainplayertype' => 44179, //Triggered
                 'chainplayerup' => $target_player,
                 'chainplayerdown' => $playerid,
@@ -1644,10 +1644,10 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
             $name = $es[0]['playertext'];
 
             //Also fetch email for this user to populate the reply to:
-            $fetch_emails = $CI->Links->read(array(
+            $fetch_emails = $CI->Chains->read(array(
                 'chainplayerup' => 3288, //Email
                 'chainplayerdown' => $playerid,
-                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             ));
             if (count($fetch_emails) && filter_var($fetch_emails[0]['chaintext'], FILTER_VALIDATE_EMAIL)) {
                 array_push($ReplyToAddresses, trim($fetch_emails[0]['chaintext']));
@@ -1665,13 +1665,13 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
     $email_message .= '<div class="line">' . get_domain('m__title', $playerid, $chainplayerdomain) . '</div>';
 
 
-    if ($playerid > 0 && count($es) && (!$template_ideaid || !count($CI->Links->read(array(
+    if ($playerid > 0 && count($es) && (!$template_ideaid || !count($CI->Chains->read(array(
                 'chainplayertype IN (' . join(',', $CI->config->item('playerids___42256')) . ')' => null, //Writes
                 'chainplayerup' => 31779, //Mandatory Emails
                 'chainidearight' => $template_ideaid,
             ))))) {
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_link(28904) . '?playerhandle=' . $es[0]['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['playerhandle']) . '" style="font-size:13px;">' . $players___6287[28904]['m__title'] . '</a></div>';
+        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?playerhandle=' . $es[0]['playerhandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['playerhandle']) . '" style="font-size:13px;">' . $players___6287[28904]['m__title'] . '</a></div>';
     }
 
 
@@ -1735,7 +1735,7 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
 
     $response = $client->sendEmail($email_data);
 
-    //Log Link:
+    //Log Chain:
     if ($log_tr) {
 
         $player_session = player_session();
@@ -1746,13 +1746,13 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
             foreach ($CI->Ideas->read(array(
                 'ideaid' => $template_ideaid,
             )) as $idea_template) {
-                $CI->Links->idea_discovered(29399, $playerid, 0, $idea_template, array(), array(
+                $CI->Chains->idea_discovered(29399, $playerid, 0, $idea_template, array(), array(
                     'chaintext' => $subject . "\n" . $email_message,
                 ));
             }
         } elseif ($playerid > 0) {
 
-            $CI->Links->create(array_merge($x_data, array(
+            $CI->Chains->create(array_merge($x_data, array(
                 'chainplayertype' => 44179, //Triggered
                 'chainplayerup' => 29399,
                 'chainplayerdown' => $playerid,
@@ -1767,7 +1767,7 @@ function dispatch_email($to_emails, $subject, $email_body, $playerid = 0, $x_dat
             foreach ($CI->Ideas->read(array(
                 'ideaid' => $x_data['chainidealeft'],
             )) as $email_i) {
-                $CI->Links->idea_discovered(idea_type_discovery($email_i), $playerid, $x_data['chainidearight'], $email_i, $x_data);
+                $CI->Chains->idea_discovered(idea_type_discovery($email_i), $playerid, $x_data['chainidearight'], $email_i, $x_data);
             }
         }
 
@@ -1881,7 +1881,7 @@ function player_access($playerhandle = null, $playerid = 0, $e = false, $replace
     $is_public = true;
     $is_author = false;
     if ($player_session) {
-        $is_author = count($CI->Links->read(array(
+        $is_author = count($CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
             'chainplayerup' => ($replacement_playerid > 0 ? $replacement_playerid : $player_session['playerid']),
             'chainplayerdown' => $e['playerid'],
@@ -1939,7 +1939,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
     $chainplayercreator = ($replacement_playerid > 0 ? $replacement_playerid : ($player_session ? $player_session['playerid'] : 0));
     $is_author = false;
     if (!$discovery_mode && $chainplayercreator) {
-        $is_author = count($CI->Links->read(array( //IDEA SOURCE
+        $is_author = count($CI->Chains->read(array( //IDEA SOURCE
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
             'chainplayerup' => $chainplayercreator,
             'chainidearight' => $i['ideaid'],
@@ -1951,7 +1951,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         //Authors can always edit:
         return 3;
 
-    } elseif (!$discovery_mode && count($CI->Links->read(array(
+    } elseif (!$discovery_mode && count($CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___42953')) . ')' => null, //Mentioned Players
             'chainplayerup' => $chainplayercreator,
             'chainidearight' => $i['ideaid'],
@@ -1978,7 +1978,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[44161] as $focusideaid) {
-                    if (count($CI->Links->read(array(
+                    if (count($CI->Chains->read(array(
                         'chainplayercreator' => $chainplayercreator,
                         'chainidealeft' => $focusideaid,
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -1997,7 +1997,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[40791] as $focusideaid) {
-                    if (count($CI->Links->read(array(
+                    if (count($CI->Chains->read(array(
                         'chainplayercreator' => $chainplayercreator,
                         'chainidealeft' => $focusideaid,
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -2018,7 +2018,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[44162] as $focusideaid) {
-                    if (count($CI->Links->read(array(
+                    if (count($CI->Chains->read(array(
                         'chainplayercreator' => $chainplayercreator,
                         'chainidealeft' => $focusideaid,
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -2040,7 +2040,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[40793] as $focusideaid) {
-                    if (count($CI->Links->read(array(
+                    if (count($CI->Chains->read(array(
                         'chainplayercreator' => $chainplayercreator,
                         'chainidealeft' => $focusideaid,
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -2066,8 +2066,8 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[27984] as $focusplayerid) {
-                    if ((($chainplayercreator && $chainplayercreator == $focusplayerid) || count($CI->Links->read(array(
-                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    if ((($chainplayercreator && $chainplayercreator == $focusplayerid) || count($CI->Chains->read(array(
+                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                             'chainplayerup' => $focusplayerid,
                             'chainplayerdown' => $chainplayercreator,
                         ))))) {
@@ -2087,8 +2087,8 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[43513] as $focusplayerid) {
-                    if ((($chainplayercreator && $chainplayercreator == $focusplayerid) || count($CI->Links->read(array(
-                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    if ((($chainplayercreator && $chainplayercreator == $focusplayerid) || count($CI->Chains->read(array(
+                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                             'chainplayerup' => $focusplayerid,
                             'chainplayerdown' => $chainplayercreator,
                         ))))) {
@@ -2107,8 +2107,8 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[43514] as $focusplayerid) {
-                    if (($chainplayercreator == $focusplayerid) || count($CI->Links->read(array(
-                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    if (($chainplayercreator == $focusplayerid) || count($CI->Chains->read(array(
+                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                             'chainplayerup' => $focusplayerid,
                             'chainplayerdown' => $chainplayercreator,
                         )))) {
@@ -2128,8 +2128,8 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
             $the_counter = 0;
             if ($chainplayercreator) {
                 foreach ($idea_list_config[26600] as $focusplayerid) {
-                    if (($chainplayercreator == $focusplayerid) || count($CI->Links->read(array(
-                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    if (($chainplayercreator == $focusplayerid) || count($CI->Chains->read(array(
+                            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                             'chainplayerup' => $focusplayerid,
                             'chainplayerdown' => $chainplayercreator,
                         )))) {
@@ -2168,7 +2168,7 @@ function search_enabled()
 function idea_started($playerid, $ideahashtag)
 {
     $CI =& get_instance();
-    return count($CI->Links->read(array(
+    return count($CI->Chains->read(array(
         'chainidealeft = chainidearight' => NULL,
         'LOWER(ideahashtag)' => strtolower($ideahashtag),
         'chainplayercreator' => $playerid,
@@ -2345,13 +2345,13 @@ function update_algolia($focus__node = null, $s__id = 0)
                 }
 
                 //Top/Bottom Idea Keywords
-                foreach ($CI->Links->read(array(
+                foreach ($CI->Chains->read(array(
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___42345')) . ')' => null, //Active Sequence 2-Ways
                     'chainidealeft' => $s['ideaid'],
                 ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['ideatext'] . ' ';
                 }
-                foreach ($CI->Links->read(array(
+                foreach ($CI->Chains->read(array(
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___42345')) . ')' => null, //Active Sequence 2-Ways
                     'chainidearight' => $s['ideaid'],
                 ), array('chainidealeft'), 0, 0, array('chainnumber' => 'ASC')) as $i) {
@@ -2359,8 +2359,8 @@ function update_algolia($focus__node = null, $s__id = 0)
                 }
 
                 //Idea Players Keywords
-                foreach ($CI->Links->read(array(
-                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+                foreach ($CI->Chains->read(array(
+                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
                     'chainidearight' => $s['ideaid'],
                 ), array('chainplayerup'), 0) as $x) {
 
@@ -2397,8 +2397,8 @@ function update_algolia($focus__node = null, $s__id = 0)
                 array_push($export_row['_tags'], 'public_index');
 
                 //Fetch Following:
-                foreach ($CI->Links->read(array(
-                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                foreach ($CI->Chains->read(array(
+                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                     'chainplayerdown' => $s['playerid'], //This follower Player
                 ), array('chainplayerup'), 0, 0, array('playertext' => 'DESC')) as $x) {
 
@@ -2411,7 +2411,7 @@ function update_algolia($focus__node = null, $s__id = 0)
                 }
 
                 //Append Discovery Written Responses to Keywords
-                foreach ($CI->Links->read(array(
+                foreach ($CI->Chains->read(array(
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___29133')) . ')' => null, //Written Responses
                     'chainplayercreator' => $s['playerid'], //This follower Player
                 ), array('chainplayercreator'), 0, 0, array('chaintime' => 'DESC')) as $x) {
@@ -2556,7 +2556,7 @@ function one_two_explode($one, $two, $str)
 function idea_creation_time($ideaid)
 {
     $CI =& get_instance();
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainid' => $ideaid,
     )) as $x) {
         return $x['chaintime'];
@@ -2659,14 +2659,14 @@ function chainprevious($starting_id = -1)
 {
     $CI =& get_instance();
     if ($starting_id < 0) {
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             '(chainhash IS NOT NULL) AND (chainprevious IS NOT NULL)' => NULL,
             'chainvoid >=' => 0,
         ), array(), 1, 0, array('chainid' => 'DESC')) as $x) {
             return $x['chainhash'];
         }
     } elseif ($starting_id > 0) {
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             'chainid >=' => $starting_id,
             'chainvoid >=' => 0,
         ), array(), 1, 0, array('chainid' => 'ASC')) as $x) {
@@ -2694,7 +2694,7 @@ function chainhash($x)
     );
 }
 
-function link_view($x)
+function chain_view($x)
 {
 
     $CI =& get_instance();
@@ -2728,12 +2728,12 @@ function link_view($x)
 
         } elseif ($playerid == 4367) {
 
-            //Link ID
+            //Chain ID
 
-            //Determine link group:
+            //Determine chain group:
             $playerhandle_sign = '';
             if (in_array($x['chainplayertype'], array(4250, 4251))) {
-                $players___4593 = $CI->config->item('players___4593'); //Link Type
+                $players___4593 = $CI->config->item('players___4593'); //Chain Type
                 $playerhandle_sign = '<span class="group_sign" title="' . $players___4593[$x['chainplayertype']]['m__title'] . '">' . $players___4593[$x['chainplayertype']]['m__cover'] . '</span>';
             } else {
                 foreach ($CI->config->item('players___31770') as $groupid => $groupm) {
@@ -2745,14 +2745,14 @@ function link_view($x)
             }
 
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $playerhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($playerid == 44395) {
 
             //Void:
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_link(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($playerid == 4362) {
@@ -2852,7 +2852,7 @@ function view_time_difference($t, $micro = false)
     }
 }
 
-function view_app_link($app_id)
+function view_app_chain($app_id)
 {
     return view_memory(42903, 6287) . view_memory(6287, $app_id, 'm__handle');
 }
@@ -2953,7 +2953,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
             . ($player_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
-        $CI->Links->create(array_merge($error_data, array(
+        $CI->Chains->create(array_merge($error_data, array(
             'chainplayerup' => 4246, //Platform Bug Reports
             'chainplayertype' => 44179, //Triggered
             'chaintext' => $error_message,
@@ -2991,22 +2991,22 @@ function players_query($chainplayertype, $playerid, $current_page = 0, $append_c
 
     if (in_array($chainplayertype, $CI->config->item('playerids___42377'))) {
 
-        //Down Player Link Groups:
+        //Down Player Chain Groups:
         $order_columns = player_sort();
         $joins_objects = array('chainplayerdown');
         $query_filters = array(
             'chainplayerup' => $playerid,
-            'chainplayertype IN (' . join(',', $CI->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $CI->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE CHAINS
         );
 
     } elseif (in_array($chainplayertype, $CI->config->item('playerids___42276'))) {
 
-        //Up Player Link Groups:
+        //Up Player Chain Groups:
         $order_columns = player_sort();
         $joins_objects = array('chainplayerup');
         $query_filters = array(
             'chainplayerdown' => $playerid,
-            'chainplayertype IN (' . join(',', $CI->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $CI->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE CHAINS
         );
 
     } elseif (in_array($chainplayertype, $CI->config->item('playerids___11028'))) {
@@ -3016,7 +3016,7 @@ function players_query($chainplayertype, $playerid, $current_page = 0, $append_c
         $joins_objects = array('chainplayerdown');
         $query_filters = array(
             'chainplayerup' => $playerid,
-            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         );
 
     } elseif (in_array($chainplayertype, $CI->config->item('playerids___42261'))) {
@@ -3061,7 +3061,7 @@ function players_query($chainplayertype, $playerid, $current_page = 0, $append_c
     if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        $query = $CI->Links->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
+        $query = $CI->Chains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
         return $query;
 
     } else {
@@ -3076,7 +3076,7 @@ function players_query($chainplayertype, $playerid, $current_page = 0, $append_c
                 'm__cover' => '',
             );
         }
-        $query = $CI->Links->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
+        $query = $CI->Chains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">' . view_number($count_query) . '<span>';
         $title_desc = number_format($count_query, 0) . ' ' . $players___11035[$chainplayertype]['m__title'];
@@ -3135,17 +3135,17 @@ function ideas_query($chainplayertype, $ideaid, $current_page = 0, $append_card_
 
     } elseif (in_array($chainplayertype, $CI->config->item('playerids___42380'))) {
 
-        //IDEA Link Groups Previous
+        //IDEA Chain Groups Previous
         $order_columns = array('chainid' => 'DESC');
         $joins_objects = array('chainidealeft');
         $query_filters = array(
-            'chainplayertype IN (' . join(',', $CI->config->item('playerids___' . $chainplayertype)) . ')' => null, //IDEA LINKS
+            'chainplayertype IN (' . join(',', $CI->config->item('playerids___' . $chainplayertype)) . ')' => null, //IDEA CHAINS
             'chainidearight' => $ideaid,
         );
 
     } elseif (in_array($chainplayertype, $CI->config->item('playerids___42265'))) {
 
-        //IDEA Link Groups Next
+        //IDEA Chain Groups Next
         $order_columns = array('chainnumber' => 'ASC');
         $joins_objects = array('chainidearight');
         $query_filters = array(
@@ -3174,12 +3174,12 @@ function ideas_query($chainplayertype, $ideaid, $current_page = 0, $append_card_
     if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        return $CI->Links->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
+        return $CI->Chains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
 
     } else {
 
         $players___11035 = $CI->config->item('players___11035'); //COINS
-        $query = $CI->Links->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
+        $query = $CI->Chains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">' . view_number($count_query) . '<span>';
         $title_desc = number_format($count_query, 0) . (isset($players___11035[$chainplayertype]['m__title']) ? ' ' . $players___11035[$chainplayertype]['m__title'] : '');
@@ -3261,9 +3261,9 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
 
     $already_selected = array();
     $selection_ids = array();
-    $selection_options = $CI->Links->read(array(
+    $selection_options = $CI->Chains->read(array(
         'chainplayerup' => $focus__id,
-        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
     ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC'));
     foreach ($selection_options as $list_item) {
         array_push($selection_ids, $list_item['playerid']);
@@ -3280,10 +3280,10 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
 
         //Player Focus:
         if (count($selection_ids)) {
-            foreach ($CI->Links->read(array(
+            foreach ($CI->Chains->read(array(
                 'chainplayerup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
                 'chainplayerdown' => $down_playerid,
-                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             )) as $sel) {
                 array_push($already_selected, $sel['chainplayerup']);
             }
@@ -3303,10 +3303,10 @@ function view_instant_select($focus__id, $down_playerid = 0, $right_ideaid = 0)
     } elseif ($right_ideaid > 0) {
 
         //Idea focus:
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             'chainplayerup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
             'chainidearight' => $right_ideaid,
-            'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Idea/Player Links Active
+            'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
         )) as $sel) {
             array_push($already_selected, $sel['chainplayerup']);
         }
@@ -3443,10 +3443,10 @@ function searchingle_select_instant($cache_playerid, $selected_playerid, $idea_a
     } elseif(!$selected_playerid && $idea_access && $player_session){
 
         //See if this user has any of these options:
-        foreach($CI->Links->read(array(
-            'chainplayerup IN (' . join(',', $CI->config->item('playerids___'.$cache_playerid)) . ')' => null, //SOURCE LINKS
+        foreach($CI->Chains->read(array(
+            'chainplayerup IN (' . join(',', $CI->config->item('playerids___'.$cache_playerid)) . ')' => null, //SOURCE CHAINS
             'chainplayerdown' => $player_session['playerid'],
-            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         )) as $x) {
             //Supports one for now
             $selected_playerid = $x['chainplayerup'];
@@ -3583,34 +3583,34 @@ function view_valid_handle_reverse_idea($string, $check_db = false)
 }
 
 
-function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node = false)
+function view_idea_chains($i, $playerid = 0, $replace_chains = true, $focus__node = false)
 {
 
     if (!isset($i['ideaid'])) {
         return null;
     }
 
-    //Append Custom Reference Link contents, if any:
+    //Append Custom Reference Chain contents, if any:
     $CI =& get_instance();
 
-    if ($replace_links) {
+    if ($replace_chains) {
         $i['ideacache'] = str_replace('spanaa', 'a', $i['ideacache']);
     }
 
     if ($playerid > 0) {
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             'chainidearight' => $i['ideaid'],
             'chainplayertype' => 31835, //References
         ), array('chainplayerup'), 0) as $message_references) {
             if (!substr_count(strtolower($i['ideacache']), '>@' . strtolower($message_references['playerhandle']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
-                $CI->Links->delete($message_references['chainid']);
+                $CI->Chains->delete($message_references['chainid']);
                 continue;
             }
-            foreach ($CI->Links->read(array(
+            foreach ($CI->Chains->read(array(
                 'chainplayerup' => $message_references['playerid'],
                 'chainplayerdown' => $playerid,
-                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 'LENGTH(chaintext) > 0' => null,
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['chaintext'])) {
@@ -3626,7 +3626,7 @@ function view_idea_links($i, $playerid = 0, $replace_links = true, $focus__node 
     }
 
     return
-        $i['ideacache'] . view_idea_media($i) . ($focus__node || !substr_count($i['ideacache'], 'show_more_line') ? view_list_player($i, !$replace_links) : '');
+        $i['ideacache'] . view_idea_media($i) . ($focus__node || !substr_count($i['ideacache'], 'show_more_line') ? view_list_player($i, !$replace_chains) : '');
 }
 
 
@@ -3669,7 +3669,7 @@ function ideacache($save_ideaid, $str)
     $word_count = 0;
     $word_limit = 89;
     $line_inwards = 3;
-    $link_words = 13; //The number of words a link is counted as
+    $chain_words = 13; //The number of words a chain is counted as
 
     $ideacache = '<div class="i_cache cache_frame_' . $save_ideaid . '">';
     $line_count = 0;
@@ -3698,7 +3698,7 @@ function ideacache($save_ideaid, $str)
                 $reference_type = 4256;
                 array_push($idea_references[$reference_type], $word);
                 $ideacache_line .= @sprintf($ui_template[$reference_type], $word, $word);
-                $word_count += $link_words;
+                $word_count += $chain_words;
 
             } elseif (view_valid_handle_player($word, true)) {
 
@@ -3758,8 +3758,8 @@ function ideacache($save_ideaid, $str)
         //Save Found references to remove the ones who exist in DB:
         $references_add_to_db = $idea_references;
         $player_session = player_session();
-        foreach ($CI->Links->read(array(
-            'chainplayertype IN (' . join(',', $CI->config->item('playerids___4736')) . ')' => null, //Idea Message Links 3x
+        foreach ($CI->Chains->read(array(
+            'chainplayertype IN (' . join(',', $CI->config->item('playerids___4736')) . ')' => null, //Idea Message Chains 3x
             'chainidearight' => $save_ideaid,
         )) as $x) {
 
@@ -3767,7 +3767,7 @@ function ideacache($save_ideaid, $str)
             if (!in_array($x['chaintext'], $idea_references[$x['chainplayertype']])) {
 
                 //Not valid, must be removed:
-                $CI->Links->delete($x['chainid'], $player_session['playerid']);
+                $CI->Chains->delete($x['chainid'], $player_session['playerid']);
 
             } else {
 
@@ -3816,7 +3816,7 @@ function ideacache($save_ideaid, $str)
                     $chainplayertype = $db_type; //Message URLs
                     $player_session = player_session();
                     $chainplayerup = ($player_session ? $player_session['playerid'] : 14068);
-                    foreach ($CI->Links->read(array(
+                    foreach ($CI->Chains->read(array(
                         'chainid' => $save_ideaid,
                     ), array()) as $x) {
                         $chainplayerup = $x['chainplayerup'];
@@ -3825,7 +3825,7 @@ function ideacache($save_ideaid, $str)
                     $chaintext = $db_val;
                 }
 
-                $CI->Links->create(array(
+                $CI->Chains->create(array(
                     'chaintime' => idea_creation_time($save_ideaid),
                     'chainplayertype' => $chainplayertype,
                     'chainplayercreator' => $player_session['playerid'],
@@ -3844,7 +3844,7 @@ function ideacache($save_ideaid, $str)
 }
 
 
-function view_featured_links($chainplayertype, $location, $m = null, $focus__node)
+function view_featured_chains($chainplayertype, $location, $m = null, $focus__node)
 {
     $CI =& get_instance();
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
@@ -3863,14 +3863,14 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
     $players___loading_order = $CI->config->item('players___' . ($discovery_mode ? 26005 : 26005));
 
     if ($player_session && !is_array($x_completes)) {
-        $x_completes = $CI->Links->read(array(
+        $x_completes = $CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainplayercreator' => $player_session['playerid'],
             'chainidealeft' => $focus_i['ideaid'],
         ), array('chainidearight'));
     }
 
-    $discovery_next_hide = $player_session && $discovery_mode && !count($x_completes) && count($CI->Links->read(array(
+    $discovery_next_hide = $player_session && $discovery_mode && !count($x_completes) && count($CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $focus_i['ideaid'],
             'chainplayerup' => 44250, //Hide Next Ideas
@@ -3905,7 +3905,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404, 6197) . '"
-                               placeholder="Create New or Link Existing @Players">
+                               placeholder="Create New or Chain Existing @Players">
                     </div></div></div></div>';
                 $body_content .= '<script> $(document).ready(function () { player_load_finder(' . $chainplayertype . '); }); </script>';
 
@@ -3917,7 +3917,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
                                maxlength="' . view_memory(6404, 6197) . '"
-                               placeholder="Create New or Link Existing #ideas">
+                               placeholder="Create New or Chain Existing #ideas">
                     </div></div></div></div>';
                 $body_content .= '<script> $(document).ready(function () { idea_load_search(' . $chainplayertype . '); }); </script>';
             }
@@ -3929,7 +3929,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
 
 
             if ($chainplayertype != 12840 || !$discovery_next_hide) {
-                $ui .= '<li class="nav-item thepill' . $chainplayertype . '"><a class="nav-link handle_nav_' . $m['m__handle'] . '" chainplayertype="' . $chainplayertype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainplayertype . '">' . view_number($coins_count[$chainplayertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainplayertype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
+                $ui .= '<li class="nav-item thepill' . $chainplayertype . '"><a class="nav-chain handle_nav_' . $m['m__handle'] . '" chainplayertype="' . $chainplayertype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainplayertype . '">' . view_number($coins_count[$chainplayertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainplayertype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
             }
 
         }
@@ -3944,7 +3944,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
 
 
     if (in_array($focus_i['ideatype'], $CI->config->item('playerids___34826')) && $player_session && $discovery_mode && !count($x_completes)) {
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $focus_i['ideaid'],
             'chainplayerup' => 44262, //Skip Next If Unidea_discovered
@@ -4147,7 +4147,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
     $superpower_10939 = !$is_cache && player_session(10939);
     $idea_startable = idea_is_startable($i);
     $chainplayercreator = ($focus_playerid > 0 ? $focus_playerid : ($player_session ? $player_session['playerid'] : 0));
-    $link_creator = isset($i['chainplayercreator']) && $i['chainplayercreator'] == $chainplayercreator;
+    $chain_creator = isset($i['chainplayercreator']) && $i['chainplayercreator'] == $chainplayercreator;
     $focus__node = in_array($chainplayertype, $CI->config->item('playerids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
     $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
@@ -4166,7 +4166,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
     //Log Preview:
     $chainplayercreator_id = ($chainplayercreator > 0 ? $chainplayercreator : 14068 /* GUEST */);
-    $CI->Links->create(array(
+    $CI->Chains->create(array(
         'chainplayertype' => 1576044, //Idea Previewed
         'chainplayercreator' => $chainplayercreator_id,
         'chainplayerup' => $chainplayercreator_id,
@@ -4175,7 +4175,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
     if ($chainplayercreator && !is_array($x_completes)) {
         //Fetch discovery
-        $x_completes = $CI->Links->read(array(
+        $x_completes = $CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainplayercreator' => $chainplayercreator,
             'chainidealeft' => $i['ideaid'],
@@ -4195,7 +4195,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
     $has_sortable = $chainid > 0 && !$focus__node && $idea_access >= 3 && in_array($chainplayertype, $CI->config->item('playerids___4603')) && ($chainplayertype != 42256 || $i['chainplayertype'] == 34513);
     $has_idea_discovered = 0;
     if (!$is_cache && $chainplayercreator) {
-        $discoveries = $CI->Links->read(array(
+        $discoveries = $CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainplayercreator' => $chainplayercreator,
             'chainidealeft' => $i['ideaid'],
@@ -4207,7 +4207,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
     }
 
     if ($has_idea_discovered && !$target_ideahashtag) {
-        foreach ($CI->Links->read(array(
+        foreach ($CI->Chains->read(array(
             'chainplayertype IN (' . join(',', $CI->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainplayercreator' => $chainplayercreator,
             'chainidealeft' => $i['ideaid'],
@@ -4243,7 +4243,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
         $ui .= '<script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>';
     }
 
-    $is_required = count($CI->Links->read(array(
+    $is_required = count($CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
         'chainidearight' => $i['ideaid'],
         'chainplayerup' => 28239, //Required
@@ -4255,7 +4255,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
     }
 
     if ($focus_idea_or) {
-        $ui .= '<div class="this_selector this_selector_' . $i['ideaid'] . '" selection_ideaid="' . $i['ideaid'] . '"><span class="icon-block-sm">' . (count($CI->Links->read(array(
+        $ui .= '<div class="this_selector this_selector_' . $i['ideaid'] . '" selection_ideaid="' . $i['ideaid'] . '"><span class="icon-block-sm">' . (count($CI->Chains->read(array(
                 'chainplayertype' => 7712, //Input Choice
                 'chainplayercreator' => $chainplayercreator,
                 'chainidealeft' => $focus_idea_or['ideaid'],
@@ -4267,12 +4267,12 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
     $ui .= '<div class="inner-content">';
     $ui .= '<div class="cover-text">';
 
-    //Show Link User:
+    //Show Chain User:
     $ui .= '<div class="creator_frame creator_frame_' . $i['ideaid'] . '">';
 
     //Show Creator if any:
     $headline_authors = array();
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayertype' => 4250, //Idea Created
         'chainidearight' => $i['ideaid'],
     ), array('chainplayerup')) as $creator) {
@@ -4280,7 +4280,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
         array_push($headline_authors, $creator['playerid']);
         $follow_btn = null;
         if ($focus__node && $chainplayercreator && $chainplayercreator != $creator['playerid']) {
-            $followings = $CI->Links->read(array(
+            $followings = $CI->Chains->read(array(
                 'chainplayerup' => $creator['playerid'],
                 'chainplayerdown' => $chainplayercreator,
                 'chainplayertype IN (' . join(',', $CI->config->item('playerids___42795')) . ')' => null, //Follow
@@ -4299,15 +4299,15 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
     //Bottom Bar
     $bottom_bar_ui = '';
 
-    //Determine Link Group
-    $chainplayertype_id = 4593; //Link Type
+    //Determine Chain Group
+    $chainplayertype_id = 4593; //Chain Type
     $chainplayertype_ui = '';
     if (!$focus__node && $chainid && !$is_cache) {
         foreach ($CI->config->item('players___31770') as $chainplayertype1 => $m1) {
             if (in_array($i['chainplayertype'], $CI->config->item('playerids___' . $chainplayertype1))) {
-                foreach ($CI->Links->read(array(
+                foreach ($CI->Chains->read(array(
                     'chainid' => $chainid,
-                ), array('chainplayercreator')) as $linker) {
+                ), array('chainplayercreator')) as $chainer) {
                     $chainplayertype_ui .= '<span class="icon-block-sm">';
                     $chainplayertype_ui .= searchingle_select_instant($chainplayertype1, $i['chainplayertype'], $idea_access, false, $i['ideaid'], $chainid);
                     $chainplayertype_ui .= '</span>';
@@ -4334,12 +4334,12 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
         //Determine hover state:
         if ($chainplayertype_target_bar == 31770 && !$discovery_mode && $chainplayertype_ui && $superpower_10939) {
 
-            //Links
+            //Chains
             $bottom_bar_ui .= $chainplayertype_ui;
 
         } elseif ($chainplayertype_target_bar == 4362 && !$is_cache && !$discovery_mode && $player_session && isset($i['chaintime']) && strtotime($i['chaintime']) > 0 && $chainplayertype_ui && ($idea_access >= 3 || ($player_session && $chainplayercreator == $i['chainplayercreator']))) {
 
-            //Link Time / Creator
+            //Chain Time / Creator
             $creator_details = '';
             $time_diff = view_time_difference($i['chaintime'], true);
             $creator_name = '';
@@ -4347,7 +4347,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                 foreach ($CI->Players->read(array(
                     'playerid' => $i['chainplayercreator'],
                 )) as $creator) {
-                    $creator_name = 'Linked by ' . $creator['playertext'] . ' @' . $creator['playerhandle'] . ' on ';
+                    $creator_name = 'Chained by ' . $creator['playertext'] . ' @' . $creator['playerhandle'] . ' on ';
                     $creator_details = '<a href="' . view_memory(42903, 33286) . $i['ideahashtag'] . '"><span class="icon-block-sm">' . view_cover($creator['playercover']) . '</span></a>';
                 }
             }
@@ -4378,9 +4378,9 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
             $action_buttons = null;
             if (!$chainid) {
                 $focus_dropdown = 11047; //Idea Dropdown
-            } elseif ($chainplayertype_id == 4486) { //Idea/Idea Links
+            } elseif ($chainplayertype_id == 4486) { //Idea/Idea Chains
                 $focus_dropdown = 14955; //Idea/Idea Dropdown
-            } elseif ($chainplayertype_id == 13550) { //Idea/Player Links
+            } elseif ($chainplayertype_id == 13550) { //Idea/Player Chains
                 $focus_dropdown = 28787; //Idea/Player Dropdown
             } else {
                 //Discoveries
@@ -4401,7 +4401,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     if ($playerid_dropdown == 12589 && $idea_access >= 3) {
 
                         //Mass Apply
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="link_preview(12589,' . $i['ideaid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(12589,' . $i['ideaid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 33286 && $discovery_mode && $idea_access >= 3) {
 
@@ -4416,7 +4416,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     } elseif ($playerid_dropdown == 13007 && $idea_access >= 3) {
 
                         //Reset Alphabetic order
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="link_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 31911 && $idea_access >= 3 && $discovery_mode) {
 
@@ -4425,8 +4425,8 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
                     } elseif ($playerid_dropdown == 10673 && $chainid && $idea_access >= 3) {
 
-                        //Unlink
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="link_delete(' . $chainid . ', ' . $chainplayertype . ',\'' . $i['ideahashtag'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Unchain
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $chainplayertype . ',\'' . $i['ideahashtag'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 30873 && $idea_access >= 3) {
 
@@ -4436,7 +4436,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     } elseif ($playerid_dropdown == 33292 && $player_session) {
 
                         //Stats
-                        $action_buttons .= '<a href="' . view_app_link(33292) . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain(33292) . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 29771 && $idea_access >= 3) {
 
@@ -4445,8 +4445,8 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
                     } elseif ($playerid_dropdown == 4341 && $idea_access >= 3 && $chainid) {
 
-                        //Link Details
-                        $action_buttons .= '<a href="' . view_app_link(4341) . '?chainid=' . $chainid . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
+                        //Chain Details
+                        $action_buttons .= '<a href="' . view_app_chain(4341) . '?chainid=' . $chainid . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
 
                     } elseif ($playerid_dropdown == 42648 && $idea_access >= 3) {
 
@@ -4465,7 +4465,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     } elseif (in_array($playerid_dropdown, $CI->config->item('playerids___6287')) && $idea_access >= 3) {
 
                         //Standard button
-                        $action_buttons .= '<a href="' . view_app_link($playerid_dropdown) . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain($playerid_dropdown) . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     }
                 }
@@ -4497,14 +4497,14 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
 
     //Idea Location if any:
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayertype' => 41949, //Locate
         'chainidearight' => $i['ideaid'],
     ), array('chainplayerup')) as $location) {
-        $ui .= view_featured_links(41949, $location, null, $focus__node);
+        $ui .= view_featured_chains(41949, $location, null, $focus__node);
     }
 
-    //Link Message if any:
+    //Chain Message if any:
     if ($chainid && $player_session) {
         $ui .= '<div class="chaintext_headline grey hideIfEmpty ignore-click ui_chaintext_' . $chainid . (in_array($i['chainplayertype'], $CI->config->item('playerids___42294')) ? ' hidden ' : '') . '" style="padding-left:40px;">' . htmlentities($i['chaintext']) . '</div>';
     }
@@ -4514,11 +4514,11 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="ui_ideacache_' . $i['ideaid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_idea_links($i, $chainplayercreator, ($focus__node || 1), $focus__node) . '</div>';
+    $ui .= '<div class="ui_ideacache_' . $i['ideaid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_idea_chains($i, $chainplayercreator, ($focus__node || 1), $focus__node) . '</div>';
 
     $idea_popup_url = idea_popup_url($i);
     if ($idea_popup_url) {
-        $ui .= '<div class="ignore-click link_click link_click_' . $i['ideaid'] . ' hideIfEmpty"><a href="' . $idea_popup_url . '" class="hideIfEmpty" target="_blank" onclick="link_clicked(' . $i['ideaid'] . ')">' . $idea_popup_url . '</a></div>';
+        $ui .= '<div class="ignore-click chain_click chain_click_' . $i['ideaid'] . ' hideIfEmpty"><a href="' . $idea_popup_url . '" class="hideIfEmpty" target="_blank" onclick="chain_clicked(' . $i['ideaid'] . ')">' . $idea_popup_url . '</a></div>';
     }
 
 
@@ -4574,22 +4574,22 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
                 $paypal_email = website_setting(30882);
 
-                $currency_types = $CI->Links->read(array(
+                $currency_types = $CI->Chains->read(array(
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                     'chainidearight' => ($previous_i['ideatype'] == 43758 ? $previous_i['ideaid'] : $i['ideaid']),
                     'chainplayerup IN (' . join(',', $CI->config->item('playerids___26661')) . ')' => null, //Currency
                 ));
-                $total_dues = $CI->Links->read(array(
+                $total_dues = $CI->Chains->read(array(
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                     'chainidearight' => $i['ideaid'],
                     'chainplayerup' => 26562, //Total Due
                 ));
-                $cart_max = $CI->Links->read(array(
+                $cart_max = $CI->Chains->read(array(
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                     'chainidearight' => $i['ideaid'],
                     'chainplayerup' => 29651, //Cart Max Quantity
                 ));
-                $cart_min = $CI->Links->read(array(
+                $cart_min = $CI->Chains->read(array(
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                     'chainidearight' => $i['ideaid'],
                     'chainplayerup' => 31008, //Cart Min Quantity
@@ -4617,7 +4617,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
                     $valid_instant_pay = true;
 
-                    $digest_fees = count($CI->Links->read(array(
+                    $digest_fees = count($CI->Chains->read(array(
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $i['ideaid'],
                         'chainplayerup' => 30589, //Digest Fees
@@ -4628,11 +4628,11 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainplayercreator)) + doubleval(website_setting(27017, $chainplayercreator))) / 100), 2, ".", "");
 
                     //Append information to cart about Paypal:
-                    $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_link(14373) . '" target="_blank">Terms of Use</a>.</div>';
+                    $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
 
                 } elseif (filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $previous_i['ideatype'] == 43758 && count($total_dues) && $total_dues[0]['chaintext'] > 0) {
 
-                    $digest_fees = count($CI->Links->read(array(
+                    $digest_fees = count($CI->Chains->read(array(
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $previous_i['ideaid'],
                         'chainplayerup' => 30589, //Digest Fees
@@ -4646,7 +4646,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
 
                 $current_value = $min_allowed;
-                foreach ($CI->Links->read(array(
+                foreach ($CI->Chains->read(array(
                     'chainplayertype' => 7712, //Input Choice
                     'chainplayercreator' => $player_session['playerid'],
                     'chainidearight' => $i['ideaid'],
@@ -4691,7 +4691,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                     $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
                     $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
-                    $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $players___14870[2738]['m__message'] . view_app_link(26595) . '">';
+                    $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $players___14870[2738]['m__message'] . view_app_chain(26595) . '">';
                     $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'] . '?cancel_pay=1">';
                     $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'] . '?process_pay=1">';
                     $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
@@ -4715,7 +4715,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
         } elseif (in_array($i['ideatype'], $CI->config->item('playerids___33532'))) {
 
             //Find the created idea if any:
-            $player_private_replies = $CI->Links->read(array(
+            $player_private_replies = $CI->Chains->read(array(
                 'chainplayertype' => 33532, //Private Reply
                 'chainidealeft' => $i['ideaid'],
                 'chainplayercreator' => $chainplayercreator,
@@ -4738,7 +4738,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                 if ($i['ideatype'] == 31794) {
 
                     //Number
-                    if (count($CI->Links->read(array(
+                    if (count($CI->Chains->read(array(
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $i['ideaid'],
                         'chainplayerup' => 42181, //Phone
@@ -4753,7 +4753,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     }
 
                     //Steps
-                    foreach ($CI->Links->read(array(
+                    foreach ($CI->Chains->read(array(
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $i['ideaid'],
                         'chainplayerup' => 31813, //Steps
@@ -4764,7 +4764,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     }
 
                     //Min Value
-                    foreach ($CI->Links->read(array(
+                    foreach ($CI->Chains->read(array(
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $i['ideaid'],
                         'chainplayerup' => 31800, //Min Value
@@ -4775,7 +4775,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
                     }
 
                     //Max Value
-                    foreach ($CI->Links->read(array(
+                    foreach ($CI->Chains->read(array(
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $i['ideaid'],
                         'chainplayerup' => 31801, //Max Value
@@ -4787,7 +4787,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
 
                 } elseif ($i['ideatype'] == 30350) {
 
-                    $has_time = count($CI->Links->read(array(
+                    $has_time = count($CI->Chains->read(array(
                         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $i['ideaid'],
                         'chainplayerup' => 32442, //Select Time
@@ -4878,7 +4878,7 @@ function idea_view($chainplayertype, $i, $previous_i = null, $target_ideahashtag
         } elseif ($chainplayertype_target_bar == 42260 && $player_session && !$is_locked && !$is_cache && 0) {
 
             //Reactions... Check to see if they have any?
-            $reactions = $CI->Links->read(array(
+            $reactions = $CI->Chains->read(array(
                 'chainplayerup' => $chainplayercreator,
                 'chainidearight' => $i['ideaid'],
                 'chainplayertype IN (' . join(',', $CI->config->item('playerids___42260')) . ')' => null, //Reactions
@@ -4968,8 +4968,8 @@ function view_list_player($i, $plain_no_html = false)
     }
 
     //Query Relevant Players:
-    foreach ($CI->Links->read(array(
-        'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Writer Links Active
+    foreach ($CI->Chains->read(array(
+        'chainplayertype IN (' . join(',', $CI->config->item('playerids___33602')) . ')' => null, //Writer Chains Active
         'chainidearight' => $i['ideaid'],
         'chainplayerup IN (' . join(',', $CI->config->item('playerids___42421')) . ')' => null, //Featured Inputs
     ), array('chainplayerup'), 0, 0, $order_columns) as $x) {
@@ -4996,7 +4996,7 @@ function view_idea_media($i)
     $message_append = '';
 
     //Query Relevant Players:
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42294')) . ')' => null, //Media
         'chainidearight' => $i['ideaid'],
     ), array('chainplayerup'), 0, 0, array('chainnumber' => 'ASC')) as $x) {
@@ -5033,7 +5033,7 @@ function view_idea_media($i)
 function view_pill($focus__node, $chainplayertype, $counter, $m, $ui = null, $is_open = true)
 {
 
-    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainplayertype . '"><a class="nav-link" chainplayertype="' . $chainplayertype . '" href="#' . $m['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainplayertype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
+    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainplayertype . '"><a class="nav-chain" chainplayertype="' . $chainplayertype . '" href="#' . $m['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainplayertype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody pillbody hidden headline_body_' . $chainplayertype . '" read-counter="' . $counter . '">' . $ui . '</div>';
 
 }
@@ -5058,14 +5058,14 @@ function player_view($chainplayertype, $e, $extra_class = null)
     $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
     $focus__node = in_array($chainplayertype, $CI->config->item('playerids___12149')); //NODE COIN
     $is_app = $chainplayertype == 6287;
-    $href = ($is_app ? view_app_link($e['playerid']) : view_memory(42903, 42902) . $e['playerhandle']);
+    $href = ($is_app ? view_app_chain($e['playerid']) : view_memory(42903, 42902) . $e['playerhandle']);
     $cover_is_image = filter_var($e['playercover'], FILTER_VALIDATE_URL);
     $has_sortable = $chainid > 0 && $player_access >= 3 && in_array($chainplayertype, $CI->config->item('playerids___13911'));
 
 
     //Log preview view:
     $chainplayercreator_id = ($player_session ? $player_session['playerid'] : 14068 /* GUEST */);
-    $CI->Links->create(array(
+    $CI->Chains->create(array(
         'chainplayertype' => 1576051, //Player Popover
         'chainplayerup' => $e['playerid'],
         'chainplayerdown' => $chainplayercreator_id,
@@ -5078,7 +5078,7 @@ function player_view($chainplayertype, $e, $extra_class = null)
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= (!$focus__node ? '<a href="' . $href . '"' : '<div') . ' class="handle_hrefplayer_' . $e['playerid'] . ' coinType12274 ' . ($player_access >= 3 ? '' : ' ready-only ') . ' black-background-obs cover-link" ' . ($cover_is_image ? 'style="background-image:url(\'' . $e['playercover'] . '\');"' : '') . '>';
+    $ui .= (!$focus__node ? '<a href="' . $href . '"' : '<div') . ' class="handle_hrefplayer_' . $e['playerid'] . ' coinType12274 ' . ($player_access >= 3 ? '' : ' ready-only ') . ' black-background-obs cover-chain" ' . ($cover_is_image ? 'style="background-image:url(\'' . $e['playercover'] . '\');"' : '') . '>';
     $ui .= '<div class="cover-btn ui_playercover_' . $e['playerid'] . '" raw_cover="' . $e['playercover'] . '">' . (!$cover_is_image && $e['playercover'] ? view_cover($e['playercover'], true) : '') . '</div>';
     $ui .= (!$focus__node ? '</a>' : '</div>');
 
@@ -5114,11 +5114,11 @@ function player_view($chainplayertype, $e, $extra_class = null)
     foreach ($players___42777 as $sort_id => $sort) {
         $order_columns['chainplayertype = \'' . $sort_id . '\' DESC'] = null;
     }
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayertype IN (' . join(',', $CI->config->item('playerids___42777')) . ')' => null, //Featured Profile
         'chainplayerdown' => $e['playerid'],
     ), array('chainplayerup'), 0, 0, $order_columns) as $location) {
-        $ui .= view_featured_links($location['chainplayertype'], $location, $players___42777[$location['chainplayertype']], $focus__node);
+        $ui .= view_featured_chains($location['chainplayertype'], $location, $players___42777[$location['chainplayertype']], $focus__node);
     }
 
 
@@ -5132,7 +5132,7 @@ function player_view($chainplayertype, $e, $extra_class = null)
     $ui .= '</div>';
 
 
-    //Start with Link Note
+    //Start with Chain Note
     $featured_players = '';
 
 
@@ -5143,42 +5143,42 @@ function player_view($chainplayertype, $e, $extra_class = null)
     foreach ($players___14036 as $sort_id => $sort) {
         $order_columns['chainplayerup = \'' . $sort_id . '\' DESC'] = null;
     }
-    foreach ($CI->Links->read(array(
+    foreach ($CI->Chains->read(array(
         'chainplayerup IN (' . join(',', $CI->config->item('playerids___14036')) . ')' => null, //Featured Players
         'chainplayerdown' => $e['playerid'],
-        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-    ), array(), 0, 0, $order_columns) as $social_link) {
+        'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+    ), array(), 0, 0, $order_columns) as $social_chain) {
 
-        if (in_array($social_link['chainplayerup'], $CI->config->item('playerids___32172'))) {
+        if (in_array($social_chain['chainplayerup'], $CI->config->item('playerids___32172'))) {
             /*
              *
              * Before showing this we must enture all information is updated...
              *
-            if (strlen($social_link['chaintext'])) {
+            if (strlen($social_chain['chaintext'])) {
                 //Must always see, show content here:
-                $bio .= '<div class="player_bio grey center">' . $social_link['chaintext'] . '</div>';
+                $bio .= '<div class="player_bio grey center">' . $social_chain['chaintext'] . '</div>';
             }
             */
             continue;
         }
 
-        //Determine link type:
+        //Determine chain type:
         $social_url = false;
 
-        if (in_array(4256, $players___14036[$social_link['chainplayerup']]['m__following'])) {
+        if (in_array(4256, $players___14036[$social_chain['chainplayerup']]['m__following'])) {
             //We made sure not the current website:
-            $social_url = 'href="' . $social_link['chaintext'] . '" target="_blank"';
-        } elseif (in_array(32097, $players___14036[$social_link['chainplayerup']]['m__following'])) {
-            $social_url = 'href="mailto:' . $social_link['chaintext'] . '"';
-        } elseif (in_array(42181, $players___14036[$social_link['chainplayerup']]['m__following'])) {
+            $social_url = 'href="' . $social_chain['chaintext'] . '" target="_blank"';
+        } elseif (in_array(32097, $players___14036[$social_chain['chainplayerup']]['m__following'])) {
+            $social_url = 'href="mailto:' . $social_chain['chaintext'] . '"';
+        } elseif (in_array(42181, $players___14036[$social_chain['chainplayerup']]['m__following'])) {
             //Phone Number
-            $social_url = 'href="' . phone_href($social_link['chainplayerup'], $social_link['chaintext']) . '"';
+            $social_url = 'href="' . phone_href($social_chain['chainplayerup'], $social_chain['chaintext']) . '"';
         }
 
-        $info = (strlen($social_link['chaintext']) && !$social_url ? $players___14036[$social_link['chainplayerup']]['m__title'] . ': ' . $social_link['chaintext'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $players___14036[$social_link['chainplayerup']]['m__title']));
+        $info = (strlen($social_chain['chaintext']) && !$social_url ? $players___14036[$social_chain['chainplayerup']]['m__title'] . ': ' . $social_chain['chaintext'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $players___14036[$social_chain['chainplayerup']]['m__title']));
 
-        //Append to links:
-        $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['chainplayerup']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $players___14036[$social_link['chainplayerup']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['chainplayerup']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_link['chainplayerup']]['m__cover'] . '</span>')) . '</span>';
+        //Append to chains:
+        $featured_players .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_chain['chainplayerup']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $players___14036[$social_chain['chainplayerup']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_chain['chainplayerup']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $players___14036[$social_chain['chainplayerup']]['m__cover'] . '</span>')) . '</span>';
 
     }
 
@@ -5186,15 +5186,15 @@ function player_view($chainplayertype, $e, $extra_class = null)
     //Start with top bar:
     if (!$is_app && $player_access >= 1) {
 
-        //Player Link Groups
+        //Player Chain Groups
         $chainplayertype_id = 0;
         $chainplayertype_ui = '';
         if ($chainid) {
             foreach ($CI->config->item('players___31770') as $chainplayertype1 => $m1) {
                 if (in_array($e['chainplayertype'], $CI->config->item('playerids___' . $chainplayertype1))) {
-                    foreach ($CI->Links->read(array(
+                    foreach ($CI->Chains->read(array(
                         'chainid' => $chainid,
-                    ), array('chainplayercreator')) as $linker) {
+                    ), array('chainplayercreator')) as $chainer) {
                         $chainplayertype_ui .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
                         $chainplayertype_ui .= searchingle_select_instant($chainplayertype1, $e['chainplayertype'], $player_access, false, $e['playerid'], $chainid);
                         $chainplayertype_ui .= '</span>';
@@ -5218,14 +5218,14 @@ function player_view($chainplayertype, $e, $extra_class = null)
 
                 $featured_players .= $chainplayertype_ui;
 
-            } elseif (0 && $chainplayertype_target_bar == 42795 && $player_session && $player_session['playerid'] != $e['playerid'] && count($CI->Links->read(array(
+            } elseif (0 && $chainplayertype_target_bar == 42795 && $player_session && $player_session['playerid'] != $e['playerid'] && count($CI->Chains->read(array(
                     'chainplayerdown' => $e['playerid'],
                     'chainplayerup' => 4430, //Active Member
-                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $CI->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 )))) {
 
                 //Allow to follow fellow players:
-                $followings = $CI->Links->read(array(
+                $followings = $CI->Chains->read(array(
                     'chainplayerup' => $e['playerid'],
                     'chainplayerdown' => $player_session['playerid'],
                     'chainplayertype IN (' . join(',', $CI->config->item('playerids___42795')) . ')' => null, //Follow
@@ -5255,11 +5255,11 @@ function player_view($chainplayertype, $e, $extra_class = null)
 
                 if (!$chainid) {
                     $focus_dropdown = 12887; //Player Dropdown
-                } elseif ($chainplayertype_id == 32292) { //Player/Player Links
+                } elseif ($chainplayertype_id == 32292) { //Player/Player Chains
                     $focus_dropdown = 14956; //Player/Player Dropdown
                 } elseif ($chainplayertype_id == 6255) { //Discoveries
                     $focus_dropdown = 32070; //Player>Discoveries Dropdown
-                } elseif ($chainplayertype_id == 13550) { //Idea/Player Links
+                } elseif ($chainplayertype_id == 13550) { //Idea/Player Chains
                     $focus_dropdown = 28792; //Player/Idea Dropdown
                 } else {
                     $focus_dropdown = 0;
@@ -5279,13 +5279,13 @@ function player_view($chainplayertype, $e, $extra_class = null)
 
                         if ($playerid_dropdown == 4997) {
 
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="link_preview(4997,' . $e['playerid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(4997,' . $e['playerid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         } elseif ($playerid_dropdown == 6287) {
 
                             //App Store
                             if (in_array($e['playerid'], $CI->config->item('playerids___6287'))) {
-                                $action_buttons .= '<a href="' . view_app_link($e['playerid']) . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                                $action_buttons .= '<a href="' . view_app_chain($e['playerid']) . '" class="dropdown-item main__title">' . $anchor . '</a>';
                             }
 
                         } elseif ($playerid_dropdown == 31912 && $player_access >= 3) {
@@ -5300,8 +5300,8 @@ function player_view($chainplayertype, $e, $extra_class = null)
 
                         } elseif ($playerid_dropdown == 10673 && $chainid > 0 && $player_access >= 3 && $superpower_10939) {
 
-                            //UNLINK
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="link_delete(' . $chainid . ', ' . $e['chainplayertype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
+                            //UNCHAIN
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $e['chainplayertype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
 
                         } elseif ($playerid_dropdown == 42649 && $player_access >= 3) {
 
@@ -5312,12 +5312,12 @@ function player_view($chainplayertype, $e, $extra_class = null)
                         } elseif ($playerid_dropdown == 13007 && $player_access >= 3) {
 
                             //Reset Alphabetic order
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="link_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         } elseif (in_array($playerid_dropdown, $CI->config->item('playerids___6287')) && $player_access >= 3) {
 
                             //Standard button
-                            $action_buttons .= '<a href="' . view_app_link($playerid_dropdown) . view_memory(42903, 42902) . $e['playerhandle'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="' . view_app_chain($playerid_dropdown) . view_memory(42903, 42902) . $e['playerhandle'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         }
                     }

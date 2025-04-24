@@ -146,7 +146,7 @@ if (isset($_GET['end_range']) && string_is_date($_GET['end_range'])) {
 }
 
 
-//Fetch unique Link types recorded so far:
+//Fetch unique Chain types recorded so far:
 $ini_filter = array();
 foreach ($query_filters as $key => $value) {
     $ini_filter[$key] = $value;
@@ -180,13 +180,13 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
     var chaintext_find = '<?= (isset($_GET['chaintext_find']) && strlen($_GET['chaintext_find']) > 0 ? $_GET['chaintext_find'] : '') ?>';
     var chaintext_replace = '<?= (isset($_GET['chaintext_replace']) && strlen($_GET['chaintext_replace']) > 0 ? $_GET['chaintext_replace'] : '') ?>';
-    var has_more_links = 1; //We always assume this?
+    var has_more_chains = 1; //We always assume this?
     var loading_in_progress = false;
     var current_page = 0;
 
-    function link_load() {
+    function chain_load() {
 
-        if (!has_more_links || loading_in_progress) {
+        if (!has_more_chains || loading_in_progress) {
             return false;
         }
 
@@ -199,7 +199,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         $('.random_message').text(js_randomize_text(12694));
 
         //Load report based on input fields:
-        $.post("/controller/link_load", {
+        $.post("/controller/chain_load", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
             chaintext_find: chaintext_find,
@@ -218,7 +218,7 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
                 if (data.overall_stats.length) {
                     $('.overall_stats').html(data.overall_stats);
                 }
-                has_more_links = data.has_more_links;
+                has_more_chains = data.has_more_chains;
                 setup_popover();
                 load_at_bottom(); //Load more?
             }
@@ -228,14 +228,14 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
 
     function load_at_bottom(){
         if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-            link_load();
+            chain_load();
         }
     }
 
     $(document).ready(function () {
 
-        //Load first page of Links:
-        link_load();
+        //Load first page of Chains:
+        chain_load();
 
         $(function () {
             $win.scroll(function () {
@@ -292,11 +292,11 @@ echo '<table class="table table-sm maxout"><tr>';
 
 //ANY DISCOVERY
 echo '<td><div>';
-echo '<span class="mini-header">ANY Link:</span>';
+echo '<span class="mini-header">ANY Chain:</span>';
 echo '<input type="text" name="any_chainid" value="' . ((isset($_GET['any_chainid'])) ? $_GET['any_chainid'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Link ID:</span><input type="text" name="chainid" value="' . ((isset($_GET['chainid'])) ? $_GET['chainid'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Chain ID:</span><input type="text" name="chainid" value="' . ((isset($_GET['chainid'])) ? $_GET['chainid'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -306,14 +306,14 @@ echo '<table class="table table-sm maxout"><tr>';
 
 //Search
 echo '<td><div>';
-echo '<span class="mini-header">Link MESSAGE SEARCH:</span>';
+echo '<span class="mini-header">Chain MESSAGE SEARCH:</span>';
 echo '<input type="text" name="chaintext_find" value="' . ((isset($_GET['chaintext_find'])) ? $_GET['chaintext_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
 if (isset($_GET['chaintext_find']) && strlen($_GET['chaintext_find']) > 0 && player_session(12701)) {
     //Give Option to Replace:
     echo '<td><div>';
-    echo '<span class="mini-header">Link MESSAGE REPLACE:</span>';
+    echo '<span class="mini-header">Chain MESSAGE REPLACE:</span>';
     echo '<input type="text" name="chaintext_replace" value="' . ((isset($_GET['chaintext_replace'])) ? $_GET['chaintext_replace'] : '') . '" class="form-control border">';
     echo '</div></td>';
 }
@@ -339,11 +339,11 @@ echo '</div></td>';
 
 echo '<td>';
 echo '<div>';
-echo '<span class="mini-header">Link TYPE:</span>';
+echo '<span class="mini-header">Chain TYPE:</span>';
 
 if (isset($_GET['chainplayertype']) && substr_count($_GET['chainplayertype'], ',') > 0) {
 
-    //We have multiple predefined Link types, so we must use a text input:
+    //We have multiple predefined Chain types, so we must use a text input:
     echo '<input type="text" name="chainplayertype" value="' . $_GET['chainplayertype'] . '" class="form-control border">';
 
 } else {
@@ -355,7 +355,7 @@ if (isset($_GET['chainplayertype']) && substr_count($_GET['chainplayertype'], ',
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach ($this->Links->read($ini_filter, array('chainplayertype'), 0, 0, player_sort(), 'COUNT(chainplayertype) as total_count, playertext, chainplayertype', 'chainplayertype, playertext') as $x) {
+        foreach ($this->Chains->read($ini_filter, array('chainplayertype'), 0, 0, player_sort(), 'COUNT(chainplayertype) as total_count, playertext, chainplayertype', 'chainplayertype, playertext') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['chainplayertype'] . '" ' . ((isset($_GET['chainplayertype']) && $_GET['chainplayertype'] == $x['chainplayertype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
@@ -368,7 +368,7 @@ if (isset($_GET['chainplayertype']) && substr_count($_GET['chainplayertype'], ',
     } else {
 
         //Load all fast:
-        echo '<option value="0">ALL Link TYPES</option>';
+        echo '<option value="0">ALL Chain TYPES</option>';
         foreach ($this->config->item('players___4593') /* DISCOVERY Types */ as $playerid => $m) {
             //Echo drop down:
             echo '<option value="' . $playerid . '" ' . ((isset($_GET['chainplayertype']) && $_GET['chainplayertype'] == $playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
@@ -394,7 +394,7 @@ echo '</tr></table>';
 echo '<input type="submit" class="btn" value="Apply" />';
 
 if ($has_filters) {
-    echo ' &nbsp;<a href="' . view_app_link(4341) . '" style="font-size: 0.8em;">Remove Filters</a>';
+    echo ' &nbsp;<a href="' . view_app_chain(4341) . '" style="font-size: 0.8em;">Remove Filters</a>';
 }
 
 echo '</form>';

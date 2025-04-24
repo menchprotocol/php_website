@@ -17,7 +17,7 @@ class Players extends CIdea_cache
             return $validate_playertext;
         }
 
-        //Log Link new Player:
+        //Log Chain new Player:
         $player_session = player_session();
         $chainplayercreator = ($chainplayercreator > 0 ? $chainplayercreator : ($player_session ? $player_session['playerid'] : 14068));
 
@@ -26,11 +26,11 @@ class Players extends CIdea_cache
             'chainplayertype' => 4251, //New Player Created
             'chaintext' => $validate_playertext['playertext_clean'],
         );
-        if (isset($add_fields['playerid']) && !count($this->Links->read(array('chainid' => $add_fields['playerid'])))) {
-            //Set the link ID since its not in the ledger:
+        if (isset($add_fields['playerid']) && !count($this->Chains->read(array('chainid' => $add_fields['playerid'])))) {
+            //Set the chain ID since its not in the ledger:
             $creation_data['chainid'] = $add_fields['playerid'];
         }
-        $new_x = $this->Links->create($creation_data);
+        $new_x = $this->Chains->create($creation_data);
 
         if (!$new_x['chainid']) {
             return log_error('create() failed to create a new Player', array(
@@ -43,7 +43,7 @@ class Players extends CIdea_cache
         if (!isset($add_fields['playerhandle'])) {
             $add_fields['playerhandle'] = generate_handle(12274, $validate_playertext['playertext_clean']);
         }
-        $this->Links->create(array(
+        $this->Chains->create(array(
             'chainplayercreator' => $chainplayercreator,
             'chainplayertype' => 44179, //Trigerred
             'chainplayerup' => 32338, //Player Handle
@@ -59,7 +59,7 @@ class Players extends CIdea_cache
 
         //Cover saving if any
         if (isset($add_fields['playercover'])) {
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayercreator' => $chainplayercreator,
                 'chainplayertype' => 44179, //Trigerred
                 'chainplayerup' => 6198, //Player Cover
@@ -142,8 +142,8 @@ class Players extends CIdea_cache
         if (!count($players_found)) {
             log_error('Player @' . $chainid . ' not found in Players table');
             return false;
-        } elseif (!count($this->Links->read(array('chainid' => $chainid)))) {
-            log_error('Player @' . $chainid . ' not found in Links table');
+        } elseif (!count($this->Chains->read(array('chainid' => $chainid)))) {
+            log_error('Player @' . $chainid . ' not found in Chains table');
             return false;
         }
 
@@ -163,7 +163,7 @@ class Players extends CIdea_cache
                 if (array_key_exists($key, $must_sync_ledger)) {
                     //Update if anything changed:
                     if ($value != $player_current[$key]) {
-                        $this->Links->create(array(
+                        $this->Chains->create(array(
                             'chainplayercreator' => $chainplayercreator,
                             'chainplayertype' => 44179, //Trigerred
                             'chainplayerup' => $must_sync_ledger[$key], //Idea Hashtag
@@ -210,12 +210,12 @@ class Players extends CIdea_cache
         if (in_array($playerid, $this->config->item('playerids___4593'))) {
             return array(
                 'status' => 0,
-                'message' => 'Cannot Delete an active @chainplayertype - Unlink, update @memory and try again',
+                'message' => 'Cannot Delete an active @chainplayertype - Unchain, update @memory and try again',
             );
         } elseif (in_array($playerid, $this->config->item('playerids___14870'))) {
             return array(
                 'status' => 0,
-                'message' => 'Cannot Delete an active @chainplayerdomain - Unlink, update @memory and try again',
+                'message' => 'Cannot Delete an active @chainplayerdomain - Unchain, update @memory and try again',
             );
         } elseif (!count($this->Players->read(array('playerid' => $playerid)))) {
             return array(
@@ -229,9 +229,9 @@ class Players extends CIdea_cache
             );
         }
 
-        //Find all links to delete/migrate:
+        //Find all chains to delete/migrate:
         $x_adjusted = 0;
-        foreach ($this->Links->read(array(
+        foreach ($this->Chains->read(array(
             '(chainid=' . $playerid . ' OR chainplayerup=' . $playerid . ' OR chainplayerdown=' . $playerid . ' OR chainplayercreator=' . $playerid . ' OR chainplayertype=' . $playerid . ' OR chainplayerdomain=' . $playerid . ')' => null,
         ), array(), 0) as $migrate) {
 
@@ -248,14 +248,14 @@ class Players extends CIdea_cache
                 );
 
                 //Update if this new one is unique:
-                if (!count($this->Links->read($new_array))) {
-                    $x_adjusted += $this->Links->update($migrate['chainid'], $new_array);
+                if (!count($this->Chains->read($new_array))) {
+                    $x_adjusted += $this->Chains->update($migrate['chainid'], $new_array);
                     continue;
                 }
             }
 
             //Just remove it:
-            $x_adjusted += $this->Links->delete($migrate['chainid'], $chainplayercreator);
+            $x_adjusted += $this->Chains->delete($migrate['chainid'], $chainplayercreator);
 
         }
 
@@ -267,7 +267,7 @@ class Players extends CIdea_cache
             update_algolia(12277, $playerid);
         } else {
             //Failed to remove
-            log_error('players->delete() Failed to remove @' . $playerid . ' Link ID', array(
+            log_error('players->delete() Failed to remove @' . $playerid . ' Chain ID', array(
                 'chainplayercreator' => $chainplayercreator,
                 'chainideaup' => $playerid,
                 'chainideadown' => $migrateid,
@@ -275,7 +275,7 @@ class Players extends CIdea_cache
         }
 
 
-        //Return Links deleted:
+        //Return Chains deleted:
         return $x_adjusted;
 
     }
@@ -320,9 +320,9 @@ class Players extends CIdea_cache
         $applied_success = 0; //To be populated
 
         //Fetch all followers:
-        $followers = $this->Links->read(array(
+        $followers = $this->Chains->read(array(
             'chainplayerup' => $playerid,
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         ), array('chainplayerdown'), 0);
 
 
@@ -356,8 +356,8 @@ class Players extends CIdea_cache
                 )) as $e) {
 
                     //See if follower Player has searched followings Player:
-                    $down_up_e = $this->Links->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    $down_up_e = $this->Chains->read(array(
+                        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                         'chainplayerdown' => $x['playerid'], //This follower Player
                         'chainplayerup' => $e['playerid'],
                     ));
@@ -377,13 +377,13 @@ class Players extends CIdea_cache
                         }
 
                         //Following Member Addition
-                        $this->Links->create($add_fields);
+                        $this->Chains->create($add_fields);
 
                         $applied_success++;
 
                         if ($action_playerid == 13441) {
                             //Since we're migrating we should remove from here:
-                            $this->Links->delete($x['chainid'], $chainplayercreator);
+                            $this->Chains->delete($x['chainid'], $chainplayercreator);
                         }
 
                     } elseif (in_array($action_playerid, array(5982, 11956)) && count($down_up_e) > 0) {
@@ -392,7 +392,7 @@ class Players extends CIdea_cache
 
                             //Following Member Removal
                             foreach ($down_up_e as $delete_tr) {
-                                $this->Links->delete($delete_tr['chainid'], $chainplayercreator);
+                                $this->Chains->delete($delete_tr['chainid'], $chainplayercreator);
                                 $applied_success++;
                             }
 
@@ -402,7 +402,7 @@ class Players extends CIdea_cache
                                 'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command2)),
                             )) as $e) {
                                 //Add as a followings because it meets the condition
-                                $this->Links->create(array(
+                                $this->Chains->create(array(
                                     'chainplayercreator' => $chainplayercreator,
                                     'chainplayertype' => 4230,
                                     'chainplayerdown' => $x['playerid'], //This follower Player
@@ -446,29 +446,29 @@ class Players extends CIdea_cache
 
                 $applied_success++;
 
-            } elseif ($action_playerid == 5001 && substr_count($x['chaintext'], $action_command1) > 0) { //Replace Link Matching String
+            } elseif ($action_playerid == 5001 && substr_count($x['chaintext'], $action_command1) > 0) { //Replace Chain Matching String
 
                 $new_message = str_replace($action_command1, $action_command2, $x['chaintext']);
 
-                $this->Links->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chaintext' => $new_message,
                     'chainplayercreator' => $chainplayercreator,
                 ));
 
                 $applied_success++;
 
-            } elseif ($action_playerid == 26093) { //Replace Link Matching String
+            } elseif ($action_playerid == 26093) { //Replace Chain Matching String
 
-                $this->Links->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chaintext' => $action_command1,
                     'chainplayercreator' => $chainplayercreator,
                 ));
 
                 $applied_success++;
 
-            } elseif ($action_playerid == 42804 && ($action_command1 == '*' || $x['chainplayertype'] == $action_command1) && in_array($action_command2, $this->config->item('playerids___13548') /* Player Link Types */)) { //Update Matching Interaction Type
+            } elseif ($action_playerid == 42804 && ($action_command1 == '*' || $x['chainplayertype'] == $action_command1) && in_array($action_command2, $this->config->item('playerids___13548') /* Player Chain Types */)) { //Update Matching Interaction Type
 
-                $this->Links->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chainplayertype' => $action_command2,
                     'chainplayercreator' => $chainplayercreator,
                 ));
@@ -499,13 +499,13 @@ class Players extends CIdea_cache
         $websiteplayerid = website_setting(0);
 
         //Make sure they also belong to this website's members:
-        //Add if link not already there:
-        if (!count($this->Links->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        //Add if chain not already there:
+        if (!count($this->Chains->read(array(
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             'chainplayerup' => $websiteplayerid,
             'chainplayerdown' => $e['playerid'],
         )))) {
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayercreator' => $e['playerid'], //Belongs to this Member
                 'chainplayertype' => 4230,
                 'chainplayerup' => $websiteplayerid,
@@ -517,16 +517,16 @@ class Players extends CIdea_cache
         //Check & Adjust their subscription, IF needed:
         //Remove their subscribe:
         $resubscribed = 0;
-        foreach ($this->Links->read(array(
+        foreach ($this->Chains->read(array(
             'chainplayerup IN (' . join(',', $this->config->item('playerids___29648')) . ')' => null, //Unsubscribers
             'chainplayerdown' => $e['playerid'],
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         )) as $unsubscribe) {
-            $resubscribed += $this->Links->delete($unsubscribe['chainid'], $e['playerid']);
+            $resubscribed += $this->Chains->delete($unsubscribe['chainid'], $e['playerid']);
         }
         if ($resubscribed > 0) {
             //Add Back to Subscribers:
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayertype' => 4230,
                 'chainplayerup' => 4430, //Active Member
                 'chainplayercreator' => $e['playerid'],
@@ -545,20 +545,20 @@ class Players extends CIdea_cache
 
         //Fetch Platform Defaults:
         $platform_theme = array();
-        foreach ($this->Links->read(array(
+        foreach ($this->Chains->read(array(
             'chainplayerup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'chainplayerdown' => 6404, //Platform Default
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         ), array(), 0) as $x) {
             array_push($platform_theme, intval($x['chainplayerup']));
         }
 
         //Fetch Website Defaults:
         $website_theme = array();
-        foreach ($this->Links->read(array(
+        foreach ($this->Chains->read(array(
             'chainplayerup IN (' . join(',', $this->config->item('playerids___14926')) . ')' => null, //Website Theme Items
             'chainplayerdown' => website_setting(0), //Website ID
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         ), array(), 0) as $x) {
             array_push($website_theme, intval($x['chainplayerup']));
         }
@@ -566,9 +566,9 @@ class Players extends CIdea_cache
 
         //Fetch User Defaults:
         $user_theme = array();
-        foreach ($this->Links->read(array(
+        foreach ($this->Chains->read(array(
             'chainplayerdown' => $e['playerid'], //This follower Player
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         ), array('chainplayerup'), 0) as $player_up) {
 
             //Push to followings IDs:
@@ -635,17 +635,17 @@ class Players extends CIdea_cache
         //TODO Resubscribe IF they are Permanently Unsubscribed:
         /*
         $unsubscribed_time = null;
-        foreach($this->Links->read(array(
+        foreach($this->Chains->read(array(
             'chainplayerup IN (' . join(',', $this->config->item('playerids___31057')) . ')' => null, //Permanently Unsubscribed
             'chainplayerdown' => $e['playerid'], //This follower Player
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 ), array(), 0) as $unsubscribed){
             $unsubscribed_time = $unsubscribed['chaintime'];
-            $this->Links->delete($unsubscribed['chainid'], $e['playerid']); //Resubscribe
+            $this->Chains->delete($unsubscribed['chainid'], $e['playerid']); //Resubscribe
         }
         if($unsubscribed_time){
             //Add to subscribed again:
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayertype' => 4230,
                 'chainplayerup' => 4430, //Active Member
                 'chainplayercreator' => $e['playerid'],
@@ -663,17 +663,17 @@ class Players extends CIdea_cache
     function scissor($chainplayerup, $sub_id)
     {
 
-        $all_results = $this->Links->read(array(
+        $all_results = $this->Chains->read(array(
             'chainplayerup' => $chainplayerup,
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         ), array('chainplayerdown'), 0, 0, player_sort());
 
         //Remove if not in the secondary group:
         foreach ($all_results as $key => $primary_list) {
-            if (!count($this->Links->read(array(
+            if (!count($this->Chains->read(array(
                 'chainplayerup' => $sub_id,
                 'chainplayerdown' => $primary_list['playerid'],
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             ), array(), 0))) {
                 unset($all_results[$key]);
             }
@@ -715,7 +715,7 @@ class Players extends CIdea_cache
 
         //Add email?
         if ($email) {
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayertype' => 4230,
                 'chaintext' => trim(strtolower($email)),
                 'chainplayerup' => 3288, //Email
@@ -727,7 +727,7 @@ class Players extends CIdea_cache
 
         //Add Number?
         if ($phone_number) {
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayerup' => 4783, //Phone
                 'chainplayertype' => 4230,
                 'chaintext' => $phone_number,
@@ -740,19 +740,19 @@ class Players extends CIdea_cache
         if ($email || $phone_number) {
 
             //Remove from Anonymous:
-            foreach ($this->Links->read(array(
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            foreach ($this->Chains->read(array(
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 'chainplayerup IN (' . join(',', $this->config->item('playerids___32540')) . ')' => null, //Unsubscribers
                 'chainplayerdown' => $added_e['player_create']['playerid'],
             )) as $unsubscriber_x) {
-                $this->Links->delete($unsubscriber_x['chainid'], $added_e['player_create']['playerid']);
+                $this->Chains->delete($unsubscriber_x['chainid'], $added_e['player_create']['playerid']);
             }
 
             $session_data = $this->session->all_userdata();
             $this->session->set_userdata($session_data);
 
             //Add to Subscriber:
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayerup' => 4430, //Subscriber
                 'chainplayertype' => 4230,
                 'chainplayercreator' => $added_e['player_create']['playerid'],
@@ -763,7 +763,7 @@ class Players extends CIdea_cache
         } else {
 
             //Add to anonymous:
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayerup' => 14938, //Guest Login
                 'chainplayertype' => 4230,
                 'chainplayercreator' => $added_e['player_create']['playerid'],
@@ -777,13 +777,13 @@ class Players extends CIdea_cache
 
         }
 
-        //Add if link not already there:
-        if (!count($this->Links->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        //Add if chain not already there:
+        if (!count($this->Chains->read(array(
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             'chainplayerup' => $chainplayerdomain,
             'chainplayerdown' => $added_e['player_create']['playerid'],
         )))) {
-            $this->Links->create(array(
+            $this->Chains->create(array(
                 'chainplayercreator' => $added_e['player_create']['playerid'], //Belongs to this Member
                 'chainplayertype' => 4230,
                 'chainplayerup' => $chainplayerdomain,
@@ -793,17 +793,17 @@ class Players extends CIdea_cache
 
         //Send Welcome Email if any:
         if ($email) {
-            foreach ($this->Links->read(array(
+            foreach ($this->Chains->read(array(
                 'chainplayertype' => 33600, //Draft
                 'chainplayerup' => 14929, //Website Welcome Email Templates
             ), array('chainidearight'), 0) as $i) {
-                if (count($this->Links->read(array(
+                if (count($this->Chains->read(array(
                     'chainplayertype' => 33600, //Draft
                     'chainplayerup' => $chainplayerdomain, //for Current website
                     'chainidearight' => $i['ideaid'], //Is this the template?
                 )))) {
                     //Found the email template to send:
-                    $total_sent = $this->Links->broadcast(array($added_e['player_create']), $i, $chainplayerdomain);
+                    $total_sent = $this->Chains->broadcast(array($added_e['player_create']), $i, $chainplayerdomain);
                     break; //Just the first template match
                 }
             }
@@ -812,7 +812,7 @@ class Players extends CIdea_cache
         //Update Search Index:
         update_algolia(12274, $added_e['player_create']['playerid']);
 
-        //Assign session & log login Link:
+        //Assign session & log login Chain:
         $this->Players->activate($added_e['player_create']);
 
 
@@ -832,22 +832,22 @@ class Players extends CIdea_cache
 
         if (in_array($chainplayertype, $this->config->item('playerids___42276'))) {
 
-            //Up Player Link Groups:
+            //Up Player Chain Groups:
             $order_columns = player_sort();
             $joins_objects = array('chainplayerup');
             $query_filters = array(
                 'chainplayerdown' => $playerid,
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE CHAINS
             );
 
         } elseif (in_array($chainplayertype, $this->config->item('playerids___42377'))) {
 
-            //Down Player Link Groups:
+            //Down Player Chain Groups:
             $order_columns = player_sort();
             $joins_objects = array('chainplayerdown');
             $query_filters = array(
                 'chainplayerup' => $playerid,
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE LINKS
+                'chainplayertype IN (' . join(',', $this->config->item('playerids___' . $chainplayertype)) . ')' => null, //SOURCE CHAINS
             );
 
         } else {
@@ -857,22 +857,22 @@ class Players extends CIdea_cache
         }
 
 
-        foreach ($this->Links->read($query_filters, $joins_objects, 0, 0, $order_columns) as $player_down) {
+        foreach ($this->Chains->read($query_filters, $joins_objects, 0, 0, $order_columns) as $player_down) {
 
             //Filter Players, if needed:
             $qualified_e = true;
-            if (count($include_any_e) && !count($this->Links->read(array(
+            if (count($include_any_e) && !count($this->Chains->read(array(
                     'chainplayerup IN (' . join(',', $include_any_e) . ')' => null,
                     'chainplayerdown' => $player_down['playerid'],
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 )))) {
                 //Must include all Players, skip:
                 $qualified_e = false;
             }
-            if (count($exclude_all_e) && count($this->Links->read(array(
+            if (count($exclude_all_e) && count($this->Chains->read(array(
                     'chainplayerup IN (' . join(',', $exclude_all_e) . ')' => null,
                     'chainplayerdown' => $player_down['playerid'],
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 )))) {
                 //Must Exclude If Has ALL Players, skip:
                 $qualified_e = false;

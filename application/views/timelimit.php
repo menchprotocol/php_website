@@ -1,7 +1,7 @@
 <?php
 
 $filters = array(
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Link
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Chain
     'chainplayerup' => 28199,
 );
 
@@ -17,20 +17,20 @@ if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
     }
 }
 
-$links_deleted = 0;
+$chains_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds ideas:
-foreach($this->Links->read($filters, array('chainidearight'), 0) as $expires){
+foreach($this->Chains->read($filters, array('chainidearight'), 0) as $expires){
 
     //Now go through everyone who idea_discovered this selection:
-    foreach($this->Links->read(array(
+    foreach($this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
         'chainidealeft' => $expires['ideaid'],
     ), array('chainplayercreator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
-        $answer_completed = $this->Links->read(array(
+        $answer_completed = $this->Chains->read(array(
                     'chainplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $x_progress['chainidearight'],
             'chainplayercreator' => $x_progress['playerid'],
@@ -41,20 +41,20 @@ foreach($this->Links->read($filters, array('chainidearight'), 0) as $expires){
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
-            foreach($this->Links->read(array(
+            foreach($this->Chains->read(array(
                             'chainplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
                 'chainidealeft' => $expires['ideaid'],
                 'chainplayercreator' => $x_progress['playerid'],
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->Links->delete($delete['chainid'], $player_session['playerid']); //Time Expired
+                $this->Chains->delete($delete['chainid'], $player_session['playerid']); //Time Expired
 
             }
 
             if($deleted){
-                $links_deleted++;
-                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="'.view_memory(42903,42902).$x_progress['playerhandle'].'">'.$x_progress['playertext'].'</a>: '.$x_progress['chaintime'].' ? '.$x_progress['chaintext'].' / <a href="'.view_app_link(12722).'?chainid=' . $x_progress['chainid'] . '">'.$x_progress['chainid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['chaintext']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['chaintime'] ).' = '.$seconds_left.')</div>';
+                $chains_deleted++;
+                echo '<div style="padding-left: 21px;">'.$chains_deleted.') <a href="'.view_memory(42903,42902).$x_progress['playerhandle'].'">'.$x_progress['playertext'].'</a>: '.$x_progress['chaintime'].' ? '.$x_progress['chaintext'].' / <a href="'.view_app_chain(12722).'?chainid=' . $x_progress['chainid'] . '">'.$x_progress['chainid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['chaintext']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['chaintime'] ).' = '.$seconds_left.')</div>';
             }
 
 
@@ -67,7 +67,7 @@ foreach($this->Links->read($filters, array('chainidearight'), 0) as $expires){
 
 }
 
-echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
+echo '<div style="text-align: center">'.$chains_deleted.'/'.$counter.' ideas expired.</div>';
 
 if(isset($filters['chainidearight'])){
     foreach($this->Ideas->read(array('ideaid' => $filters['chainidearight'])) as $i){

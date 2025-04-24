@@ -15,8 +15,8 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             $total_emails++;
             //echo $email.'<hr />';
 
-            foreach($this->Links->read(array(
-                            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            foreach($this->Chains->read(array(
+                            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 'chainplayerup' => 3288, //Email
                 'chaintext' => trim(strtolower($email)),
             )) as $player_data){
@@ -24,14 +24,14 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                 $found_emails++;
 
                 //Do we need to add?
-                if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Links->read(array(
-                                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                if(isset($_POST['import_playerid']) && intval($_POST['import_playerid']) && !count($this->Chains->read(array(
+                                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                     'chainplayerup' => $_POST['import_playerid'],
                     'chainplayerdown' => $player_data['chainplayerdown'],
                 )))){
 
                     $added_emails++;
-                    $this->Links->create(array(
+                    $this->Chains->create(array(
                         'chainplayertype' => 4230,
                         'chainplayercreator' => $player_session['playerid'],
                         'chainplayerup' => $_POST['import_playerid'],

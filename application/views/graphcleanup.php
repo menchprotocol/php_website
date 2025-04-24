@@ -9,14 +9,14 @@ $_GET['disable_algolia'] = true;
 
 $missing_ideas = array();
 foreach($this->Ideas->read(array(), 0) as $idea_fix){
-    if(!count($this->Links->read(array('chainid' => $idea_fix['ideaid'])))){
+    if(!count($this->Chains->read(array('chainid' => $idea_fix['ideaid'])))){
         array_push($missing_ideas, $idea_fix);
         //$this->Ideas->create($idea_fix);
     }
 }
 $missing_players = array();
 foreach($this->Players->read(array(), 0) as $player_fix){
-    if(!count($this->Links->read(array('chainid' => $player_fix['playerid'])))){
+    if(!count($this->Chains->read(array('chainid' => $player_fix['playerid'])))){
         array_push($missing_players, $player_fix);
         //$this->Players->create($player_fix);
     }
@@ -28,7 +28,7 @@ view_json(array(
     //'idea_list' => $missing_ideas,
     //'players_list' => $missing_players,
     //'idea_settings' => idea_settings($focus_i['ideahashtag'], false),
-    //'history' => $this->Links->history($focus_i, $focus_e['playerid']),
+    //'history' => $this->Chains->history($focus_i, $focus_e['playerid']),
 ));
 
 
@@ -54,7 +54,7 @@ echo '<hr />Edited ['.$edited.']['.$edited_players.']<br />';
 }
 
 echo '<table>';
-foreach($this->Links->read(array(
+foreach($this->Chains->read(array(
                     'chainplayertype IN (' . join(',', $this->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
 ), array(), 0, 0, array(
     'chainplayertype' => 'ASC',
@@ -122,19 +122,19 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
             'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
         )) as $player_append){
             $completed = 0;
-            foreach($this->Links->read(array(
+            foreach($this->Chains->read(array(
                 'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'chainidealeft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
-                if(!count($this->Links->read(array(
+                if(!count($this->Chains->read(array(
                     'chainplayerup' => $player_append['playerid'],
                     'chainplayerdown' => $x['chainplayercreator'],
                     'chaintext' => $x['chaintext'],
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                     )))){
-                    //Increment Player link:
+                    //Increment Player chain:
                     $completed++;
-                    $this->Links->create(array(
+                    $this->Chains->create(array(
                         'chainplayercreator' => ($player_session ? $player_session['playerid'] : $x['chainplayercreator']),
                         'chainplayerup' => $player_append['playerid'],
                         'chainplayerdown' => $x['chainplayercreator'],

@@ -10,26 +10,26 @@ foreach ($this->config->item('players___14874') as $chainplayertype => $m) {
     if ($chainplayertype == 12273) {
 
         //IDEAS
-        $unique = $this->Links->read(array(
+        $unique = $this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('chainidearight'), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } elseif ($chainplayertype == 12274) {
 
         //SOURCE
-        $unique = $this->Links->read(array(
+        $unique = $this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //AUTHORED SOURCES
         ), array('chainplayerdown'), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } elseif (in_array($chainplayertype, $this->config->item('playerids___42284'))) {
 
-        $unique = $this->Links->read(array(
+        $unique = $this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___' . $chainplayertype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } elseif ($chainplayertype == 6255) {
 
-        $unique = $this->Links->read(array(
+        $unique = $this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -56,7 +56,7 @@ foreach ($this->config->item('players___14874') as $chainplayertype => $m) {
         if ($chainplayertype == 12273) {
 
             //IDEAS
-            $query = $this->Links->read(array(
+            $query = $this->Chains->read(array(
                 'chainplayertype IN (' . join(',', $this->config->item('playerids___13480')) . ')' => null, //UNIQUE IDEAS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
@@ -65,7 +65,7 @@ foreach ($this->config->item('players___14874') as $chainplayertype => $m) {
         } elseif ($chainplayertype == 12274) {
 
             //SOURCE
-            $query = $this->Links->read(array(
+            $query = $this->Chains->read(array(
                 'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //UNIQUE SOURCES
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
@@ -73,7 +73,7 @@ foreach ($this->config->item('players___14874') as $chainplayertype => $m) {
 
         } elseif ($chainplayertype == 6255) {
 
-            $query = $this->Links->read(array(
+            $query = $this->Chains->read(array(
                 'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,

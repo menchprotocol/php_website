@@ -9,8 +9,8 @@ $handlplayers___40904 = $this->config->item('handlplayers___40904');
 $website_id = website_setting(0);
 $website_favicon = website_setting(31887);
 $basic_header_footer = in_array($app_playerid, $this->config->item('playerids___14562'));
-$domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
-$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : 'https://s3foundation.s3.us-west-2.amazonaws.com/yin-yang-solid.svg' ));
+$domain_chain = one_two_explode("\"","\"",get_domain('m__cover'));
+$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_chain, FILTER_VALIDATE_URL) ? $domain_chain : 'https://s3foundation.s3.us-west-2.amazonaws.com/yin-yang-solid.svg' ));
 $bgVideo = null;
 
 // Website
@@ -60,7 +60,7 @@ if(!$basic_header_footer){
     <meta charset="utf-8">
 
     <meta name="theme-color" content="#FFFFFF">
-    <link rel="icon" id="favicon" href="<?= $logo ?>">
+    <chain rel="icon" id="favicon" href="<?= $logo ?>">
     <?php
 
     //Block search engines from indexing anything other than the home page:
@@ -69,13 +69,13 @@ if(!$basic_header_footer){
     }
 
     if($is_emoji){
-        echo '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>'.$domain_logo.'</text></svg>">';
+        echo '<chain rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>'.$domain_logo.'</text></svg>">';
     } else {
-        echo '<link rel="mask-cover" href="'.$logo.'" color="#000000">';
+        echo '<chain rel="mask-cover" href="'.$logo.'" color="#000000">';
     }
 
     if(isset($_SERVER['SERVER_NAME'])){
-        echo '<link rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'">';
+        echo '<chain rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'">';
     }
     ?>
 
@@ -132,7 +132,7 @@ if(!$basic_header_footer){
     echo view_memory(6404,4523);
     ?>
 
-    <link href="/application/views/website.css?cache_time=<?= $this->config->item('cache_time') ?>" rel="stylesheet">
+    <chain href="/application/views/website.css?cache_time=<?= $this->config->item('cache_time') ?>" rel="stylesheet">
 
     <script type="module">
 
@@ -161,7 +161,7 @@ if(!$basic_header_footer){
         });
 
     </script>
-    <link href="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.css" rel="stylesheet">
+    <chain href="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.css" rel="stylesheet">
     <script src="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -306,7 +306,7 @@ if(!$basic_header_footer){
     echo ' </style>';
     ?>
 
-    <link href="https://fonts.googleapis.com/css?family=<?= join('|',$google_fonts) ?>&display=swap" rel="stylesheet">
+    <chain href="https://fonts.googleapis.com/css?family=<?= join('|',$google_fonts) ?>&display=swap" rel="stylesheet">
 
 </head>
 
@@ -418,7 +418,7 @@ if ($focus_i){
                         } elseif(in_array($chainplayertype, $this->config->item('playerids___6287'))){
 
                             //APP
-                            $href = 'href="'.view_app_link($chainplayertype).( $chainplayertype==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
+                            $href = 'href="'.view_app_chain($chainplayertype).( $chainplayertype==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
 
                         } else {
 
@@ -511,7 +511,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
         <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
-                    <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12274">
+                    <form method="POST" action="<?= view_app_chain(27196) ?>?focus__id=12274">
                         <div class="modal-header">
                             <div class="initial_header">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -572,12 +572,12 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                                 } elseif($action_playerid==42804){
 
-                                    //Link Type update:
+                                    //Chain Type update:
 
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_playerid.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Interaction Types</option>';
-                                    foreach($this->config->item('players___32292') /* Player Links */ as $chainplayertype3 => $m3){
+                                    foreach($this->config->item('players___32292') /* Player Chains */ as $chainplayertype3 => $m3){
                                         $input_options .= '<option value="'.$chainplayertype3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
@@ -585,7 +585,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_playerid.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status</option>';
-                                    foreach($this->config->item('players___32292') /* Player Links */ as $chainplayertype3 => $m3){
+                                    foreach($this->config->item('players___32292') /* Player Chains */ as $chainplayertype3 => $m3){
                                         $input_options .= '<option value="'.$chainplayertype3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
@@ -613,7 +613,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             echo $input_options;
 
                             ?>
-                            <div class="link_preview"></div>
+                            <div class="chain_preview"></div>
                         </div>
                 </div>
                 </form>
@@ -630,7 +630,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
 
-                    <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12273">
+                    <form method="POST" action="<?= view_app_chain(27196) ?>?focus__id=12273">
 
                         <div class="modal-header">
                             <div class="initial_header">
@@ -700,7 +700,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             echo $input_options;
 
                             ?>
-                            <div class="link_preview"></div>
+                            <div class="chain_preview"></div>
                         </div>
                     </div>
                 </form>
@@ -728,14 +728,14 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <div class="initial_header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
-                            <!-- Idea Links -->
+                            <!-- Idea Chains -->
                             <div class="dynamic_editing_input idea_chainplayertype hidden hidden_superpower__10939" style="margin: 0 !important;">
                                 <div class="dynamic_selector"><?= searchingle_select_form(4486, 4228); ?></div>
                             </div>
 
-                            <!-- Unlink -->
-                            <div class="dynamic_editing_input no_padded link_idea_unlink hidden">
-                                <a class="icon-block" href="javascript:void(0);" onclick="idea_direction_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
+                            <!-- Unchain -->
+                            <div class="dynamic_editing_input no_padded chain_idea_unchain hidden">
+                                <a class="icon-block" href="javascript:void(0);" onclick="idea_direction_switch()" title="Unchain Idea / Publish a Standalone idea"><i class="far fa-unchain"></i></a>
                             </div>
 
                         </div>
@@ -764,7 +764,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <!-- Idea Creator(s) -->
                         <div class="creator_box">
                             <?php
-                            foreach($this->Links->read(array(
+                            foreach($this->Chains->read(array(
                                 'chainplayerup' => $player_session['playerid'],
                                 'chainplayertype' => 41011, //PINNED FOLLOWER
                                             ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC')) as $x_pinned) {
@@ -836,7 +836,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             <!-- Dynamic Inputs -->
                             <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
-                            <!-- Link Note -->
+                            <!-- Chain Note -->
                             <div class="dynamic_editing_input save_frame hidden">
                                 <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$players___11035[4372]['m__cover'].'</span>'.$players___11035[4372]['m__title'].': ';  ?></h3>
                                 <textarea class="form-control border unsaved_warning save_chaintext" data-lpignore="true" placeholder="..."></textarea>
@@ -932,7 +932,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                                 <!-- Cover Demo -->
                                 <div class="section_demo ">
                                     <div class="card_cover demo_cover">
-                                        <div class="cover-wrapper uploader_42359"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                        <div class="cover-wrapper uploader_42359"><div class="black-background-obs cover-chain" style=""><div class="cover-btn"></div></div></div>
                                     </div>
                                 </div>
 
@@ -942,7 +942,7 @@ if($player_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         </div>
 
 
-                        <!-- Link Note -->
+                        <!-- Chain Note -->
                         <div class="dynamic_editing_input save_frame hidden">
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$players___11035[4372]['m__cover'].'</span>'.$players___11035[4372]['m__title'].': ';  ?></h3>
                             <textarea class="form-control border unsaved_warning save_chaintext" data-lpignore="true" placeholder="..."></textarea>

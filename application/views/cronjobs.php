@@ -3,8 +3,8 @@
 //List CronJobs command:
 $longest_time = 0;
 $longest_id = 0;
-$cron_jobs = $this->Links->read(array(
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+$cron_jobs = $this->Chains->read(array(
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
     'chainplayerup' => 7274,
 ), array('chainplayerdown'), view_memory(6404,11064), 0, array('chainnumber' => 'ASC'));
 foreach($cron_jobs as $cron_job){

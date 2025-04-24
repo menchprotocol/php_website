@@ -4,9 +4,9 @@ $community_pills = '';
 
 foreach ((isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) ? $this->Players->read(array('LOWER(playerhandle)' => strtolower($_GET['playerhandle']))) : $this->Players->scissor(website_setting(0), 13207)) as $player_item) {
 
-    foreach ($this->Links->read(array(
+    foreach ($this->Chains->read(array(
         'chainplayerup' => $player_item['playerid'],
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
     ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC')) as $x) {
 
         $total_count = players_query(42373, $x['playerid'], 0, false);

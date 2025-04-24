@@ -11,22 +11,22 @@ echo '<h1 class="no-print">' . view_idea_title($idea_settings['i']) . '</h1>';
 
 
 if(!isset($idea_settings['list_config'][34513]) || !count($idea_settings['list_config'][34513])){
-    die('Missing Pin Link @34513');
+    die('Missing Pin Chain @34513');
 }
 
 
-foreach($this->Links->read(array(
+foreach($this->Chains->read(array(
     'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
     'chainplayerup IN (' . join(',', $idea_settings['list_config'][34513]) . ')' => null, //Active Writes
-), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC')) as $link_i){
+), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC')) as $chain_i){
 
-    $idea_settings = idea_settings($link_i['ideahashtag'], true);
+    $idea_settings = idea_settings($chain_i['ideahashtag'], true);
     if(!count($idea_settings['query_string_filtered'])){
         continue;
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$link_i['ideahashtag'].'">'.view_idea_title($link_i).'</a> ['.count($idea_settings['query_string_filtered']).' Total]</h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$chain_i['ideahashtag'].'">'.view_idea_title($chain_i).'</a> ['.count($idea_settings['query_string_filtered']).' Total]</h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     foreach($idea_settings['query_string_filtered'] as $count => $x){

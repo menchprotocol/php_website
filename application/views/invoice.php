@@ -46,25 +46,25 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 }
 
 //Fetch User Data:
-$fetch_emails = $this->Links->read(array(
+$fetch_emails = $this->Chains->read(array(
     'chainplayerup' => 3288, //Email
     'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
 ));
-$fetch_phones = $this->Links->read(array(
+$fetch_phones = $this->Chains->read(array(
     'chainplayerup' => 4783, //Phone
     'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
 ));
-$fetch_first_names = $this->Links->read(array(
+$fetch_first_names = $this->Chains->read(array(
     'chainplayerup' => 42584, //First Name
     'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
 ));
-$fetch_last_names = $this->Links->read(array(
+$fetch_last_names = $this->Chains->read(array(
     'chainplayerup' => 30198, //Last Name
     'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
 ));
 
 $set_email = false;
@@ -96,12 +96,12 @@ foreach($this->Ideas->read(array(
     )) as $i){
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
-        $invoice_due_dates = $this->Links->read(array(
+        $invoice_due_dates = $this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
             'chainplayerup' => 44378, //Invoice Due Date
         ));
-        $invoice_min_payments = $this->Links->read(array(
+        $invoice_min_payments = $this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
             'chainplayerup' => 44379, //Invoice Min Payment
@@ -150,39 +150,39 @@ foreach($this->Ideas->read(array(
 
 
         //Delete Old Parent Invoice:
-        foreach($this->Links->read(array(
+        foreach($this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainidealeft' => $i['ideaid'],
             'chainplayercreator' => $player_session['playerid'],
         ), array(), 0) as $x_discovery){
-            $this->Links->delete($x_discovery['chainid'], $player_session['playerid']);
+            $this->Chains->delete($x_discovery['chainid'], $player_session['playerid']);
         }
 
         //Delete Old Child Answers:
-        foreach($this->Links->read(array(
+        foreach($this->Chains->read(array(
             'chainplayertype' => 7712, //Input Choice
             'chainplayercreator' => $player_session['playerid'],
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight')) as $x_selection){
 
             //Remove Selection:
-            $this->Links->delete($x_selection['chainid'], $player_session['playerid']);
+            $this->Chains->delete($x_selection['chainid'], $player_session['playerid']);
 
             //Remove discovery if we can:
             if(!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))){
-                foreach($this->Links->read(array(
+                foreach($this->Chains->read(array(
                         'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'chainidealeft' => $x_selection['ideaid'],
                     'chainplayercreator' => $player_session['playerid'],
                 ), array(), 0) as $x_discovery){
-                    $this->Links->delete($x_discovery['chainid'], $player_session['playerid']);
+                    $this->Chains->delete($x_discovery['chainid'], $player_session['playerid']);
                 }
             }
         }
 
 
         //Save New Invoice:
-        $this->Links->idea_discovered(44245, $player_session['playerid'], $idea_target['ideaid'], $i);
+        $this->Chains->idea_discovered(44245, $player_session['playerid'], $idea_target['ideaid'], $i);
 
 
         //Save New Child Answers:
@@ -192,12 +192,12 @@ foreach($this->Ideas->read(array(
             )) as $this_i){
 
                 //Complete this item:
-                $this->Links->idea_discovered(idea_type_discovery($this_i), $player_session['playerid'], $idea_target['ideaid'], $this_i, array(), array(
+                $this->Chains->idea_discovered(idea_type_discovery($this_i), $player_session['playerid'], $idea_target['ideaid'], $this_i, array(), array(
                     'chainnumber' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
                 //Save Answer:
-                $this->Links->create(array(
+                $this->Chains->create(array(
                     'chainplayertype' => 7712, //Input Choice
                     'chainplayercreator' => $player_session['playerid'],
                     'chainidealeft' => $_POST['focus__id'],
@@ -211,7 +211,7 @@ foreach($this->Ideas->read(array(
         //Find Next:
         $idea_redirect_url = idea_redirect_url($i);
         if(!$idea_redirect_url){
-            $idea_next = $this->Links->idea_next($player_session['playerid'], $_POST['target_ideahashtag'], $i);
+            $idea_next = $this->Chains->idea_next($player_session['playerid'], $_POST['target_ideahashtag'], $i);
         }
 
 

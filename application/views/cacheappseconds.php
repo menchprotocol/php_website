@@ -11,7 +11,7 @@ echo '<div class="row justify-content margin-top-down">';
 foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
 
     //Fetch Last Cache
-    $latest_cache = $this->Links->read(array(
+    $latest_cache = $this->Chains->read(array(
         'chainplayerdomain' => website_setting(0),
         'chainplayertype' => 44179, //Triggered
         'chainplayerup' => 14599, //Cache App
@@ -29,5 +29,5 @@ foreach($this->config->item('players___14599') as $app_playerid => $cache_apps){
 echo '</div>';
 
 if($found_cache){
-    echo '<a href="'.view_app_link(14599).'?reset=1" class="btn btn-default">RESET ACTIVE CACHE</a>';
+    echo '<a href="'.view_app_chain(14599).'?reset=1" class="btn btn-default">RESET ACTIVE CACHE</a>';
 }

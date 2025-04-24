@@ -2,7 +2,7 @@
 
 $chainplayercreator = ( $player_session ? $player_session['playerid'] : 14068 /* GUEST */ );
 //Log view:
-$this->Links->create(array(
+$this->Chains->create(array(
     'chainplayertype' => 1309378, //Idea Viewed
     'chainplayercreator' => $chainplayercreator,
     'chainplayerup' => $chainplayercreator,
@@ -10,7 +10,7 @@ $this->Links->create(array(
 ));
 
 //See if we need to redirect to starting point?
-if($player_session && !player_session(10939) && count($this->Links->read(array(
+if($player_session && !player_session(10939) && count($this->Chains->read(array(
         'chainplayercreator' => $player_session['playerid'],
         'chainplayertype' => 4235, //Get started
         'chainidealeft' => $focus_i['ideaid'],

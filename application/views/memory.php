@@ -18,15 +18,15 @@ $biggest_player_handle = '';
 
 
 //CONFIG VARS
-foreach ($this->Links->read(array(
+foreach ($this->Chains->read(array(
     'chainplayerup' => 4527,
-    'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
 ), array('chainplayerdown'), 0, 0, array('playerid' => 'ASC')) as $en) {
 
     //Now fetch all its followers:
-    $down__e = $this->Links->read(array(
+    $down__e = $this->Chains->read(array(
         'chainplayerup' => $en['chainplayerdown'],
-        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
     ), array('chainplayerdown'), 0, 0, player_sort());
 
 
@@ -58,7 +58,7 @@ foreach ($this->Links->read(array(
         }
 
         //Does this have any Pins?
-        foreach ($this->Links->read(array(
+        foreach ($this->Chains->read(array(
             'chainplayerup' => $follower['playerid'],
             'chainplayertype' => 41011, //PINNED FOLLOWER
         ), array(), 0) as $x_pinned) {
@@ -79,9 +79,9 @@ foreach ($this->Links->read(array(
 
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
-        foreach ($this->Links->read(array(
+        foreach ($this->Chains->read(array(
             'chainplayerdown' => $follower['playerid'],
-            'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
         ), array('chainplayerup'), 0) as $cp_en) {
             array_push($down_up_ids, intval($cp_en['playerid']));
         }
@@ -102,15 +102,15 @@ foreach ($this->Links->read(array(
 
 //Append all App Handlers for quick checking:
 $memory_text .= "\n" . "\n";
-foreach ($this->Links->read(array(
+foreach ($this->Chains->read(array(
     'chainplayerup' => 42043, //Handle Cache
-    'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
 ), array('chainplayerdown'), 0) as $handle) {
 
     $memory_text .= '$config[\'handlplayers___' . $handle['playerid'] . '\'] = array(' . "\n";
-    foreach ($this->Links->read(array(
+    foreach ($this->Chains->read(array(
         'chainplayerup' => $handle['playerid'],
-        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
     ), array('chainplayerdown'), 0) as $app) {
         $memory_text .= '     \'' . strtolower($app['playerhandle']) . '\' => ' . $app['playerid'] . ',' . "\n";
     }
@@ -118,7 +118,7 @@ foreach ($this->Links->read(array(
 }
 
 
-//Append Pinned Links:
+//Append Pinned Chains:
 $memory_text .= "\n" . "\n";
 $memory_text .= '$config[\'pinned_down\'] = array(' . "\n";
 foreach ($pinned_down as $key => $value) {
@@ -153,15 +153,15 @@ $routes_text .= "\n";
 $special_route_text = '';
 $routes_text .= '//APPS:' . "\n\n";
 
-foreach ($this->Links->read(array(
+foreach ($this->Chains->read(array(
     'chainplayerup' => 6287, //Apps
-    'chainplayertype IN (' . join(',', ($memory_detected ? $this->config->item('playerids___13548') : $playerids___33337)) . ')' => null, //SOURCE LINKS
+    'chainplayertype IN (' . join(',', ($memory_detected ? $this->config->item('playerids___13548') : $playerids___33337)) . ')' => null, //SOURCE CHAINS
 ), array('chainplayerdown'), 0, 0, array('playertext' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;
-        foreach ($this->Links->read(array(
-            'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+        foreach ($this->Chains->read(array(
+            'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
             'chainplayerup' => 42921,
             'chainplayerdown' => $app['playerid'], //Required
         )) as $route) {
@@ -175,8 +175,8 @@ foreach ($this->Links->read(array(
     }
 
 
-    if (count($this->Links->read(array(
-        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    if (count($this->Chains->read(array(
+        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
         'chainplayerup' => 44330,
         'chainplayerdown' => $app['playerid'], //Required
     )))) {
@@ -184,8 +184,8 @@ foreach ($this->Links->read(array(
         $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/$2/$1' . '";' . "\n";
         $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/0/$1' . '";' . "\n"; //Should give error
         $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/$1/0' . '";' . "\n"; //Should give error
-    } elseif (count($this->Links->read(array(
-        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    } elseif (count($this->Chains->read(array(
+        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
         'chainplayerup' => 42905,
         'chainplayerdown' => $app['playerid'], //Required
     )))) {
@@ -195,8 +195,8 @@ foreach ($this->Links->read(array(
         } else {
             $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/$1' . '";' . "\n";
         }
-    } elseif (count($this->Links->read(array(
-        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    } elseif (count($this->Chains->read(array(
+        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
         'chainplayerup' => 42911,
         'chainplayerdown' => $app['playerid'], //Required
     )))) {
@@ -206,8 +206,8 @@ foreach ($this->Links->read(array(
         } else {
             $routes_text .= '$route[\'(?i)' . $app['playerhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['playerid'] . '/0/$1' . '";' . "\n";
         }
-    } elseif (count($this->Links->read(array(
-        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE LINKS
+    } elseif (count($this->Chains->read(array(
+        'chainplayertype IN (' . join(',', $playerids___33337) . ')' => null, //SOURCE CHAINS
         'chainplayerup' => 44329,
         'chainplayerdown' => $app['playerid'], //Required
     )))) {

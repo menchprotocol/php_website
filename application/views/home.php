@@ -16,7 +16,7 @@ if(in_array($website_id, $this->config->item('playerids___30984'))){
 
 $primary_i = array();
 $secondary_idea_list = array();
-foreach($this->Links->read(array(
+foreach($this->Chains->read(array(
     'chainplayertype' => 34513, //Pinned
     'chainplayerup' => $website_id,
 ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC')) as $this_i){
@@ -36,7 +36,7 @@ echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377p
 
 
 //Did we find any?
-$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($primary_i) . '</div>';
+$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_chains($primary_i) . '</div>';
 
 
 
@@ -69,9 +69,9 @@ if($domain_phone || $email_domain) {
 foreach($this->Players->scissor($website_id, 14903) as $player_item) {
     //Any Followers?
     $info_item = null;
-    foreach($this->Links->read(array(
+    foreach($this->Chains->read(array(
         'chainplayerup' => $player_item['playerid'],
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
@@ -130,27 +130,27 @@ if(strlen($secondary_i)){
 $social_ui = null;
 $players___14870 = $this->config->item('players___14870'); //Website Partner
 foreach($this->config->item('players___14036') as $playerid => $m){
-    foreach($this->Links->read(array(
+    foreach($this->Chains->read(array(
         'chainplayerup' => $playerid,
         'chainplayerdown' => $website_id,
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
-        ), array(), 0, 0) as $social_link){
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+        ), array(), 0, 0) as $social_chain){
 
-        //Determine link type:
-        if(filter_var($social_link['chaintext'], FILTER_VALIDATE_URL) && view_url_clean($social_link['chaintext'])!=view_url_clean($players___14870[$website_id]['m__message'])){
+        //Determine chain type:
+        if(filter_var($social_chain['chaintext'], FILTER_VALIDATE_URL) && view_url_clean($social_chain['chaintext'])!=view_url_clean($players___14870[$website_id]['m__message'])){
             //We made sure not the current website:
-            $social_url = $social_link['chaintext'];
-        } elseif(filter_var($social_link['chaintext'], FILTER_VALIDATE_EMAIL)){
-            $social_url = 'mailto:'.$social_link['chaintext'];
-        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['chaintext'])) > 5){
+            $social_url = $social_chain['chaintext'];
+        } elseif(filter_var($social_chain['chaintext'], FILTER_VALIDATE_EMAIL)){
+            $social_url = 'mailto:'.$social_chain['chaintext'];
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_chain['chaintext'])) > 5){
             //Phone
-            $social_url = phone_href($playerid, $social_link['chaintext']);
+            $social_url = phone_href($playerid, $social_chain['chaintext']);
         } else {
             //Unknown!
             continue;
         }
 
-        //Append to link:
+        //Append to chain:
         $social_ui .= '<li><a href="'.$social_url.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
 
     }

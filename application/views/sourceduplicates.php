@@ -4,12 +4,12 @@
 
 if(isset($_GET['playerhandle'])){
 
-    //Find Link Content Duplicates for this Player:
+    //Find Chain Content Duplicates for this Player:
     $main_index = array();
     $duplicates_found = array();
-    foreach($this->Links->read(array(
+    foreach($this->Chains->read(array(
         'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         ), array('chainplayerup'), 0) as $x) {
         $chaintext_md5 = substr(md5($x['chaintext']), 0, 16);
         if(!isset($main_index[$chaintext_md5])){
@@ -31,7 +31,7 @@ if(isset($_GET['playerhandle'])){
 
 } elseif(!isset($_GET['search_by_name'])){
 
-    echo '<p>Either enter ?playerid= in URL to search specific Player Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_link(7268).'?search_by_name=1"><b>Find Duplicate Players by Name</b></a></p>.';
+    echo '<p>Either enter ?playerid= in URL to search specific Player Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_chain(7268).'?search_by_name=1"><b>Find Duplicate Players by Name</b></a></p>.';
 
 } else {
 

@@ -9,10 +9,10 @@
 
 
 //Empty both tables:
-$this->db->query("TRUNCATE TABLE public.gephilinks CONTINUE IDENTITY RESTRICT;");
+$this->db->query("TRUNCATE TABLE public.gephichains CONTINUE IDENTITY RESTRICT;");
 $this->db->query("TRUNCATE TABLE public.gephinodes CONTINUE IDENTITY RESTRICT;");
 
-//Load IDEA LINKS:
+//Load IDEA CHAINS:
 $players___4593 = $this->config->item('players___4593');
 
 //To make sure Idea/Player IDs are unique:
@@ -34,12 +34,12 @@ foreach ($is as $in) {
     ));
 
     //Fetch Next Ideas:
-    foreach ($this->Links->read(array(
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA LINKS
+    foreach ($this->Chains->read(array(
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA CHAINS
         'chainidealeft' => $in['ideaid'],
     ), array('chainidearight'), 0, 0) as $next_i) {
 
-        $this->db->insert('gephilinks', array(
+        $this->db->insert('gephichains', array(
             'source' => $id_prefix[12273] . $next_i['chainidealeft'],
             'target' => $id_prefix[12273] . $next_i['chainidearight'],
             'label' => $players___4593[$next_i['chainplayertype']]['m__title'], //TODO maybe give visibility to condition here?
@@ -64,12 +64,12 @@ foreach ($es as $en) {
     ));
 
     //Fetch followers:
-    foreach ($this->Links->read(array(
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+    foreach ($this->Chains->read(array(
+        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
         'chainplayerup' => $en['playerid'],
     ), array('chainplayerdown'), 0, 0) as $player_down) {
 
-        $this->db->insert('gephilinks', array(
+        $this->db->insert('gephichains', array(
             'source' => $id_prefix[12274] . $player_down['chainplayerup'],
             'target' => $id_prefix[12274] . $player_down['chainplayerdown'],
             'label' => $players___4593[$player_down['chainplayertype']]['m__title'] . ': ' . $player_down['chaintext'],

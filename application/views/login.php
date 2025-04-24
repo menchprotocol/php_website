@@ -29,7 +29,7 @@ if(player_session()) {
     ));
 
     if(count($es)){
-        //Assign session & log Link:
+        //Assign session & log Chain:
         $this->Players->activate($es[0], false, true);
     }
 
@@ -296,7 +296,7 @@ if(player_session()) {
                 if(intval(view_memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_link(14938).view_memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_chain(14938).view_memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
                     echo $players___11035[14938]['m__title'].' '.$players___11035[14938]['m__cover'];
                     echo ( strlen($players___11035[14938]['m__message']) ? ': '.$players___11035[14938]['m__message'] : '' );
                     echo '</a></div>';

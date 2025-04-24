@@ -9,7 +9,7 @@ $at_starting_point = $target_ideahashtag==$focus_i['ideahashtag'];
 $breadcrum_content = null;
 if ($chainplayercreator && !$at_starting_point) {
 
-    $previous = $this->Links->previousidea($chainplayercreator, $target_ideahashtag, $focus_i['ideaid']);
+    $previous = $this->Chains->previousidea($chainplayercreator, $target_ideahashtag, $focus_i['ideaid']);
     if (count($previous)) {
 
         $nav_list = array();
@@ -25,7 +25,7 @@ if ($chainplayercreator && !$at_starting_point) {
             $level++;
 
             //Does this have a follower list?
-            $query_subset = $this->Links->read(array(
+            $query_subset = $this->Chains->read(array(
                 'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
                 'chainidealeft' => $followings_i['ideaid'],
             ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'), '*', null, true);
@@ -43,7 +43,7 @@ if ($chainplayercreator && !$at_starting_point) {
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_' . $followings_i['ideaid'] . '">';
                 foreach ($query_subset as $idea_subset) {
 
-                    if (count($this->Links->read(array(
+                    if (count($this->Chains->read(array(
                         'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'chainplayercreator' => $chainplayercreator,
                         'chainidealeft' => $idea_subset['ideaid'],
@@ -75,7 +75,7 @@ if ($breadcrum_content) {
 
 //Progress?
 if ($player_session) {
-    $progress = $this->Links->progress($chainplayercreator, $target_i);
+    $progress = $this->Chains->progress($chainplayercreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
     if($target_completed && !in_array($focus_i['ideatype'], $this->config->item('playerids___43050'))){
@@ -94,7 +94,7 @@ if ($player_session) {
 
 $x_completes = array();
 if ($player_session) {
-    $x_completes = $this->Links->read(array(
+    $x_completes = $this->Chains->read(array(
         'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'chainplayercreator' => $chainplayercreator,
         'chainidealeft' => $focus_i['ideaid'],

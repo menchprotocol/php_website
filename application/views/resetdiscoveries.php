@@ -5,14 +5,14 @@ if (!isset($_GET['confirm'])) {
 
     //Asl user to confirm:
     echo '<div class="alert alert-warning" role="alert">You are about to delete all discoveries for @' . $focus_e['playerhandle'] . '... Are you sure you want to continue?</div>';
-    echo '<a href="' . view_app_link(6415) . view_memory(42903, 42902) . $focus_e['playerhandle'] . '?confirm=1" class="btn btn-default">Confirm</a>';
+    echo '<a href="' . view_app_chain(6415) . view_memory(42903, 42902) . $focus_e['playerhandle'] . '?confirm=1" class="btn btn-default">Confirm</a>';
     echo ' - OR - ';
     echo '<a href="' . view_memory(42903, 42902) . $focus_e['playerhandle'] . '" class="btn btn-default">Cancel & Return to @' . $focus_e['playerhandle'] . '</a>';
 
 } else {
 
-    //Fetch their current progress links:
-    $progress_x = $this->Links->read(array(
+    //Fetch their current progress chains:
+    $progress_x = $this->Chains->read(array(
         'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
         'chainplayercreator' => $focus_e['playerid'],
     ), array(), 0);
@@ -24,7 +24,7 @@ if (!isset($_GET['confirm'])) {
 
         //Delete all progressions:
         foreach ($progress_x as $progress_x) {
-            $this->Links->delete($progress_x['chainid'], $focus_e['playerid']);
+            $this->Chains->delete($progress_x['chainid'], $focus_e['playerid']);
         }
 
     } else {

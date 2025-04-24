@@ -2,7 +2,7 @@
 
 $chainplayercreator = ( $player_session ? $player_session['playerid'] : 14068 /* GUEST */ );
 //Log view:
-$this->Links->create(array(
+$this->Chains->create(array(
     'chainplayertype' => 44176, //Player View
     'chainplayerup' => $focus_e['playerid'],
     'chainplayerdown' => $chainplayercreator,
@@ -42,7 +42,7 @@ foreach($this->config->item('players___31916') as $chainplayertype => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="Create New or Link Existing @Players">
+                               placeholder="Create New or Chain Existing @Players">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { player_load_finder('.$chainplayertype.'); }); </script>';
 
@@ -55,7 +55,7 @@ foreach($this->config->item('players___31916') as $chainplayertype => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="Create New or Link Existing #ideas">
+                               placeholder="Create New or Chain Existing #ideas">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { idea_load_search('.$chainplayertype.'); }); </script>';
 
@@ -67,7 +67,7 @@ foreach($this->config->item('players___31916') as $chainplayertype => $m) {
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$chainplayertype.' hidden" read-counter="'.$coins_count[$chainplayertype].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-        echo '<li class="nav-item thepill'.$chainplayertype.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" chainplayertype="'.$chainplayertype.'" href="#'.$m['m__handle'].'" title="'.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainplayertype.'">'. view_number($coins_count[$chainplayertype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainplayertype.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+        echo '<li class="nav-item thepill'.$chainplayertype.'"><a class="nav-chain handle_nav_'.$m['m__handle'].'" chainplayertype="'.$chainplayertype.'" href="#'.$m['m__handle'].'" title="'.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainplayertype.'">'. view_number($coins_count[$chainplayertype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainplayertype.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
 
     }
 }

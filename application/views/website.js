@@ -189,7 +189,7 @@ function gather_media(target_el, uploader_id) {
 }
 
 
-function link_preview(apply_id, s__id) {
+function chain_preview(apply_id, s__id) {
 
     //Select first:
     var first_id = $('#modal' + apply_id + ' .mass_action_toggle option:first').val();
@@ -200,13 +200,13 @@ function link_preview(apply_id, s__id) {
     $('#modal' + apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal' + apply_id + ' .link_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
-    $.post("/controller/link_preview", {
+    $('#modal' + apply_id + ' .chain_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
+    $.post("/controller/chain_preview", {
         apply_id: apply_id,
         s__id: s__id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('#modal' + apply_id + ' .link_preview').html(data);
+        $('#modal' + apply_id + ' .chain_preview').html(data);
     });
 
 }
@@ -355,10 +355,10 @@ function search_js_cover(chainplayertype, suggestion, action_id) {
         //Mini Coin
         var search_only_app = $("#website_finder").val().charAt(0) == '-';
         var target_url = (search_only_app ? suggestion.s__url.replace('/@', '/') : suggestion.s__url);
-        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' ' + (search_only_app ? ' card-6287 ' : '') + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="' + target_url + '" class="black-background-obs cover-link coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="' + target_url + '" class="main__title">' + (suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">' + suggestion.s__title + '</span>') + '</a></div></div></div>';
+        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' ' + (search_only_app ? ' card-6287 ' : '') + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="' + target_url + '" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="' + target_url + '" class="main__title">' + (suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">' + suggestion.s__title + '</span>') + '</a></div></div></div>';
     } else if (chainplayertype == 26013) {
-        //Link Player
-        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="player_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-link coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="player_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
+        //Chain Player
+        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="player_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="player_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
     }
 
 }
@@ -519,22 +519,22 @@ function toggle_pills(chainplayertype_hash, is_first_load) {
     $('.xtypetitle_' + chainplayertype).removeClass('hidden');
 
 
-    if (!$('.thepill' + chainplayertype + ' .nav-link').hasClass('active')) {
+    if (!$('.thepill' + chainplayertype + ' .nav-chain').hasClass('active')) {
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
 
         //Hide all elements
-        $('.nav-link').removeClass('active');
+        $('.nav-chain').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + chainplayertype + ' .nav-link').addClass('active');
+        $('.thepill' + chainplayertype + ' .nav-chain').addClass('active');
         $('.headline_body_' + chainplayertype).removeClass('hidden');
 
         //Set focus tab:
         console.log('focus_group Updated from ' + focus_group + ' to ' + chainplayertype);
         focus_group = chainplayertype;
-        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainplayertype + ' .nav-link').attr('href'))) {
-            window.location.hash = $('.thepill' + chainplayertype + ' .nav-link').attr('href');
+        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainplayertype + ' .nav-chain').attr('href'))) {
+            window.location.hash = $('.thepill' + chainplayertype + ' .nav-chain').attr('href');
         }
 
         //Do we need to load data via ajax?
@@ -595,7 +595,7 @@ function toggle_pills(chainplayertype_hash, is_first_load) {
                     $win.scroll(function () {
                         //Download loading from bottom:
                         if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                            link_page_load();
+                            chain_page_load();
                         }
                     });
                 });
@@ -705,20 +705,20 @@ function loadtab(chainplayertype, tab_data_id) {
 
 var init_in_process = 0;
 
-function link_delete(chainid, chainplayertype, ideahashtag = null) {
+function chain_delete(chainid, chainplayertype, ideahashtag = null) {
 
     if (init_in_process == chainid) {
         return false;
     }
     init_in_process = chainid;
 
-    var r = confirm("Are you Sure You Want to Unlink" + (ideahashtag ? ' #' + ideahashtag : '') + "?");
+    var r = confirm("Are you Sure You Want to Unchain" + (ideahashtag ? ' #' + ideahashtag : '') + "?");
     if (!(r == true)) {
         return false;
     }
 
     //Save changes:
-    $.post("/controller/link_delete", {
+    $.post("/controller/chain_delete", {
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
         ideahashtag: ideahashtag, //Always append to AJAX Calls
@@ -728,7 +728,7 @@ function link_delete(chainid, chainplayertype, ideahashtag = null) {
             //There was some sort of an error returned!
             alert(data.message);
         } else {
-            link_counter(chainplayertype, -1);
+            chain_counter(chainplayertype, -1);
             $(".cover_x_" + chainid).fadeOut();
             setTimeout(function () {
                 $(".cover_x_" + chainid).remove();
@@ -1029,7 +1029,7 @@ function setup_popover() {
         html: true,
         //title: '<a class="close" href="javascript:void(0);" style="display: block;">Close</a>',
         content: function (inner_content) {
-            $.post("/controller/link_popover", {
+            $.post("/controller/chain_popover", {
                 handle_string: inner_content.innerText,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
@@ -1353,12 +1353,12 @@ $(document).ready(function () {
 function update_cover_main(cover_code, target_css) {
 
     //Set Default:
-    $(target_css + ' .cover-link').css('background-image', '');
+    $(target_css + ' .cover-chain').css('background-image', '');
     $(target_css + ' .cover-btn').html('');
 
     //Update:
     if (validURL(cover_code)) {
-        $(target_css + ' .cover-link').css('background-image', 'url(\'' + cover_code + '\')');
+        $(target_css + ' .cover-chain').css('background-image', 'url(\'' + cover_code + '\')');
     } else if (cover_code && cover_code.indexOf('fa-') >= 0) {
         $(target_css + ' .cover-btn').html('<i class="' + cover_code + '"></i>');
     } else if (cover_code && cover_code.length > 0) {
@@ -1392,14 +1392,14 @@ function idea_direction_switch(chainplayertype = 0, next_ideaid = 0, previous_id
 
     /*
     if(!next_ideaid && !previous_ideaid && !chainplayertype && !do_checks){
-        var r = confirm("Are you sure you want to unlink this idea?");
+        var r = confirm("Are you sure you want to unchain this idea?");
         if (!(r==true)) {
             return false;
         }
     }
     */
 
-    //Will switch the nature/direction of the link:
+    //Will switch the nature/direction of the chain:
     return idea_editor(0, 0, chainplayertype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
 }
 
@@ -1415,7 +1415,7 @@ function display_media(mediaframe_id, uploader_id, ideaid) {
 function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0) {
 
 
-    $(".link_idea_unlink, .idea_chainplayertype").addClass('hidden');
+    $(".chain_idea_unchain, .idea_chainplayertype").addClass('hidden');
     var focus_idea_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
     $("#modal31911 .save_results").html('');
 
@@ -1454,7 +1454,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
     }
 
 
-    //Load Link addition info, if any:
+    //Load Chain addition info, if any:
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
@@ -1492,7 +1492,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
 
         }
 
-        $('.link_idea_unlink, .idea_chainplayertype').removeClass('hidden');
+        $('.chain_idea_unchain, .idea_chainplayertype').removeClass('hidden');
         if (!passon_ideaid) {
             update_form_select(4486, chainplayertype, 1, false);
         }
@@ -1552,7 +1552,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
     if (chainid) {
         $('#modal31911 .save_chainid').val(chainid);
 
-        //Idea<>Ideas links do not have an interaction message
+        //Idea<>Ideas chains do not have an interaction message
         if (parseInt($('#focus__node').val()) != 12273 || ($('.ui_chaintext_' + chainid + ':first') && $('.ui_chaintext_' + chainid + ':first').text().length > 0)) {
             $('#modal31911 .save_chaintext').val($('.ui_chaintext_' + chainid + ':first').text());
             $('#modal31911 .save_frame').removeClass('hidden');
@@ -1727,7 +1727,7 @@ function idea_update() {
         save_chainid: $('#modal31911 .save_chainid').val(),
         next_ideaid: $('#modal31911 .next_ideaid').val(),
         previous_ideaid: $('#modal31911 .previous_ideaid').val(),
-        save_chainplayertype: $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
+        save_chainplayertype: $('.dropd_form_4486').attr('selected_value').trim(), //The final chain type as selected by user if they have the superpower
         focus_group: focus_group,
         save_chaintext: $('#modal31911 .save_chaintext').val().trim(),
         save_ideatext: $('#modal31911 .save_ideatext').val().trim(),
@@ -1769,7 +1769,7 @@ function idea_update() {
                 }, 6765);
             }
 
-            //Update Handle & Href links if needed:
+            //Update Handle & Href chains if needed:
             var old_handle = $(".ui_ideahashtag_" + modify_data['save_ideaid'] + ':first').text();
             var new_handle = modify_data['save_ideahashtag'];
             var on_focus__idea = parseInt($('#focus__node').val()) == 12273 && modify_data['save_ideaid'] == parseInt($('#focus__id').val());
@@ -1778,13 +1778,13 @@ function idea_update() {
             $('.s__12273_' + modify_data['save_ideaid']).attr('ideatype', modify_data['save_ideatype']);
             ui_instant_select(4737, modify_data['save_ideatype'], modify_data['save_ideaid'], modify_data['save_chainid'], false);
 
-            //Update Handle & Href links if needed:
+            //Update Handle & Href chains if needed:
             if (old_handle != new_handle) {
                 if (on_focus__idea) {
                     //Refresh page since focus item handle changed:
                     js_redirect(js_players___42903[33286]['m__message'] + new_handle);
                 } else {
-                    //Update Hashtag & Link:
+                    //Update Hashtag & Chain:
                     $('.s__12273_' + modify_data['save_ideaid']).attr('ideahashtag', new_handle);
                     $(".ui_ideahashtag_" + modify_data['save_ideaid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
                 }
@@ -1805,7 +1805,7 @@ function idea_update() {
 
                 $("#list-in-" + focus_group).append(data.return_ideacache_full);
 
-                link_counter(focus_group, 1);
+                chain_counter(focus_group, 1);
 
                 setTimeout(function () {
                     idea_sort_load(focus_group);
@@ -1816,7 +1816,7 @@ function idea_update() {
                 console.log('UPDATE  ' + modify_data['save_chainplayertype'] + ' & x GROUP: ' + focus_group);
 
                 //Update Cache otherwise:
-                $('.ui_ideacache_' + modify_data['save_ideaid']).html(data.return_ideacache_links);
+                $('.ui_ideacache_' + modify_data['save_ideaid']).html(data.return_ideacache_chains);
 
             }
 
@@ -1938,7 +1938,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 menuIcons: "#000000",
                 textDark: "#000000",
                 textLight: "#FFFFFF",
-                link: "#000000",
+                chain: "#000000",
                 action: "#000000",
                 inactiveTabIcon: "#999999",
                 error: "#FC1B44",
@@ -2328,7 +2328,7 @@ function player_save_edit() {
 
         } else {
 
-            //Update Handle & Href links if needed:
+            //Update Handle & Href chains if needed:
             var old_handle = $(".ui_playerhandle_" + modify_data['save_playerid'] + ':first').text();
             var new_handle = modify_data['save_playerhandle'];
             if (old_handle != new_handle) {
@@ -2381,7 +2381,7 @@ function player_save_edit() {
 var busy_loading = false;
 var current_page = [];
 
-function link_page_load() {
+function chain_page_load() {
 
     if (!focus_group) {
         return false;
@@ -2404,7 +2404,7 @@ function link_page_load() {
 
     current_page[focus_group]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-' + focus_group);
-    $.post("/controller/link_page_load", {
+    $.post("/controller/chain_page_load", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         chainplayertype: focus_group,
@@ -2441,7 +2441,7 @@ function toggle_max_view(css_class) {
 }
 
 
-//Adds OR links Players to Players
+//Adds OR chains Players to Players
 var player_is_adding = false;
 
 function player_create(chainplayertype, player_current_id) {
@@ -2488,7 +2488,7 @@ function player_create(chainplayertype, player_current_id) {
             //input.focus();
 
             //Add new object to list:
-            link_counter(chainplayertype, 1);
+            chain_counter(chainplayertype, 1);
 
             //See if we previously have a list in place?
             if ($("#list-in-" + chainplayertype + " .card-12274").length > 0) {
@@ -2521,16 +2521,16 @@ function player_create(chainplayertype, player_current_id) {
 
 var i_is_adding = false;
 
-function idea_create(chainplayertype, link_ideaid) {
+function idea_create(chainplayertype, chain_ideaid) {
 
     alert('not up yet');
     return false;
 
     /*
      *
-     * Either creates an IDEA link between focus_id & link_ideaid
-     * OR will create a new idea based on input text and then link it
-     * to #focus_id (In this case link_ideaid=0)
+     * Either creates an IDEA chain between focus_id & chain_ideaid
+     * OR will create a new idea based on input text and then chain it
+     * to #focus_id (In this case chain_ideaid=0)
      *
      * */
 
@@ -2545,8 +2545,8 @@ function idea_create(chainplayertype, link_ideaid) {
     var idea_createtext = input_field.val();
 
 
-    //We either need the idea name (to create a new idea) or the link_ideaid>0 to create an IDEA link:
-    if (!link_ideaid && idea_createtext.length < 1) {
+    //We either need the idea name (to create a new idea) or the chain_ideaid>0 to create an IDEA chain:
+    if (!chain_ideaid && idea_createtext.length < 1) {
         alert('Missing Idea');
         input_field.focus();
         return false;
@@ -2554,7 +2554,7 @@ function idea_create(chainplayertype, link_ideaid) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(chainplayertype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(chainplayertype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-chain"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
     $.post("/controller/idea_create", {
@@ -2562,7 +2562,7 @@ function idea_create(chainplayertype, link_ideaid) {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         idea_createtext: idea_createtext,
-        link_ideaid: link_ideaid
+        chain_ideaid: chain_ideaid
     }, function (data) {
 
         //Delete loader:
@@ -2581,7 +2581,7 @@ function idea_create(chainplayertype, link_ideaid) {
             set_autosize($('.texttype_lg'));
 
             //Hide Coin:
-            $('.mini-cover.card-12273.card-id-' + link_ideaid).fadeOut();
+            $('.mini-cover.card-12273.card-id-' + chain_ideaid).fadeOut();
 
         } else {
             //Show errors:
@@ -2695,7 +2695,7 @@ function player_text_update(this_grabr) {
 }
 
 
-function link_counter(chainplayertype, adjustment_count) {
+function chain_counter(chainplayertype, adjustment_count) {
     $('.xtypecounter' + chainplayertype).text((parseInt($('.headline_body_' + chainplayertype).attr('read-counter')) + adjustment_count));
 }
 
@@ -3137,7 +3137,7 @@ function player_sort_save(chainplayertype) {
 }
 
 
-function link_sort_reset() {
+function chain_sort_reset() {
     var r = confirm("Reset sorting?");
     if (r == true) {
 
@@ -3146,7 +3146,7 @@ function link_sort_reset() {
         var focus_handle = $('#focus_handle').val();
 
         //Update via call:
-        $.post("/controller/link_sort_reset", {
+        $.post("/controller/chain_sort_reset", {
             focus__node: focus__node,
             focus__id: focus__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3174,8 +3174,8 @@ function link_sort_reset() {
 }
 
 
-function link_clicked(ideaid) {
-    $(".link_click_" + ideaid).addClass('was_clicked');
+function chain_clicked(ideaid) {
+    $(".chain_click_" + ideaid).addClass('was_clicked');
 }
 
 
@@ -3190,7 +3190,7 @@ function idea_discovered(do_skip) {
 
     var selection_ideaid = [];
 
-    if ($(".link_click")[0] && !$(".was_clicked")[0]) {
+    if ($(".chain_click")[0] && !$(".was_clicked")[0]) {
         next_processing = false;
         alert('Click on the URL to open it in a new window before you continue.');
         return false;

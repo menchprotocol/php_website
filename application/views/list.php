@@ -24,7 +24,7 @@ $count_totals = array(
 $idea_settings = idea_settings($_GET['ideahashtag']);
 
 echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_links($idea_settings['i'], ( isset($player_session['playerid']) ? $player_session['playerid'] : 0 )) . '</div>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_chains($idea_settings['i'], ( isset($player_session['playerid']) ? $player_session['playerid'] : 0 )) . '</div>';
 
 echo 'Filter:';
 
@@ -38,7 +38,7 @@ foreach($idea_settings['query_string_filtered'] as $x){
     $name = '';
     foreach($idea_settings['idea_column'] as $idea_var){
 
-        $discoveries = $this->Links->read(array(
+        $discoveries = $this->Chains->read(array(
             'chainidealeft' => $idea_var['ideaid'],
             'chainplayercreator' => $x['playerid'],
             'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -55,10 +55,10 @@ foreach($idea_settings['query_string_filtered'] as $x){
 
         $idea_content .= '<td title="'.$x['playertext'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chaintext']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chaintext'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chaintext'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chaintext'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
 
-        if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Links->read(array(
+        if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Chains->read(array(
                     'chainplayerdown' => $x['playerid'],
                     'chainplayerup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                                 ))))){
             if(!isset($count_totals['i'][$idea_var['ideaid']])){
                 $count_totals['i'][$idea_var['ideaid']] = 0;
@@ -82,15 +82,15 @@ foreach($idea_settings['query_string_filtered'] as $x){
     //SOURCES
     foreach($idea_settings['player_column'] as $e){
 
-        $require_writing = count($this->Links->read(array(
+        $require_writing = count($this->Chains->read(array(
             'chainplayerup IN (' . join(',', $this->config->item('playerids___43510')) . ')' => null, //Require Written Answers
             'chainplayerdown' => $e['playerid'],
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                 )));
 
-        $fetch_data = $this->Links->read(array(
+        $fetch_data = $this->Chains->read(array(
                     'chainplayerdown' => $x['playerid'],
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
             'chainplayerup' => $e['playerid'],
         ));
 
@@ -122,9 +122,9 @@ foreach($idea_settings['query_string_filtered'] as $x){
                 $count_totals['e'][$e['playerid']] = 0;
             }
 
-            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + ( count($this->Links->read(array(
+            $count_totals['e'][$e['playerid']] = $count_totals['e'][$e['playerid']] + ( count($this->Chains->read(array(
                                     'chainplayerdown' => $e['playerid'],
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE LINKS
+                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
                     'chainplayerup IN (' . join(',', $this->config->item('playerids___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['chaintext'])) : 1 );
         }
@@ -150,7 +150,7 @@ foreach($idea_settings['player_column'] as $e){
 }
 foreach($idea_settings['idea_column'] as $idea_var){
 
-    $max_available = $this->Links->read(array(
+    $max_available = $this->Chains->read(array(
             'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
         'chainidearight' => $idea_var['ideaid'],
         'chainplayerup' => 26189,
