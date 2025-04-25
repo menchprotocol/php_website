@@ -433,24 +433,32 @@ function view_tree($i)
 
 
     echo '<span class="inline-block">';
-    if (isset($i['stats'])) {
-        if ($i['stats']['all_steps'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-sitemap"></i></span>' . $i['stats']['all_steps'];
+    //Chain Highlights
+    foreach ($this->config->item('players___1592660') as $playerid => $m) {
+        if (isset($i['stats']) && $playerid == 12273 && $i['stats']['all_steps'] > 0) {
+
+            echo '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__desc']) ? ': '.$m['m__desc'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $i['stats']['all_steps'] . '</span>';
+
+        } elseif (isset($i['stats']) && $playerid == 1592672 && $i['current_level'] > 0 || $i['stats']['max_level'] > 0) {
+
+            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__desc']) ? ': '.$m['m__desc'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span>' .$i['current_level'] . '/' . $i['stats']['max_level'] .'</span>';
+
+        } elseif (isset($i['stats']) && $playerid == 1592682 && $i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0) {
+
+            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__desc']) ? ': '.$m['m__desc'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span>' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'].'</span>';
+
+        } elseif (isset($i['stats']) && $playerid == 1592686 && $i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0) {
+
+            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__desc']) ? ': '.$m['m__desc'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span>' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'].'</span>';
+
+        } elseif ($playerid == 31777 && isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
+
+            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__desc']) ? ': '.$m['m__desc'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span>' . $i['idea_count_discovery'].'</span>';
+
         }
-        if ($i['current_level'] > 0 || $i['stats']['max_level']>0) {
-            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>' . $i['current_level'].'/'.$i['stats']['max_level'];
-        }
-        if ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . ( $i['stats']['min_choices']>0 && $i['stats']['min_choices']!=$i['stats']['max_choices'] ? $i['stats']['min_choices'].'-' : '' ).$i['stats']['max_choices'];
-        }
-        if ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0) {
-            echo '<span class="icon-block-sm"><i class="far fa-stairs"></i></span>' . ( $i['stats']['min_steps']!=$i['stats']['max_steps'] ? $i['stats']['min_steps'].'-' : '' ).$i['stats']['max_steps'];
-        }
-    }
-    if (isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
-        echo '<span class="icon-block-sm"><i class="far fa-play"></i></span>' . $i['idea_count_discovery'];
     }
     echo '</span>';
+
 
     echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
