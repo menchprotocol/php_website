@@ -428,7 +428,9 @@ function view_tree($i)
 
 
     echo '<a href="/' . $i['ideahashtag'] . '" target="_blank" class="' . (!isset($i['user_idea_discovered']) || count($i['user_idea_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true) . '</a>';
+
     echo(isset($i['user_idea_discovered']['chainnumber']) && intval($i['user_idea_discovered']['chainnumber']) > 1 ? $i['user_idea_discovered']['chainnumber'] . 'x ' : '');
+
     echo(isset($i['user_written_response']['ideatext']) && strlen($i['user_written_response']['ideatext']) ? ' ' . $i['user_written_response']['ideatext'] : '');
 
 
@@ -439,15 +441,17 @@ function view_tree($i)
 
             echo '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ) . '"><span class="icon-block">' . $m['m__cover'] . '</span><span style="border-bottom: 1px dotted #999;">' . $i['stats']['all_steps'] . '</span></span>';
 
-        } elseif (isset($i['stats']) && $playerid == 1592672 && $i['current_level'] > 0 || $i['stats']['max_level'] > 0) {
+        } elseif (isset($i['stats']) && $playerid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
 
             echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' .$i['current_level'] . '/' . $i['stats']['max_level'] .'</span></span>';
 
-        } elseif (isset($i['stats']) && $playerid == 1592682 && $i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0) {
+        } elseif (isset($i['stats']) && $playerid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
+
+            echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>' . ( $i['stats']['min_choices']>0 && $i['stats']['min_choices']!=$i['stats']['max_choices'] ? $i['stats']['min_choices'].'-' : '' ).$i['stats']['max_choices'];
 
             echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'].'</span></span>';
 
-        } elseif (isset($i['stats']) && $playerid == 1592686 && $i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0) {
+        } elseif (isset($i['stats']) && $playerid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
 
             echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'].'</span></span>';
 
