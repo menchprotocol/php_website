@@ -434,7 +434,7 @@ function view_tree($i)
 
     echo '<span class="inline-block">';
     //Chain Highlights
-    foreach ($this->config->item('players___1592660') as $playerid => $m) {
+    foreach ($CI->config->item('players___1592660') as $playerid => $m) {
         if (isset($i['stats']) && $playerid == 12273 && $i['stats']['all_steps'] > 0) {
 
             echo '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__desc']) ? ': '.$m['m__desc'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $i['stats']['all_steps'] . '</span>';
