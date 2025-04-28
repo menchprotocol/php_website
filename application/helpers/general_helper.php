@@ -412,7 +412,7 @@ function verify_cookie()
 }
 
 
-function view_tree($i)
+function view_tree($i, $open_by_default = true)
 {
 
     $CI =& get_instance();
@@ -422,8 +422,8 @@ function view_tree($i)
     echo '<div class="hideIfEmpty">';
 
     if (count($i['idea_next'])) {
-        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm hidden frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-plus"></i></span></a>';
-        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-minus"></i></span></a>';
+        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm '.( $open_by_default ? 'hidden' : '' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-plus"></i></span></a>';
+        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-minus"></i></span></a>';
     }
 
 
@@ -434,7 +434,7 @@ function view_tree($i)
     echo(isset($i['user_written_response']['ideatext']) && strlen($i['user_written_response']['ideatext']) ? ' ' . $i['user_written_response']['ideatext'] : '');
 
 
-    echo '<span class="inline-block">';
+    echo '<span class="inline-block float_right">';
     //Chain Highlights
     foreach ($CI->config->item('players___1592660') as $playerid => $m) {
         if (isset($i['stats']) && $playerid == 12273 && $i['stats']['all_steps'] > 0) {
@@ -470,7 +470,7 @@ function view_tree($i)
     echo '</span>';
 
 
-    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
+    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
 
 
@@ -507,15 +507,15 @@ function view_tree($i)
     }
     if ($filters_ui) {
         $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
-        echo '<div class="hideIfEmpty filter_data frame_id_' . $i['ideaid'] . '">';
+        echo '<div class="hideIfEmpty filter_data '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
         echo '<h3>' . $players___11035[40946]['m__cover'] . ' ' . $players___11035[40946]['m__title'] . ':</h3>';
         echo $filters_ui;
         echo '</div>';
     }
 
     foreach ($i['idea_next'] as $next_i) {
-        echo '<div class="sub_frame frame_id_' . $i['ideaid'] . '">';
-        view_tree($next_i);
+        echo '<div class="sub_frame '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
+        view_tree($next_i, false);
         echo '</div>';
     }
 
