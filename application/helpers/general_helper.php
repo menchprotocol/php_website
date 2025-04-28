@@ -422,13 +422,13 @@ function view_tree($i, $open_by_default = true)
 
     echo '<div class="hideIfEmpty">';
 
+    echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')">';
     if ($has_children) {
-        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm '.( $open_by_default ? 'hidden' : '' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-plus"></i></span></a>';
-        echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-minus"></i></span></a>';
+        echo '<span class="icon-block-sm '.( $open_by_default ? 'hidden' : '' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-plus"></i></span>';
+        echo '<span class="icon-block-sm '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-minus"></i></span>';
     }
-
-
-    echo '<a href="/' . $i['ideahashtag'] . '" target="_blank" class="' . (!isset($i['user_idea_discovered']) || count($i['user_idea_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true) . '</a>';
+    echo '<span class="' . (!isset($i['user_idea_discovered']) || count($i['user_idea_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true).'</span>';
+    echo '</a>';
 
     echo(isset($i['user_idea_discovered']['chainnumber']) && intval($i['user_idea_discovered']['chainnumber']) > 1 ? $i['user_idea_discovered']['chainnumber'] . 'x ' : '');
 
@@ -464,7 +464,15 @@ function view_tree($i, $open_by_default = true)
 
         } elseif ($playerid == 31777 && isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
 
-            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . $i['idea_count_discovery'].'</span></span>';
+            if($CI->uri->segment(1)=='doc'){
+                $opener = '<a href="/'.$i['ideahashtag'].'" ';
+                $closer = '</a>';
+            } else {
+                $opener = '<span ';
+                $closer = '</span>';
+            }
+
+            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . $i['idea_count_discovery'].'</span>'.$closer;
 
         }
     }
