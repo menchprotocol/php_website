@@ -439,7 +439,7 @@ function view_tree($i)
     foreach ($CI->config->item('players___1592660') as $playerid => $m) {
         if (isset($i['stats']) && $playerid == 12273 && $i['stats']['all_steps'] > 0) {
 
-            if($this->uri->segment(1)=='doc'){
+            if($CI->uri->segment(1)=='doc'){
                 $opener = '<a href="/doc/'.$i['ideahashtag'].'" ';
                 $closer = '</a>';
             } else {
