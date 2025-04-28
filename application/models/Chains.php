@@ -1535,6 +1535,7 @@ class Chains extends CIdea_cache
             'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
         );
         $i['idea_next'] = array();
+        $current_level++;
 
         //Append Total Discoveries if any:
         $sub_counter = $this->Chains->read(array(
@@ -1556,15 +1557,13 @@ class Chains extends CIdea_cache
             $i['stats']['max_choices'] += $result_i['stats']['max_choices'];
 
             if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
-                $i['stats']['max_level'] = $result_i['stats']['max_level'];
+                $i['stats']['max_level'] = $result_i['stats']['max_level']-1;
             }
             if (!$input__selection || $is_required) {
                 $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
             }
 
         }
-
-        $current_level++;
 
         return $i;
 
