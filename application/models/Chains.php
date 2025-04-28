@@ -1557,7 +1557,7 @@ class Chains extends CIdea_cache
             $i['stats']['max_choices'] += $result_i['stats']['max_choices'];
 
             if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
-                $i['stats']['max_level'] = $result_i['stats']['max_level']-1;
+                $i['stats']['max_level'] = $result_i['stats']['max_level'];
             }
             if (!$input__selection || $is_required) {
                 $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
