@@ -439,7 +439,15 @@ function view_tree($i)
     foreach ($CI->config->item('players___1592660') as $playerid => $m) {
         if (isset($i['stats']) && $playerid == 12273 && $i['stats']['all_steps'] > 0) {
 
-            echo '<span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span style="border-bottom: 1px dotted #999;">' . $i['stats']['all_steps'] . '</span></span>';
+            if($this->uri->segment(1)=='doc'){
+                $opener = '<a href="/doc/'.$i['ideahashtag'].'" ';
+                $closer = '</a>';
+            } else {
+                $opener = '<span ';
+                $closer = '</span>';
+            }
+
+            echo $opener.'data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span style="border-bottom: 1px dotted #999;">' . $i['stats']['all_steps'] . '</span>'.$closer;
 
         } elseif (isset($i['stats']) && $playerid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
 
