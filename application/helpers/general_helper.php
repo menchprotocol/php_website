@@ -451,7 +451,7 @@ function view_tree($i, $open_by_default = true)
 
         } elseif (isset($i['stats']) && $playerid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
 
-            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' .$i['current_level'] . '/' . ($i['stats']['max_level']-$i['current_level']) .'</span></span>';
+            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' .$i['current_level'] . '/' . $i['stats']['max_level'] .'</span></span>';
 
         } elseif (isset($i['stats']) && $playerid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
 
