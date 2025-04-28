@@ -416,12 +416,13 @@ function view_tree($i, $open_by_default = true)
 {
 
     $CI =& get_instance();
+    $has_children = count($i['idea_next']);
 
     echo '<div class="slim_title">';
 
     echo '<div class="hideIfEmpty">';
 
-    if (count($i['idea_next'])) {
+    if ($has_children) {
         echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm '.( $open_by_default ? 'hidden' : '' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-plus"></i></span></a>';
         echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')"><span class="icon-block-sm '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-minus"></i></span></a>';
     }
@@ -470,7 +471,7 @@ function view_tree($i, $open_by_default = true)
     echo '</span>';
 
 
-    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
+    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
 
 
