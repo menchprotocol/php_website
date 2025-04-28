@@ -470,7 +470,7 @@ function view_tree($i)
     echo '</span>';
 
 
-    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
+    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
 
 
@@ -507,7 +507,7 @@ function view_tree($i)
     }
     if ($filters_ui) {
         $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
-        echo '<div class="hideIfEmpty filter_data">';
+        echo '<div class="hideIfEmpty filter_data frame_id_' . $i['ideaid'] . '">';
         echo '<h3>' . $players___11035[40946]['m__cover'] . ' ' . $players___11035[40946]['m__title'] . ':</h3>';
         echo $filters_ui;
         echo '</div>';
