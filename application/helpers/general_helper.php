@@ -477,6 +477,7 @@ function view_tree($i, $open_by_default = true)
         }
     }
     echo '</span>';
+    echo '<div class="doclear">&nbsp;</div>';
 
 
     echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
