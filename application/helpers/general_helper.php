@@ -438,40 +438,40 @@ function view_tree($i, $open_by_default = true)
     echo '<span class="inline-block float_right">';
     //Chain Highlights
     foreach ($CI->config->item('players___1592660') as $playerid => $m) {
+
+        $opener = '<span ';
+        $closer = '</span>';
+
         if (isset($i['stats']) && $playerid == 12273 && $i['stats']['all_steps'] > 0) {
-
-            if($CI->uri->segment(1)=='doc'){
-                $opener = '<a href="/doc/'.$i['ideahashtag'].'" ';
-                $closer = '</a>';
-            } else {
-                $opener = '<span ';
-                $closer = '</span>';
-            }
-
-            echo $opener.'data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span style="border-bottom: 1px dotted #999;">' . $i['stats']['all_steps'] . '</span>'.$closer;
-
-        } elseif (isset($i['stats']) && $playerid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
-
-            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' .$i['current_level'] . '/' . $i['stats']['max_level'] .'</span></span>';
-
-        } elseif (isset($i['stats']) && $playerid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
-
-            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'].'</span></span>';
-
-        } elseif (isset($i['stats']) && $playerid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
-
-            echo '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'].'</span></span>';
-
-        } elseif ($playerid == 31777 && isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
 
             if($CI->uri->segment(1)=='doc'){
                 $opener = '<a href="/'.$i['ideahashtag'].'" ';
                 $closer = '</a>';
-            } else {
-                $opener = '<span ';
-                $closer = '</span>';
             }
+            echo $opener.'data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span style="border-bottom: 1px dotted #999;">' . $i['stats']['all_steps'] . '</span>'.$closer;
 
+        } elseif (isset($i['stats']) && $playerid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
+
+            if($CI->uri->segment(1)=='doc'){
+                $opener = '<a href="/doc/'.$i['ideahashtag'].'" ';
+                $closer = '</a>';
+            }
+            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' .$i['current_level'] . '/' . $i['stats']['max_level'] .'</span>'.$closer;
+
+        } elseif (isset($i['stats']) && $playerid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
+
+            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'].'</span>'.$closer;
+
+        } elseif (isset($i['stats']) && $playerid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
+
+            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'].'</span>'.$closer;
+
+        } elseif ($playerid == 31777 && isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
+
+            if(idea_is_startable($i)){
+                $opener = '<a href="/'.$i['ideahashtag'].'/start" ';
+                $closer = '</a>';
+            }
             echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span style="border-bottom: 1px dotted #999;">' . $i['idea_count_discovery'].'</span>'.$closer;
 
         }
