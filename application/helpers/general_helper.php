@@ -508,7 +508,7 @@ function view_tree($i, $open_by_default = true)
     }
     if ($filters_ui) {
         $players___11035 = $CI->config->item('players___11035'); //Encyclopedia
-        echo '<div class="hideIfEmpty filter_data '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
+        echo '<div class="hideIfEmpty filter_data '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
         echo '<h3>' . $players___11035[40946]['m__cover'] . ' ' . $players___11035[40946]['m__title'] . ':</h3>';
         echo $filters_ui;
         echo '</div>';
