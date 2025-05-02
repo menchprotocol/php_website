@@ -1223,7 +1223,7 @@ $(document).ready(function () {
                 search: function (q, callback) {
                     index_algolia.search(q, {
                         hitsPerPage: js_players___6404[31112]['m__message'],
-                        filters: 's__type=12274' + search_and_filter,
+                        filters: 's__type=12274 AND _tags:z_6287 ' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
                             if (content.query === q) {
