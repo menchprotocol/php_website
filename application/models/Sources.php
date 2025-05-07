@@ -491,8 +491,7 @@ class Sources extends CIdea_cache
 
         //PROFILE
         $session_data = array(
-            'session_up' => $e,
-            'session_up_ids' => array(),
+            'session_source' => $e,
             'session_superpowers_unlocked' => array(),
         );
 
@@ -568,9 +567,6 @@ class Sources extends CIdea_cache
             'chainsourcedown' => $e['sourceid'], //This follower Source
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
         ), array('chainsourceup'), 0) as $source_up) {
-
-            //Push to followings IDs:
-            array_push($session_data['session_up_ids'], intval($source_up['sourceid']));
 
             //Website Theme Items?
             if (in_array($source_up['sourceid'], $this->config->item('sourceids___14926'))) {

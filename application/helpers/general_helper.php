@@ -798,7 +798,7 @@ function source_session($superpower_sourceid = null, $force_redirect = 0, $sessi
     }
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $source_session = $CI->session->userdata('session_up');
+    $source_session = $CI->session->userdata('session_source');
 
     //Let's start checking various ways we can give member access:
     if ($source_session && !$superpower_sourceid) {
