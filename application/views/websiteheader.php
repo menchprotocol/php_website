@@ -108,9 +108,9 @@ if(!$basic_header_footer){
     //JS VARIABLES
 
     echo ' var insert_text = \'' . (isset($_GET['insert']) ? $_GET['insert'] : '')  . '\'; ';
-    echo ' var js_pl_id = ' . ( $source_session ? $source_session['sourceid'] : '0' ) . '; ';
-    echo ' var js_pl_handle = \'' . ( $source_session ? $source_session['sourcehandle'] : '' ) . '\'; ';
-    echo ' var js_pl_name = \'' . ( $source_session ? str_replace('\'','\\\'',trim($source_session['sourcevalue'])) : '' ) . '\'; ';
+    echo ' var js_pl_id = ' . ( $source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : '0' ) . '; ';
+    echo ' var js_pl_handle = \'' . ( $source_session && isset($source_session['sourcehandle']) ? $source_session['sourcehandle'] : '' ) . '\'; ';
+    echo ' var js_pl_name = \'' . ( $source_session && isset($source_session['sourcevalue']) ? str_replace('\'','\\\'',trim($source_session['sourcevalue'])) : '' ) . '\'; ';
     echo ' var js_request_uri = \'' . $_SERVER['REQUEST_URI'] . '\'; ';
     echo ' var universal_search_enabled = ' . intval($this->config->item('universal_search_enabled')) . '; ';
     echo ' var website_id = "' . $website_id . '"; ';
