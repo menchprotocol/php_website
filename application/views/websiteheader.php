@@ -367,7 +367,7 @@ if ($focus_i){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $source_session && strlen($source_session['sourcecover']) ? view_cover($source_session['sourcecover'], 1) : $sources___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $source_session && isset($source_session['sourcecover']) && strlen($source_session['sourcecover']) ? view_cover($source_session['sourcecover'], 1) : $sources___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('sources___'.$menu_type) as $chainsourcetype => $m) {

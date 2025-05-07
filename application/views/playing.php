@@ -4,7 +4,7 @@ $chainsourcecreator = ( $source_session ? $source_session['sourceid'] : 14068 /*
 //Log view:
 $this->Chains->create(array(
     'chainsourcetype' => 44176, //Source View
-    'chainsourceup' => $focus_e['sourceid'],
+    'chainsourceup' => @$focus_e['sourceid'],
     'chainsourcedown' => $chainsourcecreator,
     'chainsourcecreator' => $chainsourcecreator,
 ));
