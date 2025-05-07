@@ -221,7 +221,7 @@ class Controller extends CI_Controller
             //Needs superpowers?
             $source_session = source_session();
 
-            if ($source_session && isset($source_session['e__id'])) {
+            if ($source_session && !isset($source_session['sourceid'])) {
                 //Old source, must log out:
                 header("Location: /logout", true, 301);
                 return false;
