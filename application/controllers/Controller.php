@@ -259,7 +259,7 @@ class Controller extends CI_Controller
         $ui = null;
         $new_cache = false;
         $cache_chaintime = null;
-        $chainsourcecreator = ($source_http_request ? ($source_session ? @$source_session['sourceid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
+        $chainsourcecreator = ($source_http_request ? ($source_session ? $source_session['sourceid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
         $skip_idea_privacy_check = !$memory_detected || in_array($app_sourceid, $this->config->item('sourceids___43388'));
         $source_access = source_access(null, $focus_e['sourceid'], $focus_e);
         $idea_access = idea_access(null, $focus_i['ideaid'], $focus_i);
@@ -277,7 +277,7 @@ class Controller extends CI_Controller
             } elseif (!$source_session && in_array($app_sourceid, $this->config->item('sourceids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
-            } elseif (0 && count($superpowers_required) && !source_session(end($superpowers_required))) {
+            } elseif (count($superpowers_required) && !source_session(end($superpowers_required))) {
                 $sources___10957 = $this->config->item('sources___10957');
                 $missing_access = 'Error: You Cannot Access ' . $sources___6287[$app_sourceid]['m__title'] . ' as it requires the superpower of ' . $sources___10957[end($superpowers_required)]['m__title'] . '.';
             } elseif ($focus_e && !$source_access) {
@@ -287,7 +287,6 @@ class Controller extends CI_Controller
             } elseif (!$skip_idea_privacy_check && $target_i && !$target_idea_access) {
                 $missing_access = 'Error: You Cannot Access Target #' . $target_i['ideahashtag'] . ' due to Privacy Settings.';
             }
-
 
             if ($missing_access) {
                 //Redirect:
