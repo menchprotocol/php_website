@@ -499,14 +499,13 @@ class Sources extends CIdea_cache
         $websitesourceid = website_setting(0);
 
         //Make sure they also belong to this website's members:
-        //Add if chain not already there:
-        if (!count($this->Chains->read(array(
+        if ($websitesourceid!=4341 && !count($this->Chains->read(array(
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
             'chainsourceup' => $websitesourceid,
             'chainsourcedown' => $e['sourceid'],
         )))) {
             $this->Chains->create(array(
-                'chainsourcecreator' => $e['sourceid'], //Belongs to this Member
+                'chainsourcecreator' => $e['sourceid'],
                 'chainsourcetype' => 4230,
                 'chainsourceup' => $websitesourceid,
                 'chainsourcedown' => $e['sourceid'],
@@ -515,7 +514,6 @@ class Sources extends CIdea_cache
 
 
         //Check & Adjust their subscription, IF needed:
-        //Remove their subscribe:
         $resubscribed = 0;
         foreach ($this->Chains->read(array(
             'chainsourceup IN (' . join(',', $this->config->item('sourceids___29648')) . ')' => null, //Unsubscribers
