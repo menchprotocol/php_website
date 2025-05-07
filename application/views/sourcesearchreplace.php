@@ -14,12 +14,12 @@ $replace_with_confirmed = false;
 
 if($search_for_set){
 
-    $matching_results = $this->Players->read(array(
-            'playertext LIKE \'%'.$_GET['search_for'].'%\'' => null,
+    $matching_results = $this->Sources->read(array(
+            'sourcetext LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
     //List the matching search:
-    echo '<div>'.count($matching_results).' Players Found</div>';
+    echo '<div>'.count($matching_results).' Sources Found</div>';
     if(count($matching_results) < 1){
 
         $replace_with_set = false;
@@ -39,18 +39,18 @@ if($search_for_set){
 
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $en['playertext'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['playertext']) . $append_text;
+                $en['sourcetext'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['sourcetext']) . $append_text;
 
                 if($replace_with_confirmed){
-                    //Update player:
-                    $res = $this->Players->update($en['playerid'], array(
-                        'playertext' => $en['playertext'],
-                    ), $player_session['playerid']);
+                    //Update source:
+                    $res = $this->Sources->update($en['sourceid'], array(
+                        'sourcetext' => $en['sourcetext'],
+                    ), $source_session['sourceid']);
                     $replaced++;
                 }
             }
 
-            echo player_view(12730, $en, null);
+            echo source_view(12730, $en, null);
         }
         echo '</div>';
 

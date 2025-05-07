@@ -4268,7 +4268,7 @@
 ## 3.151.6 - 2020-09-03
 
 * `Aws\GuardDuty` - GuardDuty findings triggered by failed events now include the error code name within the AwsApiCallAction section.
-* `Aws\MediaPackage` - Enables inserting a UTCTiming XML tag in the output manifest of a DASH endpoint which a media player will use to help with time synchronization.
+* `Aws\MediaPackage` - Enables inserting a UTCTiming XML tag in the output manifest of a DASH endpoint which a media source will use to help with time synchronization.
 * `Aws\SFN` - This release of the AWS Step Functions SDK introduces support for payloads up to 256KB for Standard and Express workflows
 * `Aws\kendra` - Amazon Kendra now returns confidence scores for both 'answer' and 'question and answer' query responses.
 
@@ -6236,7 +6236,7 @@
 * `Aws\ConfigService` - AWS Config now supports a new set of APIs to manage AWS Config rules across your organization in AWS Organizations. Using this capability, you can centrally create, update, and delete AWS Config rules across all accounts in your organization. This capability is particularly useful if you have a need to deploy a common set of AWS Config rules across all accounts. You can also specify accounts where AWS Config rules should not be created. In addition, you can use these APIs from the master account in AWS Organizations to enforce governance by ensuring that the underlying AWS Config rules are not modifiable by your organization member accounts.These APIs work for both managed and custom AWS Config rules. For more information, see Enabling AWS Config Rules Across all Accounts in Your Organization in the AWS Config Developer Guide.The new APIs are available in all commercial AWS Regions where AWS Config and AWS Organizations are supported. For the full list of supported Regions, see AWS Regions and Endpoints in the AWS General Reference. To learn more about AWS Config, visit the AWS Config webpage. To learn more about AWS Organizations, visit the AWS Organizations webpage.
 * `Aws\EFS` - EFS customers can now enable Lifecycle Management for all file systems. You can also now select from one of four Lifecycle Management policies (14, 30, 60 and 90 days), to automatically move files that have not been accessed for the period of time defined by the policy, from the EFS Standard storage class to the EFS Infrequent Access (IA) storage class. EFS IA provides price/performance that is cost-optimized for files that are not accessed every day.
 * `Aws\Functions` - Avoid repeatedly loading compiled JSON.
-* `Aws\GameLift` - GameLift FlexMatch now supports matchmaking of up to 200 players per game session, and FlexMatch can now automatically backfill your game sessions whenever there is an open slot.
+* `Aws\GameLift` - GameLift FlexMatch now supports matchmaking of up to 200 sources per game session, and FlexMatch can now automatically backfill your game sessions whenever there is an open slot.
 * `Aws\KinesisVideo` - Add "GET_DASH_STREAMING_SESSION_URL" as an API name to the GetDataEndpoint API.
 * `Aws\KinesisVideoArchivedMedia` - Adds support for the GetDASHStreamingSessionURL API. Also adds support for the Live Replay playback mode of the GetHLSStreamingSessionURL API.
 * `Aws\WAF` - Updated SDK APIs to add tags to WAF Resources: WebACL, Rule, Rulegroup and RateBasedRule. Tags can also be added during creation of these resources.
@@ -8307,7 +8307,7 @@
 * `Aws\DatabaseMigrationService` - This release includes the addition of two new APIs: describe replication instance task logs and reboot instance. The first allows user to see how much storage each log for a task on a given instance is occupying. The second gives users the option to reboot the application software on the instance and force a fail over for MAZ instances to test robustness of their integration with our service. 
 * `Aws\DirectoryService` - Updated the regex of some input parameters to support longer EC2 identifiers.
 * `Aws\DynamoDB` - Amazon DynamoDB now supports server-side encryption using a default service key (alias/aws/dynamodb) from the AWS Key Management Service (KMS). AWS KMS is a service that combines secure, highly available hardware and software to provide a key management system scaled for the cloud. AWS KMS is used via the AWS Management Console or APIs to centrally create encryption keys, define the policies that control how keys can be used, and audit key usage to prove they are being used correctly. For more information, see the Amazon DynamoDB Developer Guide.
-* `Aws\GameLift` - Amazon GameLift FlexMatch added the StartMatchBackfill API. This API allows developers to add new players to an existing game session using the same matchmaking rules and player data that were used to initially create the session.
+* `Aws\GameLift` - Amazon GameLift FlexMatch added the StartMatchBackfill API. This API allows developers to add new sources to an existing game session using the same matchmaking rules and source data that were used to initially create the session.
 * `Aws\Inspector` - We marked Inspector GA yesterday. 2/.5/18.
 * `Aws\MediaLive` - AWS Elemental MediaLive has added support for updating channel settings for idle channels. You can now update channel name, channel outputs and output destinations, encoder settings, user role ARN, and input specifications. Channel settings can be updated in the console or with API calls. Please note that running channels need to be stopped before they can be updated. We've also deprecated the 'Reserved' field.
 * `Aws\MediaStore` - AWS Elemental MediaStore now supports per-container CORS configuration.
@@ -8913,7 +8913,7 @@
 ## 3.33.2 - 2017-08-16
 
 * `Aws\` - Fixes a bug in `ClientResolver` that would provide incorrect information on required parameters set to `null` when resolving a client.
-* `Aws\GameLift` - The Matchmaking Grouping Service is a new feature that groups player match requests for a given game together into game sessions based on developer configured rules.
+* `Aws\GameLift` - The Matchmaking Grouping Service is a new feature that groups source match requests for a given game together into game sessions based on developer configured rules.
 
 ## 3.33.1 - 2017-08-15
 
@@ -9375,7 +9375,7 @@
 
 * `Aws\CloudDirectory` - ListObjectAttributes documentation updated based on forum feedback
 * `Aws\ElasticBeanstalk` - Elastic Beanstalk adds support for creating and managing custom platform.
-* `Aws\GameLift` - Allow developers to configure global queues for creating GameSessions. Allow PlayerData on PlayerSessions to store player-specific data.
+* `Aws\GameLift` - Allow developers to configure global queues for creating GameSessions. Allow SourceData on SourceSessions to store source-specific data.
 * `Aws\Route53` - Added support for operations CreateVPCAssociationAuthorization and DeleteVPCAssociationAuthorization to throw a ConcurrentModification error when a conflicting modification occurs in parallel to the authorizations in place for a given hosted zone.
 
 ## 3.22.8 - 2017-02-21

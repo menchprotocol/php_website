@@ -16,9 +16,9 @@ if(!isset($idea_settings['list_config'][34513]) || !count($idea_settings['list_c
 
 
 foreach($this->Chains->read(array(
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
-    'chainplayerup IN (' . join(',', $idea_settings['list_config'][34513]) . ')' => null, //Active Writes
-), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC')) as $chain_i){
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
+    'chainsourceup IN (' . join(',', $idea_settings['list_config'][34513]) . ')' => null, //Active Writes
+), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $chain_i){
 
     $idea_settings = idea_settings($chain_i['ideahashtag'], true);
     if(!count($idea_settings['query_string_filtered'])){

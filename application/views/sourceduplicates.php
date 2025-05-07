@@ -2,27 +2,27 @@
 
 //SOURCE LIST DUPLICATES
 
-if(isset($_GET['playerhandle'])){
+if(isset($_GET['sourcehandle'])){
 
-    //Find Chain Content Duplicates for this Player:
+    //Find Chain Content Duplicates for this Source:
     $main_index = array();
     $duplicates_found = array();
     foreach($this->Chains->read(array(
-        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-        ), array('chainplayerup'), 0) as $x) {
-        $chaintext_md5 = substr(md5($x['chaintext']), 0, 16);
-        if(!isset($main_index[$chaintext_md5])){
-            $main_index[$chaintext_md5] = array();
+        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+        ), array('chainsourceup'), 0) as $x) {
+        $chainvalue_md5 = substr(md5($x['chainvalue']), 0, 16);
+        if(!isset($main_index[$chainvalue_md5])){
+            $main_index[$chainvalue_md5] = array();
         } else {
             //Found Duplicate!
-            if(!isset($duplicates_found[$chaintext_md5])){
-                $duplicates_found[$chaintext_md5] = $main_index[$chaintext_md5];
+            if(!isset($duplicates_found[$chainvalue_md5])){
+                $duplicates_found[$chainvalue_md5] = $main_index[$chainvalue_md5];
             }
-            array_push($duplicates_found[$chaintext_md5], $x['chainplayerdown']);
+            array_push($duplicates_found[$chainvalue_md5], $x['chainsourcedown']);
         }
 
-        array_push($main_index[$chaintext_md5], $x['chainplayerdown']);
+        array_push($main_index[$chainvalue_md5], $x['chainsourcedown']);
 
     }
 
@@ -31,12 +31,12 @@ if(isset($_GET['playerhandle'])){
 
 } elseif(!isset($_GET['search_by_name'])){
 
-    echo '<p>Either enter ?playerid= in URL to search specific Player Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_chain(7268).'?search_by_name=1"><b>Find Duplicate Players by Name</b></a></p>.';
+    echo '<p>Either enter ?sourceid= in URL to search specific Source Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_chain(7268).'?search_by_name=1"><b>Find Duplicate Sources by Name</b></a></p>.';
 
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from  cacheplayers en1 where (select count(*) from  cacheplayers en2 where en2.playertext = en1.playertext ORDER BY en1.playertext ASC');
+    $q = $this->db->query('select en1.* from  cachesources en1 where (select count(*) from  cachesources en2 where en2.sourcetext = en1.sourcetext ORDER BY en1.sourcetext ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -45,12 +45,12 @@ if(isset($_GET['playerhandle'])){
 
         foreach($duplicates as $en) {
 
-            if ($prev_title != $en['playertext']) {
+            if ($prev_title != $en['sourcetext']) {
                 echo '<hr />';
-                $prev_title = $en['playertext'];
+                $prev_title = $en['sourcetext'];
             }
 
-            echo '<a href="'.view_memory(42903,42902) . $en['playerhandle'] . '"><b>' . $en['playertext'] . '</b></a> @' . $en['playerid'] . '<br />';
+            echo '<a href="'.view_memory(42903,42902) . $en['sourcehandle'] . '"><b>' . $en['sourcetext'] . '</b></a> @' . $en['sourceid'] . '<br />';
         }
 
     } else {

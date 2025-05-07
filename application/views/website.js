@@ -1,9 +1,9 @@
 //Define some global variables:
-var has_unsaved_changes = false; //Tracks player/idea modal edits
+var has_unsaved_changes = false; //Tracks source/idea modal edits
 var focus_group = 0;
 
 
-if (!js_pl_id || !js_playerids___43512.includes(js_pl_id)) {
+if (!js_pl_id || !js_sourceids___43512.includes(js_pl_id)) {
     //Microsoft Clarity=
     (function (c, l, a, r, i, t, y) {
         c[a] = c[a] || function () {
@@ -94,15 +94,15 @@ function watch_cover_change(new_cover) {
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
         $('#modal31912 .fa_search a').attr('href', 'https://fontawesome.com/search?q=' + encodeURIComponent(split_cover_2arr2[0]) + '&o=r&s=solid&f=classic%2Cbrands');
-        $('#modal31912 .save_playercover,  #modal31912 .fa_search').removeClass('hidden');
+        $('#modal31912 .save_sourcecover,  #modal31912 .fa_search').removeClass('hidden');
         console.log('updated');
     } else {
-        $('#modal31912 .save_playercover, #modal31912 .fa_search').addClass('hidden');
+        $('#modal31912 .save_sourcecover, #modal31912 .fa_search').addClass('hidden');
     }
 }
 
 function watch_cover() {
-    $('#modal31912 .save_playercover').change(function () {
+    $('#modal31912 .save_sourcecover').change(function () {
 
         console.log('change detexted:' + $(this).val());
         watch_cover_change($(this).val());
@@ -145,17 +145,17 @@ function gather_media(target_el, uploader_id) {
     var uploaded_media = [];
     $(target_el).each(function () {
 
-        var currentplayer_id = parseInt($(this).attr('playerid'));
+        var currentsource_id = parseInt($(this).attr('sourceid'));
 
-        if (currentplayer_id > 0) {
+        if (currentsource_id > 0) {
 
             //Already there...
             uploaded_media[sort_rank] = {
-                media_playerid: parseInt($(this).attr('media_playerid')),
+                media_sourceid: parseInt($(this).attr('media_sourceid')),
                 playback_code: $(this).attr('playback_code'),
-                playerid: currentplayer_id,
-                playercover: $(this).attr('playercover'),
-                playertext: $('#' + $(this).attr('id') + ' input').val(),
+                sourceid: currentsource_id,
+                sourcecover: $(this).attr('sourcecover'),
+                sourcetext: $('#' + $(this).attr('id') + ' input').val(),
             }
             sort_rank++;
 
@@ -163,11 +163,11 @@ function gather_media(target_el, uploader_id) {
 
             //Fetch variables for this media:
             uploaded_media[sort_rank] = {
-                media_playerid: parseInt($(this).attr('media_playerid')),
+                media_sourceid: parseInt($(this).attr('media_sourceid')),
                 playback_code: $(this).attr('playback_code'),
-                playerid: 0,
-                playercover: $(this).attr('playercover'),
-                playertext: $('#' + $(this).attr('id') + ' input').val(),
+                sourceid: 0,
+                sourcecover: $(this).attr('sourcecover'),
+                sourcetext: $('#' + $(this).attr('id') + ' input').val(),
                 media_cache: media_cache[uploader_id][$(this).attr('id')],
             }
             sort_rank++;
@@ -224,7 +224,7 @@ function load_editor() {
         return false;
     }
 
-    $('.player_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
+    $('.source_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $(this).val('@' + suggestion.s__handle);
 
@@ -233,7 +233,7 @@ function load_editor() {
         source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12274' + search_and_filter,
-                hitsPerPage: js_players___6404[31112]['m__message'],
+                hitsPerPage: js_sources___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -250,7 +250,7 @@ function load_editor() {
                 return search_js_line(suggestion, '@');
             },
             empty: function (data) {
-                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Players Found</div>';
+                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Sources Found</div>';
             },
         }
 
@@ -265,7 +265,7 @@ function load_editor() {
         source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12273' + search_and_filter,
-                hitsPerPage: js_players___6404[31112]['m__message'],
+                hitsPerPage: js_sources___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -305,36 +305,36 @@ function search_js_line(suggestion, default_handle = '@') {
     }
 }
 
-function player_load_finder(chainplayertype) {
-    console.log(chainplayertype + " player_load_finder()");
+function source_load_finder(chainsourcetype) {
+    console.log(chainsourcetype + " source_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-' + chainplayertype + ' .add-input').keypress(function (e) {
+    $('.new-list-' + chainsourcetype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            player_create(chainplayertype, 0);
+            source_create(chainsourcetype, 0);
             return true;
         }
     });
 }
 
-function idea_load_search(chainplayertype) {
+function idea_load_search(chainsourcetype) {
     //Load Search:
     var icons_listed = [];
-    $('.new-list-' + chainplayertype + ' .add-input').keypress(function (e) {
+    $('.new-list-' + chainsourcetype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            idea_create(chainplayertype, 0);
+            idea_create(chainsourcetype, 0);
             return true;
         }
     });
 }
 
-function search_js_cover(chainplayertype, suggestion, action_id) {
+function search_js_cover(chainsourcetype, suggestion, action_id) {
 
-    if (!js_playerids___26010.includes(chainplayertype)) {
+    if (!js_sourceids___26010.includes(chainsourcetype)) {
         alert('Missing type in JS UI');
         return false;
     }
@@ -351,14 +351,14 @@ function search_js_cover(chainplayertype, suggestion, action_id) {
     }
 
     //Return appropriate UI:
-    if (chainplayertype == 26011) {
+    if (chainsourcetype == 26011) {
         //Mini Coin
         var search_only_app = $("#website_finder").val().charAt(0) == '-';
         var target_url = (search_only_app ? suggestion.s__url.replace('/@', '/') : suggestion.s__url);
         return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' ' + (search_only_app ? ' card-6287 ' : '') + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="' + target_url + '" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="' + target_url + '" class="main__title">' + (suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">' + suggestion.s__title + '</span>') + '</a></div></div></div>';
-    } else if (chainplayertype == 26013) {
-        //Chain Player
-        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="player_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="player_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
+    } else if (chainsourcetype == 26013) {
+        //Chain Source
+        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="source_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="source_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
     }
 
 }
@@ -368,26 +368,26 @@ function search_mini_js(s__cover, s__title) {
 }
 
 
-function toggle_headline(chainplayertype) {
+function toggle_headline(chainsourcetype) {
 
-    var chainplayerdown = 0;
+    var chainsourcedown = 0;
     var chainidearight = 0;
     var focus__node = parseInt($('#focus__node').val());
     if (focus__node == 12273) {
         chainidearight = parseInt($('#focus__id').val());
     } else if (focus__node == 12274) {
-        chainplayerdown = parseInt($('#focus__id').val());
+        chainsourcedown = parseInt($('#focus__id').val());
     }
 
-    if ($('.headline_title_' + chainplayertype + ' .icon_26008').hasClass('hidden')) {
+    if ($('.headline_title_' + chainsourcetype + ' .icon_26008').hasClass('hidden')) {
 
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-        $('.headline_title_' + chainplayertype + ' .icon_26008').removeClass('hidden');
-        $('.headline_title_' + chainplayertype + ' .icon_26007').addClass('hidden');
-        $('.headline_body_' + chainplayertype).addClass('hidden');
+        $('.headline_title_' + chainsourcetype + ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + chainsourcetype + ' .icon_26007').addClass('hidden');
+        $('.headline_body_' + chainsourcetype).addClass('hidden');
 
-        if (chainplayertype == 6255) {
+        if (chainsourcetype == 6255) {
             $('.navigate_12273').removeClass('active');
         }
 
@@ -400,17 +400,17 @@ function toggle_headline(chainplayertype) {
 
         //Currently closed, must now be opened
         var action_id = 26007; //Open
-        $('.headline_title_' + chainplayertype + ' .icon_26007').removeClass('hidden');
-        $('.headline_title_' + chainplayertype + ' .icon_26008').addClass('hidden');
-        $('.headline_body_' + chainplayertype).removeClass('hidden');
+        $('.headline_title_' + chainsourcetype + ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + chainsourcetype + ' .icon_26008').addClass('hidden');
+        $('.headline_body_' + chainsourcetype).removeClass('hidden');
 
-        if (chainplayertype == 6255) {
+        if (chainsourcetype == 6255) {
             $('.navigate_12273').addClass('active');
         }
 
         //Scroll To:
         $('html, body').animate({
-            scrollTop: $('.headline_body_' + chainplayertype).offset().top
+            scrollTop: $('.headline_body_' + chainsourcetype).offset().top
         }, 13);
 
     }
@@ -418,24 +418,24 @@ function toggle_headline(chainplayertype) {
 }
 
 
-function player_sort_load(chainplayertype) {
+function source_sort_load(chainsourcetype) {
 
     load_cards();
 
-    console.log('Tring to load Player Sort for @' + chainplayertype);
+    console.log('Tring to load Source Sort for @' + chainsourcetype);
 
-    var sort_item_count = parseInt($('.headline_body_' + chainplayertype).attr('read-counter'));
+    var sort_item_count = parseInt($('.headline_body_' + chainsourcetype).attr('read-counter'));
 
-    if (!js_playerids___13911.includes(chainplayertype)) {
+    if (!js_sourceids___13911.includes(chainsourcetype)) {
         //Does not support sorting:
-        console.log(chainplayertype + ' is not sortable');
+        console.log(chainsourcetype + ' is not sortable');
         return false;
-    } else if (sort_item_count < 1 || sort_item_count > parseInt(js_players___6404[11064]['m__message'])) {
+    } else if (sort_item_count < 1 || sort_item_count > parseInt(js_sources___6404[11064]['m__message'])) {
         return false;
     }
 
     setTimeout(function () {
-        var theobject = document.getElementById("list-in-" + chainplayertype);
+        var theobject = document.getElementById("list-in-" + chainsourcetype);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
             console.log('No object');
@@ -443,15 +443,15 @@ function player_sort_load(chainplayertype) {
         }
 
         //Show sort icon:
-        console.log('Completed Loading Sorting for @' + chainplayertype)
-        $('.sortplayer_frame').removeClass('hidden');
+        console.log('Completed Loading Sorting for @' + chainsourcetype)
+        $('.sortsource_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-" + chainplayertype + " .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-" + chainplayertype + " .sortplayer_grab", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-" + chainsourcetype + " .sort_draggable", // Specifies which items inside the element should be sortable
+            handle: "#list-in-" + chainsourcetype + " .sortsource_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                player_sort_save(chainplayertype);
+                source_sort_save(chainsourcetype);
             }
         });
     }, 377);
@@ -479,47 +479,47 @@ var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
 
-function toggle_pills(chainplayertype_hash, is_first_load) {
+function toggle_pills(chainsourcetype_hash, is_first_load) {
 
-    console.log('Toggle Pill: ' + chainplayertype_hash);
+    console.log('Toggle Pill: ' + chainsourcetype_hash);
 
-    if (pills_loading && !loaded_pills.includes(chainplayertype_hash)) {
+    if (pills_loading && !loaded_pills.includes(chainsourcetype_hash)) {
         return false;
     } else if (loading_in_progress) {
         return false;
     }
 
-    console.log('Toggle Pill Active: ' + chainplayertype_hash);
+    console.log('Toggle Pill Active: ' + chainsourcetype_hash);
 
-    if ($('.handle_nav_' + chainplayertype_hash).attr('chainplayertype') && $('.handle_nav_' + chainplayertype_hash).attr('chainplayertype').length) {
-        chainplayertype = parseInt($('.handle_nav_' + chainplayertype_hash).attr('chainplayertype'));
+    if ($('.handle_nav_' + chainsourcetype_hash).attr('chainsourcetype') && $('.handle_nav_' + chainsourcetype_hash).attr('chainsourcetype').length) {
+        chainsourcetype = parseInt($('.handle_nav_' + chainsourcetype_hash).attr('chainsourcetype'));
     } else {
-        console.log('ERROR: #' + chainplayertype_hash + ' is not a valid menu.');
+        console.log('ERROR: #' + chainsourcetype_hash + ' is not a valid menu.');
         return false;
     }
 
     loading_in_progress = true;
 
-    if (!loaded_pills.includes(chainplayertype_hash)) {
-        pills_loading = chainplayertype_hash;
+    if (!loaded_pills.includes(chainsourcetype_hash)) {
+        pills_loading = chainsourcetype_hash;
     }
 
-    var chainplayerdown = 0;
+    var chainsourcedown = 0;
     var chainidearight = 0;
     var focus__node = parseInt($('#focus__node').val());
 
     if (focus__node == 12273) {
         chainidearight = parseInt($('#focus__id').val());
     } else if (focus__node == 12274) {
-        chainplayerdown = parseInt($('#focus__id').val());
+        chainsourcedown = parseInt($('#focus__id').val());
     }
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
-    $('.xtypetitle_' + chainplayertype).removeClass('hidden');
+    $('.xtypetitle_' + chainsourcetype).removeClass('hidden');
 
 
-    if (!$('.thepill' + chainplayertype + ' .nav-chain').hasClass('active')) {
+    if (!$('.thepill' + chainsourcetype + ' .nav-chain').hasClass('active')) {
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
@@ -527,43 +527,43 @@ function toggle_pills(chainplayertype_hash, is_first_load) {
         //Hide all elements
         $('.nav-chain').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + chainplayertype + ' .nav-chain').addClass('active');
-        $('.headline_body_' + chainplayertype).removeClass('hidden');
+        $('.thepill' + chainsourcetype + ' .nav-chain').addClass('active');
+        $('.headline_body_' + chainsourcetype).removeClass('hidden');
 
         //Set focus tab:
-        console.log('focus_group Updated from ' + focus_group + ' to ' + chainplayertype);
-        focus_group = chainplayertype;
-        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainplayertype + ' .nav-chain').attr('href'))) {
-            window.location.hash = $('.thepill' + chainplayertype + ' .nav-chain').attr('href');
+        console.log('focus_group Updated from ' + focus_group + ' to ' + chainsourcetype);
+        focus_group = chainsourcetype;
+        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainsourcetype + ' .nav-chain').attr('href'))) {
+            window.location.hash = $('.thepill' + chainsourcetype + ' .nav-chain').attr('href');
         }
 
         //Do we need to load data via ajax?
-        if (!loaded_pills.includes(chainplayertype_hash)) {
+        if (!loaded_pills.includes(chainsourcetype_hash)) {
 
-            $('.headline_body_' + chainplayertype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + chainsourcetype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
             var focus__node = parseInt($('#focus__node').val());
-            console.log('Tab loading from @' + focus__node + ' for @' + chainplayertype);
+            console.log('Tab loading from @' + focus__node + ' for @' + chainsourcetype);
 
             if (focus__node == 12273) {
 
                 var loading_url = "/controller/idea_list";
                 var loading_data = {
                     focus__node: focus__node,
-                    chainplayertype: chainplayertype,
-                    counter: $('.headline_body_' + chainplayertype).attr('read-counter'),
+                    chainsourcetype: chainsourcetype,
+                    counter: $('.headline_body_' + chainsourcetype).attr('read-counter'),
                     ideaid: parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
             } else if (focus__node == 12274) {
 
-                var loading_url = "/controller/player_list";
+                var loading_url = "/controller/source_list";
                 var loading_data = {
                     focus__node: focus__node,
-                    chainplayertype: chainplayertype,
-                    counter: $('.headline_body_' + chainplayertype).attr('read-counter'),
-                    playerid: parseInt($('#focus__id').val()),
+                    chainsourcetype: chainsourcetype,
+                    counter: $('.headline_body_' + chainsourcetype).attr('read-counter'),
+                    sourceid: parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
@@ -580,9 +580,9 @@ function toggle_pills(chainplayertype_hash, is_first_load) {
             $.post(loading_url, loading_data, function (data) {
 
                 //Add data to the page:
-                $('.headline_body_' + chainplayertype + ' .tab_content').html(data);
+                $('.headline_body_' + chainsourcetype + ' .tab_content').html(data);
 
-                loaded_pills.push(chainplayertype_hash);
+                loaded_pills.push(chainsourcetype_hash);
 
                 load_card_clickers();
                 initiate_algolia();
@@ -602,10 +602,10 @@ function toggle_pills(chainplayertype_hash, is_first_load) {
 
                 setTimeout(function () {
 
-                    if (js_playerids___11020.includes(chainplayertype) || (focus__node == 12274 && (js_playerids___42261.includes(chainplayertype) || js_playerids___42284.includes(chainplayertype)))) {
-                        idea_sort_load(chainplayertype);
-                    } else if (js_playerids___11028.includes(chainplayertype) || (focus__node == 12273 && (js_playerids___42261.includes(chainplayertype) || js_playerids___42284.includes(chainplayertype)))) {
-                        player_sort_load(chainplayertype);
+                    if (js_sourceids___11020.includes(chainsourcetype) || (focus__node == 12274 && (js_sourceids___42261.includes(chainsourcetype) || js_sourceids___42284.includes(chainsourcetype)))) {
+                        idea_sort_load(chainsourcetype);
+                    } else if (js_sourceids___11028.includes(chainsourcetype) || (focus__node == 12273 && (js_sourceids___42261.includes(chainsourcetype) || js_sourceids___42284.includes(chainsourcetype)))) {
+                        source_sort_load(chainsourcetype);
                     }
 
                     setup_popover();
@@ -637,40 +637,40 @@ function idea_copy(ideaid, do_recursive) {
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
-            js_redirect(js_players___42903[33286]['m__message'] + data.idea_createhashtag);
+            js_redirect(js_sources___42903[33286]['m__message'] + data.idea_createhashtag);
         } else {
             alert('ERROR:' + data.message);
         }
     });
 }
 
-function player_title(playerid) {
+function source_title(sourceid) {
     //Load Instant Fields:
     var return_title = '';
-    if ($('.text__6197_' + playerid + ':first').text().length) {
-        return_title = $('.text__6197_' + playerid + ':first').text();
-    } else if ($('.text__6197_' + playerid + ':first').val().length) {
-        return_title = $('.text__6197_' + playerid + ':first').val();
+    if ($('.text__6197_' + sourceid + ':first').text().length) {
+        return_title = $('.text__6197_' + sourceid + ':first').text();
+    } else if ($('.text__6197_' + sourceid + ':first').val().length) {
+        return_title = $('.text__6197_' + sourceid + ':first').val();
     }
     return return_title;
 }
 
-function player_copy(playerid) {
+function source_copy(sourceid) {
 
-    var copy_player_title = prompt("What would be the title of the new Player?", player_title(playerid));
-    if (!copy_player_title.length) {
+    var copy_source_title = prompt("What would be the title of the new Source?", source_title(sourceid));
+    if (!copy_source_title.length) {
         alert('You must enter a title to copy.');
         return false;
     }
 
     //Go ahead and delete:
-    $.post("/controller/player_copy", {
-        playerid: playerid,
-        copy_player_title: copy_player_title,
+    $.post("/controller/source_copy", {
+        sourceid: sourceid,
+        copy_source_title: copy_source_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
-            js_redirect(js_players___42903[42902]['m__message'] + data.player_createhandle);
+            js_redirect(js_sources___42903[42902]['m__message'] + data.source_createhandle);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -678,8 +678,8 @@ function player_copy(playerid) {
 }
 
 
-function js_randomize_text(playerid) {
-    var messages = js_players___12687[playerid]['m__message'].split("\n");
+function js_randomize_text(sourceid) {
+    var messages = js_sources___12687[sourceid]['m__message'].split("\n");
     if (messages.length == 1) {
         //Return message:
         return messages[0];
@@ -690,22 +690,22 @@ function js_randomize_text(playerid) {
 }
 
 
-function loadtab(chainplayertype, tab_data_id) {
+function loadtab(chainsourcetype, tab_data_id) {
 
     //Hide all tabs:
-    $('.tab-group-' + chainplayertype).addClass('hidden');
-    $('.tab-nav-' + chainplayertype).removeClass('active');
+    $('.tab-group-' + chainsourcetype).addClass('hidden');
+    $('.tab-nav-' + chainsourcetype).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-' + chainplayertype + '.tab-data-' + tab_data_id).removeClass('hidden');
-    $('.tab-nav-' + chainplayertype + '.tab-head-' + tab_data_id).addClass('active');
+    $('.tab-group-' + chainsourcetype + '.tab-data-' + tab_data_id).removeClass('hidden');
+    $('.tab-nav-' + chainsourcetype + '.tab-head-' + tab_data_id).addClass('active');
 
 }
 
 
 var init_in_process = 0;
 
-function chain_delete(chainid, chainplayertype, ideahashtag = null) {
+function chain_delete(chainid, chainsourcetype, ideahashtag = null) {
 
     if (init_in_process == chainid) {
         return false;
@@ -728,7 +728,7 @@ function chain_delete(chainid, chainplayertype, ideahashtag = null) {
             //There was some sort of an error returned!
             alert(data.message);
         } else {
-            chain_counter(chainplayertype, -1);
+            chain_counter(chainsourcetype, -1);
             $(".cover_x_" + chainid).fadeOut();
             setTimeout(function () {
                 $(".cover_x_" + chainid).remove();
@@ -740,8 +740,8 @@ function chain_delete(chainid, chainplayertype, ideahashtag = null) {
 }
 
 
-function updatplayercover(new_cover, changed = true) {
-    $('#modal31912 .save_playercover').val(new_cover);
+function updatsourcecover(new_cover, changed = true) {
+    $('#modal31912 .save_sourcecover').val(new_cover);
     update_cover_main(new_cover, '.demo_cover');
     watch_cover_change(new_cover);
     if (changed) {
@@ -750,7 +750,7 @@ function updatplayercover(new_cover, changed = true) {
 }
 
 function image_cover(cover_preview, cover_apply, new_title) {
-    return '<a href="javascript:void(0);" onclick="updatplayercover(\'' + cover_apply + '\')">' + search_mini_js(cover_preview, new_title) + '</a>';
+    return '<a href="javascript:void(0);" onclick="updatsourcecover(\'' + cover_apply + '\')">' + search_mini_js(cover_preview, new_title) + '</a>';
 }
 
 
@@ -764,44 +764,44 @@ function initiate_algolia() {
     });
 }
 
-function player_cover(chainplayertype, playerid, counter, first_segment) {
+function source_cover(chainsourcetype, sourceid, counter, first_segment) {
 
-    if ($('.coinsplayer_' + playerid + '_' + chainplayertype).html().length) {
+    if ($('.coinssource_' + sourceid + '_' + chainsourcetype).html().length) {
         //Already loaded:
         return false;
     }
 
-    $('.coinsplayer_' + playerid + '_' + chainplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coinssource_' + sourceid + '_' + chainsourcetype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/player_cover", {
-        chainplayertype: chainplayertype,
-        playerid: playerid,
+    $.post("/controller/source_cover", {
+        chainsourcetype: chainsourcetype,
+        sourceid: sourceid,
         counter: counter,
         first_segment: first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coinsplayer_' + playerid + '_' + chainplayertype).html(data);
+        $('.coinssource_' + sourceid + '_' + chainsourcetype).html(data);
     });
 
 }
 
-function idea_cover(chainplayertype, ideaid, counter, first_segment, current_e) {
+function idea_cover(chainsourcetype, ideaid, counter, first_segment, current_e) {
 
-    if ($('.coins_idea_' + ideaid + '_' + chainplayertype).html().length) {
+    if ($('.coins_idea_' + ideaid + '_' + chainsourcetype).html().length) {
         //Already loaded:
         return false;
     }
 
-    $('.coins_idea_' + ideaid + '_' + chainplayertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_idea_' + ideaid + '_' + chainsourcetype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/controller/idea_cover", {
-        chainplayertype: chainplayertype,
+        chainsourcetype: chainsourcetype,
         ideaid: ideaid,
         counter: counter,
         first_segment: first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_idea_' + ideaid + '_' + chainplayertype).html(data);
+        $('.coins_idea_' + ideaid + '_' + chainsourcetype).html(data);
     });
 
 }
@@ -844,13 +844,13 @@ function toggle_finder() {
 
 
 function load_cards() {
-    $(".loadplayer_cards, .load_idea_cards").unbind();
+    $(".loadsource_cards, .load_idea_cards").unbind();
 
-    $(".loadplayer_cards").click(function (event) {
-        player_cover($(this).attr('load_chainplayertype'), $(this).attr('load_playerid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
+    $(".loadsource_cards").click(function (event) {
+        source_cover($(this).attr('load_chainsourcetype'), $(this).attr('load_sourceid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
     });
     $(".load_idea_cards").click(function (event) {
-        idea_cover($(this).attr('load_chainplayertype'), $(this).attr('load_ideaid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
+        idea_cover($(this).attr('load_chainsourcetype'), $(this).attr('load_ideaid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
     });
 }
 
@@ -869,7 +869,7 @@ function js_redirect(url, timer = 0) {
 function load_card_clickers() {
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .chaintext, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_player, .this_selector';
+    var ignore_clicks = 'a, .btn, textarea, .chainvalue, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
     $(".card_click").click(function (e) {
         if ($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length) {
             js_redirect($(this).attr('href'));
@@ -1081,8 +1081,8 @@ $(document).ready(function () {
                 //Add Idea
                 idea_editor();
             } else if (String.fromCharCode(e.which).toLowerCase() === 's') {
-                //Add Player:
-                player_editor(0, 0);
+                //Add Source:
+                source_editor(0, 0);
             } else if (String.fromCharCode(e.which).toLowerCase() === 'f' && search_enabled()) {
                 //Finder:
                 toggle_finder();
@@ -1114,7 +1114,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#modal31912 .save_playercover').keyup(function () {
+    $('#modal31912 .save_sourcecover').keyup(function () {
         update_cover_main($(this).val(), '.demo_cover');
     });
 
@@ -1122,8 +1122,8 @@ $(document).ready(function () {
     set_autosize($('.texttype_lg'));
 
     $('.trigger_modal').click(function (e) {
-        var chainplayertype = parseInt($(this).attr('chainplayertype'));
-        $('#modal' + chainplayertype).modal('show');
+        var chainsourcetype = parseInt($(this).attr('chainsourcetype'));
+        $('#modal' + chainsourcetype).modal('show');
     });
 
 
@@ -1162,7 +1162,7 @@ $(document).ready(function () {
                 match: /(^|\s)#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_players___6404[31112]['m__message'],
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1196,7 +1196,7 @@ $(document).ready(function () {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_players___6404[31112]['m__message'],
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1222,7 +1222,7 @@ $(document).ready(function () {
                 match: /(^|\s)\/(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_players___6404[31112]['m__message'],
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
                         filters: 's__type=12274 AND _tags:z_6287 ' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1248,7 +1248,7 @@ $(document).ready(function () {
                 match: /(^|\s):@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_players___6404[31112]['m__message'],
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1326,7 +1326,7 @@ $(document).ready(function () {
 
                         //For Members:
                         if (!js_session_superpowers_unlocked.includes(12701)) {
-                            //Can view limited Players:
+                            //Can view limited Sources:
                             if (search_filters.length > 0) {
                                 search_filters += ' AND ';
                             }
@@ -1345,7 +1345,7 @@ $(document).ready(function () {
 
                     //Append filters:
                     index_algolia.search(q, {
-                        hitsPerPage: js_players___6404[31113]['m__message'],
+                        hitsPerPage: js_sources___6404[31113]['m__message'],
                         filters: search_filters,
                     }, function (error, content) {
                         if (error) {
@@ -1412,12 +1412,12 @@ function update_cover_mini(cover_code, target_css) {
 }
 
 
-function idea_direction_switch(chainplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0) {
+function idea_direction_switch(chainsourcetype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0) {
 
-    console.log('SWITCHING TO ' + chainplayertype + '/' + next_ideaid + '/' + previous_ideaid + '/' + do_checks + '/' + $('#modal31911 .save_ideatext').val() + '/' + parseInt($('#modal31911 .created_ideaid').val()));
+    console.log('SWITCHING TO ' + chainsourcetype + '/' + next_ideaid + '/' + previous_ideaid + '/' + do_checks + '/' + $('#modal31911 .save_ideatext').val() + '/' + parseInt($('#modal31911 .created_ideaid').val()));
 
     /*
-    if(!next_ideaid && !previous_ideaid && !chainplayertype && !do_checks){
+    if(!next_ideaid && !previous_ideaid && !chainsourcetype && !do_checks){
         var r = confirm("Are you sure you want to unchain this idea?");
         if (!(r==true)) {
             return false;
@@ -1426,22 +1426,22 @@ function idea_direction_switch(chainplayertype = 0, next_ideaid = 0, previous_id
     */
 
     //Will switch the nature/direction of the chain:
-    return idea_editor(0, 0, chainplayertype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
+    return idea_editor(0, 0, chainsourcetype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
 }
 
 function display_media(mediaframe_id, uploader_id, ideaid) {
     console.log('display_media: ' + mediaframe_id + '/' + uploader_id + '/' + ideaid);
     $(".ui_ideacache_" + ideaid + " .media_display").each(function () {
-        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""></div>');
-        cloudinary_preplayer_view(uploader_id, $(this).attr('id'), $(this).attr('media_playerid'), $(this).attr('playback_code'), $(this).attr('playercover'), $(this).attr('playertext'), $(this).attr('playerid'));
+        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""></div>');
+        cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_sourceid'), $(this).attr('playback_code'), $(this).attr('sourcecover'), $(this).attr('sourcetext'), $(this).attr('sourceid'));
     });
     sort_media(mediaframe_id);
 }
 
-function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0) {
+function idea_editor(ideaid = 0, chainid = 0, chainsourcetype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0) {
 
 
-    $(".chain_idea_unchain, .idea_chainplayertype").addClass('hidden');
+    $(".chain_idea_unchain, .idea_chainsourcetype").addClass('hidden');
     var focus_idea_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
     $("#modal31911 .save_results").html('');
 
@@ -1459,23 +1459,23 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
 
         //Are we adding an idea for a target action tab?
         console.log('i Modal loaded for ' + focus_group);
-        if (focus_idea_id && do_checks && focus_group > 0 && !next_ideaid && !previous_ideaid && !ideaid && !chainid && !chainplayertype) {
-            if (js_playerids___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)) {
+        if (focus_idea_id && do_checks && focus_group > 0 && !next_ideaid && !previous_ideaid && !ideaid && !chainid && !chainsourcetype) {
+            if (js_sourceids___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)) {
                 //Next idea group:
                 next_ideaid = focus_idea_id;
-                chainplayertype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
-            } else if (js_playerids___42380.includes(focus_group)) {
+                chainsourcetype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+            } else if (js_sourceids___42380.includes(focus_group)) {
                 //Previous idea group:
                 previous_ideaid = focus_idea_id;
-                chainplayertype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                chainsourcetype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             }
         }
 
 
-        if (!chainplayertype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id) {
+        if (!chainsourcetype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id) {
             console.log('MATCH');
             next_ideaid = focus_idea_id;
-            chainplayertype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
+            chainsourcetype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
         }
     }
 
@@ -1484,8 +1484,8 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    var is_next = next_ideaid && js_playerids___4486.includes(chainplayertype) && $('.ui_ideacache_' + next_ideaid).length;
-    var is_prev = previous_ideaid && js_playerids___4486.includes(chainplayertype) && $('.ui_ideacache_' + previous_ideaid).length;
+    var is_next = next_ideaid && js_sourceids___4486.includes(chainsourcetype) && $('.ui_ideacache_' + next_ideaid).length;
+    var is_prev = previous_ideaid && js_sourceids___4486.includes(chainsourcetype) && $('.ui_ideacache_' + previous_ideaid).length;
 
     if (is_next || is_prev) {
 
@@ -1518,9 +1518,9 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
 
         }
 
-        $('.chain_idea_unchain, .idea_chainplayertype').removeClass('hidden');
+        $('.chain_idea_unchain, .idea_chainsourcetype').removeClass('hidden');
         if (!passon_ideaid) {
-            update_form_select(4486, chainplayertype, 1, false);
+            update_form_select(4486, chainsourcetype, 1, false);
         }
     }
 
@@ -1579,8 +1579,8 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
         $('#modal31911 .save_chainid').val(chainid);
 
         //Idea<>Ideas chains do not have an interaction message
-        if (parseInt($('#focus__node').val()) != 12273 || ($('.ui_chaintext_' + chainid + ':first') && $('.ui_chaintext_' + chainid + ':first').text().length > 0)) {
-            $('#modal31911 .save_chaintext').val($('.ui_chaintext_' + chainid + ':first').text());
+        if (parseInt($('#focus__node').val()) != 12273 || ($('.ui_chainvalue_' + chainid + ':first') && $('.ui_chainvalue_' + chainid + ':first').text().length > 0)) {
+            $('#modal31911 .save_chainvalue').val($('.ui_chainvalue_' + chainid + ':first').text());
             $('#modal31911 .save_frame').removeClass('hidden');
         }
     }
@@ -1588,7 +1588,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
 
     if (!passon_ideaid) {
 
-        //Player Reference:
+        //Source Reference:
         update_form_select(4737, current_ideatype, 1, false);
 
         $('#modal31911').modal('show');
@@ -1596,7 +1596,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainplayertype = 0, next_ideaid =
         setTimeout(function () {
             //Adjust sizes:
             set_autosize($('#modal31911 .save_ideatext'));
-            set_autosize($('#modal31911 .save_chaintext'));
+            set_autosize($('#modal31911 .save_chainvalue'));
         }, 233);
 
         var created_ideaid = load_idea_dynamic(ideaid, chainid, current_ideatype, true);
@@ -1649,7 +1649,7 @@ function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
             var current_header = null;
 
             //Dynamic Input Fields:
-            for (let i = 1; i <= js_players___6404[42206]['m__message']; i++) {
+            for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
 
                 var index_i = i - 1;
 
@@ -1675,7 +1675,7 @@ function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
                 }
 
 
-                var is_locked = js_playerids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_sourceids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if (is_locked && !data.return_inputs[index_i]["d__value"].length) {
                     //Hide since its locked without a value:
                     $("#modal31911 .dynamic_" + i + " .inner_dynamic").addClass('hidden');
@@ -1697,7 +1697,7 @@ function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
 
                     if (chainid && parseInt($('#focus__node').val()) == 12274 && data.return_inputs[index_i]["d__id"] == parseInt($('#focus__id').val())) {
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        //$("#modal31911 .save_chaintext").val('IGNORE_INPUT');
+                        //$("#modal31911 .save_chainvalue").val('IGNORE_INPUT');
                         //$("#modal31911 .save_frame").addClass('hidden');
                     }
                 }
@@ -1753,9 +1753,9 @@ function idea_update() {
         save_chainid: $('#modal31911 .save_chainid').val(),
         next_ideaid: $('#modal31911 .next_ideaid').val(),
         previous_ideaid: $('#modal31911 .previous_ideaid').val(),
-        save_chainplayertype: $('.dropd_form_4486').attr('selected_value').trim(), //The final chain type as selected by user if they have the superpower
+        save_chainsourcetype: $('.dropd_form_4486').attr('selected_value').trim(), //The final chain type as selected by user if they have the superpower
         focus_group: focus_group,
-        save_chaintext: $('#modal31911 .save_chaintext').val().trim(),
+        save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
         save_ideatext: $('#modal31911 .save_ideatext').val().trim(),
         save_ideahashtag: $('#modal31911 .save_ideahashtag').val().trim(),
         save_ideatype: $('.dropd_form_4737').attr('selected_value').trim(),
@@ -1764,7 +1764,7 @@ function idea_update() {
     };
 
     //Append Dynamic Data:
-    for (let i = 1; i <= js_players___6404[42206]['m__message']; i++) {
+    for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
         if ($('#modal31911 .dynamic_' + i).attr('d__id').length) {
             modify_data['save_dynamic_' + i] = $('#modal31911 .dynamic_' + i).attr('d_chainid').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_' + i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_' + i).val().trim();
         } else {
@@ -1800,7 +1800,7 @@ function idea_update() {
             var new_handle = modify_data['save_ideahashtag'];
             var on_focus__idea = parseInt($('#focus__node').val()) == 12273 && modify_data['save_ideaid'] == parseInt($('#focus__id').val());
 
-            //Update Player Reference:
+            //Update Source Reference:
             $('.s__12273_' + modify_data['save_ideaid']).attr('ideatype', modify_data['save_ideatype']);
             ui_instant_select(4737, modify_data['save_ideatype'], modify_data['save_ideaid'], modify_data['save_chainid'], false);
 
@@ -1808,7 +1808,7 @@ function idea_update() {
             if (old_handle != new_handle) {
                 if (on_focus__idea) {
                     //Refresh page since focus item handle changed:
-                    js_redirect(js_players___42903[33286]['m__message'] + new_handle);
+                    js_redirect(js_sources___42903[33286]['m__message'] + new_handle);
                 } else {
                     //Update Hashtag & Chain:
                     $('.s__12273_' + modify_data['save_ideaid']).attr('ideahashtag', new_handle);
@@ -1827,7 +1827,7 @@ function idea_update() {
             console.log('START INSERTING');
             if (!current_ideaid && created_ideaid > 0 && focus_group > 0) {
 
-                console.log('ADD NEW ' + modify_data['save_chainplayertype'] + ' & x GROUP: ' + focus_group);
+                console.log('ADD NEW ' + modify_data['save_chainsourcetype'] + ' & x GROUP: ' + focus_group);
 
                 $("#list-in-" + focus_group).append(data.return_ideacache_full);
 
@@ -1839,7 +1839,7 @@ function idea_update() {
 
             } else {
 
-                console.log('UPDATE  ' + modify_data['save_chainplayertype'] + ' & x GROUP: ' + focus_group);
+                console.log('UPDATE  ' + modify_data['save_chainsourcetype'] + ' & x GROUP: ' + focus_group);
 
                 //Update Cache otherwise:
                 $('.ui_ideacache_' + modify_data['save_ideaid']).html(data.return_ideacache_chains);
@@ -1851,8 +1851,8 @@ function idea_update() {
                 show_more(modify_data['save_ideaid']);
             }
 
-            if (modify_data['save_chainid'] && modify_data['save_chaintext'] != 'IGNORE_INPUT') {
-                $('.ui_chaintext_' + modify_data['save_chainid']).text(modify_data['save_chaintext']);
+            if (modify_data['save_chainid'] && modify_data['save_chainvalue'] != 'IGNORE_INPUT') {
+                $('.ui_chainvalue_' + modify_data['save_chainid']).text(modify_data['save_chainvalue']);
             }
 
             //Tooltips:
@@ -1882,19 +1882,19 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
     console.log('Initiating Uploader @' + uploader_id + ' with tags ' + uploader_tags.join(' & '));
 
-    if (js_players___42363[uploader_id] == undefined) {
+    if (js_sources___42363[uploader_id] == undefined) {
         console.log('Unknown Uploader @' + uploader_id + ' Missing in @42363');
         return false;
     }
 
     media_cache[uploader_id] = [];
     //Fetch global defaults:
-    var default_max_file_count = parseFloat(js_players___6404[42382]['m__message']);
+    var default_max_file_count = parseFloat(js_sources___6404[42382]['m__message']);
 
     var global_tags = ['@' + uploader_id, '@' + website_id, '@' + js_pl_id];
-    var allow_videos = js_players___42390[uploader_id] !== undefined;
-    var allow_imgaes = js_players___42389[uploader_id] !== undefined;
-    var allow_audio = js_players___42644[uploader_id] !== undefined;
+    var allow_videos = js_sources___42390[uploader_id] !== undefined;
+    var allow_imgaes = js_sources___42389[uploader_id] !== undefined;
+    var allow_audio = js_sources___42644[uploader_id] !== undefined;
 
     if (!allow_videos && !allow_imgaes && !allow_audio) {
         //Assume all are allowed:
@@ -1904,21 +1904,21 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
     }
 
     //Initiate CLoudiary for cover:
-    var max_file_count = (js_players___42382[uploader_id] !== undefined && parseFloat(js_players___42382[uploader_id]['m__message']) > 0 && parseFloat(js_players___42382[uploader_id]['m__message']) < default_max_file_count ? parseFloat(js_players___42382[uploader_id]['m__message']) : default_max_file_count);
+    var max_file_count = (js_sources___42382[uploader_id] !== undefined && parseFloat(js_sources___42382[uploader_id]['m__message']) > 0 && parseFloat(js_sources___42382[uploader_id]['m__message']) < default_max_file_count ? parseFloat(js_sources___42382[uploader_id]['m__message']) : default_max_file_count);
 
-    var enable_crop = (js_players___42386[uploader_id] !== undefined);
-    var force_crop = (js_players___42387[uploader_id] !== undefined);
+    var enable_crop = (js_sources___42386[uploader_id] !== undefined);
+    var force_crop = (js_sources___42387[uploader_id] !== undefined);
 
 
     var clientAllowedFormats = [];
     if (allow_videos) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_players___42641[4258]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_sources___42641[4258]['m__message'].split(' '));
     }
     if (allow_imgaes) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_players___42641[4260]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_sources___42641[4260]['m__message'].split(' '));
     }
     if (allow_audio) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_players___42641[4259]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_sources___42641[4259]['m__message'].split(' '));
     }
 
     var widget_setting = {
@@ -1935,15 +1935,15 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         cropping: enable_crop,
         showSkipCropButton: !force_crop,
         croppingShowBackButton: !force_crop,
-        croppingAspectRatio: (js_players___42388[uploader_id] !== undefined && parseFloat(js_players___42388[uploader_id]['m__message']) > 0 ? parseFloat(js_players___42388[uploader_id]['m__message']) : null),
+        croppingAspectRatio: (js_sources___42388[uploader_id] !== undefined && parseFloat(js_sources___42388[uploader_id]['m__message']) > 0 ? parseFloat(js_sources___42388[uploader_id]['m__message']) : null),
 
-        minImageWidth: (js_players___42407[uploader_id] !== undefined && parseInt(js_players___42407[uploader_id]['m__message']) > 0 ? parseInt(js_players___42407[uploader_id]['m__message']) : null),
-        maxImageWidth: (js_players___42408[uploader_id] !== undefined && parseInt(js_players___42408[uploader_id]['m__message']) > 0 ? parseInt(js_players___42408[uploader_id]['m__message']) : null),
-        minImageHeight: (js_players___42409[uploader_id] !== undefined && parseInt(js_players___42409[uploader_id]['m__message']) > 0 ? parseInt(js_players___42409[uploader_id]['m__message']) : null),
-        maxImageHeight: (js_players___42410[uploader_id] !== undefined && parseInt(js_players___42410[uploader_id]['m__message']) > 0 ? parseInt(js_players___42410[uploader_id]['m__message']) : null),
+        minImageWidth: (js_sources___42407[uploader_id] !== undefined && parseInt(js_sources___42407[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42407[uploader_id]['m__message']) : null),
+        maxImageWidth: (js_sources___42408[uploader_id] !== undefined && parseInt(js_sources___42408[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42408[uploader_id]['m__message']) : null),
+        minImageHeight: (js_sources___42409[uploader_id] !== undefined && parseInt(js_sources___42409[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42409[uploader_id]['m__message']) : null),
+        maxImageHeight: (js_sources___42410[uploader_id] !== undefined && parseInt(js_sources___42410[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42410[uploader_id]['m__message']) : null),
 
-        validateMaxWidthHeight: (js_players___42411[uploader_id] !== undefined),
-        croppingValidateDimensions: (js_players___42412[uploader_id] !== undefined),
+        validateMaxWidthHeight: (js_sources___42411[uploader_id] !== undefined),
+        croppingValidateDimensions: (js_sources___42412[uploader_id] !== undefined),
 
         inlineContainer: loading_inline_container,
 
@@ -2019,19 +2019,19 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Append loaders:
             if (uploader_id == 42359) {
 
-                //Player Cover Uploader:
-                updatplayercover('fas fa-yin-yang fa-spin');
+                //Source Cover Uploader:
+                updatsourcecover('fas fa-yin-yang fa-spin');
 
             } else if (uploader_id == 13572) {
 
                 //Ideator Uploader
                 has_unsaved_changes = true;
-                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             } else if (uploader_id == 43004) {
 
                 //Discovery Uploader
-                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_playerid="" playback_code="" playerid="0"  playercover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
@@ -2043,34 +2043,34 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Add uploaded media:
             if (uploader_id == 42359) {
 
-                //Player Cover Uploader:
-                updatplayercover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+                //Source Cover Uploader:
+                updatsourcecover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
 
             } else if (uploader_id == 13572 || uploader_id == 43004) {
 
                 //Idea Uploader
                 var playback_code = '';
-                var media_playerid = 0;
+                var media_sourceid = 0;
                 if (result.info.format && result.info.format.length > 0) {
-                    if (js_players___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
+                    if (js_sources___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
                         //Audio
-                        media_playerid = 4259;
+                        media_sourceid = 4259;
                         playback_code = result.info.secure_url;
-                    } else if (js_players___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'image') {
+                    } else if (js_sources___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'image') {
                         //Image
-                        media_playerid = 4260;
+                        media_sourceid = 4260;
                         playback_code = (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'w_1597,h_1597,c_fit') : result.info.secure_url);
-                    } else if (js_players___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'video') {
+                    } else if (js_sources___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'video') {
                         //Video
-                        media_playerid = 4258;
+                        media_sourceid = 4258;
                         playback_code = result.info.public_id;
                     }
                 }
 
-                //Append this to the main Player:
-                if (media_playerid) {
+                //Append this to the main Source:
+                if (media_sourceid) {
 
-                    cloudinary_preplayer_view(uploader_id, result.info.id, media_playerid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), (result.info.original_filename ? js_players___42294[media_playerid]['m__title'] + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : js_players___42294[media_playerid]['m__title'] + ' File'));
+                    cloudinary_presource_view(uploader_id, result.info.id, media_sourceid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), (result.info.original_filename ? js_sources___42294[media_sourceid]['m__title'] + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : js_sources___42294[media_sourceid]['m__title'] + ' File'));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log(media_cache);
@@ -2132,36 +2132,36 @@ function delete_media(uploader_id, info_id, skip_check = false) {
 }
 
 function play_video(public_id) {
-    var cld = cloudinary.videoPlayer('video_player_' + public_id, {cloudName: 'menchcloud'});
+    var cld = cloudinary.videoSource('video_source_' + public_id, {cloudName: 'menchcloud'});
     cld.source(public_id);
 }
 
-function cloudinary_preplayer_view(uploader_id, info_id, media_playerid, playback_code, playercover, playertext, playerid = 0) {
+function cloudinary_presource_view(uploader_id, info_id, media_sourceid, playback_code, sourcecover, sourcetext, sourceid = 0) {
 
     //Update meta variables:
-    $('#' + info_id).attr('media_playerid', media_playerid).attr('playback_code', playback_code).attr('playerid', playerid).attr('playercover', playercover);
+    $('#' + info_id).attr('media_sourceid', media_sourceid).attr('playback_code', playback_code).attr('sourceid', sourceid).attr('sourcecover', sourcecover);
 
-    if (media_playerid == 4258) {
+    if (media_sourceid == 4258) {
 
         //Video
-        $('#' + info_id).html('<input type="text" value="' + playertext + '" placeholder="Player Title" class="hidden_superpower__10939" /><span title="' + js_players___42294[media_playerid]['m__title'] + '">' + js_players___42294[media_playerid]['m__cover'] + '</span><img src="' + playercover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
-        //<video id="video_player_'+playback_code+'" controls class="cld-video-player vjs-fade-out cld-fluid cld-video-player-skin-light" poster="'+playercover+'"></video>
+        $('#' + info_id).html('<input type="text" value="' + sourcetext + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        //<video id="video_source_'+playback_code+'" controls class="cld-video-source vjs-fade-out cld-fluid cld-video-source-skin-light" poster="'+sourcecover+'"></video>
         //play_video(playback_code);
 
-    } else if (media_playerid == 4260) {
+    } else if (media_sourceid == 4260) {
 
         //Image
-        $('#' + info_id).html('<input type="text" value="' + playertext + '" placeholder="Player Title" class="hidden_superpower__10939" /><img src="' + playercover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcetext + '" placeholder="Source Title" class="hidden_superpower__10939" /><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
 
-    } else if (media_playerid == 4259) {
+    } else if (media_sourceid == 4259) {
 
         //Audio
-        $('#' + info_id).html('<input type="text" value="' + playertext + '" placeholder="Player Title" class="hidden_superpower__10939" /><span title="' + js_players___42294[media_playerid]['m__title'] + '">' + js_players___42294[media_playerid]['m__cover'] + '</span><audio controls src="' + playback_code + '"></audio><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcetext + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><audio controls src="' + playback_code + '"></audio><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
-        alert('Upload Error: Uploaded File ' + playertext + ' is not a valid Video, Image or Audio file.');
+        alert('Upload Error: Uploaded File ' + sourcetext + ' is not a valid Video, Image or Audio file.');
         delete_media(uploader_id, info_id, true);
 
     }
@@ -2170,7 +2170,7 @@ function cloudinary_preplayer_view(uploader_id, info_id, media_playerid, playbac
 }
 
 
-function player_editor(playerid = 0, chainid = 0, bar_title = null, chaintext = null) {
+function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue = null) {
 
     $('#modal31912').modal('show');
 
@@ -2184,53 +2184,53 @@ function player_editor(playerid = 0, chainid = 0, bar_title = null, chaintext = 
     $("#modal31912 .dynamic_item").attr('d__id', '').attr('d_chainid', '');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
-    //Player resets:
+    //Source resets:
     $('#search_cover').val('');
     $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
-    var current_title = player_title(playerid);
-    var current_cover = $('.ui_playercover_' + playerid + ':first').attr('raw_cover');
+    var current_title = source_title(sourceid);
+    var current_cover = $('.ui_sourcecover_' + sourceid + ':first').attr('raw_cover');
 
-    $('#modal31912 .save_playerid').val(playerid);
+    $('#modal31912 .save_sourceid').val(sourceid);
     $('#modal31912 .save_chainid').val(chainid);
-    $('#modal31912 .save_playerhandle').val($('.ui_playerhandle_' + playerid + ':first').text());
-    $('#modal31912 .save_playertext').val(current_title);
+    $('#modal31912 .save_sourcehandle').val($('.ui_sourcehandle_' + sourceid + ':first').text());
+    $('#modal31912 .save_sourcetext').val(current_title);
 
 
     $('#modal31912 .random_animal').html('<i class="' + random_animal(true) + '"></i>');
-    updatplayercover(current_cover, false);
+    updatsourcecover(current_cover, false);
 
 
     if (chainid) {
-        $('#modal31912 .save_chaintext').val($('.ui_chaintext_' + chainid).text());
+        $('#modal31912 .save_chainvalue').val($('.ui_chainvalue_' + chainid).text());
         $('#modal31912 .save_frame').removeClass('hidden');
         setTimeout(function () {
-            set_autosize($('#modal31912 .save_chaintext'));
+            set_autosize($('#modal31912 .save_chainvalue'));
         }, 377);
     }
     setTimeout(function () {
-        set_autosize($('#modal31912 .save_playertext'));
+        set_autosize($('#modal31912 .save_sourcetext'));
     }, 377);
 
 
-    $.post("/controller/player_editor", {
-        playerid: playerid,
+    $.post("/controller/source_editor", {
+        sourceid: sourceid,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
         if (data.status) {
 
-            //Initiate Player Cover Uploader:
-            load_cloudinary(42359, playerid, ['@' + playerid], '.uploader_42359', '#modal31912');
+            //Initiate Source Cover Uploader:
+            load_cloudinary(42359, sourceid, ['@' + sourceid], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
             var index_idea_content = 0;
             var current_header = null;
 
-            for (let i = 1; i <= js_players___6404[42206]['m__message']; i++) {
+            for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
 
                 var index_i = i - 1;
                 if (data.return_inputs[index_i] == undefined) {
@@ -2258,7 +2258,7 @@ function player_editor(playerid = 0, chainid = 0, bar_title = null, chaintext = 
                 $("#modal31912 .dynamic_" + i + " .radio_frame").remove();
                 $("#modal31912 .dynamic_" + i).attr('d__id', data.return_inputs[index_i]["d__id"]).attr('d_chainid', data.return_inputs[index_i]["d_chainid"]);
 
-                var is_locked = js_playerids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_sourceids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if (is_locked && !data.return_inputs[index_i]["d__value"].length) {
                     //Hide since its locked without a value:
                     $("#modal31912 .dynamic_" + i + " .inner_dynamic").addClass('hidden');
@@ -2275,9 +2275,9 @@ function player_editor(playerid = 0, chainid = 0, bar_title = null, chaintext = 
                     $("#modal31912 .dynamic_" + i + " h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_" + i + " input").attr('placeholder', data.return_inputs[index_i]["d__placeholder"]).attr('type', data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if (chainid && ((parseInt($('#focus__node').val()) == 12274 && data.return_inputs[index_i]["d__id"] == parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"] == playerid)) {
+                    if (chainid && ((parseInt($('#focus__node').val()) == 12274 && data.return_inputs[index_i]["d__id"] == parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"] == sourceid)) {
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        //$("#modal31912 .save_chaintext").val('IGNORE_INPUT');
+                        //$("#modal31912 .save_chainvalue").val('IGNORE_INPUT');
                         //$("#modal31912 .save_frame").addClass('hidden');
                     }
                 }
@@ -2285,7 +2285,7 @@ function player_editor(playerid = 0, chainid = 0, bar_title = null, chaintext = 
 
             //Add a second save button at the bottom if we have too much data:
             if (index_idea_content > 5) {
-                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default player_save_edit post_button" onclick="player_save_edit()">SAVE</button>');
+                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default source_save_edit post_button" onclick="source_save_edit()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
             }
@@ -2312,28 +2312,28 @@ function player_editor(playerid = 0, chainid = 0, bar_title = null, chaintext = 
 
 e_saving = false;
 
-function player_save_edit() {
+function source_save_edit() {
 
     if (e_saving) {
         return false;
     }
 
     e_saving = true;
-    $(".player_save_edit").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".source_save_edit").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
-        save_playerid: $('#modal31912 .save_playerid').val(),
-        save_playertext: $('#modal31912 .save_playertext').val().trim(),
-        save_playercover: $('#modal31912 .save_playercover').val().trim(),
-        save_playerhandle: $('#modal31912 .save_playerhandle').val().trim(),
+        save_sourceid: $('#modal31912 .save_sourceid').val(),
+        save_sourcetext: $('#modal31912 .save_sourcetext').val().trim(),
+        save_sourcecover: $('#modal31912 .save_sourcecover').val().trim(),
+        save_sourcehandle: $('#modal31912 .save_sourcehandle').val().trim(),
         save_chainid: $('#modal31912 .save_chainid').val(),
-        save_chaintext: $('#modal31912 .save_chaintext').val().trim(),
+        save_chainvalue: $('#modal31912 .save_chainvalue').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
-    for (let i = 1; i <= js_players___6404[42206]['m__message']; i++) {
+    for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
         if ($('#modal31912 .dynamic_' + i).attr('d__id').length) {
             modify_data['save_dynamic_' + i] = $('#modal31912 .dynamic_' + i).attr('d_chainid').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_' + i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_' + i).val().trim();
         } else {
@@ -2342,10 +2342,10 @@ function player_save_edit() {
         }
     }
 
-    $.post("/controller/player_save_edit", modify_data, function (data) {
+    $.post("/controller/source_save_edit", modify_data, function (data) {
 
         e_saving = false;
-        $(".player_save_edit").html('SAVE');
+        $(".source_save_edit").html('SAVE');
 
         if (!data.status) {
 
@@ -2355,31 +2355,31 @@ function player_save_edit() {
         } else {
 
             //Update Handle & Href chains if needed:
-            var old_handle = $(".ui_playerhandle_" + modify_data['save_playerid'] + ':first').text();
-            var new_handle = modify_data['save_playerhandle'];
+            var old_handle = $(".ui_sourcehandle_" + modify_data['save_sourceid'] + ':first').text();
+            var new_handle = modify_data['save_sourcehandle'];
             if (old_handle != new_handle) {
-                if (parseInt($('#focus__node').val()) == 12274 && modify_data['save_playerid'] == parseInt($('#focus__id').val())) {
+                if (parseInt($('#focus__node').val()) == 12274 && modify_data['save_sourceid'] == parseInt($('#focus__id').val())) {
                     //Refresh page since focus item handle changed:
-                    return js_redirect(js_players___42903[42902]['m__message'] + new_handle);
+                    return js_redirect(js_sources___42903[42902]['m__message'] + new_handle);
                 } else {
                     //Make adjustments to current page:
-                    $('.s__12274_' + modify_data['save_playerid']).attr('playerhandle', new_handle);
-                    $('.ui_playerhandle_' + modify_data['save_playerid']).text(new_handle);
-                    $(".handle_hrefplayer_" + modify_data['save_playerid']).attr('href', $(".handle_hrefplayer_" + modify_data['save_playerid'] + ':first').attr('href').replaceAll(old_handle, new_handle));
+                    $('.s__12274_' + modify_data['save_sourceid']).attr('sourcehandle', new_handle);
+                    $('.ui_sourcehandle_' + modify_data['save_sourceid']).text(new_handle);
+                    $(".handle_hrefsource_" + modify_data['save_sourceid']).attr('href', $(".handle_hrefsource_" + modify_data['save_sourceid'] + ':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
 
             //Update Title:
-            update_text_name(6197, modify_data['save_playerid'], modify_data['save_playertext']);
+            update_text_name(6197, modify_data['save_sourceid'], modify_data['save_sourcetext']);
 
             //Update Raw Cover:
-            $('.ui_playercover_' + modify_data['save_playerid'] + ':first').attr('raw_cover', modify_data['save_playercover']);
+            $('.ui_sourcecover_' + modify_data['save_sourceid'] + ':first').attr('raw_cover', modify_data['save_sourcecover']);
 
             //Update Main Cover:
-            update_cover_main(modify_data['save_playercover'], '.s__12274_' + modify_data['save_playerid']);
+            update_cover_main(modify_data['save_sourcecover'], '.s__12274_' + modify_data['save_sourceid']);
 
-            if (modify_data['save_chainid'] && modify_data['save_chaintext'] != 'IGNORE_INPUT') {
-                $('.ui_chaintext_' + modify_data['save_chainid']).text(modify_data['save_chaintext']);
+            if (modify_data['save_chainid'] && modify_data['save_chainvalue'] != 'IGNORE_INPUT') {
+                $('.ui_chainvalue_' + modify_data['save_chainid']).text(modify_data['save_chainvalue']);
             }
 
             //Tooltips:
@@ -2392,9 +2392,9 @@ function player_save_edit() {
             $('#modal31912').modal('hide');
 
             //Do we need to refresh the page?
-            if (parseInt($('#focus__node').val()) == 12274 && parseInt($('#focus__id').val()) == modify_data['save_playerid']) {
-                //Refresh page since Player edited their own profile:
-                js_redirect(js_players___42903[42902]['m__message'] + $('#focus_handle').val());
+            if (parseInt($('#focus__node').val()) == 12274 && parseInt($('#focus__id').val()) == modify_data['save_sourceid']) {
+                //Refresh page since Source edited their own profile:
+                js_redirect(js_sources___42903[42902]['m__message'] + $('#focus_handle').val());
             }
 
         }
@@ -2418,7 +2418,7 @@ function chain_page_load() {
     }
 
     var current_total_count = parseInt($('.headline_body_' + focus_group).attr('read-counter')); //Total of that item
-    var has_more_to_load = (current_total_count > parseInt(js_players___6404[11064]['m__message']) * current_page[focus_group]);
+    var has_more_to_load = (current_total_count > parseInt(js_sources___6404[11064]['m__message']) * current_page[focus_group]);
 
     if (!has_more_to_load) {
         return false;
@@ -2433,7 +2433,7 @@ function chain_page_load() {
     $.post("/controller/chain_page_load", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        chainplayertype: focus_group,
+        chainsourcetype: focus_group,
         current_page: current_page[focus_group],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -2467,46 +2467,46 @@ function toggle_max_view(css_class) {
 }
 
 
-//Adds OR chains Players to Players
-var player_is_adding = false;
+//Adds OR chains Sources to Sources
+var source_is_adding = false;
 
-function player_create(chainplayertype, player_current_id) {
+function source_create(chainsourcetype, source_current_id) {
 
-    if (player_is_adding) {
+    if (source_is_adding) {
         return false;
     }
 
-    //if player_current_id>0 it means we're adding an existing Player, in which case player_new_string should be null
-    //If player_current_id=0 it means we are creating a new Player and then adding it, in which case player_new_string is required
-    player_is_adding = true;
+    //if source_current_id>0 it means we're adding an existing Source, in which case source_new_string should be null
+    //If source_current_id=0 it means we are creating a new Source and then adding it, in which case source_new_string is required
+    source_is_adding = true;
 
-    var input = $('.new-list-' + chainplayertype + ' .add-input');
+    var input = $('.new-list-' + chainsourcetype + ' .add-input');
 
-    var original_photo = $('.mini-cover.card-12274.card-id-' + player_current_id + ' .cover-btn').html();
-    $('.mini-cover.card-12274.card-id-' + player_current_id + ' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    var player_new_string = null;
-    if (player_current_id == 0) {
-        player_new_string = input.val();
-        if (player_new_string.length < 1) {
-            alert('Missing Player name or URL, try again');
+    var original_photo = $('.mini-cover.card-12274.card-id-' + source_current_id + ' .cover-btn').html();
+    $('.mini-cover.card-12274.card-id-' + source_current_id + ' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    var source_new_string = null;
+    if (source_current_id == 0) {
+        source_new_string = input.val();
+        if (source_new_string.length < 1) {
+            alert('Missing Source name or URL, try again');
             input.focus();
             return false;
         }
     }
 
     //Add via Ajax:
-    $.post("/controller/player_create", {
+    $.post("/controller/source_create", {
 
         focus__node: parseInt($('#focus__node').val()),
-        chainplayertype: chainplayertype,
+        chainsourcetype: chainsourcetype,
         focus__id: parseInt($('#focus__id').val()),
-        player_current_id: player_current_id,
-        player_new_string: player_new_string,
+        source_current_id: source_current_id,
+        source_new_string: source_new_string,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
 
     }, function (data) {
 
-        player_is_adding = false;
+        source_is_adding = false;
 
         if (data.status) {
 
@@ -2514,15 +2514,15 @@ function player_create(chainplayertype, player_current_id) {
             //input.focus();
 
             //Add new object to list:
-            chain_counter(chainplayertype, 1);
+            chain_counter(chainsourcetype, 1);
 
             //See if we previously have a list in place?
-            if ($("#list-in-" + chainplayertype + " .card-12274").length > 0) {
+            if ($("#list-in-" + chainsourcetype + " .card-12274").length > 0) {
                 //Downwards add to start"
-                $("#list-in-" + chainplayertype + " .card-12274:first").before(data.player_new_echo);
+                $("#list-in-" + chainsourcetype + " .card-12274:first").before(data.source_new_echo);
             } else {
                 //Raw list, add before input filed:
-                $("#list-in-" + chainplayertype).prepend(data.player_new_echo);
+                $("#list-in-" + chainsourcetype).prepend(data.source_new_echo);
             }
 
             //Allow inline editing if enabled:
@@ -2530,11 +2530,11 @@ function player_create(chainplayertype, player_current_id) {
 
             setTimeout(function () {
                 setup_popover();
-                player_sort_load(chainplayertype);
+                source_sort_load(chainsourcetype);
             }, 987);
 
             //Hide Coin:
-            $('.mini-cover.card-12274.card-id-' + player_current_id).fadeOut();
+            $('.mini-cover.card-12274.card-id-' + source_current_id).fadeOut();
 
         } else {
             //We had an error:
@@ -2547,7 +2547,7 @@ function player_create(chainplayertype, player_current_id) {
 
 var i_is_adding = false;
 
-function idea_create(chainplayertype, chain_ideaid) {
+function idea_create(chainsourcetype, chain_ideaid) {
 
     alert('not up yet');
     return false;
@@ -2567,7 +2567,7 @@ function idea_create(chainplayertype, chain_ideaid) {
     //Remove results:
     i_is_adding = true;
     var sort_idea_grabr = ".card_cover";
-    var input_field = $('.new-list-' + chainplayertype + ' .add-input');
+    var input_field = $('.new-list-' + chainsourcetype + ' .add-input');
     var idea_createtext = input_field.val();
 
 
@@ -2580,11 +2580,11 @@ function idea_create(chainplayertype, chain_ideaid) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(chainplayertype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-chain"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(chainsourcetype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-chain"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
     $.post("/controller/idea_create", {
-        chainplayertype: chainplayertype,
+        chainsourcetype: chainsourcetype,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         idea_createtext: idea_createtext,
@@ -2599,7 +2599,7 @@ function idea_create(chainplayertype, chain_ideaid) {
         if (data.status) {
 
             //Add new
-            add_to_list(chainplayertype, sort_idea_grabr, data.idea_create_html, 1);
+            add_to_list(chainsourcetype, sort_idea_grabr, data.idea_create_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -2659,24 +2659,24 @@ function x_set_start_text() {
     $('.x_set_class_text').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            player_text_update(this);
+            source_text_update(this);
             e.preventDefault();
         }
     }).change(function () {
-        player_text_update(this);
+        source_text_update(this);
     });
 }
 
-function update_text_name(cache_playerid, playerid, playertext) {
-    var target_element = ".text__" + cache_playerid + "_" + playerid;
-    $(target_element).text(playertext).attr('old-value', playertext); //.val(playertext)
+function update_text_name(cache_sourceid, sourceid, sourcetext) {
+    var target_element = ".text__" + cache_sourceid + "_" + sourceid;
+    $(target_element).text(sourcetext).attr('old-value', sourcetext); //.val(sourcetext)
     set_autosize($(target_element));
 }
 
 
 var setting_text = false;
 
-function player_text_update(this_grabr) {
+function source_text_update(this_grabr) {
 
     if (setting_text) {
         return false;
@@ -2684,8 +2684,8 @@ function player_text_update(this_grabr) {
 
     setting_text = true;
     var modify_data = {
-        playerid: parseInt($(this_grabr).attr('playerid')),
-        cache_playerid: parseInt($(this_grabr).attr('cache_playerid')),
+        sourceid: parseInt($(this_grabr).attr('sourceid')),
+        cache_sourceid: parseInt($(this_grabr).attr('cache_sourceid')),
         idea_createtext: $(this_grabr).val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
@@ -2697,8 +2697,8 @@ function player_text_update(this_grabr) {
     }
 
     //Grey background to indicate saving
-    var target_element = '.text__' + modify_data['cache_playerid'] + '_' + modify_data['s__id'];
-    $.post("/controller/player_text_update", modify_data, function (data) {
+    var target_element = '.text__' + modify_data['cache_sourceid'] + '_' + modify_data['s__id'];
+    $.post("/controller/source_text_update", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -2711,7 +2711,7 @@ function player_text_update(this_grabr) {
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_playerid'], modify_data['s__id'], modify_data['idea_createtext']);
+            update_text_name(modify_data['cache_sourceid'], modify_data['s__id'], modify_data['idea_createtext']);
 
         }
 
@@ -2721,13 +2721,13 @@ function player_text_update(this_grabr) {
 }
 
 
-function chain_counter(chainplayertype, adjustment_count) {
-    $('.xtypecounter' + chainplayertype).text((parseInt($('.headline_body_' + chainplayertype).attr('read-counter')) + adjustment_count));
+function chain_counter(chainsourcetype, adjustment_count) {
+    $('.xtypecounter' + chainsourcetype).text((parseInt($('.headline_body_' + chainsourcetype).attr('read-counter')) + adjustment_count));
 }
 
 
 function search_enabled() {
-    return universal_search_enabled && parseInt(js_players___6404[12678]['m__message']);
+    return universal_search_enabled && parseInt(js_sources___6404[12678]['m__message']);
 }
 
 
@@ -2745,47 +2745,47 @@ function set_autosize(theobject) {
 }
 
 
-function idea_sort_load(chainplayertype) {
+function idea_sort_load(chainsourcetype) {
 
     load_cards();
 
-    console.log('Tring to load Idea Sort for @' + chainplayertype);
-    if (!js_playerids___4603.includes(chainplayertype)) {
-        console.log(chainplayertype + ' is not sortable');
+    console.log('Tring to load Idea Sort for @' + chainsourcetype);
+    if (!js_sourceids___4603.includes(chainsourcetype)) {
+        console.log(chainsourcetype + ' is not sortable');
         return false;
     }
 
     setTimeout(function () {
 
-        var theobject = document.getElementById("list-in-" + chainplayertype);
+        var theobject = document.getElementById("list-in-" + chainsourcetype);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
-            console.log(chainplayertype + ' failed to find sortable object');
+            console.log(chainsourcetype + ' failed to find sortable object');
             return false;
         }
 
         //Make sure beow minimum sorting requirement:
-        if ($("#list-in-" + chainplayertype + " .sort_draggable").length >= parseInt(js_players___6404[11064]['m__message'])) {
-            console.log(chainplayertype + ' has ' + $("#list-in-" + chainplayertype + " .sort_draggable").length + ' items which is more than the page limit of ' + js_players___6404[11064]['m__message']);
+        if ($("#list-in-" + chainsourcetype + " .sort_draggable").length >= parseInt(js_sources___6404[11064]['m__message'])) {
+            console.log(chainsourcetype + ' has ' + $("#list-in-" + chainsourcetype + " .sort_draggable").length + ' items which is more than the page limit of ' + js_sources___6404[11064]['m__message']);
             return false;
-        } else if ($("#list-in-" + chainplayertype + " .sort_draggable").length < 2) {
-            console.log('Less than 2 items to sort ' + chainplayertype);
+        } else if ($("#list-in-" + chainsourcetype + " .sort_draggable").length < 2) {
+            console.log('Less than 2 items to sort ' + chainsourcetype);
             return false;
         } else {
 
-            console.log(chainplayertype + ' sorting load success');
+            console.log(chainsourcetype + ' sorting load success');
             $('.sort_idea_frame').removeClass('hidden');
 
             //Load sorter:
             var sort = Sortable.create(theobject, {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: "#list-in-" + chainplayertype + " .sort_draggable", // Specifies which items inside the element should be sortable
-                handle: "#list-in-" + chainplayertype + " .sort_idea_grab", // Restricts sort start click/touch to the specified element
+                draggable: "#list-in-" + chainsourcetype + " .sort_draggable", // Specifies which items inside the element should be sortable
+                handle: "#list-in-" + chainsourcetype + " .sort_idea_grab", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
 
                     var sort_rank = 0;
                     var new_x_order = [];
-                    $("#list-in-" + chainplayertype + " .sort_draggable").each(function () {
+                    $("#list-in-" + chainsourcetype + " .sort_draggable").each(function () {
                         var chainid = parseInt($(this).attr('chainid'));
                         if (chainid > 0) {
                             sort_rank++;
@@ -2797,7 +2797,7 @@ function idea_sort_load(chainplayertype) {
                     if (sort_rank > 0) {
                         $.post("/controller/idea_sort_load", {
                             new_x_order: new_x_order,
-                            chainplayertype: chainplayertype,
+                            chainsourcetype: chainsourcetype,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
                         }, function (data) {
                             //Update UI to confirm with member:
@@ -2822,15 +2822,15 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function player_select_apply(focus__id, selected_playerid, enable_mulitiselect, down_playerid, right_ideaid) {
+function source_select_apply(focus__id, selected_sourceid, enable_mulitiselect, down_sourceid, right_ideaid) {
 
     //Any warning needed?
-    if (js_playerids___31780.includes(selected_playerid) && !confirm(js_players___31780[selected_playerid]['m__message'])) {
+    if (js_sourceids___31780.includes(selected_sourceid) && !confirm(js_sources___31780[selected_sourceid]['m__message'])) {
         return false;
     }
 
-    var field_required = js_playerids___28239.includes(focus__id);
-    var was_previously_selected = ($('.radio-' + focus__id + ' .item-' + selected_playerid).hasClass('active') ? 1 : 0);
+    var field_required = js_sourceids___28239.includes(focus__id);
+    var was_previously_selected = ($('.radio-' + focus__id + ' .item-' + selected_sourceid).hasClass('active') ? 1 : 0);
 
     //Save the rest of the content:
     if (!enable_mulitiselect && field_required && was_previously_selected) {
@@ -2839,15 +2839,15 @@ function player_select_apply(focus__id, selected_playerid, enable_mulitiselect, 
     }
 
     //Updating Customizable Theme?
-    if (js_playerids___13890.includes(focus__id)) {
+    if (js_sourceids___13890.includes(focus__id)) {
         current_focus = focus__id;
         $('body').removeClass('custom_ui_' + focus__id + '_');
-        window['js_playerids___' + focus__id].forEach(remove_ui_class); //Removes all Classes
-        $('body').addClass('custom_ui_' + focus__id + '_' + selected_playerid);
+        window['js_sourceids___' + focus__id].forEach(remove_ui_class); //Removes all Classes
+        $('body').addClass('custom_ui_' + focus__id + '_' + selected_sourceid);
     }
 
     //Show spinner on the notification element:
-    var notify_el = '.radio-' + focus__id + ' .item-' + selected_playerid + ' .change-results';
+    var notify_el = '.radio-' + focus__id + ' .item-' + selected_sourceid + ' .change-results';
     var initial_icon = $(notify_el).html();
     $(notify_el).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
@@ -2860,18 +2860,18 @@ function player_select_apply(focus__id, selected_playerid, enable_mulitiselect, 
 
     //Enable currently selected:
     if ((enable_mulitiselect || !field_required) && was_previously_selected) {
-        $('.radio-' + focus__id + ' .item-' + selected_playerid).removeClass('active');
-        $('.radio-' + focus__id + ' .item-' + selected_playerid + ' .checked_icon').remove();
+        $('.radio-' + focus__id + ' .item-' + selected_sourceid).removeClass('active');
+        $('.radio-' + focus__id + ' .item-' + selected_sourceid + ' .checked_icon').remove();
     } else {
-        $('.radio-' + focus__id + ' .item-' + selected_playerid).addClass('active');
-        $('.radio-' + focus__id + ' .item-' + selected_playerid + ' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
+        $('.radio-' + focus__id + ' .item-' + selected_sourceid).addClass('active');
+        $('.radio-' + focus__id + ' .item-' + selected_sourceid + ' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
     }
 
-    $.post("/controller/player_select_apply", {
+    $.post("/controller/source_select_apply", {
         focus__id: focus__id,
-        down_playerid: down_playerid,
+        down_sourceid: down_sourceid,
         right_ideaid: right_ideaid,
-        selected_playerid: selected_playerid,
+        selected_sourceid: selected_sourceid,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2898,57 +2898,57 @@ function isNormalInteger(str) {
 }
 
 
-function update_form_select(element_id, player_createid, initial_loading, show_title) {
-    console.log('update_form_select: ' + element_id + '/' + player_createid);
+function update_form_select(element_id, source_createid, initial_loading, show_title) {
+    console.log('update_form_select: ' + element_id + '/' + source_createid);
 
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
-    $('.dropd_form_' + element_id + ' .optiond_' + player_createid).addClass('active');
-    $('.dropd_form_' + element_id).attr('selected_value', player_createid);
+    $('.dropd_form_' + element_id + ' .optiond_' + source_createid).addClass('active');
+    $('.dropd_form_' + element_id).attr('selected_value', source_createid);
     if (show_title) {
-        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_' + player_createid).html());
+        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_' + source_createid).html());
     } else {
         //Just replace icon:
-        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_' + player_createid + ' span').html());
+        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_' + source_createid + ' span').html());
     }
     if (!initial_loading) {
         if (element_id == 4737) {
-            //Changing Player Reference would re-load dynamic fields based on type:
+            //Changing Source Reference would re-load dynamic fields based on type:
             has_unsaved_changes = true;
-            console.log('Reloading: ' + element_id + ' with value: ' + ' NEW ID ' + player_createid + ' / ' + $('#modal31911 .created_ideaid').val());
-            load_idea_dynamic($('#modal31911 .created_ideaid').val(), 0, player_createid, false);
+            console.log('Reloading: ' + element_id + ' with value: ' + ' NEW ID ' + source_createid + ' / ' + $('#modal31911 .created_ideaid').val());
+            load_idea_dynamic($('#modal31911 .created_ideaid').val(), 0, source_createid, false);
             //Add handle to text:
-            insertText($(".save_ideatext"), '@' + player_createid);
+            insertText($(".save_ideatext"), '@' + source_createid);
         }
     }
 }
 
-function ui_instant_select(element_id, player_createid, o__id, chainid, show_full_name) {
+function ui_instant_select(element_id, source_createid, o__id, chainid, show_full_name) {
 
     //Update x:
-    console.log('UI instant .dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn' + player_createid);
-    var data_object = eval('js_players___' + element_id);
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[player_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[player_createid]['m__title'] : ''));
+    console.log('UI instant .dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn' + source_createid);
+    var data_object = eval('js_sources___' + element_id);
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[source_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[source_createid]['m__title'] : ''));
 
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .drop_item_instant_' + element_id + '_' + o__id + '_' + chainid).removeClass('active');
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .optiond_' + player_createid + '_' + o__id + '_' + chainid).addClass('active');
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .optiond_' + source_createid + '_' + o__id + '_' + chainid).addClass('active');
 
-    var selected_playerid = $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value');
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value', player_createid);
+    var selected_sourceid = $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value');
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value', source_createid);
 
 
     var main_object_type = 0;
     var main_object_update = false;
 
     if (element_id == 4737) {
-        //Player Reference:
-        $('.s__12273_' + o__id).attr('ideatype', player_createid);
+        //Source Reference:
+        $('.s__12273_' + o__id).attr('ideatype', source_createid);
         main_object_type = 12273;
         main_object_update = 'ideatype';
     }
 
     if (main_object_type > 0 && main_object_update) {
-        $('.s__' + main_object_type + '_' + o__id).attr(main_object_update, player_createid);
+        $('.s__' + main_object_type + '_' + o__id).attr(main_object_update, source_createid);
     }
 
 }
@@ -2998,16 +2998,16 @@ function idea_delete(ideaid) {
 }
 
 
-function player_delete(playerid) {
+function source_delete(sourceid) {
 
-    var migratehandle = prompt("Are you sure you want to permanently delete this Player?\nYou can reference @anotherPlayer to migrate to or leave blank to delete permanently...", "@");
+    var migratehandle = prompt("Are you sure you want to permanently delete this Source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
     if (migratehandle === null) {
         return false;
     }
 
-    $.post("/controller/player_delete", {
+    $.post("/controller/source_delete", {
         focus__id: parseInt($('#focus__id').val()),
-        playerid: playerid,
+        sourceid: sourceid,
         migratehandle: migratehandle,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -3043,7 +3043,7 @@ function player_delete(playerid) {
 }
 
 
-function selector(element_id, player_createid, o__id = 0, chainid = 0, show_full_name = false) {
+function selector(element_id, source_createid, o__id = 0, chainid = 0, show_full_name = false) {
 
     /*
     *
@@ -3063,9 +3063,9 @@ function selector(element_id, player_createid, o__id = 0, chainid = 0, show_full
         chainid = $('.dropmenu_instant_' + element_id + ':first').attr('chainid');
     }
 
-    console.log('Attempt to update dropdown @' + element_id + ' to @' + player_createid);
+    console.log('Attempt to update dropdown @' + element_id + ' to @' + source_createid);
 
-    player_createid = parseInt(player_createid);
+    source_createid = parseInt(source_createid);
 
     //Deleting Anything?
     var main_object_type = 0;
@@ -3073,18 +3073,18 @@ function selector(element_id, player_createid, o__id = 0, chainid = 0, show_full
     var migratehandle = null;
 
     //Show Loading
-    var data_object = eval('js_players___' + element_id);
-    if (!data_object[player_createid]) {
-        alert('Invalid element ID: ' + element_id + '/' + player_createid + '/' + o__id + '/' + chainid + '/' + show_full_name);
+    var data_object = eval('js_sources___' + element_id);
+    if (!data_object[source_createid]) {
+        alert('Invalid element ID: ' + element_id + '/' + source_createid + '/' + o__id + '/' + chainid + '/' + show_full_name);
         return false;
     }
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/player_select", {
+    $.post("/controller/source_select", {
         focus__id: parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
-        player_createid: player_createid,
+        source_createid: source_createid,
         migratehandle: migratehandle,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3092,7 +3092,7 @@ function selector(element_id, player_createid, o__id = 0, chainid = 0, show_full
         if (data.status) {
 
             //Update on page:
-            ui_instant_select(element_id, player_createid, o__id, chainid, show_full_name);
+            ui_instant_select(element_id, source_createid, o__id, chainid, show_full_name);
 
             if (data.delete_redirect && data.delete_redirect.length > 0) {
 
@@ -3128,29 +3128,29 @@ function selector(element_id, player_createid, o__id = 0, chainid = 0, show_full
 }
 
 
-function player_sort_save(chainplayertype) {
+function source_sort_save(chainsourcetype) {
 
-    var new_chainnumber = [];
+    var new_chainkey = [];
     var sort_rank = 0;
 
-    $("#list-in-" + chainplayertype + " .card-12274").each(function () {
+    $("#list-in-" + chainsourcetype + " .card-12274").each(function () {
         //Fetch variables for this idea:
-        var playerid = parseInt($(this).attr('playerid'));
+        var sourceid = parseInt($(this).attr('sourceid'));
         var chainid = parseInt($(this).attr('chainid'));
 
         sort_rank++;
 
         //Store in DB:
-        new_chainnumber[sort_rank] = chainid;
+        new_chainkey[sort_rank] = chainid;
     });
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/controller/player_sort_save", {
-            playerid: parseInt($('#focus__id').val()),
-            chainplayertype: chainplayertype,
-            new_chainnumber: new_chainnumber,
+        $.post("/controller/source_sort_save", {
+            sourceid: parseInt($('#focus__id').val()),
+            chainsourcetype: chainsourcetype,
+            new_chainkey: new_chainkey,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             //Update UI to confirm with member:
@@ -3188,10 +3188,10 @@ function chain_sort_reset() {
                 //Refresh page:
                 if (focus__node == 12273) {
                     //Ideation
-                    js_redirect(js_players___42903[33286]['m__message'] + focus_handle);
+                    js_redirect(js_sources___42903[33286]['m__message'] + focus_handle);
                 } else if (focus__node == 12274) {
                     //Sourcing
-                    js_redirect(js_players___42903[42902]['m__message'] + focus_handle);
+                    js_redirect(js_sources___42903[42902]['m__message'] + focus_handle);
                 }
 
             }
@@ -3222,7 +3222,7 @@ function idea_discovered(do_skip) {
         return false;
     }
 
-    if (js_playerids___7712.includes(focus_ideatype)) {
+    if (js_sourceids___7712.includes(focus_ideatype)) {
         //Choose
         $(".this_selector").each(function () {
             var selection_ideaid_this = parseInt($(this).attr('selection_ideaid'));
@@ -3344,7 +3344,7 @@ function idea_discovered(do_skip) {
     $.post("/controller/idea_discovered", {
         target_ideahashtag: $('#target_ideahashtag').val(),
         target_ideaid: parseInt($('#target_ideaid').val()),
-        player_submitted_data: {
+        source_submitted_data: {
             ideaid: parseInt($('#focus__id').val()),
             idea_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
             ideanumber: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideanumber').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideanumber').val() : 0),

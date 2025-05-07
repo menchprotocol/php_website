@@ -3,15 +3,15 @@
 $ideahashtag = (isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) ? $_GET['ideahashtag'] : false );
 
 //Make sure not logged in:
-if($player_session['playerid']){
+if($source_session['sourceid']){
 
-    js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$player_session['playerhandle'] ), 13);
+    js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$source_session['sourcehandle'] ), 13);
 
 } else {
 
-    $playercover_generator = playercover_generator(12279);
-    $player_result = $this->Players->join(view_random_title(), null, null, $playercover_generator);
-    js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$player_result['e']['playerhandle'] ), 13);
+    $sourcecover_generator = sourcecover_generator(12279);
+    $source_result = $this->Sources->join(view_random_title(), null, null, $sourcecover_generator);
+    js_php_redirect(( $ideahashtag ? guestlogin . phpview_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$source_result['e']['sourcehandle'] ), 13);
 
 }
 

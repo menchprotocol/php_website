@@ -27,7 +27,7 @@ class UrlSigner
     /**
      * Create a signed Amazon CloudFront URL.
      *
-     * Keep in mind that URLs meant for use in media/flash players may have
+     * Keep in mind that URLs meant for use in media/flash sources may have
      * different requirements for URL formats (e.g. some require that the
      * extension be removed, some require the file name to be prefixed
      * - mp4:<path>, some require you to add "/cfx/st" into your URL).
@@ -74,7 +74,7 @@ class UrlSigner
 
     private function createRtmpUrl(UriInterface $uri)
     {
-        // Use a relative URL when creating Flash player URLs
+        // Use a relative URL when creating Flash source URLs
         $result = ltrim($uri->getPath(), '/');
 
         if ($query = $uri->getQuery()) {

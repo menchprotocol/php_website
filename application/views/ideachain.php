@@ -13,18 +13,18 @@
 $query_filters = array();
 $joined_by = array();
 
-//We have a special OR filter when combined with playerhandle & ideahashtag
-$input_e = (isset($_GET['playerhandle']) && strlen($_GET['playerhandle']) > 0);
+//We have a special OR filter when combined with sourcehandle & ideahashtag
+$input_e = (isset($_GET['sourcehandle']) && strlen($_GET['sourcehandle']) > 0);
 $focus_e = false;
 $input_i = (isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) > 0);
 $focus_i = false;
 
 if ($input_e) {
-    foreach ($this->Players->read(array(
-        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-    )) as $player_found) {
-        $focus_e = $player_found;
-        $_GET['playerhandle'] = $player_found['playerhandle'];
+    foreach ($this->Sources->read(array(
+        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+    )) as $source_found) {
+        $focus_e = $source_found;
+        $_GET['sourcehandle'] = $source_found['sourcehandle'];
     }
     if (!$focus_e) {
         //Invalid input!
@@ -45,34 +45,34 @@ if ($input_i) {
     }
 }
 
-$any_ideaplayer_set = $input_i || $input_e;
+$any_ideasource_set = $input_i || $input_e;
 
 
-if (isset($_GET['chainplayercreator']) && strlen($_GET['chainplayercreator']) > 0) {
-    if (substr_count($_GET['chainplayercreator'], ',') > 0) {
+if (isset($_GET['chainsourcecreator']) && strlen($_GET['chainsourcecreator']) > 0) {
+    if (substr_count($_GET['chainsourcecreator'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainplayercreator IN (' . $_GET['chainplayercreator'] . '))'] = null;
-    } elseif (intval($_GET['chainplayercreator']) > 0) {
-        $query_filters['chainplayercreator'] = $_GET['chainplayercreator'];
+        $query_filters['( chainsourcecreator IN (' . $_GET['chainsourcecreator'] . '))'] = null;
+    } elseif (intval($_GET['chainsourcecreator']) > 0) {
+        $query_filters['chainsourcecreator'] = $_GET['chainsourcecreator'];
     }
 }
 
 
-if (isset($_GET['chainplayerup']) && strlen($_GET['chainplayerup']) > 0) {
-    if (substr_count($_GET['chainplayerup'], ',') > 0) {
+if (isset($_GET['chainsourceup']) && strlen($_GET['chainsourceup']) > 0) {
+    if (substr_count($_GET['chainsourceup'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainplayerup IN (' . $_GET['chainplayerup'] . '))'] = null;
-    } elseif (intval($_GET['chainplayerup']) > 0) {
-        $query_filters['chainplayerup'] = $_GET['chainplayerup'];
+        $query_filters['( chainsourceup IN (' . $_GET['chainsourceup'] . '))'] = null;
+    } elseif (intval($_GET['chainsourceup']) > 0) {
+        $query_filters['chainsourceup'] = $_GET['chainsourceup'];
     }
 }
 
-if (isset($_GET['chainplayerdown']) && strlen($_GET['chainplayerdown']) > 0) {
-    if (substr_count($_GET['chainplayerdown'], ',') > 0) {
+if (isset($_GET['chainsourcedown']) && strlen($_GET['chainsourcedown']) > 0) {
+    if (substr_count($_GET['chainsourcedown'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainplayerdown IN (' . $_GET['chainplayerdown'] . '))'] = null;
-    } elseif (intval($_GET['chainplayerdown']) > 0) {
-        $query_filters['chainplayerdown'] = $_GET['chainplayerdown'];
+        $query_filters['( chainsourcedown IN (' . $_GET['chainsourcedown'] . '))'] = null;
+    } elseif (intval($_GET['chainsourcedown']) > 0) {
+        $query_filters['chainsourcedown'] = $_GET['chainsourcedown'];
     }
 }
 
@@ -105,7 +105,7 @@ if (isset($_GET['chainid']) && strlen($_GET['chainid']) > 0) {
 
 if ($input_e) {
     //We need to look for both following/follower
-    $query_filters['( chainplayerdown = ' . $focus_e['playerid'] . ' OR chainplayerup = ' . $focus_e['playerid'] . ' OR chainplayercreator = ' . $focus_e['playerid'] . ' )'] = null;
+    $query_filters['( chainsourcedown = ' . $focus_e['sourceid'] . ' OR chainsourceup = ' . $focus_e['sourceid'] . ' OR chainsourcecreator = ' . $focus_e['sourceid'] . ' )'] = null;
 }
 
 
@@ -125,8 +125,8 @@ if (isset($_GET['any_chainid']) && strlen($_GET['any_chainid']) > 0) {
     }
 }
 
-if (isset($_GET['chaintext_find']) && strlen($_GET['chaintext_find']) > 0) {
-    $query_filters['LOWER(chaintext) LIKE'] = '%' . $_GET['chaintext_find'] . '%';
+if (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0) {
+    $query_filters['LOWER(chainvalue) LIKE'] = '%' . $_GET['chainvalue_find'] . '%';
 }
 
 if (isset($_GET['chainvoid']) && is_numeric($_GET['chainvoid'])) {
@@ -156,20 +156,20 @@ $query_filters['chainvoid >='] = 0;
 
 
 //Make sure its a valid type considering other filters:
-if (isset($_GET['chainplayertype'])) {
+if (isset($_GET['chainsourcetype'])) {
 
-    if (substr_count($_GET['chainplayertype'], ',') > 0) {
+    if (substr_count($_GET['chainsourcetype'], ',') > 0) {
         //This is multiple:
-        $query_filters['chainplayertype IN (' . $_GET['chainplayertype'] . ')'] = null;
-    } elseif (intval($_GET['chainplayertype']) > 0) {
-        $query_filters['chainplayertype'] = intval($_GET['chainplayertype']);
+        $query_filters['chainsourcetype IN (' . $_GET['chainsourcetype'] . ')'] = null;
+    } elseif (intval($_GET['chainsourcetype']) > 0) {
+        $query_filters['chainsourcetype'] = intval($_GET['chainsourcetype']);
     }
 
 }
 
 $has_filters = (count($_GET) > 0);
 
-$players___11035 = $this->config->item('players___11035'); //Encyclopedia
+$sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
 
 ?>
 
@@ -178,8 +178,8 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
     var $win = $(window);
     var x_filters = '<?= serialize(count($query_filters) > 0 ? $query_filters : array()) ?>';
     var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
-    var chaintext_find = '<?= (isset($_GET['chaintext_find']) && strlen($_GET['chaintext_find']) > 0 ? $_GET['chaintext_find'] : '') ?>';
-    var chaintext_replace = '<?= (isset($_GET['chaintext_replace']) && strlen($_GET['chaintext_replace']) > 0 ? $_GET['chaintext_replace'] : '') ?>';
+    var chainvalue_find = '<?= (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0 ? $_GET['chainvalue_find'] : '') ?>';
+    var chainvalue_replace = '<?= (isset($_GET['chainvalue_replace']) && strlen($_GET['chainvalue_replace']) > 0 ? $_GET['chainvalue_replace'] : '') ?>';
     var has_more_chains = 1; //We always assume this?
     var loading_in_progress = false;
     var current_page = 0;
@@ -202,8 +202,8 @@ $players___11035 = $this->config->item('players___11035'); //Encyclopedia
         $.post("/controller/chain_load", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
-            chaintext_find: chaintext_find,
-            chaintext_replace: chaintext_replace,
+            chainvalue_find: chainvalue_find,
+            chainvalue_replace: chainvalue_replace,
             current_page: current_page,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -276,14 +276,14 @@ echo '<table class="table table-sm maxout"><tr>';
 //ANY SOURCE
 echo '<td><div>';
 echo '<span class="mini-header">ANY SOURCE:</span>';
-echo '<input type="text" name="playerhandle" value="' . ($input_e ? $_GET['playerhandle'] : '') . '" class="form-control border">';
+echo '<input type="text" name="sourcehandle" value="' . ($input_e ? $_GET['sourcehandle'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="chainplayercreator" value="' . ((isset($_GET['chainplayercreator'])) ? $_GET['chainplayercreator'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="chainsourcecreator" value="' . ((isset($_GET['chainsourcecreator'])) ? $_GET['chainsourcecreator'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="chainplayerup" value="' . ((isset($_GET['chainplayerup'])) ? $_GET['chainplayerup'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="chainsourceup" value="' . ((isset($_GET['chainsourceup'])) ? $_GET['chainsourceup'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="chainplayerdown" value="' . ((isset($_GET['chainplayerdown'])) ? $_GET['chainplayerdown'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="chainsourcedown" value="' . ((isset($_GET['chainsourcedown'])) ? $_GET['chainsourcedown'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -307,14 +307,14 @@ echo '<table class="table table-sm maxout"><tr>';
 //Search
 echo '<td><div>';
 echo '<span class="mini-header">Chain MESSAGE SEARCH:</span>';
-echo '<input type="text" name="chaintext_find" value="' . ((isset($_GET['chaintext_find'])) ? $_GET['chaintext_find'] : '') . '" class="form-control border">';
+echo '<input type="text" name="chainvalue_find" value="' . ((isset($_GET['chainvalue_find'])) ? $_GET['chainvalue_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if (isset($_GET['chaintext_find']) && strlen($_GET['chaintext_find']) > 0 && player_session(12701)) {
+if (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0 && source_session(12701)) {
     //Give Option to Replace:
     echo '<td><div>';
     echo '<span class="mini-header">Chain MESSAGE REPLACE:</span>';
-    echo '<input type="text" name="chaintext_replace" value="' . ((isset($_GET['chaintext_replace'])) ? $_GET['chaintext_replace'] : '') . '" class="form-control border">';
+    echo '<input type="text" name="chainvalue_replace" value="' . ((isset($_GET['chainvalue_replace'])) ? $_GET['chainvalue_replace'] : '') . '" class="form-control border">';
     echo '</div></td>';
 }
 
@@ -341,23 +341,23 @@ echo '<td>';
 echo '<div>';
 echo '<span class="mini-header">Chain TYPE:</span>';
 
-if (isset($_GET['chainplayertype']) && substr_count($_GET['chainplayertype'], ',') > 0) {
+if (isset($_GET['chainsourcetype']) && substr_count($_GET['chainsourcetype'], ',') > 0) {
 
     //We have multiple predefined Chain types, so we must use a text input:
-    echo '<input type="text" name="chainplayertype" value="' . $_GET['chainplayertype'] . '" class="form-control border">';
+    echo '<input type="text" name="chainsourcetype" value="' . $_GET['chainsourcetype'] . '" class="form-control border">';
 
 } else {
 
-    echo '<select class="form-control border" name="chainplayertype" id="chainplayertype" class="border" style="width: 100% !important;">';
+    echo '<select class="form-control border" name="chainsourcetype" id="chainsourcetype" class="border" style="width: 100% !important;">';
 
-    if (isset($_GET['chainplayercreator'])) {
+    if (isset($_GET['chainsourcecreator'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach ($this->Chains->read($ini_filter, array('chainplayertype'), 0, 0, player_sort(), 'COUNT(chainplayertype) as total_count, playertext, chainplayertype', 'chainplayertype, playertext') as $x) {
+        foreach ($this->Chains->read($ini_filter, array('chainsourcetype'), 0, 0, source_sort(), 'COUNT(chainsourcetype) as total_count, sourcetext, chainsourcetype', 'chainsourcetype, sourcetext') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['chainplayertype'] . '" ' . ((isset($_GET['chainplayertype']) && $_GET['chainplayertype'] == $x['chainplayertype']) ? 'selected="selected"' : '') . '>' . $x['playertext'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['chainsourcetype'] . '" ' . ((isset($_GET['chainsourcetype']) && $_GET['chainsourcetype'] == $x['chainsourcetype']) ? 'selected="selected"' : '') . '>' . $x['sourcetext'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 
@@ -369,9 +369,9 @@ if (isset($_GET['chainplayertype']) && substr_count($_GET['chainplayertype'], ',
 
         //Load all fast:
         echo '<option value="0">ALL Chain TYPES</option>';
-        foreach ($this->config->item('players___4593') /* DISCOVERY Types */ as $playerid => $m) {
+        foreach ($this->config->item('sources___4593') /* DISCOVERY Types */ as $sourceid => $m) {
             //Echo drop down:
-            echo '<option value="' . $playerid . '" ' . ((isset($_GET['chainplayertype']) && $_GET['chainplayertype'] == $playerid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+            echo '<option value="' . $sourceid . '" ' . ((isset($_GET['chainsourcetype']) && $_GET['chainsourcetype'] == $sourceid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
 
     }
@@ -403,21 +403,21 @@ echo '</div>';
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
 
-echo '<div class="filter_right grey">'.(player_session(12701) ? '<span class="icon-block-xs">' . $players___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $players___11035[12707]['m__title'] . '</a>' : '').'</div>';
+echo '<div class="filter_right grey">'.(source_session(12701) ? '<span class="icon-block-xs">' . $sources___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $sources___11035[12707]['m__title'] . '</a>' : '').'</div>';
 
 
 //Table Header
 $row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 3px solid #999999; border-bottom: 0px solid #FFFFFF !important;">';
 $row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 3px solid #999999;">';
-foreach ($this->config->item('players___4341') as $chainplayertype => $m) {
-    if($chainplayertype==4362 || in_array($chainplayertype, $this->config->item('playerids___6160'))){
-        //Player Cover:
+foreach ($this->config->item('sources___4341') as $chainsourcetype => $m) {
+    if($chainsourcetype==4362 || in_array($chainsourcetype, $this->config->item('sourceids___6160'))){
+        //Source Cover:
         $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
         $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
     }
-    if(in_array($chainplayertype, $this->config->item('playerids___1579727'))) {
+    if(in_array($chainsourcetype, $this->config->item('sourceids___1579727'))) {
         //Second row:
         $row2 .= $column_value;
     } else {

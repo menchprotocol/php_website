@@ -1,28 +1,28 @@
 <?php
 
 $already_loaded = array(6287);
-$players___6287 = $this->config->item('players___6287'); //APP
+$sources___6287 = $this->config->item('sources___6287'); //APP
 
 
 //Start with Featured Apps
 echo '<div class="row">';
 foreach ($this->Chains->read(array(
-    'chainplayerup' => 30841, //Featured Apps
-    'chainplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE CHAINS
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-), array('chainplayerdown'), 0, 0, player_sort()) as $app) {
+    'chainsourceup' => 30841, //Featured Apps
+    'chainsourcedown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE CHAINS
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+), array('chainsourcedown'), 0, 0, source_sort()) as $app) {
 
-    if (!in_array($app['playerid'], $this->config->item('playerids___6287')) || in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?
+    if (!in_array($app['sourceid'], $this->config->item('sourceids___6287')) || in_array($app['sourceid'], $this->config->item('sourceids___32141'))) { //Hidden Apps?
         continue;
     }
 
-    $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___6287[$app['playerid']]['m__following']);
-    if (count($superpowers_required) && !player_session(end($superpowers_required))) {
+    $superpowers_required = array_intersect($this->config->item('sourceids___10957'), $sources___6287[$app['sourceid']]['m__following']);
+    if (count($superpowers_required) && !source_session(end($superpowers_required))) {
         continue;
     }
 
-    echo player_view(6287, $app);
-    array_push($already_loaded, intval($app['playerid']));
+    echo source_view(6287, $app);
+    array_push($already_loaded, intval($app['sourceid']));
 
 }
 echo '</div>';
@@ -31,22 +31,22 @@ echo '</div>';
 //List Regular Apps:
 echo '<div class="row">';
 foreach ($this->Chains->read(array(
-    'chainplayerup' => 6287, //Featured Apps
-    'chainplayerdown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE CHAINS
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-), array('chainplayerdown'), 0, 0, player_sort()) as $app) {
+    'chainsourceup' => 6287, //Featured Apps
+    'chainsourcedown NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE CHAINS
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+), array('chainsourcedown'), 0, 0, source_sort()) as $app) {
 
-    if (in_array($app['playerid'], $this->config->item('playerids___32141'))) { //Hidden Apps?
+    if (in_array($app['sourceid'], $this->config->item('sourceids___32141'))) { //Hidden Apps?
         continue;
     }
 
-    if (isset($players___6287[$app['playerid']])) {
-        $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___6287[$app['playerid']]['m__following']);
-        if (count($superpowers_required) && !player_session(end($superpowers_required))) {
+    if (isset($sources___6287[$app['sourceid']])) {
+        $superpowers_required = array_intersect($this->config->item('sourceids___10957'), $sources___6287[$app['sourceid']]['m__following']);
+        if (count($superpowers_required) && !source_session(end($superpowers_required))) {
             continue;
         }
     }
 
-    echo player_view(6287, $app);
+    echo source_view(6287, $app);
 }
 echo '</div>';

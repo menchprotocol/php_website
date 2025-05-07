@@ -13,9 +13,9 @@ $this->db->query("TRUNCATE TABLE public.gephichains CONTINUE IDENTITY RESTRICT;"
 $this->db->query("TRUNCATE TABLE public.gephinodes CONTINUE IDENTITY RESTRICT;");
 
 //Load IDEA CHAINS:
-$players___4593 = $this->config->item('players___4593');
+$sources___4593 = $this->config->item('sources___4593');
 
-//To make sure Idea/Player IDs are unique:
+//To make sure Idea/Source IDs are unique:
 $id_prefix = array(
     12273 => 100,
     12274 => 200,
@@ -35,49 +35,49 @@ foreach ($is as $in) {
 
     //Fetch Next Ideas:
     foreach ($this->Chains->read(array(
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA CHAINS
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
         'chainidealeft' => $in['ideaid'],
     ), array('chainidearight'), 0, 0) as $next_i) {
 
         $this->db->insert('gephichains', array(
             'source' => $id_prefix[12273] . $next_i['chainidealeft'],
             'target' => $id_prefix[12273] . $next_i['chainidearight'],
-            'label' => $players___4593[$next_i['chainplayertype']]['m__title'], //TODO maybe give visibility to condition here?
+            'label' => $sources___4593[$next_i['chainsourcetype']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_i['chainplayertype'],
+            'edge_type' => $next_i['chainsourcetype'],
         ));
 
     }
 }
 
 
-//Transfer Players:
-$es = $this->Players->read(array());
+//Transfer Sources:
+$es = $this->Sources->read(array());
 foreach ($es as $en) {
 
-    //Transfer Player node:
+    //Transfer Source node:
     $this->db->insert('gephinodes', array(
-        'id' => $id_prefix[12274] . $en['playerid'],
-        'label' => $en['playertext'],
+        'id' => $id_prefix[12274] . $en['sourceid'],
+        'label' => $en['sourcetext'],
         'size' => 1,
         'node_type' => 2, //Member
     ));
 
     //Fetch followers:
     foreach ($this->Chains->read(array(
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-        'chainplayerup' => $en['playerid'],
-    ), array('chainplayerdown'), 0, 0) as $player_down) {
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+        'chainsourceup' => $en['sourceid'],
+    ), array('chainsourcedown'), 0, 0) as $source_down) {
 
         $this->db->insert('gephichains', array(
-            'source' => $id_prefix[12274] . $player_down['chainplayerup'],
-            'target' => $id_prefix[12274] . $player_down['chainplayerdown'],
-            'label' => $players___4593[$player_down['chainplayertype']]['m__title'] . ': ' . $player_down['chaintext'],
+            'source' => $id_prefix[12274] . $source_down['chainsourceup'],
+            'target' => $id_prefix[12274] . $source_down['chainsourcedown'],
+            'label' => $sources___4593[$source_down['chainsourcetype']]['m__title'] . ': ' . $source_down['chainvalue'],
             'weight' => 1,
-            'edge_type' => $player_down['chainplayertype'],
+            'edge_type' => $source_down['chainsourcetype'],
         ));
 
     }
 }
 
-echo count($is) . ' ideas & ' . count($es) . ' Players synced.';
+echo count($is) . ' ideas & ' . count($es) . ' Sources synced.';

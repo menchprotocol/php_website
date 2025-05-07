@@ -1,6 +1,6 @@
 <?php
 
-//TODO REplace with $_GET['ideahashtag'] & $_GET['playerhandle']
+//TODO REplace with $_GET['ideahashtag'] & $_GET['sourcehandle']
 
 $obj = ( isset($_GET['obj']) ? $_GET['obj'] : null );
 $s__id = ( isset($_GET['s__id']) && $obj ? intval($_GET['s__id']) : 0 );

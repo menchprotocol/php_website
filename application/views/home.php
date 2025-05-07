@@ -4,9 +4,9 @@
 
 //TITLE
 $website_id = website_setting(0);
-$expanded_space = in_array($website_id , $this->config->item('playerids___31025'));
+$expanded_space = in_array($website_id , $this->config->item('sourceids___31025'));
 
-if(in_array($website_id, $this->config->item('playerids___30984'))){
+if(in_array($website_id, $this->config->item('sourceids___30984'))){
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'homecss_black_font\'); }); </script> ';
 } else {
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'homecss_white_font\'); }); </script> ';
@@ -17,9 +17,9 @@ if(in_array($website_id, $this->config->item('playerids___30984'))){
 $primary_i = array();
 $secondary_idea_list = array();
 foreach($this->Chains->read(array(
-    'chainplayertype' => 34513, //Pinned
-    'chainplayerup' => $website_id,
-), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC')) as $this_i){
+    'chainsourcetype' => 34513, //Pinned
+    'chainsourceup' => $website_id,
+), array('chainidearight'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
     } else {
@@ -44,18 +44,18 @@ $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_f
 //SOCIAL FOOTER
 $domain_phone =  website_setting(28615);
 $email_domain =  website_setting(28614);
-$players___11035 = $this->config->item('players___11035');
+$sources___11035 = $this->config->item('sources___11035');
 
 $contact_us = '';
 if($domain_phone || $email_domain) {
 
     $contact_us .= '<ul class="social-footer">';
     if($domain_phone){
-        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$players___11035[28615]['m__title'].'">'.$players___11035[28615]['m__cover'].' '.$domain_phone.'</a></li>';
+        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$sources___11035[28615]['m__title'].'">'.$sources___11035[28615]['m__cover'].' '.$domain_phone.'</a></li>';
     }
 
     if($email_domain){
-        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$players___11035[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$players___11035[28614]['m__cover'].' '.$email_domain.'</a></li>';
+        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$sources___11035[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$sources___11035[28614]['m__cover'].' '.$email_domain.'</a></li>';
     }
     $contact_us .= '</ul>';
 
@@ -66,33 +66,33 @@ if($domain_phone || $email_domain) {
 
 
 //Any Info Boxes?
-foreach($this->Players->scissor($website_id, 14903) as $player_item) {
+foreach($this->Sources->scissor($website_id, 14903) as $source_item) {
     //Any Followers?
     $info_item = null;
     foreach($this->Chains->read(array(
-        'chainplayerup' => $player_item['playerid'],
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-        ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC')) as $info_element) {
+        'chainsourceup' => $source_item['sourceid'],
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+        ), array('chainsourcedown'), 0, 0, array('chainkey' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
-        if(filter_var($info_element['playercover'], FILTER_VALIDATE_URL)){
-            $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['playercover'].'\');"></div>'.'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['playertext'].'</div>';
+        if(filter_var($info_element['sourcecover'], FILTER_VALIDATE_URL)){
+            $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['sourcecover'].'\');"></div>'.'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['sourcetext'].'</div>';
         } else {
-            $info_item .= '<div class="info_box_cover">'.view_cover($info_element['playercover']).'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['playertext'].'</div>';
+            $info_item .= '<div class="info_box_cover">'.view_cover($info_element['sourcecover']).'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['sourcetext'].'</div>';
         }
-        if(strlen($info_element['chaintext'])){
-            $info_item .= '<div class="info_box_message">'.$info_element['chaintext'].'</div>';
+        if(strlen($info_element['chainvalue'])){
+            $info_item .= '<div class="info_box_message">'.$info_element['chainvalue'].'</div>';
         }
         $info_item .= '</div>';
         $info_item .= '</div>';
     }
 
     if($info_item){
-        $messages .= '<h2 class="info-head">'.$player_item['playertext'].'</h2>';
-        if(strlen($player_item['chaintext'])){
-            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$player_item['chaintext'].'</div>';
+        $messages .= '<h2 class="info-head">'.$source_item['sourcetext'].'</h2>';
+        if(strlen($source_item['chainvalue'])){
+            $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$source_item['chainvalue'].'</div>';
         }
         $messages .= '<div class="row justify-content" style="margin-bottom: 89px; padding: 34px 0;">'.$info_item.'</div>';
     }
@@ -128,23 +128,23 @@ if(strlen($secondary_i)){
 
 
 $social_ui = null;
-$players___14870 = $this->config->item('players___14870'); //Website Partner
-foreach($this->config->item('players___14036') as $playerid => $m){
+$sources___14870 = $this->config->item('sources___14870'); //Website Partner
+foreach($this->config->item('sources___14036') as $sourceid => $m){
     foreach($this->Chains->read(array(
-        'chainplayerup' => $playerid,
-        'chainplayerdown' => $website_id,
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+        'chainsourceup' => $sourceid,
+        'chainsourcedown' => $website_id,
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
         ), array(), 0, 0) as $social_chain){
 
         //Determine chain type:
-        if(filter_var($social_chain['chaintext'], FILTER_VALIDATE_URL) && view_url_clean($social_chain['chaintext'])!=view_url_clean($players___14870[$website_id]['m__message'])){
+        if(filter_var($social_chain['chainvalue'], FILTER_VALIDATE_URL) && view_url_clean($social_chain['chainvalue'])!=view_url_clean($sources___14870[$website_id]['m__message'])){
             //We made sure not the current website:
-            $social_url = $social_chain['chaintext'];
-        } elseif(filter_var($social_chain['chaintext'], FILTER_VALIDATE_EMAIL)){
-            $social_url = 'mailto:'.$social_chain['chaintext'];
-        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_chain['chaintext'])) > 5){
+            $social_url = $social_chain['chainvalue'];
+        } elseif(filter_var($social_chain['chainvalue'], FILTER_VALIDATE_EMAIL)){
+            $social_url = 'mailto:'.$social_chain['chainvalue'];
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_chain['chainvalue'])) > 5){
             //Phone
-            $social_url = phone_href($playerid, $social_chain['chaintext']);
+            $social_url = phone_href($sourceid, $social_chain['chainvalue']);
         } else {
             //Unknown!
             continue;

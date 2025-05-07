@@ -8,10 +8,10 @@ if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
     ));
 }
 $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . phpview_memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
-$players___14870 = $this->config->item('players___14870'); //Website Partner
+$sources___14870 = $this->config->item('sources___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
-if(player_session()) {
+if(source_session()) {
 
     //Lead member and above, go to console:
     js_php_redirect($next_url, 13);
@@ -22,15 +22,15 @@ if(player_session()) {
 
     js_php_redirect($next_url, 13);
 
-} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['playerhandle'])==$_GET['hash']){
+} elseif(isset($_GET['sourcehandle']) && $_GET['sourcehandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['sourcehandle'])==$_GET['hash']){
 
-    $es = $this->Players->read(array(
-        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
+    $es = $this->Sources->read(array(
+        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
     ));
 
     if(count($es)){
         //Assign session & log Chain:
-        $this->Players->activate($es[0], false, true);
+        $this->Sources->activate($es[0], false, true);
     }
 
     js_php_redirect($next_url, 13);
@@ -51,8 +51,8 @@ if(player_session()) {
     }
 
 
-    $players___4269 = $this->config->item('players___4269');
-    $players___11035 = $this->config->item('players___11035'); //Encyclopedia
+    $sources___4269 = $this->config->item('sources___4269');
+    $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
 
 
 
@@ -101,7 +101,7 @@ if(player_session()) {
             //Watch for 4 digit code:
             $("#input_code").on("input", function() {
                 if($(this).val().length==4){
-                    player_authenticate();
+                    source_authenticate();
                 }
             });
 
@@ -115,7 +115,7 @@ if(player_session()) {
         });
 
 
-        var next_icon = '<?= $players___11035[26104]['m__cover'] ?>';
+        var next_icon = '<?= $sources___11035[26104]['m__cover'] ?>';
         var sign_ideaid = <?= ( count($sign_i) ? $sign_i[0]['ideaid'] : 0 ) ?>;
         var referrer_url = '<?= @$_GET['url'] ?>';
         var logged_messenger = false;
@@ -130,9 +130,9 @@ if(player_session()) {
                 //Watch for action keys:
                 if (e.keyCode==13) {
                     if(step_count==2){
-                        player_verify();
+                        source_verify();
                     } else if(step_count==3){
-                        player_authenticate();
+                        source_authenticate();
                     }
                 }
             });
@@ -154,7 +154,7 @@ if(player_session()) {
 
 
         var verifying_contact = false;
-        function player_verify(){
+        function source_verify(){
 
             if(verifying_contact){
                 return false;
@@ -169,7 +169,7 @@ if(player_session()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/controller/player_verify", {
+            $.post("/controller/source_verify", {
 
                 account_email_phone: account_email_phone,
                 sign_ideaid: sign_ideaid,
@@ -224,7 +224,7 @@ if(player_session()) {
 
 
         var code_checking = false;
-        function player_authenticate(){
+        function source_authenticate(){
 
             if(code_checking){
                 return false;
@@ -236,7 +236,7 @@ if(player_session()) {
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:
-            $.post("/controller/player_authenticate", {
+            $.post("/controller/source_authenticate", {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),
@@ -276,15 +276,15 @@ if(player_session()) {
             <!-- Step 1: Enter Email -->
             <div id="step2" class="signup-steps hidden">
 
-                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$players___4269[32079]['m__cover'].'</span>'.$players___4269[32079]['m__title'] ?></span>
+                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$sources___4269[32079]['m__cover'].'</span>'.$sources___4269[32079]['m__title'] ?></span>
 
-                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $players___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
+                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $sources___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
 
                 <div id="account_email_phone_errors" class="margin-top-down hideIfEmpty"></div>
 
 
                 <span>
-                    <a href="javascript:void(0)" onclick="player_verify()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="source_verify()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $sources___11035[26104]['m__title'] ?>"><?= $sources___11035[26104]['m__cover'] ?></a>
                 </span>
 
 
@@ -297,8 +297,8 @@ if(player_session()) {
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
                     echo '<div class="full-width-btn center top-margin"><a href="'.view_app_chain(14938).view_memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
-                    echo $players___11035[14938]['m__title'].' '.$players___11035[14938]['m__cover'];
-                    echo ( strlen($players___11035[14938]['m__message']) ? ': '.$players___11035[14938]['m__message'] : '' );
+                    echo $sources___11035[14938]['m__title'].' '.$sources___11035[14938]['m__cover'];
+                    echo ( strlen($sources___11035[14938]['m__message']) ? ': '.$sources___11035[14938]['m__message'] : '' );
                     echo '</a></div>';
                     echo '</div>';
                 }
@@ -319,11 +319,11 @@ if(player_session()) {
                 <!-- New Account (If not found) -->
                 <div class="margin-top-down new_account hidden">
 
-                    <div class="main__title"><span class="icon-block"><?= $players___4269[14026]['m__cover'] ?></span><?= $players___4269[14026]['m__title'] ?></div>
+                    <div class="main__title"><span class="icon-block"><?= $sources___4269[14026]['m__cover'] ?></span><?= $sources___4269[14026]['m__title'] ?></div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
-                        <div class="main__title"><span class="icon-block"><?= $players___4269[3288]['m__cover'] ?></span><?= $players___4269[3288]['m__title'] ?></div>
+                        <div class="main__title"><span class="icon-block"><?= $sources___4269[3288]['m__cover'] ?></span><?= $sources___4269[3288]['m__title'] ?></div>
                         <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title input_border" /></div>
                     </div>
                     <div class="doclear">&nbsp;</div>
@@ -331,15 +331,15 @@ if(player_session()) {
 
 
                 <!-- Sign in Code -->
-                <div style="padding:8px 0;">Enter the <?= $players___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span> (Also check spam folder):</div>
+                <div style="padding:8px 0;">Enter the <?= $sources___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span> (Also check spam folder):</div>
                 <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border input_border" /></div>
                 <div id="sign_code_errors" class="margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
 
                 <div id="step3buttons">
-                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $players___11035[12991]['m__title'] ?>"><?= $players___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="player_authenticate()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $players___11035[26104]['m__title'] ?>"><?= $players___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $sources___11035[12991]['m__title'] ?>"><?= $sources___11035[12991]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="source_authenticate()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $sources___11035[26104]['m__title'] ?>"><?= $sources___11035[26104]['m__cover'] ?></a>
                 </div>
 
                 <div class="doclear">&nbsp;</div>

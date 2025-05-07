@@ -1,8 +1,8 @@
 <?php
 
 $filters = array(
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Chain
-    'chainplayerup' => 28199,
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42252')) . ')' => null, //Plain Chain
+    'chainsourceup' => 28199,
 );
 
 //Give it some extra time in case they are in Paypal making the payment
@@ -25,36 +25,36 @@ foreach($this->Chains->read($filters, array('chainidearight'), 0) as $expires){
 
     //Now go through everyone who idea_discovered this selection:
     foreach($this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___7704')) . ')' => null, //Discovery Expansions
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___7704')) . ')' => null, //Discovery Expansions
         'chainidealeft' => $expires['ideaid'],
-    ), array('chainplayercreator'), 0) as $x_progress){
+    ), array('chainsourcecreator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->Chains->read(array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $x_progress['chainidearight'],
-            'chainplayercreator' => $x_progress['playerid'],
+            'chainsourcecreator' => $x_progress['sourceid'],
         ));
-        $seconds_left = intval( intval( $expires['chaintext']) + $buffer_time - (time() - strtotime($x_progress['chaintime'])));
+        $seconds_left = intval( intval( $expires['chainvalue']) + $buffer_time - (time() - strtotime($x_progress['chaintime'])));
 
-        if(!count($answer_completed) && intval( $expires['chaintext'])>0 && $seconds_left <= 0){
+        if(!count($answer_completed) && intval( $expires['chainvalue'])>0 && $seconds_left <= 0){
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
             foreach($this->Chains->read(array(
-                            'chainplayertype IN (' . join(',', $this->config->item('playerids___31777')) . ')' => null, //DISCOVERIES
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                 'chainidealeft' => $expires['ideaid'],
-                'chainplayercreator' => $x_progress['playerid'],
+                'chainsourcecreator' => $x_progress['sourceid'],
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->Chains->delete($delete['chainid'], $player_session['playerid']); //Time Expired
+                $this->Chains->delete($delete['chainid'], $source_session['sourceid']); //Time Expired
 
             }
 
             if($deleted){
                 $chains_deleted++;
-                echo '<div style="padding-left: 21px;">'.$chains_deleted.') <a href="'.view_memory(42903,42902).$x_progress['playerhandle'].'">'.$x_progress['playertext'].'</a>: '.$x_progress['chaintime'].' ? '.$x_progress['chaintext'].' / <a href="'.view_app_chain(12722).'?chainid=' . $x_progress['chainid'] . '">'.$x_progress['chainid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['chaintext']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['chaintime'] ).' = '.$seconds_left.')</div>';
+                echo '<div style="padding-left: 21px;">'.$chains_deleted.') <a href="'.view_memory(42903,42902).$x_progress['sourcehandle'].'">'.$x_progress['sourcetext'].'</a>: '.$x_progress['chaintime'].' ? '.$x_progress['chainvalue'].' / <a href="'.view_app_chain(12722).'?chainid=' . $x_progress['chainid'] . '">'.$x_progress['chainid'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['chainvalue']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['chaintime'] ).' = '.$seconds_left.')</div>';
             }
 
 

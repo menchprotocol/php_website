@@ -8,13 +8,13 @@ class Ideas extends CIdea_cache
         parent::__construct();
     }
 
-    function create($add_fields, $chainplayercreator = 14068 /* GUEST */)
+    function create($add_fields, $chainsourcecreator = 14068 /* GUEST */)
     {
 
         $creation_data = array(
-            'chainplayertype' => 4250,
-            'chainplayercreator' => $chainplayercreator,
-            'chaintext' => (isset($add_fields['ideatext']) ? $add_fields['ideatext'] : null),
+            'chainsourcetype' => 4250,
+            'chainsourcecreator' => $chainsourcecreator,
+            'chainvalue' => (isset($add_fields['ideatext']) ? $add_fields['ideatext'] : null),
         );
         if (isset($add_fields['ideaid']) && !count($this->Chains->read(array('chainid' => $add_fields['ideaid'])))) {
             //Set the chain ID since its not in the ledger:
@@ -33,11 +33,11 @@ class Ideas extends CIdea_cache
             $add_fields['ideahashtag'] = random_string(8);
         }
         $this->Chains->create(array(
-            'chainplayertype' => 42275, //Idea Trigger
-            'chainplayerup' => 32337, //Idea Hashtag
-            'chainplayercreator' => $chainplayercreator,
+            'chainsourcetype' => 42275, //Idea Trigger
+            'chainsourceup' => 32337, //Idea Hashtag
+            'chainsourcecreator' => $chainsourcecreator,
             'chainidearight' => $new_x['chainid'],
-            'chaintext' => $add_fields['ideahashtag'],
+            'chainvalue' => $add_fields['ideahashtag'],
         ));
 
         //Save Idea
@@ -50,30 +50,30 @@ class Ideas extends CIdea_cache
         //Update Search Index:
         update_algolia(12273, $add_fields['ideaid']);
 
-        //Additional Players to be added? Start with creator
-        $player_appended = array($chainplayercreator);
+        //Additional Sources to be added? Start with creator
+        $source_appended = array($chainsourcecreator);
         $pinned_followers = $this->Chains->read(array(
-            'chainplayerup' => $chainplayercreator,
-            'chainplayertype' => 41011, //PINNED FOLLOWER
-        ), array('chainplayerdown'), 0, 0, array('chainnumber' => 'ASC', 'chainid' => 'DESC'));
+            'chainsourceup' => $chainsourcecreator,
+            'chainsourcetype' => 41011, //PINNED FOLLOWER
+        ), array('chainsourcedown'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
         //Also append all pinned followers:
-        $chainnumber = 0;
+        $chainkey = 0;
         foreach ($pinned_followers as $x_pinned) {
-            if (!in_array($x_pinned['playerid'], $player_appended) && !count($this->Chains->read(array(
-                    'chainplayertype' => 4983, //Idea Created
-                    'chainplayerup' => $x_pinned['playerid'],
+            if (!in_array($x_pinned['sourceid'], $source_appended) && !count($this->Chains->read(array(
+                    'chainsourcetype' => 4983, //Idea Created
+                    'chainsourceup' => $x_pinned['sourceid'],
                     'chainidearight' => $add_fields['ideaid'],
                 )))) {
                 $this->Chains->create(array(
-                    'chainplayertype' => 4983, //Idea Created
-                    'chainplayerup' => $x_pinned['playerid'],
+                    'chainsourcetype' => 4983, //Idea Created
+                    'chainsourceup' => $x_pinned['sourceid'],
                     'chainidearight' => $add_fields['ideaid'],
-                    'chainplayercreator' => $chainplayercreator,
-                    'chainnumber' => $chainnumber,
+                    'chainsourcecreator' => $chainsourcecreator,
+                    'chainkey' => $chainkey,
                 ));
-                array_push($player_appended, $x_pinned['playerid']);
-                $chainnumber++;
+                array_push($source_appended, $x_pinned['sourceid']);
+                $chainkey++;
             }
         }
 
@@ -130,7 +130,7 @@ class Ideas extends CIdea_cache
     }
 
 
-    function update($chainid, $update_columns, $chainplayercreator = 0)
+    function update($chainid, $update_columns, $chainsourcecreator = 0)
     {
 
         if (!count($update_columns)) {
@@ -162,11 +162,11 @@ class Ideas extends CIdea_cache
                     //Update if anything changed:
                     if ($value != $idea_current[$key]) {
                         $this->Chains->create(array(
-                            'chainplayertype' => 42275, //Idea Trigger
-                            'chainplayerup' => $must_sync_ledger[$key],
-                            'chainplayercreator' => $chainplayercreator,
+                            'chainsourcetype' => 42275, //Idea Trigger
+                            'chainsourceup' => $must_sync_ledger[$key],
+                            'chainsourcecreator' => $chainsourcecreator,
                             'chainidearight' => $chainid,
-                            'chaintext' => $value,
+                            'chainvalue' => $value,
                         ));
                         $must_sync_found = true;
                     } else {
@@ -206,7 +206,7 @@ class Ideas extends CIdea_cache
 
     }
 
-    function delete($ideaid, $chainplayercreator = 0, $migrateid = 0)
+    function delete($ideaid, $chainsourcecreator = 0, $migrateid = 0)
     {
 
         if (!count($this->Ideas->read(array('ideaid' => $ideaid)))) {
@@ -230,10 +230,10 @@ class Ideas extends CIdea_cache
                 $new_array = array(
                     'chainidealeft' => ($migrate['chainidealeft'] == $ideaid ? $migrateid : $migrate['chainidealeft']),
                     'chainidearight' => ($migrate['chainidearight'] == $ideaid ? $migrateid : $migrate['chainidearight']),
-                    'chainplayercreator' => $migrate['chainplayercreator'],
-                    'chainplayerdown' => $migrate['chainplayerdown'],
-                    'chainplayerup' => $migrate['chainplayerup'],
-                    'chainplayertype' => $migrate['chainplayertype'],
+                    'chainsourcecreator' => $migrate['chainsourcecreator'],
+                    'chainsourcedown' => $migrate['chainsourcedown'],
+                    'chainsourceup' => $migrate['chainsourceup'],
+                    'chainsourcetype' => $migrate['chainsourcetype'],
                 );
 
                 //Update if this new one is unique:
@@ -245,7 +245,7 @@ class Ideas extends CIdea_cache
             }
 
             //Just remove it:
-            $x_adjusted += $this->Chains->delete($migrate['chainid'], $chainplayercreator);
+            $x_adjusted += $this->Chains->delete($migrate['chainid'], $chainsourcecreator);
 
         }
 
@@ -258,7 +258,7 @@ class Ideas extends CIdea_cache
         } else {
             //Failed to remove
             log_error('ideas->delete() Failed to remove #' . $ideaid . ' Chain ID', array(
-                'chainplayercreator' => $chainplayercreator,
+                'chainsourcecreator' => $chainsourcecreator,
                 'chainidearight' => $ideaid,
                 'chainidealeft' => $migrateid,
             ));
@@ -269,27 +269,27 @@ class Ideas extends CIdea_cache
     }
 
 
-    function command($ideaid, $action_playerid, $action_command1, $action_command2, $chainplayercreator)
+    function command($ideaid, $action_sourceid, $action_command1, $action_command2, $chainsourcecreator)
     {
 
 
         boost_power();
 
-        if (!in_array($action_playerid, $this->config->item('playerids___12589'))) {
+        if (!in_array($action_sourceid, $this->config->item('sourceids___12589'))) {
 
             return array(
                 'status' => 0,
                 'message' => 'Unknown mass action',
             );
 
-        } elseif (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && !view_valid_handle_player($action_command1)) {
+        } elseif (in_array($action_sourceid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && !view_valid_handle_source($action_command1)) {
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Player. Format must be: @PlayerHandle',
+                'message' => 'Unknown Source. Format must be: @SourceHandle',
             );
 
-        } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && !view_valid_handle_idea($action_command1)) {
+        } elseif (in_array($action_sourceid, array(12611, 12612, 27240, 28801)) && !view_valid_handle_idea($action_command1)) {
 
             return array(
                 'status' => 0,
@@ -306,9 +306,9 @@ class Ideas extends CIdea_cache
         $applied_success = 0; //To be populated
 
         $is_next = $this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
             'chainidealeft' => $ideaid,
-        ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'));
+        ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'));
 
 
         //Process request:
@@ -316,22 +316,22 @@ class Ideas extends CIdea_cache
 
             //Logic here must match items in e_mass_actions config variable
 
-            if (in_array($action_playerid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && view_valid_handle_player($action_command1)) {
+            if (in_array($action_sourceid, array(12591, 12592, 27080, 27985, 27081, 27986, 27082, 27083, 27084, 27085, 27086, 27087)) && view_valid_handle_source($action_command1)) {
 
                 //Check if it has this item:
-                foreach ($this->Players->read(array(
-                    'LOWER(playerhandle)' => strtolower(view_valid_handle_player($action_command1)),
+                foreach ($this->Sources->read(array(
+                    'LOWER(sourcehandle)' => strtolower(view_valid_handle_source($action_command1)),
                 )) as $e) {
 
                     $idea_has_e = $this->Chains->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
                         'chainidearight' => $next_i['ideaid'],
-                        'chainplayerup' => $e['playerid'],
+                        'chainsourceup' => $e['sourceid'],
                     ));
 
-                    if (in_array($action_playerid, array(12591, 27080, 27985, 27082, 27084, 27086)) && !count($idea_has_e)) {
+                    if (in_array($action_sourceid, array(12591, 27080, 27985, 27082, 27084, 27086)) && !count($idea_has_e)) {
 
-                        $player_mapper = array(
+                        $source_mapper = array(
                             12591 => 4983,  //Co-Author
                             27985 => 27984, //Include If Has ANY
                             27082 => 26600, //Exclude If Has ALL
@@ -341,71 +341,71 @@ class Ideas extends CIdea_cache
 
                         //Missing & Must be Added:
                         $this->Chains->create(array(
-                            'chainplayercreator' => $chainplayercreator,
-                            'chainplayerup' => $e['playerid'],
-                            'chainplayertype' => $player_mapper[$action_playerid],
+                            'chainsourcecreator' => $chainsourcecreator,
+                            'chainsourceup' => $e['sourceid'],
+                            'chainsourcetype' => $source_mapper[$action_sourceid],
                             'chainidearight' => $next_i['ideaid'],
-                            'chaintext' => trim($action_command2),
+                            'chainvalue' => trim($action_command2),
                         ), true);
 
                         $applied_success++;
 
-                    } elseif (in_array($action_playerid, array(12592, 27081, 27986, 27083, 27085, 27087)) && count($idea_has_e)) {
+                    } elseif (in_array($action_sourceid, array(12592, 27081, 27986, 27083, 27085, 27087)) && count($idea_has_e)) {
 
                         //Has and must be deleted:
-                        $this->Chains->delete($idea_has_e[0]['chainid'], $chainplayercreator);
+                        $this->Chains->delete($idea_has_e[0]['chainid'], $chainsourcecreator);
 
                         $applied_success++;
 
                     }
                 }
 
-            } elseif (in_array($action_playerid, array(12611, 12612, 27240, 28801)) && view_valid_handle_idea($action_command1)) {
+            } elseif (in_array($action_sourceid, array(12611, 12612, 27240, 28801)) && view_valid_handle_idea($action_command1)) {
 
                 foreach ($this->Ideas->read(array(
                     'LOWER(ideahashtag)' => strtolower(view_valid_handle_idea($action_command1)),
                 )) as $i) {
 
-                    if ($action_playerid == 27240) {
+                    if ($action_sourceid == 27240) {
 
                         //Copy
-                        $result = $this->Ideas->copy(intval($_POST['ideaid']), 0, $action_playerid);
+                        $result = $this->Ideas->copy(intval($_POST['ideaid']), 0, $action_sourceid);
                         if ($result['status']) {
-                            //Increment Player since not there:
+                            //Increment Source since not there:
                             $applied_success++;
                         }
 
                     } else {
 
                         $is_previous = $this->Chains->read(array(
-                            'chainplayertype IN (' . join(',', $this->config->item('playerids___42345')) . ')' => null, //Active Sequence 2-Ways
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence 2-Ways
                             'chainidealeft' => $i['ideaid'],
                             'chainidearight' => $next_i['ideaid'],
                         ), array(), 0);
 
 
                         //See how to adjust:
-                        if (in_array($action_playerid, array(12611, 28801)) && !count($is_previous)) {
+                        if (in_array($action_sourceid, array(12611, 28801)) && !count($is_previous)) {
 
                             //Chain
-                            $status = $this->Ideas->chain($i, 4228, $next_i, $chainplayercreator);
+                            $status = $this->Ideas->chain($i, 4228, $next_i, $chainsourcecreator);
 
                             if ($status['status']) {
 
-                                if ($action_playerid == 28801) {
+                                if ($action_sourceid == 28801) {
                                     //Also remove old chain:
-                                    $this->Chains->delete($next_i['chainid'], $chainplayercreator);
+                                    $this->Chains->delete($next_i['chainid'], $chainsourcecreator);
                                 }
 
-                                //Increment Player since not there:
+                                //Increment Source since not there:
                                 $applied_success++;
                             }
                         }
 
 
-                        if ($action_playerid == 12612 && count($is_previous)) {
+                        if ($action_sourceid == 12612 && count($is_previous)) {
                             //Unchain
-                            $this->Chains->delete($is_previous[0]['chainid'], $chainplayercreator);
+                            $this->Chains->delete($is_previous[0]['chainid'], $chainsourcecreator);
 
                             $applied_success++;
                         }
@@ -418,14 +418,14 @@ class Ideas extends CIdea_cache
         }
 
 
-        //Log mass Player edit transaction:
+        //Log mass Source edit transaction:
         $this->Chains->create(array(
-            'chainplayertype' => 44179, //Triggered
-            'chainplayerup' => $action_playerid,
-            'chainplayerdown' => $chainplayercreator,
-            'chainplayercreator' => $chainplayercreator,
+            'chainsourcetype' => 44179, //Triggered
+            'chainsourceup' => $action_sourceid,
+            'chainsourcedown' => $chainsourcecreator,
+            'chainsourcecreator' => $chainsourcecreator,
             'chainidearight' => $ideaid,
-            'chaintext' => array(
+            'chainvalue' => array(
                 'payload' => $_POST,
                 'idea_total' => count($is_next),
                 'idea_updated' => $applied_success,
@@ -443,18 +443,18 @@ class Ideas extends CIdea_cache
     }
 
 
-    function chain($i, $chainplayertype, $next_i, $chainplayercreator)
+    function chain($i, $chainsourcetype, $next_i, $chainsourcecreator)
     {
 
         //Chains ideas with the causality chain ensuring not a duplicate:
-        if (0 && $chainplayertype == 4228 && count($this->Chains->previousidea(0, $next_i['ideahashtag'], $i['ideaid']))) {
+        if (0 && $chainsourcetype == 4228 && count($this->Chains->previousidea(0, $next_i['ideahashtag'], $i['ideaid']))) {
             return array(
                 'status' => 0,
                 'message' => 'Idea already added in the inverse direction, so it cannot be added here',
             );
         } elseif (count($this->Chains->read(array(
             'chainidealeft' => $i['ideaid'],
-            'chainplayertype' => $chainplayertype,
+            'chainsourcetype' => $chainsourcetype,
             'chainidearight' => $next_i['ideaid'],
         )))) {
             //Make sure not a duplicate chain:
@@ -466,9 +466,9 @@ class Ideas extends CIdea_cache
 
         //Adding PREVIOUS or NEXT Idea from Idea
         $this->Chains->create(array(
-            'chainplayercreator' => $chainplayercreator,
+            'chainsourcecreator' => $chainsourcecreator,
             'chainidealeft' => $i['ideaid'],
-            'chainplayertype' => $chainplayertype,
+            'chainsourcetype' => $chainsourcetype,
             'chainidearight' => $next_i['ideaid'],
         ), true);
 
@@ -490,7 +490,7 @@ class Ideas extends CIdea_cache
             return array();
         }
 
-        $input__selection = in_array($i['ideatype'], $this->config->item('playerids___7712'));
+        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
         if ($scope == 'AND' && $input__selection) {
             //OR IDEA:
             return array();
@@ -500,9 +500,9 @@ class Ideas extends CIdea_cache
         array_push($loop_breaker_ids, intval($i['ideaid']));
 
         foreach ($this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Active Sequence Down
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
             'chainidealeft' => $i['ideaid'],
-        ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC')) as $next_i) {
+        ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
 
             if (!in_array(intval($next_i['ideaid']), $recursive_idea_ids)) {
                 if (!($scope == 'OR' && !$input__selection)) {
@@ -530,7 +530,7 @@ class Ideas extends CIdea_cache
 
     }
 
-    function copy($ideaid, $do_recursive, $chainplayercreator, $previous_i = null, $clone_title = null)
+    function copy($ideaid, $do_recursive, $chainsourcecreator, $previous_i = null, $clone_title = null)
     {
 
         //Create Clone -or- Chain & move-on?
@@ -550,66 +550,66 @@ class Ideas extends CIdea_cache
         $idea_new = $this->Ideas->create(array(
             'ideatext' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['ideatext']),
             'ideatype' => $this_i[0]['ideatype'],
-        ), $chainplayercreator);
+        ), $chainsourcecreator);
 
-        //Always Chain Players:
+        //Always Chain Sources:
         $filters = array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___41302')) . ')' => null, //Clone Idea Player Chains
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41302')) . ')' => null, //Clone Idea Source Chains
             'chainidearight' => $ideaid,
         );
 
         foreach ($this->Chains->read($filters, array(), 0) as $x) {
             $this->Chains->create(array(
-                'chainplayercreator' => $chainplayercreator,
-                'chainplayertype' => $x['chainplayertype'],
+                'chainsourcecreator' => $chainsourcecreator,
+                'chainsourcetype' => $x['chainsourcetype'],
                 'chainidearight' => $idea_new['idea_create']['ideaid'],
-                'chainplayerup' => $x['chainplayerup'],
-                'chainplayerdown' => $x['chainplayerdown'],
+                'chainsourceup' => $x['chainsourceup'],
+                'chainsourcedown' => $x['chainsourcedown'],
                 'chainidealeft' => $x['chainidealeft'],
-                'chaintext' => $x['chaintext'],
-                'chainnumber' => $x['chainnumber'],
+                'chainvalue' => $x['chainvalue'],
+                'chainkey' => $x['chainkey'],
             ));
         }
 
 
         //Always Chain Followings:
         foreach ($this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___41301')) . ')' => null, //Duplicate Chains
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41301')) . ')' => null, //Duplicate Chains
             'chainidearight' => $ideaid,
         ), array(), 0) as $x) {
             $this->Chains->create(array(
-                'chainplayercreator' => $chainplayercreator,
-                'chainplayertype' => $x['chainplayertype'],
+                'chainsourcecreator' => $chainsourcecreator,
+                'chainsourcetype' => $x['chainsourcetype'],
                 'chainidearight' => $idea_new['idea_create']['ideaid'],
                 'chainidealeft' => $x['chainidealeft'],
-                'chaintext' => $x['chaintext'],
-                'chainnumber' => $x['chainnumber'],
+                'chainvalue' => $x['chainvalue'],
+                'chainkey' => $x['chainkey'],
             ));
         }
 
 
         //Fetch followers:
         foreach ($this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___41301')) . ')' => null, //Duplicate Chains
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41301')) . ')' => null, //Duplicate Chains
             'chainidealeft' => $ideaid,
         ), array('chainidearight'), 0) as $x) {
 
             if ($do_recursive && !count($this->Chains->read(array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
                     'chainidearight' => $ideaid,
-                    'chainplayerup' => 42208, //No-Clone Idea
+                    'chainsourceup' => 42208, //No-Clone Idea
                 )))) {
                 //Clone Followers Recursively:
-                $this->Ideas->copy($x['ideaid'], $do_recursive, $chainplayercreator, $this_i[0]);
+                $this->Ideas->copy($x['ideaid'], $do_recursive, $chainsourcecreator, $this_i[0]);
             } else {
                 //Chain Followers:
                 $this->Chains->create(array(
-                    'chainplayercreator' => $chainplayercreator,
-                    'chainplayertype' => $x['chainplayertype'],
+                    'chainsourcecreator' => $chainsourcecreator,
+                    'chainsourcetype' => $x['chainsourcetype'],
                     'chainidealeft' => $idea_new['idea_create']['ideaid'],
                     'chainidearight' => $x['ideaid'],
-                    'chaintext' => $x['chaintext'],
-                    'chainnumber' => $x['chainnumber'],
+                    'chainvalue' => $x['chainvalue'],
+                    'chainkey' => $x['chainkey'],
                 ));
             }
         }

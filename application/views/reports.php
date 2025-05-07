@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$players___11035 = $this->config->item('players___11035'); //Encyclopedia
+$sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
 $last_x_days = 7;
 
 $chaintime_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
@@ -14,10 +14,10 @@ $chaintime_end = date("Y-m-d H:i:s", $chaintime_end_timestamp);
 $html_message = '<div class="line">Here is what happened in the past '.$last_x_days.' day'.search($last_x_days).':</div><br />';
 $subject = 'Report for the Week of '.date("M jS", $chaintime_start_timestamp);
 
-foreach($this->config->item('players___31770') as $chainplayertype => $m) {
+foreach($this->config->item('sources___31770') as $chainsourcetype => $m) {
 
-    $unique = count_chain_groups($chainplayertype, null, $chaintime_end);
-    $this_week = count_chain_groups($chainplayertype, $chaintime_start, $chaintime_end);
+    $unique = count_chain_groups($chainsourcetype, null, $chaintime_end);
+    $this_week = count_chain_groups($chainsourcetype, $chaintime_start, $chaintime_end);
     if(!$unique){
         continue;
     }
@@ -32,7 +32,7 @@ foreach($this->config->item('players___31770') as $chainplayertype => $m) {
 
 
 //Decide what to do with this?
-if($player_http_request && !isset($_GET['email_trigger'])){
+if($source_http_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
     echo $html_message;
@@ -42,21 +42,21 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
 
     $subscriber_filters = array(
-        'chainplayerup' => 12114,
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+        'chainsourceup' => 12114,
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
             );
 
     //Should we limit the scope?
-    if($player_http_request){
-        $subscriber_filters['chainplayerdown'] = $player_session['playerid'];
+    if($source_http_request){
+        $subscriber_filters['chainsourcedown'] = $source_session['sourceid'];
     }
 
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Chains->read($subscriber_filters, array('chainplayerdown')) as $subscribed_u){
+    foreach($this->Chains->read($subscriber_filters, array('chainsourcedown')) as $subscribed_u){
 
-        $this->Chains->message($subscribed_u['playerid'], $subject, $html_message);
+        $this->Chains->message($subscribed_u['sourceid'], $subject, $html_message);
         $email_recipients++;
 
     }

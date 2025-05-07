@@ -6,31 +6,31 @@ if(isset($_GET['search_for'])){
 
     $icon_keyword = $_GET['search_for'];
 
-} elseif(isset($_GET['playerhandle']) && $_GET['playerhandle']){
+} elseif(isset($_GET['sourcehandle']) && $_GET['sourcehandle']){
 
-    $es = $this->Players->read(array(
-        'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
+    $es = $this->Sources->read(array(
+        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
     ));
     if(!count($es)){
         return view_json(array(
             'status' => 0,
-            'message' => 'Invalid Player ID #1'
+            'message' => 'Invalid Source ID #1'
         ));
-    } elseif(!strlen($es[0]['playercover'])) {
+    } elseif(!strlen($es[0]['sourcecover'])) {
         return view_json(array(
             'status' => 0,
-            'message' => 'Player Missing Cover'
+            'message' => 'Source Missing Cover'
         ));
     }
 
-    if(string_is_icon($es[0]['playercover'])){
+    if(string_is_icon($es[0]['sourcecover'])){
 
         //Exclude Cover settings:
-        $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['playercover']);
+        $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['sourcecover']);
 
     } else {
 
-        $icon_keyword = $es[0]['playercover'];
+        $icon_keyword = $es[0]['sourcecover'];
 
     }
 }
@@ -46,8 +46,8 @@ echo '<input type="submit" class="btn" value="Search">';
 
 if($icon_keyword){
 
-    $matching_results = $this->Players->read(array(
-        'LOWER(playercover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
+    $matching_results = $this->Sources->read(array(
+        'LOWER(sourcecover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 
     //List the matching search:
@@ -70,21 +70,21 @@ if($icon_keyword){
         foreach($matching_results as $count=>$en){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
-                $replaced += $this->Players->update($en['playerid'], array(
-                    'playercover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['playercover']),
-                ), $player_session['playerid']);
+                $replaced += $this->Sources->update($en['sourceid'], array(
+                    'sourcecover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['sourcecover']),
+                ), $source_session['sourceid']);
 
             }
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['playercover']).'</span><a href="'.view_memory(42903,42902).$en['playerhandle'].'">'.$en['playertext'].'</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['sourcecover']).'</span><a href="'.view_memory(42903,42902).$en['sourcehandle'].'">'.$en['sourcetext'].'</a></td>';
             echo '</tr>';
 
         }
 
         if($replaced > 0){
-            echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>Updated icons for '.$replaced.' Players.';
+            echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>Updated icons for '.$replaced.' Sources.';
         }
 
     }

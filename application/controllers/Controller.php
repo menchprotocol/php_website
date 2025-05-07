@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Controller extends CI_Controller
 {
 
-    public $player_session;
+    public $source_session;
 
     function __construct()
     {
@@ -13,36 +13,36 @@ class Controller extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        $this->player_session = player_session();
+        $this->source_session = source_session();
 
 
         date_default_timezone_set('America/Los_Angeles');
 
         @session_start();
 
-        //AUTO Login player if has cookie?
+        //AUTO Login source if has cookie?
         $is_ajax = false;
-        $player_user = false;
+        $source_user = false;
         $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $this->uri->segment(1));
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
         $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_chain(4269));
-        $player_session = player_session();
-        $is_login_verified = isset($_GET['playerhandle']) && $_GET['playerhandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['playerhandle']) && view_hash($_GET['time'] . $_GET['playerhandle']) == $_GET['hash'];
+        $source_session = source_session();
+        $is_login_verified = isset($_GET['sourcehandle']) && $_GET['sourcehandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['sourcehandle']) && view_hash($_GET['time'] . $_GET['sourcehandle']) == $_GET['hash'];
 
         if (
-            !$player_session
-            && !array_key_exists(strtolower($first_segment), $this->config->item('handlplayers___14582'))
+            !$source_session
+            && !array_key_exists(strtolower($first_segment), $this->config->item('handlsources___14582'))
             && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
         ) {
 
             if ($is_login_verified) {
 
-                foreach ($this->Players->read(array(
-                    'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-                )) as $player_session) {
+                foreach ($this->Sources->read(array(
+                    'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+                )) as $source_session) {
 
                     //Login:
-                    $this->Players->activate($player_session, true);
+                    $this->Sources->activate($source_session, true);
 
                     //Log them in:
                     if (!$is_ajax) {
@@ -54,8 +54,8 @@ class Controller extends CI_Controller
 
             } elseif (isset($_COOKIE['auth_cookie'])) {
 
-                $player_session = verify_cookie();
-                if ($player_session) {
+                $source_session = verify_cookie();
+                if ($source_session) {
                     //Log them in:
                     if (!$is_ajax) {
                         header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
@@ -84,34 +84,34 @@ class Controller extends CI_Controller
         redirect($newhandle, 'location', 301);
     }
 
-    function load($app_playerid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0)
+    function load($app_sourceid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0)
     {
 
-        $memory_detected = is_array($this->config->item('playerids___6287')) && count($this->config->item('playerids___6287'));
+        $memory_detected = is_array($this->config->item('sourceids___6287')) && count($this->config->item('sourceids___6287'));
         if (!$memory_detected) {
             //Since we don't have the memory created we must load the app that does so:
-            $app_playerid = 4527;
+            $app_sourceid = 4527;
         }
 
         //Any ideas passed?
-        $players___6287 = $this->config->item('players___6287'); //APP
+        $sources___6287 = $this->config->item('sources___6287'); //APP
         $flash_message = false;
         $focus_e = null; //Sourcing
         $focus_i = null; //Ideation/Discovery
         $target_i = null; //Discovery
 
 
-        if (isset($_GET['playerhandle']) && $_GET['playerhandle'] == 'SuccessfulWhale') {
-            $_GET['playerhandle'] = '';
+        if (isset($_GET['sourcehandle']) && $_GET['sourcehandle'] == 'SuccessfulWhale') {
+            $_GET['sourcehandle'] = '';
             $focus_handle = '';
-        } elseif ($focus_handle && strlen($focus_handle) && !isset($_GET['playerhandle'])) {
-            $_GET['playerhandle'] = $focus_handle;
+        } elseif ($focus_handle && strlen($focus_handle) && !isset($_GET['sourcehandle'])) {
+            $_GET['sourcehandle'] = $focus_handle;
         }
         if ($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['ideahashtag'])) {
             $_GET['ideahashtag'] = $focus_hashtag;
         }
-        if (!isset($_GET['playerhandle'])) {
-            $_GET['playerhandle'] = 0;
+        if (!isset($_GET['sourcehandle'])) {
+            $_GET['sourcehandle'] = 0;
         }
         if (!isset($_GET['ideahashtag'])) {
             $_GET['ideahashtag'] = 0;
@@ -158,71 +158,71 @@ class Controller extends CI_Controller
                 }
             }
 
-            if ($app_playerid == 33286 && $focus_i && $focus_i['ideahashtag'] !== $_GET['ideahashtag']) {
+            if ($app_sourceid == 33286 && $focus_i && $focus_i['ideahashtag'] !== $_GET['ideahashtag']) {
                 //Adjust URL Case Sensitive:
                 return get_redirected(view_memory(42903, 33286) . $focus_i['ideahashtag']);
             }
         }
 
 
-        if (isset($_GET['playerhandle']) && strlen($_GET['playerhandle'])) {
-            foreach ($this->Players->read(array(
-                'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-            )) as $player_found) {
-                $focus_e = $player_found;
+        if (isset($_GET['sourcehandle']) && strlen($_GET['sourcehandle'])) {
+            foreach ($this->Sources->read(array(
+                'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+            )) as $source_found) {
+                $focus_e = $source_found;
             }
             if (!$focus_e) {
                 //See if we need to lookup the ID:
-                if (is_numeric($_GET['playerhandle'])) {
+                if (is_numeric($_GET['sourcehandle'])) {
                     //Maybe its an ID?
-                    foreach ($this->Players->read(array(
-                        'playerid' => $_GET['playerhandle'],
-                    )) as $player_found) {
-                        $focus_e = $player_found;
+                    foreach ($this->Sources->read(array(
+                        'sourceid' => $_GET['sourcehandle'],
+                    )) as $source_found) {
+                        $focus_e = $source_found;
                     }
                 }
             }
-            if ($app_playerid == 42902 && $focus_e && $focus_e['playerhandle'] !== $_GET['playerhandle']) {
+            if ($app_sourceid == 42902 && $focus_e && $focus_e['sourcehandle'] !== $_GET['sourcehandle']) {
                 //Adjust URL Case Sensitive:
-                return get_redirected(view_memory(42903, 42902) . $focus_e['playerhandle']);
+                return get_redirected(view_memory(42903, 42902) . $focus_e['sourcehandle']);
             }
         }
 
 
-        if ($memory_detected && !in_array($app_playerid, $this->config->item('playerids___6287'))) {
+        if ($memory_detected && !in_array($app_sourceid, $this->config->item('sourceids___6287'))) {
             //Invalid App:
-            return get_redirected(view_memory(42903, 42902) . $players___6287[$app_playerid]['m__handle'], '<div class="alert alert-danger" role="alert">@' . $players___6287[$app_playerid]['m__handle'] . ' Is not an APP, yet 🤔</div>');
-        } elseif ($memory_detected && !in_array($app_playerid, $this->config->item('playerids___42922'))) {
+            return get_redirected(view_memory(42903, 42902) . $sources___6287[$app_sourceid]['m__handle'], '<div class="alert alert-danger" role="alert">@' . $sources___6287[$app_sourceid]['m__handle'] . ' Is not an APP, yet 🤔</div>');
+        } elseif ($memory_detected && !in_array($app_sourceid, $this->config->item('sourceids___42922'))) {
             //Validate Required App input:
-            if (in_array($app_playerid, $this->config->item('playerids___42905')) && !$focus_e) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['playerhandle'] . ' is not a valid Player handle.</div>');
-            } elseif (in_array($app_playerid, $this->config->item('playerids___44329')) && (!$focus_i || !$target_i)) {
+            if (in_array($app_sourceid, $this->config->item('sourceids___42905')) && !$focus_e) {
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['sourcehandle'] . ' is not a valid Source handle.</div>');
+            } elseif (in_array($app_sourceid, $this->config->item('sourceids___44329')) && (!$focus_i || !$target_i)) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['ideahashtag'] . ' & #' . $target_hashtag . ' must be valid hashtags.</div>');
-            } elseif (in_array($app_playerid, $this->config->item('playerids___42911')) && !$focus_i) {
+            } elseif (in_array($app_sourceid, $this->config->item('sourceids___42911')) && !$focus_i) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['ideahashtag'] . ' is not a valid idea hashtag.</div>');
             }
         }
 
 
-        $chainplayerdown = ($focus_e ? $focus_e['playerid'] : 0);
+        $chainsourcedown = ($focus_e ? $focus_e['sourceid'] : 0);
         $chainidearight = ($focus_i ? $focus_i['ideaid'] : 0);
         $chainidealeft = ($target_i ? $target_i['ideaid'] : 0);
 
         //Run App
-        $player_session = false;
-        $player_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
+        $source_session = false;
+        $source_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
 
-        if ($memory_detected && in_array($app_playerid, $this->config->item('playerids___42920'))) {
+        if ($memory_detected && in_array($app_sourceid, $this->config->item('sourceids___42920'))) {
             boost_power();
         }
 
-        if ($memory_detected && $player_http_request) {
+        if ($memory_detected && $source_http_request) {
 
             //Needs superpowers?
-            $player_session = player_session();
+            $source_session = source_session();
 
-            if ($player_session && isset($player_session['e__id'])) {
-                //Old player, must log out:
+            if ($source_session && isset($source_session['e__id'])) {
+                //Old source, must log out:
                 header("Location: /logout", true, 301);
                 return false;
             }
@@ -231,14 +231,14 @@ class Controller extends CI_Controller
             if (isset($_GET['hash']) && isset($_GET['time']) && $focus_e) {
 
                 //Validate Hash:
-                if ($_GET['hash'] == view_hash($_GET['time'] . $focus_e['playerhandle'])) {
+                if ($_GET['hash'] == view_hash($_GET['time'] . $focus_e['sourcehandle'])) {
 
                     if ($focus_i) {
                         if (idea_is_startable($focus_i)) {
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this idea. Scroll to the bottom & go next to continue.</div>';
                         } else {
-                            $this->Chains->idea_discovered(idea_type_discovery($focus_i), $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
-                            $this->Chains->idea_discovered(29393, $focus_e['playerid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
+                            $this->Chains->idea_discovered(idea_type_discovery($focus_i), $focus_e['sourceid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
+                            $this->Chains->idea_discovered(29393, $focus_e['sourceid'], ($target_i ? $target_i['ideaid'] : 0), $focus_i);
 
                             //Inform user of changes:
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Ideas has been idea_discovered</div>';
@@ -246,8 +246,8 @@ class Controller extends CI_Controller
                     }
 
                     //If not logged in, log them in:
-                    if (!$player_session) {
-                        $session_data = $this->Players->activate($player_session, true);
+                    if (!$source_session) {
+                        $session_data = $this->Sources->activate($source_session, true);
                     }
 
                 }
@@ -259,29 +259,29 @@ class Controller extends CI_Controller
         $ui = null;
         $new_cache = false;
         $cache_chaintime = null;
-        $chainplayercreator = ($player_http_request ? ($player_session ? $player_session['playerid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
-        $skip_idea_privacy_check = !$memory_detected || in_array($app_playerid, $this->config->item('playerids___43388'));
-        $player_access = player_access(null, $focus_e['playerid'], $focus_e);
+        $chainsourcecreator = ($source_http_request ? ($source_session ? $source_session['sourceid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
+        $skip_idea_privacy_check = !$memory_detected || in_array($app_sourceid, $this->config->item('sourceids___43388'));
+        $source_access = source_access(null, $focus_e['sourceid'], $focus_e);
         $idea_access = idea_access(null, $focus_i['ideaid'], $focus_i);
         $target_idea_access = idea_access(null, $target_i['ideaid'], $target_i);
 
         //MEMBER REDIRECT?
-        if ($player_http_request && $memory_detected) {
+        if ($source_http_request && $memory_detected) {
 
-            //Missing App, Player or Idea Access?
+            //Missing App, Source or Idea Access?
             $missing_access = false; //Assume they have access
-            $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___6287[$app_playerid]['m__following']);
-            if ($player_session && in_array($app_playerid, $this->config->item('playerids___14639'))) {
+            $superpowers_required = array_intersect($this->config->item('sourceids___10957'), $sources___6287[$app_sourceid]['m__following']);
+            if ($source_session && in_array($app_sourceid, $this->config->item('sourceids___14639'))) {
                 //Should redirect them:
-                return get_redirected(view_memory(42903, 42902) . $player_session['playerhandle']);
-            } elseif (!$player_session && in_array($app_playerid, $this->config->item('playerids___14740'))) {
+                return get_redirected(view_memory(42903, 42902) . $source_session['sourcehandle']);
+            } elseif (!$source_session && in_array($app_sourceid, $this->config->item('sourceids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
-            } elseif (count($superpowers_required) && !player_session(end($superpowers_required))) {
-                $players___10957 = $this->config->item('players___10957');
-                $missing_access = 'Error: You Cannot Access ' . $players___6287[$app_playerid]['m__title'] . ' as it requires the superpower of ' . $players___10957[end($superpowers_required)]['m__title'] . '.';
-            } elseif ($focus_e && !$player_access) {
-                $missing_access = 'Error: You Cannot Access @' . $focus_e['playerhandle'] . ' due to Privacy Settings.';
+            } elseif (count($superpowers_required) && !source_session(end($superpowers_required))) {
+                $sources___10957 = $this->config->item('sources___10957');
+                $missing_access = 'Error: You Cannot Access ' . $sources___6287[$app_sourceid]['m__title'] . ' as it requires the superpower of ' . $sources___10957[end($superpowers_required)]['m__title'] . '.';
+            } elseif ($focus_e && !$source_access) {
+                $missing_access = 'Error: You Cannot Access @' . $focus_e['sourcehandle'] . ' due to Privacy Settings.';
             } elseif (!$skip_idea_privacy_check && $focus_i && !$idea_access) {
                 $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['ideahashtag'] . ' due to Privacy Settings.';
             } elseif (!$skip_idea_privacy_check && $target_i && !$target_idea_access) {
@@ -291,28 +291,28 @@ class Controller extends CI_Controller
 
             if ($missing_access) {
                 //Redirect:
-                return get_redirected((!$player_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
+                return get_redirected((!$source_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
             }
         }
 
 
         if ($memory_detected) {
 
-            if (in_array($app_playerid, $this->config->item('playerids___14599')) && !in_array($app_playerid, $this->config->item('playerids___12741'))) {
+            if (in_array($app_sourceid, $this->config->item('sourceids___14599')) && !in_array($app_sourceid, $this->config->item('sourceids___12741'))) {
 
                 if (!isset($_GET['reset_cache'])) {
                     //Fetch Most Recent Cache:
                     foreach ($this->Chains->read(array(
-                        'chainplayerdomain' => website_setting(0),
-                        'chainplayertype' => 44179, //Triggered
-                        'chainplayerup' => 14599, //Cache App
-                        'chainplayerdown' => $app_playerid,
+                        'chainsourcedomain' => website_setting(0),
+                        'chainsourcetype' => 44179, //Triggered
+                        'chainsourceup' => 14599, //Cache App
+                        'chainsourcedown' => $app_sourceid,
                     ), array(), 1, 0, array('chaintime' => 'DESC')) as $latest_cache) {
                         if (strtotime($latest_cache['chaintime']) <= (time() - view_memory(6404, 14599))) {
                             //Its expired, void it:
                             $this->Chains->delete($latest_cache['chainid']);
                         } else {
-                            $ui = $latest_cache['chaintext'];
+                            $ui = $latest_cache['chainvalue'];
                             $cache_chaintime = '<div class="texttransparent center main__title">Updated ' . view_time_difference($latest_cache['chaintime']) . ' Ago</div>';
                         }
                     }
@@ -334,28 +334,28 @@ class Controller extends CI_Controller
             $title .= view_idea_title($target_i, true) . ' | ';
         }
         if ($focus_e) {
-            $title .= $focus_e['playertext'] . ' @' . $focus_e['playerhandle'] . ' | ';
+            $title .= $focus_e['sourcetext'] . ' @' . $focus_e['sourcehandle'] . ' | ';
         }
         if (!$title) {
             //Append app name since no title:
-            $title .= $players___6287[$app_playerid]['m__title'] . ' | ';
+            $title .= $sources___6287[$app_sourceid]['m__title'] . ' | ';
         }
         //Always Append Website at the end:
         $title .= ($memory_detected ? get_domain('m__title') : 'Loading Memory');
 
 
         $view_input = array(
-            'app_playerid' => $app_playerid,
-            'chainplayercreator' => $chainplayercreator,
-            'player_session' => $player_session,
-            'player_http_request' => $player_http_request,
+            'app_sourceid' => $app_sourceid,
+            'chainsourcecreator' => $chainsourcecreator,
+            'source_session' => $source_session,
+            'source_http_request' => $source_http_request,
             'memory_detected' => $memory_detected,
 
             'focus_e' => $focus_e,
             'focus_i' => $focus_i,
             'target_i' => $target_i,
 
-            '$player_access' => $player_access,
+            '$source_access' => $source_access,
             '$idea_access' => $idea_access,
             '$target_idea_access' => $target_idea_access,
 
@@ -365,7 +365,7 @@ class Controller extends CI_Controller
 
         if (!$ui) {
             //Prep view:
-            $app_handler = ($memory_detected ? strtolower($players___6287[$app_playerid]['m__handle']) : 'memory');
+            $app_handler = ($memory_detected ? strtolower($sources___6287[$app_sourceid]['m__handle']) : 'memory');
             $raw_app = $this->load->view($app_handler, $view_input, true);
             $ui .= $raw_app;
         }
@@ -373,13 +373,13 @@ class Controller extends CI_Controller
 
         if ($new_cache) {
             $cache_x = $this->Chains->create(array(
-                'chainplayerdomain' => website_setting(0),
-                'chainplayertype' => 44179, //Triggered
-                'chainplayerup' => 14599, //Cache App
-                'chainplayerdown' => $app_playerid,
+                'chainsourcedomain' => website_setting(0),
+                'chainsourcetype' => 44179, //Triggered
+                'chainsourceup' => 14599, //Cache App
+                'chainsourcedown' => $app_sourceid,
 
-                'chainplayercreator' => $chainplayercreator,
-                'chaintext' => $ui,
+                'chainsourcecreator' => $chainsourcecreator,
+                'chainvalue' => $ui,
                 'chainidealeft' => $chainidealeft,
                 'chainidearight' => $chainidearight,
             ));
@@ -387,13 +387,13 @@ class Controller extends CI_Controller
 
 
         //App title?
-        if ($memory_detected && in_array($app_playerid, $this->config->item('playerids___42928'))) {
-            $ui = '<h1><span style="font-size:2em !important;">' . $players___6287[$app_playerid]['m__cover'] . '</span> ' . $players___6287[$app_playerid]['m__title'] . '</h1>' . $ui;
+        if ($memory_detected && in_array($app_sourceid, $this->config->item('sourceids___42928'))) {
+            $ui = '<h1><span style="font-size:2em !important;">' . $sources___6287[$app_sourceid]['m__cover'] . '</span> ' . $sources___6287[$app_sourceid]['m__title'] . '</h1>' . $ui;
         }
 
 
         //Check to ensure they have started:
-        if ($app_playerid == 30795 && $target_i && $focus_i && $player_session && $target_i['ideahashtag'] == $focus_i['ideahashtag']) {
+        if ($app_sourceid == 30795 && $target_i && $focus_i && $source_session && $target_i['ideahashtag'] == $focus_i['ideahashtag']) {
 
             //Starting point, make sure all good:
             if (!idea_is_startable($target_i)) {
@@ -401,13 +401,13 @@ class Controller extends CI_Controller
                 //Not a valid starting point:
                 return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['ideahashtag'] . ' is not an active starting point.</div>');
 
-            } elseif (!idea_started($player_session['playerid'], $target_i['ideahashtag'])) {
+            } elseif (!idea_started($source_session['sourceid'], $target_i['ideahashtag'])) {
 
                 //Not yet started, add to their starting point:
-                $completion_status = $this->Chains->idea_discovered(4235, $player_session['playerid'], 0, $target_i);
+                $completion_status = $this->Chains->idea_discovered(4235, $source_session['sourceid'], 0, $target_i);
 
                 //Now return next idea:
-                $next__url = $this->Chains->idea_next($player_session['playerid'], $target_i['ideahashtag'], $target_i);
+                $next__url = $this->Chains->idea_next($source_session['sourceid'], $target_i['ideahashtag'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
@@ -426,7 +426,7 @@ class Controller extends CI_Controller
 
         } else {
 
-            if (in_array($app_playerid, $this->config->item('playerids___12741'))) {
+            if (in_array($app_sourceid, $this->config->item('sourceids___12741'))) {
 
                 //Raw UI:
                 echo $raw_app;
@@ -464,10 +464,10 @@ class Controller extends CI_Controller
                     return true;
                 }
             } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
-                foreach ($this->Players->read(array(
-                    'LOWER(playerhandle)' => strtolower(substr($_POST['handle_string'], 1)),
+                foreach ($this->Sources->read(array(
+                    'LOWER(sourcehandle)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $e) {
-                    echo player_view(12274, $e);
+                    echo source_view(12274, $e);
                     return true;
                 }
             }
@@ -486,8 +486,8 @@ class Controller extends CI_Controller
     function idea_editor()
     {
 
-        $player_session = player_session(null, 0, $this->player_session);
-        if (!$player_session) {
+        $source_session = source_session(null, 0, $this->source_session);
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -533,7 +533,7 @@ class Controller extends CI_Controller
             $idea_new = $this->Ideas->create(array(
                 'ideatext' => null,
                 'ideatype' => $_POST['current_ideatype'],
-            ), $player_session['playerid']);
+            ), $source_session['sourceid']);
 
             $ideaid = $idea_new['idea_create']['ideaid'];
             $created_ideaid = $ideaid;
@@ -543,25 +543,25 @@ class Controller extends CI_Controller
 
         //Fetch dynamic data based on idea type:
         $return_inputs = array();
-        $players___4737 = $this->config->item('players___4737'); // Idea Status
-        $players___42179 = $this->config->item('players___42179'); //Dynamic Input Fields
-        $players___11035 = $this->config->item('players___11035'); //Encyclopedia
+        $sources___4737 = $this->config->item('sources___4737'); // Idea Status
+        $sources___42179 = $this->config->item('sources___42179'); //Dynamic Input Fields
+        $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
 
-        foreach (array_intersect($this->config->item('playerids___' . $ideatype), $this->config->item('playerids___42179')) as $dynamic_playerid) {
+        foreach (array_intersect($this->config->item('sourceids___' . $ideatype), $this->config->item('sourceids___42179')) as $dynamic_sourceid) {
 
-            $superpowers_required = array_intersect($this->config->item('playerids___10957'), $players___42179[$dynamic_playerid]['m__following']);
-            if (count($superpowers_required) && !player_session(end($superpowers_required), 0, $this->player_session)) {
+            $superpowers_required = array_intersect($this->config->item('sourceids___10957'), $sources___42179[$dynamic_sourceid]['m__following']);
+            if (count($superpowers_required) && !source_session(end($superpowers_required), 0, $this->source_session)) {
                 continue;
             }
 
             //Let's first determine the data type:
-            $data_types = array_intersect($players___42179[$dynamic_playerid]['m__following'], $this->config->item('playerids___4592'));
+            $data_types = array_intersect($sources___42179[$dynamic_sourceid]['m__following'], $this->config->item('sourceids___4592'));
 
             if (count($data_types) != 1) {
                 //This is strange, we are expecting 1 match only report this:
-                log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong', array(
-                    'chainplayercreator' => $player_session['playerid'],
-                    'chainplayerdown' => $dynamic_playerid,
+                log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_sourceid . ': Check @4592 to see what is wrong', array(
+                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chainsourcedown' => $dynamic_sourceid,
                     'chainidearight' => $ideaid,
                 ));
                 continue; //Go to the next dynamic data type
@@ -573,14 +573,14 @@ class Controller extends CI_Controller
                 break;
             }
 
-            if (in_array($data_type, $this->config->item('playerids___42188'))) {
+            if (in_array($data_type, $this->config->item('sourceids___42188'))) {
 
                 //Single or Multiple Choice:
                 array_push($return_inputs, array(
-                    'd__id' => $dynamic_playerid,
+                    'd__id' => $dynamic_sourceid,
                     'd__is_radio' => 1,
                     'd_chainid' => 0,
-                    'd__html' => view_instant_select($dynamic_playerid, 0, $ideaid),
+                    'd__html' => view_instant_select($dynamic_sourceid, 0, $ideaid),
                     'd__value' => ($ideaid > 0 ? $ideaid : ''),
                     'd__type_name' => '',
                     'd__placeholder' => '',
@@ -589,31 +589,31 @@ class Controller extends CI_Controller
 
             } else {
 
-                $this_data_type = $this->config->item('players___' . $data_type);
-                $players___4592 = $this->config->item('players___4592'); //Data types
-                $players___42179 = $this->config->item('players___42179'); //Dynamic Input Field
-                $players___11035 = $this->config->item('players___11035'); //Encyclopedia
+                $this_data_type = $this->config->item('sources___' . $data_type);
+                $sources___4592 = $this->config->item('sources___4592'); //Data types
+                $sources___42179 = $this->config->item('sources___42179'); //Dynamic Input Field
+                $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
 
                 //Fetch the current value:
                 $counted = 0;
                 $unique_values = array();
                 if ($ideaid > 0) { //Must have an original ID to possibly have a value...
                     foreach ($this->Chains->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Chain
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42252')) . ')' => null, //Plain Chain
                         'chainidearight' => $ideaid,
-                        'chainplayerup' => $dynamic_playerid,
-                    ), array('chainplayerup')) as $selected_e) {
-                        if (strlen($selected_e['chaintext']) && !in_array($selected_e['chaintext'], $unique_values)) {
+                        'chainsourceup' => $dynamic_sourceid,
+                    ), array('chainsourceup')) as $selected_e) {
+                        if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
                             $counted++;
-                            array_push($unique_values, $selected_e['chaintext']);
+                            array_push($unique_values, $selected_e['chainvalue']);
                             array_push($return_inputs, array(
-                                'd__id' => $dynamic_playerid,
+                                'd__id' => $dynamic_sourceid,
                                 'd__is_radio' => 0,
                                 'd_chainid' => $selected_e['chainid'],
-                                'd__html' => view_dynamic_headline($dynamic_playerid, $players___42179[$dynamic_playerid], $selected_e),
-                                'd__value' => $selected_e['chaintext'],
+                                'd__html' => view_dynamic_headline($dynamic_sourceid, $sources___42179[$dynamic_sourceid], $selected_e),
+                                'd__value' => $selected_e['chainvalue'],
                                 'd__type_name' => html_input_type($data_type),
-                                'd__placeholder' => (strlen($this_data_type[$dynamic_playerid]['m__message']) ? $this_data_type[$dynamic_playerid]['m__message'] : $players___4592[$data_type]['m__title'] . '...'),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_sourceid]['m__message']) ? $this_data_type[$dynamic_sourceid]['m__message'] : $sources___4592[$data_type]['m__title'] . '...'),
                                 'd__profile_header' => '',
                             ));
                         }
@@ -622,17 +622,17 @@ class Controller extends CI_Controller
 
 
                 if (!$counted) {
-                    foreach ($this->Players->read(array(
-                        'playerid' => $dynamic_playerid,
+                    foreach ($this->Sources->read(array(
+                        'sourceid' => $dynamic_sourceid,
                     )) as $selected_e) {
                         array_push($return_inputs, array(
-                            'd__id' => $dynamic_playerid,
+                            'd__id' => $dynamic_sourceid,
                             'd__is_radio' => 0,
                             'd_chainid' => 0,
-                            'd__html' => view_dynamic_headline($dynamic_playerid, $players___42179[$dynamic_playerid], $selected_e),
+                            'd__html' => view_dynamic_headline($dynamic_sourceid, $sources___42179[$dynamic_sourceid], $selected_e),
                             'd__value' => '',
                             'd__type_name' => html_input_type($data_type),
-                            'd__placeholder' => (strlen($this_data_type[$dynamic_playerid]['m__message']) ? $this_data_type[$dynamic_playerid]['m__message'] : $players___4592[$data_type]['m__title'] . '...'),
+                            'd__placeholder' => (strlen($this_data_type[$dynamic_sourceid]['m__message']) ? $this_data_type[$dynamic_sourceid]['m__message'] : $sources___4592[$data_type]['m__title'] . '...'),
                             'd__profile_header' => '',
                         ));
                     }
@@ -655,10 +655,10 @@ class Controller extends CI_Controller
     function idea_delete()
     {
 
-        $player_session = player_session(null, 0, $this->player_session);
+        $source_session = source_session(null, 0, $this->source_session);
         $migrateid = 0;
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -694,7 +694,7 @@ class Controller extends CI_Controller
 
             //Find Published Followings:
             foreach ($this->Chains->read(array(
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //IDEA CHAINS
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42268')) . ')' => null, //IDEA CHAINS
                 'chainidearight' => $_POST['ideaid'],
             ), array('chainidealeft'), 1) as $previous_i) {
                 $delete_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
@@ -703,7 +703,7 @@ class Controller extends CI_Controller
             //If not found, find active followings:
             if (!$delete_redirect) {
                 foreach ($this->Chains->read(array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___42268')) . ')' => null, //IDEA CHAINS
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42268')) . ')' => null, //IDEA CHAINS
                     'chainidearight' => $_POST['ideaid'],
                 ), array('chainidealeft'), 1) as $previous_i) {
                     $delete_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
@@ -727,7 +727,7 @@ class Controller extends CI_Controller
         }
 
         //Delete all Chains:
-        $chains_removed = $this->Ideas->delete($_POST['ideaid'], $player_session['playerid'], $migrateid);
+        $chains_removed = $this->Ideas->delete($_POST['ideaid'], $source_session['sourceid'], $migrateid);
 
         return view_json(array(
             'status' => ($chains_removed > 0 ? 1 : 0),
@@ -739,31 +739,31 @@ class Controller extends CI_Controller
     }
 
 
-    function player_delete()
+    function source_delete()
     {
 
-        $player_session = player_session(null, 0, $this->player_session);
+        $source_session = source_session(null, 0, $this->source_session);
         $migrateid = 0;
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['playerid']) || !isset($_POST['focus__id']) || !isset($_POST['migratehandle'])) {
+        } elseif (!isset($_POST['sourceid']) || !isset($_POST['focus__id']) || !isset($_POST['migratehandle'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (player_access(null, $_POST['playerid']) < 3) {
+        } elseif (source_access(null, $_POST['sourceid']) < 3) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Access to delete this idea',
             ));
         } elseif (strlen($_POST['migratehandle']) > 1) {
-            $valid_handle = $this->Players->read(array(
-                'playerid !=' => $_POST['playerid'],
-                'LOWER(playerhandle)' => strtolower(str_replace('@', '', $_POST['migratehandle'])),
+            $valid_handle = $this->Sources->read(array(
+                'sourceid !=' => $_POST['sourceid'],
+                'LOWER(sourcehandle)' => strtolower(str_replace('@', '', $_POST['migratehandle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
@@ -771,7 +771,7 @@ class Controller extends CI_Controller
                     'message' => $_POST['migratehandle'] . ' is not an active handle',
                 ));
             }
-            $migrateid = $valid_handle[0]['playerid'];
+            $migrateid = $valid_handle[0]['sourceid'];
         }
 
 
@@ -779,35 +779,35 @@ class Controller extends CI_Controller
         $delete_redirect = '';
         $delete_element = '';
 
-        if ($_POST['playerid'] == $_POST['focus__id']) {
+        if ($_POST['sourceid'] == $_POST['focus__id']) {
 
             //Find Published Followings:
             foreach ($this->Chains->read(array(
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-                'chainplayerdown' => $_POST['playerid'],
-            ), array('chainplayerup'), 1, 0, array('playertext' => 'DESC')) as $up_e) {
-                $delete_redirect = view_memory(42903, 42902) . $up_e['playerhandle'];
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                'chainsourcedown' => $_POST['sourceid'],
+            ), array('chainsourceup'), 1, 0, array('sourcetext' => 'DESC')) as $up_e) {
+                $delete_redirect = view_memory(42903, 42902) . $up_e['sourcehandle'];
             }
 
             //If still not found, go to main page if no followings found:
             if (!$delete_redirect) {
-                foreach ($this->Players->read(array('playerid' => $_POST['playerid'])) as $e2) {
-                    $delete_redirect = view_memory(42903, 42902) . e2['playerhandle'];
+                foreach ($this->Sources->read(array('sourceid' => $_POST['sourceid'])) as $e2) {
+                    $delete_redirect = view_memory(42903, 42902) . e2['sourcehandle'];
                 }
             }
         } else {
 
             //Just delete from UI using JS:
-            $delete_element = '.s__12274_' . $_POST['playerid'];
+            $delete_element = '.s__12274_' . $_POST['sourceid'];
 
         }
 
         //Delete all Chains:
-        $chains_removed = $this->Players->delete($_POST['playerid'], $player_session['playerid'], $migrateid);
+        $chains_removed = $this->Sources->delete($_POST['sourceid'], $source_session['sourceid'], $migrateid);
 
         return view_json(array(
             'status' => ($chains_removed > 0 ? 1 : 0),
-            'message' => 'Player successfully removed',
+            'message' => 'Source successfully removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
         ));
@@ -817,8 +817,8 @@ class Controller extends CI_Controller
     function idea_update()
     {
 
-        $player_session = player_session(null, 0, $this->player_session);
-        if (!$player_session) {
+        $source_session = source_session(null, 0, $this->source_session);
+        if (!$source_session) {
 
             return view_json(array(
                 'status' => 0,
@@ -853,21 +853,21 @@ class Controller extends CI_Controller
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif (!isset($_POST['next_ideaid']) || !isset($_POST['previous_ideaid']) || !isset($_POST['save_chainplayertype'])) {
+        } elseif (!isset($_POST['next_ideaid']) || !isset($_POST['previous_ideaid']) || !isset($_POST['save_chainsourcetype'])) {
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Next/Previous ID',
             ));
 
-        } elseif (!isset($_POST['save_chainid']) || !isset($_POST['save_chaintext'])) {
+        } elseif (!isset($_POST['save_chainid']) || !isset($_POST['save_chainvalue'])) {
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Chain Data',
             ));
 
-        } elseif (!isset($_POST['save_ideatype']) || !in_array($_POST['save_ideatype'], $this->config->item('playerids___4737'))) {
+        } elseif (!isset($_POST['save_ideatype']) || !in_array($_POST['save_ideatype'], $this->config->item('sourceids___4737'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid idea Type',
@@ -900,7 +900,7 @@ class Controller extends CI_Controller
         if (!strlen($is[0]['ideatext'])) {
 
             //See if references only:
-            if (strlen($_POST['save_ideatext']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_ideatext'], "\n") && intval($_POST['save_chainplayertype']) && (intval($_POST['next_ideaid']) || intval($_POST['previous_ideaid']))) {
+            if (strlen($_POST['save_ideatext']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_ideatext'], "\n") && intval($_POST['save_chainsourcetype']) && (intval($_POST['next_ideaid']) || intval($_POST['previous_ideaid']))) {
 
                 $all_hashtags = true;
                 $idea_references = array();
@@ -915,7 +915,7 @@ class Controller extends CI_Controller
                             $valid_hashtag = true;
                             array_push($idea_references, $idea_found);
                         }
-                        if (!$valid_hashtag && player_session(10939, 0, $this->player_session)) {
+                        if (!$valid_hashtag && source_session(10939, 0, $this->source_session)) {
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'ERROR: ' . $word . ' is not a valid/active Idea',
@@ -928,7 +928,7 @@ class Controller extends CI_Controller
                     }
                 }
 
-                if ($all_hashtags && count($idea_references) && $_POST['save_chainplayertype'] > 0) {
+                if ($all_hashtags && count($idea_references) && $_POST['save_chainsourcetype'] > 0) {
 
                     //Return success:
                     foreach ($this->Ideas->read(array(
@@ -938,9 +938,9 @@ class Controller extends CI_Controller
                         //Append all of these hashtags:
                         foreach ($idea_references as $reference_i) {
                             if (intval($_POST['next_ideaid']) > 0) {
-                                $status = $this->Ideas->chain($focus_i, $_POST['save_chainplayertype'], $reference_i, $player_session['playerid']);
+                                $status = $this->Ideas->chain($focus_i, $_POST['save_chainsourcetype'], $reference_i, $source_session['sourceid']);
                             } elseif (intval($_POST['previous_ideaid']) > 0) {
-                                $status = $this->Ideas->chain($reference_i, $_POST['save_chainplayertype'], $focus_i, $player_session['playerid']);
+                                $status = $this->Ideas->chain($reference_i, $_POST['save_chainsourcetype'], $focus_i, $source_session['sourceid']);
                             }
                             if (!$status['status']) {
                                 return view_json($status);
@@ -964,7 +964,7 @@ class Controller extends CI_Controller
             //Update new idea fields:
             $this->Ideas->update($is[0]['ideaid'], array(
                 'ideatype' => $_POST['save_ideatype'],
-            ), $player_session['playerid']);
+            ), $source_session['sourceid']);
             $is[0]['ideatype'] = trim($_POST['save_ideatype']);
 
         }
@@ -984,7 +984,7 @@ class Controller extends CI_Controller
 
 
         //Process dynamic inputs if any:
-        $players___42179 = $this->config->item('players___42179'); //Dynamic Input Fields
+        $sources___42179 = $this->config->item('sources___42179'); //Dynamic Input Fields
         if ($_POST['save_ideaid'] > 0) {
             for ($p = 1; $p <= view_memory(6404, 42206); $p++) {
 
@@ -997,21 +997,21 @@ class Controller extends CI_Controller
                     continue;
                 }
                 $d_chainid = $input_parts[0];
-                $dynamic_playerid = $input_parts[1];
+                $dynamic_sourceid = $input_parts[1];
                 $dynamic_value = trim($input_parts[2]);
 
                 //Required fields must have an input:
-                if (in_array($dynamic_playerid, $this->config->item('playerids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_playerid, $this->config->item('playerids___33331')) && !in_array($dynamic_playerid, $this->config->item('playerids___33332'))) {
+                if (in_array($dynamic_sourceid, $this->config->item('sourceids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_sourceid, $this->config->item('sourceids___33331')) && !in_array($dynamic_sourceid, $this->config->item('sourceids___33332'))) {
                     return view_json(array(
                         'status' => 0,
-                        'message' => 'Missing Required Field: ' . $players___42179[$dynamic_playerid]['m__title'],
+                        'message' => 'Missing Required Field: ' . $sources___42179[$dynamic_sourceid]['m__title'],
                     ));
                 }
 
                 //Validate input based on its data type, if provided:
                 if (strlen($dynamic_value)) {
-                    foreach (array_intersect($players___42179[$dynamic_playerid]['m__following'], $this->config->item('playerids___4592')) as $data_type_this) {
-                        $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $players___42179[$dynamic_playerid]['m__title']);
+                    foreach (array_intersect($sources___42179[$dynamic_sourceid]['m__following'], $this->config->item('sourceids___4592')) as $data_type_this) {
+                        $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $sources___42179[$dynamic_sourceid]['m__title']);
                         if (!$data_type_validate['status']) {
                             //We had an error:
                             return view_json($data_type_validate);
@@ -1028,9 +1028,9 @@ class Controller extends CI_Controller
 
                 if (!$d_chainid || !count($values)) {
                     $values = $this->Chains->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___42252')) . ')' => null, //Plain Chain
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42252')) . ')' => null, //Plain Chain
                         'chainidearight' => $is[0]['ideaid'],
-                        'chainplayerup' => $dynamic_playerid,
+                        'chainsourceup' => $dynamic_sourceid,
                     ));
                 }
 
@@ -1039,28 +1039,28 @@ class Controller extends CI_Controller
                 if (!strlen($dynamic_value)) {
 
                     //Remove Chain if we have one:
-                    if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key chains that should not be removed */) {
-                        $this->Chains->delete($values[0]['chainid'], $player_session['playerid']);
+                    if (count($values) && $dynamic_sourceid != 11035 /* HACK: Summary are key chains that should not be removed */) {
+                        $this->Chains->delete($values[0]['chainid'], $source_session['sourceid']);
                     }
 
                 } elseif (!count($values)) {
 
                     //Create New Chain:
                     $this->Chains->create(array(
-                        'chainplayercreator' => $player_session['playerid'],
-                        'chainplayertype' => 4983, //Co-Author
-                        'chainplayerup' => $dynamic_playerid,
+                        'chainsourcecreator' => $source_session['sourceid'],
+                        'chainsourcetype' => 4983, //Co-Author
+                        'chainsourceup' => $dynamic_sourceid,
                         'chainidearight' => $is[0]['ideaid'],
-                        'chaintext' => $dynamic_value,
-                        'chainnumber' => number_chainnumber($dynamic_value),
+                        'chainvalue' => $dynamic_value,
+                        'chainkey' => number_chainkey($dynamic_value),
                     ));
 
-                } elseif ($values[0]['chaintext'] != $dynamic_value) {
+                } elseif ($values[0]['chainvalue'] != $dynamic_value) {
 
                     //Update Chain:
                     $this->Chains->update($values[0]['chainid'], array(
-                        'chaintext' => $dynamic_value,
-                        'chainplayercreator' => $player_session['playerid'],
+                        'chainvalue' => $dynamic_value,
+                        'chainsourcecreator' => $source_session['sourceid'],
                     ));
 
                 }
@@ -1081,17 +1081,17 @@ class Controller extends CI_Controller
             //Save hashtag since changed:
             $this->Ideas->update($is[0]['ideaid'], array(
                 'ideahashtag' => trim($_POST['save_ideahashtag']),
-            ), $player_session['playerid']);
+            ), $source_session['sourceid']);
 
             //Now Handles everywhere they are referenced:
             foreach ($this->Chains->read(array(
                 'chainidealeft' => $is[0]['ideaid'],
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___42341')) . ')' => null, //Idea References
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42341')) . ')' => null, //Idea References
             ), array('chainidearight')) as $ref) {
 
                 $this->Ideas->update($ref['ideaid'], array(
                     'ideatext' => str_replace('#' . $is[0]['ideahashtag'], '#' . trim($_POST['save_ideahashtag']), $ref['ideatext']),
-                ), $player_session['playerid']);
+                ), $source_session['sourceid']);
 
             }
 
@@ -1102,25 +1102,25 @@ class Controller extends CI_Controller
 
 
         //Also have to add as a comment to another idea?
-        if (intval($_POST['next_ideaid']) > 0 && $_POST['save_chainplayertype'] > 0) {
+        if (intval($_POST['next_ideaid']) > 0 && $_POST['save_chainsourcetype'] > 0) {
             $this->Chains->create(array(
-                'chainplayercreator' => $player_session['playerid'],
+                'chainsourcecreator' => $source_session['sourceid'],
                 'chainidealeft' => $_POST['next_ideaid'],
                 'chainidearight' => $is[0]['ideaid'],
-                'chainplayertype' => $_POST['save_chainplayertype'],
+                'chainsourcetype' => $_POST['save_chainsourcetype'],
             ));
-        } elseif (intval($_POST['previous_ideaid']) > 0 && $_POST['save_chainplayertype'] > 0) {
+        } elseif (intval($_POST['previous_ideaid']) > 0 && $_POST['save_chainsourcetype'] > 0) {
             $this->Chains->create(array(
-                'chainplayercreator' => $player_session['playerid'],
+                'chainsourcecreator' => $source_session['sourceid'],
                 'chainidealeft' => $is[0]['ideaid'],
                 'chainidearight' => $_POST['previous_ideaid'],
-                'chainplayertype' => $_POST['save_chainplayertype'],
+                'chainsourcetype' => $_POST['save_chainsourcetype'],
             ));
         }
 
 
         //Do we have a chain reference message that need to be saved?
-        if ($_POST['save_chainid'] > 0 && $_POST['save_chaintext'] != 'IGNORE_INPUT') {
+        if ($_POST['save_chainid'] > 0 && $_POST['save_chainvalue'] != 'IGNORE_INPUT') {
             //Fetch Chain:
             foreach ($this->Chains->read(array(
                 'chainid' => $_POST['save_chainid'],
@@ -1128,10 +1128,10 @@ class Controller extends CI_Controller
 
                 $is[0] = array_merge($is[0], $this_x);
 
-                if ($this_x['chaintext'] != trim($_POST['save_chaintext'])) {
+                if ($this_x['chainvalue'] != trim($_POST['save_chainvalue'])) {
                     $this->Chains->update($this_x['chainid'], array(
-                        'chaintext' => trim($_POST['save_chaintext']),
-                        'chainplayercreator' => $player_session['playerid'],
+                        'chainvalue' => trim($_POST['save_chainvalue']),
+                        'chainsourcecreator' => $source_session['sourceid'],
                     ));
                 }
             }
@@ -1140,7 +1140,7 @@ class Controller extends CI_Controller
         //Update Text:
         $text_updated = $this->Ideas->update($is[0]['ideaid'], array(
             'ideatext' => trim($_POST['save_ideatext']),
-        ), $player_session['playerid']);
+        ), $source_session['sourceid']);
 
 
         foreach ($this->Ideas->read(array(
@@ -1151,7 +1151,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 1,
-                'return_ideacache_chains' => view_idea_chains($new_i, $player_session['playerid'], $focus__node, $focus__node),
+                'return_ideacache_chains' => view_idea_chains($new_i, $source_session['sourceid'], $focus__node, $focus__node),
                 'return_ideacache_full' => idea_view($_POST['focus_group'], $new_i),
                 'save_ideaid' => $is[0]['ideaid'],
                 'save_ideatext' => trim($_POST['save_ideatext']),
@@ -1168,42 +1168,42 @@ class Controller extends CI_Controller
     function idea_cover()
     {
 
-        if (!isset($_POST['ideaid']) || !isset($_POST['chainplayertype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
+        if (!isset($_POST['ideaid']) || !isset($_POST['chainsourcetype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            if (in_array($_POST['chainplayertype'], $this->config->item('playerids___42376')) && !idea_access(null, $_POST['ideaid'])) {
+            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !idea_access(null, $_POST['ideaid'])) {
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
             } else {
 
-                $discover_chainplayertype = discover_chainplayertype();
+                $discover_chainsourcetype = discover_chainsourcetype();
 
                 $ui = '';
                 $listed_items = 0;
-                if (in_array($_POST['chainplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['chainplayertype'], $this->config->item('playerids___42284'))) {
+                if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
 
                     //SOURCES
-                    $players___4593 = $this->config->item('players___4593'); //Chain Types
-                    $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
-                    foreach (ideas_query($_POST['chainplayertype'], $_POST['ideaid'], 1, false) as $player_session) {
-                        if (isset($player_session['playerid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $player_session['playerhandle'], $current_playerhandle && $player_session['playerhandle'] == $current_playerhandle, $player_session['chainplayertype'], view_cover($player_session['playercover'], true), $player_session['playertext'], $player_session['chaintext']);
+                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
+                    $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
+                    foreach (ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1, false) as $source_session) {
+                        if (isset($source_session['sourceid'])) {
+                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $current_sourcehandle && $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcetext'], $source_session['chainvalue']);
                             $listed_items++;
                         }
                     }
 
-                } elseif (in_array($_POST['chainplayertype'], $this->config->item('playerids___11020'))) {
+                } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
 
                     //IDEAS
-                    $players___4737 = $this->config->item('players___4737'); //Idea Types
-                    $players___4593 = $this->config->item('players___4593'); //Chain Types
+                    $sources___4737 = $this->config->item('sources___4737'); //Idea Types
+                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
                     $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
-                    foreach (ideas_query($_POST['chainplayertype'], $_POST['ideaid'], 1, false) as $next_i) {
+                    foreach (ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
-                            $ui .= view_card($discover_chainplayertype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['chaintext']);
+                            $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['chainvalue']);
                             $listed_items++;
                         }
                     }
@@ -1215,7 +1215,7 @@ class Controller extends CI_Controller
                     foreach ($this->Ideas->read(array(
                         'ideaid' => $_POST['ideaid'],
                     )) as $i) {
-                        $ui .= view_more($discover_chainplayertype . view_memory(42903, 33286) . $i['ideahashtag'], false, '&nbsp;', '&nbsp;', 'View All');
+                        $ui .= view_more($discover_chainsourcetype . view_memory(42903, 33286) . $i['ideahashtag'], false, '&nbsp;', '&nbsp;', 'View All');
                     }
                 }
 
@@ -1235,9 +1235,9 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_session = player_session(null, 0, $this->player_session);
+        $source_session = source_session(null, 0, $this->source_session);
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -1247,7 +1247,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
             ));
-        } elseif (!isset($_POST['chainplayertype']) || !in_array($_POST['chainplayertype'], $this->config->item('playerids___4603'))) {
+        } elseif (!isset($_POST['chainsourcetype']) || !in_array($_POST['chainsourcetype'], $this->config->item('sourceids___4603'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Chain Type',
@@ -1256,12 +1256,12 @@ class Controller extends CI_Controller
 
         //Update the order of their discoveries:
         $updated = 0;
-        foreach ($_POST['new_x_order'] as $chainnumber => $chainid) {
-            if (intval($chainid) > 0 && intval($chainnumber) > 0) {
+        foreach ($_POST['new_x_order'] as $chainkey => $chainid) {
+            if (intval($chainid) > 0 && intval($chainkey) > 0) {
                 //Update order of this Chain:
                 if ($this->Chains->update(intval($chainid), array(
-                    'chainnumber' => $chainnumber,
-                    'chainplayercreator' => $player_session['playerid'],
+                    'chainkey' => $chainkey,
+                    'chainsourcecreator' => $source_session['sourceid'],
                 ))) {
                     $updated++;
                 }
@@ -1278,11 +1278,11 @@ class Controller extends CI_Controller
     function idea_list()
     {
         //Authenticate Member:
-        if (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1 || !isset($_POST['counter']) || !isset($_POST['chainplayertype']) || intval($_POST['chainplayertype']) < 1) {
+        if (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1 || !isset($_POST['counter']) || !isset($_POST['chainsourcetype']) || intval($_POST['chainsourcetype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            $ideas_query = ideas_query($_POST['chainplayertype'], $_POST['ideaid'], 1);
+            $ideas_query = ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1);
             $ui = '';
             $is = $this->Ideas->read(array(
                 'ideaid' => $_POST['ideaid'],
@@ -1291,42 +1291,42 @@ class Controller extends CI_Controller
                 return false;
             }
 
-            if (in_array($_POST['chainplayertype'], $this->config->item('playerids___42376')) && !idea_access(null, $is[0]['ideaid'], $is[0])) {
+            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !idea_access(null, $is[0]['ideaid'], $is[0])) {
                 return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
             }
 
-            if (in_array($_POST['chainplayertype'], $this->config->item('playerids___42380'))) {
+            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42380'))) {
 
                 //IDEA Chain Groups Previous
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainplayertype'] . '">';
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
                 foreach ($ideas_query as $previous_i) {
                     $ui .= idea_view(11019, $previous_i);
                 }
                 $ui .= '</div>';
 
-            } elseif (in_array($_POST['chainplayertype'], $this->config->item('playerids___42265'))) {
+            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42265'))) {
 
                 //IDEA Chain Groups Next
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainplayertype'] . '">';
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
                 foreach ($ideas_query as $next_i) {
-                    $ui .= idea_view($_POST['chainplayertype'], $next_i, $is[0]);
+                    $ui .= idea_view($_POST['chainsourcetype'], $next_i, $is[0]);
                 }
                 $ui .= '</div>';
 
-            } elseif (in_array($_POST['chainplayertype'], $this->config->item('playerids___42284'))) {
+            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
 
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainplayertype'] . '">';
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
                 foreach ($ideas_query as $item) {
-                    $ui .= player_view(6255, $item);
+                    $ui .= source_view(6255, $item);
                 }
                 $ui .= '</div>';
 
-            } elseif (in_array($_POST['chainplayertype'], $this->config->item('playerids___42261'))) {
+            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261'))) {
 
-                //Players
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainplayertype'] . '">';
-                foreach ($ideas_query as $player_ref) {
-                    $ui .= player_view($_POST['chainplayertype'], $player_ref, null);
+                //Sources
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
+                foreach ($ideas_query as $source_ref) {
+                    $ui .= source_view($_POST['chainsourcetype'], $source_ref, null);
                 }
                 $ui .= '</div>';
 
@@ -1338,63 +1338,63 @@ class Controller extends CI_Controller
     }
 
 
-    function player_list()
+    function source_list()
     {
 
         //Authenticate Member:
-        if (!isset($_POST['playerid']) || intval($_POST['playerid']) < 1 || !isset($_POST['chainplayertype']) || intval($_POST['chainplayertype']) < 1) {
+        if (!isset($_POST['sourceid']) || intval($_POST['sourceid']) < 1 || !isset($_POST['chainsourcetype']) || intval($_POST['chainsourcetype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
             return false;
         }
 
         $limit = view_memory(6404, 11064);
-        $player_session = player_session();
+        $source_session = source_session();
 
         //Check Permission:
-        if (in_array($_POST['chainplayertype'], $this->config->item('playerids___42376')) && !player_access(null, $_POST['playerid'])) {
+        if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !source_access(null, $_POST['sourceid'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
             return false;
         }
 
-        $players_query = players_query($_POST['chainplayertype'], $_POST['playerid'], 1);
-        $es = $this->Players->read(array(
-            'playerid' => $_POST['playerid'],
+        $sources_query = sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1);
+        $es = $this->Sources->read(array(
+            'sourceid' => $_POST['sourceid'],
         ));
         if (!count($es)) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Invalid Player ID</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Invalid Source ID</div>';
             return false;
         }
-        if (!$players_query) {
+        if (!$sources_query) {
             return false;
         }
 
-        $focus_playerid = ($_POST['playerid'] > 0 ? $_POST['playerid'] : ($player_session ? $player_session['playerid'] : 0));
+        $focus_sourceid = ($_POST['sourceid'] > 0 ? $_POST['sourceid'] : ($source_session ? $source_session['sourceid'] : 0));
         $ui = '';
 
-        if (in_array($_POST['chainplayertype'], $this->config->item('playerids___42261'))) {
+        if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261'))) {
 
             //Ideas:
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainplayertype'] . '">';
-            foreach ($players_query as $i) {
-                $ui .= idea_view($_POST['chainplayertype'], $i, null, null, $focus_playerid);
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
+            foreach ($sources_query as $i) {
+                $ui .= idea_view($_POST['chainsourcetype'], $i, null, null, $focus_sourceid);
             }
             $ui .= '</div>';
 
-        } elseif (in_array($_POST['chainplayertype'], $this->config->item('playerids___11028'))) {
+        } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
 
-            //Players:
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainplayertype'] . '">';
-            foreach ($players_query as $e) {
-                $ui .= player_view($_POST['chainplayertype'], $e, null);
+            //Sources:
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
+            foreach ($sources_query as $e) {
+                $ui .= source_view($_POST['chainsourcetype'], $e, null);
             }
             $ui .= '</div>';
 
-        } elseif (in_array($_POST['chainplayertype'], $this->config->item('playerids___12144'))) {
+        } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___12144'))) {
 
             //Discoveries:
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainplayertype'] . '">';
-            foreach ($players_query as $i) {
-                $ui .= idea_view($_POST['chainplayertype'], $i, null, null, $focus_playerid);
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
+            foreach ($sources_query as $i) {
+                $ui .= idea_view($_POST['chainsourcetype'], $i, null, null, $focus_sourceid);
             }
             $ui .= '</div>';
 
@@ -1404,16 +1404,16 @@ class Controller extends CI_Controller
 
     }
 
-    function player_cover()
+    function source_cover()
     {
 
-        if (!isset($_POST['playerid']) || !isset($_POST['chainplayertype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
+        if (!isset($_POST['sourceid']) || !isset($_POST['chainsourcetype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
 
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
 
         } else {
 
-            if (in_array($_POST['chainplayertype'], $this->config->item('playerids___42376')) && !player_access(null, $_POST['playerid'])) {
+            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !source_access(null, $_POST['sourceid'])) {
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
@@ -1422,30 +1422,30 @@ class Controller extends CI_Controller
                 $ui = '';
                 $listed_items = 0;
 
-                if (in_array($_POST['chainplayertype'], $this->config->item('playerids___11028'))) {
+                if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
 
                     //SOURCES
-                    $current_playerhandle = view_valid_handle_player($_POST['first_segment']);
-                    $players___4593 = $this->config->item('players___4593'); //Chain Types
+                    $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
+                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
 
-                    foreach (players_query($_POST['chainplayertype'], $_POST['playerid'], 1, false) as $player_session) {
-                        if (isset($player_session['playerid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $player_session['playerhandle'], $player_session['playerhandle'] == $current_playerhandle, $player_session['chainplayertype'], view_cover($player_session['playercover'], true), $player_session['playertext'], $player_session['chaintext']);
+                    foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $source_session) {
+                        if (isset($source_session['sourceid'])) {
+                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcetext'], $source_session['chainvalue']);
                             $listed_items++;
                         }
                     }
 
-                } elseif (in_array($_POST['chainplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['chainplayertype'], $this->config->item('playerids___42284'))) {
+                } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
 
                     //IDEAS
                     $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
-                    $players___4737 = $this->config->item('players___4737'); //Idea Types
-                    $players___4593 = $this->config->item('players___4593'); //Chain Types
-                    $discover_chainplayertype = discover_chainplayertype();
+                    $sources___4737 = $this->config->item('sources___4737'); //Idea Types
+                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
+                    $discover_chainsourcetype = discover_chainsourcetype();
 
-                    foreach (players_query($_POST['chainplayertype'], $_POST['playerid'], 1, false) as $next_i) {
+                    foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
-                            $ui .= view_card($discover_chainplayertype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainplayertype'], (in_array($next_i['ideatype'], $this->config->item('playerids___32172')) ? $players___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['chaintext']);
+                            $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['chainvalue']);
                             $listed_items++;
                         }
                     }
@@ -1454,10 +1454,10 @@ class Controller extends CI_Controller
 
                 if ($listed_items < $_POST['counter']) {
                     //We have more to show:
-                    foreach ($this->Players->read(array(
-                        'playerid' => $_POST['playerid'],
-                    )) as $player_this) {
-                        $ui .= view_more(view_memory(42903, 42902) . $player_this['playerhandle'], false, '&nbsp;', '&nbsp;', 'View All');
+                    foreach ($this->Sources->read(array(
+                        'sourceid' => $_POST['sourceid'],
+                    )) as $source_this) {
+                        $ui .= view_more(view_memory(42903, 42902) . $source_this['sourcehandle'], false, '&nbsp;', '&nbsp;', 'View All');
                     }
                 }
 
@@ -1467,61 +1467,61 @@ class Controller extends CI_Controller
         }
     }
 
-    function player_sort_save()
+    function source_sort_save()
     {
 
         //Authenticate Member:
-        $player_session = player_session(10939, 0, $this->player_session);
-        if (!$player_session) {
+        $source_session = source_session(10939, 0, $this->source_session);
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
-        } elseif (!isset($_POST['playerid']) || intval($_POST['playerid']) < 1) {
+        } elseif (!isset($_POST['sourceid']) || intval($_POST['sourceid']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid playerid',
+                'message' => 'Invalid sourceid',
             ));
-        } elseif (!isset($_POST['new_chainnumber']) || !is_array($_POST['new_chainnumber']) || count($_POST['new_chainnumber']) < 1) {
+        } elseif (!isset($_POST['new_chainkey']) || !is_array($_POST['new_chainkey']) || count($_POST['new_chainkey']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
             ));
         } else {
 
-            //Validate Player:
-            $es = $this->Players->read(array(
-                'playerid' => $_POST['playerid'],
+            //Validate Source:
+            $es = $this->Sources->read(array(
+                'sourceid' => $_POST['sourceid'],
             ));
 
             //Count followers:
-            $listplayer_count = $this->Chains->read(array(
-                'chainplayerup' => $_POST['playerid'],
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainplayerdown'), 0, 0, array(), 'COUNT(playerid) as totals');
+            $listsource_count = $this->Chains->read(array(
+                'chainsourceup' => $_POST['sourceid'],
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            ), array('chainsourcedown'), 0, 0, array(), 'COUNT(sourceid) as totals');
 
             if (count($es) < 1) {
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid playerid',
+                    'message' => 'Invalid sourceid',
                 ));
 
-            } elseif ($listplayer_count[0]['totals'] > view_memory(6404, 11064)) {
+            } elseif ($listsource_count[0]['totals'] > view_memory(6404, 11064)) {
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Cannot sort Players if greater than ' . view_memory(6404, 11064),
+                    'message' => 'Cannot sort Sources if greater than ' . view_memory(6404, 11064),
                 ));
 
             } else {
 
                 //Update them all:
                 $updated = 0;
-                foreach ($_POST['new_chainnumber'] as $rank => $chainid) {
+                foreach ($_POST['new_chainkey'] as $rank => $chainid) {
                     if ($chainid > 0) {
                         $updated += $this->Chains->update($chainid, array(
-                            'chainnumber' => intval($rank),
+                            'chainkey' => intval($rank),
                         ));
                     }
                 }
@@ -1541,9 +1541,9 @@ class Controller extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_session = player_session(10939, 0, $this->player_session);
+        $source_session = source_session(10939, 0, $this->source_session);
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view__json(array(
                 'status' => 0,
                 'messagCloe' => view__unauthorized_message(10939),
@@ -1551,7 +1551,7 @@ class Controller extends CI_Controller
         } elseif (!isset($_POST['ideaid']) || intval($_POST['ideaid']) < 1) {
             return view__json(array(
                 'status' => 0,
-                'message' => 'Invalid Following Player',
+                'message' => 'Invalid Following Source',
             ));
         } elseif (!isset($_POST['do_recursive'])) {
             return view__json(array(
@@ -1560,135 +1560,135 @@ class Controller extends CI_Controller
             ));
         }
 
-        return view_json($this->Ideas->copy(intval($_POST['ideaid']), intval($_POST['do_recursive']), $player_session['playerid']));
+        return view_json($this->Ideas->copy(intval($_POST['ideaid']), intval($_POST['do_recursive']), $source_session['sourceid']));
 
     }
 
 
-    function player_copy()
+    function source_copy()
     {
 
         //Auth member and check required variables:
-        $player_session = player_session(10939, 0, $this->player_session);
+        $source_session = source_session(10939, 0, $this->source_session);
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
-        } elseif (intval($_POST['playerid']) < 1) {
+        } elseif (intval($_POST['sourceid']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Player',
+                'message' => 'Invalid Source',
             ));
-        } elseif (!strlen($_POST['copy_player_title'])) {
+        } elseif (!strlen($_POST['copy_source_title'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Player Title',
+                'message' => 'Invalid Source Title',
             ));
         }
 
-        //Validate Player:
-        $fetch_o = $this->Players->read(array(
-            'playerid' => $_POST['playerid'],
+        //Validate Source:
+        $fetch_o = $this->Sources->read(array(
+            'sourceid' => $_POST['sourceid'],
         ));
         if (count($fetch_o) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid followings Player ID',
+                'message' => 'Invalid followings Source ID',
             ));
         }
 
 
         //Create:
-        $added_e = $this->Players->create(array(
-            'playertext' => $_POST['copy_player_title'],
-            'playercover' => $fetch_o[0]['playercover'],
-        ), $player_session['playerid']);
+        $added_e = $this->Sources->create(array(
+            'sourcetext' => $_POST['copy_source_title'],
+            'sourcecover' => $fetch_o[0]['sourcecover'],
+        ), $source_session['sourceid']);
         if (!$added_e['status']) {
             //We had an error, return it:
             return view_json($added_e);
         } else {
-            //Assign new Player:
-            $focus_e = $added_e['player_create'];
+            //Assign new Source:
+            $focus_e = $added_e['source_create'];
         }
 
 
         //Followers:
         foreach ($this->Chains->read(array(
-            'chainplayerup' => $_POST['playerid'],
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Chains
+            'chainsourceup' => $_POST['sourceid'],
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41303')) . ')' => null, //Clone Source Chains
         ), array(), 0) as $x) {
 
-            //Make sure none existent in new Player:
+            //Make sure none existent in new Source:
             if (!count($this->Chains->read(array(
-                'chainplayertype' => $x['chainplayertype'],
-                'chainplayerup' => $focus_e['playerid'],
-                'chainplayerdown' => $x['chainplayerdown'],
-                'chaintext' => $x['chaintext'],
+                'chainsourcetype' => $x['chainsourcetype'],
+                'chainsourceup' => $focus_e['sourceid'],
+                'chainsourcedown' => $x['chainsourcedown'],
+                'chainvalue' => $x['chainvalue'],
             )))) {
                 $this->Chains->create(array(
-                    'chainplayercreator' => $player_session['playerid'],
-                    'chainnumber' => $x['chainnumber'],
-                    'chainplayertype' => $x['chainplayertype'],
-                    'chainplayerup' => $focus_e['playerid'],
-                    'chainplayerdown' => $x['chainplayerdown'],
-                    'chaintext' => $x['chaintext'],
+                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chainkey' => $x['chainkey'],
+                    'chainsourcetype' => $x['chainsourcetype'],
+                    'chainsourceup' => $focus_e['sourceid'],
+                    'chainsourcedown' => $x['chainsourcedown'],
+                    'chainvalue' => $x['chainvalue'],
                 ));
             }
         }
 
         //Followings:
         foreach ($this->Chains->read(array(
-            'chainplayerdown' => $_POST['playerid'],
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___41303')) . ')' => null, //Clone Player Chains
+            'chainsourcedown' => $_POST['sourceid'],
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41303')) . ')' => null, //Clone Source Chains
         ), array(), 0) as $x) {
             if (!count($this->Chains->read(array(
-                'chainplayertype' => $x['chainplayertype'],
-                'chainplayerup' => $x['chainplayerup'],
-                'chainplayerdown' => $focus_e['playerid'],
-                'chaintext' => $x['chaintext'],
+                'chainsourcetype' => $x['chainsourcetype'],
+                'chainsourceup' => $x['chainsourceup'],
+                'chainsourcedown' => $focus_e['sourceid'],
+                'chainvalue' => $x['chainvalue'],
             )))) {
                 $this->Chains->create(array(
-                    'chainplayercreator' => $player_session['playerid'],
-                    'chainnumber' => $x['chainnumber'],
-                    'chainplayertype' => $x['chainplayertype'],
-                    'chainplayerup' => $x['chainplayerup'],
-                    'chainplayerdown' => $focus_e['playerid'],
-                    'chaintext' => $x['chaintext'],
+                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chainkey' => $x['chainkey'],
+                    'chainsourcetype' => $x['chainsourcetype'],
+                    'chainsourceup' => $x['chainsourceup'],
+                    'chainsourcedown' => $focus_e['sourceid'],
+                    'chainvalue' => $x['chainvalue'],
                 ));
             }
         }
 
         //Ideas:
         foreach ($this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___41302')) . ')' => null, //Clone Idea Player Chains
-            'chainplayerup' => $_POST['playerid'],
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41302')) . ')' => null, //Clone Idea Source Chains
+            'chainsourceup' => $_POST['sourceid'],
         ), array(), 0) as $x) {
             if (!count($this->Chains->read(array(
-                'chainplayertype' => $x['chainplayertype'],
-                'chainplayerup' => $focus_e['playerid'],
-                'chainplayerdown' => $x['chainplayerdown'],
+                'chainsourcetype' => $x['chainsourcetype'],
+                'chainsourceup' => $focus_e['sourceid'],
+                'chainsourcedown' => $x['chainsourcedown'],
                 'chainidealeft' => $x['chainidealeft'],
                 'chainidearight' => $x['chainidearight'],
-                'chaintext' => $x['chaintext'],
+                'chainvalue' => $x['chainvalue'],
             )))) {
                 $this->Chains->create(array(
-                    'chainplayercreator' => $player_session['playerid'],
-                    'chainnumber' => $x['chainnumber'],
-                    'chainplayertype' => $x['chainplayertype'],
-                    'chainplayerup' => $focus_e['playerid'],
-                    'chainplayerdown' => $x['chainplayerdown'],
+                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chainkey' => $x['chainkey'],
+                    'chainsourcetype' => $x['chainsourcetype'],
+                    'chainsourceup' => $focus_e['sourceid'],
+                    'chainsourcedown' => $x['chainsourcedown'],
                     'chainidealeft' => $x['chainidealeft'],
                     'chainidearight' => $x['chainidearight'],
-                    'chaintext' => $x['chaintext'],
+                    'chainvalue' => $x['chainvalue'],
                 ));
             }
         }
 
         return view_json(array(
             'status' => 1,
-            'player_createhandle' => $focus_e['playerhandle'],
+            'source_createhandle' => $focus_e['sourcehandle'],
         ));
 
 
@@ -1706,13 +1706,13 @@ class Controller extends CI_Controller
          * */
 
         //Authenticate Member:
-        $member_e = player_session(10939, 0, $this->player_session);
+        $member_e = source_session(10939, 0, $this->source_session);
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
-        } elseif (!isset($_POST['chainplayertype']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
+        } elseif (!isset($_POST['chainsourcetype']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variables',
@@ -1756,18 +1756,18 @@ class Controller extends CI_Controller
         }
 
         //All seems good, go ahead and try to create/chain the Idea:
-        return view_json($this->Ideas->create_or_chain($_POST['focus_card'], $_POST['chainplayertype'], trim($_POST['idea_createtext']), $member_e['playerid'], $_POST['focus_id'], $_POST['chain_ideaid']));
+        return view_json($this->Ideas->create_or_chain($_POST['focus_card'], $_POST['chainsourcetype'], trim($_POST['idea_createtext']), $member_e['sourceid'], $_POST['focus_id'], $_POST['chain_ideaid']));
 
     }
 
 
-    function player_create()
+    function source_create()
     {
 
         //Auth member and check required variables:
-        $player_session = player_session(10939, 0, $this->player_session);
+        $source_session = source_session(10939, 0, $this->source_session);
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
@@ -1775,17 +1775,17 @@ class Controller extends CI_Controller
         } elseif (intval($_POST['focus__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Following Player',
+                'message' => 'Invalid Following Source',
             ));
-        } elseif (!isset($_POST['chainplayertype'])) {
+        } elseif (!isset($_POST['chainsourcetype'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Player Creation Type',
+                'message' => 'Invalid Source Creation Type',
             ));
-        } elseif (!isset($_POST['player_current_id']) || !isset($_POST['player_new_string']) || (intval($_POST['player_current_id']) < 1 && strlen($_POST['player_new_string']) < 1)) {
+        } elseif (!isset($_POST['source_current_id']) || !isset($_POST['source_new_string']) || (intval($_POST['source_current_id']) < 1 && strlen($_POST['source_new_string']) < 1)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Either New Player ID or Player Name',
+                'message' => 'Either New Source ID or Source Name',
             ));
         }
 
@@ -1800,20 +1800,20 @@ class Controller extends CI_Controller
             if (count($fetch_o) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid followings Player ID',
+                    'message' => 'Invalid followings Source ID',
                 ));
             }
 
         } else {
 
-            //Validate Player:
-            $fetch_o = $this->Players->read(array(
-                'playerid' => $_POST['focus__id'],
+            //Validate Source:
+            $fetch_o = $this->Sources->read(array(
+                'sourceid' => $_POST['focus__id'],
             ));
             if (count($fetch_o) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid followings Player ID',
+                    'message' => 'Invalid followings Source ID',
                 ));
             }
 
@@ -1821,31 +1821,31 @@ class Controller extends CI_Controller
 
 
         //Set some variables:
-        $_POST['player_new_string'] = trim($_POST['player_new_string']);
-        $_POST['chainplayertype'] = intval($_POST['chainplayertype']);
-        $is_upwards = in_array($_POST['chainplayertype'], $this->config->item('playerids___14686'));
+        $_POST['source_new_string'] = trim($_POST['source_new_string']);
+        $_POST['chainsourcetype'] = intval($_POST['chainsourcetype']);
+        $is_upwards = in_array($_POST['chainsourcetype'], $this->config->item('sourceids___14686'));
 
-        if (!intval($_POST['player_current_id']) && view_valid_handle_player($_POST['player_new_string'])) {
-            foreach ($this->Players->read(array(
-                'LOWER(playerhandle)' => strtolower(substr($_POST['player_new_string'], 1)),
+        if (!intval($_POST['source_current_id']) && view_valid_handle_source($_POST['source_new_string'])) {
+            foreach ($this->Sources->read(array(
+                'LOWER(sourcehandle)' => strtolower(substr($_POST['source_new_string'], 1)),
             )) as $e) {
-                $_POST['player_current_id'] = $e['playerid'];
+                $_POST['source_current_id'] = $e['sourceid'];
             }
         }
-        $adding_to_existing = (intval($_POST['player_current_id']) > 0);
+        $adding_to_existing = (intval($_POST['source_current_id']) > 0);
 
-        //Are we adding an existing Player?
+        //Are we adding an existing Source?
         if ($adding_to_existing) {
 
-            //Validate this existing Player:
-            $es = $this->Players->read(array(
-                'playerid' => $_POST['player_current_id'],
+            //Validate this existing Source:
+            $es = $this->Sources->read(array(
+                'sourceid' => $_POST['source_current_id'],
             ));
 
             if (count($es) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Player @' . $_POST['player_current_id'] . ' is not active',
+                    'message' => 'Source @' . $_POST['source_current_id'] . ' is not active',
                 ));
             }
 
@@ -1854,181 +1854,181 @@ class Controller extends CI_Controller
 
         } else {
 
-            //We are creating a new Player:
-            $added_e = $this->Players->create(array(
-                'playertext' => $_POST['player_new_string'],
-            ), $player_session['playerid']);
+            //We are creating a new Source:
+            $added_e = $this->Sources->create(array(
+                'sourcetext' => $_POST['source_new_string'],
+            ), $source_session['sourceid']);
             if (!$added_e['status']) {
                 //We had an error, return it:
                 return view_json($added_e);
             } else {
-                //Assign new Player:
-                $focus_e = $added_e['player_create'];
+                //Assign new Source:
+                $focus_e = $added_e['source_create'];
             }
 
         }
 
 
-        //We need to check to ensure this is not a duplicate Chain if adding an existing Player:
+        //We need to check to ensure this is not a duplicate Chain if adding an existing Source:
         $ur2 = array();
 
         if ($adding_to_i) {
 
             //Add Reference:
             $ur2 = $this->Chains->create(array(
-                'chainplayercreator' => $player_session['playerid'],
-                'chainplayertype' => 4983, //Co-Author
-                'chainplayerup' => $focus_e['playerid'],
+                'chainsourcecreator' => $source_session['sourceid'],
+                'chainsourcetype' => 4983, //Co-Author
+                'chainsourceup' => $focus_e['sourceid'],
                 'chainidearight' => $fetch_o[0]['ideaid'],
             ));
 
         } else {
 
-            //Add Up/Down Player:
+            //Add Up/Down Source:
 
             //Add Chains only if not previously added by the URL function:
             if ($is_upwards) {
 
                 //Following
-                $chainplayerdown = $fetch_o[0]['playerid'];
-                $chainplayerup = $focus_e['playerid'];
-                $chainnumber = 0; //Never sort following, only sort followers
+                $chainsourcedown = $fetch_o[0]['sourceid'];
+                $chainsourceup = $focus_e['sourceid'];
+                $chainkey = 0; //Never sort following, only sort followers
 
             } else {
 
                 //Followers
-                $chainplayerup = $fetch_o[0]['playerid'];
-                $chainplayerdown = $focus_e['playerid'];
-                $chainnumber = 0;
+                $chainsourceup = $fetch_o[0]['sourceid'];
+                $chainsourcedown = $focus_e['sourceid'];
+                $chainkey = 0;
 
             }
 
 
-            $chaintext = null;
+            $chainvalue = null;
 
             //Create Chain:
             $ur2 = $this->Chains->create(array(
-                'chainplayercreator' => $player_session['playerid'],
-                'chainplayertype' => 4230,
-                'chaintext' => $chaintext,
-                'chainplayerdown' => $chainplayerdown,
-                'chainplayerup' => $chainplayerup,
-                'chainnumber' => $chainnumber,
+                'chainsourcecreator' => $source_session['sourceid'],
+                'chainsourcetype' => 4230,
+                'chainvalue' => $chainvalue,
+                'chainsourcedown' => $chainsourcedown,
+                'chainsourceup' => $chainsourceup,
+                'chainkey' => $chainkey,
             ));
         }
 
-        //Return Player:
+        //Return Source:
         return view_json(array(
             'status' => 1,
-            'player_new_echo' => player_view($_POST['chainplayertype'], array_merge($focus_e, $ur2), null),
+            'source_new_echo' => source_view($_POST['chainsourcetype'], array_merge($focus_e, $ur2), null),
         ));
 
     }
 
-    function player_editor()
+    function source_editor()
     {
 
-        $player_session = player_session(null, 0, $this->player_session);
-        $players___11035 = $this->config->item('players___11035');
-        $players___42776 = $this->config->item('players___42776');
-        $players___4592 = $this->config->item('players___4592'); //Data types
-        if (!$player_session) {
+        $source_session = source_session(null, 0, $this->source_session);
+        $sources___11035 = $this->config->item('sources___11035');
+        $sources___42776 = $this->config->item('sources___42776');
+        $sources___4592 = $this->config->item('sources___4592'); //Data types
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['playerid']) || !isset($_POST['chainid'])) {
+        } elseif (!isset($_POST['sourceid']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
         }
 
-        $es = $this->Players->read(array(
-            'playerid' => $_POST['playerid'],
+        $es = $this->Sources->read(array(
+            'sourceid' => $_POST['sourceid'],
         ));
         if (!count($es)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Player is no longer active',
+                'message' => 'Source is no longer active',
             ));
-        } elseif (!player_access($es[0]['playerhandle'], 0, $es[0])) {
+        } elseif (!source_access($es[0]['sourcehandle'], 0, $es[0])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'You are missing permission to edit this Player',
+                'message' => 'You are missing permission to edit this Source',
             ));
         }
 
 
         //Fetch dynamic data based on idea type:
         $order_42145 = sort_by(42145);
-        $scanned_players = array();
+        $scanned_sources = array();
         $return_inputs = array();
         $input_pointer = 0;
         $profile_header = '';
 
-        //Fetch Player Templates, if any:
+        //Fetch Source Templates, if any:
         foreach ($this->Chains->read(array(
-            'chainplayerup IN (' . join(',', $this->config->item('playerids___42178')) . ')' => null, //Dynamic Players
-            'chainplayerdown' => $es[0]['playerid'],
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-        ), array('chainplayerup'), 0, 0, sort_by(42178)) as $player_group) {
+            'chainsourceup IN (' . join(',', $this->config->item('sourceids___42178')) . ')' => null, //Dynamic Sources
+            'chainsourcedown' => $es[0]['sourceid'],
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+        ), array('chainsourceup'), 0, 0, sort_by(42178)) as $source_group) {
 
-            if (in_array($player_group['playerid'], $scanned_players)) {
+            if (in_array($source_group['sourceid'], $scanned_sources)) {
                 continue;
             }
-            array_push($scanned_players, $player_group['playerid']);
+            array_push($scanned_sources, $source_group['sourceid']);
 
             foreach ($this->Chains->read(array(
-                'chainplayerdown' => $player_group['playerid'],
-                'chainplayerup IN (' . join(',', $this->config->item('playerids___42145')) . ')' => null, //Dynamic Input Templates
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainplayerup'), 0, 0, $order_42145) as $player_template) {
+                'chainsourcedown' => $source_group['sourceid'],
+                'chainsourceup IN (' . join(',', $this->config->item('sourceids___42145')) . ')' => null, //Dynamic Input Templates
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            ), array('chainsourceup'), 0, 0, $order_42145) as $source_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($player_template['playercover']) . '</span>' . $player_template['playertext'] . '<a href="' . view_memory(42903, 42902) . $player_group['playerhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $player_group['playertext'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($player_group['playercover']) . '</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($source_template['sourcecover']) . '</span>' . $source_template['sourcetext'] . '<a href="' . view_memory(42903, 42902) . $source_group['sourcehandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $source_group['sourcetext'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($source_group['sourcecover']) . '</span></a></div>';
 
 
                 //Load template:
-                if (!is_array($this->config->item('players___' . $player_template['playerid']))) {
+                if (!is_array($this->config->item('sources___' . $source_template['sourceid']))) {
                     //Report Error:
-                    log_error('player_sessionditor_load() ERROR: @' . $player_template['playerid'] . ' is NOT in memory cache', array(
-                        'chainplayerdown' => $player_template['playerid'],
+                    log_error('source_sessionditor_load() ERROR: @' . $source_template['sourceid'] . ' is NOT in memory cache', array(
+                        'chainsourcedown' => $source_template['sourceid'],
                     ));
                     continue;
-                } elseif (in_array($player_template['playerid'], $scanned_players)) {
+                } elseif (in_array($source_template['sourceid'], $scanned_sources)) {
                     continue;
                 }
-                array_push($scanned_players, $player_template['playerid']);
+                array_push($scanned_sources, $source_template['sourceid']);
 
 
-                foreach ($this->config->item('players___' . $player_template['playerid']) as $dynamic_playerid => $m) {
+                foreach ($this->config->item('sources___' . $source_template['sourceid']) as $dynamic_sourceid => $m) {
 
                     //Make sure it's a dynamic input field:
-                    if (!in_array($dynamic_playerid, $this->config->item('playerids___42179'))) {
+                    if (!in_array($dynamic_sourceid, $this->config->item('sourceids___42179'))) {
                         continue;
-                    } elseif (in_array($dynamic_playerid, $scanned_players)) {
+                    } elseif (in_array($dynamic_sourceid, $scanned_sources)) {
                         continue;
                     }
-                    array_push($scanned_players, $dynamic_playerid);
+                    array_push($scanned_sources, $dynamic_sourceid);
 
                     //Let's first determine the data type:
-                    $data_types = array_intersect($m['m__following'], $this->config->item('playerids___4592'));
+                    $data_types = array_intersect($m['m__following'], $this->config->item('sourceids___4592'));
 
                     if (count($data_types) != 1) {
 
                         //This is strange, we are expecting 1 match only report this:
-                        log_error('Found ' . count($data_types) . ' Data Types (@' . $es[0]['playerid'] . ') (Expecting exactly 1) for @' . $dynamic_playerid . ': Check @4592 to see what is wrong', array(
-                            'chainplayerdown' => $dynamic_playerid,
-                            'chainplayercreator' => $player_session['playerid'],
+                        log_error('Found ' . count($data_types) . ' Data Types (@' . $es[0]['sourceid'] . ') (Expecting exactly 1) for @' . $dynamic_sourceid . ': Check @4592 to see what is wrong', array(
+                            'chainsourcedown' => $dynamic_sourceid,
+                            'chainsourcecreator' => $source_session['sourceid'],
                         ));
                         continue; //Go to the next dynamic data type
 
                     } elseif ($input_pointer >= view_memory(6404, 42206)) {
                         //Monitor if we ever reach the maximum:
                         log_error('Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion', array(
-                            'chainplayerdown' => $dynamic_playerid,
-                            'chainplayercreator' => $player_session['playerid'],
-                            'chainidearight' => $_POST['playerid'],
+                            'chainsourcedown' => $dynamic_sourceid,
+                            'chainsourcecreator' => $source_session['sourceid'],
+                            'chainidearight' => $_POST['sourceid'],
                         ));
                     }
 
@@ -2039,15 +2039,15 @@ class Controller extends CI_Controller
                         break;
                     }
 
-                    if (in_array($data_type, $this->config->item('playerids___42188'))) {
+                    if (in_array($data_type, $this->config->item('sourceids___42188'))) {
 
                         //Single or Multiple Choice:
                         array_push($return_inputs, array(
-                            'd__id' => $dynamic_playerid,
+                            'd__id' => $dynamic_sourceid,
                             'd__is_radio' => 1,
                             'd_chainid' => 0,
-                            'd__html' => view_instant_select($dynamic_playerid, $es[0]['playerid'], 0),
-                            'd__value' => ($es[0]['playerid'] > 0 ? $es[0]['playerid'] : ''),
+                            'd__html' => view_instant_select($dynamic_sourceid, $es[0]['sourceid'], 0),
+                            'd__value' => ($es[0]['sourceid'] > 0 ? $es[0]['sourceid'] : ''),
                             'd__type_name' => '',
                             'd__placeholder' => '',
                             'd__profile_header' => $profile_header,
@@ -2055,46 +2055,46 @@ class Controller extends CI_Controller
 
                     } else {
 
-                        $this_data_type = $this->config->item('players___' . $data_type);
-                        $players___42179 = $this->config->item('players___42179'); //Dynamic Input Field
-                        $players___11035 = $this->config->item('players___11035'); //Encyclopedia
+                        $this_data_type = $this->config->item('sources___' . $data_type);
+                        $sources___42179 = $this->config->item('sources___42179'); //Dynamic Input Field
+                        $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
 
                         //Fetch the current value(s):
                         $counted = 0;
                         $unique_values = array();
                         foreach ($this->Chains->read(array(
-                            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-                            'chainplayerdown' => $es[0]['playerid'],
-                            'chainplayerup' => $dynamic_playerid,
-                        ), array('chainplayerup')) as $selected_e) {
-                            if (strlen($selected_e['chaintext']) && !in_array($selected_e['chaintext'], $unique_values)) {
-                                array_push($unique_values, $selected_e['chaintext']);
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                            'chainsourcedown' => $es[0]['sourceid'],
+                            'chainsourceup' => $dynamic_sourceid,
+                        ), array('chainsourceup')) as $selected_e) {
+                            if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
+                                array_push($unique_values, $selected_e['chainvalue']);
                                 $counted++;
                                 array_push($return_inputs, array(
-                                    'd__id' => $dynamic_playerid,
+                                    'd__id' => $dynamic_sourceid,
                                     'd__is_radio' => 0,
                                     'd_chainid' => $selected_e['chainid'],
-                                    'd__html' => view_dynamic_headline($dynamic_playerid, $m, $selected_e),
-                                    'd__value' => $selected_e['chaintext'],
+                                    'd__html' => view_dynamic_headline($dynamic_sourceid, $m, $selected_e),
+                                    'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_playerid]['m__message']) ? $this_data_type[$dynamic_playerid]['m__message'] : $players___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_sourceid]['m__message']) ? $this_data_type[$dynamic_sourceid]['m__message'] : $sources___4592[$data_type]['m__title'] . '...'),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
                         }
 
                         if (!$counted) {
-                            foreach ($this->Players->read(array(
-                                'playerid' => $dynamic_playerid,
+                            foreach ($this->Sources->read(array(
+                                'sourceid' => $dynamic_sourceid,
                             )) as $selected_e) {
                                 array_push($return_inputs, array(
-                                    'd__id' => $dynamic_playerid,
+                                    'd__id' => $dynamic_sourceid,
                                     'd__is_radio' => 0,
                                     'd_chainid' => 0,
-                                    'd__html' => view_dynamic_headline($dynamic_playerid, $m, $selected_e),
+                                    'd__html' => view_dynamic_headline($dynamic_sourceid, $m, $selected_e),
                                     'd__value' => '',
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_playerid]['m__message']) ? $this_data_type[$dynamic_playerid]['m__message'] : $players___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_sourceid]['m__message']) ? $this_data_type[$dynamic_sourceid]['m__message'] : $sources___4592[$data_type]['m__title'] . '...'),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
@@ -2106,25 +2106,25 @@ class Controller extends CI_Controller
 
 
         //Add universal inputs only if missing bio profiles:
-        if (!array_intersect($scanned_players, $this->config->item('playerids___42885'))) {
-            foreach ($this->Players->read(array(
-                'playerid IN (' . join(',', $this->config->item('playerids___42776')) . ')' => null, //Universal Dynamic Inputs
+        if (!array_intersect($scanned_sources, $this->config->item('sourceids___42885'))) {
+            foreach ($this->Sources->read(array(
+                'sourceid IN (' . join(',', $this->config->item('sourceids___42776')) . ')' => null, //Universal Dynamic Inputs
             )) as $selected_e) {
-                foreach (array_intersect($players___42776[$selected_e['playerid']]['m__following'], $this->config->item('playerids___4592')) as $data_type) {
+                foreach (array_intersect($sources___42776[$selected_e['sourceid']]['m__following'], $this->config->item('sourceids___4592')) as $data_type) {
                     //Any value?
                     $values = $this->Chains->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-                        'chainplayerdown' => $es[0]['playerid'],
-                        'chainplayerup' => $selected_e['playerid'],
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                        'chainsourcedown' => $es[0]['sourceid'],
+                        'chainsourceup' => $selected_e['sourceid'],
                     ));
                     array_push($return_inputs, array(
-                        'd__id' => $selected_e['playerid'],
+                        'd__id' => $selected_e['sourceid'],
                         'd__is_radio' => 0,
                         'd_chainid' => 0,
-                        'd__html' => view_dynamic_headline($selected_e['playerid'], $players___42776[$selected_e['playerid']], $selected_e),
-                        'd__value' => (isset($values[0]['chaintext']) && strlen($values[0]['chaintext']) > 0 ? $values[0]['chaintext'] : ''),
+                        'd__html' => view_dynamic_headline($selected_e['sourceid'], $sources___42776[$selected_e['sourceid']], $selected_e),
+                        'd__value' => (isset($values[0]['chainvalue']) && strlen($values[0]['chainvalue']) > 0 ? $values[0]['chainvalue'] : ''),
                         'd__type_name' => html_input_type($data_type),
-                        'd__placeholder' => (strlen($players___42776[$selected_e['playerid']]['m__message']) ? $players___42776[$selected_e['playerid']]['m__message'] : $players___4592[$data_type]['m__title'] . '...'),
+                        'd__placeholder' => (strlen($sources___42776[$selected_e['sourceid']]['m__message']) ? $sources___42776[$selected_e['sourceid']]['m__message'] : $sources___4592[$data_type]['m__title'] . '...'),
                         'd__profile_header' => '', //No header for universals
                     ));
                     break;
@@ -2140,36 +2140,36 @@ class Controller extends CI_Controller
 
     }
 
-    function player_save_edit()
+    function source_save_edit()
     {
 
-        $player_session = player_session(null, 0, $this->player_session);
-        if (!$player_session) {
+        $source_session = source_session(null, 0, $this->source_session);
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['save_playerid'])) {
+        } elseif (!isset($_POST['save_sourceid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
             ));
-        } elseif (!isset($_POST['save_playertext'])) {
+        } elseif (!isset($_POST['save_sourcetext'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Player Title',
+                'message' => 'Invalid Source Title',
             ));
-        } elseif (!isset($_POST['save_playerhandle'])) {
+        } elseif (!isset($_POST['save_sourcehandle'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Player Handle',
+                'message' => 'Invalid Source Handle',
             ));
-        } elseif (!isset($_POST['save_playercover'])) {
+        } elseif (!isset($_POST['save_sourcecover'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Player Cover',
+                'message' => 'Invalid Source Cover',
             ));
-        } elseif (!isset($_POST['save_chainid']) || !isset($_POST['save_chaintext'])) {
+        } elseif (!isset($_POST['save_chainid']) || !isset($_POST['save_chainvalue'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Chain Data',
@@ -2177,19 +2177,19 @@ class Controller extends CI_Controller
         }
 
 
-        $es = $this->Players->read(array(
-            'playerid' => $_POST['save_playerid'],
+        $es = $this->Sources->read(array(
+            'sourceid' => $_POST['save_sourceid'],
         ));
         if (!count($es)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Player Not Active',
+                'message' => 'Source Not Active',
             ));
         }
 
 
         //Validate Dynamic Inputs:
-        $players___42179 = $this->config->item('players___42179'); //Dynamic Input Fields
+        $sources___42179 = $this->config->item('sources___42179'); //Dynamic Input Fields
 
         //Process dynamic inputs if any:
         for ($p = 1; $p <= view_memory(6404, 42206); $p++) {
@@ -2203,22 +2203,22 @@ class Controller extends CI_Controller
                 continue;
             }
             $d_chainid = $input_parts[0];
-            $dynamic_playerid = $input_parts[1];
+            $dynamic_sourceid = $input_parts[1];
             $dynamic_value = trim($input_parts[2]);
 
 
             //Required fields must have an input:
-            if (in_array($dynamic_playerid, $this->config->item('playerids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_playerid, $this->config->item('playerids___33331')) && !in_array($dynamic_playerid, $this->config->item('playerids___33332'))) {
+            if (in_array($dynamic_sourceid, $this->config->item('sourceids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_sourceid, $this->config->item('sourceids___33331')) && !in_array($dynamic_sourceid, $this->config->item('sourceids___33332'))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Missing Required Field: ' . $players___42179[$dynamic_playerid]['m__title'],
+                    'message' => 'Missing Required Field: ' . $sources___42179[$dynamic_sourceid]['m__title'],
                 ));
             }
 
             //Validate input based on its data type, if provided:
             if (strlen($dynamic_value)) {
-                foreach (array_intersect($players___42179[$dynamic_playerid]['m__following'], $this->config->item('playerids___4592')) as $data_type_this) {
-                    $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $players___42179[$dynamic_playerid]['m__title']);
+                foreach (array_intersect($sources___42179[$dynamic_sourceid]['m__following'], $this->config->item('sourceids___4592')) as $data_type_this) {
+                    $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $sources___42179[$dynamic_sourceid]['m__title']);
                     if (!$data_type_validate['status']) {
                         //We had an error:
                         return view_json($data_type_validate);
@@ -2236,9 +2236,9 @@ class Controller extends CI_Controller
 
             if (!$d_chainid || !count($values)) {
                 $values = $this->Chains->read(array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-                    'chainplayerup' => $dynamic_playerid,
-                    'chainplayerdown' => $es[0]['playerid'],
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                    'chainsourceup' => $dynamic_sourceid,
+                    'chainsourcedown' => $es[0]['sourceid'],
                 ));
             }
 
@@ -2247,37 +2247,37 @@ class Controller extends CI_Controller
             if (!strlen($dynamic_value)) {
 
                 //Remove Chain if we have one:
-                if (count($values) && $dynamic_playerid != 11035 /* HACK: Summary are key chains that should not be removed */) {
-                    $this->Chains->delete($values[0]['chainid'], $player_session['playerid']);
+                if (count($values) && $dynamic_sourceid != 11035 /* HACK: Summary are key chains that should not be removed */) {
+                    $this->Chains->delete($values[0]['chainid'], $source_session['sourceid']);
                 }
 
             } elseif (!count($values)) {
 
                 //Create Chain:
                 $this->Chains->create(array(
-                    'chainplayercreator' => $player_session['playerid'],
-                    'chainplayertype' => 4230,
-                    'chainplayerup' => $dynamic_playerid,
-                    'chainplayerdown' => $es[0]['playerid'],
-                    'chaintext' => $dynamic_value,
-                    'chainnumber' => number_chainnumber($dynamic_value),
+                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chainsourcetype' => 4230,
+                    'chainsourceup' => $dynamic_sourceid,
+                    'chainsourcedown' => $es[0]['sourceid'],
+                    'chainvalue' => $dynamic_value,
+                    'chainkey' => number_chainkey($dynamic_value),
                 ));
 
-            } elseif ($values[0]['chaintext'] != $dynamic_value) {
+            } elseif ($values[0]['chainvalue'] != $dynamic_value) {
 
                 //Update Chain:
                 $this->Chains->update($values[0]['chainid'], array(
-                    'chaintext' => $dynamic_value,
-                    'chainplayercreator' => $player_session['playerid'],
+                    'chainvalue' => $dynamic_value,
+                    'chainsourcecreator' => $source_session['sourceid'],
                 ));
 
             }
         }
 
 
-        //Validate Player Handle & save if needed:
-        if ($es[0]['playerhandle'] !== trim($_POST['save_playerhandle'])) {
-            $validate_update_handle = validate_update_handle(trim($_POST['save_playerhandle']), null, $es[0]['playerid']);
+        //Validate Source Handle & save if needed:
+        if ($es[0]['sourcehandle'] !== trim($_POST['save_sourcehandle'])) {
+            $validate_update_handle = validate_update_handle(trim($_POST['save_sourcehandle']), null, $es[0]['sourceid']);
             if (!$validate_update_handle['status']) {
                 return view_json(array(
                     'status' => 0,
@@ -2286,50 +2286,50 @@ class Controller extends CI_Controller
             }
         }
 
-        //Validate Player Title & save if needed:
-        $validate_playertext = validate_playertext($_POST['save_playertext']);
-        if ($es[0]['playertext'] != trim($_POST['save_playertext'])) {
-            if (!$validate_playertext['status']) {
+        //Validate Source Title & save if needed:
+        $validate_sourcetext = validate_sourcetext($_POST['save_sourcetext']);
+        if ($es[0]['sourcetext'] != trim($_POST['save_sourcetext'])) {
+            if (!$validate_sourcetext['status']) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $validate_playertext['message'],
+                    'message' => $validate_sourcetext['message'],
                 ));
             }
-            $es[0]['playertext'] = $validate_playertext['playertext_clean'];
+            $es[0]['sourcetext'] = $validate_sourcetext['sourcetext_clean'];
         }
 
-        //Save Player Cover if needed:
-        if ($es[0]['playercover'] != trim($_POST['save_playercover'])) {
-            //TODO validate playercover?
-            $es[0]['playercover'] = trim($_POST['save_playercover']);
+        //Save Source Cover if needed:
+        if ($es[0]['sourcecover'] != trim($_POST['save_sourcecover'])) {
+            //TODO validate sourcecover?
+            $es[0]['sourcecover'] = trim($_POST['save_sourcecover']);
         }
 
         //Update:
-        $this->Players->update($es[0]['playerid'], array(
-            'playertext' => $validate_playertext['playertext_clean'],
-            'playercover' => trim($_POST['save_playercover']),
-            'playerhandle' => trim($_POST['save_playerhandle']),
-        ), $player_session['playerid']);
+        $this->Sources->update($es[0]['sourceid'], array(
+            'sourcetext' => $validate_sourcetext['sourcetext_clean'],
+            'sourcecover' => trim($_POST['save_sourcecover']),
+            'sourcehandle' => trim($_POST['save_sourcehandle']),
+        ), $source_session['sourceid']);
 
 
         //Sync handle reference:
-        $new_handle_string = trim($_POST['save_playerhandle']);
-        if ($es[0]['playerhandle'] != $new_handle_string) {
+        $new_handle_string = trim($_POST['save_sourcehandle']);
+        if ($es[0]['sourcehandle'] != $new_handle_string) {
             //Update Handles everywhere they are referenced:
             foreach ($this->Chains->read(array(
-                'chainplayerup' => $es[0]['playerid'],
-                'chainplayertype' => 31835, //Player Mention
+                'chainsourceup' => $es[0]['sourceid'],
+                'chainsourcetype' => 31835, //Source Mention
             ), array('chainidearight')) as $ref) {
                 $this->Ideas->update($ref['ideaid'], array(
-                    'ideatext' => str_replace('@' . $es[0]['playerhandle'], '@' . $new_handle_string, $ref['ideatext']),
-                ), $player_session['playerid']);
+                    'ideatext' => str_replace('@' . $es[0]['sourcehandle'], '@' . $new_handle_string, $ref['ideatext']),
+                ), $source_session['sourceid']);
             }
-            $es[0]['playerhandle'] = $new_handle_string;
+            $es[0]['sourcehandle'] = $new_handle_string;
         }
 
 
         //Do we have a chain reference message that need to be saved?
-        if ($_POST['save_chainid'] > 0 && $_POST['save_chaintext'] != 'IGNORE_INPUT') {
+        if ($_POST['save_chainid'] > 0 && $_POST['save_chainvalue'] != 'IGNORE_INPUT') {
 
             //Fetch Chain:
             foreach ($this->Chains->read(array(
@@ -2338,10 +2338,10 @@ class Controller extends CI_Controller
 
                 $es[0] = array_merge($es[0], $this_x);
 
-                if ($this_x['chaintext'] != trim($_POST['save_chaintext'])) {
+                if ($this_x['chainvalue'] != trim($_POST['save_chainvalue'])) {
                     $this->Chains->update($this_x['chainid'], array(
-                        'chaintext' => trim($_POST['save_chaintext']),
-                        'chainplayercreator' => $player_session['playerid'],
+                        'chainvalue' => trim($_POST['save_chainvalue']),
+                        'chainsourcecreator' => $source_session['sourceid'],
                     ));
                 }
             }
@@ -2349,8 +2349,8 @@ class Controller extends CI_Controller
 
 
         //Reset member session data if this data belongs to the logged-in member:
-        if ($_POST['save_playerid'] == $player_session['playerid']) {
-            $this->Players->activate($es[0], true);
+        if ($_POST['save_sourceid'] == $source_session['sourceid']) {
+            $this->Sources->activate($es[0], true);
         }
 
 
@@ -2362,7 +2362,7 @@ class Controller extends CI_Controller
 
     }
 
-    function player_select_apply()
+    function source_select_apply()
     {
         /*
          *
@@ -2370,8 +2370,8 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_session = player_session(null, 0, $this->player_session);
-        if (!$player_session) {
+        $source_session = source_session(null, 0, $this->source_session);
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -2379,14 +2379,14 @@ class Controller extends CI_Controller
         } elseif (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing followings Player',
+                'message' => 'Missing followings Source',
             ));
-        } elseif (!isset($_POST['selected_playerid']) || intval($_POST['selected_playerid']) < 1) {
+        } elseif (!isset($_POST['selected_sourceid']) || intval($_POST['selected_sourceid']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing selected Player',
+                'message' => 'Missing selected Source',
             ));
-        } elseif (!isset($_POST['down_playerid']) || !isset($_POST['right_ideaid'])) {
+        } elseif (!isset($_POST['down_sourceid']) || !isset($_POST['right_ideaid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Down/Right Element',
@@ -2406,96 +2406,96 @@ class Controller extends CI_Controller
         );
 
 
-        if ($_POST['down_playerid'] > 0) {
+        if ($_POST['down_sourceid'] > 0) {
 
             //Dispatch Any Emails Necessary:
-            if (isset($_POST['selected_playerid']) && intval($_POST['selected_playerid']) > 0) {
+            if (isset($_POST['selected_sourceid']) && intval($_POST['selected_sourceid']) > 0) {
                 foreach ($this->Chains->read(array(
-                    'chainplayertype' => 33600, //Draft
-                    'chainplayerup' => $_POST['selected_playerid'],
+                    'chainsourcetype' => 33600, //Draft
+                    'chainsourceup' => $_POST['selected_sourceid'],
                 ), array('chainidearight'), 0) as $i) {
                     if (count($this->Chains->read(array(
-                        'chainplayertype' => 33600, //Draft
-                        'chainplayerup' => 31065, //Choice Update Email Templates
+                        'chainsourcetype' => 33600, //Draft
+                        'chainsourceup' => 31065, //Choice Update Email Templates
                         'chainidearight' => $i['ideaid'], //Is this the template?
                     )))) {
                         //Found the email template to send:
-                        $total_sent = $this->Chains->broadcast(array($player_session), $i, website_setting(0), false);
+                        $total_sent = $this->Chains->broadcast(array($source_session), $i, website_setting(0), false);
                         break; //Just the first template match
                     }
                 }
             }
         }
 
-        $is_required = in_array($_POST['focus__id'], $this->config->item('playerids___28239')); //Required Settings
+        $is_required = in_array($_POST['focus__id'], $this->config->item('sourceids___28239')); //Required Settings
 
         if (!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']) {
 
             //Since this is not a multi-select we want to delete all existing options
 
-            //Fetch all possible answers based on followings Player:
+            //Fetch all possible answers based on followings Source:
             $query_filters = array(
-                'chainplayerup' => $_POST['focus__id'],
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+                'chainsourceup' => $_POST['focus__id'],
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
             );
 
             if ((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']) {
                 //Just delete this single item, not the other ones:
-                $query_filters['chainplayerdown'] = $_POST['selected_playerid'];
+                $query_filters['chainsourcedown'] = $_POST['selected_sourceid'];
             }
 
             //List all possible answers:
             $possible_answers = array();
-            foreach ($this->Chains->read($query_filters, array('chainplayerdown'), 0, 0) as $answer_e) {
+            foreach ($this->Chains->read($query_filters, array('chainsourcedown'), 0, 0) as $answer_e) {
                 $stats['total']++;
-                array_push($possible_answers, $answer_e['playerid']);
+                array_push($possible_answers, $answer_e['sourceid']);
             }
 
             //Delete previously selected options:
-            if ($_POST['down_playerid']) {
+            if ($_POST['down_sourceid']) {
                 $delete_query = $this->Chains->read(array(
-                    'chainplayerup IN (' . join(',', $possible_answers) . ')' => null,
-                    'chainplayerdown' => $_POST['down_playerid'],
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+                    'chainsourceup IN (' . join(',', $possible_answers) . ')' => null,
+                    'chainsourcedown' => $_POST['down_sourceid'],
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                 ));
             } elseif ($_POST['right_ideaid']) {
                 $delete_query = $this->Chains->read(array(
-                    'chainplayerup IN (' . join(',', $possible_answers) . ')' => null,
+                    'chainsourceup IN (' . join(',', $possible_answers) . ')' => null,
                     'chainidearight' => $_POST['right_ideaid'],
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
                 ));
             }
 
             foreach ($delete_query as $delete) {
                 $stats['deleted']++;
                 //Should usually delete a single option:
-                $this->Chains->delete($delete['chainid'], $player_session['playerid']);
+                $this->Chains->delete($delete['chainid'], $source_session['sourceid']);
             }
 
         }
 
         //Add new option if not previously there:
         if ((!$_POST['enable_mulitiselect'] && $is_required) || !$_POST['was_previously_selected']) {
-            if ($_POST['down_playerid']) {
+            if ($_POST['down_sourceid']) {
                 $stats['added']++;
                 $this->Chains->create(array(
-                    'chainplayercreator' => $player_session['playerid'],
-                    'chainplayerup' => $_POST['selected_playerid'],
-                    'chainplayertype' => 4230,
-                    'chainplayerdown' => $_POST['down_playerid'],
+                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chainsourceup' => $_POST['selected_sourceid'],
+                    'chainsourcetype' => 4230,
+                    'chainsourcedown' => $_POST['down_sourceid'],
                 ));
             } elseif ($_POST['right_ideaid']) {
 
                 if (!count($this->Chains->read(array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
-                    'chainplayerup' => $_POST['selected_playerid'],
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31919')) . ')' => null, //IDEA AUTHOR
+                    'chainsourceup' => $_POST['selected_sourceid'],
                     'chainidearight' => $_POST['right_ideaid'],
                 )))) {
                     $stats['added']++;
                     $this->Chains->create(array(
-                        'chainplayercreator' => $player_session['playerid'],
-                        'chainplayertype' => 4983, //Co-Author
-                        'chainplayerup' => $_POST['selected_playerid'],
+                        'chainsourcecreator' => $source_session['sourceid'],
+                        'chainsourcetype' => 4983, //Co-Author
+                        'chainsourceup' => $_POST['selected_sourceid'],
                         'chainidearight' => $_POST['right_ideaid'],
                     ));
                 }
@@ -2505,8 +2505,8 @@ class Controller extends CI_Controller
 
 
         //Update Session:
-        if ($_POST['down_playerid'] && $player_session) {
-            $this->Players->activate($player_session, true);
+        if ($_POST['down_sourceid'] && $source_session) {
+            $this->Sources->activate($source_session, true);
         }
 
 
@@ -2517,7 +2517,7 @@ class Controller extends CI_Controller
         ));
     }
 
-    function player_authenticate()
+    function source_authenticate()
     {
 
 
@@ -2553,8 +2553,8 @@ class Controller extends CI_Controller
         //Validate member ID
         if ($_POST['account_id'] > 0) {
 
-            $es = $this->Players->read(array(
-                'playerid' => $_POST['account_id'],
+            $es = $this->Sources->read(array(
+                'sourceid' => $_POST['account_id'],
             ));
             if (!count($es)) {
                 return view_json(array(
@@ -2579,9 +2579,9 @@ class Controller extends CI_Controller
         //Auth Code:
         $is_authenticated = false;
         foreach ($this->Chains->read(array(
-            'chainplayertype' => 44179, //Triggered
-            'chainplayerup' => 32078, //Sign In Key
-            'LOWER(chaintext) LIKE \'' . strtolower($_POST['account_email_phone']) . '%\'' => null,
+            'chainsourcetype' => 44179, //Triggered
+            'chainsourceup' => 32078, //Sign In Key
+            'LOWER(chainvalue) LIKE \'' . strtolower($_POST['account_email_phone']) . '%\'' => null,
         ), array(), 1, 0, array('chaintime' => 'DESC')) as $sent_key) {
             if (strtotime($sent_key['chaintime']) <= (time() - 86400)) {
                 //Expired
@@ -2589,7 +2589,7 @@ class Controller extends CI_Controller
                 break;
             }
             $session_key = $this->session->userdata('session_key');
-            $key_parts = explode('/', $sent_key['chaintext'], 2);
+            $key_parts = explode('/', $sent_key['chainvalue'], 2);
             if (strlen($session_key) && $key_parts[1] == md5($session_key . $_POST['input_code'])) {
                 //Void access code:
                 $is_authenticated = $this->Chains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
@@ -2607,7 +2607,7 @@ class Controller extends CI_Controller
         if ($_POST['account_id'] > 0) {
 
             //Assign session & log Chain:
-            $this->Players->activate($es[0]);
+            $this->Sources->activate($es[0]);
 
         } else {
 
@@ -2617,18 +2617,18 @@ class Controller extends CI_Controller
 
             //Prep inputs & validate further:
             $acc_email = ($is_email ? $_POST['account_email_phone'] : $_POST['new_account_email']);
-            $player_result = $this->Players->join(strstr($acc_email, '@', true), $acc_email, (!$is_email ? $_POST['account_email_phone'] : ''));
-            if (!$player_result['status']) {
-                return view_json($player_result);
+            $source_result = $this->Sources->join(strstr($acc_email, '@', true), $acc_email, (!$is_email ? $_POST['account_email_phone'] : ''));
+            if (!$source_result['status']) {
+                return view_json($source_result);
             }
 
-            $es[0] = $player_result['e'];
+            $es[0] = $source_result['e'];
 
         }
 
 
         //Set default sign in URL:
-        $sign_url = view_memory(42903, 42902) . $es[0]['playerhandle'];
+        $sign_url = view_memory(42903, 42902) . $es[0]['sourcehandle'];
 
         //See if we can find a better one:
         if (intval($_POST['sign_ideaid']) > 0) {
@@ -2648,18 +2648,18 @@ class Controller extends CI_Controller
 
     }
 
-    function player_toggle_follow()
+    function source_toggle_follow()
     {
 
-        $player_session = player_session(10939, 0, $this->player_session);
-        if (!$player_session) {
+        $source_session = source_session(10939, 0, $this->source_session);
+        if (!$source_session) {
 
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
 
-        } elseif (!isset($_POST['chainplayercreator']) || !isset($_POST['playerid']) || !isset($_POST['ideaid']) || !isset($_POST['chainid'])) {
+        } elseif (!isset($_POST['chainsourcecreator']) || !isset($_POST['sourceid']) || !isset($_POST['ideaid']) || !isset($_POST['chainid'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -2671,23 +2671,23 @@ class Controller extends CI_Controller
             $_POST['require_writing'] = intval($_POST['require_writing']);
 
             $already_added = $this->Chains->read(array(
-                'chainplayerup' => $_POST['playerid'],
-                'chainplayerdown' => $_POST['chainplayercreator'],
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainplayerup'));
+                'chainsourceup' => $_POST['sourceid'],
+                'chainsourcedown' => $_POST['chainsourcecreator'],
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            ), array('chainsourceup'));
 
             if (count($already_added)) {
 
                 if (intval($_POST['require_writing'])) {
 
                     //Updating current value if changed:
-                    if (strlen($_POST['written_answer']) && trim($_POST['written_answer']) != $already_added[0]['chaintext']) {
+                    if (strlen($_POST['written_answer']) && trim($_POST['written_answer']) != $already_added[0]['chainvalue']) {
                         $this->Chains->update($already_added[0]['chainid'], array(
-                            'chaintext' => $_POST['written_answer'],
-                            'chainplayercreator' => $player_session['playerid'],
+                            'chainvalue' => $_POST['written_answer'],
+                            'chainsourcecreator' => $source_session['sourceid'],
                         ));
                     } elseif (!strlen($_POST['written_answer'])) {
-                        $this->Chains->delete($already_added[0]['chainid'], $player_session['playerid']);
+                        $this->Chains->delete($already_added[0]['chainid'], $source_session['sourceid']);
                     }
 
                     return view_json(array(
@@ -2698,7 +2698,7 @@ class Controller extends CI_Controller
                 } else {
 
                     //Already exists, let's remove:
-                    $this->Chains->delete($already_added[0]['chainid'], $player_session['playerid']);
+                    $this->Chains->delete($already_added[0]['chainid'], $source_session['sourceid']);
 
                     return view_json(array(
                         'status' => 1,
@@ -2719,22 +2719,22 @@ class Controller extends CI_Controller
 
                 } else {
 
-                    foreach ($this->Players->read(array(
-                        'playerid' => $_POST['playerid'],
+                    foreach ($this->Sources->read(array(
+                        'sourceid' => $_POST['sourceid'],
                     )) as $e) {
 
                         //Does not exist, Add:
                         $this->Chains->create(array(
-                            'chainplayerup' => $_POST['playerid'],
-                            'chainplayerdown' => $_POST['chainplayercreator'],
-                            'chainplayercreator' => $player_session['playerid'],
-                            'chaintext' => $_POST['written_answer'],
-                            'chainplayertype' => 4230,
+                            'chainsourceup' => $_POST['sourceid'],
+                            'chainsourcedown' => $_POST['chainsourcecreator'],
+                            'chainsourcecreator' => $source_session['sourceid'],
+                            'chainvalue' => $_POST['written_answer'],
+                            'chainsourcetype' => 4230,
                         ));
 
                         return view_json(array(
                             'status' => 1,
-                            'message' => (intval($_POST['require_writing']) ? $_POST['written_answer'] : view_cover($e['playercover'], true)),
+                            'message' => (intval($_POST['require_writing']) ? $_POST['written_answer'] : view_cover($e['sourcecover'], true)),
                         ));
 
                     }
@@ -2743,7 +2743,7 @@ class Controller extends CI_Controller
         }
     }
 
-    function player_verify()
+    function source_verify()
     {
 
         if (!isset($_POST['account_email_phone'])) {
@@ -2754,7 +2754,7 @@ class Controller extends CI_Controller
         }
 
         //Cleanup input email:
-        $players___11035 = $this->config->item('players___11035'); //Encyclopedia
+        $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
         $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
         $valid_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
         if (!$valid_email && strlen($_POST['account_email_phone']) >= 10) {
@@ -2786,14 +2786,14 @@ class Controller extends CI_Controller
 
 
         //Search for email/phone to see if it exists
-        $chainplayercreator = 0;
+        $chainsourcecreator = 0;
         foreach ($this->Chains->read(array(
-            'LOWER(chaintext)' => strtolower($_POST['account_email_phone']),
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-            'chainplayerup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
-        ), array('chainplayerdown'), 1, 0, array('chainid' => 'ASC')) as $map_e) {
+            'LOWER(chainvalue)' => strtolower($_POST['account_email_phone']),
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            'chainsourceup' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
+        ), array('chainsourcedown'), 1, 0, array('chainid' => 'ASC')) as $map_e) {
             $u = $map_e;
-            $chainplayercreator = $map_e['playerid'];
+            $chainsourcecreator = $map_e['sourceid'];
         }
 
         //Send Sign In Key
@@ -2805,12 +2805,12 @@ class Controller extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $html_message = $passcode . ' is your ' . $players___11035[32078]['m__title'] . ' for your ' . get_domain('m__title') . ' account.';
+        $html_message = $passcode . ' is your ' . $sources___11035[32078]['m__title'] . ' for your ' . get_domain('m__title') . ' account.';
 
         if ($valid_email) {
 
             //Email:
-            dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">' . $html_message . '</div>', $chainplayercreator, array(), 0, 0, false);
+            dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">' . $html_message . '</div>', $chainsourcecreator, array(), 0, 0, false);
 
 
         } elseif ($possible_phone) {
@@ -2822,32 +2822,32 @@ class Controller extends CI_Controller
 
         //Log new key:
         $this->Chains->create(array(
-            'chainplayertype' => 44179, //Triggered
-            'chainplayerup' => 32078, //Sign In Key
-            'chainplayerdown' => $chainplayercreator, //Member making request
-            'chainplayercreator' => $chainplayercreator, //Member making request
+            'chainsourcetype' => 44179, //Triggered
+            'chainsourceup' => 32078, //Sign In Key
+            'chainsourcedown' => $chainsourcecreator, //Member making request
+            'chainsourcecreator' => $chainsourcecreator, //Member making request
             'chainidealeft' => intval($_POST['sign_ideaid']),
-            'chaintext' => $_POST['account_email_phone'] . '/' . md5($session_key . $passcode),
+            'chainvalue' => $_POST['account_email_phone'] . '/' . md5($session_key . $passcode),
         ));
 
         return view_json(array(
             'status' => 1,
-            'account_id' => $chainplayercreator,
+            'account_id' => $chainsourcecreator,
             'valid_email' => ($valid_email ? 1 : 0),
-            'account_preview' => ($chainplayercreator ? '<span class="icon-block">' . view_cover($u['playercover'], true) . '</span>' . $u['playertext'] : ''),
+            'account_preview' => ($chainsourcecreator ? '<span class="icon-block">' . view_cover($u['sourcecover'], true) . '</span>' . $u['sourcetext'] : ''),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
     }
 
-    function player_text_update()
+    function source_text_update()
     {
 
         //Authenticate Member:
-        $player_session = player_session(null, 0, $this->player_session);
-        $players___12112 = $this->config->item('players___12112');
+        $source_session = source_session(null, 0, $this->source_session);
+        $sources___12112 = $this->config->item('sources___12112');
 
-        if (!$player_session) {
+        if (!$source_session) {
 
             return view_json(array(
                 'status' => 0,
@@ -2855,7 +2855,7 @@ class Controller extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif (!isset($_POST['playerid']) || !isset($_POST['cache_playerid']) || !isset($_POST['idea_createtext'])) {
+        } elseif (!isset($_POST['sourceid']) || !isset($_POST['cache_sourceid']) || !isset($_POST['idea_createtext'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -2863,37 +2863,37 @@ class Controller extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif ($_POST['cache_playerid'] == 6197 /* SOURCE FULL NAME */) {
+        } elseif ($_POST['cache_sourceid'] == 6197 /* SOURCE FULL NAME */) {
 
-            $es = $this->Players->read(array(
-                'playerid' => $_POST['playerid'],
+            $es = $this->Sources->read(array(
+                'sourceid' => $_POST['sourceid'],
             ));
             if (!count($es)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Player ID #3',
+                    'message' => 'Invalid Source ID #3',
                     'original_val' => '',
                 ));
             }
 
 
-            $validate_playertext = validate_playertext($_POST['idea_createtext']);
-            if (!$validate_playertext['status']) {
-                return view_json(array_merge($validate_playertext, array(
-                    'original_val' => $es[0]['playertext'],
+            $validate_sourcetext = validate_sourcetext($_POST['idea_createtext']);
+            if (!$validate_sourcetext['status']) {
+                return view_json(array_merge($validate_sourcetext, array(
+                    'original_val' => $es[0]['sourcetext'],
                 )));
             }
 
             //All good, go ahead and update:
-            $this->Players->update($es[0]['playerid'], array(
-                'playertext' => $validate_playertext['playertext_clean'],
-            ), $player_session['playerid']);
+            $this->Sources->update($es[0]['sourceid'], array(
+                'sourcetext' => $validate_sourcetext['sourcetext_clean'],
+            ), $source_session['sourceid']);
 
             //Reset member session data if this data belongs to the logged-in member:
-            if ($es[0]['playerid'] == $player_session['playerid']) {
+            if ($es[0]['sourceid'] == $source_session['sourceid']) {
                 //set Session with new data:
-                $es[0]['playertext'] = $validate_playertext['playertext_clean'];
-                $this->Players->activate($es[0], true);
+                $es[0]['sourcetext'] = $validate_sourcetext['sourcetext_clean'];
+                $this->Sources->activate($es[0], true);
             }
 
             return view_json(array(
@@ -2904,7 +2904,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Unknown Update Type [' . $_POST['cache_playerid'] . ']',
+                'message' => 'Unknown Update Type [' . $_POST['cache_sourceid'] . ']',
                 'original_val' => '',
             ));
 
@@ -2919,24 +2919,24 @@ class Controller extends CI_Controller
         }
 
         //Log Modal View
-        $player_session = player_session(null, 0, $this->player_session);
+        $source_session = source_session(null, 0, $this->source_session);
 
         if (!isset($_POST['apply_id']) || !isset($_POST['s__id'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing Core Data</div>';
         } else {
             if ($_POST['apply_id'] == 4997) {
 
-                //Player list:
-                $counter = players_query(42373, $_POST['s__id'], 0, false);
+                //Source list:
+                $counter = sources_query(42373, $_POST['s__id'], 0, false);
                 if (!$counter) {
-                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Players yet</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Sources yet</div>';
                 } else {
-                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Player' . search($counter) . ':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Source' . search($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach (players_query(42373, $_POST['s__id'], 1, true) as $e) {
-                        array_push($ids, $e['playerid']);
-                        echo player_view(12274, $e);
+                    foreach (sources_query(42373, $_POST['s__id'], 1, true) as $e) {
+                        array_push($ids, $e['sourceid']);
+                        echo source_view(12274, $e);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent" title="Total of ' . count($ids) . '">' . join(', ', $ids) . '</div>';
@@ -2946,9 +2946,9 @@ class Controller extends CI_Controller
 
                 //idea list:
                 $is_next = $this->Chains->read(array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA CHAINS
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
                     'chainidealeft' => $_POST['s__id'],
-                ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'));
+                ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'));
                 $counter = count($is_next);
 
                 if (!$counter) {
@@ -2985,17 +2985,17 @@ class Controller extends CI_Controller
         if ($_POST['focus__node'] == 12274) {
 
             //SOURCE
-            $focus_es = $this->Players->read(array(
-                'playerid' => $_POST['focus__id'],
+            $focus_es = $this->Sources->read(array(
+                'sourceid' => $_POST['focus__id'],
             ));
             $focus_e = $focus_es[0];
 
-            foreach (players_query($_POST['chainplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
-                if (in_array($_POST['chainplayertype'], $this->config->item('playerids___11028'))) {
-                    echo player_view($_POST['chainplayertype'], $s);
+            foreach (sources_query($_POST['chainsourcetype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+                if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
+                    echo source_view($_POST['chainsourcetype'], $s);
                     $success = true;
-                } else if ($_POST['chainplayertype'] == 6255 || in_array($_POST['chainplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['chainplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['chainplayertype'], $this->config->item('playerids___11020'))) {
-                    echo idea_view($_POST['chainplayertype'], $s, $previous_i, null, $focus_e['playerid']);
+                } else if ($_POST['chainsourcetype'] == 6255 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
+                    echo idea_view($_POST['chainsourcetype'], $s, $previous_i, null, $focus_e['sourceid']);
                     $success = true;
                 }
             }
@@ -3008,12 +3008,12 @@ class Controller extends CI_Controller
             ));
             $previous_i = $previous_is[0];
 
-            foreach (ideas_query($_POST['chainplayertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
-                if (in_array($_POST['chainplayertype'], $this->config->item('playerids___11020'))) {
-                    echo idea_view($_POST['chainplayertype'], $s, $previous_i);
+            foreach (ideas_query($_POST['chainsourcetype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+                if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
+                    echo idea_view($_POST['chainsourcetype'], $s, $previous_i);
                     $success = true;
-                } else if ($_POST['chainplayertype'] == 6255 || in_array($_POST['chainplayertype'], $this->config->item('playerids___42261')) || in_array($_POST['chainplayertype'], $this->config->item('playerids___42284')) || in_array($_POST['chainplayertype'], $this->config->item('playerids___11028'))) {
-                    echo player_view($_POST['chainplayertype'], $s);
+                } else if ($_POST['chainsourcetype'] == 6255 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
+                    echo source_view($_POST['chainsourcetype'], $s);
                     $success = true;
                 }
             }
@@ -3029,14 +3029,14 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_session = player_session(10939, 0, $this->player_session);
+        $source_session = source_session(10939, 0, $this->source_session);
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
-        } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('playerids___28956'))) {
+        } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('sourceids___28956'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid focus__node',
@@ -3052,22 +3052,22 @@ class Controller extends CI_Controller
             //Ideas order based on alphabetical order
             $order = 0;
             foreach ($this->Chains->read(array(
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //IDEA CHAINS
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
                 'chainidealeft' => $_POST['focus__id'],
             ), array('chainidearight'), 0, 0, array('ideatext' => 'ASC')) as $x) {
                 $order++;
                 $this->Chains->update($x['chainid'], array(
-                    'chainnumber' => $order,
+                    'chainkey' => $order,
                 ));
             }
         } elseif ($_POST['focus__node'] == 12274) {
-            //Players reset order
+            //Sources reset order
             foreach ($this->Chains->read(array(
-                'chainplayerup' => $_POST['focus__id'],
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainplayerdown'), 0, 0) as $x) {
+                'chainsourceup' => $_POST['focus__id'],
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            ), array('chainsourcedown'), 0, 0) as $x) {
                 $this->Chains->update($x['chainid'], array(
-                    'chainnumber' => 0,
+                    'chainkey' => 0,
                 ));
             }
         }
@@ -3081,13 +3081,13 @@ class Controller extends CI_Controller
     function idea_discovered()
     {
 
-        $player_session = player_session(null, 0, $this->player_session);
-        if (!$player_session) {
+        $source_session = source_session(null, 0, $this->source_session);
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['target_ideahashtag']) || !isset($_POST['target_ideaid']) || !isset($_POST['player_submitted_data']) || !isset($_POST['do_skip'])) {
+        } elseif (!isset($_POST['target_ideahashtag']) || !isset($_POST['target_ideaid']) || !isset($_POST['source_submitted_data']) || !isset($_POST['do_skip'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Data',
@@ -3097,11 +3097,11 @@ class Controller extends CI_Controller
         if (!isset($_POST['selection_ideaid'])) {
             $_POST['selection_ideaid'] = array();
         }
-        if (!isset($_POST['player_submitted_data']['idea_createtext'])) {
-            $_POST['player_submitted_data']['idea_createtext'] = null;
+        if (!isset($_POST['source_submitted_data']['idea_createtext'])) {
+            $_POST['source_submitted_data']['idea_createtext'] = null;
         }
-        if (!isset($_POST['player_submitted_data']['uploaded_media'])) {
-            $_POST['player_submitted_data']['uploaded_media'] = array();
+        if (!isset($_POST['source_submitted_data']['uploaded_media'])) {
+            $_POST['source_submitted_data']['uploaded_media'] = array();
         }
         if (!isset($_POST['next_idea_data'])) {
             $_POST['next_idea_data'] = array();
@@ -3110,21 +3110,21 @@ class Controller extends CI_Controller
         //Discover Focus Idea:
         $primary_ideaid = null;
         foreach ($this->Ideas->read(array(
-            'ideaid' => $_POST['player_submitted_data']['ideaid'],
+            'ideaid' => $_POST['source_submitted_data']['ideaid'],
         )) as $focus_i) {
 
-            $input__selection = in_array($focus_i['ideatype'], $this->config->item('playerids___7712'));
-            $input__upload = in_array($focus_i['ideatype'], $this->config->item('playerids___43004'));
-            $skipping_not_allowed = in_array($focus_i['ideatype'], $this->config->item('playerids___43009'));
-            $input__text = in_array($focus_i['ideatype'], $this->config->item('playerids___43002')) || in_array($focus_i['ideatype'], $this->config->item('playerids___43003'));
+            $input__selection = in_array($focus_i['ideatype'], $this->config->item('sourceids___7712'));
+            $input__upload = in_array($focus_i['ideatype'], $this->config->item('sourceids___43004'));
+            $skipping_not_allowed = in_array($focus_i['ideatype'], $this->config->item('sourceids___43009'));
+            $input__text = in_array($focus_i['ideatype'], $this->config->item('sourceids___43002')) || in_array($focus_i['ideatype'], $this->config->item('sourceids___43003'));
             $total_selected = count($_POST['selection_ideaid']);
             $trying_to_skip = !$skipping_not_allowed &&
                 (
                     intval($_POST['do_skip'])
                     || ($input__selection && !$total_selected)
-                    || ($input__text && !$input__upload && !strlen($_POST['player_submitted_data']['idea_createtext']))
-                    || (!$input__text && $input__upload && !count($_POST['player_submitted_data']['uploaded_media']))
-                    || ($input__text && $input__upload && !count($_POST['player_submitted_data']['uploaded_media']) && !strlen($_POST['player_submitted_data']['idea_createtext']))
+                    || ($input__text && !$input__upload && !strlen($_POST['source_submitted_data']['idea_createtext']))
+                    || (!$input__text && $input__upload && !count($_POST['source_submitted_data']['uploaded_media']))
+                    || ($input__text && $input__upload && !count($_POST['source_submitted_data']['uploaded_media']) && !strlen($_POST['source_submitted_data']['idea_createtext']))
                 );
             $idea_required = idea_required($focus_i);
 
@@ -3143,7 +3143,7 @@ class Controller extends CI_Controller
             //Now complete relevant next ideas, if any:
             if ($input__selection) {
 
-                $is_single_selection = in_array($focus_i['ideatype'], $this->config->item('playerids___33331'));
+                $is_single_selection = in_array($focus_i['ideatype'], $this->config->item('sourceids___33331'));
 
 
                 if (!$is_single_selection) {
@@ -3151,14 +3151,14 @@ class Controller extends CI_Controller
                     //How about the min selection?
                     if ($idea_required) {
                         foreach ($this->Chains->read(array(
-                            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
                             'chainidearight' => $focus_i['ideaid'],
-                            'chainplayerup' => 40834, //Min Selection
+                            'chainsourceup' => 40834, //Min Selection
                         ), array(), 1) as $limit) {
-                            if (intval($limit['chaintext']) > 0 && $total_selected < intval($limit['chaintext'])) {
+                            if (intval($limit['chainvalue']) > 0 && $total_selected < intval($limit['chainvalue'])) {
                                 return view_json(array(
                                     'status' => 0,
-                                    'message' => 'Select ' . $limit['chaintext'] . ' or more ideas to go next.',
+                                    'message' => 'Select ' . $limit['chainvalue'] . ' or more ideas to go next.',
                                 ));
                             }
                         }
@@ -3166,14 +3166,14 @@ class Controller extends CI_Controller
 
                     //How about max selection?
                     foreach ($this->Chains->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
                         'chainidearight' => $focus_i['ideaid'],
-                        'chainplayerup' => 40833, //Max Selection
+                        'chainsourceup' => 40833, //Max Selection
                     ), array(), 1) as $limit) {
-                        if (intval($limit['chaintext']) > 0 && $total_selected > intval($limit['chaintext'])) {
+                        if (intval($limit['chainvalue']) > 0 && $total_selected > intval($limit['chainvalue'])) {
                             return view_json(array(
                                 'status' => 0,
-                                'message' => 'You cannot select more than ' . $limit['chaintext'] . ' items.',
+                                'message' => 'You cannot select more than ' . $limit['chainvalue'] . ' items.',
                             ));
                         }
                     }
@@ -3184,8 +3184,8 @@ class Controller extends CI_Controller
                 //Delete ALL previous answers that are not currently selected, if any:
                 $already_answered = array();
                 foreach ($this->Chains->read(array(
-                    'chainplayertype' => 7712, //Input Choice
-                    'chainplayercreator' => $player_session['playerid'],
+                    'chainsourcetype' => 7712, //Input Choice
+                    'chainsourcecreator' => $source_session['sourceid'],
                     'chainidealeft' => $focus_i['ideaid'],
                 ), array('chainidearight')) as $x_selection) {
 
@@ -3195,16 +3195,16 @@ class Controller extends CI_Controller
                         continue; //Nothing we need to do here...
                     }
 
-                    $this->Chains->delete($x_selection['chainid'], $player_session['playerid']);
+                    $this->Chains->delete($x_selection['chainid'], $source_session['sourceid']);
 
                     //Remove discovery if we can:
-                    if (!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))) {
+                    if (!in_array($x_selection['ideatype'], $this->config->item('sourceids___42905'))) {
                         foreach ($this->Chains->read(array(
-                            'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                             'chainidealeft' => $x_selection['ideaid'],
-                            'chainplayercreator' => $player_session['playerid'],
+                            'chainsourcecreator' => $source_session['sourceid'],
                         ), array(), 0) as $x_discovery) {
-                            $this->Chains->delete($x_discovery['chainid'], $player_session['playerid']);
+                            $this->Chains->delete($x_discovery['chainid'], $source_session['sourceid']);
                         }
                     }
                 }
@@ -3213,8 +3213,8 @@ class Controller extends CI_Controller
                 foreach ($_POST['selection_ideaid'] as $answer_ideaid) {
                     if (!in_array($answer_ideaid, $already_answered)) {
                         $this->Chains->create(array(
-                            'chainplayertype' => 7712, //Input Choice
-                            'chainplayercreator' => $player_session['playerid'],
+                            'chainsourcetype' => 7712, //Input Choice
+                            'chainsourcecreator' => $source_session['sourceid'],
                             'chainidealeft' => $focus_i['ideaid'],
                             'chainidearight' => $answer_ideaid,
                         ));
@@ -3224,8 +3224,8 @@ class Controller extends CI_Controller
             }
 
             //Issue DISCOVERY/IDEA COIN:
-            $completion_status = $this->Chains->idea_discovered(idea_type_discovery($focus_i, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $focus_i, $_POST['player_submitted_data'], array(
-                'chainnumber' => $_POST['player_submitted_data']['ideanumber'],
+            $completion_status = $this->Chains->idea_discovered(idea_type_discovery($focus_i, $trying_to_skip), $source_session['sourceid'], $_POST['target_ideaid'], $focus_i, $_POST['source_submitted_data'], array(
+                'chainkey' => $_POST['source_submitted_data']['ideanumber'],
             ));
             if (!$completion_status['status']) {
                 //We had an error with data within target_ideaid:
@@ -3250,20 +3250,20 @@ class Controller extends CI_Controller
                 )) as $idea_next) {
 
                     //Analyze input:
-                    $input__required = in_array($idea_next['ideatype'], $this->config->item('playerids___43039'));
+                    $input__required = in_array($idea_next['ideatype'], $this->config->item('sourceids___43039'));
                     if ($input__required) {
                         continue;
                     }
-                    $input__text = in_array($idea_next['ideatype'], $this->config->item('playerids___43002')) || in_array($idea_next['ideatype'], $this->config->item('playerids___43003'));
-                    $input__upload = in_array($idea_next['ideatype'], $this->config->item('playerids___43004'));
-                    $skipping_not_allowed = in_array($idea_next['ideatype'], $this->config->item('playerids___43009'));
+                    $input__text = in_array($idea_next['ideatype'], $this->config->item('sourceids___43002')) || in_array($idea_next['ideatype'], $this->config->item('sourceids___43003'));
+                    $input__upload = in_array($idea_next['ideatype'], $this->config->item('sourceids___43004'));
+                    $skipping_not_allowed = in_array($idea_next['ideatype'], $this->config->item('sourceids___43009'));
 
 
                     //Cleanup phone number:
                     if($input__text && strlen($next_idea_data['idea_createtext']) && !is_numeric($next_idea_data['idea_createtext']) && count($this->Chains->read(array(
-                            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
                             'chainidearight' => $idea_next['ideaid'],
-                            'chainplayerup' => 42181, //Phone
+                            'chainsourceup' => 42181, //Phone
                         )))){
                         $next_idea_data['idea_createtext'] = preg_replace("/[^0-9]+/", "", $next_idea_data['idea_createtext']);
                         if(strlen($next_idea_data['idea_createtext'])<10){
@@ -3289,8 +3289,8 @@ class Controller extends CI_Controller
                     }
 
                     //Try to complete:
-                    $completion_status = $this->Chains->idea_discovered(idea_type_discovery($idea_next, $trying_to_skip), $player_session['playerid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
-                        'chainnumber' => $next_idea_data['ideanumber'],
+                    $completion_status = $this->Chains->idea_discovered(idea_type_discovery($idea_next, $trying_to_skip), $source_session['sourceid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
+                        'chainkey' => $next_idea_data['ideanumber'],
                     ));
                     if ($idea_required && !$completion_status['status']) {
                         //We had an error with data within target_ideaid:
@@ -3307,7 +3307,7 @@ class Controller extends CI_Controller
                 $idea_redirect_url = idea_redirect_url($primary_i);
             }
             if (!$idea_redirect_url) {
-                $idea_next = $this->Chains->idea_next($player_session['playerid'], $_POST['target_ideahashtag'], $focus_i);
+                $idea_next = $this->Chains->idea_next($source_session['sourceid'], $_POST['target_ideahashtag'], $focus_i);
             }
 
             //All good:
@@ -3327,10 +3327,10 @@ class Controller extends CI_Controller
 
     }
 
-    function player_select()
+    function source_select()
     {
 
-        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['player_createid']) || !isset($_POST['migratehandle']) || !isset($_POST['chainid'])) {
+        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['source_createid']) || !isset($_POST['migratehandle']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -3341,12 +3341,12 @@ class Controller extends CI_Controller
         $_POST['migratehandle'] = trim($_POST['migratehandle']);
         $first_letter = substr($_POST['migratehandle'], 0, 1);
         if ($first_letter == '@' && strlen($_POST['migratehandle']) > 1) {
-            if (!count($this->Players->read(array(
-                'LOWER(playerhandle)' => strtolower(substr($_POST['migratehandle'], 1)),
+            if (!count($this->Sources->read(array(
+                'LOWER(sourcehandle)' => strtolower(substr($_POST['migratehandle'], 1)),
             )))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migratehandle'] . ' is an invalid Player Handle. Try again if you want to migrate this Player chains or leave the field blank.',
+                    'message' => $_POST['migratehandle'] . ' is an invalid Source Handle. Try again if you want to migrate this Source chains or leave the field blank.',
                 ));
             }
         } elseif ($first_letter == '#' && strlen($_POST['migratehandle']) > 1) {
@@ -3365,11 +3365,11 @@ class Controller extends CI_Controller
         if (is_array($_POST['o__id'])) {
             $mass_result = array();
             foreach ($_POST['o__id'] as $o__id) {
-                array_push($mass_result, $this->Chains->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['player_createid'], $_POST['migratehandle'], $_POST['chainid']));
+                array_push($mass_result, $this->Chains->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['source_createid'], $_POST['migratehandle'], $_POST['chainid']));
             }
             return view_json($mass_result);
         } else {
-            return view_json($this->Chains->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['player_createid'], $_POST['migratehandle'], $_POST['chainid']));
+            return view_json($this->Chains->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['source_createid'], $_POST['migratehandle'], $_POST['chainid']));
         }
 
     }
@@ -3387,9 +3387,9 @@ class Controller extends CI_Controller
          *
          * */
 
-        $player_session = player_session(null, 0, $this->player_session);
+        $source_session = source_session(null, 0, $this->source_session);
 
-        if (!$player_session) {
+        if (!$source_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -3402,7 +3402,7 @@ class Controller extends CI_Controller
         }
 
         //Remove Idea
-        $this->Chains->delete($_POST['chainid'], $player_session['playerid']);
+        $this->Chains->delete($_POST['chainid'], $source_session['sourceid']);
 
         return view_json(array(
             'status' => 1,
@@ -3427,7 +3427,7 @@ class Controller extends CI_Controller
         $current_page = (isset($_POST['current_page']) && intval($_POST['current_page']) >= 2 ? intval($_POST['current_page']) : 1);
         $next_page = ($current_page + 1);
         $query_offset = (($current_page - 1) * view_memory(6404, 11064));
-        $player_session = player_session(null, 0, $this->player_session);
+        $source_session = source_session(null, 0, $this->source_session);
 
         $message = '';
         $overall_stats = '';
@@ -3480,15 +3480,15 @@ class Controller extends CI_Controller
     function chain_graph()
     {
 
-        //See if we have any idea or Player targets to limit our stats:
-        $has_handle = isset($_POST['playerhandle']) && strlen($_POST['playerhandle']) && $_POST['playerhandle'];
+        //See if we have any idea or Source targets to limit our stats:
+        $has_handle = isset($_POST['sourcehandle']) && strlen($_POST['sourcehandle']) && $_POST['sourcehandle'];
         $has_hashtag = isset($_POST['ideahashtag']) && strlen($_POST['ideahashtag']) && $_POST['ideahashtag'];
 
         if ($has_handle) {
 
-            //See stats for this Player:
-            $es = $this->Players->read(array(
-                'LOWER(playerhandle)' => strtolower($_POST['playerhandle']),
+            //See stats for this Source:
+            $es = $this->Sources->read(array(
+                'LOWER(sourcehandle)' => strtolower($_POST['sourcehandle']),
             ));
             if (!count($es)) {
                 return view_json(array(
@@ -3516,15 +3516,15 @@ class Controller extends CI_Controller
 
         //Count Chains:
         $return_array = array();
-        foreach ($this->config->item('players___33292') as $chainplayertype1 => $m1) { //Gameplay
+        foreach ($this->config->item('sources___33292') as $chainsourcetype1 => $m1) { //Gameplay
 
             $level1_total = 0;
 
-            if($chainplayertype1==1309754){
+            if($chainsourcetype1==1309754){
 
 
                 if ($has_handle) {
-                    $void_filter['(chainvoid >0 AND ( chainplayerdown = ' . $es[0]['playerid'] . ' OR chainplayerup = ' . $es[0]['playerid'] . ' OR chainplayercreator = ' . $es[0]['playerid'] . ' ))'] = null;
+                    $void_filter['(chainvoid >0 AND ( chainsourcedown = ' . $es[0]['sourceid'] . ' OR chainsourceup = ' . $es[0]['sourceid'] . ' OR chainsourcecreator = ' . $es[0]['sourceid'] . ' ))'] = null;
                 } elseif ($has_hashtag) {
                     $void_filter['(chainvoid >0 AND ( chainidealeft = ' . $is[0]['ideaid'] . ' OR chainidearight = ' . $is[0]['ideaid'] . ' ))'] = null;
                 } else {
@@ -3534,26 +3534,26 @@ class Controller extends CI_Controller
                     );
                 }
                 $sub_counter = $this->Chains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');
-                $return_array[$chainplayertype1] = intval($sub_counter[0]['totals']);
+                $return_array[$chainsourcetype1] = intval($sub_counter[0]['totals']);
                 continue;
             }
 
-            foreach ($this->config->item('players___' . $chainplayertype1) as $chainplayertype2 => $m2) { //Nodes/Chains
+            foreach ($this->config->item('sources___' . $chainsourcetype1) as $chainsourcetype2 => $m2) { //Nodes/Chains
 
-                $player_pinned = player_pinned($chainplayertype2, true);
+                $source_pinned = source_pinned($chainsourcetype2, true);
                 $level2_total = 0;
-                if (!is_array($this->config->item('players___' . $player_pinned)) || !count($this->config->item('players___' . $player_pinned))) {
+                if (!is_array($this->config->item('sources___' . $source_pinned)) || !count($this->config->item('sources___' . $source_pinned))) {
                     continue;
                 }
-                foreach ($this->config->item('players___' . $player_pinned) as $chainplayertype3 => $m3) { //Player/Idea/Discovery
+                foreach ($this->config->item('sources___' . $source_pinned) as $chainsourcetype3 => $m3) { //Source/Idea/Discovery
 
-                    if ($chainplayertype2 == 12273) {
+                    if ($chainsourcetype2 == 12273) {
 
                         if ($has_handle) {
 
                             $sub_counter = $this->Chains->read(array(
-                                'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
-                                'chainplayerup' => $es[0]['playerid'],
+                                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
+                                'chainsourceup' => $es[0]['sourceid'],
                             ), array('chainidearight'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
@@ -3569,26 +3569,26 @@ class Controller extends CI_Controller
 
                         }
 
-                    } elseif ($chainplayertype2 == 12274) {
+                    } elseif ($chainsourcetype2 == 12274) {
 
                         if ($has_handle) {
 
                             $sub_counter = $this->Chains->read(array(
-                                'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
-                                'chainplayerup' => $es[0]['playerid'],
-                            ), array('chainplayerdown'), 0, 0, array(), 'COUNT(chainid) as totals');
+                                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                                'chainsourceup' => $es[0]['sourceid'],
+                            ), array('chainsourcedown'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
                             //See stats for this idea:
                             $sub_counter = $this->Chains->read(array(
-                                'chainplayertype IN (' . join(',', $this->config->item('playerids___33602')) . ')' => null, //Idea/Player Chains Active
+                                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
                                 'chainidearight IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
-                            ), array('chainplayerup'), 0, 0, array(), 'COUNT(chainid) as totals');
+                            ), array('chainsourceup'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } else {
 
-                            $sub_counter = $this->Players->read(array(), 0, 0, array(), 'COUNT(playerid) as totals');
+                            $sub_counter = $this->Sources->read(array(), 0, 0, array(), 'COUNT(sourceid) as totals');
 
                         }
 
@@ -3597,21 +3597,21 @@ class Controller extends CI_Controller
                         if ($has_handle) {
 
                             $sub_counter = $this->Chains->read(array(
-                                'chainplayertype' => $chainplayertype3,
-                                '( chainplayerdown = ' . $es[0]['playerid'] . ' OR chainplayerup = ' . $es[0]['playerid'] . ' OR chainplayercreator = ' . $es[0]['playerid'] . ' )' => null,
+                                'chainsourcetype' => $chainsourcetype3,
+                                '( chainsourcedown = ' . $es[0]['sourceid'] . ' OR chainsourceup = ' . $es[0]['sourceid'] . ' OR chainsourcecreator = ' . $es[0]['sourceid'] . ' )' => null,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } elseif ($has_hashtag && count($copy['recursive_idea_ids'])) {
 
                             $sub_counter = $this->Chains->read(array(
-                                'chainplayertype' => $chainplayertype3,
+                                'chainsourcetype' => $chainsourcetype3,
                                 '( chainidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ') OR chainidearight IN (' . join(',', $copy['recursive_idea_ids']) . '))' => null,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } else {
 
                             $sub_counter = $this->Chains->read(array(
-                                'chainplayertype' => $chainplayertype3,
+                                'chainsourcetype' => $chainsourcetype3,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         }
@@ -3619,20 +3619,20 @@ class Controller extends CI_Controller
                     }
 
                     $level2_total += $sub_counter[0]['totals'];
-                    $return_array[$chainplayertype3] = intval($sub_counter[0]['totals']);
+                    $return_array[$chainsourcetype3] = intval($sub_counter[0]['totals']);
 
-                    if ($chainplayertype2 == 12273 || $chainplayertype2 == 12274) {
+                    if ($chainsourcetype2 == 12273 || $chainsourcetype2 == 12274) {
                         break;
                     }
 
                 }
 
                 $level1_total += $level2_total;
-                $return_array[$chainplayertype2] = intval($level2_total);
+                $return_array[$chainsourcetype2] = intval($level2_total);
 
             }
 
-            $return_array[$chainplayertype1] = intval($level1_total);
+            $return_array[$chainsourcetype1] = intval($level1_total);
 
         }
         return view_json(array(

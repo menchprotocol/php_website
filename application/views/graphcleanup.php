@@ -14,21 +14,21 @@ foreach($this->Ideas->read(array(), 0) as $idea_fix){
         //$this->Ideas->create($idea_fix);
     }
 }
-$missing_players = array();
-foreach($this->Players->read(array(), 0) as $player_fix){
-    if(!count($this->Chains->read(array('chainid' => $player_fix['playerid'])))){
-        array_push($missing_players, $player_fix);
-        //$this->Players->create($player_fix);
+$missing_sources = array();
+foreach($this->Sources->read(array(), 0) as $source_fix){
+    if(!count($this->Chains->read(array('chainid' => $source_fix['sourceid'])))){
+        array_push($missing_sources, $source_fix);
+        //$this->Sources->create($source_fix);
     }
 }
 
 view_json(array(
     'ideas_missing' => count($missing_ideas),
-    'players_missing' => count($missing_players),
+    'sources_missing' => count($missing_sources),
     //'idea_list' => $missing_ideas,
-    //'players_list' => $missing_players,
+    //'sources_list' => $missing_sources,
     //'idea_settings' => idea_settings($focus_i['ideahashtag'], false),
-    //'history' => $this->Chains->history($focus_i, $focus_e['playerid']),
+    //'history' => $this->Chains->history($focus_i, $focus_e['sourceid']),
 ));
 
 
@@ -39,39 +39,39 @@ if(0){
 //Idea cache update
 
 $edited = 0;
-$edited_players = 0;
+$edited_sources = 0;
 foreach($this->Ideas->read(array(
 ), 0) as $idea_fix){
 
     $this->Ideas->update($idea_fix['ideaid'], array(
         'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideatext']),
-    ), $player_session['playerid']);
+    ), $source_session['sourceid']);
 
 }
 
-echo '<hr />Edited ['.$edited.']['.$edited_players.']<br />';
+echo '<hr />Edited ['.$edited.']['.$edited_sources.']<br />';
 
 }
 
 echo '<table>';
 foreach($this->Chains->read(array(
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___31919')) . ')' => null, //IDEA AUTHOR
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31919')) . ')' => null, //IDEA AUTHOR
 ), array(), 0, 0, array(
-    'chainplayertype' => 'ASC',
-    'chainplayerup' => 'ASC',
-    'chainplayerdown' => 'ASC',
+    'chainsourcetype' => 'ASC',
+    'chainsourceup' => 'ASC',
+    'chainsourcedown' => 'ASC',
     'chainidearight' => 'ASC',
     'chainidealeft' => 'ASC',
-    'chaintext' => 'ASC',
+    'chainvalue' => 'ASC',
     'chainid' => 'DESC',
 )) as $discover){
 
     $count++;
-    if($previous && $previous['chainplayertype']==$discover['chainplayertype'] && $previous['chainplayerup']==$discover['chainplayerup'] && $previous['chainplayerdown']==$discover['chainplayerdown'] && $previous['chainidearight']==$discover['chainidearight'] && $previous['chainidealeft']==$discover['chainidealeft'] && trim(strtolower($previous['chaintext']))==trim(strtolower($discover['chaintext']))){
+    if($previous && $previous['chainsourcetype']==$discover['chainsourcetype'] && $previous['chainsourceup']==$discover['chainsourceup'] && $previous['chainsourcedown']==$discover['chainsourcedown'] && $previous['chainidearight']==$discover['chainidearight'] && $previous['chainidealeft']==$discover['chainidealeft'] && trim(strtolower($previous['chainvalue']))==trim(strtolower($discover['chainvalue']))){
 
         $duplicate++;
-        echo '<tr><td>'.$previous['chainplayercreator'].'</td><td>'.$players___4593[$previous['chainplayertype']]['m__title'].'</td><td>'.$previous['chaintime'].'</td><td>'.$previous['chainplayercreator'].'</td><td>'.$previous['chainplayerup'].'</td><td>'.$previous['chainplayerdown'].'</td><td>'.$previous['chainidearight'].'</td><td>'.$previous['chainidealeft'].'</td><td>'.$previous['chaintext'].'</td><td>'.$previous['chainplayertype'].'</td><td>'.$previous['chainplayertype'].'</td></tr>';
-        echo '<tr style="background-color: #CCC;"><td>'.$discover['chainplayercreator'].'</td><td>'.$players___4593[$discover['chainplayertype']]['m__title'].'</td><td>'.$discover['chaintime'].'</td><td>'.$discover['chainplayercreator'].'</td><td>'.$discover['chainplayerup'].'</td><td>'.$discover['chainplayerdown'].'</td><td>'.$discover['chainidearight'].'</td><td>'.$discover['chainidealeft'].'</td><td>'.$discover['chaintext'].'</td><td>'.$discover['chainplayertype'].'</td><td>'.$discover['chainplayertype'].'</td></tr>';
+        echo '<tr><td>'.$previous['chainsourcecreator'].'</td><td>'.$sources___4593[$previous['chainsourcetype']]['m__title'].'</td><td>'.$previous['chaintime'].'</td><td>'.$previous['chainsourcecreator'].'</td><td>'.$previous['chainsourceup'].'</td><td>'.$previous['chainsourcedown'].'</td><td>'.$previous['chainidearight'].'</td><td>'.$previous['chainidealeft'].'</td><td>'.$previous['chainvalue'].'</td><td>'.$previous['chainsourcetype'].'</td><td>'.$previous['chainsourcetype'].'</td></tr>';
+        echo '<tr style="background-color: #CCC;"><td>'.$discover['chainsourcecreator'].'</td><td>'.$sources___4593[$discover['chainsourcetype']]['m__title'].'</td><td>'.$discover['chaintime'].'</td><td>'.$discover['chainsourcecreator'].'</td><td>'.$discover['chainsourceup'].'</td><td>'.$discover['chainsourcedown'].'</td><td>'.$discover['chainidearight'].'</td><td>'.$discover['chainidealeft'].'</td><td>'.$discover['chainvalue'].'</td><td>'.$discover['chainsourcetype'].'</td><td>'.$discover['chainsourcetype'].'</td></tr>';
 
         $this->db->query("DELETE FROM ideachain WHERE chainid=".$discover['chainid'].";");
 
@@ -86,12 +86,12 @@ echo $duplicate.'/'.$count.' are duplicate';
 
 
 //Various cleanup functions
-echo @$_GET['playerhandle'];
+echo @$_GET['sourcehandle'];
 
 
 if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
 
-    //Sync Ideas & Players
+    //Sync Ideas & Sources
     $stats = array(
         'cached_ideas' => 0,
         'active_ideas' => 0,
@@ -99,17 +99,17 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
     );
 
     $edited = 0;
-    $edited_players = 0;
+    $edited_sources = 0;
     foreach($this->Ideas->read(array(
     ), 0) as $idea_fix){
 
         $this->Ideas->update($idea_fix['ideaid'], array(
             'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideatext']),
-        ), $player_session['playerid']);
+        ), $source_session['sourceid']);
 
     }
 
-    echo '<hr />Edited ['.$edited.']['.$edited_players.']<br />';
+    echo '<hr />Edited ['.$edited.']['.$edited_sources.']<br />';
 
 
 } elseif(isset($_GET['action']) && $_GET['action']=='import_discovery') {
@@ -117,34 +117,34 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
 
     //Import Discoveries?
     $flash_message = '';
-    if(isset($_GET['playerhandle'])){
-        foreach($this->Players->read(array(
-            'LOWER(playerhandle)' => strtolower($_GET['playerhandle']),
-        )) as $player_append){
+    if(isset($_GET['sourcehandle'])){
+        foreach($this->Sources->read(array(
+            'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+        )) as $source_append){
             $completed = 0;
             foreach($this->Chains->read(array(
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                 'chainidealeft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
                 if(!count($this->Chains->read(array(
-                    'chainplayerup' => $player_append['playerid'],
-                    'chainplayerdown' => $x['chainplayercreator'],
-                    'chaintext' => $x['chaintext'],
-                    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+                    'chainsourceup' => $source_append['sourceid'],
+                    'chainsourcedown' => $x['chainsourcecreator'],
+                    'chainvalue' => $x['chainvalue'],
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                     )))){
-                    //Increment Player chain:
+                    //Increment Source chain:
                     $completed++;
                     $this->Chains->create(array(
-                        'chainplayercreator' => ($player_session ? $player_session['playerid'] : $x['chainplayercreator']),
-                        'chainplayerup' => $player_append['playerid'],
-                        'chainplayerdown' => $x['chainplayercreator'],
-                        'chaintext' => $x['chaintext'],
-                        'chainplayertype' => 4230,
+                        'chainsourcecreator' => ($source_session ? $source_session['sourceid'] : $x['chainsourcecreator']),
+                        'chainsourceup' => $source_append['sourceid'],
+                        'chainsourcedown' => $x['chainsourcecreator'],
+                        'chainvalue' => $x['chainvalue'],
+                        'chainsourcetype' => 4230,
                     ));
                 }
             }
 
-            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span> '.$completed.' Players who played this idea added to @'.$player_append['playerhandle'].'</div>';
+            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span> '.$completed.' Sources who played this idea added to @'.$source_append['sourcehandle'].'</div>';
         }
     }
 

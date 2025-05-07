@@ -1,15 +1,15 @@
 <?php
 
-$players___11035 = $this->config->item('players___11035'); //Encyclopedia
-$chainplayercreator = ($player_session ? $player_session['playerid'] : 0);
-$target_ideahashtag = (count($target_i) && $chainplayercreator ? $target_i['ideahashtag'] : null);
+$sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
+$chainsourcecreator = ($source_session ? $source_session['sourceid'] : 0);
+$target_ideahashtag = (count($target_i) && $chainsourcecreator ? $target_i['ideahashtag'] : null);
 $at_starting_point = $target_ideahashtag==$focus_i['ideahashtag'];
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-if ($chainplayercreator && !$at_starting_point) {
+if ($chainsourcecreator && !$at_starting_point) {
 
-    $previous = $this->Chains->previousidea($chainplayercreator, $target_ideahashtag, $focus_i['ideaid']);
+    $previous = $this->Chains->previousidea($chainsourcecreator, $target_ideahashtag, $focus_i['ideaid']);
     if (count($previous)) {
 
         $nav_list = array();
@@ -26,9 +26,9 @@ if ($chainplayercreator && !$at_starting_point) {
 
             //Does this have a follower list?
             $query_subset = $this->Chains->read(array(
-                'chainplayertype IN (' . join(',', $this->config->item('playerids___42267')) . ')' => null, //Sequence Down
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Sequence Down
                 'chainidealeft' => $followings_i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainnumber' => 'ASC'), '*', null, true);
+            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
             $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_ideahashtag . '/' . ($followings_i['ideahashtag'] == $target_ideahashtag ? 'start' : $followings_i['ideahashtag']) . '">' . view_idea_title($followings_i, true) . '</a>';
@@ -44,14 +44,14 @@ if ($chainplayercreator && !$at_starting_point) {
                 foreach ($query_subset as $idea_subset) {
 
                     if (count($this->Chains->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'chainplayercreator' => $chainplayercreator,
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcecreator' => $chainsourcecreator,
                         'chainidealeft' => $idea_subset['ideaid'],
                     )))) {
                         $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_ideahashtag . '/' . $idea_subset['ideahashtag'] . '" class="dropdown-item ' . (in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '') . '">' . view_idea_title($idea_subset, true) . '</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_locked ' . (in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '') . '" title="' . $players___11035[43010]['m__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">' . $players___11035[43010]['m__cover'] . '</span>' . view_idea_title($idea_subset, true) . '</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked ' . (in_array($idea_subset['ideaid'], $main_branch) ? ' active ' : '') . '" title="' . $sources___11035[43010]['m__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">' . $sources___11035[43010]['m__cover'] . '</span>' . view_idea_title($idea_subset, true) . '</div>';
                     }
 
                 }
@@ -74,11 +74,11 @@ if ($breadcrum_content) {
 
 
 //Progress?
-if ($player_session) {
-    $progress = $this->Chains->progress($chainplayercreator, $target_i);
+if ($source_session) {
+    $progress = $this->Chains->progress($chainsourcecreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
-    if($target_completed && !in_array($focus_i['ideatype'], $this->config->item('playerids___43050'))){
+    if($target_completed && !in_array($focus_i['ideatype'], $this->config->item('sourceids___43050'))){
         //Hide next navigation and allow them to browse the tree:
         echo '<script> $(document).ready(function () { setTimeout(function () { $(\'.fixed-bottom .card_cards\').addClass(\'hidden\'); }, 233); }); </script>';
     }
@@ -93,10 +93,10 @@ if ($player_session) {
 }
 
 $x_completes = array();
-if ($player_session) {
+if ($source_session) {
     $x_completes = $this->Chains->read(array(
-        'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        'chainplayercreator' => $chainplayercreator,
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'chainsourcecreator' => $chainsourcecreator,
         'chainidealeft' => $focus_i['ideaid'],
     ), array('chainidearight'));
 }
@@ -109,7 +109,7 @@ echo '</div>';
 
 
 //Main Navigation
-if ($player_session || isset($_GET['open'])) {
+if ($source_session || isset($_GET['open'])) {
     echo view_idea_nav(true, $focus_i, $x_completes);
 }
 
@@ -127,10 +127,10 @@ if ($player_session || isset($_GET['open'])) {
 
         set_autosize($('.x_write'));
 
-        if (js_playerids___7712.includes(focus_ideatype)) {
+        if (js_sourceids___7712.includes(focus_ideatype)) {
             //Choose
             $('.xtypecounter12840').text('');
-            $('.xtypetitle_12840').text(js_players___7712[focus_ideatype]['m__title'] + ': ');
+            $('.xtypetitle_12840').text(js_sources___7712[focus_ideatype]['m__title'] + ': ');
         }
 
 

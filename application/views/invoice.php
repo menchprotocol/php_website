@@ -1,7 +1,7 @@
 <?php
 
-$player_session = player_session(null, 0, $this->player_session);
-if(!$player_session){
+$source_session = source_session(null, 0, $this->source_session);
+if(!$source_session){
     return view_json(array(
         'status' => 0,
         'message' => blocked_reasoning(),
@@ -47,40 +47,40 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 
 //Fetch User Data:
 $fetch_emails = $this->Chains->read(array(
-    'chainplayerup' => 3288, //Email
-    'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+    'chainsourceup' => 3288, //Email
+    'chainsourcedown' => $source_session['sourceid'],
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
 ));
 $fetch_phones = $this->Chains->read(array(
-    'chainplayerup' => 4783, //Phone
-    'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+    'chainsourceup' => 4783, //Phone
+    'chainsourcedown' => $source_session['sourceid'],
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
 ));
 $fetch_first_names = $this->Chains->read(array(
-    'chainplayerup' => 42584, //First Name
-    'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+    'chainsourceup' => 42584, //First Name
+    'chainsourcedown' => $source_session['sourceid'],
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
 ));
 $fetch_last_names = $this->Chains->read(array(
-    'chainplayerup' => 30198, //Last Name
-    'chainplayerdown' => $player_session['playerid'],
-    'chainplayertype IN (' . join(',', $this->config->item('playerids___13548')) . ')' => null, //SOURCE CHAINS
+    'chainsourceup' => 30198, //Last Name
+    'chainsourcedown' => $source_session['sourceid'],
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
 ));
 
 $set_email = false;
-if(count($fetch_emails) && filter_var($fetch_emails[0]['chaintext'], FILTER_VALIDATE_EMAIL)) {
-    $set_email = $fetch_emails[0]['chaintext'];
+if(count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL)) {
+    $set_email = $fetch_emails[0]['chainvalue'];
 }
 $set_phone = false;
-if(count($fetch_phones) && strlen($fetch_phones[0]['chaintext'])>=8) {
-    $set_phone = $fetch_phones[0]['chaintext'];
+if(count($fetch_phones) && strlen($fetch_phones[0]['chainvalue'])>=8) {
+    $set_phone = $fetch_phones[0]['chainvalue'];
 }
 
 if(!$set_email){
     //No Valid email:
     return view_json(log_error('Your account does not have a valid email address for us to send your invoice. Click on Edit Profile from Top/Right menu, edit your email address, and try again.', array(
-        'chainplayerdown' => $player_session['playerid'],
-        'chainplayercreator' => $player_session['playerid'],
+        'chainsourcedown' => $source_session['sourceid'],
+        'chainsourcecreator' => $source_session['sourceid'],
         'chainidearight' => $_POST['focus__id'],
     )));
 }
@@ -97,16 +97,16 @@ foreach($this->Ideas->read(array(
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
         $invoice_due_dates = $this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
-            'chainplayerup' => 44378, //Invoice Due Date
+            'chainsourceup' => 44378, //Invoice Due Date
         ));
         $invoice_min_payments = $this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___42991')) . ')' => null, //Active Writes
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
-            'chainplayerup' => 44379, //Invoice Min Payment
+            'chainsourceup' => 44379, //Invoice Min Payment
         ));
-        $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['chaintext'])>0 ? floatval($invoice_min_payments[0]['chaintext']) : 0 );
+        $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['chainvalue'])>0 ? floatval($invoice_min_payments[0]['chainvalue']) : 0 );
 
         // Usage example
         try {
@@ -116,19 +116,19 @@ foreach($this->Ideas->read(array(
                 'invoicer_given_name' => view_idea_title($idea_target, true),
                 'invoicer_address_line_1' => '', //Atlas Foundation; Non-Profit #774760508BC0001
                 'invoicer_address_line_2' => '', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
-                'invoicer_website' => 'https://'.get_domain('m__message', $player_session['playerid']),
+                'invoicer_website' => 'https://'.get_domain('m__message', $source_session['sourceid']),
                 'invoicer_email' => website_setting(30882),
 
                 'note' => $i['ideatext'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $min_pay>0 && $_POST['total_price'] >= $min_pay ? $min_pay."" : "0" ),
-                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['chaintext'])>time() ? strtotime($invoice_due_dates[0]['chaintext']) : time() )),
+                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['chainvalue'])>time() ? strtotime($invoice_due_dates[0]['chainvalue']) : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chaintext']) ? $fetch_first_names[0]['chaintext'] : $player_session['playertext'],
-                'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['chaintext'] : '',
-                'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_session['playerid']).'/@'.$player_session['playerhandle'],
+                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $source_session['sourcetext'],
+                'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['chainvalue'] : '',
+                'recipient_address_line_1' => 'https://'.get_domain('m__message', $source_session['sourceid']).'/@'.$source_session['sourcehandle'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
             ];
@@ -151,38 +151,38 @@ foreach($this->Ideas->read(array(
 
         //Delete Old Parent Invoice:
         foreach($this->Chains->read(array(
-            'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainidealeft' => $i['ideaid'],
-            'chainplayercreator' => $player_session['playerid'],
+            'chainsourcecreator' => $source_session['sourceid'],
         ), array(), 0) as $x_discovery){
-            $this->Chains->delete($x_discovery['chainid'], $player_session['playerid']);
+            $this->Chains->delete($x_discovery['chainid'], $source_session['sourceid']);
         }
 
         //Delete Old Child Answers:
         foreach($this->Chains->read(array(
-            'chainplayertype' => 7712, //Input Choice
-            'chainplayercreator' => $player_session['playerid'],
+            'chainsourcetype' => 7712, //Input Choice
+            'chainsourcecreator' => $source_session['sourceid'],
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight')) as $x_selection){
 
             //Remove Selection:
-            $this->Chains->delete($x_selection['chainid'], $player_session['playerid']);
+            $this->Chains->delete($x_selection['chainid'], $source_session['sourceid']);
 
             //Remove discovery if we can:
-            if(!in_array($x_selection['ideatype'], $this->config->item('playerids___42905'))){
+            if(!in_array($x_selection['ideatype'], $this->config->item('sourceids___42905'))){
                 foreach($this->Chains->read(array(
-                        'chainplayertype IN (' . join(',', $this->config->item('playerids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
                     'chainidealeft' => $x_selection['ideaid'],
-                    'chainplayercreator' => $player_session['playerid'],
+                    'chainsourcecreator' => $source_session['sourceid'],
                 ), array(), 0) as $x_discovery){
-                    $this->Chains->delete($x_discovery['chainid'], $player_session['playerid']);
+                    $this->Chains->delete($x_discovery['chainid'], $source_session['sourceid']);
                 }
             }
         }
 
 
         //Save New Invoice:
-        $this->Chains->idea_discovered(44245, $player_session['playerid'], $idea_target['ideaid'], $i);
+        $this->Chains->idea_discovered(44245, $source_session['sourceid'], $idea_target['ideaid'], $i);
 
 
         //Save New Child Answers:
@@ -192,16 +192,16 @@ foreach($this->Ideas->read(array(
             )) as $this_i){
 
                 //Complete this item:
-                $this->Chains->idea_discovered(idea_type_discovery($this_i), $player_session['playerid'], $idea_target['ideaid'], $this_i, array(), array(
-                    'chainnumber' => $_POST['invoice_items'][$key]['quantity'],
+                $this->Chains->idea_discovered(idea_type_discovery($this_i), $source_session['sourceid'], $idea_target['ideaid'], $this_i, array(), array(
+                    'chainkey' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
                 //Save Answer:
                 $this->Chains->create(array(
-                    'chainplayertype' => 7712, //Input Choice
-                    'chainplayercreator' => $player_session['playerid'],
+                    'chainsourcetype' => 7712, //Input Choice
+                    'chainsourcecreator' => $source_session['sourceid'],
                     'chainidealeft' => $_POST['focus__id'],
-                    'chainnumber' => $_POST['invoice_items'][$key]['quantity'],
+                    'chainkey' => $_POST['invoice_items'][$key]['quantity'],
                     'chainidearight' => $_POST['invoice_items'][$key]['ideaid'],
                 ));
             }
@@ -211,7 +211,7 @@ foreach($this->Ideas->read(array(
         //Find Next:
         $idea_redirect_url = idea_redirect_url($i);
         if(!$idea_redirect_url){
-            $idea_next = $this->Chains->idea_next($player_session['playerid'], $_POST['target_ideahashtag'], $i);
+            $idea_next = $this->Chains->idea_next($source_session['sourceid'], $_POST['target_ideahashtag'], $i);
         }
 
 
