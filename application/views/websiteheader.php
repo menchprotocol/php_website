@@ -232,7 +232,7 @@ if(!$basic_header_footer){
 
 
 
-    if(isset($app_playerid) && in_array($app_playerid, $this->config->item('playerids___28621'))){
+    if($app_playerid==14565){
 
         $domain_background = website_setting(28621);
         if(strlen($domain_background)){
