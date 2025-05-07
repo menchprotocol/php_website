@@ -20,7 +20,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
     
     echo '<h1>'.$sources___6287[27004]['m__title'].'</h1>';
     foreach($this->Sources->tree(11029, $source_session['sourceid'], array(27004)) as $e){
-        echo '<div><a href="'.view_app_chain(27004).view_memory(42903,42902).$e['sourcehandle'].'" class="main__title">'.$e['sourcetext'].'</a></div>';
+        echo '<div><a href="'.view_app_chain(27004).view_memory(42903,42902).$e['sourcehandle'].'" class="main__title">'.$e['sourcevalue'].'</a></div>';
     }
 
 } else {
@@ -32,7 +32,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
     $es = $this->Sources->read(array(
         'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
     ));
-    echo '<h2>'.$es[0]['sourcetext'].' @'.$es[0]['sourcehandle'].'</h2>';
+    echo '<h2>'.$es[0]['sourcevalue'].' @'.$es[0]['sourcehandle'].'</h2>';
 
     $idea_query = $this->Chains->read(array(
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
@@ -120,7 +120,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
 
 
             $chain_content .= '<tr class="chain_columns chains_'.$i['ideaid'].' hidden">';
-            $chain_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['sourcecover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['sourcehandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['sourcetext'].'</a> ' : '' ).$chainvalue['first_name'].' '.$chainvalue['last_name'].'</td>';
+            $chain_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['sourcecover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['sourcehandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['sourcevalue'].'</a> ' : '' ).$chainvalue['first_name'].' '.$chainvalue['last_name'].'</td>';
             $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $chainvalue['mc_gross']!=0 && strlen($chainvalue['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$chainvalue['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Chain"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_chain(4341).'?chainid='.$x['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';
             $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $chain_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
@@ -246,7 +246,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
         //Doo We Have other?
         foreach($other_es as $other_e){
             $othersource_content .= '<tr class="chain_columns thr_e hidden">';
-            $othersource_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['sourcecover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['sourcehandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['sourcetext'].'</a></td>';
+            $othersource_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['sourcecover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['sourcehandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['sourcevalue'].'</a></td>';
             $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $othersource_content .= '<td style="text-align: right;"><a href="'.view_app_chain(4341).'?chainid='.$other_e['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';

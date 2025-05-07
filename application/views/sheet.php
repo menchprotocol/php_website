@@ -46,7 +46,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             ), array(), 1);
 
-            $idea_content .= '<td title="' . $x['sourcetext'] . ' x ' . view_idea_title($idea_var, true) . '">';
+            $idea_content .= '<td title="' . $x['sourcevalue'] . ' x ' . view_idea_title($idea_var, true) . '">';
 
             if (count($discoveries)) {
 
@@ -60,7 +60,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
                     'chainidealeft' => $idea_var['ideaid'],
                     'chainsourcecreator' => $x['sourceid'],
                 ), array('chainidearight'), 0, 1, array('chainid' => 'DESC')) as $response) {
-                    $set_chainvalue = $response['ideatext'];
+                    $set_chainvalue = $response['ideavalue'];
                 }
 
                 if ($set_chainvalue) {
@@ -96,7 +96,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
         $this_quantity = $this_quantity - 1;
 
 
-        $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">' . view_cover($x['sourcecover'], true) . '</span><a href="' . view_memory(42903, 42902) . $x['sourcehandle'] . '" style="font-weight:bold;">' . $x['sourcetext'] . '</a>' . ($this_quantity > 0 ? ' +' . $this_quantity : '') . '</td>';
+        $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">' . view_cover($x['sourcecover'], true) . '</span><a href="' . view_memory(42903, 42902) . $x['sourcehandle'] . '" style="font-weight:bold;">' . $x['sourcevalue'] . '</a>' . ($this_quantity > 0 ? ' +' . $this_quantity : '') . '</td>';
 
 
         //SOURCES
@@ -145,7 +145,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
                 }
             }
 
-            $body_content .= '<td title="' . $x['sourcetext'] . ' x ' . $e['sourcetext'] . '" class="' . (source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_' . $e['sourceid'] . '_' . $x['sourceid'] : '') . '" ideaid="0" sourceid="' . $e['sourceid'] . '" chainsourcecreator="' . $x['sourceid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
+            $body_content .= '<td title="' . $x['sourcevalue'] . ' x ' . $e['sourcevalue'] . '" class="' . (source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_' . $e['sourceid'] . '_' . $x['sourceid'] : '') . '" ideaid="0" sourceid="' . $e['sourceid'] . '" chainsourcecreator="' . $x['sourceid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
 
             if (strlen($message_clean) > 0) {
 
@@ -178,7 +178,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
 
     foreach ($idea_settings['source_column'] as $e) {
         array_push($table_sortable, '#thsource_' . $e['sourceid']);
-        echo '<th id="thsource_' . $e['sourceid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['sourcehandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['sourceid']]) ? str_replace('.00', '', number_format($count_totals['e'][$e['sourceid']], 2)) : '0') . '</a><span class="vertical_col">' . view_cover($e['sourcecover'], '✔️', ' ') . $e['sourcetext'] . '</span></th>';
+        echo '<th id="thsource_' . $e['sourceid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['sourcehandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['sourceid']]) ? str_replace('.00', '', number_format($count_totals['e'][$e['sourceid']], 2)) : '0') . '</a><span class="vertical_col">' . view_cover($e['sourcecover'], '✔️', ' ') . $e['sourcevalue'] . '</span></th>';
     }
 
     foreach ($idea_settings['idea_column'] as $idea_var) {

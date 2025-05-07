@@ -44,7 +44,7 @@ foreach($this->Ideas->read(array(
 ), 0) as $idea_fix){
 
     $this->Ideas->update($idea_fix['ideaid'], array(
-        'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideatext']),
+        'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideavalue']),
     ), $source_session['sourceid']);
 
 }
@@ -104,7 +104,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
     ), 0) as $idea_fix){
 
         $this->Ideas->update($idea_fix['ideaid'], array(
-            'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideatext']),
+            'ideacache' => ideacache($idea_fix['ideaid'], $idea_fix['ideavalue']),
         ), $source_session['sourceid']);
 
     }

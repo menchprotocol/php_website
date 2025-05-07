@@ -334,7 +334,7 @@ class Controller extends CI_Controller
             $title .= view_idea_title($target_i, true) . ' | ';
         }
         if ($focus_e) {
-            $title .= $focus_e['sourcetext'] . ' @' . $focus_e['sourcehandle'] . ' | ';
+            $title .= $focus_e['sourcevalue'] . ' @' . $focus_e['sourcehandle'] . ' | ';
         }
         if (!$title) {
             //Append app name since no title:
@@ -531,7 +531,7 @@ class Controller extends CI_Controller
 
             //Create a new idea:
             $idea_new = $this->Ideas->create(array(
-                'ideatext' => null,
+                'ideavalue' => null,
                 'ideatype' => $_POST['current_ideatype'],
             ), $source_session['sourceid']);
 
@@ -785,7 +785,7 @@ class Controller extends CI_Controller
             foreach ($this->Chains->read(array(
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                 'chainsourcedown' => $_POST['sourceid'],
-            ), array('chainsourceup'), 1, 0, array('sourcetext' => 'DESC')) as $up_e) {
+            ), array('chainsourceup'), 1, 0, array('sourcevalue' => 'DESC')) as $up_e) {
                 $delete_redirect = view_memory(42903, 42902) . $up_e['sourcehandle'];
             }
 
@@ -825,7 +825,7 @@ class Controller extends CI_Controller
                 'message' => blocked_reasoning(),
             ));
 
-        } elseif (!isset($_POST['save_ideatext'])) {
+        } elseif (!isset($_POST['save_ideavalue'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -872,7 +872,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid idea Type',
             ));
-        } elseif (strlen($_POST['save_ideatext']) > view_memory(6404, 4736)) {
+        } elseif (strlen($_POST['save_ideavalue']) > view_memory(6404, 4736)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea message must be less than ' . view_memory(6404, 4736) . ' characters.',
@@ -897,14 +897,14 @@ class Controller extends CI_Controller
         }
 
         //Might be new if pre-drafting:
-        if (!strlen($is[0]['ideatext'])) {
+        if (!strlen($is[0]['ideavalue'])) {
 
             //See if references only:
-            if (strlen($_POST['save_ideatext']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_ideatext'], "\n") && intval($_POST['save_chainsourcetype']) && (intval($_POST['next_ideaid']) || intval($_POST['previous_ideaid']))) {
+            if (strlen($_POST['save_ideavalue']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_ideavalue'], "\n") && intval($_POST['save_chainsourcetype']) && (intval($_POST['next_ideaid']) || intval($_POST['previous_ideaid']))) {
 
                 $all_hashtags = true;
                 $idea_references = array();
-                foreach (explode(' ', trim($_POST['save_ideatext'])) as $word) {
+                foreach (explode(' ', trim($_POST['save_ideavalue'])) as $word) {
                     $found_hashtag = false;
                     if (substr($word, 0, 1) == '#') {
                         $valid_hashtag = false;
@@ -974,7 +974,7 @@ class Controller extends CI_Controller
 
 
         //Validate Idea Message:
-        if (!$media_stats['total_media'] && !strlen(trim($_POST['save_ideatext']))) {
+        if (!$media_stats['total_media'] && !strlen(trim($_POST['save_ideavalue']))) {
             //Since we do not have media, we must have a message:
             return view_json(array(
                 'status' => 0,
@@ -1090,7 +1090,7 @@ class Controller extends CI_Controller
             ), array('chainidearight')) as $ref) {
 
                 $this->Ideas->update($ref['ideaid'], array(
-                    'ideatext' => str_replace('#' . $is[0]['ideahashtag'], '#' . trim($_POST['save_ideahashtag']), $ref['ideatext']),
+                    'ideavalue' => str_replace('#' . $is[0]['ideahashtag'], '#' . trim($_POST['save_ideahashtag']), $ref['ideavalue']),
                 ), $source_session['sourceid']);
 
             }
@@ -1139,7 +1139,7 @@ class Controller extends CI_Controller
 
         //Update Text:
         $text_updated = $this->Ideas->update($is[0]['ideaid'], array(
-            'ideatext' => trim($_POST['save_ideatext']),
+            'ideavalue' => trim($_POST['save_ideavalue']),
         ), $source_session['sourceid']);
 
 
@@ -1154,7 +1154,7 @@ class Controller extends CI_Controller
                 'return_ideacache_chains' => view_idea_chains($new_i, $source_session['sourceid'], $focus__node, $focus__node),
                 'return_ideacache_full' => idea_view($_POST['focus_group'], $new_i),
                 'save_ideaid' => $is[0]['ideaid'],
-                'save_ideatext' => trim($_POST['save_ideatext']),
+                'save_ideavalue' => trim($_POST['save_ideavalue']),
                 'text_updated' => $text_updated,
                 'redirect_idea' => (isset($new_i['ideahashtag']) ? view_memory(42903, 33286) . $new_i['ideahashtag'] : null),
                 'message' => $media_stats['total_current'] . ' current & ' . $media_stats['total_submitted'] . ' submitted media: ' . $media_stats['total_submitted'] . ' Created, ' . $media_stats['adjust_updated'] . ' Updated & ' . $media_stats['adjust_removed'] . ' Removed while detected ' . $media_stats['adjust_duplicated'] . ' duplicate uploads.',
@@ -1189,7 +1189,7 @@ class Controller extends CI_Controller
                     $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
                     foreach (ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1, false) as $source_session) {
                         if (isset($source_session['sourceid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $current_sourcehandle && $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcetext'], $source_session['chainvalue']);
+                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $current_sourcehandle && $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], $source_session['chainvalue']);
                             $listed_items++;
                         }
                     }
@@ -1430,7 +1430,7 @@ class Controller extends CI_Controller
 
                     foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $source_session) {
                         if (isset($source_session['sourceid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcetext'], $source_session['chainvalue']);
+                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], $source_session['chainvalue']);
                             $listed_items++;
                         }
                     }
@@ -1602,7 +1602,7 @@ class Controller extends CI_Controller
 
         //Create:
         $added_e = $this->Sources->create(array(
-            'sourcetext' => $_POST['copy_source_title'],
+            'sourcevalue' => $_POST['copy_source_title'],
             'sourcecover' => $fetch_o[0]['sourcecover'],
         ), $source_session['sourceid']);
         if (!$added_e['status']) {
@@ -1700,7 +1700,7 @@ class Controller extends CI_Controller
         /*
          *
          * Either creates a IDEA Chain between focus_id & chain_ideaid
-         * OR will create a new idea with outcome ideatext and then Chain it
+         * OR will create a new idea with outcome ideavalue and then Chain it
          * to focus_id (In this case chain_ideaid=0)
          *
          * */
@@ -1724,10 +1724,10 @@ class Controller extends CI_Controller
             ));
         }
 
-        $validate_ideatext = validate_ideatext($_POST['idea_createtext']);
-        if (!$validate_ideatext['status']) {
+        $validate_ideavalue = validate_ideavalue($_POST['idea_createtext']);
+        if (!$validate_ideavalue['status']) {
             //We had an error, return it:
-            return view_json($validate_ideatext);
+            return view_json($validate_ideavalue);
         }
 
 
@@ -1856,7 +1856,7 @@ class Controller extends CI_Controller
 
             //We are creating a new Source:
             $added_e = $this->Sources->create(array(
-                'sourcetext' => $_POST['source_new_string'],
+                'sourcevalue' => $_POST['source_new_string'],
             ), $source_session['sourceid']);
             if (!$added_e['status']) {
                 //We had an error, return it:
@@ -1985,7 +1985,7 @@ class Controller extends CI_Controller
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
             ), array('chainsourceup'), 0, 0, $order_42145) as $source_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($source_template['sourcecover']) . '</span>' . $source_template['sourcetext'] . '<a href="' . view_memory(42903, 42902) . $source_group['sourcehandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $source_group['sourcetext'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($source_group['sourcecover']) . '</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($source_template['sourcecover']) . '</span>' . $source_template['sourcevalue'] . '<a href="' . view_memory(42903, 42902) . $source_group['sourcehandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $source_group['sourcevalue'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($source_group['sourcecover']) . '</span></a></div>';
 
 
                 //Load template:
@@ -2154,7 +2154,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
             ));
-        } elseif (!isset($_POST['save_sourcetext'])) {
+        } elseif (!isset($_POST['save_sourcevalue'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source Title',
@@ -2287,15 +2287,15 @@ class Controller extends CI_Controller
         }
 
         //Validate Source Title & save if needed:
-        $validate_sourcetext = validate_sourcetext($_POST['save_sourcetext']);
-        if ($es[0]['sourcetext'] != trim($_POST['save_sourcetext'])) {
-            if (!$validate_sourcetext['status']) {
+        $validate_sourcevalue = validate_sourcevalue($_POST['save_sourcevalue']);
+        if ($es[0]['sourcevalue'] != trim($_POST['save_sourcevalue'])) {
+            if (!$validate_sourcevalue['status']) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $validate_sourcetext['message'],
+                    'message' => $validate_sourcevalue['message'],
                 ));
             }
-            $es[0]['sourcetext'] = $validate_sourcetext['sourcetext_clean'];
+            $es[0]['sourcevalue'] = $validate_sourcevalue['sourcevalue_clean'];
         }
 
         //Save Source Cover if needed:
@@ -2306,7 +2306,7 @@ class Controller extends CI_Controller
 
         //Update:
         $this->Sources->update($es[0]['sourceid'], array(
-            'sourcetext' => $validate_sourcetext['sourcetext_clean'],
+            'sourcevalue' => $validate_sourcevalue['sourcevalue_clean'],
             'sourcecover' => trim($_POST['save_sourcecover']),
             'sourcehandle' => trim($_POST['save_sourcehandle']),
         ), $source_session['sourceid']);
@@ -2321,7 +2321,7 @@ class Controller extends CI_Controller
                 'chainsourcetype' => 31835, //Source Mention
             ), array('chainidearight')) as $ref) {
                 $this->Ideas->update($ref['ideaid'], array(
-                    'ideatext' => str_replace('@' . $es[0]['sourcehandle'], '@' . $new_handle_string, $ref['ideatext']),
+                    'ideavalue' => str_replace('@' . $es[0]['sourcehandle'], '@' . $new_handle_string, $ref['ideavalue']),
                 ), $source_session['sourceid']);
             }
             $es[0]['sourcehandle'] = $new_handle_string;
@@ -2834,7 +2834,7 @@ class Controller extends CI_Controller
             'status' => 1,
             'account_id' => $chainsourcecreator,
             'valid_email' => ($valid_email ? 1 : 0),
-            'account_preview' => ($chainsourcecreator ? '<span class="icon-block">' . view_cover($u['sourcecover'], true) . '</span>' . $u['sourcetext'] : ''),
+            'account_preview' => ($chainsourcecreator ? '<span class="icon-block">' . view_cover($u['sourcecover'], true) . '</span>' . $u['sourcevalue'] : ''),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
@@ -2877,22 +2877,22 @@ class Controller extends CI_Controller
             }
 
 
-            $validate_sourcetext = validate_sourcetext($_POST['idea_createtext']);
-            if (!$validate_sourcetext['status']) {
-                return view_json(array_merge($validate_sourcetext, array(
-                    'original_val' => $es[0]['sourcetext'],
+            $validate_sourcevalue = validate_sourcevalue($_POST['idea_createtext']);
+            if (!$validate_sourcevalue['status']) {
+                return view_json(array_merge($validate_sourcevalue, array(
+                    'original_val' => $es[0]['sourcevalue'],
                 )));
             }
 
             //All good, go ahead and update:
             $this->Sources->update($es[0]['sourceid'], array(
-                'sourcetext' => $validate_sourcetext['sourcetext_clean'],
+                'sourcevalue' => $validate_sourcevalue['sourcevalue_clean'],
             ), $source_session['sourceid']);
 
             //Reset member session data if this data belongs to the logged-in member:
             if ($es[0]['sourceid'] == $source_session['sourceid']) {
                 //set Session with new data:
-                $es[0]['sourcetext'] = $validate_sourcetext['sourcetext_clean'];
+                $es[0]['sourcevalue'] = $validate_sourcevalue['sourcevalue_clean'];
                 $this->Sources->activate($es[0], true);
             }
 
@@ -3054,7 +3054,7 @@ class Controller extends CI_Controller
             foreach ($this->Chains->read(array(
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
                 'chainidealeft' => $_POST['focus__id'],
-            ), array('chainidearight'), 0, 0, array('ideatext' => 'ASC')) as $x) {
+            ), array('chainidearight'), 0, 0, array('ideavalue' => 'ASC')) as $x) {
                 $order++;
                 $this->Chains->update($x['chainid'], array(
                     'chainkey' => $order,
@@ -3225,7 +3225,7 @@ class Controller extends CI_Controller
 
             //Issue DISCOVERY/IDEA COIN:
             $completion_status = $this->Chains->idea_discovered(idea_type_discovery($focus_i, $trying_to_skip), $source_session['sourceid'], $_POST['target_ideaid'], $focus_i, $_POST['source_submitted_data'], array(
-                'chainkey' => $_POST['source_submitted_data']['ideanumber'],
+                'chainkey' => $_POST['source_submitted_data']['ideakey'],
             ));
             if (!$completion_status['status']) {
                 //We had an error with data within target_ideaid:
@@ -3290,7 +3290,7 @@ class Controller extends CI_Controller
 
                     //Try to complete:
                     $completion_status = $this->Chains->idea_discovered(idea_type_discovery($idea_next, $trying_to_skip), $source_session['sourceid'], $_POST['target_ideaid'], $idea_next, $next_idea_data, array(
-                        'chainkey' => $next_idea_data['ideanumber'],
+                        'chainkey' => $next_idea_data['ideakey'],
                     ));
                     if ($idea_required && !$completion_status['status']) {
                         //We had an error with data within target_ideaid:

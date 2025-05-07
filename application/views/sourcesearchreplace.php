@@ -15,7 +15,7 @@ $replace_with_confirmed = false;
 if($search_for_set){
 
     $matching_results = $this->Sources->read(array(
-            'sourcetext LIKE \'%'.$_GET['search_for'].'%\'' => null,
+            'sourcevalue LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
     //List the matching search:
@@ -39,12 +39,12 @@ if($search_for_set){
 
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $en['sourcetext'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['sourcetext']) . $append_text;
+                $en['sourcevalue'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['sourcevalue']) . $append_text;
 
                 if($replace_with_confirmed){
                     //Update source:
                     $res = $this->Sources->update($en['sourceid'], array(
-                        'sourcetext' => $en['sourcetext'],
+                        'sourcevalue' => $en['sourcevalue'],
                     ), $source_session['sourceid']);
                     $replaced++;
                 }

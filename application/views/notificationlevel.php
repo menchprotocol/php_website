@@ -10,7 +10,7 @@ if(strlen($sourcehandle)){
     foreach($this->Sources->read(array(
         'sourcehandle' => $sourcehandle,
     )) as $e){
-        echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['sourcetext'].'</h3>';
+        echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['sourcevalue'].'</h3>';
     }
 
     echo '<div style="max-width:610px; margin: 0 auto;">'.view_instant_select(28904, $e['sourceid'], 0).'</div>';

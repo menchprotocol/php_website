@@ -21,7 +21,7 @@ foreach ((isset($_GET['sourcehandle']) && strlen($_GET['sourcehandle']) ? $this-
 
             $community_pills .= view_pill(12274, $x['sourceid'], $total_count, array(
                 'm__cover' => view_cover($x['sourcecover'], true),
-                'm__title' => $x['sourcetext'],
+                'm__title' => $x['sourcevalue'],
                 'm__message' => $x['chainvalue'],
                 'm__handle' => $x['sourcehandle'],
             ), $ui);
@@ -34,7 +34,7 @@ foreach ((isset($_GET['sourcehandle']) && strlen($_GET['sourcehandle']) ? $this-
 if (strlen($community_pills)) {
 
     //Community
-    echo '<h2 class="center">' . $source_item['sourcetext'] . '</h2>';
+    echo '<h2 class="center">' . $source_item['sourcevalue'] . '</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 

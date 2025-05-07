@@ -12,9 +12,9 @@ class Sources extends CIdea_cache
     {
 
         //Validate Title
-        $validate_sourcetext = validate_sourcetext($add_fields['sourcetext']);
-        if (!$validate_sourcetext['status']) {
-            return $validate_sourcetext;
+        $validate_sourcevalue = validate_sourcevalue($add_fields['sourcevalue']);
+        if (!$validate_sourcevalue['status']) {
+            return $validate_sourcevalue;
         }
 
         //Log Chain new Source:
@@ -24,7 +24,7 @@ class Sources extends CIdea_cache
         $creation_data = array(
             'chainsourcecreator' => $chainsourcecreator,
             'chainsourcetype' => 4251, //New Source Created
-            'chainvalue' => $validate_sourcetext['sourcetext_clean'],
+            'chainvalue' => $validate_sourcevalue['sourcevalue_clean'],
         );
         if (isset($add_fields['sourceid']) && !count($this->Chains->read(array('chainid' => $add_fields['sourceid'])))) {
             //Set the chain ID since its not in the ledger:
@@ -41,7 +41,7 @@ class Sources extends CIdea_cache
 
         //Handle Generation
         if (!isset($add_fields['sourcehandle'])) {
-            $add_fields['sourcehandle'] = generate_handle(12274, $validate_sourcetext['sourcetext_clean']);
+            $add_fields['sourcehandle'] = generate_handle(12274, $validate_sourcevalue['sourcevalue_clean']);
         }
         $this->Chains->create(array(
             'chainsourcecreator' => $chainsourcecreator,
@@ -54,7 +54,7 @@ class Sources extends CIdea_cache
         $update_data = array(
             'sourceid' => $new_x['chainid'],
             'sourcehandle' => $add_fields['sourcehandle'],
-            'sourcetext' => $validate_sourcetext['sourcetext_clean'],
+            'sourcevalue' => $validate_sourcevalue['sourcevalue_clean'],
         );
 
         //Cover saving if any
@@ -151,11 +151,11 @@ class Sources extends CIdea_cache
         foreach ($sources_found as $source_current) {
 
             $must_sync_found = false;
-            $skip_sync_ledger = array('sourceexternal', 'sourcenumber');
+            $skip_sync_ledger = array('sourceexternal', 'sourcekey');
             $must_sync_ledger = array(
                 'sourcehandle' => 32338,
                 'sourcecover' => 6198,
-                'sourcetext' => 6197,
+                'sourcevalue' => 6197,
             );
 
             //See what is being updated:
@@ -335,7 +335,7 @@ class Sources extends CIdea_cache
             if ($action_sourceid == 4998) { //Add Prefix String
 
                 $this->Sources->update($x['sourceid'], array(
-                    'sourcetext' => $action_command1 . $x['sourcetext'],
+                    'sourcevalue' => $action_command1 . $x['sourcevalue'],
                 ), $chainsourcecreator);
 
                 $applied_success++;
@@ -343,7 +343,7 @@ class Sources extends CIdea_cache
             } elseif ($action_sourceid == 4999) { //Add Postfix String
 
                 $this->Sources->update($x['sourceid'], array(
-                    'sourcetext' => $x['sourcetext'] . $action_command1,
+                    'sourcevalue' => $x['sourcevalue'] . $action_command1,
                 ), $chainsourcecreator);
 
                 $applied_success++;
@@ -430,10 +430,10 @@ class Sources extends CIdea_cache
 
                 $applied_success++;
 
-            } elseif ($action_sourceid == 5000 && substr_count(strtolower($x['sourcetext']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
+            } elseif ($action_sourceid == 5000 && substr_count(strtolower($x['sourcevalue']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
 
                 $this->Sources->update($x['sourceid'], array(
-                    'sourcetext' => str_ireplace($action_command1, $action_command2, $x['sourcetext']),
+                    'sourcevalue' => str_ireplace($action_command1, $action_command2, $x['sourcevalue']),
                 ), $chainsourcecreator);
 
                 $applied_success++;
@@ -695,7 +695,7 @@ class Sources extends CIdea_cache
         //All good, create new Source:
         $new_private_users = in_array($chainsourcedomain, $this->config->item('sourceids___44011'));
         $added_e = $this->Sources->create(array(
-            'sourcetext' => $full_name,
+            'sourcevalue' => $full_name,
             'sourcecover' => ($image_url ? $image_url : sourcecover_generator(12279)),
         ));
         if (!$added_e['status']) {

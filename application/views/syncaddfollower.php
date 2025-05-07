@@ -21,7 +21,7 @@ foreach ($this->Chains->read(array(
             'chainidealeft' => $addition_sync['chainidearight'],
             'chainsourcecreator' => $dicovered['chainsourcecreator'],
         ), array('chainidearight'), 0, 1, array('chainid' => 'DESC')) as $response) {
-            $set_chainvalue = $response['ideatext'];
+            $set_chainvalue = $response['ideavalue'];
         }
 
         //lets append this Source:

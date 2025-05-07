@@ -53,7 +53,7 @@ foreach($idea_settings['query_string_filtered'] as $x){
 
         }
 
-        $idea_content .= '<td title="'.$x['sourcetext'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chainvalue']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chainvalue'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
+        $idea_content .= '<td title="'.$x['sourcevalue'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chainvalue']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chainvalue'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
 
         if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Chains->read(array(
                     'chainsourcedown' => $x['sourceid'],
@@ -75,7 +75,7 @@ foreach($idea_settings['query_string_filtered'] as $x){
 
     $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
 
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['sourcecover'], true).'</span><a href="'.view_memory(42903,42902).$x['sourcehandle'].'" style="font-weight:bold;">'.$x['sourcetext'].'</a>'.$name.$plus_info.'</td>';
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['sourcecover'], true).'</span><a href="'.view_memory(42903,42902).$x['sourcehandle'].'" style="font-weight:bold;">'.$x['sourcevalue'].'</a>'.$name.$plus_info.'</td>';
 
 
 
@@ -114,7 +114,7 @@ foreach($idea_settings['query_string_filtered'] as $x){
         }
 
 
-        $body_content .= '<td title="'.$x['sourcetext'].' x '.$e['sourcetext'].'" class="'.( source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_'.$e['sourceid'].'_'.$x['sourceid'] : '' ).'" ideaid="0" sourceid="'.$e['sourceid'].'" chainsourcecreator="'.$x['sourceid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" chainid="'.$x['chainid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['sourcevalue'].' x '.$e['sourcevalue'].'" class="'.( source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_'.$e['sourceid'].'_'.$x['sourceid'] : '' ).'" ideaid="0" sourceid="'.$e['sourceid'].'" chainsourcecreator="'.$x['sourceid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" chainid="'.$x['chainid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
@@ -146,7 +146,7 @@ echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
 foreach($idea_settings['source_column'] as $e){
     array_push($table_sortable, '#thsource_'.$e['sourceid']);
-    echo '<th id="thsource_'.$e['sourceid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['sourcehandle'].'" target="_blank" title="Open in New Window">'.view_cover($e['sourcecover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['sourceid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['sourceid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['sourcetext'].'</span></th>';
+    echo '<th id="thsource_'.$e['sourceid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['sourcehandle'].'" target="_blank" title="Open in New Window">'.view_cover($e['sourcecover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['sourceid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['sourceid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['sourcevalue'].'</span></th>';
 }
 foreach($idea_settings['idea_column'] as $idea_var){
 

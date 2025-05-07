@@ -28,7 +28,7 @@ foreach ($is as $in) {
     //Add Idea node:
     $this->db->insert('gephinodes', array(
         'id' => $id_prefix[12273] . $in['ideaid'],
-        'label' => $in['ideatext'],
+        'label' => $in['ideavalue'],
         'size' => 1,
         'node_type' => 1, //Idea
     ));
@@ -58,7 +58,7 @@ foreach ($es as $en) {
     //Transfer Source node:
     $this->db->insert('gephinodes', array(
         'id' => $id_prefix[12274] . $en['sourceid'],
-        'label' => $en['sourcetext'],
+        'label' => $en['sourcevalue'],
         'size' => 1,
         'node_type' => 2, //Member
     ));

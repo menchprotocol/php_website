@@ -355,9 +355,9 @@ if (isset($_GET['chainsourcetype']) && substr_count($_GET['chainsourcetype'], ',
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach ($this->Chains->read($ini_filter, array('chainsourcetype'), 0, 0, source_sort(), 'COUNT(chainsourcetype) as total_count, sourcetext, chainsourcetype', 'chainsourcetype, sourcetext') as $x) {
+        foreach ($this->Chains->read($ini_filter, array('chainsourcetype'), 0, 0, source_sort(), 'COUNT(chainsourcetype) as total_count, sourcevalue, chainsourcetype', 'chainsourcetype, sourcevalue') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['chainsourcetype'] . '" ' . ((isset($_GET['chainsourcetype']) && $_GET['chainsourcetype'] == $x['chainsourcetype']) ? 'selected="selected"' : '') . '>' . $x['sourcetext'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['chainsourcetype'] . '" ' . ((isset($_GET['chainsourcetype']) && $_GET['chainsourcetype'] == $x['chainsourcetype']) ? 'selected="selected"' : '') . '>' . $x['sourcevalue'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 

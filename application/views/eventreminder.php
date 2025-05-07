@@ -126,7 +126,7 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
                         $subject = 'Reminder: ' . $title . ' Starts in ' . view_time_difference($time_starts);
                         $html_message = 'This is a friendly reminder about an upcoming event you signed up for:' .
                             "\n" .
-                            "\n" . $i['ideatext'] .
+                            "\n" . $i['ideavalue'] .
                             "\n" . 'Start Time: ' . date("D M j G:i:s T", $time_starts) .
                             (count($time_ends) && strtotime($time_ends[0]['chainvalue']) ? "\n" . 'End Time: ' . date("D M j G:i:s T", strtotime($time_ends[0]['chainvalue'])) : '') .
                             "\n" . 'https://' . get_domain('m__message', $x['sourceid'], $user_website) . view_memory(42903, 33286) . $i['ideahashtag'] .

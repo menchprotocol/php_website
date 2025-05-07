@@ -77,10 +77,10 @@ foreach($this->Sources->scissor($website_id, 14903) as $source_item) {
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['sourcecover'], FILTER_VALIDATE_URL)){
             $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['sourcecover'].'\');"></div>'.'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['sourcetext'].'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['sourcevalue'].'</div>';
         } else {
             $info_item .= '<div class="info_box_cover">'.view_cover($info_element['sourcecover']).'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['sourcetext'].'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['sourcevalue'].'</div>';
         }
         if(strlen($info_element['chainvalue'])){
             $info_item .= '<div class="info_box_message">'.$info_element['chainvalue'].'</div>';
@@ -90,7 +90,7 @@ foreach($this->Sources->scissor($website_id, 14903) as $source_item) {
     }
 
     if($info_item){
-        $messages .= '<h2 class="info-head">'.$source_item['sourcetext'].'</h2>';
+        $messages .= '<h2 class="info-head">'.$source_item['sourcevalue'].'</h2>';
         if(strlen($source_item['chainvalue'])){
             $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$source_item['chainvalue'].'</div>';
         }

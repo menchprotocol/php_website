@@ -115,7 +115,7 @@ class Chains extends CIdea_cache
                     'sourceid' => $add_fields['chainsourcecreator'],
                 ));
                 if (count($add_e)) {
-                    $u_name = $add_e[0]['sourcetext'];
+                    $u_name = $add_e[0]['sourcevalue'];
                 }
             }
 
@@ -142,7 +142,7 @@ class Chains extends CIdea_cache
 
                     //SOURCE
                     foreach ($this->Sources->read(array('sourceid' => $add_fields[$m['m__handle']])) as $this_e) {
-                        $html_message .= $m['m__title'] . ': ' . $this_e['sourcetext'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['sourcehandle'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . $this_e['sourcevalue'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['sourcehandle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
@@ -1047,10 +1047,10 @@ class Chains extends CIdea_cache
                 if (count($source_private_replies)) {
 
                     //Update existing response if different:
-                    if ($source_submitted_data['idea_createtext'] != $source_private_replies[0]['ideatext']) {
+                    if ($source_submitted_data['idea_createtext'] != $source_private_replies[0]['ideavalue']) {
 
                         $this->Ideas->update($source_private_replies[0]['ideaid'], array(
-                            'ideatext' => $source_submitted_data['idea_createtext'],
+                            'ideavalue' => $source_submitted_data['idea_createtext'],
                         ), $chainsourcecreator);
 
                     }
@@ -1061,7 +1061,7 @@ class Chains extends CIdea_cache
 
                     //Create a new idea:
                     $idea_new = $this->Ideas->create(array(
-                        'ideatext' => $source_submitted_data['idea_createtext'],
+                        'ideavalue' => $source_submitted_data['idea_createtext'],
                         'ideatype' => 6677,
                     ), $chainsourcecreator);
 
@@ -1175,7 +1175,7 @@ class Chains extends CIdea_cache
                 if ($clone_i['chainsourcetype'] == 32247) {
 
                     //Discovery Clone
-                    $new_title = $es_creator[0]['sourcetext'] . ' ' . $clone_i['ideatext'];
+                    $new_title = $es_creator[0]['sourcevalue'] . ' ' . $clone_i['ideavalue'];
                     $result = $this->Ideas->copy($clone_i['ideaid'], 0, $x_data['chainsourcecreator'], null, $new_title);
                     if ($result['status']) {
 
@@ -1236,11 +1236,11 @@ class Chains extends CIdea_cache
 
                         //Update Source Title:
                         $this->Sources->update($x_data['chainsourcecreator'], array(
-                            'sourcetext' => $x_data['chainvalue'],
+                            'sourcevalue' => $x_data['chainvalue'],
                         ), $x_data['chainsourcecreator']);
 
                         //Update live session as well:
-                        $es_creator[0]['sourcetext'] = $x_data['chainvalue'];
+                        $es_creator[0]['sourcevalue'] = $x_data['chainvalue'];
                         $this->Sources->activate($es_creator[0], true);
 
                     } elseif ($this_tag['chainsourceup'] == 6198 && isset($media_stats['media_sourcecover']) && filter_var($media_stats['media_sourcecover'], FILTER_VALIDATE_URL)) {
@@ -1327,11 +1327,11 @@ class Chains extends CIdea_cache
                         if (!in_array(intval($watcher['chainsourceup']), $sent_watchers)) {
                             array_push($sent_watchers, intval($watcher['chainsourceup']));
 
-                            $this->Chains->message($watcher['chainsourceup'], $es_discoverer[0]['sourcetext'] . ' idea_discovered: ' . view_idea_title($i, true),
+                            $this->Chains->message($watcher['chainsourceup'], $es_discoverer[0]['sourcevalue'] . ' idea_discovered: ' . view_idea_title($i, true),
                                 //Message Body:
                                 view_idea_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['ideahashtag'] . "\n\n" .
                                 (strlen($x_data['chainvalue']) ? $x_data['chainvalue'] . "\n\n" : '') .
-                                $es_discoverer[0]['sourcetext'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['sourcehandle'] . "\n\n" .
+                                $es_discoverer[0]['sourcevalue'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['sourcehandle'] . "\n\n" .
                                 $discoverer_contact
                             );
                         }
@@ -1404,7 +1404,7 @@ class Chains extends CIdea_cache
             unset($media['chainid']);
             unset($media['chainvalue']);
             unset($media['sourceid']);
-            unset($media['sourcetext']);
+            unset($media['sourcevalue']);
             unset($media['sourcehandle']);
             unset($media['sourceexternal']);
             array_push($i['uploaded_media'], $media);

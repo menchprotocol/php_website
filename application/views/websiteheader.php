@@ -110,7 +110,7 @@ if(!$basic_header_footer){
     echo ' var insert_text = \'' . (isset($_GET['insert']) ? $_GET['insert'] : '')  . '\'; ';
     echo ' var js_pl_id = ' . ( $source_session ? $source_session['sourceid'] : '0' ) . '; ';
     echo ' var js_pl_handle = \'' . ( $source_session ? $source_session['sourcehandle'] : '' ) . '\'; ';
-    echo ' var js_pl_name = \'' . ( $source_session ? str_replace('\'','\\\'',trim($source_session['sourcetext'])) : '' ) . '\'; ';
+    echo ' var js_pl_name = \'' . ( $source_session ? str_replace('\'','\\\'',trim($source_session['sourcevalue'])) : '' ) . '\'; ';
     echo ' var js_request_uri = \'' . $_SERVER['REQUEST_URI'] . '\'; ';
     echo ' var universal_search_enabled = ' . intval($this->config->item('universal_search_enabled')) . '; ';
     echo ' var website_id = "' . $website_id . '"; ';
@@ -140,7 +140,7 @@ if(!$basic_header_footer){
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
         const picker_i = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
             //Insert into idea text box:
-            insertText($(".save_ideatext"), res.native);
+            insertText($(".save_ideavalue"), res.native);
             //We keep it open!
         }});
         const picker_e = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
@@ -157,7 +157,7 @@ if(!$basic_header_footer){
 
         $(".add_hashtag_44169").click(function (e) {
             console.log('added2');
-            insertText($(".save_ideatext"), '#');
+            insertText($(".save_ideavalue"), '#');
         });
 
     </script>
@@ -389,7 +389,7 @@ if ($focus_i){
 
                             //Profile View
                             $m['m__cover'] = view_cover($source_session['sourcecover'], 1);
-                            $m['m__title'] = '<div class="type_head main__title">'.$source_session['sourcetext'].'</div><div class="grey type_handle">@'.$source_session['sourcehandle'].'</div>';
+                            $m['m__title'] = '<div class="type_head main__title">'.$source_session['sourcevalue'].'</div><div class="grey type_handle">@'.$source_session['sourcehandle'].'</div>';
                             $href = 'href="'.view_memory(42903,42902).$source_session['sourcehandle'].'" ';
 
                         } elseif($chainsourcetype==42246 && $source_session) {
@@ -768,7 +768,7 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                                 'chainsourceup' => $source_session['sourceid'],
                                 'chainsourcetype' => 41011, //PINNED FOLLOWER
                                             ), array('chainsourcedown'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $x_pinned) {
-                                echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['sourcecover']).'</span><b>'.$x_pinned['sourcetext'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['sourcehandle'].'</span></div>';
+                                echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['sourcecover']).'</span><b>'.$x_pinned['sourcevalue'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['sourcehandle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }
 
@@ -779,7 +779,7 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                         <!-- Idea Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_ideatext" placeholder="<?= ( strlen($sources___6201[4736]['m__message']) ? $sources___6201[4736]['m__message'] : $sources___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_ideavalue" placeholder="<?= ( strlen($sources___6201[4736]['m__message']) ? $sources___6201[4736]['m__message'] : $sources___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="media_outer_frame hideIfEmpty" style="margin-left: 40px;">
                                 <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
                                 <div class="doclear">&nbsp;</div>
@@ -877,7 +877,7 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <!-- Source Title -->
                         <div class="dynamic_editing_input">
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$sources___6206[6197]['m__cover'].'</span>'.$sources___6206[6197]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control unsaved_warning save_sourcetext main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control unsaved_warning save_sourcevalue main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
 

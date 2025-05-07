@@ -42,13 +42,13 @@ foreach ($this->Chains->read(array(
     foreach ($down__e as $follower) {
         if ($follower['sourceid'] > 0) {
             array_push($down_ids, $follower['sourceid']);
-            array_push($down_titles, $follower['sourcetext']);
+            array_push($down_titles, $follower['sourcevalue']);
         }
     }
 
 
     $prefix_common_words = prefix_common_words($down_titles); //Clean Titles
-    $memory_text .= "\n" . '//' . $en['sourcetext'] . ':' . "\n";
+    $memory_text .= "\n" . '//' . $en['sourcevalue'] . ':' . "\n";
     $memory_text .= '$config[\'sourceids___' . $en['chainsourcedown'] . '\'] = array(' . join(',', $down_ids) . ');' . "\n";
     $memory_text .= '$config[\'sources___' . $en['chainsourcedown'] . '\'] = array(' . (strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "' . trim($prefix_common_words) . '"' : '') . "\n";
     foreach ($down__e as $follower) {
@@ -88,7 +88,7 @@ foreach ($this->Chains->read(array(
 
         $memory_text .= '     ' . $follower['sourceid'] . ' => array(' . "\n";
         $memory_text .= '        \'m__handle\' => \'' . $follower['sourcehandle'] . '\',' . "\n";
-        $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['sourcetext']))) . '\',' . "\n";
+        $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['sourcevalue']))) . '\',' . "\n";
         $memory_text .= '        \'m__message\' => \'' . (str_replace('\'', '\\\'', $follower['chainvalue'])) . '\',' . "\n";
         $memory_text .= '        \'m__cover\' => \'' . str_replace('\'', '\\\'', view_cover($follower['sourcecover'])) . '\',' . "\n";
         $memory_text .= '        \'m__following\' => array(' . join(',', $down_up_ids) . '),' . "\n";
@@ -156,7 +156,7 @@ $routes_text .= '//APPS:' . "\n\n";
 foreach ($this->Chains->read(array(
     'chainsourceup' => 6287, //Apps
     'chainsourcetype IN (' . join(',', ($memory_detected ? $this->config->item('sourceids___13548') : $sourceids___33337)) . ')' => null, //SOURCE CHAINS
-), array('chainsourcedown'), 0, 0, array('sourcetext' => 'ASC')) as $app) {
+), array('chainsourcedown'), 0, 0, array('sourcevalue' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;

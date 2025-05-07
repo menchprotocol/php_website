@@ -9,7 +9,7 @@ if ($sourcehandle) {
     foreach ($this->Sources->read(array(
         'LOWER(sourcehandle)' => strtolower($sourcehandle),
     )) as $e) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $sourcehandle . '"><span class="icon-block">' . view_cover($e['sourcecover']) . '</span> ' . $e['sourcetext'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $sourcehandle . '"><span class="icon-block">' . view_cover($e['sourcecover']) . '</span> ' . $e['sourcevalue'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif ($ideahashtag) {
     foreach ($this->Ideas->read(array(
@@ -95,7 +95,7 @@ foreach ($this->config->item('sources___33292') as $sourceid1 => $m1) {
                                     'chainsourcedown' => $headline_chain,
                                     'chainsourcetype' => 41011, //Family
                                 ), array('chainsourceup'), 1) as $sibling){
-                                    echo '<a href="'.view_memory(42903,42902).$sibling['sourcehandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['sourcecover']).'</span><b class="grey">'.$sibling['sourcetext'].'</b></a><b class="grey"> & </b></b>';
+                                    echo '<a href="'.view_memory(42903,42902).$sibling['sourcehandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['sourcecover']).'</span><b class="grey">'.$sibling['sourcevalue'].'</b></a><b class="grey"> & </b></b>';
                                 }
                             }
 

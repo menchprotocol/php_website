@@ -14,7 +14,7 @@ class Ideas extends CIdea_cache
         $creation_data = array(
             'chainsourcetype' => 4250,
             'chainsourcecreator' => $chainsourcecreator,
-            'chainvalue' => (isset($add_fields['ideatext']) ? $add_fields['ideatext'] : null),
+            'chainvalue' => (isset($add_fields['ideavalue']) ? $add_fields['ideavalue'] : null),
         );
         if (isset($add_fields['ideaid']) && !count($this->Chains->read(array('chainid' => $add_fields['ideaid'])))) {
             //Set the chain ID since its not in the ledger:
@@ -42,7 +42,7 @@ class Ideas extends CIdea_cache
 
         //Save Idea
         $add_fields['ideaid'] = $new_x['chainid'];
-        $add_fields['ideacache'] = ideacache($add_fields['ideaid'], $add_fields['ideatext']);
+        $add_fields['ideacache'] = ideacache($add_fields['ideaid'], $add_fields['ideavalue']);
         if (!count($this->Ideas->read(array('ideaid' => $add_fields['ideaid'])))) {
             $this->db->insert('cacheideas', $add_fields);
         }
@@ -150,9 +150,9 @@ class Ideas extends CIdea_cache
         foreach ($ideas_found as $idea_current) {
 
             $must_sync_found = false;
-            $skip_sync_ledger = array('ideacache', 'ideaexternal', 'ideanumber', 'ideatype');
+            $skip_sync_ledger = array('ideacache', 'ideaexternal', 'ideakey', 'ideatype');
             $must_sync_ledger = array(
-                'ideatext' => 4736, //Idea Text
+                'ideavalue' => 4736, //Idea Text
                 'ideahashtag' => 32337,
             );
 
@@ -181,9 +181,9 @@ class Ideas extends CIdea_cache
                 }
             }
 
-            if (isset($update_columns['ideatext']) && !isset($update_columns['ideacache'])) {
+            if (isset($update_columns['ideavalue']) && !isset($update_columns['ideacache'])) {
                 //Update Idea Text:
-                $update_columns['ideacache'] = ideacache($chainid, $update_columns['ideatext']);
+                $update_columns['ideacache'] = ideacache($chainid, $update_columns['ideavalue']);
             }
 
             if (!count($update_columns)) {
@@ -548,7 +548,7 @@ class Ideas extends CIdea_cache
         }
 
         $idea_new = $this->Ideas->create(array(
-            'ideatext' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['ideatext']),
+            'ideavalue' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['ideavalue']),
             'ideatype' => $this_i[0]['ideatype'],
         ), $chainsourcecreator);
 

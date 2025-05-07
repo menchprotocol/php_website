@@ -92,9 +92,9 @@ function idea_number_calculator($i)
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $i['ideanumber']) {
+    if ($count_x[0]['totals'] != $i['ideakey']) {
         return $CI->Ideas->update($i['ideaid'], array(
-            'ideanumber' => $count_x[0]['totals'],
+            'ideakey' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -112,9 +112,9 @@ function source_number_calculator($e)
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $e['sourcenumber']) {
+    if ($count_x[0]['totals'] != $e['sourcekey']) {
         return $CI->Sources->update($e['sourceid'], array(
-            'sourcenumber' => $count_x[0]['totals'],
+            'sourcekey' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -297,12 +297,12 @@ function object_to_array($obj)
 function idea_redirect_url($i)
 {
     $CI =& get_instance();
-    if (strlen($i['ideatext']) && count($CI->Chains->read(array(
+    if (strlen($i['ideavalue']) && count($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
             'chainidearight' => $i['ideaid'],
             'chainsourceup' => 43871, //Redirect URL
         )))) {
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['ideatext'], $match);
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['ideavalue'], $match);
         foreach ($match[0] as $url) {
             if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
@@ -432,7 +432,7 @@ function view_tree($i, $open_by_default = true)
 
     echo(isset($i['user_idea_discovered']['chainkey']) && intval($i['user_idea_discovered']['chainkey']) > 1 ? $i['user_idea_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['ideatext']) && strlen($i['user_written_response']['ideatext']) ? ' ' . $i['user_written_response']['ideatext'] : '');
+    echo(isset($i['user_written_response']['ideavalue']) && strlen($i['user_written_response']['ideavalue']) ? ' ' . $i['user_written_response']['ideavalue'] : '');
 
 
     echo '<span class="inline-block float_right">';
@@ -498,7 +498,7 @@ function view_tree($i, $open_by_default = true)
                     $current_sourceid = $sourceid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_source['sourcehandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_source['sourcecover']) . '</span>' . $filtered_source['sourcetext'] . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_source['sourcehandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_source['sourcecover']) . '</span>' . $filtered_source['sourcevalue'] . '</a></div>';
             }
         }
         //Idea<>Idea Settings:
@@ -674,7 +674,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 'chainsourceup IN (' . join(',', $pinned_columns) . ')' => null,
                 'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
                 'chainidearight !=' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC', 'ideatext' => 'ASC')) as $chain_i) {
+            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC', 'ideavalue' => 'ASC')) as $chain_i) {
                 array_push($idea_column, $chain_i);
             }
         }
@@ -700,7 +700,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                     'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                 ));
 
-                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['sourcetext']);
+                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['sourcevalue']);
                 $query_string_filtered[$count]['extension_email'] = (count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['chainvalue'] : false);
                 $query_string_filtered[$count]['extension_phone'] = (count($fetch_phones) && strlen($fetch_phones[0]['chainvalue']) >= 10 ? $fetch_phones[0]['chainvalue'] : false);
 
@@ -974,11 +974,11 @@ function process_media($ideaid, $uploaded_media)
                 }
 
                 //Update the Source title?
-                $validate_sourcetext = validate_sourcetext($upload_media['sourcetext']);
-                if ($validate_sourcetext['status'] && $full_media[$upload_media['sourceid']]['sourcetext'] != $upload_media['sourcetext']) {
+                $validate_sourcevalue = validate_sourcevalue($upload_media['sourcevalue']);
+                if ($validate_sourcevalue['status'] && $full_media[$upload_media['sourceid']]['sourcevalue'] != $upload_media['sourcevalue']) {
                     $adjust_updated = true;
                     $CI->Sources->update($upload_media['sourceid'], array(
-                        'sourcetext' => trim($upload_media['sourcetext']),
+                        'sourcevalue' => trim($upload_media['sourcevalue']),
                     ), $source_session['sourceid']);
                 }
 
@@ -1012,11 +1012,11 @@ function process_media($ideaid, $uploaded_media)
 
                     //Create Source for this new media:
                     $added_e = $CI->Sources->create(array(
-                        'sourcetext' => $upload_media['sourcetext'],
+                        'sourcevalue' => $upload_media['sourcevalue'],
                         'sourcecover' => ($upload_media['media_sourceid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['sourcecover']),
                     ), $source_session['sourceid']);
                     if (!$added_e['status']) {
-                        log_error('Failed to create a new Source for [' . $upload_media['sourcetext'] . '] with cover [' . $upload_media['sourcecover'] . ']', array(
+                        log_error('Failed to create a new Source for [' . $upload_media['sourcevalue'] . '] with cover [' . $upload_media['sourcecover'] . ']', array(
                             'chainsourcedown' => $upload_media['sourceid'],
                         ));
                         continue;
@@ -1058,7 +1058,7 @@ function process_media($ideaid, $uploaded_media)
                             foreach ($CI->Chains->read(array(
                                 'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                                 'chainsourceup' => $chainsourcetype,
-                                'sourcetext' => $target_variable,
+                                'sourcevalue' => $target_variable,
                             ), array('chainsourcedown'), 1, 0, array('chainid' => 'ASC')) as $child_source) {
                                 $child_id = $child_source['sourceid'];
                             }
@@ -1066,7 +1066,7 @@ function process_media($ideaid, $uploaded_media)
                             //If not found create the child:
                             if (!$child_id) {
                                 $added_child = $CI->Sources->create(array(
-                                    'sourcetext' => $target_variable,
+                                    'sourcevalue' => $target_variable,
                                 ));
                                 if (!$added_child['status']) {
                                     log_error('Failed to create a new Source for [' . $target_variable . ']', array(
@@ -1466,7 +1466,7 @@ function validate_update_handle($str, $ideaid = null, $sourceid = null)
 }
 
 
-function validate_sourcetext($str)
+function validate_sourcevalue($str)
 {
 
     //Validate:
@@ -1501,7 +1501,7 @@ function validate_sourcetext($str)
     //All good, return success:
     return array(
         'status' => 1,
-        'sourcetext_clean' => trim($title_clean),
+        'sourcevalue_clean' => trim($title_clean),
     );
 
 }
@@ -1669,7 +1669,7 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
         ));
         if (count($es)) {
 
-            $name = $es[0]['sourcetext'];
+            $name = $es[0]['sourcevalue'];
 
             //Also fetch email for this user to populate the reply to:
             $fetch_emails = $CI->Chains->read(array(
@@ -2364,9 +2364,9 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__handle'] = $s['ideahashtag'];
                 $export_row['s__url'] = view_memory(42903, 33286) . $s['ideahashtag']; //Default to idea, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['ideatext'];
+                $export_row['s__title'] = $s['ideavalue'];
                 $export_row['s__cache'] = $s['ideacache'];
-                $export_row['s__weight'] = intval($s['ideanumber']);
+                $export_row['s__weight'] = intval($s['ideakey']);
 
                 if (idea_is_startable($s)) {
                     array_push($export_row['_tags'], 'public_index');
@@ -2377,13 +2377,13 @@ function update_algolia($focus__node = null, $s__id = 0)
                     'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence 2-Ways
                     'chainidealeft' => $s['ideaid'],
                 ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['ideatext'] . ' ';
+                    $export_row['s__keywords'] .= $i['ideavalue'] . ' ';
                 }
                 foreach ($CI->Chains->read(array(
                     'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence 2-Ways
                     'chainidearight' => $s['ideaid'],
                 ), array('chainidealeft'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['ideatext'] . ' ';
+                    $export_row['s__keywords'] .= $i['ideavalue'] . ' ';
                 }
 
                 //Idea Sources Keywords
@@ -2400,7 +2400,7 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                     //Keywords?
                     if ($is_author || strlen($x['chainvalue'])) {
-                        $export_row['s__keywords'] .= $x['sourcetext'] . ' ' . (strlen($x['chainvalue']) ? $x['chainvalue'] . ' ' : '');
+                        $export_row['s__keywords'] .= $x['sourcevalue'] . ' ' . (strlen($x['chainvalue']) ? $x['chainvalue'] . ' ' : '');
                     }
 
                 }
@@ -2413,9 +2413,9 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__handle'] = $s['sourcehandle'];
                 $export_row['s__url'] = view_memory(42903, 42902) . $s['sourcehandle'];
                 $export_row['s__cover'] = $s['sourcecover'];
-                $export_row['s__title'] = $s['sourcetext'];
+                $export_row['s__title'] = $s['sourcevalue'];
                 $export_row['s__cache'] = '';
-                $export_row['s__weight'] = intval($s['sourcenumber']);
+                $export_row['s__weight'] = intval($s['sourcekey']);
 
                 //Is this an image?
                 if (strlen($s['sourcecover'])) {
@@ -2428,13 +2428,13 @@ function update_algolia($focus__node = null, $s__id = 0)
                 foreach ($CI->Chains->read(array(
                     'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                     'chainsourcedown' => $s['sourceid'], //This follower Source
-                ), array('chainsourceup'), 0, 0, array('sourcetext' => 'DESC')) as $x) {
+                ), array('chainsourceup'), 0, 0, array('sourcevalue' => 'DESC')) as $x) {
 
                     //Add tags:
                     array_push($export_row['_tags'], 'z_' . $x['sourceid']);
 
                     //Add Keywords:
-                    $export_row['s__keywords'] .= $x['sourcetext'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
+                    $export_row['s__keywords'] .= $x['sourcevalue'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
 
                 }
 
@@ -2738,7 +2738,7 @@ function chain_view($x)
             $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Sources->read(array('sourceid' => $x[$m['m__handle']])) as $focus_e) {
-                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['sourcehandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['sourcetext'] . '" class="icon-block-sm">' . view_cover($focus_e['sourcecover'], '<i class="far fa-at"></i>') . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['sourcehandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['sourcevalue'] . '" class="icon-block-sm">' . view_cover($focus_e['sourcecover'], '<i class="far fa-at"></i>') . '</a>';
                 }
             }
             $column_value .= '</div></td>';
@@ -3364,7 +3364,7 @@ function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
             $overflow_reached = true;
         }
 
-        $headline = '<span class="inner_headline">' . (strlen($list_item['sourcecover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['sourcecover']) . '</span>' : '') . $list_item['sourcetext'] . '</span>';
+        $headline = '<span class="inner_headline">' . (strlen($list_item['sourcecover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['sourcecover']) . '</span>' : '') . $list_item['sourcevalue'] . '</span>';
         if (in_array($list_item['sourceid'], $CI->config->item('sourceids___32145'))) {
             $headline .= '<span class="icon-block-sm" title="' . $sources___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $sources___11035[32145]['m__cover'] . '</span>';
         }
@@ -3378,14 +3378,14 @@ function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
 
         if ($selected) {
             if ($access_locked) {
-                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['sourcetext']) . '">' . $headline . '</span>';
+                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['sourcevalue']) . '">' . $headline . '</span>';
             } elseif ($has_multiple) {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['sourcetext']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['sourcevalue']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
             }
         }
 
         if (!$access_locked) {
-            $ui .= '<a href="javascript:void(0);" onclick="source_select_apply(' . $focus__id . ',' . $list_item['sourceid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_sourceid . ',' . $right_ideaid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' item-' . $list_item['sourceid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['sourcetext']) . '">' . $headline . '</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="source_select_apply(' . $focus__id . ',' . $list_item['sourceid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_sourceid . ',' . $right_ideaid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' item-' . $list_item['sourceid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['sourcevalue']) . '">' . $headline . '</a>';
         }
 
 
@@ -3570,12 +3570,12 @@ function view_hash($string)
 function view_idea_title($i, $string_only = false)
 {
 
-    if (!isset($i['ideatext'])) {
+    if (!isset($i['ideavalue'])) {
         return null;
     }
 
     //Break down by lines:
-    foreach (explode("\n", $i['ideatext']) as $line) {
+    foreach (explode("\n", $i['ideavalue']) as $line) {
         if (strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)) {
             return ($string_only ? $line : '<span class="main__title">' . $line . '</span>');
         }
@@ -3876,7 +3876,7 @@ function view_featured_chains($chainsourcetype, $location, $m = null, $focus__no
 {
     $CI =& get_instance();
     $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
-    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['sourcehandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['sourcehandle'] . '">' : '') . '<span class="grey ' . ($chainsourcetype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $sources___11035[$chainsourcetype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainsourcetype == 41949 ? 'mini-font' : '') . '">' . $location['sourcetext'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
+    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['sourcehandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['sourcehandle'] . '">' : '') . '<span class="grey ' . ($chainsourcetype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $sources___11035[$chainsourcetype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainsourcetype == 41949 ? 'mini-font' : '') . '">' . $location['sourcevalue'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
 }
 
 
@@ -4316,7 +4316,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             $follow_btn = searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainsourcetype'] : 0), $idea_access, false, $creator['sourceid'], (count($followings) ? $followings[0]['chainid'] : 0));
         }
 
-        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['sourcehandle'] . '"><span class="icon-block">' . view_cover($creator['sourcecover']) . '</span><b class="hidden">' . $creator['sourcetext'] . '</b><span class="grey mini-font mini-frame">@' . $creator['sourcehandle'] . '</span></a>' . (!in_array($creator['sourceid'], $CI->config->item('sourceids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
+        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['sourcehandle'] . '"><span class="icon-block">' . view_cover($creator['sourcecover']) . '</span><b class="hidden">' . $creator['sourcevalue'] . '</b><span class="grey mini-font mini-frame">@' . $creator['sourcehandle'] . '</span></a>' . (!in_array($creator['sourceid'], $CI->config->item('sourceids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
     }
 
@@ -4375,7 +4375,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 foreach ($CI->Sources->read(array(
                     'sourceid' => $i['chainsourcecreator'],
                 )) as $creator) {
-                    $creator_name = 'Chained by ' . $creator['sourcetext'] . ' @' . $creator['sourcehandle'] . ' on ';
+                    $creator_name = 'Chained by ' . $creator['sourcevalue'] . ' @' . $creator['sourcehandle'] . ' on ';
                     $creator_details = '<a href="' . view_memory(42903, 33286) . $i['ideahashtag'] . '"><span class="icon-block-sm">' . view_cover($creator['sourcecover']) . '</span></a>';
                 }
             }
@@ -4551,8 +4551,8 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
 
     //Raw Data:
-    $ui .= '<div class="ui_ideatext_' . $i['ideaid'] . '
-     hidden">' . $i['ideatext'] . '</div>';
+    $ui .= '<div class="ui_ideavalue_' . $i['ideaid'] . '
+     hidden">' . $i['ideavalue'] . '</div>';
 
 
     $ui .= '</div>';
@@ -4594,7 +4594,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 }
 
                 $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $chainvalue['mc_gross'] . '">';
-                $input_ui .= '<input type="hidden" class="ideanumber" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" class="ideakey" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
 
             } else {
 
@@ -4712,7 +4712,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                     $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="ideanumber" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" class="ideakey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
                     $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_idea_title($i, true)) . '">';
                     $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_ideahashtag ? $target_ideahashtag . ' #' : '') . $i['ideahashtag'] . ' @' . get_domain('m__handle') . ' @' . $source_session['sourcehandle'] . '">';
 
@@ -4735,7 +4735,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
                     //FREE TICKET
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="ideanumber" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" class="ideakey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
 
                 }
             }
@@ -4750,7 +4750,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             ), array('chainidearight'), 0, 1, array('chainid' => 'DESC'));
 
             $input_attributes = '';
-            $previous_response = (isset($source_private_replies[0]['ideatext']) ? $source_private_replies[0]['ideatext'] : '');
+            $previous_response = (isset($source_private_replies[0]['ideavalue']) ? $source_private_replies[0]['ideavalue'] : '');
 
             if (in_array($i['ideatype'], $CI->config->item('sourceids___43002'))) {
 
@@ -5049,7 +5049,7 @@ function view_idea_media($i)
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_' . $x['chainsourcetype'] . ($x['chainsourcetype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_sourceid="' . $x['chainsourcetype'] . '" sourceid="' . $x['sourceid'] . '"  sourcecover="' . $x['sourcecover'] . '" playback_code="' . $x['chainvalue'] . '" sourcetext="' . $x['sourcetext'] . '">' . $template . '</div>';
+        $message_append .= '<div class="media_display media_display_' . $x['chainsourcetype'] . ($x['chainsourcetype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_sourceid="' . $x['chainsourcetype'] . '" sourceid="' . $x['sourceid'] . '"  sourcecover="' . $x['sourcecover'] . '" playback_code="' . $x['chainvalue'] . '" sourcevalue="' . $x['sourcevalue'] . '">' . $template . '</div>';
 
     }
 
@@ -5072,7 +5072,7 @@ function source_view($chainsourcetype, $e, $extra_class = null)
 
     $CI =& get_instance();
 
-    if (!isset($e['sourceid']) || !isset($e['sourcetext'])) {
+    if (!isset($e['sourceid']) || !isset($e['sourcevalue'])) {
         log_error('source_view() Missing core variables', array(
             'chainsourcedown' => $chainsourcetype,
         ));
@@ -5120,13 +5120,13 @@ function source_view($chainsourcetype, $e, $extra_class = null)
 
     if ($source_access >= 3) {
         //Editable:
-        $ui .= view_source_input(6197, $e['sourcetext'], $e['sourceid'], $source_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
-        $ui .= '<div class="hidden text__6197_' . $e['sourceid'] . '">' . $e['sourcetext'] . '</div>';
+        $ui .= view_source_input(6197, $e['sourcevalue'], $e['sourceid'], $source_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
+        $ui .= '<div class="hidden text__6197_' . $e['sourceid'] . '">' . $e['sourcevalue'] . '</div>';
     } else {
         //Static:
-        $ui .= '<input type="hidden" class="text__6197_' . $e['sourceid'] . '" value="' . $e['sourcetext'] . '">';
+        $ui .= '<input type="hidden" class="text__6197_' . $e['sourceid'] . '" value="' . $e['sourcevalue'] . '">';
         $ui .= '<div class="center">';
-        $ui .= '<span class="main__title text__6197_' . $e['sourceid'] . '">' . $e['sourcetext'] . '</span>';
+        $ui .= '<span class="main__title text__6197_' . $e['sourceid'] . '">' . $e['sourcevalue'] . '</span>';
         $ui .= '</div>';
     }
 

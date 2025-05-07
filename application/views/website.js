@@ -155,7 +155,7 @@ function gather_media(target_el, uploader_id) {
                 playback_code: $(this).attr('playback_code'),
                 sourceid: currentsource_id,
                 sourcecover: $(this).attr('sourcecover'),
-                sourcetext: $('#' + $(this).attr('id') + ' input').val(),
+                sourcevalue: $('#' + $(this).attr('id') + ' input').val(),
             }
             sort_rank++;
 
@@ -167,7 +167,7 @@ function gather_media(target_el, uploader_id) {
                 playback_code: $(this).attr('playback_code'),
                 sourceid: 0,
                 sourcecover: $(this).attr('sourcecover'),
-                sourcetext: $('#' + $(this).attr('id') + ' input').val(),
+                sourcevalue: $('#' + $(this).attr('id') + ' input').val(),
                 media_cache: media_cache[uploader_id][$(this).attr('id')],
             }
             sort_rank++;
@@ -969,7 +969,7 @@ function sale_increment(increment, ideaid, max_allowed, min_allowed, unit_total,
     var new_total = (unit_total * new_quantity);
 
     //Update UI:
-    $(".input_ui_" + ideaid + " .ideanumber").val(new_quantity);
+    $(".input_ui_" + ideaid + " .ideakey").val(new_quantity);
     $(".input_ui_" + ideaid + " .current_count").text(new_quantity);
     $(".input_ui_" + ideaid + " .paypal_handling").val(handling_total);
 
@@ -1180,11 +1180,11 @@ $(document).ready(function () {
                 replace: function (suggestion) {
                     setTimeout(function () {
                         //One more time to make sure it also works in mobile:
-                        set_autosize($('.save_ideatext'));
+                        set_autosize($('.save_ideavalue'));
                     }, 144);
                     setTimeout(function () {
                         //One more time to make sure it also works in mobile:
-                        set_autosize($('.save_ideatext'));
+                        set_autosize($('.save_ideavalue'));
                     }, 144);
                     return ' #' + suggestion.s__handle + ' ';
                 }
@@ -1414,7 +1414,7 @@ function update_cover_mini(cover_code, target_css) {
 
 function idea_direction_switch(chainsourcetype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0) {
 
-    console.log('SWITCHING TO ' + chainsourcetype + '/' + next_ideaid + '/' + previous_ideaid + '/' + do_checks + '/' + $('#modal31911 .save_ideatext').val() + '/' + parseInt($('#modal31911 .created_ideaid').val()));
+    console.log('SWITCHING TO ' + chainsourcetype + '/' + next_ideaid + '/' + previous_ideaid + '/' + do_checks + '/' + $('#modal31911 .save_ideavalue').val() + '/' + parseInt($('#modal31911 .created_ideaid').val()));
 
     /*
     if(!next_ideaid && !previous_ideaid && !chainsourcetype && !do_checks){
@@ -1426,14 +1426,14 @@ function idea_direction_switch(chainsourcetype = 0, next_ideaid = 0, previous_id
     */
 
     //Will switch the nature/direction of the chain:
-    return idea_editor(0, 0, chainsourcetype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideatext').val(), parseInt($('#modal31911 .created_ideaid').val()));
+    return idea_editor(0, 0, chainsourcetype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideavalue').val(), parseInt($('#modal31911 .created_ideaid').val()));
 }
 
 function display_media(mediaframe_id, uploader_id, ideaid) {
     console.log('display_media: ' + mediaframe_id + '/' + uploader_id + '/' + ideaid);
     $(".ui_ideacache_" + ideaid + " .media_display").each(function () {
         $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""></div>');
-        cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_sourceid'), $(this).attr('playback_code'), $(this).attr('sourcecover'), $(this).attr('sourcetext'), $(this).attr('sourceid'));
+        cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_sourceid'), $(this).attr('playback_code'), $(this).attr('sourcecover'), $(this).attr('sourcevalue'), $(this).attr('sourceid'));
     });
     sort_media(mediaframe_id);
 }
@@ -1537,14 +1537,14 @@ function idea_editor(ideaid = 0, chainid = 0, chainsourcetype = 0, next_ideaid =
         $('#modal31911 .save_ideaid').val(ideaid);
         $('#modal31911 .hash_group').removeClass('hidden');
         $('#modal31911 .save_ideahashtag').val($('.ui_ideahashtag_' + ideaid + ':first').text());
-        $('#modal31911 .save_ideatext').val($('.ui_ideatext_' + ideaid + ':first').text());
+        $('#modal31911 .save_ideavalue').val($('.ui_ideavalue_' + ideaid + ':first').text());
 
         //Display Current Media:
         display_media('media_editor_frame', 13572, ideaid);
 
     } else if (passon_ideaid) {
 
-        $("#modal31911 .save_ideatext").val(load_message);
+        $("#modal31911 .save_ideavalue").val(load_message);
 
     } else {
 
@@ -1570,7 +1570,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainsourcetype = 0, next_ideaid =
         }
 
         if (insert_message.length) {
-            $("#modal31911 .save_ideatext").val(insert_message);
+            $("#modal31911 .save_ideavalue").val(insert_message);
         }
 
     }
@@ -1595,7 +1595,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainsourcetype = 0, next_ideaid =
 
         setTimeout(function () {
             //Adjust sizes:
-            set_autosize($('#modal31911 .save_ideatext'));
+            set_autosize($('#modal31911 .save_ideavalue'));
             set_autosize($('#modal31911 .save_chainvalue'));
         }, 233);
 
@@ -1605,7 +1605,7 @@ function idea_editor(ideaid = 0, chainid = 0, chainsourcetype = 0, next_ideaid =
 
     setTimeout(function () {
         //Focus on writing a message:
-        $('#modal31911 .save_ideatext').focus();
+        $('#modal31911 .save_ideavalue').focus();
     }, 611);
 
 }
@@ -1756,7 +1756,7 @@ function idea_update() {
         save_chainsourcetype: $('.dropd_form_4486').attr('selected_value').trim(), //The final chain type as selected by user if they have the superpower
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
-        save_ideatext: $('#modal31911 .save_ideatext').val().trim(),
+        save_ideavalue: $('#modal31911 .save_ideavalue').val().trim(),
         save_ideahashtag: $('#modal31911 .save_ideahashtag').val().trim(),
         save_ideatype: $('.dropd_form_4737').attr('selected_value').trim(),
         uploaded_media: gather_media_result['uploaded_media'],
@@ -1821,7 +1821,7 @@ function idea_update() {
             $('#modal31911').modal('hide');
 
             //Update Idea Message:
-            $('.ui_ideatext_' + modify_data['save_ideaid']).text(modify_data['save_ideatext']);
+            $('.ui_ideavalue_' + modify_data['save_ideaid']).text(modify_data['save_ideavalue']);
 
             //Insert idea into the page if new:
             console.log('START INSERTING');
@@ -2136,7 +2136,7 @@ function play_video(public_id) {
     cld.source(public_id);
 }
 
-function cloudinary_presource_view(uploader_id, info_id, media_sourceid, playback_code, sourcecover, sourcetext, sourceid = 0) {
+function cloudinary_presource_view(uploader_id, info_id, media_sourceid, playback_code, sourcecover, sourcevalue, sourceid = 0) {
 
     //Update meta variables:
     $('#' + info_id).attr('media_sourceid', media_sourceid).attr('playback_code', playback_code).attr('sourceid', sourceid).attr('sourcecover', sourcecover);
@@ -2144,24 +2144,24 @@ function cloudinary_presource_view(uploader_id, info_id, media_sourceid, playbac
     if (media_sourceid == 4258) {
 
         //Video
-        $('#' + info_id).html('<input type="text" value="' + sourcetext + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
         //<video id="video_source_'+playback_code+'" controls class="cld-video-source vjs-fade-out cld-fluid cld-video-source-skin-light" poster="'+sourcecover+'"></video>
         //play_video(playback_code);
 
     } else if (media_sourceid == 4260) {
 
         //Image
-        $('#' + info_id).html('<input type="text" value="' + sourcetext + '" placeholder="Source Title" class="hidden_superpower__10939" /><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
 
     } else if (media_sourceid == 4259) {
 
         //Audio
-        $('#' + info_id).html('<input type="text" value="' + sourcetext + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><audio controls src="' + playback_code + '"></audio><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><audio controls src="' + playback_code + '"></audio><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
-        alert('Upload Error: Uploaded File ' + sourcetext + ' is not a valid Video, Image or Audio file.');
+        alert('Upload Error: Uploaded File ' + sourcevalue + ' is not a valid Video, Image or Audio file.');
         delete_media(uploader_id, info_id, true);
 
     }
@@ -2196,7 +2196,7 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
     $('#modal31912 .save_sourceid').val(sourceid);
     $('#modal31912 .save_chainid').val(chainid);
     $('#modal31912 .save_sourcehandle').val($('.ui_sourcehandle_' + sourceid + ':first').text());
-    $('#modal31912 .save_sourcetext').val(current_title);
+    $('#modal31912 .save_sourcevalue').val(current_title);
 
 
     $('#modal31912 .random_animal').html('<i class="' + random_animal(true) + '"></i>');
@@ -2211,7 +2211,7 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
         }, 377);
     }
     setTimeout(function () {
-        set_autosize($('#modal31912 .save_sourcetext'));
+        set_autosize($('#modal31912 .save_sourcevalue'));
     }, 377);
 
 
@@ -2324,7 +2324,7 @@ function source_save_edit() {
 
     var modify_data = {
         save_sourceid: $('#modal31912 .save_sourceid').val(),
-        save_sourcetext: $('#modal31912 .save_sourcetext').val().trim(),
+        save_sourcevalue: $('#modal31912 .save_sourcevalue').val().trim(),
         save_sourcecover: $('#modal31912 .save_sourcecover').val().trim(),
         save_sourcehandle: $('#modal31912 .save_sourcehandle').val().trim(),
         save_chainid: $('#modal31912 .save_chainid').val(),
@@ -2370,7 +2370,7 @@ function source_save_edit() {
             }
 
             //Update Title:
-            update_text_name(6197, modify_data['save_sourceid'], modify_data['save_sourcetext']);
+            update_text_name(6197, modify_data['save_sourceid'], modify_data['save_sourcevalue']);
 
             //Update Raw Cover:
             $('.ui_sourcecover_' + modify_data['save_sourceid'] + ':first').attr('raw_cover', modify_data['save_sourcecover']);
@@ -2667,9 +2667,9 @@ function x_set_start_text() {
     });
 }
 
-function update_text_name(cache_sourceid, sourceid, sourcetext) {
+function update_text_name(cache_sourceid, sourceid, sourcevalue) {
     var target_element = ".text__" + cache_sourceid + "_" + sourceid;
-    $(target_element).text(sourcetext).attr('old-value', sourcetext); //.val(sourcetext)
+    $(target_element).text(sourcevalue).attr('old-value', sourcevalue); //.val(sourcevalue)
     set_autosize($(target_element));
 }
 
@@ -2918,7 +2918,7 @@ function update_form_select(element_id, source_createid, initial_loading, show_t
             console.log('Reloading: ' + element_id + ' with value: ' + ' NEW ID ' + source_createid + ' / ' + $('#modal31911 .created_ideaid').val());
             load_idea_dynamic($('#modal31911 .created_ideaid').val(), 0, source_createid, false);
             //Add handle to text:
-            insertText($(".save_ideatext"), '@' + source_createid);
+            insertText($(".save_ideavalue"), '@' + source_createid);
         }
     }
 }
@@ -3247,7 +3247,7 @@ function idea_discovered(do_skip) {
         next_idea_data.push({
             ideaid: parseInt($(this).attr('ideaid')),
             idea_createtext: ($('.s__12273_' + $(this).attr('ideaid') + ' .x_write').val() ? $('.s__12273_' + $(this).attr('ideaid') + ' .x_write').val() : null),
-            ideanumber: ($('.input_ui_' + $(this).attr('ideaid') + ' .ideanumber').val() ? $('.input_ui_' + $(this).attr('ideaid') + ' .ideanumber').val() : 0),
+            ideakey: ($('.input_ui_' + $(this).attr('ideaid') + ' .ideakey').val() ? $('.input_ui_' + $(this).attr('ideaid') + ' .ideakey').val() : 0),
             uploaded_media: gather_media_result['uploaded_media'],
         });
 
@@ -3347,7 +3347,7 @@ function idea_discovered(do_skip) {
         source_submitted_data: {
             ideaid: parseInt($('#focus__id').val()),
             idea_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
-            ideanumber: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideanumber').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideanumber').val() : 0),
+            ideakey: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideakey').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideakey').val() : 0),
             uploaded_media: gather_media_result['uploaded_media'],
         },
         do_skip: do_skip,

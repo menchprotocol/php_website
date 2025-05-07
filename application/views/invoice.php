@@ -119,14 +119,14 @@ foreach($this->Ideas->read(array(
                 'invoicer_website' => 'https://'.get_domain('m__message', $source_session['sourceid']),
                 'invoicer_email' => website_setting(30882),
 
-                'note' => $i['ideatext'],
+                'note' => $i['ideavalue'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $min_pay>0 && $_POST['total_price'] >= $min_pay ? $min_pay."" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['chainvalue'])>time() ? strtotime($invoice_due_dates[0]['chainvalue']) : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $source_session['sourcetext'],
+                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $source_session['sourcevalue'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['chainvalue'] : '',
                 'recipient_address_line_1' => 'https://'.get_domain('m__message', $source_session['sourceid']).'/@'.$source_session['sourcehandle'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),

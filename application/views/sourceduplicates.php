@@ -36,7 +36,7 @@ if(isset($_GET['sourcehandle'])){
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from  cachesources en1 where (select count(*) from  cachesources en2 where en2.sourcetext = en1.sourcetext ORDER BY en1.sourcetext ASC');
+    $q = $this->db->query('select en1.* from  cachesources en1 where (select count(*) from  cachesources en2 where en2.sourcevalue = en1.sourcevalue ORDER BY en1.sourcevalue ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -45,12 +45,12 @@ if(isset($_GET['sourcehandle'])){
 
         foreach($duplicates as $en) {
 
-            if ($prev_title != $en['sourcetext']) {
+            if ($prev_title != $en['sourcevalue']) {
                 echo '<hr />';
-                $prev_title = $en['sourcetext'];
+                $prev_title = $en['sourcevalue'];
             }
 
-            echo '<a href="'.view_memory(42903,42902) . $en['sourcehandle'] . '"><b>' . $en['sourcetext'] . '</b></a> @' . $en['sourceid'] . '<br />';
+            echo '<a href="'.view_memory(42903,42902) . $en['sourcehandle'] . '"><b>' . $en['sourcevalue'] . '</b></a> @' . $en['sourceid'] . '<br />';
         }
 
     } else {
