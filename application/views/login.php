@@ -331,7 +331,7 @@ if(player_session()) {
 
 
                 <!-- Sign in Code -->
-                <div style="padding:8px 0;">Enter the <?= $players___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
+                <div style="padding:8px 0;">Enter the <?= $players___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>(Also check spam folder):</div>
                 <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border input_border" /></div>
                 <div id="sign_code_errors" class="margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
