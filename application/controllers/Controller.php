@@ -259,7 +259,7 @@ class Controller extends CI_Controller
         $ui = null;
         $new_cache = false;
         $cache_chaintime = null;
-        $chainsourcecreator = ($source_http_request ? ($source_session ? $source_session['sourceid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
+        $chainsourcecreator = ($source_http_request ? ($source_session ? @$source_session['sourceid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
         $skip_idea_privacy_check = !$memory_detected || in_array($app_sourceid, $this->config->item('sourceids___43388'));
         $source_access = source_access(null, $focus_e['sourceid'], $focus_e);
         $idea_access = idea_access(null, $focus_i['ideaid'], $focus_i);

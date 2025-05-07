@@ -1815,7 +1815,7 @@ function website_setting($setting_id = 0, $initiator_sourceid = 0, $chainsourced
 
     if (!$initiator_sourceid) {
         $source_session = source_session();
-        if ($source_session && $source_session['sourceid'] > 0) {
+        if ($source_session && isset($source_session['sourceid']) && $source_session['sourceid'] > 0) {
             $initiator_sourceid = $source_session['sourceid'];
         }
     }
