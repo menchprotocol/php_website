@@ -277,7 +277,7 @@ class Controller extends CI_Controller
             } elseif (!$source_session && in_array($app_sourceid, $this->config->item('sourceids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
-            } elseif (count($superpowers_required) && !source_session(end($superpowers_required))) {
+            } elseif (0 && count($superpowers_required) && !source_session(end($superpowers_required))) {
                 $sources___10957 = $this->config->item('sources___10957');
                 $missing_access = 'Error: You Cannot Access ' . $sources___6287[$app_sourceid]['m__title'] . ' as it requires the superpower of ' . $sources___10957[end($superpowers_required)]['m__title'] . '.';
             } elseif ($focus_e && !$source_access) {
