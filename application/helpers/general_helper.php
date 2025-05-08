@@ -480,8 +480,8 @@ function view_tree($i, $open_by_default = true)
     echo '<div class="doclear">&nbsp;</div>';
 
     if(isset($_GET['expand'])){
-        foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+        foreach ($CI->Chains->read(array(
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
         ), array('chainsourcecreator')) as $creator) {
             echo '<div class="maxwidth"><a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block-sm grey">'.view_cover($creator['sourcecover']).'</span><b class="grey">'.$creator['sourcevalue'].'</b></a> - '.view_time_difference($creator['chaintime'], false).'</div>';
