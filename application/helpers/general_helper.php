@@ -480,11 +480,19 @@ function view_tree($i, $open_by_default = true)
     echo '<div class="doclear">&nbsp;</div>';
 
     if(isset($_GET['expand'])){
+        $already_shown = array();
         foreach ($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
-        ), array('chainsourcecreator')) as $creator) {
+        ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
+            if(in_array($creator['chainsourcecreator'], $already_shown)){
+                continue;
+            }
+            array_push($already_shown, $creator['chainsourcecreator']);
             echo '<div class="maxwidth"><a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block-sm grey">'.view_cover($creator['sourcecover']).'</span><b class="grey">'.$creator['sourcevalue'].'</b></a> - '.view_time_difference($creator['chaintime'], false).'</div>';
+            if(count($already_shown)>=view_memory(6404, 11064)){
+                break;
+            }
         }
     }
 
