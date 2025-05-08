@@ -482,6 +482,7 @@ function view_tree($i, $open_by_default = true)
 
     echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
+    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
 
 
     //Idea Discovery Expanded List
@@ -495,7 +496,7 @@ function view_tree($i, $open_by_default = true)
                 continue;
             }
             array_push($already_shown, $creator['chainsourcecreator']);
-            echo '<div class="maxwidth"><a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><b class="main__title">'.$creator['sourcevalue'].'</b></a> <span class="grey">'.view_time_difference($creator['chaintime'], false).' Ago</span></div>';
+            echo '<div class="maxwidth"><a href="' . view_app_chain(44328) . '/Discotique25@' . $creator['sourcehandle'] . '" target="_blank" title="' . $sources___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $sources___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><b class="main__title">'.$creator['sourcevalue'].'</b></a> <span class="grey">'.view_time_difference($creator['chaintime'], false).' Ago</span></div>';
             if(count($already_shown)>=view_memory(6404, 11064)){
                 break;
             }
