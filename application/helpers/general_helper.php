@@ -474,8 +474,8 @@ function view_tree($i, $open_by_default = true)
                 $closer = '</a>';
             }
 
-            $max_available = $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
+            $max_available = $CI->Chains->read(array(
+                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
                 'chainidearight' => $i['ideaid'],
                 'chainsourceup' => 26189,
             ), array(), 1);
