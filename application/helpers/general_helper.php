@@ -488,7 +488,7 @@ function view_tree($i, $open_by_default = true)
     if(isset($_GET['expand'])){
         $already_shown = array();
         foreach ($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
         ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
             if(in_array($creator['chainsourcecreator'], $already_shown)){
