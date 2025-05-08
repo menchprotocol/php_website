@@ -486,19 +486,13 @@ function view_tree($i, $open_by_default = true)
 
     //Idea Discovery Expanded List
     if(isset($_GET['expand'])){
-        $already_shown = array();
         foreach ($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
-        ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
-            if(in_array($creator['chainsourcecreator'], $already_shown)){
-                continue;
-            }
-            array_push($already_shown, $creator['chainsourcecreator']);
+        ), array('chainsourcecreator'), view_memory(6404, 11064), 0, array('chainid' => 'DESC')) as $creator) {
+
             echo '<div class="maxwidth"><a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><b class="main__title">'.$creator['sourcevalue'].'</b></a> <span class="grey">'.view_time_difference($creator['chaintime'], false).' Ago</span></div>';
-            if(count($already_shown)>=view_memory(6404, 11064)){
-                break;
-            }
+
         }
     }
 
