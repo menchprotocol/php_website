@@ -417,6 +417,7 @@ function view_tree($i, $open_by_default = true)
 
     $CI =& get_instance();
     $has_children = count($i['idea_next']);
+    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
 
     echo '<div class="slim_title">';
 
@@ -472,7 +473,14 @@ function view_tree($i, $open_by_default = true)
                 $opener = '<a href="/'.$i['ideahashtag'].'/start" ';
                 $closer = '</a>';
             }
-            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . $i['idea_count_discovery'].'</span>'.$closer;
+
+            $max_available = $this->Chains->read(array(
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
+                'chainidearight' => $i['ideaid'],
+                'chainsourceup' => 26189,
+            ), array(), 1);
+
+            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . $i['idea_count_discovery'].(count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="'.$sources___11035[26189]['m__title'].'" style="border-bottom: 1px dotted #999;">/'.intval($max_available[0]['chainvalue']).'</span>' : '').'</span>'.$closer;
 
         }
     }
@@ -482,7 +490,6 @@ function view_tree($i, $open_by_default = true)
 
     echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
 
 
     //Idea Discovery Expanded List
@@ -496,7 +503,7 @@ function view_tree($i, $open_by_default = true)
                 continue;
             }
             array_push($already_shown, $creator['chainsourcecreator']);
-            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'"><a href="' . view_app_chain(44328) . '/Discotique2025@' . $creator['sourcehandle'] . '" target="_blank" title="' . $sources___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $sources___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><b class="main__title">'.$creator['sourcevalue'].'</b></a> <span class="grey">'.view_time_difference($creator['chaintime'], false).' Ago</span> <a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['ideahashtag'] . '\')" title="'.$sources___11035[10673]['m__title'].'">' . $sources___11035[10673]['m__cover'] . '</a></div>';
+            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'"><a href="' . view_app_chain(44328) . '/Discotique2025@' . $creator['sourcehandle'] . '" target="_blank" title="' . $sources___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $sources___11035[44328]['m__cover'] . '</span><span class="grey">@'.$creator['sourcehandle'].'</span></a> <a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><b class="main__title">'.$creator['sourcevalue'].'</b></a> <span class="grey">'.view_time_difference($creator['chaintime'], false).' Ago</span> <a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['ideahashtag'] . '\')" title="'.$sources___11035[10673]['m__title'].'">' . $sources___11035[10673]['m__cover'] . '</a></div>';
             if(count($already_shown)>=view_memory(6404, 11064)){
                 break;
             }
