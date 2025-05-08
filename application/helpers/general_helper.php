@@ -479,6 +479,15 @@ function view_tree($i, $open_by_default = true)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
+    if(isset($_GET['expand'])){
+        foreach ($this->Chains->read(array(
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+            'chainidealeft' => $i['ideaid'],
+        ), array('chainsourcecreator')) as $creator) {
+            echo '<div class="maxwidth"><a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block-sm grey">'.view_cover($creator['sourcecover']).'</span><b class="grey">'.$creator['sourcevalue'].'</b></a> - '.view_time_difference($creator['chaintime'], false).'</div>';
+        }
+    }
+
 
     echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
