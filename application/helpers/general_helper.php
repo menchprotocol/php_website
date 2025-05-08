@@ -496,7 +496,7 @@ function view_tree($i, $open_by_default = true)
                 continue;
             }
             array_push($already_shown, $creator['chainsourcecreator']);
-            echo '<div class="maxwidth"><a href="' . view_app_chain(44328) . '/Discotique25@' . $creator['sourcehandle'] . '" target="_blank" title="' . $sources___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $sources___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><b class="main__title">'.$creator['sourcevalue'].'</b></a> <span class="grey">'.view_time_difference($creator['chaintime'], false).' Ago</span></div>';
+            echo '<div class="maxwidth"><a href="' . view_app_chain(44328) . '/Discotique2025@' . $creator['sourcehandle'] . '" target="_blank" title="' . $sources___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $sources___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><b class="main__title">'.$creator['sourcevalue'].'</b></a> <span class="grey">'.view_time_difference($creator['chaintime'], false).' Ago</span></div>';
             if(count($already_shown)>=view_memory(6404, 11064)){
                 break;
             }
