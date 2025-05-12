@@ -1523,8 +1523,8 @@ class Chains extends CIdea_cache
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
-        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)) + ( !$current_level ? 1 : 0 ); //Can be improved later...
-        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)) + ( !$current_level ? 1 : 0 );
+        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
+        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
         $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
         $i['stats'] = array(
             'max_level' => $current_level,
@@ -1534,6 +1534,7 @@ class Chains extends CIdea_cache
             'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
             'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
         );
+
         $i['idea_next'] = array();
         $current_level++;
 
@@ -1550,7 +1551,6 @@ class Chains extends CIdea_cache
             $result_i = $this->Chains->flat($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
             array_push($i['idea_next'], $result_i);
 
-
             $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
             $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
             $i['stats']['min_choices'] += $result_i['stats']['min_choices'];
@@ -1563,6 +1563,11 @@ class Chains extends CIdea_cache
                 $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
             }
 
+        }
+
+        if($current_level==0){
+            $i['stats']['min_steps']++;
+            $i['stats']['max_steps']++;
         }
 
         return $i;
