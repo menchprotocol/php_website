@@ -1534,12 +1534,16 @@ label {
 .slim_title {
     padding: 1px 0 0 13px;
     font-size:1em;
-    color: #999;
-    font-weight: normal;
+    color: #000;
     margin:5px 0 0 5px;
 }
 
-
+.inner_items>a,
+.inner_items>span{
+    display: inline-block;
+    min-width: 89px;
+    text-align: left;
+}
 
 .slim_title .main__title{
     color: #000;
