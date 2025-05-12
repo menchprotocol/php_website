@@ -1565,7 +1565,7 @@ class Chains extends CIdea_cache
 
         }
 
-        if($current_level==0){
+        if($current_level==1){
             $i['stats']['min_steps']++;
             $i['stats']['max_steps']++;
         }
