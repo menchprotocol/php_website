@@ -4278,7 +4278,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         $href = view_memory(42903, 30795) . $i['ideahashtag'] . '/' . view_memory(6404, 4235);
     } elseif ($is_locked) {
         $href = null;
-    } elseif ($discovery_mode && $target_ideahashtag) {
+    } elseif ($target_ideahashtag) {
         $href = view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'];
     } elseif ($discovery_mode) {
         $href = view_memory(42903, 33286) . $i['ideahashtag'];
@@ -4306,7 +4306,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
     if ($is_required) {
         //Add required icon:
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_' . $i['ideaid'] . ' .first_line\').append(\'<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' asterisk" title="Required">*</span>\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_' . $i['ideaid'] . ' .first_line:first\').append(\'<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' asterisk" title="Required">*</span>\'); }); </script>';
     }
 
     if ($focus_idea_or) {
