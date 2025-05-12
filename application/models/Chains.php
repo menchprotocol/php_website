@@ -1529,7 +1529,7 @@ class Chains extends CIdea_cache
         $i['stats'] = array(
             'max_level' => $current_level,
             'all_steps' => 1,
-            'min_steps' => 1 + $min_steps,
+            'min_steps' => $min_steps,
             'max_steps' => 1 + $max_steps,
             'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
             'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
