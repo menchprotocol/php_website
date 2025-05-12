@@ -2132,7 +2132,7 @@ function delete_media(uploader_id, info_id, skip_check = false) {
 }
 
 function play_video(public_id) {
-    var cld = cloudinary.videoSource('video_source_' + public_id, {cloudName: 'menchcloud'});
+    var cld = cloudinary.videoPlayer('video_source_' + public_id, {cloudName: 'menchcloud'});
     cld.source(public_id);
 }
 
