@@ -1523,14 +1523,14 @@ class Chains extends CIdea_cache
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
-        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
-        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
+        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)) + ( !$current_level ? 1 : 0 ); //Can be improved later...
+        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next)) + ( !$current_level ? 1 : 0 );
         $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
         $i['stats'] = array(
             'max_level' => $current_level,
             'all_steps' => 1,
-            'min_steps' => ( !$current_level ? 1 : 0 ) + $min_steps,
-            'max_steps' => ( !$current_level ? 1 : 0 ) + $max_steps,
+            'min_steps' => $min_steps,
+            'max_steps' => $max_steps,
             'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
             'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
         );
