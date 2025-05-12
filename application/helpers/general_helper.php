@@ -431,13 +431,9 @@ function view_tree($i, $open_by_default = true)
     echo '<span class="' . (!isset($i['user_idea_discovered']) || count($i['user_idea_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true).'</span>';
     echo '</a>';
 
-    echo (isset($i['user_idea_discovered']['chainkey']) && intval($i['user_idea_discovered']['chainkey']) > 1 ? $i['user_idea_discovered']['chainkey'] . 'x ' : '');
+    echo(isset($i['user_idea_discovered']['chainkey']) && intval($i['user_idea_discovered']['chainkey']) > 1 ? $i['user_idea_discovered']['chainkey'] . 'x ' : '');
 
-    echo (isset($i['user_written_response']['ideavalue']) && strlen($i['user_written_response']['ideavalue']) ? ' ' . $i['user_written_response']['ideavalue'] : '');
-
-
-    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_value($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
-
+    echo(isset($i['user_written_response']['ideavalue']) && strlen($i['user_written_response']['ideavalue']) ? ' ' . $i['user_written_response']['ideavalue'] : '');
 
 
     echo '<span class="inline-block float_right inner_items">';
@@ -495,6 +491,7 @@ function view_tree($i, $open_by_default = true)
     echo '<div class="doclear">&nbsp;</div>';
 
 
+    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_value($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
 
 
