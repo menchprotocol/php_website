@@ -4261,6 +4261,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         $i = array_merge($i, $discoveries[0]);
     }
 
+    $target_ideahashtag_discover = null;
     if ($has_idea_discovered && !$target_ideahashtag) {
         foreach ($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -4268,7 +4269,8 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             'chainidealeft' => $i['ideaid'],
             'chainidearight > 0' => null,
         ), array('chainidearight')) as $CI_dis) {
-            $target_ideahashtag = $CI_dis['ideahashtag'];
+            $target_ideahashtag_discover = $CI_dis['ideahashtag'];
+            $target_ideahashtag = $target_ideahashtag_discover;
         }
     }
 
@@ -4280,6 +4282,8 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         $href = null;
     } elseif ($discovery_mode && $target_ideahashtag) {
         $href = view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'];
+    } elseif ($target_ideahashtag_discover) {
+        $href = view_memory(42903, 30795) . $target_ideahashtag_discover . '/' . $i['ideahashtag'];
     } elseif ($discovery_mode) {
         $href = view_memory(42903, 33286) . $i['ideahashtag'];
     } else {
