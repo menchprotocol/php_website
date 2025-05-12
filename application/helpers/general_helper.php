@@ -482,6 +482,9 @@ function view_tree($i, $open_by_default = true)
 
             echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . $i['idea_count_discovery'].(count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="'.$sources___11035[26189]['m__title'].'" style="border-bottom: 1px dotted #999;">/'.intval($max_available[0]['chainvalue']).'</span>' : '').'</span>'.$closer;
 
+        } else {
+            //block
+            echo $opener.'>&nbsp;'.$closer;
         }
     }
     echo '</span>';
