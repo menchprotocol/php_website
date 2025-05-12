@@ -431,9 +431,13 @@ function view_tree($i, $open_by_default = true)
     echo '<span class="' . (!isset($i['user_idea_discovered']) || count($i['user_idea_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true).'</span>';
     echo '</a>';
 
-    echo(isset($i['user_idea_discovered']['chainkey']) && intval($i['user_idea_discovered']['chainkey']) > 1 ? $i['user_idea_discovered']['chainkey'] . 'x ' : '');
+    echo (isset($i['user_idea_discovered']['chainkey']) && intval($i['user_idea_discovered']['chainkey']) > 1 ? $i['user_idea_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['ideavalue']) && strlen($i['user_written_response']['ideavalue']) ? ' ' . $i['user_written_response']['ideavalue'] : '');
+    echo (isset($i['user_written_response']['ideavalue']) && strlen($i['user_written_response']['ideavalue']) ? ' ' . $i['user_written_response']['ideavalue'] : '');
+
+
+    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_value($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
+
 
 
     echo '<span class="inline-block float_right inner_items">';
@@ -491,7 +495,6 @@ function view_tree($i, $open_by_default = true)
     echo '<div class="doclear">&nbsp;</div>';
 
 
-    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_chains($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
 
 
@@ -3641,7 +3644,7 @@ function view_valid_handle_reverse_idea($string, $check_db = false)
 }
 
 
-function view_idea_chains($i, $sourceid = 0, $replace_chains = true, $focus__node = false)
+function view_idea_value($i, $sourceid = 0, $replace_chains = true, $focus__node = false)
 {
 
     if (!isset($i['ideaid'])) {
@@ -4576,7 +4579,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="ui_ideacache_' . $i['ideaid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_idea_chains($i, $chainsourcecreator, ($focus__node || 1), $focus__node) . '</div>';
+    $ui .= '<div class="ui_ideacache_' . $i['ideaid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_idea_value($i, $chainsourcecreator, ($focus__node || 1), $focus__node) . '</div>';
 
     $idea_popup_url = idea_popup_url($i);
     if ($idea_popup_url) {

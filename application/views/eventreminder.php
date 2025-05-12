@@ -228,7 +228,7 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
                 continue;
             }
 
-            $content_message = view_idea_chains($i, $x['sourceid']);
+            $content_message = view_idea_value($i, $x['sourceid']);
             if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
                 //Let's remove the first line since it's used in the title:
                 $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);

@@ -1150,7 +1150,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 1,
-                'return_ideacache_chains' => view_idea_chains($new_i, $source_session['sourceid'], $focus__node, $focus__node),
+                'return_ideacache_chains' => view_idea_value($new_i, $source_session['sourceid'], $focus__node, $focus__node),
                 'return_ideacache_full' => idea_view($_POST['focus_group'], $new_i),
                 'save_ideaid' => $is[0]['ideaid'],
                 'save_ideavalue' => trim($_POST['save_ideavalue']),

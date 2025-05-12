@@ -36,7 +36,7 @@ echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377p
 
 
 //Did we find any?
-$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_chains($primary_i) . '</div>';
+$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_value($primary_i) . '</div>';
 
 
 
