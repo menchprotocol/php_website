@@ -4261,7 +4261,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         $i = array_merge($i, $discoveries[0]);
     }
 
-    if ($has_idea_discovered && !$target_ideahashtag) {
+    if ($has_idea_discovered) { // && !$target_ideahashtag
         foreach ($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'chainsourcecreator' => $chainsourcecreator,
@@ -4278,7 +4278,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         $href = view_memory(42903, 30795) . $i['ideahashtag'] . '/' . view_memory(6404, 4235);
     } elseif ($is_locked) {
         $href = null;
-    } elseif ($target_ideahashtag) {
+    } elseif ($discovery_mode && $target_ideahashtag) {
         $href = view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'];
     } elseif ($discovery_mode) {
         $href = view_memory(42903, 33286) . $i['ideahashtag'];
