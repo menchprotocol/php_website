@@ -7,7 +7,7 @@ if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
         'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
     ));
 }
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . phpview_memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . view_memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
 $sources___14870 = $this->config->item('sources___14870'); //Website Partner
 
 //Check to see if they are previously logged in?

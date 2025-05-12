@@ -72,6 +72,6 @@ echo '<div style="text-align: center">'.$chains_deleted.'/'.$counter.' ideas exp
 if(isset($filters['chainidearight'])){
     foreach($this->Ideas->read(array('ideaid' => $filters['chainidearight'])) as $i){
         //We were deleting a single item, redirect back:
-        js_php_redirect(timelimit . phpview_memory(42903, 33286) . $i['ideahashtag'], 0);
+        js_php_redirect(timelimit . view_memory(42903, 33286) . $i['ideahashtag'], 0);
     }
 }
