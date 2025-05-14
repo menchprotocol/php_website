@@ -490,7 +490,6 @@ function view_tree($i, $open_by_default = true)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
-
     echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_value($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
     echo '</div>';
 
@@ -511,6 +510,9 @@ function view_tree($i, $open_by_default = true)
                 break;
             }
         }
+    } elseif(isset($focus_e['sourceid']) && isset($i['idea_count_discovery']) && !intval($i['idea_count_discovery'])){
+        //Not discovered by this user:
+        echo '<span class="grey inline-block"><span class="icon-block-sm"><i class="far fa-eye-slash"></i></span>Not Yet Discovered</span>';
     }
 
 
