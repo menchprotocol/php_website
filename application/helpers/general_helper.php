@@ -412,7 +412,7 @@ function verify_cookie()
 }
 
 
-function view_tree($i, $open_by_default = true)
+function view_tree($i, $open_by_default = true, $focus_e = false)
 {
 
     $CI =& get_instance();

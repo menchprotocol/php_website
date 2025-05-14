@@ -9,5 +9,5 @@ $_GET['view_all'] = true;
 
 //Idea Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Chains->historyidea_discovered($focus_i, $focus_e['sourceid']));
+view_tree($this->Chains->historyidea_discovered($focus_i, $focus_e['sourceid']), true, $focus_e);
 echo '</div>';
