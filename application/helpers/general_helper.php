@@ -510,7 +510,11 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                 break;
             }
         }
-    } elseif(isset($focus_e['sourceid']) && isset($i['idea_count_discovery']) && !intval($i['idea_count_discovery'])){
+    } elseif(isset($focus_e['sourceid']) && !count($CI->Chains->read(array(
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+            'chainidealeft' => $i['ideaid'],
+            'chainsourcecreator' => $x_progress['sourceid'],
+        )))){
         //Not discovered by this user:
         echo '<span class="grey inline-block"><span class="icon-block-sm"><i class="far fa-eye-slash"></i></span>Not Yet Discovered</span>';
     }
