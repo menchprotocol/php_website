@@ -113,6 +113,12 @@ if ($source_session || isset($_GET['open'])) {
     echo view_idea_nav(true, $focus_i, $x_completes);
 }
 
+
+
+if($chainsourcecreator==1){
+    die('hi');
+}
+
 ?>
 
 <script>
