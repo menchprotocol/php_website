@@ -4291,8 +4291,8 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         $href = null;
     } elseif ($discovery_mode && $target_ideahashtag) {
         $href = view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'];
-    } elseif ($target_ideahashtag_discover) {
-        $href = view_memory(42903, 30795) . $target_ideahashtag_discover . '/' . $i['ideahashtag'];
+    //} elseif ($target_ideahashtag_discover) {
+        //$href = view_memory(42903, 30795) . $target_ideahashtag_discover . '/' . $i['ideahashtag'];
     } elseif ($discovery_mode) {
         $href = view_memory(42903, 33286) . $i['ideahashtag'];
     } else {
