@@ -350,7 +350,7 @@ function get_redirected($url, $message = null, $log_error = false)
     $source_id = ($source_session ? $source_session['sourceid'] : 14068);
 
     if($source_id==1){
-        die($url);
+        die($url.'/'.$message);
     }
 
     if ($message) {
