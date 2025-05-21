@@ -401,7 +401,7 @@ class Controller extends CI_Controller
                 return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['ideahashtag'] . ' is not an active starting point.</div>');
 
             } elseif (!count($this->Chains->read(array(
-                '(chainidealeft = chainidearight)' => NULL,
+                //'(chainidealeft = chainidearight)' => NULL,
                 'LOWER(ideahashtag)' => strtolower($target_i['ideahashtag']),
                 'chainsourcecreator' => $source_session['sourceid'],
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
