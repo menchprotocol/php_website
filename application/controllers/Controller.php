@@ -401,11 +401,10 @@ class Controller extends CI_Controller
                 return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['ideahashtag'] . ' is not an active starting point.</div>');
 
             } elseif (!count($this->Chains->read(array(
-                //'(chainidealeft = chainidearight)' => NULL,
                 'LOWER(ideahashtag)' => strtolower($target_i['ideahashtag']),
                 'chainsourcecreator' => $source_session['sourceid'],
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            ), array('chainidearight')))) {
+                'chainsourcetype' => 4235,
+            ), array('chainidealeft')))) {
 
                 //Not yet started, add to their starting point:
                 $completion_status = $this->Chains->idea_discovered(4235, $source_session['sourceid'], 0, $target_i);
