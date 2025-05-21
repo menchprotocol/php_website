@@ -347,13 +347,17 @@ function get_redirected($url, $message = null, $log_error = false)
     //Do we have a Message?
     $CI =& get_instance();
     $source_session = source_session();
+    $source_id = ($source_session ? $source_session['sourceid'] : 14068);
+
+    if($source_id==1){
+        die($url);
+    }
 
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
     }
 
     if ($log_error) {
-        $source_id = ($source_session ? $source_session['sourceid'] : 14068);
         //Log thie error:
         log_error($url . ' ' . stripslashes($message), array(
             'chainsourcedown' => $source_id,
