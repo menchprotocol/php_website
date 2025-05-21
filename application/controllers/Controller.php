@@ -410,7 +410,8 @@ class Controller extends CI_Controller
 
                 if ($next__url) {
                     //Go Next:
-                    return get_redirected(view_memory(42903, 30795) . $target_i['ideahashtag'] . '/' . $next__url.'?');
+                    return get_redirected(view_memory(42903, 30795) . $target_i['ideahashtag'] . '/' . $next__url);
+                    //TODO Fix this
                 }
 
             }

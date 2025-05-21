@@ -349,10 +349,6 @@ function get_redirected($url, $message = null, $log_error = false)
     $source_session = source_session();
     $source_id = ($source_session ? $source_session['sourceid'] : 14068);
 
-    if($source_id==1){
-        die($url.'/'.$message);
-    }
-
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
     }
@@ -2237,7 +2233,7 @@ function idea_started($sourceid, $ideahashtag)
 {
     $CI =& get_instance();
     return count($CI->Chains->read(array(
-        'chainidealeft = chainidearight' => NULL,
+        '(chainidealeft = chainidearight)' => NULL,
         'LOWER(ideahashtag)' => strtolower($ideahashtag),
         'chainsourcecreator' => $sourceid,
         'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
