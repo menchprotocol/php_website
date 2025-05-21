@@ -2229,16 +2229,7 @@ function search_enabled()
     return ($CI->config->item('universal_search_enabled') && intval(view_memory(6404, 12678)));
 }
 
-function idea_started($sourceid, $ideahashtag)
-{
-    $CI =& get_instance();
-    return count($CI->Chains->read(array(
-        '(chainidealeft = chainidearight)' => NULL,
-        'LOWER(ideahashtag)' => strtolower($ideahashtag),
-        'chainsourcecreator' => $sourceid,
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-    ), array('chainidearight')));
-}
+
 
 function update_algolia($focus__node = null, $s__id = 0)
 {

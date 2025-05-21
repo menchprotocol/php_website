@@ -400,7 +400,12 @@ class Controller extends CI_Controller
                 //Not a valid starting point:
                 return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['ideahashtag'] . ' is not an active starting point.</div>');
 
-            } elseif (!idea_started($source_session['sourceid'], $target_i['ideahashtag'])) {
+            } elseif (!count($this->Chains->read(array(
+                '(chainidealeft = chainidearight)' => NULL,
+                'LOWER(ideahashtag)' => strtolower($target_i['ideahashtag']),
+                'chainsourcecreator' => $source_session['sourceid'],
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            ), array('chainidearight')))) {
 
                 //Not yet started, add to their starting point:
                 $completion_status = $this->Chains->idea_discovered(4235, $source_session['sourceid'], 0, $target_i);
@@ -411,7 +416,6 @@ class Controller extends CI_Controller
                 if ($next__url) {
                     //Go Next:
                     return get_redirected(view_memory(42903, 30795) . $target_i['ideahashtag'] . '/' . $next__url);
-                    //TODO Fix this
                 }
 
             }
