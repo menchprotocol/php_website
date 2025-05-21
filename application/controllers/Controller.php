@@ -403,7 +403,7 @@ class Controller extends CI_Controller
             } elseif (!count($this->Chains->read(array(
                 'LOWER(ideahashtag)' => strtolower($target_i['ideahashtag']),
                 'chainsourcecreator' => $source_session['sourceid'],
-                'chainsourcetype' => 4235,
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
             ), array('chainidealeft')))) {
 
                 //Not yet started, add to their starting point:
