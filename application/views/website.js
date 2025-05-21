@@ -855,6 +855,12 @@ function load_cards() {
 }
 
 function js_redirect(url, timer = 0) {
+
+    if(js_pl_id==1){
+        alert(url);
+        return false;
+    }
+
     if (timer > 0) {
         setTimeout(function () {
             window.location = url;

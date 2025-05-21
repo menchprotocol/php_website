@@ -114,11 +114,6 @@ if ($source_session || isset($_GET['open'])) {
 }
 
 
-
-if($chainsourcecreator==1){
-    die('hi');
-}
-
 ?>
 
 <script>
