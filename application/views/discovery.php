@@ -124,7 +124,7 @@ if ($source_session || isset($_GET['open'])) {
     $(document).ready(function () {
 
 
-        load_hashtag_menu('Next');
+        //load_hashtag_menu('Next');
 
         set_autosize($('.x_write'));
 
