@@ -5,6 +5,10 @@ $chainsourcecreator = ($source_session ? $source_session['sourceid'] : 0);
 $target_ideahashtag = (count($target_i) && $chainsourcecreator ? $target_i['ideahashtag'] : null);
 $at_starting_point = $target_ideahashtag==$focus_i['ideahashtag'];
 
+if($chainsourcecreator==1){
+    die('hi');
+}
+
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
 if ($chainsourcecreator && !$at_starting_point) {
