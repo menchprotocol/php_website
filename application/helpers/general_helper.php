@@ -513,7 +513,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     } elseif(isset($focus_e['sourceid']) && !count($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
-            'chainsourcecreator' => $x_progress['sourceid'],
+            'chainsourcecreator' => $focus_e['sourceid'],
         )))){
         //Not discovered by this user:
         echo '<span class="grey inline-block"><span class="icon-block-sm"><i class="far fa-eye-slash"></i></span>Not Yet Discovered</span>';
@@ -813,7 +813,7 @@ function idea_is_startable($i)
     $CI =& get_instance();
     return count($CI->Chains->read(array(
         'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidearight' => $i['ideaid'],
+        'chainidealeft' => $i['ideaid'],
         'chainsourceup' => 4235,
     )));
 }
