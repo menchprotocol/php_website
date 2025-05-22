@@ -813,7 +813,7 @@ function idea_is_startable($i)
     $CI =& get_instance();
     return count($CI->Chains->read(array(
         'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidealeft' => $i['ideaid'],
+        'chainidearight' => $i['ideaid'],
         'chainsourceup' => 4235,
     )));
 }
