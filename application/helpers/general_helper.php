@@ -3953,7 +3953,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
         $input_content = '';
         if (!$discovery_mode && $ideation_pen) {
 
-            if (in_array($chainsourcetype, $CI->config->item('sourceids___42261'))) {
+            if (in_array($chainsourcetype, $CI->config->item('sourceids___1635910'))) {
 
                 $input_content .= '<div class="new_list new-list-' . $chainsourcetype . '"><div class="col-12 container-center"><div class="dropdown_' . $chainsourcetype . ' list-adder">
                     <div class="input-group border">

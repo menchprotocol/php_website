@@ -46,7 +46,7 @@ foreach($this->config->item('sources___31916') as $chainsourcetype => $m) {
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { source_load_finder('.$chainsourcetype.'); }); </script>';
 
-        } elseif(0 && in_array($chainsourcetype, $this->config->item('sourceids___42261'))){
+        } elseif(in_array($chainsourcetype, $this->config->item('sourceids___1635910'))){
 
             //TODO Activate Later?
             //ADD IDEAS
