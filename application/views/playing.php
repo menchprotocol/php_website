@@ -63,7 +63,8 @@ foreach($this->config->item('sources___31916') as $chainsourcetype => $m) {
 
     }
 
-    if(in_array($chainsourcetype, $this->config->item('sourceids___42945')) || $coins_count[$chainsourcetype]>0){
+    $chainsourcecreator = ( $source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : 14068 /* GUEST */ );
+    if(($source_session && in_array($chainsourcetype, $this->config->item('sourceids___42945'))) || $coins_count[$chainsourcetype]>0){
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$chainsourcetype.' hidden" read-counter="'.$coins_count[$chainsourcetype].'">'.$input_content.'<div class="tab_content"></div></div>';
 

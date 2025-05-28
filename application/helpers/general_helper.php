@@ -3979,7 +3979,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
 
         }
 
-        if (in_array($chainsourcetype, $CI->config->item('sourceids___42945')) || $coins_count[$chainsourcetype] > 0) {
+        if (($source_session && in_array($chainsourcetype, $CI->config->item('sourceids___42945'))) || $coins_count[$chainsourcetype] > 0) {
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainsourcetype . ' hidden" read-counter="' . $coins_count[$chainsourcetype] . '">' . $input_content . '<div class="tab_content"></div></div>';
 
 
