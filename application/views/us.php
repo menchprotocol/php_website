@@ -16,8 +16,6 @@ foreach ($this->Chains->read(array(
 ), array('chainsourcedown'), 0, 1, source_sort()) as $group) {
     array_push($groups_ids, intval($group['sourceid']));
     $groups_all[intval($group['sourceid'])] = $group;
-    $main_source_name = $group['sourcevalue'];
-    $main_source_id = intval($group['sourceid']);
 }
 
 //Load Main:
@@ -28,6 +26,9 @@ foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
     'chainsourcetype' => 4230, //SOURCE FOLLOW
 ), array('chainsourcedown'), 1, 0, source_sort()) as $group_main) {
+
+    $main_source_name = $group_main['sourcevalue'];
+    $main_source_id = intval($group_main['sourceid']);
 
     foreach ($this->Chains->read(array(
         'chainsourceup' => $group_main['sourceid'],
