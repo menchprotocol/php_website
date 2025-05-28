@@ -17,7 +17,7 @@ foreach ($this->Chains->read(array(
 //Load Main:
 $content_ui = '';
 $group_counts = array();
-$content_ui .= '<div class="group_content">';
+$content_ui .= '<div class="row justify-content group_content">';
 foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
     'chainsourcetype' => 4230, //SOURCE FOLLOW
@@ -47,9 +47,7 @@ foreach ($this->Chains->read(array(
             $group_class .= ' group_'.$filter['chainsourceup'];
         }
 
-        $content_ui .= '<div class="'.$group_class.'">';
-        $content_ui .= source_view(6255, $us);
-        $content_ui .= '</div>';
+        $content_ui .= source_view(6255, $us, $group_class);
 
     }
 }
