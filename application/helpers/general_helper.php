@@ -5316,7 +5316,7 @@ function source_view($chainsourcetype, $e, $extra_class = null)
                     $focus_dropdown = 12887; //Source Dropdown
                 } elseif ($chainsourcetype_id == 32292) { //Source/Source Chains
                     $focus_dropdown = 14956; //Source/Source Dropdown
-                } elseif ($chainsourcetype_id == 6255) { //Discoveries
+                } elseif ($chainsourcetype_id == 6255 || $chainsourcetype_id == 31777) { //Discoveries
                     $focus_dropdown = 32070; //Source>Discoveries Dropdown
                 } elseif ($chainsourcetype_id == 13550) { //Idea/Source Chains
                     $focus_dropdown = 28792; //Source/Idea Dropdown
