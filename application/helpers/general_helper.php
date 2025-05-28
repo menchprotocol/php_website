@@ -2024,6 +2024,14 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         //Mentioned can always reply:
         return 2;
 
+    } elseif (!$is_author && count($CI->Chains->read(array(
+        'chainidearight' => $i['ideaid'],
+        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42625')) . ')' => null, //Private Ideas
+        )))) {
+
+        //Private Idea:
+        return 0;
+
     } else {
 
 
@@ -2031,7 +2039,6 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         if (!count($idea_list_config) && idea_spots_remaining($ideaid) == 0) {
             return 0;
         }
-
 
         // IDEA RELATION CHECK:
         $idea_list_config = idea_list_config($ideaid);
