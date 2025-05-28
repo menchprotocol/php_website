@@ -28,9 +28,11 @@ foreach ($this->Chains->read(array(
 
     $main_source_id = intval($group_main['sourceid']);
     if(!isset($group_counts[$group_main['sourceid']])){
-        $group_counts[$group_main['sourceid']] = 0;
+        $group_counts[$group_main['sourceid']] = array();
     }
-    $group_counts[$group_main['sourceid']]++;
+    if(!in_array($group_main['sourceid'], $group_counts[$group_main['sourceid']])){
+        array_push($group_counts[$group_main['sourceid']], $group_main['sourceid']);
+    }
 
     foreach ($this->Chains->read(array(
         'chainsourceup' => $group_main['sourceid'],
@@ -45,9 +47,11 @@ foreach ($this->Chains->read(array(
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
         ), array(), 0) as $filter) {
             if(!isset($group_counts[$filter['chainsourceup']])){
-                $group_counts[$filter['chainsourceup']] = 0;
+                $group_counts[$filter['chainsourceup']] = array();
             }
-            $group_counts[$filter['chainsourceup']]++;
+            if(!in_array($group_main['sourceid'], $group_counts[$filter['chainsourceup']])){
+                array_push($group_counts[$filter['chainsourceup']], $group_main['sourceid']);
+            }
             $group_class .= ' group_'.$filter['chainsourceup'];
         }
 
@@ -64,7 +68,7 @@ foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
     'chainsourcetype' => 4230, //SOURCE FOLLOW
 ), array('chainsourcedown'), 0, 0, source_sort()) as $group) {
-    echo '<li class="nav-item nav-chain '.( $group['sourceid']==$main_source_id ? ' active ' : '' ).' navgroup_'.$group['sourceid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['sourceid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['sourcecover']).'</span><span class="main__title">'.( isset($group_counts[$group['sourceid']]) ? $group_counts[$group['sourceid']] : 0 ).'</span><span class="main__title '.( $group['sourceid']==$main_source_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['sourceid'].'">&nbsp;'.trim(str_replace($focus_e['sourcevalue'], '', $group['sourcevalue'])).'&nbsp;</span></a></li>';
+    echo '<li class="nav-item nav-chain '.( $group['sourceid']==$main_source_id ? ' active ' : '' ).' navgroup_'.$group['sourceid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['sourceid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['sourcecover']).'</span><span class="main__title">'.( isset($group_counts[$group['sourceid']]) ? count($group_counts[$group['sourceid']]) : 0 ).'</span><span class="main__title '.( $group['sourceid']==$main_source_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['sourceid'].'">&nbsp;'.trim(str_replace($focus_e['sourcevalue'], '', $group['sourcevalue'])).'&nbsp;</span></a></li>';
 }
 echo '</ul>';
 
