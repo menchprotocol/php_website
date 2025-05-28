@@ -65,3 +65,5 @@ foreach ($this->Chains->read(array(
     echo '<li class="nav-item thepill42256"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="$(\'.html_message_' . $group['sourceid'] . '\').toggleClass(\'hidden\');">&nbsp;<span class="icon-block">'.view_cover($group['sourcecover']).'</span><span class="main__title"></span><span class="main__title hidden xtypetitle_'.$group['sourceid'].'">&nbsp;'.( isset($group_counts[$group['sourceid']]) ? $group_counts[$group['sourceid']] : 0 ).'&nbsp;'.$group['sourcevalue'].'&nbsp;</span></a></li>';
 }
 echo '</ul>';
+
+echo $content_ui;
