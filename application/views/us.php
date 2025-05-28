@@ -28,6 +28,9 @@ foreach ($this->Chains->read(array(
         'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33337')) . ')' => null, //SOURCE CHAINS
     ), array('chainsourcedown'), 0, 0, source_sort()) as $us) {
 
+        if(!isset($group_counts[$group_main['sourceid']])){
+            $group_counts[$group_main['sourceid']] = 0;
+        }
         $group_counts[$group_main['sourceid']]++;
 
         //See which filters belong to this member:
@@ -37,6 +40,9 @@ foreach ($this->Chains->read(array(
             'chainsourcedown' => $us['sourceid'],
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33337')) . ')' => null, //SOURCE CHAINS
         ), array(), 0) as $filter) {
+            if(!isset($group_counts[$filter['sourceid']])){
+                $group_counts[$filter['sourceid']] = 0;
+            }
             $group_counts[$filter['sourceid']]++;
             $group_class .= ' group_'.$filter['sourceid'];
         }
