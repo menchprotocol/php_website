@@ -1097,7 +1097,8 @@ class Chains extends CIdea_cache
 
         }
 
-        $x_data['chainsourcecreator'] = ( $source_session && $source_session['sourceid']!=$chainsourcecreator ? $source_session['sourceid'] : $chainsourcecreator );
+        //$x_data['chainsourcecreator'] = ( $source_session && $source_session['sourceid']!=$chainsourcecreator ? $source_session['sourceid'] : $chainsourcecreator );
+        $x_data['chainsourcecreator'] = $chainsourcecreator;
         $x_data['chainsourceup'] = $chainsourcecreator;
         $x_data['chainsourcetype'] = $chainsourcetype;
         $x_data['chainidealeft'] = $i['ideaid']; //Always add Idea to chainidealeft

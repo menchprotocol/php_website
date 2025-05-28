@@ -1877,18 +1877,13 @@ class Controller extends CI_Controller
 
         if ($adding_to_i) {
 
-            if($_POST['chainsourcetype'] == 6255 && $_POST['chainsourcetype'] == 31777){
-                //Add Discovery Suggestion:
-                $this->Chains->idea_discovered(1635945, $focus_e['sourceid'], 0, $fetch_o[0]);
-            } else {
-                //Add Author:
-                $ur2 = $this->Chains->create(array(
-                    'chainsourcecreator' => $source_session['sourceid'],
-                    'chainsourcetype' => 4983, //Co-Author
-                    'chainsourceup' => $focus_e['sourceid'],
-                    'chainidearight' => $fetch_o[0]['ideaid'],
-                ));
-            }
+            //Add Author:
+            $ur2 = $this->Chains->create(array(
+                'chainsourcecreator' => $source_session['sourceid'],
+                'chainsourcetype' => 4983, //Co-Author
+                'chainsourceup' => $focus_e['sourceid'],
+                'chainidearight' => $fetch_o[0]['ideaid'],
+            ));
 
         } else {
 
