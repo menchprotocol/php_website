@@ -1424,6 +1424,7 @@ class Controller extends CI_Controller
 
                 $ui = '';
                 $listed_items = 0;
+                $is_cache = in_array($_POST['chainsourcetype'], $this->config->item('sourceids___14599'));
 
                 if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
 
@@ -1433,7 +1434,7 @@ class Controller extends CI_Controller
 
                     foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $source_session) {
                         if (isset($source_session['sourceid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], $source_session['chainvalue']);
+                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], (!$is_cache ? $source_session['chainvalue'] : null));
                             $listed_items++;
                         }
                     }
@@ -1448,7 +1449,7 @@ class Controller extends CI_Controller
 
                     foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $next_i) {
                         if (isset($next_i['ideaid'])) {
-                            $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['chainvalue']);
+                            $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
                             $listed_items++;
                         }
                     }
