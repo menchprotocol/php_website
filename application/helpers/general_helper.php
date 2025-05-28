@@ -5246,7 +5246,7 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
 
 
     //Start with top bar:
-    if (!$is_app && $source_access >= 1) {
+    if (!$is_app && !$is_cache && $source_access >= 1) {
 
         //Source Chain Groups
         $chainsourcetype_id = 0;
