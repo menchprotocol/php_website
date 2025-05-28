@@ -30,7 +30,7 @@ foreach ($this->Chains->read(array(
 
     foreach ($this->Chains->read(array(
         'chainsourceup' => $group_main['sourceid'],
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33337')) . ')' => null, //SOURCE CHAINS
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
     ), array('chainsourcedown'), 0, 0, source_sort()) as $us) {
 
         if(!isset($group_counts[$group_main['sourceid']])){
@@ -43,7 +43,7 @@ foreach ($this->Chains->read(array(
         foreach ($this->Chains->read(array(
             'chainsourceup IN (' . join(',', $groups_ids) . ')' => null,
             'chainsourcedown' => $us['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33337')) . ')' => null, //SOURCE CHAINS
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
         ), array(), 0) as $filter) {
             if(!isset($group_counts[$filter['chainsourceup']])){
                 $group_counts[$filter['chainsourceup']] = 0;
