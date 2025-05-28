@@ -27,16 +27,15 @@ foreach ($this->Chains->read(array(
 ), array('chainsourcedown'), 1, 0, source_sort()) as $group_main) {
 
     $main_source_id = intval($group_main['sourceid']);
+    if(!isset($group_counts[$group_main['sourceid']])){
+        $group_counts[$group_main['sourceid']] = 0;
+    }
+    $group_counts[$group_main['sourceid']]++;
 
     foreach ($this->Chains->read(array(
         'chainsourceup' => $group_main['sourceid'],
         'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
     ), array('chainsourcedown'), 0, 0, source_sort()) as $us) {
-
-        if(!isset($group_counts[$group_main['sourceid']])){
-            $group_counts[$group_main['sourceid']] = 0;
-        }
-        $group_counts[$group_main['sourceid']]++;
 
         //See which filters belong to this member:
         $group_class = 'main_group';
