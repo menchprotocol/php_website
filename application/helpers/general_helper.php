@@ -5182,7 +5182,7 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
     }
 
 
-    if ($is_app && isset($e['chainvalue']) && strlen($e['chainvalue'])) {
+    if ($is_app && isset($e['chainvalue']) && strlen($e['chainvalue']) && !$is_cache && $superpower_10939) {
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $e['chainvalue'] . '"><i class="far fa-info-circle"></i></span>';
     } else if ($chainid && $source_access >= 3) {
         //Main description:

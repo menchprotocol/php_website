@@ -55,7 +55,6 @@ foreach ($this->Chains->read(array(
                 array_push($group_counts[$filter['chainsourceup']], $us['sourceid']);
             }
             $group_class .= ' group_'.$filter['chainsourceup'];
-            $extra_value .= '  ';
         }
 
         $content_ui .= source_view(1637076, $us, $group_class, $extra_value);
