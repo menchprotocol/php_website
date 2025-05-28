@@ -993,6 +993,7 @@ class Chains extends CIdea_cache
         }
 
         //Do we need to save text/upload ?
+        $source_session = source_session();
         $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
         $input__upload = in_array($i['ideatype'], $this->config->item('sourceids___43004'));
         $input__text = in_array($i['ideatype'], $this->config->item('sourceids___43002')) || in_array($i['ideatype'], $this->config->item('sourceids___43003'));
@@ -1096,7 +1097,8 @@ class Chains extends CIdea_cache
 
         }
 
-        $x_data['chainsourcecreator'] = $chainsourcecreator;
+        $x_data['chainsourcecreator'] = ( $source_session && $source_session['sourceid']!=$chainsourcecreator ? $source_session['sourceid'] : $chainsourcecreator );
+        $x_data['chainsourceup'] = $chainsourcecreator;
         $x_data['chainsourcetype'] = $chainsourcetype;
         $x_data['chainidealeft'] = $i['ideaid']; //Always add Idea to chainidealeft
 
@@ -1263,7 +1265,6 @@ class Chains extends CIdea_cache
                     $append_source = append_source($this_tag['chainsourceup'], $x_data['chainsourcecreator'], (isset($source_submitted_data['idea_createtext']) ? $source_submitted_data['idea_createtext'] : null), $i['ideaid']);
 
                     //See if Session needs to be updated:
-                    $source_session = source_session();
                     if ($source_session && $source_session['sourceid']==$x_data['chainsourcecreator'] && $append_source) {
                         $this->Sources->activate($source_session, true);
                     }

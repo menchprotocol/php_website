@@ -1794,6 +1794,7 @@ class Controller extends CI_Controller
 
         $adding_to_i = ($_POST['focus__node'] == 12273);
 
+
         if ($adding_to_i) {
 
             //Validate Idea:
@@ -1871,19 +1872,23 @@ class Controller extends CI_Controller
 
         }
 
-
         //We need to check to ensure this is not a duplicate Chain if adding an existing Source:
         $ur2 = array();
 
         if ($adding_to_i) {
 
-            //Add Reference:
-            $ur2 = $this->Chains->create(array(
-                'chainsourcecreator' => $source_session['sourceid'],
-                'chainsourcetype' => 4983, //Co-Author
-                'chainsourceup' => $focus_e['sourceid'],
-                'chainidearight' => $fetch_o[0]['ideaid'],
-            ));
+            if($_POST['chainsourcetype'] == 6255 && $_POST['chainsourcetype'] == 31777){
+                //Add Discovery Suggestion:
+                $this->Chains->idea_discovered(1635945, $focus_e['sourceid'], 0, $fetch_o[0]);
+            } else {
+                //Add Author:
+                $ur2 = $this->Chains->create(array(
+                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chainsourcetype' => 4983, //Co-Author
+                    'chainsourceup' => $focus_e['sourceid'],
+                    'chainidearight' => $fetch_o[0]['ideaid'],
+                ));
+            }
 
         } else {
 
@@ -3218,6 +3223,7 @@ class Controller extends CI_Controller
                         $this->Chains->create(array(
                             'chainsourcetype' => 7712, //Input Choice
                             'chainsourcecreator' => $source_session['sourceid'],
+                            'chainsourceup' => $source_session['sourceid'],
                             'chainidealeft' => $focus_i['ideaid'],
                             'chainidearight' => $answer_ideaid,
                         ));
