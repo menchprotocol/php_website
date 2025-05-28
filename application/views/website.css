@@ -692,6 +692,7 @@ textarea.main__title {
 
 .center-block{
     display: block;
+    padding-top: 5px;
     width: 100%;
     text-align: center !important;
 }
