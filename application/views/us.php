@@ -42,6 +42,7 @@ foreach ($this->Chains->read(array(
 
         //See which filters belong to this member:
         $group_class = 'main_group';
+        $extra_value = '';
         foreach ($this->Chains->read(array(
             'chainsourceup IN (' . join(',', $groups_ids) . ')' => null,
             'chainsourcedown' => $us['sourceid'],
@@ -54,9 +55,10 @@ foreach ($this->Chains->read(array(
                 array_push($group_counts[$filter['chainsourceup']], $us['sourceid']);
             }
             $group_class .= ' group_'.$filter['chainsourceup'];
+            $extra_value .= '  ';
         }
 
-        $content_ui .= source_view(6255, $us, $group_class, null);
+        $content_ui .= source_view(6255, $us, $group_class, $extra_value);
 
     }
 }

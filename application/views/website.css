@@ -715,7 +715,7 @@ textarea.main__title {
 }
 
 .nav-tabs {
-    margin: 0 0 3px 0 !important;
+    margin: 0 0 1px 0 !important;
     padding: 0;
     white-space: nowrap;
     overflow-x: auto;
