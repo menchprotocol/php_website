@@ -40,11 +40,11 @@ foreach ($this->Chains->read(array(
             'chainsourcedown' => $us['sourceid'],
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33337')) . ')' => null, //SOURCE CHAINS
         ), array(), 0) as $filter) {
-            if(!isset($group_counts[$filter['sourceid']])){
-                $group_counts[$filter['sourceid']] = 0;
+            if(!isset($group_counts[$filter['chainsourceup']])){
+                $group_counts[$filter['chainsourceup']] = 0;
             }
-            $group_counts[$filter['sourceid']]++;
-            $group_class .= ' group_'.$filter['sourceid'];
+            $group_counts[$filter['chainsourceup']]++;
+            $group_class .= ' group_'.$filter['chainsourceup'];
         }
 
         $content_ui .= '<div class="'.$group_class.'">';
