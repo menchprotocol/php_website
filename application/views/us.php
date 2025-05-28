@@ -10,8 +10,8 @@ foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
     'chainsourcetype' => 4230, //SOURCE FOLLOW
 ), array('chainsourcedown'), 0, 1, source_sort()) as $group) {
-    array_push($groups_ids, intval($group['id']));
-    $groups_all[intval($group['id'])] = $group;
+    array_push($groups_ids, intval($group['sourceid']));
+    $groups_all[intval($group['sourceid'])] = $group;
 }
 
 //Load Main:
