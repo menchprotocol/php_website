@@ -794,9 +794,9 @@ class Chains extends CIdea_cache
             }
 
             //Where to place the next step?
-            if (substr_count($content_message, 'chain_here') == 1) {
+            if (substr_count($content_message, 'link_here') == 1) {
                 //We have direction to place the next step somewhere specific:
-                $content_message = str_replace('chain_here', $html_message, $content_message);
+                $content_message = str_replace('link_here', $html_message, $content_message);
             } else {
                 $content_message = $content_message . $html_message;
             }
