@@ -5098,7 +5098,7 @@ function view_pill($focus__node, $chainsourcetype, $counter, $m, $ui = null, $is
 }
 
 
-function source_view($chainsourcetype, $e, $extra_class = null)
+function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = null)
 {
 
     $CI =& get_instance();
@@ -5111,9 +5111,10 @@ function source_view($chainsourcetype, $e, $extra_class = null)
     }
 
     $chainid = (isset($e['chainid']) ? $e['chainid'] : 0);
-    $source_access = source_access($e['sourcehandle'], 0, $e);
-    $superpower_10939 = source_session(10939);
-    $source_session = source_session();
+    $is_cache = in_array($chainsourcetype, $CI->config->item('sourceids___14599'));
+    $source_access = ( $is_cache ? 1 : source_access($e['sourcehandle'], 0, $e) );
+    $superpower_10939 = ( !$is_cache && source_session(10939) );
+    $source_session = ( !$is_cache ? source_session() : false );
     $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
     $focus__node = in_array($chainsourcetype, $CI->config->item('sourceids___12149')); //NODE COIN
     $is_app = $chainsourcetype == 6287;
@@ -5186,6 +5187,8 @@ function source_view($chainsourcetype, $e, $extra_class = null)
     } else if ($chainid && $source_access >= 3) {
         //Main description:
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . (in_array($e['chainsourcetype'], $CI->config->item('sourceids___42294')) ? ' hidden ' : '') . '">' . htmlentities($e['chainvalue']) . '</div>';
+    } elseif($extra_value) {
+        $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click">' . $extra_value . '</div>';
     }
 
     $ui .= '</div>';

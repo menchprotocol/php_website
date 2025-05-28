@@ -56,7 +56,7 @@ foreach ($this->Chains->read(array(
             $group_class .= ' group_'.$filter['chainsourceup'];
         }
 
-        $content_ui .= source_view(6255, $us, $group_class);
+        $content_ui .= source_view(6255, $us, $group_class, null);
 
     }
 }
