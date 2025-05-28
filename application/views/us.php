@@ -71,7 +71,7 @@ foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
     'chainsourcetype' => 4230, //SOURCE FOLLOW
 ), array('chainsourcedown'), 0, 0, source_sort()) as $group) {
-    echo '<li class="nav-item nav-chain '.( $group['sourceid']==$main_source_id ? ' active ' : '' ).' navgroup_'.$group['sourceid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['sourceid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['sourcecover']).'</span><span class="main__title">'.( isset($group_counts[$group['sourceid']]) ? count($group_counts[$group['sourceid']]) : 0 ).'</span><span class="main__title '.( $group['sourceid']==$main_source_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['sourceid'].'">&nbsp;'.trim(str_replace($focus_e['sourcevalue'], '', $group['sourcevalue'])).'&nbsp;</span></a></li>';
+    echo '<li class="nav-item nav-chain '.( $group['sourceid']==$main_source_id ? ' active ' : '' ).' navgroup_'.$group['sourceid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['sourceid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['sourcecover']).'</span><span class="main__title">'.( isset($group_counts[$group['sourceid']]) && count($group_counts[$group['sourceid']])>0 ? count($group_counts[$group['sourceid']]) : '' ).'</span><span class="main__title '.( $group['sourceid']==$main_source_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['sourceid'].'">&nbsp;'.trim(str_replace($focus_e['sourcevalue'], '', $group['sourcevalue'])).'&nbsp;</span></a></li>';
 }
 echo '</ul>';
 
