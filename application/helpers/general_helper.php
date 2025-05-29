@@ -5194,7 +5194,9 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
     } else if ($chainid && $source_access >= 3 && !$is_cache && $superpower_10939) {
         //Main description:
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . (in_array($e['chainsourcetype'], $CI->config->item('sourceids___42294')) ? ' hidden ' : '') . '">' . htmlentities($e['chainvalue']) . '</div>';
-    } elseif($extra_value) {
+    }
+
+    if($extra_value) {
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click">' . $extra_value . '</div>';
     }
 

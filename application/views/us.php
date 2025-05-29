@@ -53,10 +53,11 @@ foreach ($this->Chains->read(array(
             }
             if(!in_array($us['sourceid'], $group_counts[$filter['chainsourceup']])){
                 array_push($group_counts[$filter['chainsourceup']], $us['sourceid']);
+
             }
             $group_class .= ' group_'.$filter['chainsourceup'];
-            if(strlen($filter['chainvalue'])){
-                $extra_value .= '<div class="hidden grey extra_descs extra_desc_'.$us['sourceid'].'">'.$filter['chainvalue'].'</div>';
+            if(strlen($filter['chainvalue']) || strlen($us['chainvalue'])){
+                $extra_value .= '<div class="grey extra_descs extra_desc_'.$us['sourceid'].'">'.$filter['chainvalue'].'|'.$us['chainvalue'].'</div>';
             }
         }
 
