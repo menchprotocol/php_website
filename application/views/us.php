@@ -55,6 +55,9 @@ foreach ($this->Chains->read(array(
                 array_push($group_counts[$filter['chainsourceup']], $us['sourceid']);
             }
             $group_class .= ' group_'.$filter['chainsourceup'];
+            if(strlen($filter['chainvalue'])){
+                $extra_value .= '<div class="hidden grey extra_descs extra_desc_'.$us['sourceid'].'">'.$filter['chainvalue'].'</div>';
+            }
         }
 
         $content_ui .= source_view(1637076, $us, $group_class, $extra_value);
@@ -91,6 +94,10 @@ echo $content_ui;
         $('.grouptitle_'+group_id).removeClass('hidden');
         $('.nav-item').removeClass('active');
         $('.navgroup_'+group_id).addClass('active');
+
+        //Desc
+        $('.extra_descs').addClass('hidden');
+        $('.extra_desc_'+group_id).removeClass('hidden');
 
         if(main_source_id!=group_id){
             $('.main_group').addClass('hidden');
