@@ -72,7 +72,7 @@ foreach ($this->Chains->read(array(
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
             'LENGTH(chainvalue) > 0' => null,
         ), array(), 0, 0, source_sort()) as $group) {
-            $extra_value .= '<div class="grey extra_descs extra_desc_'.$us['sourceid'].'">'.$group['chainvalue'].'</div>';
+            $extra_value .= '<div class="grey extra_descs hidden extra_desc_'.$us['sourceid'].'">'.$group['chainvalue'].'</div>';
         }
 
         $content_ui .= source_view(1637076, $us, $group_class, $extra_value);
@@ -108,6 +108,8 @@ echo $content_ui;
         //Remove all filters:
         $('.grouptitle').addClass('hidden');
         $('.grouptitle_'+group_id).removeClass('hidden');
+        $('.extra_descs').addClass('hidden');
+        $('.extra_desc_'+group_id).removeClass('hidden');
         $('.nav-item').removeClass('active');
         $('.navgroup_'+group_id).addClass('active');
 
