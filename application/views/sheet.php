@@ -275,6 +275,15 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
             width: 8px;
         }
 
+        .showonhover {
+            display: none;
+        }
+        .editable:hover .showonhover {
+            display: block;
+            background-color: #FFD961;
+            cursor: pointer;
+        }
+
     </style>
     <script>
 
