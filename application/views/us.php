@@ -20,9 +20,9 @@ foreach ($this->Chains->read(array(
 $full_group_ids = array();
 foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
-    'chainsourcetype' => 4230, //SOURCE FOLLOW
-), array('chainsourcedown'), 0, 0, source_sort()) as $group) {
-    array_push($full_group_ids, $group['sourceid']);
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+), array(), 0, 0, source_sort()) as $group) {
+    array_push($full_group_ids, intval($group['chainsourcedown']));
 }
 
 //Load Main:
@@ -71,7 +71,7 @@ foreach ($this->Chains->read(array(
             'chainsourcedown' => $us['sourceid'],
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
             'LENGTH(chainvalue) > 0' => null,
-        ), array('chainsourceup'), 0, 0, source_sort()) as $group) {
+        ), array(), 0, 0, source_sort()) as $group) {
             $extra_value .= '<div class="grey extra_descs extra_desc_'.$us['sourceid'].'">'.$filter['chainvalue'].'|'.$us['chainvalue'].'</div>';
         }
 
