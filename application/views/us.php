@@ -111,9 +111,6 @@ echo $content_ui;
         $('.nav-item').removeClass('active');
         $('.navgroup_'+group_id).addClass('active');
 
-        //Desc
-        $('.extra_descs').addClass('hidden');
-        $('.extra_desc_'+group_id).removeClass('hidden');
 
         if(main_source_id!=group_id){
             $('.main_group').addClass('hidden');
