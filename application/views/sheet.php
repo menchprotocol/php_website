@@ -115,6 +115,8 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
             ));
 
             $message_clean = '';
+            $view_cover =  view_cover($e['sourcecover'], '✔️', ' ');
+
             if (count($fetch_data)) {
                 if (strlen($fetch_data[0]['chainvalue'])) {
                     if (filter_var($fetch_data[0]['chainvalue'], FILTER_VALIDATE_URL)) {
@@ -122,14 +124,14 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
                         $message_clean = '<a href="' . $fetch_data[0]['chainvalue'] . '" target="_blank" title="Open in a New Window">' . view_cover($e['sourcecover'], '🔗️', ' ') . '</a>';
                     } elseif (!isset($_GET['expand']) && in_array($e['sourceid'], $this->config->item('sourceids___40945'))) {
                         //Sheet Click to Expand
-                        $message_clean = '<span class="click_2_see_' . $e['sourceid'] . '_' . $fetch_data[0]['chainid'] . '"><a href="javascript:void(0);" onclick="$(\'.click_2_see_' . $e['sourceid'] . '_' . $fetch_data[0]['chainid'] . '\').toggleClass(\'hidden\')" title="' . $fetch_data[0]['chainvalue'] . ' [Click to Expand]">' . view_cover($e['sourcecover'], '✔️', ' ') . '</a></span><span class="click_2_see_' . $e['sourceid'] . '_' . $fetch_data[0]['chainid'] . ' hidden">' . $fetch_data[0]['chainvalue'] . '</span>';
+                        $message_clean = '<span class="click_2_see_' . $e['sourceid'] . '_' . $fetch_data[0]['chainid'] . '"><a href="javascript:void(0);" onclick="$(\'.click_2_see_' . $e['sourceid'] . '_' . $fetch_data[0]['chainid'] . '\').toggleClass(\'hidden\')" title="' . $fetch_data[0]['chainvalue'] . ' [Click to Expand]">' . $view_cover . '</a></span><span class="click_2_see_' . $e['sourceid'] . '_' . $fetch_data[0]['chainid'] . ' hidden">' . $fetch_data[0]['chainvalue'] . '</span>';
                     } elseif (isset($_GET['expand']) || $require_writing) {
                         $message_clean = $fetch_data[0]['chainvalue'];
                     } else {
-                        $message_clean = '<span title="' . $fetch_data[0]['chainvalue'] . '">' . view_cover($e['sourcecover'], '✔️', ' ') . '</span>';
+                        $message_clean = '<span title="' . $fetch_data[0]['chainvalue'] . '">' . $view_cover . '</span>';
                     }
                 } else {
-                    $message_clean = '<span class="icon-block-xs">' . view_cover($e['sourcecover'], '✔️', ' ') . '</span>';
+                    $message_clean = '<span class="icon-block-xs">' .$view_cover. '</span>';
                 }
             }
 
@@ -145,7 +147,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
                 }
             }
 
-            $body_content .= '<td title="' . $x['sourcevalue'] . ' x ' . $e['sourcevalue'] . '" class="' . (source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_' . $e['sourceid'] . '_' . $x['sourceid'] : '') . '" ideaid="0" sourceid="' . $e['sourceid'] . '" chainsourcecreator="' . $x['sourceid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div></td>';
+            $body_content .= '<td title="' . $x['sourcevalue'] . ' x ' . $e['sourcevalue'] . '" class="' . (source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_' . $e['sourceid'] . '_' . $x['sourceid'] : '') . '" ideaid="0" sourceid="' . $e['sourceid'] . '" chainsourcecreator="' . $x['sourceid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '<div class="hidden showonhover">'.$view_cover.'</div></div></td>';
 
             if (strlen($message_clean) > 0) {
 

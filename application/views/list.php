@@ -226,6 +226,17 @@ echo '</table>';
         cursor: pointer;
     }
 
+    .showonhover {
+        display: none;
+    }
+    .editable:hover .showonhover {
+        display: block;
+        background-color: #FFD961;
+        cursor: pointer;
+    }
+
+
+
     .vertical_col {
         writing-mode: tb-rl;
         white-space: nowrap;
