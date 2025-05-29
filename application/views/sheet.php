@@ -257,7 +257,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
         }
 
         #sortable_table .body_tr .editable:hover {
-            background-color: #FFD961;
+            background-color: #f5d981;
             cursor: pointer;
         }
 
@@ -280,9 +280,9 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
         }
         .editable:hover .showonhover {
             display: block;
-            background-color: #FFD961;
+            background-color: #f5d981;
             cursor: pointer;
-            opacity: 0.55;
+            opacity: 0.67;
         }
 
     </style>

@@ -222,7 +222,7 @@ echo '</table>';
         background-color: #CCC;
     }
     #sortable_table .body_tr .editable:hover {
-        background-color: #FFD961;
+        background-color: #f5d981;
         cursor: pointer;
     }
 
