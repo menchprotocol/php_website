@@ -282,6 +282,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
             display: block;
             background-color: #FFD961;
             cursor: pointer;
+            opacity: 0.55;
         }
 
     </style>
