@@ -22,9 +22,6 @@ foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
     'chainsourcetype' => 4230, //SOURCE FOLLOW
 ), array('chainsourcedown'), 0, 0, source_sort()) as $group) {
-    if(!isset($group_counts[$group['sourceid']]) || !count($group_counts[$group['sourceid']])){
-        continue;
-    }
     array_push($full_group_ids, $group['sourceid']);
 }
 
