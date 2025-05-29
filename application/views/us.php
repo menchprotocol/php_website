@@ -69,7 +69,7 @@ foreach ($this->Chains->read(array(
         foreach ($this->Chains->read(array(
             'chainsourceup IN (' . join(',', $full_group_ids) . ')' => null,
             'chainsourcedown' => $us['sourceid'],
-            'chainsourcetype' => 4230, //SOURCE FOLLOW
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
             'LENGTH(chainvalue) > 0' => null,
         ), array('chainsourceup'), 0, 0, source_sort()) as $group) {
             $extra_value .= '<div class="grey extra_descs extra_desc_'.$us['sourceid'].'">'.$filter['chainvalue'].'|'.$us['chainvalue'].'</div>';
