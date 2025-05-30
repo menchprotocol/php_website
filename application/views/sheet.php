@@ -147,7 +147,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
                 }
             }
 
-            $body_content .= '<td title="' . $x['sourcevalue'] . ' x ' . $e['sourcevalue'] . '" class="' . (source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_' . $e['sourceid'] . '_' . $x['sourceid'] : '') . '" ideaid="0" sourceid="' . $e['sourceid'] . '" chainsourcecreator="' . $x['sourceid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '<div class="showonhover">'.( !$message_clean ? $view_cover : '' ).'</div></div></td>';
+            $body_content .= '<td title="' . $x['sourcevalue'] . ' x ' . $e['sourcevalue'] . '" class="' . (source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_' . $e['sourceid'] . '_' . $x['sourceid'] : '') . '" ideaid="0" sourceid="' . $e['sourceid'] . '" chainsourcecreator="' . $x['sourceid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div><div class="showonhover">'.( !$message_clean ? $view_cover : '' ).'</div></td>';
 
             if (strlen($message_clean) > 0) {
 
