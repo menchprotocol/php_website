@@ -19,7 +19,7 @@ $count_totals = array(
 
 //Generate list & settings:
 $idea_settings = idea_settings($_GET['ideahashtag']);
-$max_limit = 55;
+$max_limit = view_memory(6404,11064);
 
 
 if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'])) > $max_limit) {
