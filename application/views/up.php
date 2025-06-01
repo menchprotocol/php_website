@@ -14,6 +14,7 @@ foreach ($this->Chains->read(array(
         'chainsourceup' => $e['sourceid'],
         'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
     ), array('chainsourcedown'), 0) as $child){
+        $this->Chains->delete($child['chainid']);
         $deleted++;
     }
 
