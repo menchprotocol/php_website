@@ -624,7 +624,7 @@ function source_list_config($sourceid, $access_limit = true)
     foreach ($CI->Chains->read(array(
         'chainsourceup >' => 0,
         'chainsourcedown' => $sourceid,
-        'chainsourcetype IN (' . join(',', $CI->config->item('sources___1645191')) . ')' => null,
+        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___1645191')) . ')' => null,
     ), array('chainsourceup'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
         array_push($source_list_config[intval($setting_chain['chainsourcetype'])], intval($setting_chain['chainsourceup']));
         array_push($source_list_config['full_config_' . $setting_chain['chainsourcetype']], $setting_chain);
