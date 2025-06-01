@@ -18,7 +18,9 @@ foreach ($this->Chains->read(array(
     }
 
     $deleted_all += $deleted;
-    echo '<div>'.$deleted.') <span class="icon-block">'.view_cover($e['sourcecover']).'</span><span class="main__title">'.$e['sourcevalue'].'</span><span class="grey">@'.$e['sourcehandle'].'</span></div>';
+    if($deleted>0){
+        echo '<div>'.$deleted.') <span class="icon-block">'.view_cover($e['sourcecover']).'</span><span class="main__title">'.$e['sourcevalue'].'</span><span class="grey">@'.$e['sourcehandle'].'.</span></div>';
+    }
 
 }
 
