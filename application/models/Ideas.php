@@ -333,8 +333,8 @@ class Ideas extends CIdea_cache
 
                         $source_mapper = array(
                             12591 => 4983,  //Co-Author
-                            27985 => 27984, //Include If Has ANY
-                            27082 => 26600, //Exclude If Has ALL
+                            27985 => 27984, //IF Follows Any
+                            27082 => 26600, //IF Not Follows All
                             27084 => 7545,  //Following Add
                             27086 => 26599, //Following Remove
                         );

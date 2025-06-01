@@ -607,6 +607,33 @@ function idea_list_config($ideaid, $access_limit = true)
     return $idea_list_config;
 }
 
+
+function source_list_config($sourceid, $access_limit = true)
+{
+
+    $CI =& get_instance();
+
+    $source_list_config = array(); //To compile the settings of this sheet:
+
+    foreach ($CI->config->item('sources___1645191') as $chainsourcetype => $m) {
+        $source_list_config[intval($chainsourcetype)] = array(); //Assume no chains for this type
+        $source_list_config['full_config_' . $chainsourcetype] = array(); //Assume no chains for this type
+    }
+
+    //Now search for these settings across Sources:
+    foreach ($CI->Chains->read(array(
+        'chainsourceup >' => 0,
+        'chainsourcedown' => $sourceid,
+        'chainsourcetype IN (' . join(',', $CI->config->item('sources___1645191')) . ')' => null,
+    ), array('chainsourceup'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($source_list_config[intval($setting_chain['chainsourcetype'])], intval($setting_chain['chainsourceup']));
+        array_push($source_list_config['full_config_' . $setting_chain['chainsourcetype']], $setting_chain);
+    }
+
+    return $source_list_config;
+}
+
+
 function idea_settings($ideahashtag, $fetch_contact = false)
 {
 
@@ -646,7 +673,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
         } elseif (count($idea_list_config[27984])) {
 
-            //Include If Has ANY
+            //IF Follows Any
             $query_string_all = $CI->Chains->read(array(
                 'chainsourceup IN (' . join(',', $idea_list_config[27984]) . ')' => null,
                 'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
@@ -654,7 +681,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
         } elseif (count($idea_list_config[43513])) {
 
-            //Include If Has ALL
+            //IF Follows All
             $query_string_all = $CI->Chains->read(array(
                 'chainsourceup IN (' . join(',', $idea_list_config[43513]) . ')' => null,
                 'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
@@ -1904,7 +1931,7 @@ function get_domain($var_field, $initiator_sourceid = 0, $chainsourcedomain = 0,
 }
 
 
-function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replacement_sourceid = false)
+function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replacement_sourceid = false, $source_list_config = array())
 {
 
     /*
@@ -1942,12 +1969,101 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
         }
     }
 
+    $chainsourcecreator = ($replacement_sourceid > 0 ? $replacement_sourceid : ( $source_session ? $source_session['sourceid'] : 0 ));
+    if(!count($source_list_config)){
+        $source_list_config = source_list_config($e['sourceid']);
+    }
+
+
+    //IF Follows Any
+    if (count($source_list_config[1645062])) {
+        $the_counter = 0;
+        if ($chainsourcecreator) {
+            foreach ($source_list_config[1645062] as $focussourceid) {
+                if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                        'chainsourceup' => $focussourceid,
+                        'chainsourcedown' => $chainsourcecreator,
+                    ))))) {
+                    $the_counter++;
+                    break;
+                }
+            }
+        }
+        if (!$chainsourcecreator || !$the_counter) {
+            return 0;
+        }
+    }
+
+
+    //IF Follows All
+    if (count($source_list_config[1645146])) {
+        $the_counter = 0;
+        if ($chainsourcecreator) {
+            foreach ($source_list_config[1645146] as $focussourceid) {
+                if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                        'chainsourceup' => $focussourceid,
+                        'chainsourcedown' => $chainsourcecreator,
+                    ))))) {
+                    $the_counter++;
+                }
+            }
+        }
+        if (!$chainsourcecreator || $the_counter<count($source_list_config[1645146])) {
+            return 0;
+        }
+    }
+
+
+    //IF Not Follows Any
+    if (count($source_list_config[1645161])) {
+        $the_counter = 0;
+        if ($chainsourcecreator) {
+            foreach ($source_list_config[1645161] as $focussourceid) {
+                if (($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                        'chainsourceup' => $focussourceid,
+                        'chainsourcedown' => $chainsourcecreator,
+                    )))) {
+                    //Found an exclusion, so skip this:
+                    $the_counter++;
+                    break;
+                }
+            }
+        }
+        if (!$chainsourcecreator || $the_counter > 0) {
+            return 0;
+        }
+    }
+
+    //IF Not Follows All
+    if (count($source_list_config[1645176])) {
+        $the_counter = 0;
+        if ($chainsourcecreator) {
+            foreach ($source_list_config[1645176] as $focussourceid) {
+                if (($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                        'chainsourceup' => $focussourceid,
+                        'chainsourcedown' => $chainsourcecreator,
+                    )))) {
+                    //Found an exclusion, so skip this:
+                    $the_counter++;
+                }
+            }
+        }
+        if (!$chainsourcecreator || $the_counter==count($source_list_config[1645176])) {
+            return 0;
+        }
+    }
+
+
     $is_public = true;
     $is_author = false;
     if ($source_session) {
         $is_author = count($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //AUTHORED SOURCES
-            'chainsourceup' => ($replacement_sourceid > 0 ? $replacement_sourceid : $source_session['sourceid']),
+            'chainsourceup' => $chainsourcecreator,
             'chainsourcedown' => $e['sourceid'],
         )));
     }
@@ -1956,6 +2072,31 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
 
 }
 
+function source_up($sourceid, $return_ids = array()){
+
+    if(!count($return_ids)){
+        $return_ids = array(intval($sourceid));
+    }
+    $CI =& get_instance();
+    foreach ($CI->Chains->read(array(
+        'chainsourceup > 0' => null,
+        'chainsourcedown' => $sourceid,
+        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+    ), array(), 0) as $up_source) {
+        if(in_array(intval($up_source['chainsourceup']), $return_ids)){
+            continue;
+        }
+        array_push($return_ids, intval($up_source['chainsourceup']));
+        $return_ids_up = source_up($up_source['chainsourceup'], $return_ids);
+        foreach($return_ids_up as $return_id_up){
+            if(!in_array($return_id_up, $return_ids)){
+                array_push($return_ids, $return_id_up);
+            }
+        }
+    }
+
+    return $return_ids;
+}
 
 function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_sourceid = false, $idea_list_config = array(), $is_cahce = false)
 {
@@ -2058,7 +2199,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if ($the_counter < count($idea_list_config[44161])) {
+            if (!$chainsourcecreator || $the_counter < count($idea_list_config[44161])) {
                 return 0;
             }
         }
@@ -2078,7 +2219,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if (!$the_counter) {
+            if (!$chainsourcecreator || !$the_counter) {
                 return 0;
             }
         }
@@ -2097,7 +2238,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                         $the_counter++;
                     }
                 }
-                if ($the_counter >= count($idea_list_config[44162])) {
+                if (!$chainsourcecreator || $the_counter >= count($idea_list_config[44162])) {
                     return 0;
                 }
             } else {
@@ -2120,10 +2261,8 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                         break;
                     }
                 }
-            } else {
-                return 0;
             }
-            if ($the_counter > 0) {
+            if (!$chainsourcecreator || $the_counter > 0) {
                 return 0;
             }
         }
@@ -2132,12 +2271,12 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         // SOURCE RELATION CHECK:
 
 
-        //Include If Has ANY
+        //IF Follows Any
         if (count($idea_list_config[27984])) {
             $the_counter = 0;
             if ($chainsourcecreator) {
                 foreach ($idea_list_config[27984] as $focussourceid) {
-                    if ((($chainsourcecreator && $chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
+                    if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
                             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                             'chainsourceup' => $focussourceid,
                             'chainsourcedown' => $chainsourcecreator,
@@ -2147,18 +2286,18 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if (!$the_counter) {
+            if (!$chainsourcecreator || !$the_counter) {
                 return 0;
             }
         }
 
 
-        //Include If Has ALL
+        //IF Follows All
         if (count($idea_list_config[43513])) {
             $the_counter = 0;
             if ($chainsourcecreator) {
                 foreach ($idea_list_config[43513] as $focussourceid) {
-                    if ((($chainsourcecreator && $chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
+                    if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
                             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                             'chainsourceup' => $focussourceid,
                             'chainsourcedown' => $chainsourcecreator,
@@ -2167,13 +2306,13 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if ($the_counter < count($idea_list_config[43513])) {
+            if (!$chainsourcecreator || $the_counter < count($idea_list_config[43513])) {
                 return 0;
             }
         }
 
 
-        //Exclude If Has ANY
+        //IF Not Follows Any
         if (count($idea_list_config[43514])) {
             $the_counter = 0;
             if ($chainsourcecreator) {
@@ -2189,12 +2328,12 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if ($the_counter > 0) {
+            if (!$chainsourcecreator || $the_counter > 0) {
                 return 0;
             }
         }
 
-        //Exclude If Has ALL
+        //IF Not Follows All
         if (count($idea_list_config[26600])) {
             $the_counter = 0;
             if ($chainsourcecreator) {
@@ -2209,7 +2348,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if ($the_counter == count($idea_list_config[26600])) {
+            if (!$chainsourcecreator || $the_counter == count($idea_list_config[26600])) {
                 return 0;
             }
         }

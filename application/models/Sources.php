@@ -868,7 +868,7 @@ class Sources extends CIdea_cache
                     'chainsourcedown' => $source_down['sourceid'],
                     'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
                 )))) {
-                //Must Exclude If Has ALL Sources, skip:
+                //Must IF Not Follows All Sources, skip:
                 $qualified_e = false;
             }
 
