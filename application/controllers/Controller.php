@@ -410,7 +410,7 @@ class Controller extends CI_Controller
                 $completion_status = $this->Chains->idea_discovered(4235, $source_session['sourceid'], 0, $target_i);
 
                 //Now return next idea:
-                $next__url = $this->Chains->idea_next($source_session['sourceid'], $target_i['ideahashtag'], $target_i);
+                $next__url = $this->Chains->next_ideas($source_session['sourceid'], $target_i['ideahashtag'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
@@ -3312,7 +3312,7 @@ class Controller extends CI_Controller
                 $idea_redirect_url = idea_redirect_url($primary_i);
             }
             if (!$idea_redirect_url) {
-                $idea_next = $this->Chains->idea_next($source_session['sourceid'], $_POST['target_ideahashtag'], $focus_i);
+                $idea_next = $this->Chains->next_ideas($source_session['sourceid'], $_POST['target_ideahashtag'], $focus_i);
             }
 
             //All good:

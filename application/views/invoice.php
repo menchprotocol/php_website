@@ -211,7 +211,7 @@ foreach($this->Ideas->read(array(
         //Find Next:
         $idea_redirect_url = idea_redirect_url($i);
         if(!$idea_redirect_url){
-            $idea_next = $this->Chains->idea_next($source_session['sourceid'], $_POST['target_ideahashtag'], $i);
+            $idea_next = $this->Chains->next_ideas($source_session['sourceid'], $_POST['target_ideahashtag'], $i);
         }
 
 

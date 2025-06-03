@@ -21,7 +21,7 @@ foreach($this->Sources->read(array(
 )) as $e){
     //List the idea:
     print_r(array(
-        'idea_next' => $this->Chains->idea_next($e['sourceid'], $idea_settings['i']['ideahashtag'], $idea_settings['i'], 0, false),
+        'next_ideas' => $this->Chains->next_ideas($e['sourceid'], $idea_settings['i']['ideahashtag'], $idea_settings['i'], 0, false),
         'progress' => $this->Chains->progress($e['sourceid'], $idea_settings['i']),
     ));
 }

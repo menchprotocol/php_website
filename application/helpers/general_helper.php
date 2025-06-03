@@ -416,7 +416,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 {
 
     $CI =& get_instance();
-    $has_children = count($i['idea_next']);
+    $has_children = count($i['next_ideas']);
     $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
 
     echo '<div class="slim_title">';
@@ -557,7 +557,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         echo '</div>';
     }
 
-    foreach ($i['idea_next'] as $next_i) {
+    foreach ($i['next_ideas'] as $next_i) {
         echo '<div class="sub_frame '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
         view_tree($next_i, ( isset($_GET['expand']) ? true : false ));
         echo '</div>';

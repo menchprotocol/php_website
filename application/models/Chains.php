@@ -901,7 +901,7 @@ class Chains extends CIdea_cache
     }
 
 
-    function idea_next($sourceid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
+    function next_ideas($sourceid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
         /*
@@ -955,7 +955,7 @@ class Chains extends CIdea_cache
             }
 
             //Keep looking deeper:
-            $next__url = $this->Chains->idea_next($sourceid, $target_ideahashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
+            $next__url = $this->Chains->next_ideas($sourceid, $target_ideahashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
             if ($next__url) {
                 return $next__url;
             }
@@ -968,7 +968,7 @@ class Chains extends CIdea_cache
             $current_previous = $i['ideaid'];
             foreach (array_reverse($this->Chains->previousidea($sourceid, $target_ideahashtag, $i['ideaid'])) as $p_i) {
                 //Find the next siblings:
-                $next__url = $this->Chains->idea_next($sourceid, $target_ideahashtag, $p_i, $current_previous, false, $target_completed);
+                $next__url = $this->Chains->next_ideas($sourceid, $target_ideahashtag, $p_i, $current_previous, false, $target_completed);
                 if ($next__url) {
                     return $next__url;
                 }
@@ -1374,7 +1374,7 @@ class Chains extends CIdea_cache
         $i['user_idea_discovered'] = array();
         $i['user_written_response'] = array();
         $i['current_level'] = $current_level;
-        $i['idea_next'] = array();
+        $i['next_ideas'] = array();
         $current_level++;
 
         //Append media if any:
@@ -1451,7 +1451,7 @@ class Chains extends CIdea_cache
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
                 'chainidealeft' => $i['ideaid'],
             ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
-                array_push($i['idea_next'], $this->Chains->history($next_i, $sourceid, $current_level));
+                array_push($i['next_ideas'], $this->Chains->history($next_i, $sourceid, $current_level));
             }
         }
 
@@ -1466,7 +1466,7 @@ class Chains extends CIdea_cache
         $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
         $input__text = in_array($i['ideatype'], $this->config->item('sourceids___43002'));
         $i['current_level'] = $current_level;
-        $i['idea_next'] = array();
+        $i['next_ideas'] = array();
         $i['user_idea_discovered'] = array();
         $i['user_written_response'] = array();
         $current_level++;
@@ -1500,7 +1500,7 @@ class Chains extends CIdea_cache
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
                 'chainidealeft' => $i['ideaid'],
             ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'))) as $next_i) {
-                array_push($i['idea_next'], $this->Chains->historyidea_discovered($next_i, $sourceid, $current_level));
+                array_push($i['next_ideas'], $this->Chains->historyidea_discovered($next_i, $sourceid, $current_level));
             }
         }
 
@@ -1559,7 +1559,7 @@ class Chains extends CIdea_cache
             );
         }
 
-        $i['idea_next'] = array();
+        $i['next_ideas'] = array();
         $current_level++;
 
         //Append Total Discoveries if any:
@@ -1575,7 +1575,7 @@ class Chains extends CIdea_cache
         foreach ($total_next as $next_i) {
 
             $result_i = $this->Chains->flat_tree($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
-            array_push($i['idea_next'], $result_i);
+            array_push($i['next_ideas'], $result_i);
 
             if(!isset($_GET['skip_config'])) {
                 $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
