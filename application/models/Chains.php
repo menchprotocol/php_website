@@ -1509,7 +1509,7 @@ class Chains extends CIdea_cache
 
     }
 
-    function flat($i, $current_level = 0, $previous_input__selection = false)
+    function flat_tree($i, $current_level = 0, $previous_input__selection = false)
     {
 
         $i['current_level'] = $current_level;
