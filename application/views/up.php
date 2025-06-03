@@ -1,5 +1,7 @@
 <?php
 
+//Displays all the up sources of a given source recursively
+
 echo '<h1>'.$focus_e['sourcevalue'].'</h1>';
 
 $total_parents = source_up($focus_e['sourceid']);

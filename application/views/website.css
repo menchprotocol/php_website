@@ -716,7 +716,7 @@ textarea.main__title {
 }
 
 .nav-tabs {
-    margin: 0 0 1px 0 !important;
+    margin: 0 !important;
     padding: 0;
     white-space: nowrap;
     overflow-x: auto;
@@ -4469,7 +4469,6 @@ main {
 
 .container ul.nav-tabs {
     border-bottom:1px solid #999999 !important;
-    margin: 5px 0 -1px;
     font-size: 1.1em;
     position: relative;
     z-index: 998;
