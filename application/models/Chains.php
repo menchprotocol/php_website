@@ -1512,7 +1512,16 @@ class Chains extends CIdea_cache
     function flat_tree($i, $current_level = 0, $previous_input__selection = false)
     {
 
-        $i['current_level'] = $current_level;
+        if(isset($_GET['skip_config'])) {
+            unset($i['ideaexternal']);
+            unset($i['ideakey']);
+            unset($i['ideacache']);
+            unset($i['ideatype']);
+            unset($i['chainkey']);
+            unset($i['chainvoid']);
+        } else {
+            $i['current_level'] = $current_level;
+        }
         $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
         $single_choice = in_array($i['ideatype'], $this->config->item('sourceids___33331'));
         $is_required = count($this->Chains->read(array(
