@@ -436,7 +436,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo(isset($i['user_written_response']['ideavalue']) && strlen($i['user_written_response']['ideavalue']) ? ' ' . $i['user_written_response']['ideavalue'] : '');
 
 
-    echo '<span class="inline-block float_right inner_items">';
+    echo '<span class="float_right inner_items hidden frame_id_' . $i['ideaid'] . '">';
     //Chain Highlights
     foreach ($CI->config->item('sources___1592660') as $sourceid => $m) {
 
