@@ -1519,23 +1519,20 @@ class Chains extends CIdea_cache
             unset($i['ideatype']);
         } else {
             $i['current_level'] = $current_level;
-        }
-        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
-        $single_choice = in_array($i['ideatype'], $this->config->item('sourceids___33331'));
-        $is_required = count($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $i['ideaid'],
-            'chainsourceup' => 28239, //Required
-        )));
-        $total_next = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
-            'chainidealeft' => $i['ideaid'],
-        ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+            $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
+            $single_choice = in_array($i['ideatype'], $this->config->item('sourceids___33331'));
+            $is_required = count($this->Chains->read(array(
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
+                'chainidearight' => $i['ideaid'],
+                'chainsourceup' => 28239, //Required
+            )));
+            $total_next = $this->Chains->read(array(
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+                'chainidealeft' => $i['ideaid'],
+            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
-        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
-        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
-
-        if(!isset($_GET['skip_config'])){
+            $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
+            $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
             $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
             $i['stats'] = array(
                 'max_level' => $current_level,
@@ -1546,7 +1543,6 @@ class Chains extends CIdea_cache
                 'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
             );
         }
-
 
         $i['idea_next'] = array();
         $current_level++;
