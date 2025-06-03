@@ -5,7 +5,7 @@ echo '<div class="view_12274 row justify-content">';
 echo source_view(42287, $focus_e, null);
 echo '</div>';
 
-$_GET['view_all'] = true;
+$_GET['expand'] = true;
 
 //Idea Tree:
 echo '<div class="row justify-content">';
