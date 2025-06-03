@@ -1512,6 +1512,11 @@ class Chains extends CIdea_cache
     function flat_tree($i, $current_level = 0, $previous_input__selection = false)
     {
 
+        $total_next = $this->Chains->read(array(
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+            'chainidealeft' => $i['ideaid'],
+        ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+
         if(isset($_GET['skip_config'])) {
             unset($i['ideaexternal']);
             unset($i['ideakey']);
@@ -1526,10 +1531,6 @@ class Chains extends CIdea_cache
                 'chainidearight' => $i['ideaid'],
                 'chainsourceup' => 28239, //Required
             )));
-            $total_next = $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
-                'chainidealeft' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
             $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
             $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
