@@ -1517,8 +1517,6 @@ class Chains extends CIdea_cache
             unset($i['ideakey']);
             unset($i['ideacache']);
             unset($i['ideatype']);
-            unset($i['chainkey']);
-            unset($i['chainvoid']);
         } else {
             $i['current_level'] = $current_level;
         }
