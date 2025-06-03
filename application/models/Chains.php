@@ -1545,11 +1545,13 @@ class Chains extends CIdea_cache
         $current_level++;
 
         //Append Total Discoveries if any:
-        $sub_counter = $this->Chains->read(array(
-            'chainidealeft' => $i['ideaid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
-        ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
-        $i['idea_count_discovery'] = $sub_counter[0]['totals'];
+        if(!isset($_GET['skip_config'])) {
+            $sub_counter = $this->Chains->read(array(
+                'chainidealeft' => $i['ideaid'],
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+            $i['idea_count_discovery'] = $sub_counter[0]['totals'];
+        }
 
 
         foreach ($total_next as $next_i) {
@@ -1557,17 +1559,21 @@ class Chains extends CIdea_cache
             $result_i = $this->Chains->flat_tree($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
             array_push($i['idea_next'], $result_i);
 
-            $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
-            $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
-            $i['stats']['min_choices'] += $result_i['stats']['min_choices'];
-            $i['stats']['max_choices'] += $result_i['stats']['max_choices'];
+            if(!isset($_GET['skip_config'])) {
+                $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
+                $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
+                $i['stats']['min_choices'] += $result_i['stats']['min_choices'];
+                $i['stats']['max_choices'] += $result_i['stats']['max_choices'];
 
-            if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
-                $i['stats']['max_level'] = $result_i['stats']['max_level'];
+                if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
+                    $i['stats']['max_level'] = $result_i['stats']['max_level'];
+                }
+                if (!$input__selection || $is_required) {
+                    $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
+                }
             }
-            if (!$input__selection || $is_required) {
-                $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
-            }
+
+
 
         }
 
