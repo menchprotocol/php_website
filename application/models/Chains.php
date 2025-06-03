@@ -1524,6 +1524,18 @@ class Chains extends CIdea_cache
             unset($i['ideakey']);
             unset($i['ideacache']);
             unset($i['ideatype']);
+            if(isset($i['chainid'])){
+                unset($i['chainsourcedomain']);
+                unset($i['chainsourcecreator']);
+                unset($i['chainsourcetype']);
+                unset($i['chainsourceup']);
+                unset($i['chainsourcedown']);
+                unset($i['chainkey']);
+                unset($i['chainvalue']);
+                unset($i['chainvoid']);
+                unset($i['chainprevious']);
+                unset($i['chainhash']);
+            }
         } else {
             $i['current_level'] = $current_level;
             $is_required = count($this->Chains->read(array(
