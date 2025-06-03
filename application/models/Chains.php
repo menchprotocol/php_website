@@ -1550,7 +1550,7 @@ class Chains extends CIdea_cache
 
         foreach ($total_next as $next_i) {
 
-            $result_i = $this->Chains->flat($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
+            $result_i = $this->Chains->flat_tree($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
             array_push($i['idea_next'], $result_i);
 
             $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
