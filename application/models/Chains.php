@@ -1530,6 +1530,8 @@ class Chains extends CIdea_cache
                 unset($i['chainsourcetype']);
                 unset($i['chainsourceup']);
                 unset($i['chainsourcedown']);
+                unset($i['chainidealeft']);
+                unset($i['chainidearight']);
                 unset($i['chainkey']);
                 unset($i['chainvalue']);
                 unset($i['chainvoid']);
