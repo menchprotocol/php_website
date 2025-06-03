@@ -1516,6 +1516,8 @@ class Chains extends CIdea_cache
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
+        $single_choice = in_array($i['ideatype'], $this->config->item('sourceids___33331'));
 
         if(isset($_GET['skip_config'])) {
             unset($i['ideaexternal']);
@@ -1524,8 +1526,6 @@ class Chains extends CIdea_cache
             unset($i['ideatype']);
         } else {
             $i['current_level'] = $current_level;
-            $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
-            $single_choice = in_array($i['ideatype'], $this->config->item('sourceids___33331'));
             $is_required = count($this->Chains->read(array(
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
                 'chainidearight' => $i['ideaid'],
