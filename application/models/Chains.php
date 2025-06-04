@@ -266,14 +266,14 @@ class Chains extends CIdea_cache
                 //Idea results:
                 foreach ($results as $key => $value) {
                     if (!idea_access(null, $value['ideaid'], $value)) {
-                        //unset($results[$key]); //Remove this option
+                        unset($results[$key]); //Remove this option
                     }
                 }
             } elseif (array_intersect(array('chainsourceup', 'chainsourcedown'), $joins_objects)) {
                 //Source results:
                 foreach ($results as $key => $value) {
                     if (!source_access(null, $value['sourceid'], $value)) {
-                        //unset($results[$key]); //Remove this option
+                        unset($results[$key]); //Remove this option
                     }
                 }
             }
