@@ -665,6 +665,7 @@ class Chains extends CIdea_cache
 
         $stats = array(
             'email_addresses' => array(),
+            'sms_numbers' => array(),
             'phone_count' => 0,
         );
 
@@ -675,14 +676,14 @@ class Chains extends CIdea_cache
             'chainsourceup' => 3288, //Email
             'chainsourcedown' => $sourceid,
         )) as $source_data) {
-
             if (!filter_var($source_data['chainvalue'], FILTER_VALIDATE_EMAIL)) {
                 $this->Chains->delete($source_data['chainid'], $sourceid);
                 continue;
             }
 
-            array_push($stats['email_addresses'], $source_data['chainvalue']);
-
+            if(!in_array($source_data['chainvalue'],$stats['email_addresses'])){
+                array_push($stats['email_addresses'], $source_data['chainvalue']);
+            }
         }
 
         if (count($stats['email_addresses']) > 0) {
@@ -710,21 +711,20 @@ class Chains extends CIdea_cache
                 'chainsourcedown' => $sourceid,
             )) as $source_data) {
 
+                $clean_number = preg_replace('/[^0-9.]+/', '', $source_data['chainvalue']);
+
                 foreach (explode('|||', wordwrap($sms_message, view_memory(6404, 27891), "|||")) as $single_message) {
-
-                    $sms_sent = dispatch_sms($source_data['chainvalue'], $single_message, $sourceid, $x_data, $template_ideaid, $chainsourcedomain, $log_tr, $demo_only);
-
-                    if (!$sms_sent) {
-                        //bad number, remove it:
-                        $this->Chains->delete($source_data['chainid'], $sourceid);
+                    if(!in_array($clean_number,$stats['sms_numbers'])){
+                        $stats['phone_count']++;
+                        array_push($stats['sms_numbers'], $clean_number);
+                        $sms_sent = dispatch_sms($clean_number, $single_message, $sourceid, $x_data, $template_ideaid, $chainsourcedomain, $log_tr, $demo_only);
+                        if (!$sms_sent) {
+                            //bad number, remove it:
+                            $this->Chains->delete($source_data['chainid'], $sourceid);
+                        }
                     }
-
                 }
-
-                $stats['phone_count']++;
-
             }
-
         }
 
         return array(
