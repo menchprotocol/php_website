@@ -180,7 +180,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
 
     foreach ($idea_settings['source_column'] as $e) {
         array_push($table_sortable, '#thsource_' . $e['sourceid']);
-        echo '<th id="thsource_' . $e['sourceid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['sourcehandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['sourceid']]) ? str_replace('.00', '', number_format($count_totals['e'][$e['sourceid']], 2)) : '0') . '</a><span class="vertical_col">' . view_cover($e['sourcecover'], '✔️', ' ') . $e['sourcevalue'] . '</span></th>';
+        echo '<th id="thsource_' . $e['sourceid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['sourcehandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['sourceid']]) ? str_replace('.00', '', view_number($count_totals['e'][$e['sourceid']], 2)) : '0') . '</a><span class="vertical_col">' . view_cover($e['sourcecover'], '✔️', ' ') . $e['sourcevalue'] . '</span></th>';
     }
 
     foreach ($idea_settings['idea_column'] as $idea_var) {
