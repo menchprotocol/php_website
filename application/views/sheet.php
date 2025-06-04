@@ -180,7 +180,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
 
     foreach ($idea_settings['source_column'] as $e) {
         array_push($table_sortable, '#thsource_' . $e['sourceid']);
-        echo '<th id="thsource_' . $e['sourceid'] . '" title="'.number_format($count_totals['e'][$e['sourceid']], 2).'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['sourcehandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['sourceid']]) ? view_number($count_totals['e'][$e['sourceid']]) : '0') . '</a><span class="vertical_col">' . view_cover($e['sourcecover'], '✔️', ' ') . $e['sourcevalue'] . '</span></th>';
+        echo '<th id="thsource_' . $e['sourceid'] . '" title="'.(isset($count_totals['e'][$e['sourceid']]) ? number_format($count_totals['e'][$e['sourceid']], 2) : '').'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['sourcehandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['sourceid']]) ? view_number($count_totals['e'][$e['sourceid']]) : '0') . '</a><span class="vertical_col">' . view_cover($e['sourcecover'], '✔️', ' ') . $e['sourcevalue'] . '</span></th>';
     }
 
     foreach ($idea_settings['idea_column'] as $idea_var) {
