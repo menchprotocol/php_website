@@ -559,7 +559,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
     foreach ($i['next_ideas'] as $next_i) {
         echo '<div class="sub_frame '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
-        view_tree($next_i, ( isset($_GET['expand']) ? true : false ));
+        view_tree($next_i, ( isset($_GET['view_all']) ? true : false ));
         echo '</div>';
     }
 
