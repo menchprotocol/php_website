@@ -1970,8 +1970,6 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
 
 
     //IF Follows Any
-    /*
-     *
     $chainsourcecreator = ($replacement_sourceid > 0 ? $replacement_sourceid : ( $source_session ? $source_session['sourceid'] : 0 ));
     if(!count($source_list_config)){
         $source_list_config = source_list_config($e['sourceid']);
@@ -2056,8 +2054,6 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
             return 0;
         }
     }
-
-    */
 
 
     $is_public = true;
