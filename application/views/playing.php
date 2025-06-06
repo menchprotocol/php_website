@@ -1,7 +1,7 @@
 <?php
 
 if($chainsourcecreator==1){
-    $query = $this->db->query("SELECT last_value FROM menchledger_linkid_seq;");
+    $query = $this->db->query("SELECT MAX(chainid) FROM ideachain;");
     print_r($query);
 }
 
