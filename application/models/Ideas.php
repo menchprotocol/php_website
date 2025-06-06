@@ -30,11 +30,6 @@ class Ideas extends CIdea_cache
 
         if (!$new_x['chainid']) {
             return false;
-        } else {
-            //Now update right:
-            $status = $this->Chains->update($new_x['chainid'], array(
-                'chainidearight' => $new_x['chainid'],
-            ));
         }
 
         //Save hashtag

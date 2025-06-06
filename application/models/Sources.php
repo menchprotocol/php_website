@@ -21,12 +21,16 @@ class Sources extends CIdea_cache
         $source_session = source_session();
         $chainsourcecreator = ($chainsourcecreator > 0 ? $chainsourcecreator : ($source_session ? $source_session['sourceid'] : 14068));
 
-        $creation_data = array(
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainsourceup' => $chainsourcecreator,
-            'chainsourcetype' => 4251, //New Source Created
-            'chainvalue' => $validate_sourcevalue['sourcevalue_clean'],
-        );
+        foreach($this->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain){
+            $creation_data = array(
+                'chainsourcecreator' => $chainsourcecreator,
+                'chainsourceup' => $chainsourcecreator,
+                'chainsourcedown' => $bigchain['chainid']+1,
+                'chainsourcetype' => 4251, //New Source Created
+                'chainvalue' => $validate_sourcevalue['sourcevalue_clean'],
+            );
+        }
+
         if (isset($add_fields['sourceid']) && !count($this->Chains->read(array('chainid' => $add_fields['sourceid'])))) {
             //Set the chain ID since its not in the ledger:
             $creation_data['chainid'] = $add_fields['sourceid'];
