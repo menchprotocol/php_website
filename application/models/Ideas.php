@@ -11,13 +11,15 @@ class Ideas extends CIdea_cache
     function create($add_fields, $chainsourcecreator = 14068 /* GUEST */)
     {
 
-        $creation_data = array(
-            'chainsourcetype' => 4250,
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainsourceup' => $chainsourcecreator,
-            'chainidearight' => 111,
-            'chainvalue' => (isset($add_fields['ideavalue']) ? $add_fields['ideavalue'] : null),
-        );
+        foreach($this->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain){
+            $creation_data = array(
+                'chainsourcetype' => 4250,
+                'chainsourcecreator' => $chainsourcecreator,
+                'chainsourceup' => $chainsourcecreator,
+                'chainidearight' => $bigchain['chainid']+1,
+                'chainvalue' => (isset($add_fields['ideavalue']) ? $add_fields['ideavalue'] : null),
+            );
+        }
         if (isset($add_fields['ideaid']) && !count($this->Chains->read(array('chainid' => $add_fields['ideaid'])))) {
             //Set the chain ID since its not in the ledger:
             $creation_data['chainid'] = $add_fields['ideaid'];

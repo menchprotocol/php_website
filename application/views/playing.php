@@ -1,10 +1,5 @@
 <?php
 
-if($chainsourcecreator==1){
-    print_r($this->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid'));
-}
-
-
 $chainsourcecreator = ( $source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : 14068 /* GUEST */ );
 //Log view:
 $this->Chains->create(array(
