@@ -1592,6 +1592,12 @@ class Controller extends CI_Controller
             ));
         }
 
+        $copy_children = true;
+        if(substr($_POST['copy_source_title'], 0, 1)=='-'){
+            $copy_children = false;
+            $_POST['copy_source_title'] = substr($_POST['copy_source_title'], 1);
+        }
+
         //Validate Source:
         $fetch_o = $this->Sources->read(array(
             'sourceid' => $_POST['sourceid'],
@@ -1618,30 +1624,6 @@ class Controller extends CI_Controller
         }
 
 
-        //Followers:
-        foreach ($this->Chains->read(array(
-            'chainsourceup' => $_POST['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41303')) . ')' => null, //Clone Source Chains
-        ), array(), 0) as $x) {
-
-            //Make sure none existent in new Source:
-            if (!count($this->Chains->read(array(
-                'chainsourcetype' => $x['chainsourcetype'],
-                'chainsourceup' => $focus_e['sourceid'],
-                'chainsourcedown' => $x['chainsourcedown'],
-                'chainvalue' => $x['chainvalue'],
-            )))) {
-                $this->Chains->create(array(
-                    'chainsourcecreator' => $source_session['sourceid'],
-                    'chainkey' => $x['chainkey'],
-                    'chainsourcetype' => $x['chainsourcetype'],
-                    'chainsourceup' => $focus_e['sourceid'],
-                    'chainsourcedown' => $x['chainsourcedown'],
-                    'chainvalue' => $x['chainvalue'],
-                ));
-            }
-        }
-
         //Followings:
         foreach ($this->Chains->read(array(
             'chainsourcedown' => $_POST['sourceid'],
@@ -1661,6 +1643,32 @@ class Controller extends CI_Controller
                     'chainsourcedown' => $focus_e['sourceid'],
                     'chainvalue' => $x['chainvalue'],
                 ));
+            }
+        }
+
+        if($copy_children){
+            //Followers:
+            foreach ($this->Chains->read(array(
+                'chainsourceup' => $_POST['sourceid'],
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___41303')) . ')' => null, //Clone Source Chains
+            ), array(), 0) as $x) {
+
+                //Make sure none existent in new Source:
+                if (!count($this->Chains->read(array(
+                    'chainsourcetype' => $x['chainsourcetype'],
+                    'chainsourceup' => $focus_e['sourceid'],
+                    'chainsourcedown' => $x['chainsourcedown'],
+                    'chainvalue' => $x['chainvalue'],
+                )))) {
+                    $this->Chains->create(array(
+                        'chainsourcecreator' => $source_session['sourceid'],
+                        'chainkey' => $x['chainkey'],
+                        'chainsourcetype' => $x['chainsourcetype'],
+                        'chainsourceup' => $focus_e['sourceid'],
+                        'chainsourcedown' => $x['chainsourcedown'],
+                        'chainvalue' => $x['chainvalue'],
+                    ));
+                }
             }
         }
 
