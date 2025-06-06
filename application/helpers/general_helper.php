@@ -736,7 +736,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                 'chainsourceup IN (' . join(',', $pinned_columns) . ')' => null,
                 'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
                 'chainidearight !=' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC', 'ideavalue' => 'ASC')) as $chain_i) {
+            ), array('chainidearight'), 0, 0, array('ideavalue' => 'ASC')) as $chain_i) {
                 array_push($idea_column, $chain_i);
             }
         }
