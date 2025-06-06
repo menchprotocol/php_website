@@ -1,5 +1,11 @@
 <?php
 
+if($chainsourcecreator==1){
+    $query = $this->db->query("SELECT last_value FROM menchledger_linkid_seq;");
+    print_r($query);
+}
+
+
 $chainsourcecreator = ( $source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : 14068 /* GUEST */ );
 //Log view:
 $this->Chains->create(array(

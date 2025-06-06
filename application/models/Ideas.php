@@ -11,14 +11,11 @@ class Ideas extends CIdea_cache
     function create($add_fields, $chainsourcecreator = 14068 /* GUEST */)
     {
 
-        $query = $this->query("SELECT last_value FROM menchledger_linkid_seq;");
-        $row = $query->getRow();
-
         $creation_data = array(
             'chainsourcetype' => 4250,
             'chainsourcecreator' => $chainsourcecreator,
             'chainsourceup' => $chainsourcecreator,
-            'chainidearight' => $row->last_value,
+            'chainidearight' => 111,
             'chainvalue' => (isset($add_fields['ideavalue']) ? $add_fields['ideavalue'] : null),
         );
         if (isset($add_fields['ideaid']) && !count($this->Chains->read(array('chainid' => $add_fields['ideaid'])))) {
