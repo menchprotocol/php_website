@@ -4482,6 +4482,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
         array_push($headline_authors, $creator['sourceid']);
         $follow_btn = null;
+        /*
         if ($focus__node && $chainsourcecreator && $chainsourcecreator != $creator['sourceid']) {
             $followings = $CI->Chains->read(array(
                 'chainsourceup' => $creator['sourceid'],
@@ -4490,6 +4491,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             ), array(), 1, 0, array('chainkey' => 'ASC'));
             $follow_btn = searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainsourcetype'] : 0), $idea_access, false, $creator['sourceid'], (count($followings) ? $followings[0]['chainid'] : 0));
         }
+        */
 
         $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['sourcehandle'] . '"><span class="icon-block">' . view_cover($creator['sourcecover']) . '</span><b class="hidden">' . $creator['sourcevalue'] . '</b><span class="grey mini-font mini-frame">@' . $creator['sourcehandle'] . '</span></a>' . (!in_array($creator['sourceid'], $CI->config->item('sourceids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
