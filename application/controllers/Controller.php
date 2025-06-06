@@ -3085,6 +3085,7 @@ class Controller extends CI_Controller
     function idea_discovered()
     {
 
+
         $source_session = source_session(null, 0, $this->source_session);
         if (!$source_session) {
             return view_json(array(
@@ -3092,6 +3093,13 @@ class Controller extends CI_Controller
                 'message' => blocked_reasoning(),
             ));
         } elseif (!isset($_POST['target_ideahashtag']) || !isset($_POST['target_ideaid']) || !isset($_POST['source_submitted_data']) || !isset($_POST['do_skip'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Core Data',
+            ));
+        }
+
+        if($source_session['sourceid']==1667827){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Data',
