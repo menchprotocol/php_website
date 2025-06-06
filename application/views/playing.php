@@ -1,7 +1,7 @@
 <?php
 
 if($chainsourcecreator==1){
-    print_r($this->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'MAX(chainid) AS maxchainid'));
+    print_r($this->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid'));
 }
 
 
