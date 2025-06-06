@@ -1,8 +1,7 @@
 <?php
 
 if($chainsourcecreator==1){
-    $query = $this->db->query("SELECT MAX(chainid) FROM ideachain;");
-    print_r($query);
+    print_r($this->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'MAX(chainid) AS maxchainid'));
 }
 
 
