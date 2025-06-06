@@ -261,7 +261,7 @@ class Chains extends CIdea_cache
 
 
         //Verify Access to each item:
-        if ($access_limit && $select == '*' && isset($_SERVER['SERVER_NAME'])) {
+        if (0 && $access_limit && $select == '*' && isset($_SERVER['SERVER_NAME'])) {
             if (array_intersect(array('chainidealeft', 'chainidearight'), $joins_objects)) {
                 //Idea results:
                 foreach ($results as $key => $value) {
@@ -676,6 +676,7 @@ class Chains extends CIdea_cache
             'chainsourceup' => 3288, //Email
             'chainsourcedown' => $sourceid,
         )) as $source_data) {
+
             if (!filter_var($source_data['chainvalue'], FILTER_VALIDATE_EMAIL)) {
                 $this->Chains->delete($source_data['chainid'], $sourceid);
                 continue;
