@@ -5019,6 +5019,8 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
             }
 
+            print_r($i);
+
             //Uploader
             if (in_array($i['ideatype'], $CI->config->item('sourceids___43004'))) {
 
