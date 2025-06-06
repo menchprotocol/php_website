@@ -4160,6 +4160,14 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
 }
 
 
+function nextchainid(){
+    $CI =& get_instance();
+    foreach($CI->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain){
+        return $bigchain['chainid']+1;
+    }
+    return 0;
+}
+
 // Function to get PayPal access token
 function paypal_token($clientId, $clientSecret)
 {

@@ -21,15 +21,14 @@ class Sources extends CIdea_cache
         $source_session = source_session();
         $chainsourcecreator = ($chainsourcecreator > 0 ? $chainsourcecreator : ($source_session ? $source_session['sourceid'] : 14068));
 
-        foreach($this->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain){
-            $creation_data = array(
-                'chainsourcecreator' => $chainsourcecreator,
-                'chainsourceup' => $chainsourcecreator,
-                'chainsourcedown' => $bigchain['chainid']+1,
-                'chainsourcetype' => 4251, //New Source Created
-                'chainvalue' => $validate_sourcevalue['sourcevalue_clean'],
-            );
-        }
+        $nextchainid = nextchainid();
+        $creation_data = array(
+            'chainsourcecreator' => $chainsourcecreator,
+            'chainsourceup' => $chainsourcecreator,
+            'chainsourcedown' => $nextchainid,
+            'chainsourcetype' => 4251, //New Source Created
+            'chainvalue' => $validate_sourcevalue['sourcevalue_clean'],
+        );
 
         if (isset($add_fields['sourceid']) && !count($this->Chains->read(array('chainid' => $add_fields['sourceid'])))) {
             //Set the chain ID since its not in the ledger:
@@ -41,6 +40,11 @@ class Sources extends CIdea_cache
             return log_error('create() failed to create a new Source', array(
                 'chainsourcedown' => $chainsourcecreator,
                 'chainsourcecreator' => $chainsourcecreator,
+            ));
+        } elseif($nextchainid!=$new_x['chainid']) {
+            //Something went wrong, update:
+            $this->Chains->update($new_x['chainid'], array(
+                'chainsourcedown' => $new_x['chainid'],
             ));
         }
 
