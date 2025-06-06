@@ -2141,7 +2141,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
 
     $chainsourcecreator = ($replacement_sourceid > 0 ? $replacement_sourceid : ($source_session ? $source_session['sourceid'] : 0));
     $is_author = false;
-    if (!$discovery_mode && $chainsourcecreator) {
+    if ($chainsourcecreator) {
         $is_author = count($CI->Chains->read(array( //IDEA SOURCE
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31919')) . ')' => null, //IDEA AUTHOR
             'chainsourceup' => $chainsourcecreator,
@@ -2149,10 +2149,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         )));
     }
 
-    if (!$discovery_mode && $is_author) {
+    if ($is_author) {
 
         //Authors can always edit:
-        return 3;
+        return ( !$discovery_mode ? 3 : 2 );
 
     } elseif (!$discovery_mode && count($CI->Chains->read(array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42953')) . ')' => null, //Mentioned Sources
