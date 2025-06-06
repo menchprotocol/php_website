@@ -1975,6 +1975,7 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
 
 
     //IF Follows Any
+    /*
     if (count($source_list_config[1645062])) {
         $the_counter = 0;
         if ($chainsourcecreator) {
@@ -2055,6 +2056,8 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
             return 0;
         }
     }
+
+    */
 
 
     $is_public = true;

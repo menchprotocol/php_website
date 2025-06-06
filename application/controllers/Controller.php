@@ -3099,13 +3099,6 @@ class Controller extends CI_Controller
             ));
         }
 
-        if($source_session['sourceid']==1667827){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Core Data',
-            ));
-        }
-
         if (!isset($_POST['selection_ideaid'])) {
             $_POST['selection_ideaid'] = array();
         }
