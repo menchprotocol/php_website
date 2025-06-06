@@ -4382,7 +4382,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     }
 
     $focus_idea_or = false;
-    if ($discovery_mode && $focus_ideahashtag && !$focus__node && $chainsourcecreator && $previous_i['ideatype'] != 43758) {
+    if ($discovery_mode && $focus_ideahashtag && !$focus__node && $chainsourcecreator && isset($previous_i['ideatype']) && $previous_i['ideatype'] != 43758) {
         foreach ($CI->Ideas->read(array(
             'LOWER(ideahashtag)' => strtolower($focus_ideahashtag),
             'ideatype IN (' . join(',', $CI->config->item('sourceids___7712')) . ')' => null, //Input Choice
@@ -4736,14 +4736,11 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     $ui .= '</div>';
     $ui .= '</div>';
 
-
-    if ($chainsourcecreator && isset($previous_i['ideatype'])) {
-
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
 
         //Any inputs for this idea?
-        if ($previous_i['ideatype'] == 43758 || (in_array($i['ideatype'], $CI->config->item('sourceids___41055')) && $focus__node && $i['ideatype'] != 43758)) {
+        if (isset($previous_i['ideatype']) && ($previous_i['ideatype'] == 43758 || (in_array($i['ideatype'], $CI->config->item('sourceids___41055')) && $focus__node && $i['ideatype'] != 43758))) {
 
             //PAYMENT TICKET
             if (isset($_GET['cancel_pay']) && !count($x_completes)) {
@@ -4757,7 +4754,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 //Referesh soon so we can check if completed or not
                 js_php_redirect(view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'] . '?process_pay=1', 987);
 
-            } elseif ($previous_i['ideatype'] != 43758 && count($x_completes)) {
+            } elseif (isset($previous_i['ideatype']) && $previous_i['ideatype'] != 43758 && count($x_completes)) {
 
                 foreach ($x_completes as $x_complete) {
 
@@ -4781,7 +4778,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
                 $currency_types = $CI->Chains->read(array(
                     'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                    'chainidearight' => ($previous_i['ideatype'] == 43758 ? $previous_i['ideaid'] : $i['ideaid']),
+                    'chainidearight' => ( isset($previous_i['ideatype']) && $previous_i['ideatype'] == 43758 ? $previous_i['ideaid'] : $i['ideaid']),
                     'chainsourceup IN (' . join(',', $CI->config->item('sourceids___26661')) . ')' => null, //Currency
                 ));
                 $total_dues = $CI->Chains->read(array(
@@ -4818,7 +4815,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 }
 
 
-                if (filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $previous_i['ideatype'] != 43758 && $total_dues[0]['chainvalue'] > 0 && count($currency_types) == 1) {
+                if ($chainsourcecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && isset($previous_i['ideatype']) && $previous_i['ideatype'] != 43758 && $total_dues[0]['chainvalue'] > 0 && count($currency_types) == 1) {
 
                     $valid_instant_pay = true;
 
@@ -4835,11 +4832,11 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                     //Append information to cart about Paypal:
                     $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
 
-                } elseif (filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $previous_i['ideatype'] == 43758 && count($total_dues) && $total_dues[0]['chainvalue'] > 0) {
+                } elseif ($chainsourcecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['ideatype']) && $previous_i['ideatype'] == 43758 && count($total_dues) && $total_dues[0]['chainvalue'] > 0) {
 
                     $digest_fees = count($CI->Chains->read(array(
                         'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => $previous_i['ideaid'],
+                        'chainidearight' => ( isset($previous_i['ideatype']) ? $previous_i['ideaid'] : -1 ) ,
                         'chainsourceup' => 30589, //Digest Fees
                     )));
 
@@ -4927,7 +4924,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             ), array('chainidearight'), 0, 1, array('chainid' => 'DESC'));
 
             $input_attributes = '';
-            $previous_response = (isset($source_private_replies[0]['ideavalue']) ? $source_private_replies[0]['ideavalue'] : '');
+            $previous_response = ($chainsourcecreator && isset($source_private_replies[0]['ideavalue']) ? $source_private_replies[0]['ideavalue'] : '');
 
             if (in_array($i['ideatype'], $CI->config->item('sourceids___43002'))) {
 
@@ -5019,12 +5016,10 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
             }
 
-            $input_ui .= print_r($i, true);
-
             //Uploader
             if (in_array($i['ideatype'], $CI->config->item('sourceids___43004'))) {
 
-                if ($i['ideahashtag'] == 'ProfilePicture' && $source_session) {
+                if ($i['ideahashtag'] == 'ProfilePicture' && $source_session && $chainsourcecreator) {
 
                     //TODO REMOVE HACK: This is a profile picture hack:
                     $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="source_editor(' . $chainsourcecreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['ideaid'] . '"><span class="icon-block-sm">' . $sources___11035[7637]['m__cover'] . '</span>' . $sources___11035[7637]['m__title'] . '</a></div>';
@@ -5051,8 +5046,6 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             $ui .= '<div class="ignore-click input_ui input_ui_' . $i['ideaid'] . '">' . $input_ui . '</div>';
         }
 
-        //End of Discovery input
-    }
 
 
     //Bottom Bar
