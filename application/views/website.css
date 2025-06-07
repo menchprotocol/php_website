@@ -4562,6 +4562,10 @@ main {
     max-width: 100%;
 }
 
+
+.creator_headline span.mini-frame.grey{
+    margin-bottom: -6px;
+}
 .creator_headline .grey.icon-block{
     padding:3px 0;
 }
