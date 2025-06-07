@@ -15,28 +15,21 @@ if(in_array($website_id, $this->config->item('sourceids___30984'))){
 
 
 $primary_i = array();
-$secondary_idea_list = array();
 foreach($this->Chains->read(array(
     'chainsourcetype' => 34513, //Pinned
     'chainsourceup' => $website_id,
-), array('chainidearight'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $this_i){
-    if(!count($primary_i)){
-        $primary_i = $this_i;
-    } else {
-        //Add to secondary ideas:
-        array_push($secondary_idea_list, $this_i);
-    }
-}
+), array('chainidearight'), 1, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $primary_i){
 
-if(count($primary_i)){
     echo ' <script> $(document).ready(function () { show_more('.$primary_i['ideaid'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_idea_title($primary_i, true)).'\'); }); </script> ';
+
+    echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_idea_title($primary_i, true) . '</h1>';
+
+    $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_value($primary_i) . '</div>';
+
+
+
 }
 
-echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_idea_title($primary_i, true) . '</h1>';
-
-
-//Did we find any?
-$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_value($primary_i) . '</div>';
 
 
 
@@ -109,12 +102,13 @@ if($messages){
 
 
 
-
-
 //List Relevant Ideas in order:
 $secondary_i = '';
-foreach($secondary_idea_list as $ref_i){
-    $secondary_i .= idea_view(14565,  $ref_i);
+foreach ($this->Chains->read(array(
+    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
+    'chainidealeft' => $in['ideaid'],
+), array('chainidearight'), 0, 0) as $next_i) {
+    $secondary_i .= idea_view(14565,  $next_i);
 }
 if(strlen($secondary_i)){
     echo '<div class="row justify-content flip-content">';
@@ -126,7 +120,7 @@ if(strlen($secondary_i)){
 
 
 
-
+//Footer links
 $social_ui = null;
 $sources___14870 = $this->config->item('sources___14870'); //Website Partner
 foreach($this->config->item('sources___14036') as $sourceid => $m){
@@ -166,6 +160,8 @@ if($social_ui){
 }
 
 echo '<div class="bottom_spacer">&nbsp;</div>';
+
+
 
 ?>
 
