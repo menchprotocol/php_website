@@ -84,7 +84,7 @@ $content_ui .= '</div>';
 
 
 
-echo '<ul class="nav nav-tabs nav12274" style="display: flex !important;">';
+echo '<ul class="nav nav-tabs nav12274" style="display: flex !important; justify-content: space-evenly;">';
 foreach ($this->Chains->read(array(
     'chainsourceup' => $focus_e['sourceid'],
     'chainsourcetype' => 4230, //SOURCE FOLLOW

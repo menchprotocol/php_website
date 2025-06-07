@@ -13,7 +13,7 @@ if(in_array($website_id, $this->config->item('sourceids___30984'))){
 }
 
 
-
+$secondary_i = '';
 $primary_i = array();
 foreach($this->Chains->read(array(
     'chainsourcetype' => 34513, //Pinned
@@ -26,7 +26,12 @@ foreach($this->Chains->read(array(
 
     $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_value($primary_i) . '</div>';
 
-
+    foreach ($this->Chains->read(array(
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
+        'chainidealeft' => $primary_i['ideaid'],
+    ), array('chainidearight'), 0, 0) as $next_i) {
+        $secondary_i .= idea_view(14565,  $next_i);
+    }
 
 }
 
@@ -103,13 +108,6 @@ if($messages){
 
 
 //List Relevant Ideas in order:
-$secondary_i = '';
-foreach ($this->Chains->read(array(
-    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
-    'chainidealeft' => $in['ideaid'],
-), array('chainidearight'), 0, 0) as $next_i) {
-    $secondary_i .= idea_view(14565,  $next_i);
-}
 if(strlen($secondary_i)){
     echo '<div class="row justify-content flip-content">';
     echo $secondary_i;
