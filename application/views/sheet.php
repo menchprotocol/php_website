@@ -142,8 +142,10 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
                     'chainidealeft' => $focus_i['ideaid'],
                     'chainsourcetype IN (' . join(',', $this->config->item('sourceids___44344')) . ')' => null, //Idea Filter Additions
                 ), array('chainidearight'), 1) as $target_i) {
+
                     //See History for this user:
                     $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['ideahashtag'] . '@' . $x['sourcehandle'] . '" target="_blank" title="' . $sources___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $sources___11035[44328]['m__cover'] . '</span></a>';
+
                 }
             }
 

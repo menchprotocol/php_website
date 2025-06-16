@@ -32,6 +32,13 @@ class Chains extends CIdea_cache
             $add_fields['chainvalue'] = serialize($add_fields['chainvalue']);
         }
 
+        //Set some zero defaults if not set:
+        foreach (array('chainidearight', 'chainidealeft', 'chainsourcedown', 'chainsourceup', 'chainkey') as $dz) {
+            if (!isset($add_fields[$dz])) {
+                $add_fields[$dz] = 0;
+            }
+        }
+
         //Is this an observation chain that should replace an older observation, if any:
         if($update_observed && in_array($add_fields['chainsourcetype'], $this->config->item('sourceids___1308453'))){
             $read_fields = $add_fields;
@@ -41,13 +48,6 @@ class Chains extends CIdea_cache
             foreach ($this->Chains->read($read_fields, array(), 1) as $last_observation) {
                 //Update the previous observed chain:
                 return $this->Chains->update($last_observation['chainid'], $add_fields);
-            }
-        }
-
-        //Set some zero defaults if not set:
-        foreach (array('chainidearight', 'chainidealeft', 'chainsourcedown', 'chainsourceup', 'chainkey') as $dz) {
-            if (!isset($add_fields[$dz])) {
-                $add_fields[$dz] = 0;
             }
         }
 
@@ -88,15 +88,12 @@ class Chains extends CIdea_cache
             if ($add_fields['chainsourceup'] > 0) {
                 update_algolia(12274, $add_fields['chainsourceup']);
             }
-
             if ($add_fields['chainsourcedown'] > 0) {
                 update_algolia(12274, $add_fields['chainsourcedown']);
             }
-
             if ($add_fields['chainidealeft'] > 0) {
                 update_algolia(12273, $add_fields['chainidealeft']);
             }
-
             if ($add_fields['chainidearight'] > 0) {
                 update_algolia(12273, $add_fields['chainidearight']);
             }
@@ -118,7 +115,6 @@ class Chains extends CIdea_cache
                     $u_name = $add_e[0]['sourcevalue'];
                 }
             }
-
 
             //Email Subject:
             $sources___4593 = $this->config->item('sources___4593'); //Chain Types

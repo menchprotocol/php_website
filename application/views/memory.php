@@ -7,7 +7,7 @@ $memory_text .= "<?php\n\n";
 $memory_text .= '//UPDATED: ' . $start_time . "\n\n";
 $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');' . "\n\n";
 $routes_text = $memory_text;
-$sourceids___33337 = ( $memory_detected ? $this->config->item('sourceids___33337') : array(42897, 42849, 42791, 42659, 4251, 42581, 42580, 42579, 42570, 42567, 42554, 42518, 42516, 42440, 42427, 42335, 41011, 32489, 32486, 4230) );
+$sourceids___33337 = ( $memory_detected ? $this->config->item('sourceids___33337') : array(42897, 42849, 42791, 42659, 42581, 42580, 42579, 42570, 42567, 42554, 42518, 42516, 42440, 42427, 42335, 41011, 32489, 32486, 4230) );
 
 
 $pinned_down = array();

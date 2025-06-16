@@ -13,7 +13,7 @@ $count = 0;
 $fixed = 0;
 foreach ($this->Chains->read(array(
     'chainid >' => $starting_id,
-    'chainvoid >=' => 0
+    'chainvoid >=' => 0, //Any Chain
 ), array(), 0, 0, array('chainid' => 'ASC')) as $x) {
     $must_fix = false;
     if($x['chainprevious']!=$previous){

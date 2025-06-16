@@ -152,7 +152,7 @@ foreach ($query_filters as $key => $value) {
     $ini_filter[$key] = $value;
 }
 
-$query_filters['chainvoid >='] = 0;
+$query_filters['chainvoid >='] = 0; //Any Chain
 
 
 //Make sure its a valid type considering other filters:

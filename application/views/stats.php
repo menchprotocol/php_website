@@ -30,7 +30,7 @@ foreach ($this->config->item('sources___33292') as $sourceid1 => $m1) {
         continue;
     } elseif($sourceid1==28956){
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span class="hidden headlines"><a target="_blank" href="'.view_app_chain(4341).'?chainsourcetype=4250,4251&chainvoid=0" class="grey card_count_' . $sourceid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span class="hidden headlines"><a target="_blank" href="'.view_app_chain(4341).'?chainsourcetype=12273,12274&chainvoid=0" class="grey card_count_' . $sourceid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> ' . $m1['m__title'] . ':</span></div>';
     } elseif($sourceid1==31770){
 
         //Chains
@@ -68,7 +68,7 @@ foreach ($this->config->item('sources___33292') as $sourceid1 => $m1) {
 
         echo '<div class="card_header" title="' . $m2['m__message'] . '" sourceid="' . $sourceid2 . '">';
         echo '<div class="'.( $is_chain ? 'medium_cover' : 'large_cover' ).'">' . $m2['m__cover'] . '</div>';
-        echo '<div class="main__title large_title"><a target="_blank" href="'.view_app_chain(4341).'?chainsourcetype='.join(',',( $is_chain ? $this->config->item('sourceids___' . $sourceid2) : array(( $sourceid2==12273 ? 4250 : 4251 )) )).'&chainvoid=0" class="card_count_' . $sourceid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
+        echo '<div class="main__title large_title"><a target="_blank" href="'.view_app_chain(4341).'?chainsourcetype='.join(',',( $is_chain ? $this->config->item('sourceids___' . $sourceid2) : array(( $sourceid2==12273 ? 12273 : 12274 )) )).'&chainvoid=0" class="card_count_' . $sourceid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
         echo '<div class="main__title large_title" title="@' . $sourceid2 . ' @' . $m2['m__handle'] . '"><a href="'.view_memory(42903,42902).$m2['m__handle'].'">' . $m2['m__title'] . '</a></div>';
         echo '</div>';
 

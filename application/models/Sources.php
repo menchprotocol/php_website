@@ -26,7 +26,7 @@ class Sources extends CIdea_cache
             'chainsourcecreator' => $chainsourcecreator,
             'chainsourceup' => $chainsourcecreator,
             'chainsourcedown' => $nextchainid,
-            'chainsourcetype' => 4251, //New Source Created
+            'chainsourcetype' => 12274, //New Source Created
             'chainvalue' => $validate_sourcevalue['sourcevalue_clean'],
         );
 

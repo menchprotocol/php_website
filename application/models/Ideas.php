@@ -13,7 +13,7 @@ class Ideas extends CIdea_cache
 
         $nextchainid = nextchainid();
         $creation_data = array(
-            'chainsourcetype' => 4250,
+            'chainsourcetype' => 12273,
             'chainsourcecreator' => $chainsourcecreator,
             'chainsourceup' => $chainsourcecreator,
             'chainidearight' => $nextchainid,

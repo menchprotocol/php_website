@@ -3132,7 +3132,7 @@ h4.main__title{
 .focus-cover .sub__handle,
 .sub__handle {
     display: inline-block;
-    padding: 0 0 0 40px !important;
+    padding: 0 0 0 5px !important;
 }
 
 .cover-btn i {

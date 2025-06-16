@@ -2860,14 +2860,14 @@ function chainprevious($starting_id = -1)
     if ($starting_id < 0) {
         foreach ($CI->Chains->read(array(
             '(chainhash IS NOT NULL) AND (chainprevious IS NOT NULL)' => NULL,
-            'chainvoid >=' => 0,
+            'chainvoid >=' => 0, //Any Chain
         ), array(), 1, 0, array('chainid' => 'DESC')) as $x) {
             return $x['chainhash'];
         }
     } elseif ($starting_id > 0) {
         foreach ($CI->Chains->read(array(
             'chainid >=' => $starting_id,
-            'chainvoid >=' => 0,
+            'chainvoid >=' => 0, //Any Chain
         ), array(), 1, 0, array('chainid' => 'ASC')) as $x) {
             return $x['chainhash'];
         }
@@ -2931,7 +2931,7 @@ function chain_view($x)
 
             //Determine chain group:
             $sourcehandle_sign = '';
-            if (in_array($x['chainsourcetype'], array(4250, 4251))) {
+            if (in_array($x['chainsourcetype'], array(12273, 12274))) {
                 $sources___4593 = $CI->config->item('sources___4593'); //Chain Type
                 $sourcehandle_sign = '<span class="group_sign" title="' . $sources___4593[$x['chainsourcetype']]['m__title'] . '">' . $sources___4593[$x['chainsourcetype']]['m__cover'] . '</span>';
             } else {
@@ -4484,7 +4484,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     //Show Creator if any:
     $headline_authors = array();
     foreach ($CI->Chains->read(array(
-        'chainsourcetype' => 4250, //Idea Created
+        'chainsourcetype' => 12273, //Idea Created
         'chainidearight' => $i['ideaid'],
     ), array('chainsourceup')) as $creator) {
 
