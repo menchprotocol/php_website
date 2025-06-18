@@ -655,7 +655,6 @@ class Chains extends CIdea_cache
                 'status' => 0,
                 'message' => 'User has been recently contacted',
             );
-
         }
         */
 
@@ -804,7 +803,6 @@ class Chains extends CIdea_cache
 
             //Mark as idea_discovered:
             if ($message['status'] && !$demo_only) {
-                $this->Chains->idea_discovered(43142, $x['sourceid'], 0, $i);
                 $total_sent++;
             }
 
