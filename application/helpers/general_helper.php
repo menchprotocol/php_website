@@ -1827,7 +1827,7 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
 
     //$response = $client->sendEmail($email_data);
     $response = FALSE;
-    echo 'Email Sent to '.$to_emails."<br />\n";
+    echo 'Email Sent to '.join(', ',$to_emails)."<br />\n";
 
 
     //Log Chain:
