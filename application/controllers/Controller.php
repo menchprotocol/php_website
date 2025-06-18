@@ -3536,7 +3536,6 @@ class Controller extends CI_Controller
 
             if($chainsourcetype1==1309754){
 
-
                 if ($has_handle) {
                     $void_filter['(chainvoid >0 AND ( chainsourcedown = ' . $es[0]['sourceid'] . ' OR chainsourceup = ' . $es[0]['sourceid'] . ' OR chainsourcecreator = ' . $es[0]['sourceid'] . ' ))'] = null;
                 } elseif ($has_hashtag) {

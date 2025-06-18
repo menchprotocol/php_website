@@ -1661,7 +1661,9 @@ function dispatch_sms($to_phone, $single_message, $sourceid = 0, $x_data = array
     curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($x, CURLOPT_USERPWD, $twilio_account_sid . ":" . $twilio_auth_token);
     curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
-    $y = curl_exec($x);
+    //$y = curl_exec($x);
+    echo 'SMS Sent to '.$to_phone."<br />\n";
+    $y = false;
     curl_close($x);
 
     if (substr_count($y, '"code": 21211')) {
@@ -1823,7 +1825,10 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
         'credentials' => $CI->config->item('cred_aws'),
     ]);
 
-    $response = $client->sendEmail($email_data);
+    //$response = $client->sendEmail($email_data);
+    $response = FALSE;
+    echo 'Email Sent to '.$to_emails."<br />\n";
+
 
     //Log Chain:
     if ($log_tr) {
