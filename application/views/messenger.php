@@ -40,6 +40,7 @@ foreach ($this->Chains->read(array(
     $total_sent = $this->Chains->broadcast($idea_settings['query_string_filtered'], $i, $i['chainsourcedomain'], true, $demo_only);
 
     echo view_idea_title($i) . ' Sent ' . $total_sent . ' Messages to ' . count($idea_settings['query_string_filtered']) . ' Members<hr />';
+    print_r($idea_settings);
 
     //Mark this as complete?
     if (!$demo_only && (!$end_sending || $end_sending < time())) {
