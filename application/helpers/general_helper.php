@@ -1661,12 +1661,7 @@ function dispatch_sms($to_phone, $single_message, $sourceid = 0, $x_data = array
     curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($x, CURLOPT_USERPWD, $twilio_account_sid . ":" . $twilio_auth_token);
     curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
-    if(isset($_GET['wow'])){
-        echo 'SMS Sent to '.$to_phone."<br />\n";
-        $y = false;
-    } else {
-        $y = curl_exec($x);
-    }
+    $y = curl_exec($x);
 
     curl_close($x);
 
@@ -1829,13 +1824,7 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
         'credentials' => $CI->config->item('cred_aws'),
     ]);
 
-    if(isset($_GET['wow'])){
-        echo 'Email Sent to '.join(', ',$to_emails)."<br />\n";
-        $response = FALSE;
-    } else {
-        $response = $client->sendEmail($email_data);
-    }
-
+    $response = $client->sendEmail($email_data);
 
     //Log Chain:
     if ($log_tr) {

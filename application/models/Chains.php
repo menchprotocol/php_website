@@ -801,7 +801,6 @@ class Chains extends CIdea_cache
                 'chainidealeft' => $i['ideaid'],
             ), $i['ideaid'], $chainsourcedomain, true, $demo_only);
 
-            //Mark as idea_discovered:
             if ($message['status'] && !$demo_only) {
                 $total_sent++;
             }
