@@ -803,7 +803,7 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                                 } elseif($sourceid==4737){ //Source Reference
 
-                                    echo '<div class="dynamic_editing_input no_padded pull-right " style="margin: 0 !important;">
+                                    echo '<div class="dynamic_editing_input no_padded">
                                         <div class="dynamic_selector">'.searchingle_select_form(4737, 6677).'</div>
                                     </div>';
 
@@ -815,7 +815,7 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                                 } elseif($sourceid==44170){ //ADD EMOJI
 
-                                    echo '<div class="dynamic_editing_input no_padded">
+                                    echo '<div class="dynamic_editing_input no_padded pull-right" style="margin: 0 !important;">
                                         <div class="dropdown emoji_selector">
                                             <button type="button" class="btn no-left-padding no-right-padding icon-block" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$m['m__title'].'">'.$m['m__cover'].'</button>
                                             <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
