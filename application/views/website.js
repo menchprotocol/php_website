@@ -1157,137 +1157,143 @@ $(document).ready(function () {
     //Search that also has insert module:
     if (search_enabled()) {
 
-        console.log('LOADING SEARCH HANDLES:');
-        for (var key in js_sources___1696899) {
 
-            // skip loop if the property is from prototype
-            if (!js_sources___1696899.hasOwnProperty(key)) continue;
-
-            //Determine Type:
-            if(js_sources___1696899[key]['m__cover'].includes("#")){
-                var string_match = js_sources___1696899[key]['m__cover'];
-                var base_filter = 's__type=12273';
-            } else if(js_sources___1696899[key]['m__cover']=='/'){
-                //Apps
-                var string_match = '\/';
-                var base_filter = 's__type=12274 AND _tags:z_6287';
-            } else if(js_sources___1696899[key]['m__cover'].includes("@")){
-                //Sources
-                var string_match = js_sources___1696899[key]['m__cover'];
-                var base_filter = 's__type=12274';
-            } else {
-                //Ignore, should not happen!
-                continue;
-            }
-
-            $('.algolia__e').textcomplete([
-                {
-                    match: new RegExp(`(^|\s)${string_match}(\w*(?:\s*\w*))$`),
-                    search: function (q, callback) {
-                        index_algolia.search(q, {
-                            hitsPerPage: js_sources___6404[31112]['m__message'],
-                            filters: base_filter + search_and_filter,
+        $('.algolia__e').textcomplete([
+            {
+                match: /(^|\s)\/(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        filters: 's__type=12274 AND _tags:z_6287 ' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
                         })
-                            .then(function searchSuccess(content) {
-                                if (content.query === q) {
-                                    callback(content.hits);
-                                }
-                            })
-                            .catch(function searchFailure(err) {
-                                console.error(err);
-                            });
-                    },
-                    template: function (suggestion) {
-                        return search_js_line(suggestion, js_sources___1696899[key]['m__cover']);
-                    },
-                    replace: function (suggestion) {
-                        return ' '+js_sources___1696899[key]['m__cover'] + suggestion.s__handle + ' ';
-                    }
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
                 },
-            ]);
-        }
-        /*
-                $('.algolia__e').textcomplete([
-                    {
-                        match: /(^|\s)@(\w*(?:\s*\w*))$/,
-                        search: function (q, callback) {
-                            index_algolia.search(q, {
-                                hitsPerPage: js_sources___6404[31112]['m__message'],
-                                filters: 's__type=12274' + search_and_filter,
-                            })
-                                .then(function searchSuccess(content) {
-                                    if (content.query === q) {
-                                        callback(content.hits);
-                                    }
-                                })
-                                .catch(function searchFailure(err) {
-                                    console.error(err);
-                                });
-                        },
-                        template: function (suggestion) {
-                            return search_js_line(suggestion, '@');
-                        },
-                        replace: function (suggestion) {
-                            return ' @' + suggestion.s__handle + ' ';
-                        }
-                    },
-                ]);
+                template: function (suggestion) {
+                    return search_js_line(suggestion, '/');
+                },
+                replace: function (suggestion) {
+                    return ' /' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
+        $('.algolia__e').textcomplete([
+            {
+                match: /(^|\s).@(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        filters: 's__type=12274' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return search_js_line(suggestion, '.@');
+                },
+                replace: function (suggestion) {
+                    return ' .@' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
+        $('.algolia__e').textcomplete([
+            {
+                match: /(^|\s),@(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        filters: 's__type=12274' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return search_js_line(suggestion, ',@');
+                },
+                replace: function (suggestion) {
+                    return ' ,@' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
+        $('.algolia__e').textcomplete([
+            {
+                match: /(^|\s)@(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        filters: 's__type=12274' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return search_js_line(suggestion, '@');
+                },
+                replace: function (suggestion) {
+                    return ' @' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
+        $('.algolia__e').textcomplete([
+            {
+                match: /(^|\s)#(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        filters: 's__type=12273' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return search_js_line(suggestion, '#');
+                },
+                replace: function (suggestion) {
+                    return ' #' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
 
 
 
-                $('.algolia__e').textcomplete([
-                    {
-                        match: /(^|\s)@(\w*(?:\s*\w*))$/,
-                        search: function (q, callback) {
-                            index_algolia.search(q, {
-                                hitsPerPage: js_sources___6404[31112]['m__message'],
-                                filters: 's__type=12274' + search_and_filter,
-                            })
-                                .then(function searchSuccess(content) {
-                                    if (content.query === q) {
-                                        callback(content.hits);
-                                    }
-                                })
-                                .catch(function searchFailure(err) {
-                                    console.error(err);
-                                });
-                        },
-                        template: function (suggestion) {
-                            return search_js_line(suggestion, '@');
-                        },
-                        replace: function (suggestion) {
-                            return ' @' + suggestion.s__handle + ' ';
-                        }
-                    },
-                ]);
 
-                $('.algolia__e').textcomplete([
-                    {
-                        match: /(^|\s)\/(\w*(?:\s*\w*))$/,
-                        search: function (q, callback) {
-                            index_algolia.search(q, {
-                                hitsPerPage: js_sources___6404[31112]['m__message'],
-                                filters: 's__type=12274 AND _tags:z_6287 ' + search_and_filter,
-                            })
-                                .then(function searchSuccess(content) {
-                                    if (content.query === q) {
-                                        callback(content.hits);
-                                    }
-                                })
-                                .catch(function searchFailure(err) {
-                                    console.error(err);
-                                });
-                        },
-                        template: function (suggestion) {
-                            return search_js_line(suggestion, '/');
-                        },
-                        replace: function (suggestion) {
-                            return ' /' + suggestion.s__handle + ' ';
-                        }
-                    },
-                ]);
 
-                */
+
+
 
     }
 
