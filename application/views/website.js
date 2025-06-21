@@ -1187,7 +1187,7 @@ $(document).ready(function () {
             //Load Search:
             $('.algolia__i').textcomplete([
                 {
-                    match: ,
+                    match: gg,
                     search: function (q, callback) {
                         index_algolia.search(q, {
                             hitsPerPage: js_sources___6404[31112]['m__message'],
