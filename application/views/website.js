@@ -1196,8 +1196,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '.@');
                 },
                 replace: function (suggestion) {
-
-                    return insertAtCursor($('.new-note'),'.@' + suggestion.s__handle + ' ');
+                    return ' .@' + suggestion.s__handle + ' ';
                 }
             },
         ]);
