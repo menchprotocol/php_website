@@ -1178,7 +1178,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '.@');
                 },
                 replace: function (suggestion) {
-                    return ' .@' + suggestion.s__handle + ' ';
+                    return "\n"+'.@' + suggestion.s__handle + ' ';
                 }
             },
         ]);
