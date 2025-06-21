@@ -1180,6 +1180,7 @@ $(document).ready(function () {
                 continue;
             }
 
+            continue;
             var gg = new RegExp(`/(^|\\s)${string_match}(\\w*(?:\\s*\\w*))$/`);
 
             console.log(js_sources___1696899[key]['m__cover'] + gg);
@@ -1239,6 +1240,33 @@ $(document).ready(function () {
                 }
             },
         ]);
+
+        $('.algolia__e').textcomplete([
+            {
+                match: new RegExp(`/(^|\s)#(\w*(?:\s*\w*))$/`),
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        filters: 's__type=12274' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return search_js_line(suggestion, '#');
+                },
+                replace: function (suggestion) {
+                    return ' #' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
 
 /*
         $('.algolia__e').textcomplete([
