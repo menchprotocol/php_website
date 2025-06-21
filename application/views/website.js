@@ -1180,13 +1180,14 @@ $(document).ready(function () {
                 continue;
             }
 
-            console.log(js_sources___1696899[key]['m__cover']);
+            var gg = new RegExp("/(^|\\s)"+string_match+"(\\w*(?:\\s*\\w*))$/", "g");
+            console.log(js_sources___1696899[key]['m__cover'] + gg);
 
 
             //Load Search:
             $('.algolia__i').textcomplete([
                 {
-                    match: "/(^|\\s)"+string_match+"(\\w*(?:\\s*\\w*))$/",
+                    match: ,
                     search: function (q, callback) {
                         index_algolia.search(q, {
                             hitsPerPage: js_sources___6404[31112]['m__message'],
