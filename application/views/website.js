@@ -1158,7 +1158,19 @@ $(document).ready(function () {
     if (search_enabled()) {
 
         console.log('HIIII');
-        console.log(js_sources___1696899);
+        for (var key in js_sources___1696899) {
+            // skip loop if the property is from prototype
+            if (!js_sources___1696899.hasOwnProperty(key)) continue;
+
+            var obj = js_sources___1696899[key];
+            for (var prop in obj) {
+                // skip loop if the property is from prototype
+                if (!obj.hasOwnProperty(prop)) continue;
+
+                // your code
+                console.log(prop + " = " + obj[prop]);
+            }
+        }
 
         $('.algolia__i').textcomplete([
             {
