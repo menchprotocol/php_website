@@ -1180,7 +1180,7 @@ $(document).ready(function () {
                 continue;
             }
 
-            var gg = new RegExp(`/(^|\\s)${string_match}(\\w*(?:\\s*\\w*))$/`);
+            var gg = new RegExp(`\/(^|\\s)${string_match}(\\w*(?:\\s*\\w*))$\/`);
 
             console.log(js_sources___1696899[key]['m__cover'] + gg);
 
