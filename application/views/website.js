@@ -1157,6 +1157,11 @@ $(document).ready(function () {
     //Search that also has insert module:
     if (search_enabled()) {
 
+        console.log('HIIII');
+        js_sources___1696899.each(function () {
+            console.log($(this));
+        });
+
         $('.algolia__i').textcomplete([
             {
                 match: /(^|\s)#(\w*(?:\s*\w*))$/,
