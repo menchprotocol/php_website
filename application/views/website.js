@@ -1243,7 +1243,7 @@ $(document).ready(function () {
 
         $('.algolia__e').textcomplete([
             {
-                match: new RegExp(`/(^|\s)#(\w*(?:\s*\w*))$/`),
+                match: new RegExp(`/(^|\s)#(\w*(?:\s*\w*))$/`, 'g'),
                 search: function (q, callback) {
                     index_algolia.search(q, {
                         hitsPerPage: js_sources___6404[31112]['m__message'],
