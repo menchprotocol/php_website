@@ -1158,9 +1158,8 @@ $(document).ready(function () {
     if (search_enabled()) {
 
         console.log('HIIII');
-        for (let i = 0; i < js_sources___1696899.length; i++) {
-            console.log(js_sources___1696899[i]);
-            count++;
+        for (const element of js_sources___1696899) {
+            console.log(element);
         }
 
         $('.algolia__i').textcomplete([
