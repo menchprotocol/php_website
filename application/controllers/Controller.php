@@ -1365,8 +1365,10 @@ class Controller extends CI_Controller
         $focus_sourceid = ($_POST['sourceid'] > 0 ? $_POST['sourceid'] : ($source_session ? $source_session['sourceid'] : 0));
         $ui = '';
 
+
         if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261'))) {
 
+            //Idea/Source Link Groups
             //Ideas:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
             foreach ($sources_query as $i) {

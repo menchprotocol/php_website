@@ -5293,7 +5293,7 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $e['chainvalue'] . '"><i class="far fa-info-circle"></i></span>';
     } else if ($chainid && $source_access >= 3 && !$is_cache && $superpower_10939) {
         //Main description:
-        $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . (in_array($e['chainsourcetype'], $CI->config->item('sourceids___42294')) ? ' hidden ' : '') . '">' . htmlentities($e['chainvalue']) . '</div>';
+        $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '">' . htmlentities($e['chainvalue']) . '</div>';
     }
 
     if($extra_value) {
