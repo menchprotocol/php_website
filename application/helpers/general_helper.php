@@ -946,36 +946,9 @@ function process_media($ideaid, $uploaded_media)
     $CI =& get_instance();
     $source_session = source_session();
 
-    //Update Media...
-    $media_stats = array(
-        'media_sourcecover' => null,
-        'total_current' => 0,
-        'total_submitted' => 0,
-        'adjust_created' => 0,
-        'adjust_duplicated' => 0,
-        'adjust_updated' => 0,
-        'adjust_removed' => 0,
-        'total_media' => 0,
-    );
-
 
     if (!$source_session) {
-        return $media_stats;
-    }
-
-    $full_media = array();
-    $current_media_sourceids = array();
-    $sort_count = 0;
-
-    //Fetch current media:
-    foreach ($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42294')) . ')' => null, //Media
-        'chainidearight' => $ideaid,
-    ), array('chainsourceup'), 0, 0, array('chainkey' => 'ASC')) as $media) {
-        $media_stats['total_current']++;
-        $current_media_sourceids[$sort_count] = intval($media['chainsourceup']);
-        $full_media[$media['chainsourceup']] = $media;
-        $sort_count++;
+        return false;
     }
 
     //Fetch submitted media:
@@ -986,36 +959,7 @@ function process_media($ideaid, $uploaded_media)
         $sort_count = 0; //Reset sorting to compare to submitted media...
         foreach ($uploaded_media as $upload_media) {
 
-            if ($upload_media['sourceid'] > 0) {
-
-                $adjust_updated = false;
-
-                //Update media order?
-                if ($current_media_sourceids[$sort_count] != $upload_media['sourceid']) {
-                    //Order has changed, update it:
-                    $adjust_updated = true;
-                    $CI->Chains->update($full_media[$upload_media['sourceid']]['chainid'], array(
-                        'chainkey' => $sort_count,
-                    ));
-                }
-
-                //Update the Source title?
-                $validate_sourcevalue = validate_sourcevalue($upload_media['sourcevalue']);
-                if ($validate_sourcevalue['status'] && $full_media[$upload_media['sourceid']]['sourcevalue'] != $upload_media['sourcevalue']) {
-                    $adjust_updated = true;
-                    $CI->Sources->update($upload_media['sourceid'], array(
-                        'sourcevalue' => trim($upload_media['sourcevalue']),
-                    ), $source_session['sourceid']);
-                }
-
-                $media_stats['media_sourcecover'] = $upload_media['sourcecover'];
-
-                if ($adjust_updated) {
-                    $media_stats['adjust_updated']++;
-                }
-
-            } else {
-
+            if (!$upload_media['sourceid']) {
                 //Adding new media...
                 //Search eTag to see if we already have it:
                 $etag_detected = false;
@@ -1026,15 +970,12 @@ function process_media($ideaid, $uploaded_media)
                         'chainsourceup' => 42662, //etag
                         'chainvalue' => $upload_media['media_cache']['etag'],
                     ), array('chainsourcedown'), 1) as $existing_media) {
-                        $media_stats['adjust_duplicated']++;
                         $upload_media['sourceid'] = $existing_media['sourceid'];
                         $etag_detected = true;
                     }
                 }
 
                 if (!$upload_media['sourceid']) {
-
-                    $media_stats['media_sourcecover'] = $upload_media['sourcecover'];
 
                     //Create Source for this new media:
                     $added_e = $CI->Sources->create(array(
@@ -1049,7 +990,6 @@ function process_media($ideaid, $uploaded_media)
                     }
 
                     //Create new media and assign ID:
-                    $media_stats['adjust_created']++;
                     $upload_media['sourceid'] = $added_e['source_create']['sourceid'];
 
                     //new asset, create new Source and insert tags...
@@ -1139,7 +1079,6 @@ function process_media($ideaid, $uploaded_media)
                     }
                 }
 
-
                 //By now have the media Source, create necessary chains:
                 if ($upload_media['sourceid'] && $upload_media['media_sourceid']) {
 
@@ -1196,22 +1135,12 @@ function process_media($ideaid, $uploaded_media)
 
             //Add this to the submitted ones:
             $upload_media_sourceids[$sort_count] = $upload_media['sourceid'];
-            $media_stats['total_submitted']++;
             $sort_count++;
 
         }
     }
 
-    //Remove current media missing from submitted (Removed during editing):
-    foreach (array_diff($current_media_sourceids, $upload_media_sourceids) as $deleted_media_sourceid) {
-        $media_stats['adjust_removed']++;
-        $CI->Chains->delete($full_media[$deleted_media_sourceid]['chainid'], $source_session['sourceid']); //Media Removed
-    }
-
-    //Calculate total media:
-    $media_stats['total_media'] = $media_stats['total_current'] + $media_stats['adjust_duplicated'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
-
-    return $media_stats;
+    return true;
 
 }
 

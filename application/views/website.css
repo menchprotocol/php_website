@@ -102,11 +102,6 @@ body {
     height: 0;
     padding-bottom: 56.25%;
 }
-#list-in-42294 .ytframe{
-    margin: 0;
-    padding-bottom: 93.5%;
-    margin-bottom: -377px;
-}
 .ytframe iframe {
     position: absolute;
     top: 0;
@@ -3815,10 +3810,6 @@ a,
 }
 .justify-content {
     justify-content: center !important;
-}
-
-#list-in-42294{
-    justify-content: left !important;
 }
 
 

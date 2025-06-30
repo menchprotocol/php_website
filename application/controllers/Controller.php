@@ -970,12 +970,8 @@ class Controller extends CI_Controller
 
         }
 
-        //Process Media:
-        $media_stats = process_media($is[0]['ideaid'], $_POST['uploaded_media']);
-
-
         //Validate Idea Message:
-        if (!$media_stats['total_media'] && !strlen(trim($_POST['save_ideavalue']))) {
+        if (!strlen(trim($_POST['save_ideavalue']))) {
             //Since we do not have media, we must have a message:
             return view_json(array(
                 'status' => 0,
@@ -1151,7 +1147,7 @@ class Controller extends CI_Controller
                 'save_ideavalue' => trim($_POST['save_ideavalue']),
                 'text_updated' => $text_updated,
                 'redirect_idea' => (isset($new_i['ideahashtag']) ? view_memory(42903, 33286) . $new_i['ideahashtag'] : null),
-                'message' => $media_stats['total_current'] . ' current & ' . $media_stats['total_submitted'] . ' submitted media: ' . $media_stats['total_submitted'] . ' Created, ' . $media_stats['adjust_updated'] . ' Updated & ' . $media_stats['adjust_removed'] . ' Removed while detected ' . $media_stats['adjust_duplicated'] . ' duplicate uploads.',
+                'message' => 'Success',
             ));
         }
 

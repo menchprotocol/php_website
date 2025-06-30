@@ -1003,9 +1003,6 @@ class Chains extends CIdea_cache
             if (!isset($source_submitted_data['idea_createtext'])) {
                 $source_submitted_data['idea_createtext'] = null;
             }
-            if (!isset($source_submitted_data['uploaded_media'])) {
-                $source_submitted_data['uploaded_media'] = array();
-            }
 
             //Must add a new idea, but first let's validate the input:
             if ($i['ideatype'] == 31794 && strlen($source_submitted_data['idea_createtext']) && !is_numeric($source_submitted_data['idea_createtext'])) {
@@ -1037,7 +1034,7 @@ class Chains extends CIdea_cache
 
 
             //All validated, lets create the new idea:
-            if (strlen($source_submitted_data['idea_createtext']) || count($source_submitted_data['uploaded_media'])) {
+            if (strlen($source_submitted_data['idea_createtext'])) {
 
                 if (count($source_private_replies)) {
 
@@ -1072,9 +1069,6 @@ class Chains extends CIdea_cache
 
                 }
 
-                //Process Media:
-                $media_stats = process_media($this_ideaid, $source_submitted_data['uploaded_media']);
-
             } elseif (count($source_private_replies)) {
 
                 if ($is_required) {
@@ -1091,7 +1085,6 @@ class Chains extends CIdea_cache
 
         }
 
-        //$x_data['chainsourcecreator'] = ( $source_session && $source_session['sourceid']!=$chainsourcecreator ? $source_session['sourceid'] : $chainsourcecreator );
         $x_data['chainsourcecreator'] = $chainsourcecreator;
         $x_data['chainsourceup'] = $chainsourcecreator;
         $x_data['chainsourcetype'] = $chainsourcetype;
@@ -1238,18 +1231,6 @@ class Chains extends CIdea_cache
 
                         //Update live session as well:
                         $es_creator[0]['sourcevalue'] = $x_data['chainvalue'];
-                        $this->Sources->activate($es_creator[0], true);
-
-                    } elseif ($this_tag['chainsourceup'] == 6198 && isset($media_stats['media_sourcecover']) && filter_var($media_stats['media_sourcecover'], FILTER_VALIDATE_URL)) {
-
-                        //Update Source Cover:
-                        //Update profile picture for current user:
-                        $this->Sources->update($chainsourcecreator, array(
-                            'sourcecover' => $media_stats['media_sourcecover'],
-                        ), $chainsourcecreator);
-
-                        //Update live session as well:
-                        $es_creator[0]['sourcecover'] = $media_stats['media_sourcecover'];
                         $this->Sources->activate($es_creator[0], true);
 
                     }
