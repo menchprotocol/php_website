@@ -56,6 +56,9 @@
 
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
+if($_SERVER['REMOTE_ADDR']!='107.217.189.220'){
+    die('Down for maintenance. We will be back online Monday July 7th');
+}
 
 /*
  *---------------------------------------------------------------
