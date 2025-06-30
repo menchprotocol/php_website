@@ -549,6 +549,7 @@ function toggle_pills(chainsourcetype_hash, is_first_load) {
 
                 setTimeout(function () {
 
+                    //TODO Fix Sorting
                     if (js_sourceids___11020.includes(chainsourcetype) || (focus__node == 12274 && (js_sourceids___42261.includes(chainsourcetype) || js_sourceids___42284.includes(chainsourcetype)))) {
                         idea_sort_load(chainsourcetype);
                     } else if (js_sourceids___11028.includes(chainsourcetype) || (focus__node == 12273 && (js_sourceids___42261.includes(chainsourcetype) || js_sourceids___42284.includes(chainsourcetype)))) {

@@ -2501,15 +2501,6 @@ function update_algolia($focus__node = null, $s__id = 0)
                     $export_row['s__keywords'] .= $x['sourcevalue'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
 
                 }
-
-                //Append Discovery Written Responses to Keywords
-                foreach ($CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___29133')) . ')' => null, //Written Responses
-                    'chainsourcecreator' => $s['sourceid'], //This follower Source
-                ), array('chainsourcecreator'), 0, 0, array('chaintime' => 'DESC')) as $x) {
-                    $export_row['s__keywords'] .= $x['chainvalue'] . ' ';
-                }
-
             }
 
             //Prep Keywords:
@@ -3099,16 +3090,6 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         $query_filters = array(
             'chainsourcedown' => $sourceid,
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
-        );
-
-    } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___11028'))) {
-
-        //Source Tree
-        $order_columns = array('chainkey' => 'ASC', 'chaintime' => 'DESC');
-        $joins_objects = array('chainsourcedown');
-        $query_filters = array(
-            'chainsourceup' => $sourceid,
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
         );
 
     } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___42261'))) {

@@ -216,28 +216,6 @@ class Sources extends CIdea_cache
     function delete($sourceid, $chainsourcecreator = 0, $migrateid = 0)
     {
 
-        if (in_array($sourceid, $this->config->item('sourceids___4593'))) {
-            return array(
-                'status' => 0,
-                'message' => 'Cannot Delete an active @chainsourcetype - Unchain, update @memory and try again',
-            );
-        } elseif (in_array($sourceid, $this->config->item('sourceids___14870'))) {
-            return array(
-                'status' => 0,
-                'message' => 'Cannot Delete an active @chainsourcedomain - Unchain, update @memory and try again',
-            );
-        } elseif (!count($this->Sources->read(array('sourceid' => $sourceid)))) {
-            return array(
-                'status' => 0,
-                'message' => $sourceid . ' is not a valid ID',
-            );
-        } elseif ($migrateid > 0 && !count($this->Sources->read(array('sourceid' => $migrateid)))) {
-            return array(
-                'status' => 0,
-                'message' => $migrateid . ' is not a valid ID',
-            );
-        }
-
         //Find all chains to delete/migrate:
         $x_adjusted = 0;
         foreach ($this->Chains->read(array(

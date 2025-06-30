@@ -774,6 +774,22 @@ class Controller extends CI_Controller
                 ));
             }
             $migrateid = $valid_handle[0]['sourceid'];
+            if (!count($this->Sources->read(array('sourceid' => $migrateid)))) {
+                return array(
+                    'status' => 0,
+                    'message' => $_POST['migratehandle'] . ' is not a valid Handle',
+                );
+            }
+        } elseif (in_array($_POST['sourceid'], $this->config->item('sourceids___14870'))) {
+            return array(
+                'status' => 0,
+                'message' => 'Cannot Delete an active @chainsourcedomain - Unchain, update @memory and try again',
+            );
+        } elseif (!count($this->Sources->read(array('sourceid' => $_POST['sourceid'])))) {
+            return array(
+                'status' => 0,
+                'message' => $_POST['sourceid'] . ' is not a valid ID',
+            );
         }
 
 
@@ -807,8 +823,17 @@ class Controller extends CI_Controller
         //Delete all Chains:
         $chains_removed = $this->Sources->delete($_POST['sourceid'], $source_session['sourceid'], $migrateid);
 
+        if(!$chains_removed['status']){
+            return view_json(array(
+                'status' => 1,
+                'message' => 'Source successfully removed',
+                'delete_redirect' => $delete_redirect,
+                'delete_element' => $delete_element,
+            ));
+        }
+
         return view_json(array(
-            'status' => ($chains_removed > 0 ? 1 : 0),
+            'status' => 1,
             'message' => 'Source successfully removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
@@ -1324,7 +1349,6 @@ class Controller extends CI_Controller
 
         $limit = view_memory(6404, 11064);
         $source_session = source_session();
-
         $sources_query = sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1);
         $es = $this->Sources->read(array(
             'sourceid' => $_POST['sourceid'],
