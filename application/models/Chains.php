@@ -879,7 +879,7 @@ class Chains extends CIdea_cache
         ), array('chainidealeft')) as $prev_i) {
 
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                 'chainsourcecreator' => $chainsourcecreator,
                 'chainidealeft' => $prev_i['ideaid'],
             ), array('chainidearight')) as $x) {
@@ -941,7 +941,7 @@ class Chains extends CIdea_cache
 
             //Return this if everything is completed, or if this is incomplete:
             if ($target_completed || !count($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                     'chainsourcecreator' => $sourceid,
                     'chainidealeft' => $next_i['ideaid'],
                 )))) {
@@ -1112,7 +1112,7 @@ class Chains extends CIdea_cache
 
         //Make sure not duplicate:
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => (isset($x_data['chainidealeft']) ? $x_data['chainidealeft'] : 0),
             'chainidearight' => (isset($x_data['chainidearight']) ? $x_data['chainidearight'] : 0),
             'chainsourcecreator' => $chainsourcecreator,
@@ -1410,7 +1410,7 @@ class Chains extends CIdea_cache
         foreach ($this->Chains->read(array(
             'chainidealeft' => $i['ideaid'],
             'chainsourcecreator' => $sourceid,
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
         ), array(), 1) as $x) {
 
             unset($x['chainsourcetype']);
@@ -1469,7 +1469,7 @@ class Chains extends CIdea_cache
         foreach ($this->Chains->read(array(
             'chainidealeft' => $i['ideaid'],
             'chainsourcecreator' => $sourceid,
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
         ), array(), 1) as $x) {
             $i['user_idea_discovered'] = $x;
         }
@@ -1560,7 +1560,7 @@ class Chains extends CIdea_cache
         if(!isset($_GET['skip_config'])) {
             $sub_counter = $this->Chains->read(array(
                 'chainidealeft' => $i['ideaid'],
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
             $i['idea_count_discovery'] = $sub_counter[0]['totals'];
         }
@@ -1612,7 +1612,7 @@ class Chains extends CIdea_cache
         //Count completed:
         $list_idea_discovered = array();
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainsourcecreator' => $sourceid, //Belongs to this Member
             'chainidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
         ), array('chainidealeft'), 0) as $completed) {
@@ -1642,7 +1642,7 @@ class Chains extends CIdea_cache
                 $progress = $this->Chains->progress($sourceid, $expansion_in, $current_level, $loop_breaker_ids);
 
                 if (!$progress && !count($this->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                         'chainsourcecreator' => $sourceid, //Belongs to this Member
                         'chainidealeft' => $expansion_in['ideaid'],
                     )))) {

@@ -44,7 +44,7 @@ if ($chainsourcecreator && !$at_starting_point) {
                 foreach ($query_subset as $idea_subset) {
 
                     if (count($this->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                         'chainsourcecreator' => $chainsourcecreator,
                         'chainidealeft' => $idea_subset['ideaid'],
                     )))) {
@@ -87,7 +87,7 @@ if ($source_session) {
         echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_idea_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_idea_discovered'] . ': ' . join(',', $progress['list_idea_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
     } else {
         echo '<div class="progress">
-<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_idea_discovered'] . '/' . $progress['fixed_total'] . ' Ideas idea_discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress-bar bg31777" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_idea_discovered'] . '/' . $progress['fixed_total'] . ' Ideas idea_discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
 </div>';
     }
 }
@@ -95,7 +95,7 @@ if ($source_session) {
 $x_completes = array();
 if ($source_session) {
     $x_completes = $this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
         'chainsourcecreator' => $chainsourcecreator,
         'chainidealeft' => $focus_i['ideaid'],
     ), array('chainidearight'));

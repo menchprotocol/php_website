@@ -116,7 +116,7 @@ foreach($this->Ideas->read(array(
         echo '<p>Applying against ['.$preg_query[0]['chainvalue'].'] results in:</p>';
 
         foreach($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'LENGTH(chainvalue)>0' => null,
             'chainidealeft' => $i['ideaid'],
         ), array(), 0) as $x) {

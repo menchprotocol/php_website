@@ -387,7 +387,7 @@ function toggle_headline(chainsourcetype) {
         $('.headline_title_' + chainsourcetype + ' .icon_26007').addClass('hidden');
         $('.headline_body_' + chainsourcetype).addClass('hidden');
 
-        if (chainsourcetype == 6255) {
+        if (chainsourcetype == 31777) {
             $('.navigate_12273').removeClass('active');
         }
 
@@ -404,7 +404,7 @@ function toggle_headline(chainsourcetype) {
         $('.headline_title_' + chainsourcetype + ' .icon_26008').addClass('hidden');
         $('.headline_body_' + chainsourcetype).removeClass('hidden');
 
-        if (chainsourcetype == 6255) {
+        if (chainsourcetype == 31777) {
             $('.navigate_12273').addClass('active');
         }
 

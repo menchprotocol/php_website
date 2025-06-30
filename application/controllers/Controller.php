@@ -403,7 +403,7 @@ class Controller extends CI_Controller
             } elseif (!count($this->Chains->read(array(
                 'LOWER(ideahashtag)' => strtolower($target_i['ideahashtag']),
                 'chainsourcecreator' => $source_session['sourceid'],
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             ), array('chainidealeft')))) {
 
                 //Not yet started, add to their starting point:
@@ -463,7 +463,7 @@ class Controller extends CI_Controller
                 foreach ($this->Ideas->read(array(
                     'LOWER(ideahashtag)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $i) {
-                    echo idea_view(6255, $i);
+                    echo idea_view(31777, $i);
                     return true;
                 }
             } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
@@ -1311,7 +1311,7 @@ class Controller extends CI_Controller
 
                 $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
                 foreach ($ideas_query as $item) {
-                    $ui .= source_view(6255, $item);
+                    $ui .= source_view(31777, $item);
                 }
                 $ui .= '</div>';
 
@@ -2999,7 +2999,7 @@ class Controller extends CI_Controller
                 if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
                     echo source_view($_POST['chainsourcetype'], $s);
                     $success = true;
-                } else if ($_POST['chainsourcetype'] == 6255 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
+                } else if ($_POST['chainsourcetype'] == 31777 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
                     echo idea_view($_POST['chainsourcetype'], $s, $previous_i, null, $focus_e['sourceid']);
                     $success = true;
                 }
@@ -3017,7 +3017,7 @@ class Controller extends CI_Controller
                 if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
                     echo idea_view($_POST['chainsourcetype'], $s, $previous_i);
                     $success = true;
-                } else if ($_POST['chainsourcetype'] == 6255 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
+                } else if ($_POST['chainsourcetype'] == 31777 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
                     echo source_view($_POST['chainsourcetype'], $s);
                     $success = true;
                 }
@@ -3206,7 +3206,7 @@ class Controller extends CI_Controller
                     //Remove discovery if we can:
                     if (!in_array($x_selection['ideatype'], $this->config->item('sourceids___42905'))) {
                         foreach ($this->Chains->read(array(
-                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                             'chainidealeft' => $x_selection['ideaid'],
                             'chainsourcecreator' => $source_session['sourceid'],
                         ), array(), 0) as $x_discovery) {

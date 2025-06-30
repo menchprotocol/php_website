@@ -234,7 +234,7 @@ function idea_spots_remaining($ideaid)
 
         //We have a limit! See if we've met it already:
         $query_filters = array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___40986')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $ideaid,
         );
         if ($source_session) {
@@ -473,7 +473,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     if(isset($_GET['expand'])){
         $already_shown = array();
         foreach ($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //DISCOVERIES
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
         ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
             if(in_array($creator['chainsourcecreator'], $already_shown)){
@@ -636,7 +636,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             //If idea_discovered Any
             $query_string_all = $CI->Chains->read(array(
                 'chainidealeft IN (' . join(',', $idea_list_config[40791]) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC'));
 
         } elseif (count($idea_list_config[44161])) {
@@ -644,7 +644,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             //If idea_discovered All
             $query_string_all = $CI->Chains->read(array(
                 'chainidealeft IN (' . join(',', $idea_list_config[44161]) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC'));
 
         } elseif (count($idea_list_config[27984])) {
@@ -668,7 +668,7 @@ function idea_settings($ideahashtag, $fetch_contact = false)
             //All Discoveries:
             $query_string_all = $CI->Chains->read(array(
                 'chainidealeft' => $i['ideaid'],
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             ), array('chainsourcecreator'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
         }
@@ -2156,7 +2156,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     if (count($CI->Chains->read(array(
                         'chainsourcecreator' => $chainsourcecreator,
                         'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                     }
@@ -2175,7 +2175,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     if (count($CI->Chains->read(array(
                         'chainsourcecreator' => $chainsourcecreator,
                         'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                         break;
@@ -2196,7 +2196,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     if (count($CI->Chains->read(array(
                         'chainsourcecreator' => $chainsourcecreator,
                         'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                     }
@@ -2218,7 +2218,7 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     if (count($CI->Chains->read(array(
                         'chainsourcecreator' => $chainsourcecreator,
                         'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                         break;
@@ -3201,7 +3201,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         //Determine Sort:
         $order_columns = array();
         /*
-        foreach($CI->config->item('sources___6255') as $sort_id => $sort) {
+        foreach($CI->config->item('sources___31777') as $sort_id => $sort) {
             $order_columns['chainsourcetype = \''.$sort_id.'\' DESC'] = null;
         }
         */
@@ -4028,7 +4028,7 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
 
     if ($source_session && !is_array($x_completes)) {
         $x_completes = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainsourcecreator' => $source_session['sourceid'],
             'chainidealeft' => $focus_i['ideaid'],
         ), array('chainidearight'));
@@ -4348,7 +4348,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     if ($chainsourcecreator && !is_array($x_completes)) {
         //Fetch discovery
         $x_completes = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainsourcecreator' => $chainsourcecreator,
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight'));
@@ -4368,7 +4368,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     $has_idea_discovered = 0;
     if (!$is_cache && $chainsourcecreator) {
         $discoveries = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainsourcecreator' => $chainsourcecreator,
             'chainidealeft' => $i['ideaid'],
         ));
@@ -4381,7 +4381,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     $target_ideahashtag_discover = null;
     if ($has_idea_discovered && !$target_ideahashtag) {
         foreach ($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainsourcecreator' => $chainsourcecreator,
             'chainidealeft' => $i['ideaid'],
             'chainidearight > 0' => null,
@@ -5006,7 +5006,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                     $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['ideaid'] . ', [\'#' . $i['ideaid'] . '\'], \'.inner_uploader_' . $i['ideaid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $i['ideaid'] . '); }, 144); }); </script>';
 
                     foreach ($source_private_replies as $x_response) {
-                        $input_ui .= '<div class="hidden">' . idea_view(6255, $x_response) . '</div>';
+                        $input_ui .= '<div class="hidden">' . idea_view(31777, $x_response) . '</div>';
                         $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $x_response['ideaid'] . '); }, 144); }); </script>';
                     }
                 }
@@ -5061,8 +5061,8 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         } elseif ($chainsourcetype_target_bar == 42924 && $discovery_mode && $focus__node) {
 
             //Next
-            $sources___6255 = $CI->config->item('sources___6255');
-            $focus_menu = ($has_idea_discovered ? $m_target_bar : $sources___6255[idea_type_discovery($i)]);
+            $sources___31777 = $CI->config->item('sources___31777');
+            $focus_menu = ($has_idea_discovered ? $m_target_bar : $sources___31777[idea_type_discovery($i)]);
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="idea_discovered(0)" class="btn btn-sm post_button idea_discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
         } elseif ($chainsourcetype_target_bar == 31022 && $discovery_mode && $focus__node && $source_session && !count($x_completes) && !in_array($i['ideatype'], $CI->config->item('sourceids___43009')) && !idea_required($i)) {
@@ -5428,7 +5428,7 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
                     $focus_dropdown = 12887; //Source Dropdown
                 } elseif ($chainsourcetype_id == 32292) { //Source/Source Chains
                     $focus_dropdown = 14956; //Source/Source Dropdown
-                } elseif ($chainsourcetype_id == 6255 || $chainsourcetype_id == 31777) { //Discoveries
+                } elseif ($chainsourcetype_id == 31777 || $chainsourcetype_id == 31777) { //Discoveries
                     $focus_dropdown = 32070; //Source>Discoveries Dropdown
                 } elseif ($chainsourcetype_id == 13550) { //Idea/Source Chains
                     $focus_dropdown = 28792; //Source/Idea Dropdown

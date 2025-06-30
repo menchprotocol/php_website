@@ -27,10 +27,10 @@ foreach ($this->config->item('sources___14874') as $chainsourcetype => $m) {
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___' . $chainsourcetype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif ($chainsourcetype == 6255) {
+    } elseif ($chainsourcetype == 31777) {
 
         $unique = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } else {
@@ -71,10 +71,10 @@ foreach ($this->config->item('sources___14874') as $chainsourcetype => $m) {
                 'chaintime <' => $time_end,
             ), array('chainsourcedown'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-        } elseif ($chainsourcetype == 6255) {
+        } elseif ($chainsourcetype == 31777) {
 
             $query = $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');

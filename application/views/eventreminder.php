@@ -6,7 +6,7 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
     //This is a request to cancel, do so and redirect:
     if (view_hash($_GET['time'] . $_GET['sourcehandle']) == $_GET['hash']) {
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___40986')) . ')' => null, //DISCOVERIES
             'chainid' => $_GET['chainid'],
             'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
         ), array('chainsourcecreator'), 0) as $x) {
@@ -99,7 +99,7 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
 
                     //The time is here! Send event reminders to those who successfully idea_discovered this:
                     foreach ($this->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___40986')) . ')' => null, //DISCOVERIES
                         'chainidealeft' => $i['ideaid'],
                     ), array('chainsourcecreator'), 0) as $x) {
 
@@ -203,7 +203,7 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
             if (count($this->Chains->read(array(
                 'chainidealeft' => $i['ideaid'],
                 'chainsourcecreator' => $x['sourceid'],
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             )))) {
                 //Skip since they already idea_discovered this idea:
                 continue;
@@ -221,7 +221,7 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
             foreach ($children as $down_or) {
 
                 $discoveries = $this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                     'chainsourcecreator' => $x['sourceid'],
                     'chainidealeft' => $down_or['ideaid'],
                 ));

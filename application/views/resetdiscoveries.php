@@ -13,7 +13,7 @@ if (!isset($_GET['confirm'])) {
 
     //Fetch their current progress chains:
     $progress_x = $this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
         'chainsourcecreator' => $focus_e['sourceid'],
     ), array(), 0);
 

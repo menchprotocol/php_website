@@ -43,7 +43,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
             $discoveries = $this->Chains->read(array(
                 'chainidealeft' => $idea_var['ideaid'],
                 'chainsourcecreator' => $x['sourceid'],
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             ), array(), 1);
 
             $idea_content .= '<td title="' . $x['sourcevalue'] . ' x ' . view_idea_title($idea_var, true) . '">';

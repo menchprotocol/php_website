@@ -10,7 +10,7 @@ foreach ($this->Chains->read(array(
     $is_found = false;
     //Fetch everyone who has idea_discovered this idea:
     foreach ($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
         'chainidealeft' => $addition_sync['chainidearight'],
     ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC')) as $dicovered) {
 

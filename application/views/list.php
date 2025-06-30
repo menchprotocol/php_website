@@ -41,7 +41,7 @@ foreach($idea_settings['query_string_filtered'] as $x){
         $discoveries = $this->Chains->read(array(
             'chainidealeft' => $idea_var['ideaid'],
             'chainsourcecreator' => $x['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                 ), array(), 1);
 
         if(count($discoveries)){

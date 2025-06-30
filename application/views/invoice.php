@@ -151,7 +151,7 @@ foreach($this->Ideas->read(array(
 
         //Delete Old Parent Invoice:
         foreach($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
             'chainsourcecreator' => $source_session['sourceid'],
         ), array(), 0) as $x_discovery){
@@ -171,7 +171,7 @@ foreach($this->Ideas->read(array(
             //Remove discovery if we can:
             if(!in_array($x_selection['ideatype'], $this->config->item('sourceids___42905'))){
                 foreach($this->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                     'chainidealeft' => $x_selection['ideaid'],
                     'chainsourcecreator' => $source_session['sourceid'],
                 ), array(), 0) as $x_discovery){

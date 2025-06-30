@@ -57,7 +57,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
         $currencies = array();
 
         foreach($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
             'chainidealeft' => $i['ideaid'],
         ), array(), 0, 0, array('chainsourcecreator' => 'ASC')) as $x){
 

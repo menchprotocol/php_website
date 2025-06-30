@@ -123,7 +123,7 @@ if(isset($_GET['action']) && $_GET['action']=='idea_messages'){
         )) as $source_append){
             $completed = 0;
             foreach($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___6255')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
                 'chainidealeft' => $is[0]['ideaid'],
             ), array(), 0) as $x){
                 if(!count($this->Chains->read(array(
