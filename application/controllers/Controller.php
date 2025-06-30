@@ -741,7 +741,6 @@ class Controller extends CI_Controller
 
     }
 
-
     function source_delete()
     {
 
@@ -1159,56 +1158,49 @@ class Controller extends CI_Controller
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !idea_access(null, $_POST['ideaid'])) {
+            $discover_chainsourcetype = discover_chainsourcetype();
 
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
+            $ui = '';
+            $listed_items = 0;
+            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
 
-            } else {
-
-                $discover_chainsourcetype = discover_chainsourcetype();
-
-                $ui = '';
-                $listed_items = 0;
-                if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
-
-                    //SOURCES
-                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
-                    $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
-                    foreach (ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1, false) as $source_session) {
-                        if (isset($source_session['sourceid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $current_sourcehandle && $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], $source_session['chainvalue']);
-                            $listed_items++;
-                        }
-                    }
-
-                } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
-
-                    //IDEAS
-                    $sources___4737 = $this->config->item('sources___4737'); //Idea Types
-                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
-                    $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
-
-                    foreach (ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1, false) as $next_i) {
-                        if (isset($next_i['ideaid'])) {
-                            $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['chainvalue']);
-                            $listed_items++;
-                        }
-                    }
-
-                }
-
-                if ($listed_items < $_POST['counter']) {
-                    //We have more to show:
-                    foreach ($this->Ideas->read(array(
-                        'ideaid' => $_POST['ideaid'],
-                    )) as $i) {
-                        $ui .= view_more($discover_chainsourcetype . view_memory(42903, 33286) . $i['ideahashtag'], false, '&nbsp;', '&nbsp;', 'View All');
+                //SOURCES
+                $sources___4593 = $this->config->item('sources___4593'); //Chain Types
+                $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
+                foreach (ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1, false) as $source_session) {
+                    if (isset($source_session['sourceid'])) {
+                        $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $current_sourcehandle && $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], $source_session['chainvalue']);
+                        $listed_items++;
                     }
                 }
 
-                echo $ui;
+            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
+
+                //IDEAS
+                $sources___4737 = $this->config->item('sources___4737'); //Idea Types
+                $sources___4593 = $this->config->item('sources___4593'); //Chain Types
+                $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
+
+                foreach (ideas_query($_POST['chainsourcetype'], $_POST['ideaid'], 1, false) as $next_i) {
+                    if (isset($next_i['ideaid'])) {
+                        $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), $next_i['chainvalue']);
+                        $listed_items++;
+                    }
+                }
 
             }
+
+            if ($listed_items < $_POST['counter']) {
+                //We have more to show:
+                foreach ($this->Ideas->read(array(
+                    'ideaid' => $_POST['ideaid'],
+                )) as $i) {
+                    $ui .= view_more($discover_chainsourcetype . view_memory(42903, 33286) . $i['ideahashtag'], false, '&nbsp;', '&nbsp;', 'View All');
+                }
+            }
+
+            echo $ui;
+
         }
     }
 
@@ -1278,10 +1270,6 @@ class Controller extends CI_Controller
                 return false;
             }
 
-            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !idea_access(null, $is[0]['ideaid'], $is[0])) {
-                return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
-            }
-
             if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42380'))) {
 
                 //IDEA Chain Groups Previous
@@ -1337,12 +1325,6 @@ class Controller extends CI_Controller
         $limit = view_memory(6404, 11064);
         $source_session = source_session();
 
-        //Check Permission:
-        if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !source_access(null, $_POST['sourceid'])) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
-            return false;
-        }
-
         $sources_query = sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1);
         $es = $this->Sources->read(array(
             'sourceid' => $_POST['sourceid'],
@@ -1357,7 +1339,6 @@ class Controller extends CI_Controller
 
         $focus_sourceid = ($_POST['sourceid'] > 0 ? $_POST['sourceid'] : ($source_session ? $source_session['sourceid'] : 0));
         $ui = '';
-
 
         if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261'))) {
 
@@ -1402,58 +1383,51 @@ class Controller extends CI_Controller
 
         } else {
 
-            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42376')) && !source_access(null, $_POST['sourceid'])) {
+            $ui = '';
+            $listed_items = 0;
+            $is_cache = in_array($_POST['chainsourcetype'], $this->config->item('sourceids___14599'));
 
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
+            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
 
-            } else {
+                //SOURCES
+                $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
+                $sources___4593 = $this->config->item('sources___4593'); //Chain Types
 
-                $ui = '';
-                $listed_items = 0;
-                $is_cache = in_array($_POST['chainsourcetype'], $this->config->item('sourceids___14599'));
-
-                if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
-
-                    //SOURCES
-                    $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
-                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
-
-                    foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $source_session) {
-                        if (isset($source_session['sourceid'])) {
-                            $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], (!$is_cache ? $source_session['chainvalue'] : null));
-                            $listed_items++;
-                        }
-                    }
-
-                } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
-
-                    //IDEAS
-                    $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
-                    $sources___4737 = $this->config->item('sources___4737'); //Idea Types
-                    $sources___4593 = $this->config->item('sources___4593'); //Chain Types
-                    $discover_chainsourcetype = discover_chainsourcetype();
-
-                    foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $next_i) {
-                        if (isset($next_i['ideaid'])) {
-                            $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
-                            $listed_items++;
-                        }
-                    }
-
-                }
-
-                if ($listed_items < $_POST['counter']) {
-                    //We have more to show:
-                    foreach ($this->Sources->read(array(
-                        'sourceid' => $_POST['sourceid'],
-                    )) as $source_this) {
-                        $ui .= view_more(view_memory(42903, 42902) . $source_this['sourcehandle'], false, '&nbsp;', '&nbsp;', 'View All');
+                foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $source_session) {
+                    if (isset($source_session['sourceid'])) {
+                        $ui .= view_card(view_memory(42903, 42902) . $source_session['sourcehandle'], $source_session['sourcehandle'] == $current_sourcehandle, $source_session['chainsourcetype'], view_cover($source_session['sourcecover'], true), $source_session['sourcevalue'], (!$is_cache ? $source_session['chainvalue'] : null));
+                        $listed_items++;
                     }
                 }
 
-                echo $ui;
+            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
+
+                //IDEAS
+                $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
+                $sources___4737 = $this->config->item('sources___4737'); //Idea Types
+                $sources___4593 = $this->config->item('sources___4593'); //Chain Types
+                $discover_chainsourcetype = discover_chainsourcetype();
+
+                foreach (sources_query($_POST['chainsourcetype'], $_POST['sourceid'], 1, false) as $next_i) {
+                    if (isset($next_i['ideaid'])) {
+                        $ui .= view_card($discover_chainsourcetype . view_memory(42903, 33286) . $next_i['ideahashtag'], $next_i['ideahashtag'] == $current_ideahashtag, $next_i['chainsourcetype'], (in_array($next_i['ideatype'], $this->config->item('sourceids___32172')) ? $sources___4737[$next_i['ideatype']]['m__cover'] : ''), view_idea_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
+                        $listed_items++;
+                    }
+                }
 
             }
+
+            if ($listed_items < $_POST['counter']) {
+                //We have more to show:
+                foreach ($this->Sources->read(array(
+                    'sourceid' => $_POST['sourceid'],
+                )) as $source_this) {
+                    $ui .= view_more(view_memory(42903, 42902) . $source_this['sourcehandle'], false, '&nbsp;', '&nbsp;', 'View All');
+                }
+            }
+
+            echo $ui;
+
         }
     }
 

@@ -1954,9 +1954,9 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
     $is_author = false;
     if ($source_session) {
         $is_author = count($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //AUTHORED SOURCES
-            'chainsourceup' => $chainsourcecreator,
-            'chainsourcedown' => $e['sourceid'],
+            'chainsourcetype' => 12274,
+            'chainsourcecreator' => $chainsourcecreator,
+            'chainid' => $e['sourceid'],
         )));
     }
 
@@ -2004,7 +2004,6 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
      *
      * */
 
-
     $CI =& get_instance();
     $source_session = source_session();
     $discovery_mode = ($replacement_sourceid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlsources___6287'))) ? true : false));
@@ -2036,10 +2035,10 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
     $chainsourcecreator = ($replacement_sourceid > 0 ? $replacement_sourceid : ($source_session ? $source_session['sourceid'] : 0));
     $is_author = false;
     if ($chainsourcecreator) {
-        $is_author = count($CI->Chains->read(array( //IDEA SOURCE
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31919')) . ')' => null, //IDEA AUTHOR
-            'chainsourceup' => $chainsourcecreator,
-            'chainidearight' => $i['ideaid'],
+        $is_author = count($CI->Chains->read(array(
+            'chainsourcetype' => 12273,
+            'chainsourcecreator' => $chainsourcecreator,
+            'chainid' => $i['ideaid'],
         )));
     }
 
@@ -3977,10 +3976,6 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
         if (count($superpowers_required) && !source_session(end($superpowers_required))) {
             continue;
         }
-        if (in_array($chainsourcetype, $CI->config->item('sourceids___42376')) && !$source_session) {
-            //Private content without being a member, so dont even show the counters:
-            continue;
-        }
 
 
         $coins_count[$chainsourcetype] = ideas_query($chainsourcetype, $focus_i['ideaid'], 0, false);
@@ -5006,11 +5001,6 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 continue;
             }
 
-            if (in_array($sourceid_bottom_bar, $CI->config->item('sourceids___42376')) && !$source_session) {
-                //Private content without being a member, so dont even show the counters:
-                continue;
-            }
-
             $coins_ui = ideas_query($sourceid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
             if (strlen($coins_ui)) {
                 $bottom_menu_ui .= '<span class="hideIfEmpty">';
@@ -5456,10 +5446,6 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
             foreach ($CI->config->item('sources___31916') as $sourceid_bottom_bar => $m_bottom_bar) {
                 $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_bottom_bar['m__following']);
                 if (count($superpowers_required) && !source_session(end($superpowers_required))) {
-                    continue;
-                }
-                if (in_array($sourceid_bottom_bar, $CI->config->item('sourceids___42376')) && !$source_session) {
-                    //Private content without being a member, so dont even show the counters:
                     continue;
                 }
 
