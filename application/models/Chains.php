@@ -1352,7 +1352,7 @@ class Chains extends CIdea_cache
         $i['next_ideas'] = array();
         $current_level++;
 
-        //Append media if any:
+        //TODO Append media
         foreach ($this->Chains->read(array(
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42294')) . ')' => null, //Media
             'chainidearight' => $i['ideaid'],

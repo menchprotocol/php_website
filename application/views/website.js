@@ -136,59 +136,6 @@ function watch_cover() {
 }
 
 
-function gather_media(target_el, uploader_id) {
-
-    //Append Media:
-    var sort_rank = 0;
-    var upload_completed = true;
-    var error_message = null;
-    var uploaded_media = [];
-    $(target_el).each(function () {
-
-        var currentsource_id = parseInt($(this).attr('sourceid'));
-
-        if (currentsource_id > 0) {
-
-            //Already there...
-            uploaded_media[sort_rank] = {
-                media_sourceid: parseInt($(this).attr('media_sourceid')),
-                playback_code: $(this).attr('playback_code'),
-                sourceid: currentsource_id,
-                sourcecover: $(this).attr('sourcecover'),
-                sourcevalue: $('#' + $(this).attr('id') + ' input').val(),
-            }
-            sort_rank++;
-
-        } else if (media_cache[uploader_id][$(this).attr('id')]) {
-
-            //Fetch variables for this media:
-            uploaded_media[sort_rank] = {
-                media_sourceid: parseInt($(this).attr('media_sourceid')),
-                playback_code: $(this).attr('playback_code'),
-                sourceid: 0,
-                sourcecover: $(this).attr('sourcecover'),
-                sourcevalue: $('#' + $(this).attr('id') + ' input').val(),
-                media_cache: media_cache[uploader_id][$(this).attr('id')],
-            }
-            sort_rank++;
-
-        } else {
-
-            //This media is missing, upload is not yet complete:
-            upload_completed = false;
-            error_message = 'Media has not yet uploaded, please wait until upload is complete...';
-
-        }
-    });
-
-    return {
-        upload_completed: upload_completed,
-        error_message: error_message,
-        uploaded_media: uploaded_media,
-    };
-}
-
-
 function chain_preview(apply_id, s__id) {
 
     //Select first:
@@ -2052,7 +1999,7 @@ function idea_update() {
     var created_ideaid = parseInt($('#modal31911 .created_ideaid').val());
     console.log('Idea updating begins #' + current_ideaid);
 
-    //Fetch Media
+    //TODO Preview Media
     var gather_media_result = gather_media('#modal31911 .media_frame .media_item', 13572);
     if (!gather_media_result['upload_completed']) {
         i_saving = false;
