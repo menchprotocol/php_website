@@ -3,7 +3,6 @@
 $sourcehandle = (isset($_GET['sourcehandle']) ? $_GET['sourcehandle'] : null);
 $ideahashtag = (!$sourcehandle && isset($_GET['ideahashtag']) ? $_GET['ideahashtag'] : null);
 $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
-$sources___42263 = $this->config->item('sources___42263'); //Chain Groups
 
 if ($sourcehandle) {
     foreach ($this->Sources->read(array(
@@ -80,35 +79,6 @@ foreach ($this->config->item('sources___33292') as $sourceid1 => $m1) {
                 continue;
             }
             foreach ($this->config->item('sources___' . $source_pinned) as $sourceid3 => $m3) {
-
-                //Determine chain group:
-                foreach(array_intersect($m3['m__following'], $this->config->item('sourceids___42263')) as $headline_chain){
-                    if ($headline_chain > 0){
-                        if(!$focus_chain_group || $focus_chain_group!=$headline_chain){
-
-                            echo '<tr class="mobile-shrink headlines hidden">';
-                            echo '<td class="center" colspan="2" title="@'.$sources___42263[$headline_chain]['m__handle'].'">';
-
-                            //Search for sibling if Has Family:
-                            if(in_array($sourceid2, $this->config->item('sourceids___42792'))){
-                                foreach($this->Chains->read(array(
-                                    'chainsourcedown' => $headline_chain,
-                                    'chainsourcetype' => 41011, //Family
-                                ), array('chainsourceup'), 1) as $sibling){
-                                    echo '<a href="'.view_memory(42903,42902).$sibling['sourcehandle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['sourcecover']).'</span><b class="grey">'.$sibling['sourcevalue'].'</b></a><b class="grey"> & </b></b>';
-                                }
-                            }
-
-                            echo '<a href="'.view_memory(42903,42902).$sources___42263[$headline_chain]['m__handle'].'"><span class="icon-block-sm grey">'.$sources___42263[$headline_chain]['m__cover'].'</span><b class="grey">'.$sources___42263[$headline_chain]['m__title'].'</a>:</b>';
-
-                            echo '</td>';
-                            echo '</tr>';
-                            $focus_chain_group = $headline_chain;
-                        }
-                    }
-                }
-
-
                 echo '<tr class="main__title mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
                 echo '<td style="text-align: left;" title="@' . $sourceid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a target="_blank" href="'.view_app_chain(4341).'?chainsourcetype='.  $sourceid3 . '&chainvoid=0" class="card_count_' . $sourceid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
                 echo '</tr>';

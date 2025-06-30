@@ -35,7 +35,7 @@ foreach ($is as $in) {
 
     //Fetch Next Ideas:
     foreach ($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
         'chainidealeft' => $in['ideaid'],
     ), array('chainidearight'), 0, 0) as $next_i) {
 

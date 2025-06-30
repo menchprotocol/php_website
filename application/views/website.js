@@ -266,19 +266,6 @@ function source_load_finder(chainsourcetype) {
     });
 }
 
-function idea_load_search(chainsourcetype) {
-    //Load Search:
-    var icons_listed = [];
-    $('.new-list-' + chainsourcetype + ' .add-input').keypress(function (e) {
-        icons_listed = [];
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            idea_create(chainsourcetype, 0);
-            return true;
-        }
-    });
-}
-
 function search_js_cover(chainsourcetype, suggestion, action_id) {
 
     if (!js_sourceids___26010.includes(chainsourcetype)) {
@@ -550,14 +537,13 @@ function toggle_pills(chainsourcetype_hash, is_first_load) {
                 setTimeout(function () {
 
                     //TODO Fix Sorting
-                    if (js_sourceids___11020.includes(chainsourcetype) || (focus__node == 12274 && (js_sourceids___42261.includes(chainsourcetype) || js_sourceids___42284.includes(chainsourcetype)))) {
+                    if (js_sourceids___11020.includes(chainsourcetype) || (focus__node == 12274 && ( chainsourcetype==13550 || chainsourcetype==31777 ))) {
                         idea_sort_load(chainsourcetype);
-                    } else if (js_sourceids___11028.includes(chainsourcetype) || (focus__node == 12273 && (js_sourceids___42261.includes(chainsourcetype) || js_sourceids___42284.includes(chainsourcetype)))) {
+                    } else if (js_sourceids___11028.includes(chainsourcetype) || (focus__node == 12273 && ( chainsourcetype==13550 || chainsourcetype==31777 ))) {
                         source_sort_load(chainsourcetype);
                     }
 
                     setup_popover();
-
                     pills_loading = null;
 
                 }, 233);

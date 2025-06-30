@@ -811,9 +811,9 @@ class Sources extends CIdea_cache
         $flat_items = array();
         $s__level++;
 
-        if (in_array($chainsourcetype, $this->config->item('sourceids___42276'))) {
+        if ($chainsourcetype==42279) {
 
-            //Up Source Chain Groups:
+            //Up/Following Source Chain Groups:
             $order_columns = source_sort();
             $joins_objects = array('chainsourceup');
             $query_filters = array(
@@ -821,9 +821,9 @@ class Sources extends CIdea_cache
                 'chainsourcetype IN (' . join(',', $this->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
             );
 
-        } elseif (in_array($chainsourcetype, $this->config->item('sourceids___42377'))) {
+        } elseif ($chainsourcetype==42373) {
 
-            //Down Source Chain Groups:
+            //Down/Followers Source Chain Groups:
             $order_columns = source_sort();
             $joins_objects = array('chainsourcedown');
             $query_filters = array(

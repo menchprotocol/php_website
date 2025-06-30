@@ -32,34 +32,17 @@ foreach($this->config->item('sources___31916') as $chainsourcetype => $m) {
     if(!$coins_count[$chainsourcetype] && in_array($chainsourcetype, $this->config->item('sourceids___12144'))){ continue; }
 
     $input_content = '';
-    if(source_session(10939)){
+    if(source_session(10939) && in_array($chainsourcetype, $this->config->item('sourceids___11028'))){
 
-        if(in_array($chainsourcetype, $this->config->item('sourceids___11028'))){
-
-            //ADD SOURCES
-            $input_content .= '<div class="new_list new-list-'.$chainsourcetype.'"><div class="col-12 container-center"><div class="dropdown_'.$chainsourcetype.' list-adder">
+        //ADD SOURCES
+        $input_content .= '<div class="new_list new-list-'.$chainsourcetype.'"><div class="col-12 container-center"><div class="dropdown_'.$chainsourcetype.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="Create New or Chain Existing @Sources">
                     </div></div></div></div>';
-            $body_content .= '<script> $(document).ready(function () { source_load_finder('.$chainsourcetype.'); }); </script>';
-
-        } elseif(in_array($chainsourcetype, $this->config->item('sourceids___1635910'))){
-
-            //TODO Activate Later?
-            //ADD IDEAS
-            $input_content .= '<div class="new_list new-list-'.$chainsourcetype.'"><div class="col-12 container-center"><div class="dropdown_'.$chainsourcetype.' list-adder">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="Create New or Chain Existing #ideas">
-                    </div></div></div></div>';
-            $body_content .= '<script> $(document).ready(function () { idea_load_search('.$chainsourcetype.'); }); </script>';
-
-        }
+        $body_content .= '<script> $(document).ready(function () { source_load_finder('.$chainsourcetype.'); }); </script>';
 
     }
 

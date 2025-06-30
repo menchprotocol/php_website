@@ -27,7 +27,7 @@ foreach($this->Chains->read(array(
     $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_value($primary_i) . '</div>';
 
     foreach ($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
+        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
         'chainidealeft' => $primary_i['ideaid'],
     ), array('chainidearight'), 0, 0) as $next_i) {
         $secondary_i .= idea_view(14565,  $next_i);

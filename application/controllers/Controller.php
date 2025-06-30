@@ -697,7 +697,7 @@ class Controller extends CI_Controller
 
             //Find Published Followings:
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42268')) . ')' => null, //IDEA CHAINS
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                 'chainidearight' => $_POST['ideaid'],
             ), array('chainidealeft'), 1) as $previous_i) {
                 $delete_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
@@ -706,7 +706,7 @@ class Controller extends CI_Controller
             //If not found, find active followings:
             if (!$delete_redirect) {
                 foreach ($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42268')) . ')' => null, //IDEA CHAINS
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                     'chainidearight' => $_POST['ideaid'],
                 ), array('chainidealeft'), 1) as $previous_i) {
                     $delete_redirect = view_memory(42903, 33286) . $previous_i['ideahashtag'];
@@ -1187,7 +1187,7 @@ class Controller extends CI_Controller
 
             $ui = '';
             $listed_items = 0;
-            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
+            if ($_POST['chainsourcetype']==13550 || $_POST['chainsourcetype']==31777) {
 
                 //SOURCES
                 $sources___4593 = $this->config->item('sources___4593'); //Chain Types
@@ -1295,7 +1295,7 @@ class Controller extends CI_Controller
                 return false;
             }
 
-            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42380'))) {
+            if ($_POST['chainsourcetype']==11019) {
 
                 //IDEA Chain Groups Previous
                 $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
@@ -1304,7 +1304,7 @@ class Controller extends CI_Controller
                 }
                 $ui .= '</div>';
 
-            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42265'))) {
+            } elseif ($_POST['chainsourcetype']==12840) {
 
                 //IDEA Chain Groups Next
                 $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
@@ -1313,7 +1313,7 @@ class Controller extends CI_Controller
                 }
                 $ui .= '</div>';
 
-            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
+            } elseif ($_POST['chainsourcetype']==31777) {
 
                 $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
                 foreach ($ideas_query as $item) {
@@ -1321,7 +1321,7 @@ class Controller extends CI_Controller
                 }
                 $ui .= '</div>';
 
-            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261'))) {
+            } elseif ($_POST['chainsourcetype']==13550) {
 
                 //Sources
                 $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
@@ -1364,7 +1364,7 @@ class Controller extends CI_Controller
         $focus_sourceid = ($_POST['sourceid'] > 0 ? $_POST['sourceid'] : ($source_session ? $source_session['sourceid'] : 0));
         $ui = '';
 
-        if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261'))) {
+        if ($_POST['chainsourcetype']==13550) {
 
             //Idea/Source Link Groups
             //Ideas:
@@ -1424,7 +1424,7 @@ class Controller extends CI_Controller
                     }
                 }
 
-            } elseif (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284'))) {
+            } elseif ($_POST['chainsourcetype']==13550 || $_POST['chainsourcetype']==31777) {
 
                 //IDEAS
                 $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
@@ -2942,7 +2942,7 @@ class Controller extends CI_Controller
 
                 //idea list:
                 $is_next = $this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                     'chainidealeft' => $_POST['s__id'],
                 ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'));
                 $counter = count($is_next);
@@ -2990,7 +2990,7 @@ class Controller extends CI_Controller
                 if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
                     echo source_view($_POST['chainsourcetype'], $s);
                     $success = true;
-                } else if ($_POST['chainsourcetype'] == 31777 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
+                } else if ($_POST['chainsourcetype']==31777 || $_POST['chainsourcetype']==13550 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
                     echo idea_view($_POST['chainsourcetype'], $s, $previous_i, null, $focus_e['sourceid']);
                     $success = true;
                 }
@@ -3008,7 +3008,7 @@ class Controller extends CI_Controller
                 if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11020'))) {
                     echo idea_view($_POST['chainsourcetype'], $s, $previous_i);
                     $success = true;
-                } else if ($_POST['chainsourcetype'] == 31777 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42261')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___42284')) || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
+                } else if ($_POST['chainsourcetype']==31777 || $_POST['chainsourcetype']==13550 || in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
                     echo source_view($_POST['chainsourcetype'], $s);
                     $success = true;
                 }
@@ -3048,7 +3048,7 @@ class Controller extends CI_Controller
             //Ideas order based on alphabetical order
             $order = 0;
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                 'chainidealeft' => $_POST['focus__id'],
             ), array('chainidearight'), 0, 0, array('ideavalue' => 'ASC')) as $x) {
                 $order++;

@@ -26,7 +26,7 @@ if ($chainsourcecreator && !$at_starting_point) {
 
             //Does this have a follower list?
             $query_subset = $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Sequence Down
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                 'chainidealeft' => $followings_i['ideaid'],
             ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, true);
 

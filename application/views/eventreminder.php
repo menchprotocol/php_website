@@ -188,7 +188,7 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
 
 
         $children = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Sequence Down
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'));
 

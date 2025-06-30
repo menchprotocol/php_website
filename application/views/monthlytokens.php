@@ -21,16 +21,10 @@ foreach ($this->config->item('sources___14874') as $chainsourcetype => $m) {
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //AUTHORED SOURCES
         ), array('chainsourcedown'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif (in_array($chainsourcetype, $this->config->item('sourceids___42284'))) {
+    } elseif ($chainsourcetype==31777) {
 
         $unique = $this->Chains->read(array(
             'chainsourcetype IN (' . join(',', $this->config->item('sourceids___' . $chainsourcetype)) . ')' => null,
-        ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
-
-    } elseif ($chainsourcetype == 31777) {
-
-        $unique = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } else {

@@ -315,7 +315,7 @@ class Ideas extends CIdea_cache
         $applied_success = 0; //To be populated
 
         $is_next = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
             'chainidealeft' => $ideaid,
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'));
 
@@ -387,7 +387,7 @@ class Ideas extends CIdea_cache
                     } else {
 
                         $is_previous = $this->Chains->read(array(
-                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence 2-Ways
+                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                             'chainidealeft' => $i['ideaid'],
                             'chainidearight' => $next_i['ideaid'],
                         ), array(), 0);
@@ -509,7 +509,7 @@ class Ideas extends CIdea_cache
         array_push($loop_breaker_ids, intval($i['ideaid']));
 
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
 

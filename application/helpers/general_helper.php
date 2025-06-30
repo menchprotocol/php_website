@@ -2438,13 +2438,13 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                 //Top/Bottom Idea Keywords
                 foreach ($CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence 2-Ways
+                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                     'chainidealeft' => $s['ideaid'],
                 ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['ideavalue'] . ' ';
                 }
                 foreach ($CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence 2-Ways
+                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                     'chainidearight' => $s['ideaid'],
                 ), array('chainidealeft'), 0, 0, array('chainkey' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['ideavalue'] . ' ';
@@ -3072,9 +3072,9 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         return false;
     }
 
-    if (in_array($chainsourcetype, $CI->config->item('sourceids___42377'))) {
+    if ($chainsourcetype==42373) {
 
-        //Down Source Chain Groups:
+        //Down/Followers Source Chain Groups:
         $order_columns = source_sort();
         $joins_objects = array('chainsourcedown');
         $query_filters = array(
@@ -3082,9 +3082,9 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
         );
 
-    } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___42276'))) {
+    } elseif ($chainsourcetype==42279) {
 
-        //Up Source Chain Groups:
+        //Up/Following Source Chain Groups:
         $order_columns = source_sort();
         $joins_objects = array('chainsourceup');
         $query_filters = array(
@@ -3092,7 +3092,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
         );
 
-    } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___42261'))) {
+    } elseif ($chainsourcetype==13550) {
 
         //IDEAS
         $query_filters = array(
@@ -3191,7 +3191,7 @@ function ideas_query($chainsourcetype, $ideaid, $current_page = 0, $append_card_
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if (in_array($chainsourcetype, $CI->config->item('sourceids___42261'))) {
+    if ($chainsourcetype==13550) {
 
         //SOURCES
         $joins_objects = array('chainsourceup');
@@ -3206,7 +3206,7 @@ function ideas_query($chainsourcetype, $ideaid, $current_page = 0, $append_card_
 
         $order_columns = idea_sort();
 
-    } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___42380'))) {
+    } elseif ($chainsourcetype==11019) {
 
         //IDEA Chain Groups Previous
         $order_columns = array('chainid' => 'DESC');
@@ -3216,7 +3216,7 @@ function ideas_query($chainsourcetype, $ideaid, $current_page = 0, $append_card_
             'chainidearight' => $ideaid,
         );
 
-    } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___42265'))) {
+    } elseif ($chainsourcetype==12840) {
 
         //IDEA Chain Groups Next
         $order_columns = array('chainkey' => 'ASC');
@@ -3964,37 +3964,9 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
             continue;
         }
 
-        $input_content = '';
-        if (!$discovery_mode && $ideation_pen) {
-
-            if (in_array($chainsourcetype, $CI->config->item('sourceids___1635910'))) {
-
-                $input_content .= '<div class="new_list new-list-' . $chainsourcetype . '"><div class="col-12 container-center"><div class="dropdown_' . $chainsourcetype . ' list-adder">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
-                               maxlength="' . view_memory(6404, 6197) . '"
-                               placeholder="Create New or Chain Existing @Sources">
-                    </div></div></div></div>';
-                $body_content .= '<script> $(document).ready(function () { source_load_finder(' . $chainsourcetype . '); }); </script>';
-
-            } elseif (0 && in_array($chainsourcetype, $CI->config->item('sourceids___11020'))) {
-
-                //ADD IDEAS
-                $input_content .= '<div class="new_list new-list-' . $chainsourcetype . '"><div class="col-12 container-center"><div class="dropdown_' . $chainsourcetype . ' list-adder">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
-                               maxlength="' . view_memory(6404, 6197) . '"
-                               placeholder="Create New or Chain Existing #ideas">
-                    </div></div></div></div>';
-                $body_content .= '<script> $(document).ready(function () { idea_load_search(' . $chainsourcetype . '); }); </script>';
-            }
-
-        }
 
         if (($source_session && in_array($chainsourcetype, $CI->config->item('sourceids___42945'))) || $coins_count[$chainsourcetype] > 0) {
-            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainsourcetype . ' hidden" read-counter="' . $coins_count[$chainsourcetype] . '">' . $input_content . '<div class="tab_content"></div></div>';
+            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainsourcetype . ' hidden" read-counter="' . $coins_count[$chainsourcetype] . '"><div class="tab_content"></div></div>';
 
 
             if ($chainsourcetype != 12840 || !$discovery_next_hide) {

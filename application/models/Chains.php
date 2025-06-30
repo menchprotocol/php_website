@@ -781,7 +781,7 @@ class Chains extends CIdea_cache
             //Append children as options:
             $html_message = '';
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Sequence Down
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                 'chainidealeft' => $i['ideaid'],
             ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
                 //Has this user idea_discovered this idea or no?
@@ -823,7 +823,7 @@ class Chains extends CIdea_cache
 
         //Fetch followings:
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42268')) . ')' => null, //Active Sequence Up
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
             'chainidearight' => $focus_ideaid,
         ), array('chainidealeft')) as $idea_previous) {
 
@@ -874,7 +874,7 @@ class Chains extends CIdea_cache
         array_push($loop_breaker_ids, intval($focus_ideaid));
 
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42268')) . ')' => null, //Active Sequence Up
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
             'chainidearight' => $focus_ideaid,
         ), array('chainidealeft')) as $prev_i) {
 
@@ -916,7 +916,7 @@ class Chains extends CIdea_cache
 
         foreach ($this->Chains->read(array(
             'chainidealeft' => $i['ideaid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
 
             //Validate Find After:
@@ -1142,7 +1142,7 @@ class Chains extends CIdea_cache
                 }
 
                 $has_children = count($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //IDEA CHAINS
+                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                     'chainidealeft' => $next_i['ideaid'],
                 ), array('chainidearight'), 0, 0));
 
@@ -1389,7 +1389,7 @@ class Chains extends CIdea_cache
 
         if ($i['user_idea_discovered']) {
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                 'chainidealeft' => $i['ideaid'],
             ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
                 array_push($i['next_ideas'], $this->Chains->history($next_i, $sourceid, $current_level));
@@ -1438,7 +1438,7 @@ class Chains extends CIdea_cache
                 'chainsourcecreator' => $sourceid,
                 'chainidealeft' => $i['ideaid'],
             ), array('chainidearight')) : $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
                 'chainidealeft' => $i['ideaid'],
             ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'))) as $next_i) {
                 array_push($i['next_ideas'], $this->Chains->historyidea_discovered($next_i, $sourceid, $current_level));
@@ -1454,7 +1454,7 @@ class Chains extends CIdea_cache
     {
 
         $total_next = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42267')) . ')' => null, //Active Sequence Down
+            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
             'chainidealeft' => $i['ideaid'],
         ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
         $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
