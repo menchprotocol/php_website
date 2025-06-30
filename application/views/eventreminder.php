@@ -93,15 +93,6 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
                         'chainsourceup' => 26557, //Time Ends
                     ), array(), 1);
 
-                    //Navigation?
-                    $must_follow = array();
-                    foreach ($this->Chains->read(array(
-                        'chainsourcetype' => 32235, //Navigation
-                        'chainidearight' => $i['ideaid'],
-                    )) as $follow) {
-                        array_push($must_follow, $follow['chainsourceup']);
-                    }
-
                     array_push($idea_scanned, $i['ideaid']);
                     $title = view_idea_title($i, true);
                     $total_sent = 0;
@@ -111,16 +102,6 @@ if (isset($_GET['chainid']) && isset($_GET['sourcehandle']) && isset($_GET['hash
                         'chainsourcetype IN (' . join(',', $this->config->item('sourceids___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'chainidealeft' => $i['ideaid'],
                     ), array('chainsourcecreator'), 0) as $x) {
-
-                        //Make sure this member qualified:
-                        if (count($must_follow) > 0 && count($must_follow) != count($this->Chains->read(array(
-                                'chainsourcedown' => $x['sourceid'],
-                                'chainsourceup IN (' . join(',', $must_follow) . ')' => null,
-                                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                            )))) {
-                            //User does not have all navigation items, skip for now:
-                            continue;
-                        }
 
                         $user_website = user_website($x['sourceid']);
                         $subject = 'Reminder: ' . $title . ' Starts in ' . view_time_difference($time_starts);

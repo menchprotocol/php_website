@@ -546,7 +546,7 @@ class Chains extends CIdea_cache
 
         } elseif ($element_id == 4737) {
 
-            //Source Reference
+            //Idea Type
             $status = $this->Ideas->update($o__id, array(
                 'ideatype' => $source_createid,
             ), $source_session['sourceid']);
@@ -1030,10 +1030,10 @@ class Chains extends CIdea_cache
 
             //Find most recent answers by this user:
             $source_private_replies = $this->Chains->read(array(
-                'chainsourcetype' => 33532, //Private Reply
-                'chainidealeft' => $i['ideaid'],
+                'chainsourcetype' => 4228,
+                'chainidearight' => $i['ideaid'],
                 'chainsourcecreator' => $chainsourcecreator,
-            ), array('chainidearight'), 0, 1, array('chainid' => 'DESC'));
+            ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC'));
 
 
             //All validated, lets create the new idea:
@@ -1064,10 +1064,10 @@ class Chains extends CIdea_cache
 
                     //Chain to this idea:
                     $this->Chains->create(array(
-                        'chainsourcetype' => 33532, //Private Reply
+                        'chainsourcetype' => 4228,
                         'chainsourcecreator' => $chainsourcecreator,
-                        'chainidealeft' => $i['ideaid'],
-                        'chainidearight' => $idea_new['idea_create']['ideaid'],
+                        'chainidearight' => $i['ideaid'],
+                        'chainidealeft' => $idea_new['idea_create']['ideaid'],
                     ));
 
                 }
@@ -1430,10 +1430,10 @@ class Chains extends CIdea_cache
             if ($input__text) {
                 //Since it has been idea_discovered and its a text input, lots fetch the written response:
                 foreach ($this->Chains->read(array(
-                    'chainsourcetype' => 33532, //Private Reply
-                    'chainidealeft' => $i['ideaid'],
+                    'chainsourcetype' => 4228,
+                    'chainidearight' => $i['ideaid'],
                     'chainsourcecreator' => $sourceid,
-                ), array('chainidearight'), 0, 1, array('chainid' => 'DESC')) as $response) {
+                ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC')) as $response) {
                     $i['user_written_response'] = $response;
                 }
             }
@@ -1476,10 +1476,10 @@ class Chains extends CIdea_cache
 
         if ($input__text) {
             foreach ($this->Chains->read(array(
-                'chainsourcetype' => 33532, //Private Reply
-                'chainidealeft' => $i['ideaid'],
+                'chainsourcetype' => 4228,
+                'chainidearight' => $i['ideaid'],
                 'chainsourcecreator' => $sourceid,
-            ), array('chainidearight'), 0, 1, array('chainid' => 'DESC')) as $response) {
+            ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC')) as $response) {
                 $i['user_written_response'] = $response;
             }
         }

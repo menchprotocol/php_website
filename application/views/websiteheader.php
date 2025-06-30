@@ -727,17 +727,6 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                     <div class="modal-header">
                         <div class="initial_header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                            <!-- Idea Chains -->
-                            <div class="dynamic_editing_input idea_chainsourcetype hidden hidden_superpower__10939" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= searchingle_select_form(4486, 4228); ?></div>
-                            </div>
-
-                            <!-- Unchain -->
-                            <div class="dynamic_editing_input no_padded chain_idea_unchain hidden">
-                                <a class="icon-block" href="javascript:void(0);" onclick="idea_direction_switch()" title="Unchain Idea / Publish a Standalone idea"><i class="far fa-unchain"></i></a>
-                            </div>
-
                         </div>
                         <button type="button" class="btn btn-default idea_update post_button" onclick="idea_update()">POST</button>
                     </div>
@@ -750,10 +739,6 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <input type="hidden" class="save_ideaid" value="0" />
                         <input type="hidden" class="save_chainid" value="0" />
                         <input type="hidden" class="next_ideaid" value="0" />
-                        <input type="hidden" class="previous_ideaid" value="0" />
-
-                        <div class="idea_list_next cover-text hideIfEmpty"></div>
-                        <div class="doclear">&nbsp;</div>
 
                         <!-- Idea Hashtag -->
                         <div class="dynamic_editing_input single_line hash_group" title="<?= $sources___6201[32337]['m__title'] ?>">
@@ -787,11 +772,6 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         </div>
 
                         <div class="inner_message left_padded">
-                            <div class="idea_list_previous hideIfEmpty"></div>
-                        </div>
-
-
-                        <div class="inner_message left_padded">
                             <?php
                             foreach($this->config->item('sources___44168') as $sourceid => $m){
 
@@ -801,7 +781,7 @@ if($source_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                                         <a class="add_hashtag_44169 icon-block" href="javascript:void(0)" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>
                                     </div>';
 
-                                } elseif($sourceid==4737){ //Source Reference
+                                } elseif($sourceid==4737){ //Idea Type
 
                                     echo '<div class="dynamic_editing_input no_padded">
                                         <div class="dynamic_selector">'.searchingle_select_form(4737, 6677).'</div>

@@ -6,7 +6,7 @@ if(!isset($_GET['ideahashtag'])){
 
 //Sheet
 $sources___6287 = $this->config->item('sources___6287'); //APP
-$sources___4737 = $this->config->item('sources___4737'); //Source References
+$sources___4737 = $this->config->item('sources___4737'); //Idea Types
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 $recursive_idea_ids = array();
@@ -55,11 +55,7 @@ foreach($idea_settings['query_string_filtered'] as $x){
 
         $idea_content .= '<td title="'.$x['sourcevalue'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chainvalue']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chainvalue'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
 
-        if(count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow'])!=count($this->Chains->read(array(
-                    'chainsourcedown' => $x['sourceid'],
-                    'chainsourceup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                                ))))){
+        if(count($discoveries)){
             if(!isset($count_totals['i'][$idea_var['ideaid']])){
                 $count_totals['i'][$idea_var['ideaid']] = 0;
             }

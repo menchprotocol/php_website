@@ -56,10 +56,10 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
 
                 $set_chainvalue = '';
                 foreach ($this->Chains->read(array(
-                    'chainsourcetype' => 33532, //Private Reply
-                    'chainidealeft' => $idea_var['ideaid'],
+                    'chainsourcetype' => 4228,
+                    'chainidearight' => $idea_var['ideaid'],
                     'chainsourcecreator' => $x['sourceid'],
-                ), array('chainidearight'), 0, 1, array('chainid' => 'DESC')) as $response) {
+                ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC')) as $response) {
                     $set_chainvalue = $response['ideavalue'];
                 }
 
@@ -80,11 +80,7 @@ if ((count($idea_settings['source_column']) + count($idea_settings['idea_column'
             $idea_content .= '</td>';
 
 
-            if (count($discoveries) && (!count($idea_var['must_follow']) || count($idea_var['must_follow']) != count($this->Chains->read(array(
-                        'chainsourcedown' => $x['sourceid'],
-                        'chainsourceup IN (' . join(',', $idea_var['must_follow']) . ')' => null,
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                    ))))) {
+            if (count($discoveries)) {
                 if (!isset($count_totals['i'][$idea_var['ideaid']])) {
                     $count_totals['i'][$idea_var['ideaid']] = 0;
                 }

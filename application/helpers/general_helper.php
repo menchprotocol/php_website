@@ -242,32 +242,9 @@ function idea_spots_remaining($ideaid)
             $query_filters['chainsourcecreator !='] = $source_session['sourceid'];
         }
 
-        //Navigation?
-        $must_follow = array();
-        foreach ($CI->Chains->read(array(
-            'chainsourcetype' => 32235, //Navigation
-            'chainidearight' => $ideaid,
-        )) as $follow) {
-            array_push($must_follow, $follow['chainsourceup']);
-        }
 
-        $current_discoveries = 0;
-        if (count($must_follow)) {
-            //We must qualify each discovery individually:
-            foreach ($CI->Chains->read($query_filters) as $e) {
-                if (count($must_follow) == count($CI->Chains->read(array(
-                        'chainsourcedown' => $e['chainsourcecreator'],
-                        'chainsourceup IN (' . join(',', $must_follow) . ')' => null,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                    )))) {
-                    $current_discoveries++;
-                }
-            }
-        } else {
-            $query = $CI->Chains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
-            $current_discoveries = $query[0]['totals'];
-        }
-
+        $query = $CI->Chains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
+        $current_discoveries = $query[0]['totals'];
 
         $spots_remaining = intval($max_available[0]['chainvalue']) - $current_discoveries;
         if ($spots_remaining < 0) {
@@ -777,19 +754,6 @@ function idea_settings($ideahashtag, $fetch_contact = false)
                     $contact_details['phone_count']++;
                 }
             }
-        }
-
-
-        //Append Navigation:
-        foreach ($idea_column as $key => $idea_var) {
-            $must_follow = array();
-            foreach ($CI->Chains->read(array(
-                'chainsourcetype' => 32235, //Navigation
-                'chainidearight' => $idea_var['ideaid'],
-            )) as $follow) {
-                array_push($must_follow, $follow['chainsourceup']);
-            }
-            $idea_column[$key]['must_follow'] = $must_follow;
         }
 
         return array(
@@ -4570,7 +4534,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
         } elseif ($chainsourcetype_target_bar == 4737 && !$discovery_mode && $superpower_10939) {
 
-            //Source Reference
+            //Idea Type
             $bottom_bar_ui .= '<span>';
             $bottom_bar_ui .= searchingle_select_instant(4737, $i['ideatype'], $idea_access, false, $i['ideaid'], $chainid);
             $bottom_bar_ui .= '</span>';
@@ -4927,10 +4891,10 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
             //Find the created idea if any:
             $source_private_replies = $CI->Chains->read(array(
-                'chainsourcetype' => 33532, //Private Reply
-                'chainidealeft' => $i['ideaid'],
+                'chainsourcetype' => 4228,
+                'chainidearight' => $i['ideaid'],
                 'chainsourcecreator' => $chainsourcecreator,
-            ), array('chainidearight'), 0, 1, array('chainid' => 'DESC'));
+            ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC'));
 
             $input_attributes = '';
             $previous_response = ($chainsourcecreator && isset($source_private_replies[0]['ideavalue']) ? $source_private_replies[0]['ideavalue'] : '');
@@ -5072,16 +5036,9 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         //Determine hover state:
         if ($chainsourcetype_target_bar == 33532 && !$is_cache && $source_session && $idea_access >= 2 && !$is_locked) {
 
-            //Private Reply
+            //Idea Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="idea_editor(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
-            $bottom_menu_ui .= '</span>';
-
-        } elseif (0 && $chainsourcetype_target_bar == 42819 && !$is_cache && source_session(10939) && $idea_access >= 3 && !$is_locked) {
-
-            //New Source
-            $bottom_menu_ui .= '<span class="mini_button main__title">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" onclick="idea_editor(0,0,' . ($idea_access >= 3 ? 4228 : 30901) . ',' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node ? $m_target_bar['m__title'] : '') . '</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="idea_editor(0,0,' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
         } elseif ($chainsourcetype_target_bar == 42260 && $source_session && !$is_locked && !$is_cache && 0) {

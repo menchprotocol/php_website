@@ -17,10 +17,10 @@ foreach ($this->Chains->read(array(
         //Any responses by this user?
         $set_chainvalue = $dicovered['chainvalue'];
         foreach ($this->Chains->read(array(
-            'chainsourcetype' => 33532, //Private Reply
-            'chainidealeft' => $addition_sync['chainidearight'],
+            'chainsourcetype' => 4228, //Sequence
+            'chainidearight' => $addition_sync['chainidearight'],
             'chainsourcecreator' => $dicovered['chainsourcecreator'],
-        ), array('chainidearight'), 0, 1, array('chainid' => 'DESC')) as $response) {
+        ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC')) as $response) {
             $set_chainvalue = $response['ideavalue'];
         }
 

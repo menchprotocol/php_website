@@ -3,9 +3,19 @@
 boost_power();
 
 foreach ($this->Chains->read(array(
-    'chainsourcetype' => 33600, //Draft
+    'chainsourcetype' => 31835, //Mention
     'chainsourceup' => 26582,
 ), array('chainidearight')) as $i) {
+
+    //Make sure not completed before:
+    if(count($this->Chains->read(array(
+        'chainsourcecreator' => 26582,
+        'chainsourcetype IN (' . join(',', array(42275 /* Idea Trigerred */ , 31022 /* Idea Skipped */)) . ')' => null, //Active Writes
+        'chainidealeft' => $i['ideaid'],
+    )))){
+       //Already completed:
+       continue;
+    }
 
     //Determine if it's time to send this message:
     $time_starts = 0;
@@ -43,11 +53,10 @@ foreach ($this->Chains->read(array(
 
     //Mark this as complete?
     if (!$demo_only && (!$end_sending || $end_sending < time())) {
+
         //Ready to be done:
-        $this->Chains->update($i['chainid'], array(
-            'chainsourcetype' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
-            'chainsourcecreator' => 26582, //Messenger
-        ));
+        $this->Chains->idea_discovered(($total_sent > 0 ? 42275 /* Idea Trigerred */ : 31022 /* Idea Skipped */), 26582, 0, $i);
+
     }
 
 }

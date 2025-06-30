@@ -1333,32 +1333,6 @@ $(document).ready(function () {
 
         $('.algolia__e').textcomplete([
             {
-                match: /(^|\s)\?@(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
-                        filters: 's__type=12274' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    return search_js_line(suggestion, '?@');
-                },
-                replace: function (suggestion) {
-                    return ' ?@' + suggestion.s__handle + ' ';
-                }
-            },
-        ]);
-
-        $('.algolia__e').textcomplete([
-            {
                 match: /(^|\s)~@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
@@ -1379,32 +1353,6 @@ $(document).ready(function () {
                 },
                 replace: function (suggestion) {
                     return ' ~@' + suggestion.s__handle + ' ';
-                }
-            },
-        ]);
-
-        $('.algolia__e').textcomplete([
-            {
-                match: /(^|\s)\^@(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
-                        filters: 's__type=12274' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    return search_js_line(suggestion, '^@');
-                },
-                replace: function (suggestion) {
-                    return ' ^@' + suggestion.s__handle + ' ';
                 }
             },
         ]);
@@ -1516,32 +1464,6 @@ $(document).ready(function () {
 
         $('.algolia__e').textcomplete([
             {
-                match: /(^|\s)\?#(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
-                        filters: 's__type=12273' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    return search_js_line(suggestion, '?#');
-                },
-                replace: function (suggestion) {
-                    return ' ?#' + suggestion.s__handle + ' ';
-                }
-            },
-        ]);
-
-        $('.algolia__e').textcomplete([
-            {
                 match: /(^|\s)\|#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
@@ -1562,6 +1484,32 @@ $(document).ready(function () {
                 },
                 replace: function (suggestion) {
                     return ' |#' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
+        $('.algolia__e').textcomplete([
+            {
+                match: /(^|\s)^#(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        filters: 's__type=12273' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return search_js_line(suggestion, '^#');
+                },
+                replace: function (suggestion) {
+                    return ' ^#' + suggestion.s__handle + ' ';
                 }
             },
         ]);
@@ -1898,25 +1846,7 @@ function update_cover_mini(cover_code, target_css) {
 }
 
 
-function idea_direction_switch(chainsourcetype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 0) {
-
-    console.log('SWITCHING TO ' + chainsourcetype + '/' + next_ideaid + '/' + previous_ideaid + '/' + do_checks + '/' + $('#modal31911 .save_ideavalue').val() + '/' + parseInt($('#modal31911 .created_ideaid').val()));
-
-    /*
-    if(!next_ideaid && !previous_ideaid && !chainsourcetype && !do_checks){
-        var r = confirm("Are you sure you want to unchain this idea?");
-        if (!(r==true)) {
-            return false;
-        }
-    }
-    */
-
-    //Will switch the nature/direction of the chain:
-    return idea_editor(0, 0, chainsourcetype, next_ideaid, previous_ideaid, do_checks, $('#modal31911 .save_ideavalue').val(), parseInt($('#modal31911 .created_ideaid').val()));
-}
-
 function display_media(mediaframe_id, uploader_id, ideaid) {
-    console.log('display_media: ' + mediaframe_id + '/' + uploader_id + '/' + ideaid);
     $(".ui_ideacache_" + ideaid + " .media_display").each(function () {
         $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""></div>');
         cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_sourceid'), $(this).attr('playback_code'), $(this).attr('sourcecover'), $(this).attr('sourcevalue'), $(this).attr('sourceid'));
@@ -1924,170 +1854,69 @@ function display_media(mediaframe_id, uploader_id, ideaid) {
     sort_media(mediaframe_id);
 }
 
-function idea_editor(ideaid = 0, chainid = 0, chainsourcetype = 0, next_ideaid = 0, previous_ideaid = 0, do_checks = 1, load_message = '', passon_ideaid = 0) {
+function idea_editor(ideaid = 0, chainid = 0, next_ideaid = 0) {
 
-
-    $(".chain_idea_unchain, .idea_chainsourcetype").addClass('hidden');
+    var chainsourcetype = 0;
     var focus_idea_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
     $("#modal31911 .save_results").html('');
 
-    if (!passon_ideaid) {
+    //Reset Fields:
+    has_unsaved_changes = false;
+    $('#modal31911 .media_frame').html('');
+    $("#modal31911 .dynamic_item").attr('d__id', '').attr('d_chainid', '');
+    $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
+    $('#modal31911 .created_ideaid').val(0);
+    $("#modal31911 .unsaved_warning").val('');
+    $("#modal31911 .save_frame").addClass('hidden');
+    $('#modal31911 .save_ideaid, #modal31911 .save_chainid').val(0);
 
-        //Reset Fields:
-        has_unsaved_changes = false;
-        $('#modal31911 .media_frame').html('');
-        $("#modal31911 .dynamic_item").attr('d__id', '').attr('d_chainid', '');
-        $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
-        $('#modal31911 .created_ideaid').val(0);
-        $("#modal31911 .unsaved_warning").val('');
-        $("#modal31911 .save_frame").addClass('hidden');
-        $('#modal31911 .save_ideaid, #modal31911 .save_chainid').val(0);
-
-        //Are we adding an idea for a target action tab?
-        console.log('i Modal loaded for ' + focus_group);
-        if (focus_idea_id && do_checks && focus_group > 0 && !next_ideaid && !previous_ideaid && !ideaid && !chainid && !chainsourcetype) {
-            if (js_sourceids___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)) {
-                //Next idea group:
-                next_ideaid = focus_idea_id;
-                chainsourcetype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
-            } else if (js_sourceids___42380.includes(focus_group)) {
-                //Previous idea group:
-                previous_ideaid = focus_idea_id;
-                chainsourcetype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
-            }
-        }
-
-
-        if (!chainsourcetype && do_checks && !ideaid && !next_ideaid && !previous_ideaid && focus_idea_id) {
-            console.log('MATCH');
-            next_ideaid = focus_idea_id;
-            chainsourcetype = (js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
-        }
+    //Are we adding an idea for a target action tab?
+    console.log('i Modal loaded for ' + focus_group);
+    if (focus_idea_id && focus_group > 0 && !next_ideaid && !ideaid && !chainid) {
+        //Next idea group:
+        next_ideaid = focus_idea_id;
     }
+
+    if (!ideaid && !next_ideaid && focus_idea_id) {
+        next_ideaid = focus_idea_id;
+    }
+
+
+    //Assign updates:
+    var insert_message = '';
+    var current_ideatype = 6677;
+    $('#modal31911 .next_ideaid').val(next_ideaid);
+    $('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
 
 
     //Load Chain addition info, if any:
-    $("#modal31911 .idea_list_next").html('');
-    $("#modal31911 .idea_list_previous").html('');
-
-    var is_next = next_ideaid && js_sourceids___4486.includes(chainsourcetype) && $('.ui_ideacache_' + next_ideaid).length;
-    var is_prev = previous_ideaid && js_sourceids___4486.includes(chainsourcetype) && $('.ui_ideacache_' + previous_ideaid).length;
-
-    if (is_next || is_prev) {
-
-        ideaid = 0;
-        chainid = 0;
-        var force_next_simplify = is_prev && !js_session_superpowers_unlocked.includes(42817);
-
-        if (is_next || force_next_simplify) {
-
-            if (force_next_simplify) {
-                next_ideaid = previous_ideaid;
-                previous_ideaid = 0;
-            }
-
-            //Generate content:
-            $("#modal31911 .idea_list_next").html('<div class="creator_box"></div>');
-            $('.creator_frame_' + next_ideaid + ' .creator_headline>a').each(function () {
-                $("#modal31911 .idea_list_next .creator_box").append('<div class="creator_headline">' + $(this).html() + '</div>');
-            });
-            $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_ideacache_' + next_ideaid).html() + '</div>');
-
-        } else if (is_prev) {
-
-            //Generate content:
-            $("#modal31911 .idea_list_previous").html('<div class="creator_box"></div>');
-            $('.creator_frame_' + previous_ideaid + ' .creator_headline>a').each(function () {
-                $("#modal31911 .idea_list_previous .creator_box").append('<div class="creator_headline">' + $(this).html() + '</div>');
-            });
-            $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_ideacache_' + previous_ideaid).html() + '</div>');
-
-        }
-
-        $('.chain_idea_unchain, .idea_chainsourcetype').removeClass('hidden');
-        if (!passon_ideaid) {
-            update_form_select(4486, chainsourcetype, 1, false);
-        }
-    }
-
-    //Assign updates:
-    $('#modal31911 .next_ideaid').val(next_ideaid);
-    $('#modal31911 .previous_ideaid').val(previous_ideaid);
-
-
-    if (ideaid) {
-
-        var current_ideatype = $('.s__12273_' + ideaid).attr('ideatype');
-
-        //Editig an existing idea:
-        $('#modal31911 .save_ideaid').val(ideaid);
-        $('#modal31911 .hash_group').removeClass('hidden');
-        $('#modal31911 .save_ideahashtag').val($('.ui_ideahashtag_' + ideaid + ':first').text());
-        $('#modal31911 .save_ideavalue').val($('.ui_ideavalue_' + ideaid + ':first').text());
-
-        //Display Current Media:
-        display_media('media_editor_frame', 13572, ideaid);
-
-    } else if (passon_ideaid) {
-
-        $("#modal31911 .save_ideavalue").val(load_message);
-
-    } else {
-
-        //See the default passed to the form:
-        var current_ideatype = 6677;
-
-        //Hide hashtag:
-        $('#modal31911 .hash_group').addClass('hidden');
-
+    if (next_ideaid && $('.ui_ideahashtag_' + next_ideaid).length) {
+        //Append to textarea:
+        insert_message = '#'+$('.ui_ideahashtag_'+next_ideaid).val()+' ';
+    } else if (!next_ideaid) {
         //See where we are at and append anything needed to the idea:
-        var insert_message = '';
-        if (!next_ideaid && !previous_ideaid) {
-            var focus__node = parseInt($('#focus__node').val());
-            if (focus__node == 12273) {
-                //insert_message = '#'+$('#focus_handle').val()+' ';
-            } else if (focus__node == 12274 && parseInt($('#focus__id').val()) != js_pl_id) {
-                insert_message = '@' + $('#focus_handle').val() + ' ';
-            }
-        }
-
-        if (insert_text.length && !insert_message.length) {
-            insert_message = insert_text;
-        }
-
-        if (insert_message.length) {
-            $("#modal31911 .save_ideavalue").val(insert_message);
-        }
-
-    }
-
-    if (chainid) {
-        $('#modal31911 .save_chainid').val(chainid);
-
-        //Idea<>Ideas chains do not have an interaction message
-        if (parseInt($('#focus__node').val()) != 12273 || ($('.ui_chainvalue_' + chainid + ':first') && $('.ui_chainvalue_' + chainid + ':first').text().length > 0)) {
-            $('#modal31911 .save_chainvalue').val($('.ui_chainvalue_' + chainid + ':first').text());
-            $('#modal31911 .save_frame').removeClass('hidden');
+        var focus__node = parseInt($('#focus__node').val());
+        if (focus__node == 12273) {
+            insert_message = '#'+$('#focus_handle').val()+' ';
+        } else if (focus__node == 12274 && parseInt($('#focus__id').val()) != js_pl_id) {
+            insert_message = '@' + $('#focus_handle').val() + ' ';
         }
     }
 
-
-    if (!passon_ideaid) {
-
-        //Source Reference:
-        update_form_select(4737, current_ideatype, 1, false);
-
-        $('#modal31911').modal('show');
-
-        setTimeout(function () {
-            //Adjust sizes:
-            set_autosize($('#modal31911 .save_ideavalue'));
-            set_autosize($('#modal31911 .save_chainvalue'));
-        }, 233);
-
-        var created_ideaid = load_idea_dynamic(ideaid, chainid, current_ideatype, true);
-
+    if (insert_message.length) {
+        $("#modal31911 .save_ideavalue").val(insert_message);
     }
+
+    //Idea Type:
+    update_form_select(4737, current_ideatype, 1, false);
+
+    $('#modal31911').modal('show');
+
+    setTimeout(function () {
+        //Adjust sizes:
+        set_autosize($('#modal31911 .save_ideavalue'));
+        set_autosize($('#modal31911 .save_chainvalue'));
+    }, 233);
 
     setTimeout(function () {
         //Focus on writing a message:
@@ -2238,8 +2067,6 @@ function idea_update() {
         save_ideaid: (current_ideaid > 0 ? current_ideaid : created_ideaid),
         save_chainid: $('#modal31911 .save_chainid').val(),
         next_ideaid: $('#modal31911 .next_ideaid').val(),
-        previous_ideaid: $('#modal31911 .previous_ideaid').val(),
-        save_chainsourcetype: $('.dropd_form_4486').attr('selected_value').trim(), //The final chain type as selected by user if they have the superpower
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
         save_ideavalue: $('#modal31911 .save_ideavalue').val().trim(),
@@ -2286,7 +2113,7 @@ function idea_update() {
             var new_handle = modify_data['save_ideahashtag'];
             var on_focus__idea = parseInt($('#focus__node').val()) == 12273 && modify_data['save_ideaid'] == parseInt($('#focus__id').val());
 
-            //Update Source Reference:
+            //Update Idea Type:
             $('.s__12273_' + modify_data['save_ideaid']).attr('ideatype', modify_data['save_ideatype']);
             ui_instant_select(4737, modify_data['save_ideatype'], modify_data['save_ideaid'], modify_data['save_chainid'], false);
 
@@ -2313,8 +2140,6 @@ function idea_update() {
             console.log('START INSERTING');
             if (!current_ideaid && created_ideaid > 0 && focus_group > 0) {
 
-                console.log('ADD NEW ' + modify_data['save_chainsourcetype'] + ' & x GROUP: ' + focus_group);
-
                 $("#list-in-" + focus_group).append(data.return_ideacache_full);
 
                 chain_counter(focus_group, 1);
@@ -2324,8 +2149,6 @@ function idea_update() {
                 }, 987);
 
             } else {
-
-                console.log('UPDATE  ' + modify_data['save_chainsourcetype'] + ' & x GROUP: ' + focus_group);
 
                 //Update Cache otherwise:
                 $('.ui_ideacache_' + modify_data['save_ideaid']).html(data.return_ideacache_chains);
@@ -3397,16 +3220,6 @@ function update_form_select(element_id, source_createid, initial_loading, show_t
         //Just replace icon:
         $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_' + source_createid + ' span').html());
     }
-    if (!initial_loading) {
-        if (element_id == 4737) {
-            //Changing Source Reference would re-load dynamic fields based on type:
-            has_unsaved_changes = true;
-            console.log('Reloading: ' + element_id + ' with value: ' + ' NEW ID ' + source_createid + ' / ' + $('#modal31911 .created_ideaid').val());
-            load_idea_dynamic($('#modal31911 .created_ideaid').val(), 0, source_createid, false);
-            //Add handle to text:
-            insertText($(".save_ideavalue"), '@' + source_createid);
-        }
-    }
 }
 
 function ui_instant_select(element_id, source_createid, o__id, chainid, show_full_name) {
@@ -3427,7 +3240,7 @@ function ui_instant_select(element_id, source_createid, o__id, chainid, show_ful
     var main_object_update = false;
 
     if (element_id == 4737) {
-        //Source Reference:
+        //Idea Type:
         $('.s__12273_' + o__id).attr('ideatype', source_createid);
         main_object_type = 12273;
         main_object_update = 'ideatype';

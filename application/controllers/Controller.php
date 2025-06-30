@@ -856,7 +856,7 @@ class Controller extends CI_Controller
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif (!isset($_POST['next_ideaid']) || !isset($_POST['previous_ideaid']) || !isset($_POST['save_chainsourcetype'])) {
+        } elseif (!isset($_POST['next_ideaid'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -903,7 +903,7 @@ class Controller extends CI_Controller
         if (!strlen($is[0]['ideavalue'])) {
 
             //See if references only:
-            if (strlen($_POST['save_ideavalue']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_ideavalue'], "\n") && intval($_POST['save_chainsourcetype']) && (intval($_POST['next_ideaid']) || intval($_POST['previous_ideaid']))) {
+            if (strlen($_POST['save_ideavalue']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_ideavalue'], "\n") && (intval($_POST['next_ideaid']))) {
 
                 $all_hashtags = true;
                 $idea_references = array();
@@ -931,19 +931,17 @@ class Controller extends CI_Controller
                     }
                 }
 
-                if ($all_hashtags && count($idea_references) && $_POST['save_chainsourcetype'] > 0) {
+                if ($all_hashtags && count($idea_references)) {
 
                     //Return success:
                     foreach ($this->Ideas->read(array(
-                        'ideaid' => (intval($_POST['next_ideaid']) > 0 ? intval($_POST['next_ideaid']) : intval($_POST['previous_ideaid'])),
+                        'ideaid' => intval($_POST['next_ideaid']),
                     )) as $focus_i) {
 
                         //Append all of these hashtags:
                         foreach ($idea_references as $reference_i) {
                             if (intval($_POST['next_ideaid']) > 0) {
-                                $status = $this->Ideas->chain($focus_i, $_POST['save_chainsourcetype'], $reference_i, $source_session['sourceid']);
-                            } elseif (intval($_POST['previous_ideaid']) > 0) {
-                                $status = $this->Ideas->chain($reference_i, $_POST['save_chainsourcetype'], $focus_i, $source_session['sourceid']);
+                                $status = $this->Ideas->chain($focus_i, 4228, $reference_i, $source_session['sourceid']);
                             }
                             if (!$status['status']) {
                                 return view_json($status);
@@ -1105,19 +1103,12 @@ class Controller extends CI_Controller
 
 
         //Also have to add as a comment to another idea?
-        if (intval($_POST['next_ideaid']) > 0 && $_POST['save_chainsourcetype'] > 0) {
+        if (intval($_POST['next_ideaid']) > 0) {
             $this->Chains->create(array(
                 'chainsourcecreator' => $source_session['sourceid'],
-                'chainidealeft' => $_POST['next_ideaid'],
-                'chainidearight' => $is[0]['ideaid'],
-                'chainsourcetype' => $_POST['save_chainsourcetype'],
-            ));
-        } elseif (intval($_POST['previous_ideaid']) > 0 && $_POST['save_chainsourcetype'] > 0) {
-            $this->Chains->create(array(
-                'chainsourcecreator' => $source_session['sourceid'],
+                'chainidearight' => $_POST['next_ideaid'],
                 'chainidealeft' => $is[0]['ideaid'],
-                'chainidearight' => $_POST['previous_ideaid'],
-                'chainsourcetype' => $_POST['save_chainsourcetype'],
+                'chainsourcetype' => 4228,
             ));
         }
 
