@@ -5163,8 +5163,8 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
     $chainsourcecreator_id = ($source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : 14068 /* GUEST */);
     $CI->Chains->create(array(
         'chainsourcetype' => 1576051, //Source Popover
-        'chainsourceup' => $e['sourceid'],
-        'chainsourcedown' => $chainsourcecreator_id,
+        'chainsourceup' => $chainsourcecreator_id,
+        'chainsourcedown' => $e['sourceid'],
         'chainsourcecreator' => $chainsourcecreator_id,
     ));
 
