@@ -1795,8 +1795,8 @@ function update_cover_mini(cover_code, target_css) {
 
 function display_media(mediaframe_id, uploader_id, ideaid) {
     $(".ui_ideacache_" + ideaid + " .media_display").each(function () {
-        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""></div>');
-        cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_sourceid'), $(this).attr('playback_code'), $(this).attr('sourcecover'), $(this).attr('sourcevalue'), $(this).attr('sourceid'));
+        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" sourceid="0"  sourcecover=""></div>');
+        cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('sourcecover'), $(this).attr('sourcevalue'), $(this).attr('sourceid'));
     });
     sort_media(mediaframe_id);
 }
@@ -2000,13 +2000,6 @@ function idea_update() {
     console.log('Idea updating begins #' + current_ideaid);
 
     //TODO Preview Media
-    var gather_media_result = gather_media('#modal31911 .media_frame .media_item', 13572);
-    if (!gather_media_result['upload_completed']) {
-        i_saving = false;
-        $(".idea_update").html('SAVE');
-        $("#modal31911 .save_results").html('<span class="icon-block"><i class="far fa-exclamation-circle"></i></span> Error: ' + gather_media_result['error_message']);
-        return false;
-    }
 
     var modify_data = {
         focus__node: parseInt($('#focus__node').val()),
@@ -2019,7 +2012,6 @@ function idea_update() {
         save_ideavalue: $('#modal31911 .save_ideavalue').val().trim(),
         save_ideahashtag: $('#modal31911 .save_ideahashtag').val().trim(),
         save_ideatype: $('.dropd_form_4737').attr('selected_value').trim(),
-        uploaded_media: gather_media_result['uploaded_media'],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
@@ -2244,7 +2236,6 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Show error if any:
             if (result.failed && result.status && result.status.length > 0) {
                 alert('ERROR for File [' + result.info.name + ']: ' + result.status);
-                delete_media(uploader_id, result.info.id, true);
             }
             //Log error
             console.log('ERROR');
@@ -2282,12 +2273,12 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
                 //Ideator Uploader
                 has_unsaved_changes = true;
-                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             } else if (uploader_id == 43004) {
 
                 //Discovery Uploader
-                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_sourceid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
@@ -2306,27 +2297,31 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
                 //Idea Uploader
                 var playback_code = '';
-                var media_sourceid = 0;
+                var media_typeid = 0;
+                var media_typename = '';
                 if (result.info.format && result.info.format.length > 0) {
                     if (js_sources___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
                         //Audio
-                        media_sourceid = 4259;
+                        media_typeid = 4259;
+                        media_typename = 'Audio';
                         playback_code = result.info.secure_url;
                     } else if (js_sources___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'image') {
                         //Image
-                        media_sourceid = 4260;
+                        media_typeid = 4260;
+                        media_typename = 'Image';
                         playback_code = (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'w_1597,h_1597,c_fit') : result.info.secure_url);
                     } else if (js_sources___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'video') {
                         //Video
-                        media_sourceid = 4258;
+                        media_typeid = 4258;
+                        media_typename = 'Video';
                         playback_code = result.info.public_id;
                     }
                 }
 
                 //Append this to the main Source:
-                if (media_sourceid) {
+                if (media_typeid) {
 
-                    cloudinary_presource_view(uploader_id, result.info.id, media_sourceid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), (result.info.original_filename ? js_sources___42294[media_sourceid]['m__title'] + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : js_sources___42294[media_sourceid]['m__title'] + ' File'));
+                    cloudinary_presource_view(uploader_id, result.info.id, media_typeid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), (result.info.original_filename ? media_typename + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : media_typename + ' File'));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log(media_cache);
@@ -2364,61 +2359,37 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 }
 
 
-var confirm_removal_once_done = false;
-
-function delete_media(uploader_id, info_id, skip_check = false) {
-
-    if (!skip_check && !confirm_removal_once_done) {
-        //Confirm removal once:
-        var r = confirm("Are you sure you want to delete this?");
-        if (!(r == true)) {
-            return false;
-        }
-        confirm_removal_once_done = true; //Dont ask again
-        has_unsaved_changes = true;
-    }
-
-    $('#' + info_id).remove();
-    $('.media_frame #' + info_id).remove();
-
-    if (media_cache[uploader_id][info_id]) {
-        delete media_cache[uploader_id][info_id];
-    }
-
-}
-
 function play_video(public_id) {
     var cld = cloudinary.videoPlayer('video_source_' + public_id, {cloudName: 'menchcloud'});
     cld.source(public_id);
 }
 
-function cloudinary_presource_view(uploader_id, info_id, media_sourceid, playback_code, sourcecover, sourcevalue, sourceid = 0) {
+function cloudinary_presource_view(uploader_id, info_id, media_typeid, playback_code, sourcecover, sourcevalue, sourceid = 0) {
 
     //Update meta variables:
-    $('#' + info_id).attr('media_sourceid', media_sourceid).attr('playback_code', playback_code).attr('sourceid', sourceid).attr('sourcecover', sourcecover);
+    $('#' + info_id).attr('media_typeid', media_typeid).attr('playback_code', playback_code).attr('sourceid', sourceid).attr('sourcecover', sourcecover);
 
-    if (media_sourceid == 4258) {
+    if (media_typeid == 4258) {
 
         //Video
-        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="Video"><i class="far fa-play-circle" aria-hidden="true"></i></span><img src="' + sourcecover + '" />');
         //<video id="video_source_'+playback_code+'" controls class="cld-video-source vjs-fade-out cld-fluid cld-video-source-skin-light" poster="'+sourcecover+'"></video>
         //play_video(playback_code);
 
-    } else if (media_sourceid == 4260) {
+    } else if (media_typeid == 4260) {
 
         //Image
-        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><img src="' + sourcecover + '" /><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><img src="' + sourcecover + '" />');
 
-    } else if (media_sourceid == 4259) {
+    } else if (media_typeid == 4259) {
 
         //Audio
-        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="' + js_sources___42294[media_sourceid]['m__title'] + '">' + js_sources___42294[media_sourceid]['m__cover'] + '</span><audio controls src="' + playback_code + '"></audio><a href="javascript:void(0)" onclick="delete_media(\'' + uploader_id + '\',\'' + info_id + '\')"><i class="far fa-xmark"></i></a>');
+        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="Audio"><i class="far fa-volume-up" aria-hidden="true"></i></span><audio controls src="' + playback_code + '"></audio>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
         alert('Upload Error: Uploaded File ' + sourcevalue + ' is not a valid Video, Image or Audio file.');
-        delete_media(uploader_id, info_id, true);
 
     }
 
@@ -3481,31 +3452,12 @@ function idea_discovered(do_skip) {
     //Compile all next ideas, if any:
     var next_idea_data = []; //Aggregate the data for all children
     $("#list-in-12840 .edge-cover").each(function () {
-
-        //Fetch Media
-        var gather_media_result = gather_media('.media_frame_' + $(this).attr('ideaid') + ' .media_item', 43004);
-        if (!gather_media_result['upload_completed']) {
-            next_processing = false;
-            alert('MEDIA ERROR: ' + gather_media_result['error_message']);
-            return false;
-        }
-
         next_idea_data.push({
             ideaid: parseInt($(this).attr('ideaid')),
             idea_createtext: ($('.s__12273_' + $(this).attr('ideaid') + ' .x_write').val() ? $('.s__12273_' + $(this).attr('ideaid') + ' .x_write').val() : null),
             ideakey: ($('.input_ui_' + $(this).attr('ideaid') + ' .ideakey').val() ? $('.input_ui_' + $(this).attr('ideaid') + ' .ideakey').val() : 0),
-            uploaded_media: gather_media_result['uploaded_media'],
         });
-
     });
-
-
-    var gather_media_result = gather_media('.media_frame_' + $('#focus__id').val() + ' .media_item', 43004);
-    if (!gather_media_result['upload_completed']) {
-        next_processing = false;
-        alert('MEDIA ERROR: ' + gather_media_result['error_message']);
-        return false;
-    }
 
     //Payment Error?
     if (focus_ideatype == 26560 && !$(".tickets_issued")[0]) {
@@ -3594,7 +3546,6 @@ function idea_discovered(do_skip) {
             ideaid: parseInt($('#focus__id').val()),
             idea_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
             ideakey: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideakey').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideakey').val() : 0),
-            uploaded_media: gather_media_result['uploaded_media'],
         },
         do_skip: do_skip,
         selection_ideaid: selection_ideaid,

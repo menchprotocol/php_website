@@ -895,15 +895,12 @@ class Controller extends CI_Controller
 
 
         $focus__node = ($_POST['focus__node'] == 12273 && $_POST['focus__id'] == $_POST['save_ideaid']);
-        if (!isset($_POST['uploaded_media']) || !is_array($_POST['uploaded_media'])) {
-            $_POST['uploaded_media'] = array();
-        }
 
         //Might be new if pre-drafting:
         if (!strlen($is[0]['ideavalue'])) {
 
             //See if references only:
-            if (strlen($_POST['save_ideavalue']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_ideavalue'], "\n") && (intval($_POST['next_ideaid']))) {
+            if (strlen($_POST['save_ideavalue']) && !substr_count($_POST['save_ideavalue'], "\n") && (intval($_POST['next_ideaid']))) {
 
                 $all_hashtags = true;
                 $idea_references = array();
@@ -3102,9 +3099,6 @@ class Controller extends CI_Controller
         if (!isset($_POST['source_submitted_data']['idea_createtext'])) {
             $_POST['source_submitted_data']['idea_createtext'] = null;
         }
-        if (!isset($_POST['source_submitted_data']['uploaded_media'])) {
-            $_POST['source_submitted_data']['uploaded_media'] = array();
-        }
         if (!isset($_POST['next_idea_data'])) {
             $_POST['next_idea_data'] = array();
         }
@@ -3124,9 +3118,8 @@ class Controller extends CI_Controller
                 (
                     intval($_POST['do_skip'])
                     || ($input__selection && !$total_selected)
-                    || ($input__text && !$input__upload && !strlen($_POST['source_submitted_data']['idea_createtext']))
-                    || (!$input__text && $input__upload && !count($_POST['source_submitted_data']['uploaded_media']))
-                    || ($input__text && $input__upload && !count($_POST['source_submitted_data']['uploaded_media']) && !strlen($_POST['source_submitted_data']['idea_createtext']))
+                    || ($input__upload && !strlen($_POST['source_submitted_data']['idea_createtext'])) //TODO Check Media
+                    || !strlen($_POST['source_submitted_data']['idea_createtext'])
                 );
             $idea_required = idea_required($focus_i);
 
@@ -3244,10 +3237,6 @@ class Controller extends CI_Controller
                     continue;
                 }
 
-                if (!isset($next_idea_data['uploaded_media'])) {
-                    $next_idea_data['uploaded_media'] = array();
-                }
-
                 foreach ($this->Ideas->read(array(
                     'ideaid' => $next_idea_data['ideaid'],
                 )) as $idea_next) {
@@ -3278,9 +3267,8 @@ class Controller extends CI_Controller
                     }
 
                     $trying_to_skip = (
-                        ($input__text && !$input__upload && !strlen($next_idea_data['idea_createtext'])) ||
-                        (!$input__text && $input__upload && !count($next_idea_data['uploaded_media'])) ||
-                        ($input__text && $input__upload && !count($next_idea_data['uploaded_media']) && !strlen($next_idea_data['idea_createtext']))
+                        !strlen($next_idea_data['idea_createtext']) ||
+                        ($input__upload && !strlen($next_idea_data['idea_createtext'])) //TODO Check Media
                     );
                     $idea_required = !$skipping_not_allowed && idea_required($idea_next);
 

@@ -952,7 +952,7 @@ function process_media($ideaid, $uploaded_media)
     }
 
     //Fetch submitted media:
-    $upload_media_sourceids = array();
+    $upload_media_typeids = array();
     if (count($uploaded_media) > 0) {
 
         //We have media to process:
@@ -980,7 +980,7 @@ function process_media($ideaid, $uploaded_media)
                     //Create Source for this new media:
                     $added_e = $CI->Sources->create(array(
                         'sourcevalue' => $upload_media['sourcevalue'],
-                        'sourcecover' => ($upload_media['media_sourceid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['sourcecover']),
+                        'sourcecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['sourcecover']),
                     ), $source_session['sourceid']);
                     if (!$added_e['status']) {
                         log_error('Failed to create a new Source for [' . $upload_media['sourcevalue'] . '] with cover [' . $upload_media['sourcecover'] . ']', array(
@@ -1080,19 +1080,19 @@ function process_media($ideaid, $uploaded_media)
                 }
 
                 //By now have the media Source, create necessary chains:
-                if ($upload_media['sourceid'] && $upload_media['media_sourceid']) {
+                if ($upload_media['sourceid'] && $upload_media['media_typeid']) {
 
                     //Chain to Idea:
                     if (!count($CI->Chains->read(array(
                         'chainidearight' => $ideaid,
                         'chainsourceup' => $upload_media['sourceid'],
-                        'chainsourcetype' => $upload_media['media_sourceid'],
+                        'chainsourcetype' => $upload_media['media_typeid'],
                     )))) {
                         $CI->Chains->create(array(
                             'chainsourcecreator' => $source_session['sourceid'],
                             'chainidearight' => $ideaid,
                             'chainsourceup' => $upload_media['sourceid'],
-                            'chainsourcetype' => $upload_media['media_sourceid'],
+                            'chainsourcetype' => $upload_media['media_typeid'],
                             'chainvalue' => $upload_media['playback_code'],
                             'chainkey' => $sort_count,
                         ));
@@ -1117,13 +1117,13 @@ function process_media($ideaid, $uploaded_media)
 
                     //Chain to Media Type:
                     if (!count($CI->Chains->read(array(
-                        'chainsourceup' => $upload_media['media_sourceid'],
+                        'chainsourceup' => $upload_media['media_typeid'],
                         'chainsourcedown' => $upload_media['sourceid'],
                         'chainsourcetype' => 4230,
                     )))) {
                         $CI->Chains->create(array(
                             'chainsourcecreator' => $source_session['sourceid'],
-                            'chainsourceup' => $upload_media['media_sourceid'],
+                            'chainsourceup' => $upload_media['media_typeid'],
                             'chainsourcedown' => $upload_media['sourceid'],
                             'chainsourcetype' => 4230,
                             'chainvalue' => $upload_media,
@@ -1134,7 +1134,7 @@ function process_media($ideaid, $uploaded_media)
             }
 
             //Add this to the submitted ones:
-            $upload_media_sourceids[$sort_count] = $upload_media['sourceid'];
+            $upload_media_typeids[$sort_count] = $upload_media['sourceid'];
             $sort_count++;
 
         }
@@ -5092,7 +5092,7 @@ function view_idea_media($i)
 
     //Query Relevant Sources:
     foreach ($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42294')) . ')' => null, //Media
+        'chainsourcetype IN (0)' => null, //Media TODO
         'chainidearight' => $i['ideaid'],
     ), array('chainsourceup'), 0, 0, array('chainkey' => 'ASC')) as $x) {
 
@@ -5116,7 +5116,7 @@ function view_idea_media($i)
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_' . $x['chainsourcetype'] . ($x['chainsourcetype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_sourceid="' . $x['chainsourcetype'] . '" sourceid="' . $x['sourceid'] . '"  sourcecover="' . $x['sourcecover'] . '" playback_code="' . $x['chainvalue'] . '" sourcevalue="' . $x['sourcevalue'] . '">' . $template . '</div>';
+        $message_append .= '<div class="media_display media_display_' . $x['chainsourcetype'] . ($x['chainsourcetype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainsourcetype'] . '" sourceid="' . $x['sourceid'] . '"  sourcecover="' . $x['sourcecover'] . '" playback_code="' . $x['chainvalue'] . '" sourcevalue="' . $x['sourcevalue'] . '">' . $template . '</div>';
 
     }
 

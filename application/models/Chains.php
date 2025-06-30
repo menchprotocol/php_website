@@ -1345,7 +1345,6 @@ class Chains extends CIdea_cache
 
         $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
         $input__text = in_array($i['ideatype'], $this->config->item('sourceids___43002'));
-        $i['uploaded_media'] = array();
         $i['user_idea_discovered'] = array();
         $i['user_written_response'] = array();
         $i['current_level'] = $current_level;
@@ -1353,39 +1352,6 @@ class Chains extends CIdea_cache
         $current_level++;
 
         //TODO Append media
-        foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42294')) . ')' => null, //Media
-            'chainidearight' => $i['ideaid'],
-        ), array('chainsourceup'), 0, 0, array('chainkey' => 'ASC')) as $media) {
-
-            //Get metadata:
-            foreach ($this->Chains->read(array(
-                'chainsourceup IN (' . join(',', $this->config->item('sourceids___44393')) . ')' => null, //Media JSON
-                'chainsourcedown' => $media['sourceid'],
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainsourceup'), 0) as $source_group) {
-                if (strlen($source_group['chainvalue'])) {
-                    $media[$source_group['sourcehandle']] = $source_group['chainvalue'];
-                }
-            }
-
-            unset($media['chaintime']);
-            unset($media['chainsourceup']);
-            unset($media['chainsourcedown']);
-            unset($media['chainkey']);
-            unset($media['chainsourcedomain']);
-            unset($media['chainvoid']);
-            unset($media['chainsourcecreator']);
-            unset($media['chainidealeft']);
-            unset($media['chainidearight']);
-            unset($media['chainid']);
-            unset($media['chainvalue']);
-            unset($media['sourceid']);
-            unset($media['sourcevalue']);
-            unset($media['sourcehandle']);
-            unset($media['sourceexternal']);
-            array_push($i['uploaded_media'], $media);
-        }
 
         //Append Discovery if any:
         foreach ($this->Chains->read(array(
