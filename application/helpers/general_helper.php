@@ -4267,6 +4267,12 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
     //Log Preview:
     $chainsourcecreator_id = ($chainsourcecreator > 0 ? $chainsourcecreator : 14068 /* GUEST */);
+    $CI->Chains->create(array(
+        'chainsourcetype' => 1576044, //Idea Previewed
+        'chainsourcecreator' => $chainsourcecreator_id,
+        'chainsourceup' => $chainsourcecreator_id,
+        'chainidealeft' => $i['ideaid'],
+    ));
 
     if ($chainsourcecreator && !is_array($x_completes)) {
         //Fetch discovery
@@ -5155,6 +5161,12 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
 
     //Log preview view:
     $chainsourcecreator_id = ($source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : 14068 /* GUEST */);
+    $CI->Chains->create(array(
+        'chainsourcetype' => 1576051, //Source Popover
+        'chainsourceup' => $chainsourcecreator_id,
+        'chainsourcedown' => $e['sourceid'],
+        'chainsourcecreator' => $chainsourcecreator_id,
+    ));
 
     //Source UI
     $ui = '<div sourceid="' . $e['sourceid'] . '" sourcehandle="' . $e['sourcehandle'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardsource_cover no-padding card-12274 s__12274_' . $e['sourceid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
