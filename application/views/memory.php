@@ -7,8 +7,6 @@ $memory_text .= "<?php\n\n";
 $memory_text .= '//UPDATED: ' . $start_time . "\n\n";
 $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');' . "\n\n";
 $routes_text = $memory_text;
-$sourceids___33337 = ( $memory_detected ? $this->config->item('sourceids___33337') : array(42897, 42849, 42791, 42659, 42581, 42580, 42579, 42570, 42567, 42554, 42518, 42516, 42440, 42427, 42335, 41011, 32489, 32486, 4230) );
-
 
 $pinned_down = array();
 $pinned_up = array();
@@ -20,13 +18,13 @@ $biggest_source_handle = '';
 //CONFIG VARS
 foreach ($this->Chains->read(array(
     'chainsourceup' => 4527,
-    'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+    'chainsourcetype' => 4230,
 ), array('chainsourcedown'), 0, 0, array('sourceid' => 'ASC')) as $en) {
 
     //Now fetch all its followers:
     $down__e = $this->Chains->read(array(
         'chainsourceup' => $en['chainsourcedown'],
-        'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+        'chainsourcetype' => 4230,
     ), array('chainsourcedown'), 0, 0, source_sort());
 
 
@@ -81,7 +79,7 @@ foreach ($this->Chains->read(array(
         $down_up_ids = array(); //To be populated soon
         foreach ($this->Chains->read(array(
             'chainsourcedown' => $follower['sourceid'],
-            'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+            'chainsourcetype' => 4230,
         ), array('chainsourceup'), 0) as $cp_en) {
             array_push($down_up_ids, intval($cp_en['sourceid']));
         }
@@ -104,13 +102,13 @@ foreach ($this->Chains->read(array(
 $memory_text .= "\n" . "\n";
 foreach ($this->Chains->read(array(
     'chainsourceup' => 42043, //Handle Cache
-    'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+    'chainsourcetype' => 4230,
 ), array('chainsourcedown'), 0) as $handle) {
 
     $memory_text .= '$config[\'handlsources___' . $handle['sourceid'] . '\'] = array(' . "\n";
     foreach ($this->Chains->read(array(
         'chainsourceup' => $handle['sourceid'],
-        'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+        'chainsourcetype' => 4230,
     ), array('chainsourcedown'), 0) as $app) {
         $memory_text .= '     \'' . strtolower($app['sourcehandle']) . '\' => ' . $app['sourceid'] . ',' . "\n";
     }
@@ -155,13 +153,13 @@ $routes_text .= '//APPS:' . "\n\n";
 
 foreach ($this->Chains->read(array(
     'chainsourceup' => 6287, //Apps
-    'chainsourcetype IN (' . join(',', ($memory_detected ? $this->config->item('sourceids___13548') : $sourceids___33337)) . ')' => null, //SOURCE CHAINS
+    'chainsourcetype' => 4230,
 ), array('chainsourcedown'), 0, 0, array('sourcevalue' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+            'chainsourcetype' => 4230,
             'chainsourceup' => 42921,
             'chainsourcedown' => $app['sourceid'], //Required
         )) as $route) {
@@ -176,7 +174,7 @@ foreach ($this->Chains->read(array(
 
 
     if (count($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+        'chainsourcetype' => 4230,
         'chainsourceup' => 44330,
         'chainsourcedown' => $app['sourceid'], //Required
     )))) {
@@ -185,7 +183,7 @@ foreach ($this->Chains->read(array(
         $routes_text .= '$route[\'(?i)' . $app['sourcehandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['sourceid'] . '/0/$1' . '";' . "\n"; //Should give error
         $routes_text .= '$route[\'(?i)' . $app['sourcehandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['sourceid'] . '/$1/0' . '";' . "\n"; //Should give error
     } elseif (count($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+        'chainsourcetype' => 4230,
         'chainsourceup' => 42905,
         'chainsourcedown' => $app['sourceid'], //Required
     )))) {
@@ -196,7 +194,7 @@ foreach ($this->Chains->read(array(
             $routes_text .= '$route[\'(?i)' . $app['sourcehandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['sourceid'] . '/$1' . '";' . "\n";
         }
     } elseif (count($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+        'chainsourcetype' => 4230,
         'chainsourceup' => 42911,
         'chainsourcedown' => $app['sourceid'], //Required
     )))) {
@@ -207,7 +205,7 @@ foreach ($this->Chains->read(array(
             $routes_text .= '$route[\'(?i)' . $app['sourcehandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['sourceid'] . '/0/$1' . '";' . "\n";
         }
     } elseif (count($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $sourceids___33337) . ')' => null, //SOURCE CHAINS
+        'chainsourcetype' => 4230,
         'chainsourceup' => 44329,
         'chainsourcedown' => $app['sourceid'], //Required
     )))) {
