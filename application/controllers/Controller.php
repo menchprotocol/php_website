@@ -1364,7 +1364,7 @@ class Controller extends CI_Controller
         $focus_sourceid = ($_POST['sourceid'] > 0 ? $_POST['sourceid'] : ($source_session ? $source_session['sourceid'] : 0));
         $ui = '';
 
-        if ($_POST['chainsourcetype']==13550) {
+        if ($_POST['chainsourcetype']==13550 || $_POST['chainsourcetype']==12273) {
 
             //Idea/Source Link Groups
             //Ideas:
