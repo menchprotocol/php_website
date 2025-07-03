@@ -3071,7 +3071,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
 
         //Ideas Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainidearight');
+        $joins_objects = array('chainidealeft');
         $query_filters = array(
             'chainsourcecreator' => $sourceid,
             'chainsourcetype' => $chainsourcetype,
