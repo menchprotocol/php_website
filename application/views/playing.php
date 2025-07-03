@@ -59,7 +59,7 @@ foreach($this->config->item('sources___31916') as $chainsourcetype => $m) {
     //Now generate sub menu:
     if($chainsourcetype!=12273 && $chainsourcetype!=12274 && is_array($this->config->item('sources___'.$chainsourcetype))){
 
-        $submenus = '<ul class="nav nav-tabs nav12274 nav_tab_'.$chainsourcetype.'">';
+        $submenus .= '<ul class="nav nav-tabs nav12274 nav_tab_'.$chainsourcetype.'">';
         foreach($this->config->item('sources___'.$chainsourcetype) as $chainsourcetype2 => $m2) {
 
             $coins_count[$chainsourcetype2] = sources_query($chainsourcetype2, $focus_e['sourceid'], 0, false);
