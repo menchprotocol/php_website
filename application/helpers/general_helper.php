@@ -3067,7 +3067,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if (!in_array($chainsourcetype, $CI->config->item('sourceids___4527')) || !is_array($CI->config->item('sourceids___' . $chainsourcetype)) || !count($CI->config->item('sourceids___' . $chainsourcetype))) {
+    if (!in_array($chainsourcetype, $CI->config->item('sourceids___4527'))) {
         log_error('sources_query() @' . $chainsourcetype . ' Empty Array in Cache @4527');
         return false;
     }
@@ -3085,12 +3085,17 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
     } elseif ($chainsourcetype==12274) {
 
         //Source Created
-        $order_columns = source_sort();
+        $order_columns['chainid'] = 'DESC';
         $joins_objects = array('chainsourcedown');
         $query_filters = array(
             'chainsourcecreator' => $sourceid,
             'chainsourcetype' => $chainsourcetype,
         );
+
+    } elseif(!is_array($CI->config->item('sourceids___' . $chainsourcetype)) || !count($CI->config->item('sourceids___' . $chainsourcetype))){
+
+        log_error('sources_query() @' . $chainsourcetype . ' not in cache');
+        return false;
 
     } elseif ($chainsourcetype==42373) {
 
