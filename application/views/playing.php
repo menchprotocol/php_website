@@ -68,7 +68,7 @@ foreach($this->config->item('sources___31916') as $chainsourcetype => $m) {
             }
 
             $coins_count[$chainsourcetype2] = sources_query($chainsourcetype2, $focus_e['sourceid'], 0, false);
-            if(!$coins_count[$chainsourcetype2] && in_array($chainsourcetype2, $this->config->item('sourceids___12144'))){ continue; }
+            if(!$coins_count[$chainsourcetype2]){ continue; }
 
             $submenu_content .= '<li class="nav-item thepill'.$chainsourcetype2.'"><a class="nav-chain handle_nav_'.$m2['m__handle'].'" chainsourcetype="'.$chainsourcetype2.'" href="#'.$m2['m__handle'].'" title="'.$m2['m__title'].'">&nbsp;<span class="icon-block">'.$m2['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainsourcetype2.'">'. view_number($coins_count[$chainsourcetype2]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainsourcetype2.'">&nbsp;'. $m2['m__title'] . '&nbsp;</span></a></li>';
         }
