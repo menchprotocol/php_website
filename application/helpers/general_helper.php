@@ -3055,7 +3055,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
 }
 
 
-function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_card_icon = true)
+function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_card_icon = true, $chainsourcesub = 0)
 {
 
     /*
@@ -3112,9 +3112,29 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
         );
 
+    } elseif ($chainsourcetype==42373 && in_array($chainsourcesub, $CI->config->item('sourceids___32292'))) {
+
+        //Down/Followers Sub
+        $order_columns = source_sort();
+        $joins_objects = array('chainsourcedown');
+        $query_filters = array(
+            'chainsourceup' => $sourceid,
+            'chainsourcetype' => $chainsourcetype,
+        );
+
+    } elseif ($chainsourcetype==42279 && in_array($chainsourcesub, $CI->config->item('sourceids___32292'))) {
+
+        //Up/Following Sub
+        $order_columns = source_sort();
+        $joins_objects = array('chainsourceup');
+        $query_filters = array(
+            'chainsourcedown' => $sourceid,
+            'chainsourcetype' => $chainsourcetype,
+        );
+
     } elseif ($chainsourcetype==13550) {
 
-        //IDEAS
+        //Mentions
         $query_filters = array(
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null,
             'chainsourceup' => $sourceid,
@@ -3123,9 +3143,20 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         $joins_objects = array('chainidearight');
         $order_columns = idea_sort();
 
+    } elseif (in_array($chainsourcesub, $CI->config->item('sourceids___13550'))) {
+
+        //Mentions Sub
+        $query_filters = array(
+            'chainsourcetype' => $chainsourcesub,
+            'chainsourceup' => $sourceid,
+        );
+
+        $joins_objects = array('chainidearight');
+        $order_columns = idea_sort();
+
     } elseif ($chainsourcetype==4486) {
 
-        //Discoveries
+        //Ideas
 
         //Determine Sort:
         $order_columns = array();
@@ -3136,6 +3167,21 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         $query_filters = array(
             'chainsourcecreator' => $sourceid,
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //DISCOVERY GROUP
+        );
+
+    } elseif (in_array($chainsourcesub, $CI->config->item('sourceids___4486'))) {
+
+        //Ideas Sub
+
+        //Determine Sort:
+        $order_columns = array();
+        $order_columns['chainid'] = 'DESC';
+
+        //DISCOVERIES
+        $joins_objects = array('chainidearight');
+        $query_filters = array(
+            'chainsourcecreator' => $sourceid,
+            'chainsourcetype' => $chainsourcesub,
         );
 
     } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___12144'))) {
@@ -3156,6 +3202,21 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         $query_filters = array(
             'chainsourcecreator' => $sourceid,
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //DISCOVERY GROUP
+        );
+
+    } elseif (in_array($chainsourcesub, $CI->config->item('sourceids___31777'))) {
+
+        //Discoveries SUB
+
+        //Determine Sort:
+        $order_columns = array();
+        $order_columns['chainid'] = 'DESC';
+
+        //DISCOVERIES
+        $joins_objects = array('chainidealeft');
+        $query_filters = array(
+            'chainsourcecreator' => $sourceid,
+            'chainsourcetype' => $chainsourcesub,
         );
 
     } else {
