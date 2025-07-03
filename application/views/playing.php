@@ -57,18 +57,22 @@ foreach($this->config->item('sources___31916') as $chainsourcetype => $m) {
     }
 
     //Now generate sub menu:
-    if($chainsourcetype!=12273 && $chainsourcetype!=12274 && is_array($this->config->item('sources___'.$chainsourcetype))){
+    if($chainsourcetype!=12273 && $chainsourcetype!=12274){
 
         $submenu_content = null;
         foreach($this->config->item('sources___'.$chainsourcetype) as $chainsourcetype2 => $m2) {
 
-            $coins_count[$chainsourcetype2] = sources_query($chainsourcetype2, $focus_e['sourceid'], 0, false);
-            if(!$coins_count[$chainsourcetype2]){
+            $superpowers_required = array_intersect($this->config->item('sourceids___10957'), $m2['m__following']);
+            if(count($superpowers_required) && !source_session(end($superpowers_required))){
                 continue;
             }
 
+            $coins_count[$chainsourcetype2] = sources_query($chainsourcetype2, $focus_e['sourceid'], 0, false);
+            if(!$coins_count[$chainsourcetype2] && in_array($chainsourcetype2, $this->config->item('sourceids___12144'))){ continue; }
+
             $submenu_content .= '<li class="nav-item thepill'.$chainsourcetype2.'"><a class="nav-chain handle_nav_'.$m2['m__handle'].'" chainsourcetype="'.$chainsourcetype2.'" href="#'.$m2['m__handle'].'" title="'.$m2['m__title'].'">&nbsp;<span class="icon-block">'.$m2['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainsourcetype2.'">'. view_number($coins_count[$chainsourcetype2]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainsourcetype2.'">&nbsp;'. $m2['m__title'] . '&nbsp;</span></a></li>';
         }
+
         if($submenu_content){
             $submenus .= '<ul class="nav nav-tabs nav12274 nav_tab_'.$chainsourcetype.'">';
             $submenus .= $submenu_content;
@@ -81,7 +85,6 @@ $mainmenu .= '</ul>';
 
 echo $mainmenu;
 echo $submenus;
-
 echo $body_content;
 
 
