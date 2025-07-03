@@ -1368,7 +1368,6 @@ class Controller extends CI_Controller
 
             //Idea/Source Link Groups
             //Ideas:
-            $ui .= 'Hiiiiii';
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainsourcetype'] . '">';
             foreach ($sources_query as $i) {
                 $ui .= idea_view($_POST['chainsourcetype'], $i, null, null, $focus_sourceid);
