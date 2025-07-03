@@ -1411,7 +1411,7 @@ class Controller extends CI_Controller
             $listed_items = 0;
             $is_cache = in_array($_POST['chainsourcetype'], $this->config->item('sourceids___14599'));
 
-            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028'))) {
+            if (in_array($_POST['chainsourcetype'], $this->config->item('sourceids___11028')) || $_POST['chainsourcetype']==12274) {
 
                 //SOURCES
                 $current_sourcehandle = view_valid_handle_source($_POST['first_segment']);
@@ -1424,7 +1424,7 @@ class Controller extends CI_Controller
                     }
                 }
 
-            } elseif ($_POST['chainsourcetype']==13550 || $_POST['chainsourcetype']==31777) {
+            } elseif ($_POST['chainsourcetype']==13550 || $_POST['chainsourcetype']==31777 || $_POST['chainsourcetype']==12273) {
 
                 //IDEAS
                 $current_ideahashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
