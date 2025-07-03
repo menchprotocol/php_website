@@ -74,7 +74,7 @@ foreach($this->config->item('sources___31916') as $chainsourcetype => $m) {
         }
 
         if($submenu_content){
-            $submenus .= '<ul class="nav nav-tabs nav12274 nav_tab_'.$chainsourcetype.'">';
+            $submenus .= '<ul class="nav nav-tabs nav12274 nav_sub nav_sub_'.$chainsourcetype.' hidden">';
             $submenus .= $submenu_content;
             $submenus .= '</ul>';
         }

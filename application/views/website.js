@@ -399,11 +399,11 @@ window.onpopstate = function (event) {
 
 function load_hashtag_menu(load_hashtag = null, is_first_load = true) {
     if (load_hashtag) {
-        toggle_pills(load_hashtag, is_first_load);
+        toggle_menu(load_hashtag, is_first_load);
     } else if (document.location.hash) {
         var hashtag = document.location.hash.substr(1);
         if (hashtag && hashtag.length > 0) {
-            toggle_pills(hashtag, is_first_load);
+            toggle_menu(hashtag, is_first_load);
         }
     }
 }
@@ -413,7 +413,7 @@ var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
 
-function toggle_pills(chainsourcetype_hash, is_first_load) {
+function toggle_menu(chainsourcetype_hash, is_first_load) {
 
     console.log('Toggle Pill: ' + chainsourcetype_hash);
 
@@ -450,6 +450,8 @@ function toggle_pills(chainsourcetype_hash, is_first_load) {
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
+    $('.nav_sub').addClass('hidden');
+    $('.nav_sub_' + chainsourcetype).removeClass('hidden');
     $('.xtypetitle_' + chainsourcetype).removeClass('hidden');
 
 
