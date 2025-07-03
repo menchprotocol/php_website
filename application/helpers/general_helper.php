@@ -3092,7 +3092,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         log_error('sources_query() @' . $chainsourcetype . ' Empty Array in Cache @4527');
         return false;
 
-    } elseif ($chainsourcetype==42373) {
+    } elseif ($chainsourcetype==42373 && !$chainsourcesub) {
 
         //Down/Followers Source Chain Groups:
         $order_columns = source_sort();
@@ -3102,7 +3102,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
             'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
         );
 
-    } elseif ($chainsourcetype==42279) {
+    } elseif ($chainsourcetype==42279 && !$chainsourcesub) {
 
         //Up/Following Source Chain Groups:
         $order_columns = source_sort();
