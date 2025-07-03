@@ -470,7 +470,7 @@ class Controller extends CI_Controller
                 foreach ($this->Sources->read(array(
                     'LOWER(sourcehandle)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $e) {
-                    echo source_view(12274, $e);
+                    echo source_view(42287, $e);
                     return true;
                 }
             }
@@ -2932,7 +2932,7 @@ class Controller extends CI_Controller
                     $ids = array();
                     foreach (sources_query(42373, $_POST['s__id'], 1, true) as $e) {
                         array_push($ids, $e['sourceid']);
-                        echo source_view(12274, $e);
+                        echo source_view(42287, $e);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent" title="Total of ' . count($ids) . '">' . join(', ', $ids) . '</div>';
@@ -2955,7 +2955,7 @@ class Controller extends CI_Controller
                     $ids = array();
                     foreach ($is_next as $i) {
                         array_push($ids, $i['ideaid']);
-                        echo idea_view(12273, $i);
+                        echo idea_view(42288, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">' . join(',', $ids) . '</div>';

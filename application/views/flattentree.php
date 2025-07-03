@@ -22,7 +22,7 @@ foreach($copy['recursive_idea_ids'] as $recursive_down_id){
     foreach($this->Ideas->read(array(
         'ideaid' => $recursive_down_id,
     ), 0) as $this_i){
-        echo idea_view(12273, $this_i);
+        echo idea_view(42288, $this_i);
     }
 }
 echo '</div>';
