@@ -3071,7 +3071,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
 
         //Ideas Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainidealeft');
+        $joins_objects = array('chainidearight');
         $query_filters = array(
             'chainsourcecreator' => $sourceid,
             'chainsourcetype' => $chainsourcetype,
@@ -3122,6 +3122,21 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
 
         $joins_objects = array('chainidearight');
         $order_columns = idea_sort();
+
+    } elseif ($chainsourcetype==4486) {
+
+        //Discoveries
+
+        //Determine Sort:
+        $order_columns = array();
+        $order_columns['chainid'] = 'DESC';
+
+        //DISCOVERIES
+        $joins_objects = array('chainidearight');
+        $query_filters = array(
+            'chainsourcecreator' => $sourceid,
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //DISCOVERY GROUP
+        );
 
     } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___12144'))) {
 
