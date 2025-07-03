@@ -3072,17 +3072,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         return false;
     }
 
-    if ($chainsourcetype==42373) {
-
-        //Down/Followers Source Chain Groups:
-        $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainsourcedown');
-        $query_filters = array(
-            'chainsourceup' => $sourceid,
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
-        );
-
-    } elseif ($chainsourcetype==12273) {
+    if ($chainsourcetype==12273) {
 
         //Ideas Created
         $order_columns['chainid'] = 'DESC';
@@ -3100,6 +3090,16 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         $query_filters = array(
             'chainsourcecreator' => $sourceid,
             'chainsourcetype' => $chainsourcetype,
+        );
+
+    } elseif ($chainsourcetype==42373) {
+
+        //Down/Followers Source Chain Groups:
+        $order_columns = source_sort();
+        $joins_objects = array('chainsourcedown');
+        $query_filters = array(
+            'chainsourceup' => $sourceid,
+            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
         );
 
     } elseif ($chainsourcetype==42279) {
