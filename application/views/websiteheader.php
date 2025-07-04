@@ -254,7 +254,7 @@ if(!$basic_header_footer){
                 if(substr($domain_background, -4)=='.mp4'){
 
                     //Is Video:
-                    $bgVideo = '<video autoplay loop muted playsinline class="video_contain"><handle src="'.$domain_background.'" type="video/mp4"></video>';
+                    $bgVideo = '<video autoplay loop muted playsinline class="video_contain"><source src="'.$domain_background.'" type="video/mp4"></video>';
 
                 } else {
 
