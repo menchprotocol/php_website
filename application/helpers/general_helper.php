@@ -1893,7 +1893,7 @@ function handle_access($handlehandle = null, $handleid = 0, $e = false, $replace
 
 
     //IF Follows All
-    if (count($handle_list_config[1645146])) {
+    if (is_array($handle_list_config[1645146]) && count($handle_list_config[1645146])) {
         $the_counter = 0;
         if ($chainhandlecreator) {
             foreach ($handle_list_config[1645146] as $focushandleid) {
@@ -1913,7 +1913,7 @@ function handle_access($handlehandle = null, $handleid = 0, $e = false, $replace
 
 
     //IF Not Follows Any
-    if (count($handle_list_config[1645161])) {
+    if (is_array($handle_list_config[1645161]) && count($handle_list_config[1645161])) {
         $the_counter = 0;
         if ($chainhandlecreator) {
             foreach ($handle_list_config[1645161] as $focushandleid) {
@@ -1934,7 +1934,7 @@ function handle_access($handlehandle = null, $handleid = 0, $e = false, $replace
     }
 
     //IF Not Follows All
-    if (count($handle_list_config[1645176])) {
+    if (is_array($handle_list_config[1645176]) && count($handle_list_config[1645176])) {
         $the_counter = 0;
         if ($chainhandlecreator) {
             foreach ($handle_list_config[1645176] as $focushandleid) {
