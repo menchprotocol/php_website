@@ -590,6 +590,10 @@ function handle_list_config($handleid, $access_limit = true)
     $CI =& get_instance();
 
     $handle_list_config = array(); //To compile the settings of this sheet:
+    $memory_detected = is_array($this->config->item('handleids___6287')) && count($this->config->item('handleids___6287'));
+    if(!$memory_detected){
+        return false;
+    }
 
     foreach ($CI->config->item('handles___1645191') as $chainhandletype => $m) {
         $handle_list_config[intval($chainhandletype)] = array(); //Assume no chains for this type
