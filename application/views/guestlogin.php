@@ -1,17 +1,17 @@
 <?php
 
-$ideahashtag = (isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) ? $_GET['ideahashtag'] : false );
+$hashtaghashtag = (isset($_GET['hashtaghashtag']) && strlen($_GET['hashtaghashtag']) ? $_GET['hashtaghashtag'] : false );
 
 //Make sure not logged in:
-if($source_session['sourceid']){
+if($handle_session['handleid']){
 
-    js_php_redirect(( $ideahashtag ? guestlogin . view_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$source_session['sourcehandle'] ), 13);
+    js_php_redirect(( $hashtaghashtag ? guestlogin . view_memory(42903, 33286) . $hashtaghashtag : view_memory(42903,42902).$handle_session['handlehandle'] ), 13);
 
 } else {
 
-    $sourcecover_generator = sourcecover_generator(12279);
-    $source_result = $this->Sources->join(view_random_title(), null, null, $sourcecover_generator);
-    js_php_redirect(( $ideahashtag ? guestlogin . view_memory(42903, 33286) . $ideahashtag : view_memory(42903,42902).$source_result['e']['sourcehandle'] ), 13);
+    $handlecover_generator = handlecover_generator(12279);
+    $handle_result = $this->Handles->join(view_random_title(), null, null, $handlecover_generator);
+    js_php_redirect(( $hashtaghashtag ? guestlogin . view_memory(42903, 33286) . $hashtaghashtag : view_memory(42903,42902).$handle_result['e']['handlehandle'] ), 13);
 
 }
 

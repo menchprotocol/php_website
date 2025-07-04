@@ -1,9 +1,9 @@
 //Define some global variables:
-var has_unsaved_changes = false; //Tracks source/idea modal edits
+var has_unsaved_changes = false; //Tracks handle/hashtag modal edits
 var focus_group = 0;
 
 
-if (!js_pl_id || !js_sourceids___43512.includes(js_pl_id)) {
+if (!js_pl_id || !js_handleids___43512.includes(js_pl_id)) {
     //Microsoft Clarity=
     (function (c, l, a, r, i, t, y) {
         c[a] = c[a] || function () {
@@ -94,15 +94,15 @@ function watch_cover_change(new_cover) {
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
         $('#modal31912 .fa_search a').attr('href', 'https://fontawesome.com/search?q=' + encodeURIComponent(split_cover_2arr2[0]) + '&o=r&s=solid&f=classic%2Cbrands');
-        $('#modal31912 .save_sourcecover,  #modal31912 .fa_search').removeClass('hidden');
+        $('#modal31912 .save_handlecover,  #modal31912 .fa_search').removeClass('hidden');
         console.log('updated');
     } else {
-        $('#modal31912 .save_sourcecover, #modal31912 .fa_search').addClass('hidden');
+        $('#modal31912 .save_handlecover, #modal31912 .fa_search').addClass('hidden');
     }
 }
 
 function watch_cover() {
-    $('#modal31912 .save_sourcecover').change(function () {
+    $('#modal31912 .save_handlecover').change(function () {
 
         console.log('change detexted:' + $(this).val());
         watch_cover_change($(this).val());
@@ -171,16 +171,16 @@ function load_editor() {
         return false;
     }
 
-    $('.source_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
+    $('.handle_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         $(this).val('@' + suggestion.s__handle);
 
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
-        source: function (q, cb) {
+        handle: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12274' + search_and_filter,
-                hitsPerPage: js_sources___6404[31112]['m__message'],
+                hitsPerPage: js_handles___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -197,7 +197,7 @@ function load_editor() {
                 return search_js_line(suggestion, '@');
             },
             empty: function (data) {
-                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Sources Found</div>';
+                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Handles Found</div>';
             },
         }
 
@@ -209,10 +209,10 @@ function load_editor() {
 
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
-        source: function (q, cb) {
+        handle: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12273' + search_and_filter,
-                hitsPerPage: js_sources___6404[31112]['m__message'],
+                hitsPerPage: js_handles___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -229,7 +229,7 @@ function load_editor() {
                 return search_js_line(suggestion, '#');
             },
             empty: function (data) {
-                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Ideas Found</div>';
+                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Hashtags Found</div>';
             },
         }
     }]);
@@ -252,23 +252,23 @@ function search_js_line(suggestion, default_handle = '@') {
     }
 }
 
-function source_load_finder(chainsourcetype) {
-    console.log(chainsourcetype + " source_load_finder()");
+function handle_load_finder(chainhandletype) {
+    console.log(chainhandletype + " handle_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-' + chainsourcetype + ' .add-input').keypress(function (e) {
+    $('.new-list-' + chainhandletype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            source_create(chainsourcetype, 0);
+            handle_create(chainhandletype, 0);
             return true;
         }
     });
 }
 
-function search_js_cover(chainsourcetype, suggestion, action_id) {
+function search_js_cover(chainhandletype, suggestion, action_id) {
 
-    if (!js_sourceids___26010.includes(chainsourcetype)) {
+    if (!js_handleids___26010.includes(chainhandletype)) {
         alert('Missing type in JS UI');
         return false;
     }
@@ -285,14 +285,14 @@ function search_js_cover(chainsourcetype, suggestion, action_id) {
     }
 
     //Return appropriate UI:
-    if (chainsourcetype == 26011) {
+    if (chainhandletype == 26011) {
         //Mini Coin
         var search_only_app = $("#website_finder").val().charAt(0) == '-';
         var target_url = (search_only_app ? suggestion.s__url.replace('/@', '/') : suggestion.s__url);
         return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' ' + (search_only_app ? ' card-6287 ' : '') + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="' + target_url + '" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="' + target_url + '" class="main__title">' + (suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">' + suggestion.s__title + '</span>') + '</a></div></div></div>';
-    } else if (chainsourcetype == 26013) {
-        //Chain Source
-        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="source_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="source_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
+    } else if (chainhandletype == 26013) {
+        //Chain Handle
+        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="handle_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="handle_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
     }
 
 }
@@ -302,26 +302,26 @@ function search_mini_js(s__cover, s__title) {
 }
 
 
-function toggle_headline(chainsourcetype) {
+function toggle_headline(chainhandletype) {
 
-    var chainsourcedown = 0;
-    var chainidearight = 0;
+    var chainhandleoutput = 0;
+    var chainhashtagoutput = 0;
     var focus__node = parseInt($('#focus__node').val());
     if (focus__node == 12273) {
-        chainidearight = parseInt($('#focus__id').val());
+        chainhashtagoutput = parseInt($('#focus__id').val());
     } else if (focus__node == 12274) {
-        chainsourcedown = parseInt($('#focus__id').val());
+        chainhandleoutput = parseInt($('#focus__id').val());
     }
 
-    if ($('.headline_title_' + chainsourcetype + ' .icon_26008').hasClass('hidden')) {
+    if ($('.headline_title_' + chainhandletype + ' .icon_26008').hasClass('hidden')) {
 
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-        $('.headline_title_' + chainsourcetype + ' .icon_26008').removeClass('hidden');
-        $('.headline_title_' + chainsourcetype + ' .icon_26007').addClass('hidden');
-        $('.headline_body_' + chainsourcetype).addClass('hidden');
+        $('.headline_title_' + chainhandletype + ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + chainhandletype + ' .icon_26007').addClass('hidden');
+        $('.headline_body_' + chainhandletype).addClass('hidden');
 
-        if (chainsourcetype == 31777) {
+        if (chainhandletype == 31777) {
             $('.navigate_12273').removeClass('active');
         }
 
@@ -334,17 +334,17 @@ function toggle_headline(chainsourcetype) {
 
         //Currently closed, must now be opened
         var action_id = 26007; //Open
-        $('.headline_title_' + chainsourcetype + ' .icon_26007').removeClass('hidden');
-        $('.headline_title_' + chainsourcetype + ' .icon_26008').addClass('hidden');
-        $('.headline_body_' + chainsourcetype).removeClass('hidden');
+        $('.headline_title_' + chainhandletype + ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + chainhandletype + ' .icon_26008').addClass('hidden');
+        $('.headline_body_' + chainhandletype).removeClass('hidden');
 
-        if (chainsourcetype == 31777) {
+        if (chainhandletype == 31777) {
             $('.navigate_12273').addClass('active');
         }
 
         //Scroll To:
         $('html, body').animate({
-            scrollTop: $('.headline_body_' + chainsourcetype).offset().top
+            scrollTop: $('.headline_body_' + chainhandletype).offset().top
         }, 13);
 
     }
@@ -352,40 +352,40 @@ function toggle_headline(chainsourcetype) {
 }
 
 
-function source_sort_load(chainsourcetype) {
+function handle_sort_load(chainhandletype) {
 
     load_cards();
 
-    console.log('Tring to load Source Sort for @' + chainsourcetype);
+    console.log('Tring to load Handle Sort for @' + chainhandletype);
 
-    var sort_item_count = parseInt($('.headline_body_' + chainsourcetype).attr('read-counter'));
+    var sort_item_count = parseInt($('.headline_body_' + chainhandletype).attr('read-counter'));
 
-    if (!js_sourceids___13911.includes(chainsourcetype)) {
+    if (!js_handleids___13911.includes(chainhandletype)) {
         //Does not support sorting:
-        console.log(chainsourcetype + ' is not sortable');
+        console.log(chainhandletype + ' is not sortable');
         return false;
-    } else if (sort_item_count < 1 || sort_item_count > parseInt(js_sources___6404[11064]['m__message'])) {
+    } else if (sort_item_count < 1 || sort_item_count > parseInt(js_handles___6404[11064]['m__message'])) {
         return false;
     }
 
     setTimeout(function () {
-        var theobject = document.getElementById("list-in-" + chainsourcetype);
+        var theobject = document.getElementById("list-in-" + chainhandletype);
         if (!theobject) {
-            //due to duplicate ideas belonging in this idea:
+            //due to duplicate hashtags belonging in this hashtag:
             console.log('No object');
             return false;
         }
 
         //Show sort icon:
-        console.log('Completed Loading Sorting for @' + chainsourcetype)
-        $('.sortsource_frame').removeClass('hidden');
+        console.log('Completed Loading Sorting for @' + chainhandletype)
+        $('.sorthandle_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-" + chainsourcetype + " .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-" + chainsourcetype + " .sortsource_grab", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-" + chainhandletype + " .sort_draggable", // Specifies which items inside the element should be sortable
+            handle: "#list-in-" + chainhandletype + " .sorthandle_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                source_sort_save(chainsourcetype);
+                handle_sort_save(chainhandletype);
             }
         });
     }, 377);
@@ -413,49 +413,49 @@ var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
 
-function toggle_menu(chainsourcetype_hash, is_first_load) {
+function toggle_menu(chainhandletype_hash, is_first_load) {
 
-    console.log('Toggle Pill: ' + chainsourcetype_hash);
+    console.log('Toggle Pill: ' + chainhandletype_hash);
 
-    if (pills_loading && !loaded_pills.includes(chainsourcetype_hash)) {
+    if (pills_loading && !loaded_pills.includes(chainhandletype_hash)) {
         return false;
     } else if (loading_in_progress) {
         return false;
     }
 
-    console.log('Toggle Pill Active: ' + chainsourcetype_hash);
+    console.log('Toggle Pill Active: ' + chainhandletype_hash);
 
-    if ($('.handle_nav_' + chainsourcetype_hash).attr('chainsourcetype') && $('.handle_nav_' + chainsourcetype_hash).attr('chainsourcetype').length) {
-        chainsourcetype = parseInt($('.handle_nav_' + chainsourcetype_hash).attr('chainsourcetype'));
+    if ($('.handle_nav_' + chainhandletype_hash).attr('chainhandletype') && $('.handle_nav_' + chainhandletype_hash).attr('chainhandletype').length) {
+        chainhandletype = parseInt($('.handle_nav_' + chainhandletype_hash).attr('chainhandletype'));
     } else {
-        console.log('ERROR: #' + chainsourcetype_hash + ' is not a valid menu.');
+        console.log('ERROR: #' + chainhandletype_hash + ' is not a valid menu.');
         return false;
     }
 
     loading_in_progress = true;
 
-    if (!loaded_pills.includes(chainsourcetype_hash)) {
-        pills_loading = chainsourcetype_hash;
+    if (!loaded_pills.includes(chainhandletype_hash)) {
+        pills_loading = chainhandletype_hash;
     }
 
-    var chainsourcedown = 0;
-    var chainidearight = 0;
+    var chainhandleoutput = 0;
+    var chainhashtagoutput = 0;
     var focus__node = parseInt($('#focus__node').val());
 
     if (focus__node == 12273) {
-        chainidearight = parseInt($('#focus__id').val());
+        chainhashtagoutput = parseInt($('#focus__id').val());
     } else if (focus__node == 12274) {
-        chainsourcedown = parseInt($('#focus__id').val());
+        chainhandleoutput = parseInt($('#focus__id').val());
     }
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
     $('.nav_sub').addClass('hidden');
-    $('.nav_sub_' + chainsourcetype).removeClass('hidden');
-    $('.xtypetitle_' + chainsourcetype).removeClass('hidden');
+    $('.nav_sub_' + chainhandletype).removeClass('hidden');
+    $('.xtypetitle_' + chainhandletype).removeClass('hidden');
 
 
-    if (!$('.thepill' + chainsourcetype + ' .nav-chain').hasClass('active')) {
+    if (!$('.thepill' + chainhandletype + ' .nav-chain').hasClass('active')) {
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
@@ -463,43 +463,43 @@ function toggle_menu(chainsourcetype_hash, is_first_load) {
         //Hide all elements
         $('.nav-chain').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + chainsourcetype + ' .nav-chain').addClass('active');
-        $('.headline_body_' + chainsourcetype).removeClass('hidden');
+        $('.thepill' + chainhandletype + ' .nav-chain').addClass('active');
+        $('.headline_body_' + chainhandletype).removeClass('hidden');
 
         //Set focus tab:
-        console.log('focus_group Updated from ' + focus_group + ' to ' + chainsourcetype);
-        focus_group = chainsourcetype;
-        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainsourcetype + ' .nav-chain').attr('href'))) {
-            window.location.hash = $('.thepill' + chainsourcetype + ' .nav-chain').attr('href');
+        console.log('focus_group Updated from ' + focus_group + ' to ' + chainhandletype);
+        focus_group = chainhandletype;
+        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainhandletype + ' .nav-chain').attr('href'))) {
+            window.location.hash = $('.thepill' + chainhandletype + ' .nav-chain').attr('href');
         }
 
         //Do we need to load data via ajax?
-        if (!loaded_pills.includes(chainsourcetype_hash)) {
+        if (!loaded_pills.includes(chainhandletype_hash)) {
 
-            $('.headline_body_' + chainsourcetype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + chainhandletype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
             var focus__node = parseInt($('#focus__node').val());
-            console.log('Tab loading from @' + focus__node + ' for @' + chainsourcetype);
+            console.log('Tab loading from @' + focus__node + ' for @' + chainhandletype);
 
             if (focus__node == 12273) {
 
-                var loading_url = "/controller/idea_list";
+                var loading_url = "/controller/hashtag_list";
                 var loading_data = {
                     focus__node: focus__node,
-                    chainsourcetype: chainsourcetype,
-                    counter: $('.headline_body_' + chainsourcetype).attr('read-counter'),
-                    ideaid: parseInt($('#focus__id').val()),
+                    chainhandletype: chainhandletype,
+                    counter: $('.headline_body_' + chainhandletype).attr('read-counter'),
+                    hashtagid: parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
             } else if (focus__node == 12274) {
 
-                var loading_url = "/controller/source_list";
+                var loading_url = "/controller/handle_list";
                 var loading_data = {
                     focus__node: focus__node,
-                    chainsourcetype: chainsourcetype,
-                    counter: $('.headline_body_' + chainsourcetype).attr('read-counter'),
-                    sourceid: parseInt($('#focus__id').val()),
+                    chainhandletype: chainhandletype,
+                    counter: $('.headline_body_' + chainhandletype).attr('read-counter'),
+                    handleid: parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
@@ -516,9 +516,9 @@ function toggle_menu(chainsourcetype_hash, is_first_load) {
             $.post(loading_url, loading_data, function (data) {
 
                 //Add data to the page:
-                $('.headline_body_' + chainsourcetype + ' .tab_content').html(data);
+                $('.headline_body_' + chainhandletype + ' .tab_content').html(data);
 
-                loaded_pills.push(chainsourcetype_hash);
+                loaded_pills.push(chainhandletype_hash);
 
                 load_card_clickers();
                 initiate_algolia();
@@ -539,10 +539,10 @@ function toggle_menu(chainsourcetype_hash, is_first_load) {
                 setTimeout(function () {
 
                     //TODO Fix Sorting
-                    if (js_sourceids___11020.includes(chainsourcetype) || (focus__node == 12274 && ( chainsourcetype==13550 || chainsourcetype==31777 ))) {
-                        idea_sort_load(chainsourcetype);
-                    } else if (js_sourceids___11028.includes(chainsourcetype) || (focus__node == 12273 && ( chainsourcetype==13550 || chainsourcetype==31777 ))) {
-                        source_sort_load(chainsourcetype);
+                    if (js_handleids___11020.includes(chainhandletype) || (focus__node == 12274 && ( chainhandletype==13550 || chainhandletype==31777 ))) {
+                        hashtag_sort_load(chainhandletype);
+                    } else if (js_handleids___11028.includes(chainhandletype) || (focus__node == 12273 && ( chainhandletype==13550 || chainhandletype==31777 ))) {
+                        handle_sort_load(chainhandletype);
                     }
 
                     setup_popover();
@@ -564,49 +564,49 @@ function toggle_menu(chainsourcetype_hash, is_first_load) {
 }
 
 
-function idea_copy(ideaid, do_recursive) {
+function hashtag_copy(hashtagid, do_recursive) {
 
     //Go ahead and delete:
-    $.post("/controller/idea_copy", {
-        ideaid: ideaid,
+    $.post("/controller/hashtag_copy", {
+        hashtagid: hashtagid,
         do_recursive: do_recursive,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
-            js_redirect(js_sources___42903[33286]['m__message'] + data.idea_createhashtag);
+            js_redirect(js_handles___42903[33286]['m__message'] + data.hashtag_createhashtag);
         } else {
             alert('ERROR:' + data.message);
         }
     });
 }
 
-function source_title(sourceid) {
+function handle_title(handleid) {
     //Load Instant Fields:
     var return_title = '';
-    if ($('.text__6197_' + sourceid + ':first').text().length) {
-        return_title = $('.text__6197_' + sourceid + ':first').text();
-    } else if ($('.text__6197_' + sourceid + ':first').val().length) {
-        return_title = $('.text__6197_' + sourceid + ':first').val();
+    if ($('.text__6197_' + handleid + ':first').text().length) {
+        return_title = $('.text__6197_' + handleid + ':first').text();
+    } else if ($('.text__6197_' + handleid + ':first').val().length) {
+        return_title = $('.text__6197_' + handleid + ':first').val();
     }
     return return_title;
 }
 
-function source_copy(sourceid) {
+function handle_copy(handleid) {
 
-    var copy_source_title = prompt("What would be the title of the new Source?", source_title(sourceid));
-    if (!copy_source_title.length) {
+    var copy_handle_title = prompt("What would be the title of the new Handle?", handle_title(handleid));
+    if (!copy_handle_title.length) {
         alert('You must enter a title to copy.');
         return false;
     }
 
     //Go ahead and delete:
-    $.post("/controller/source_copy", {
-        sourceid: sourceid,
-        copy_source_title: copy_source_title,
+    $.post("/controller/handle_copy", {
+        handleid: handleid,
+        copy_handle_title: copy_handle_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
-            js_redirect(js_sources___42903[42902]['m__message'] + data.source_createhandle);
+            js_redirect(js_handles___42903[42902]['m__message'] + data.handle_createhandle);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -614,8 +614,8 @@ function source_copy(sourceid) {
 }
 
 
-function js_randomize_text(sourceid) {
-    var messages = js_sources___12687[sourceid]['m__message'].split("\n");
+function js_randomize_text(handleid) {
+    var messages = js_handles___12687[handleid]['m__message'].split("\n");
     if (messages.length == 1) {
         //Return message:
         return messages[0];
@@ -626,29 +626,29 @@ function js_randomize_text(sourceid) {
 }
 
 
-function loadtab(chainsourcetype, tab_data_id) {
+function loadtab(chainhandletype, tab_data_id) {
 
     //Hide all tabs:
-    $('.tab-group-' + chainsourcetype).addClass('hidden');
-    $('.tab-nav-' + chainsourcetype).removeClass('active');
+    $('.tab-group-' + chainhandletype).addClass('hidden');
+    $('.tab-nav-' + chainhandletype).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-' + chainsourcetype + '.tab-data-' + tab_data_id).removeClass('hidden');
-    $('.tab-nav-' + chainsourcetype + '.tab-head-' + tab_data_id).addClass('active');
+    $('.tab-group-' + chainhandletype + '.tab-data-' + tab_data_id).removeClass('hidden');
+    $('.tab-nav-' + chainhandletype + '.tab-head-' + tab_data_id).addClass('active');
 
 }
 
 
 var init_in_process = 0;
 
-function chain_delete(chainid, chainsourcetype, ideahashtag = null) {
+function chain_delete(chainid, chainhandletype, hashtaghashtag = null) {
 
     if (init_in_process == chainid) {
         return false;
     }
     init_in_process = chainid;
 
-    var r = confirm("Are you Sure You Want to Unchain" + (ideahashtag ? ' #' + ideahashtag : '') + "?");
+    var r = confirm("Are you Sure You Want to Unchain" + (hashtaghashtag ? ' #' + hashtaghashtag : '') + "?");
     if (!(r == true)) {
         return false;
     }
@@ -657,14 +657,14 @@ function chain_delete(chainid, chainsourcetype, ideahashtag = null) {
     $.post("/controller/chain_delete", {
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
-        ideahashtag: ideahashtag, //Always append to AJAX Calls
+        hashtaghashtag: hashtaghashtag, //Always append to AJAX Calls
     }, function (data) {
         //Update UI to confirm with member:
         if (!data.status) {
             //There was some sort of an error returned!
             alert(data.message);
         } else {
-            chain_counter(chainsourcetype, -1);
+            chain_counter(chainhandletype, -1);
             $(".cover_x_" + chainid).fadeOut();
             setTimeout(function () {
                 $(".cover_x_" + chainid).remove();
@@ -676,8 +676,8 @@ function chain_delete(chainid, chainsourcetype, ideahashtag = null) {
 }
 
 
-function updatsourcecover(new_cover, changed = true) {
-    $('#modal31912 .save_sourcecover').val(new_cover);
+function updathandlecover(new_cover, changed = true) {
+    $('#modal31912 .save_handlecover').val(new_cover);
     update_cover_main(new_cover, '.demo_cover');
     watch_cover_change(new_cover);
     if (changed) {
@@ -686,7 +686,7 @@ function updatsourcecover(new_cover, changed = true) {
 }
 
 function image_cover(cover_preview, cover_apply, new_title) {
-    return '<a href="javascript:void(0);" onclick="updatsourcecover(\'' + cover_apply + '\')">' + search_mini_js(cover_preview, new_title) + '</a>';
+    return '<a href="javascript:void(0);" onclick="updathandlecover(\'' + cover_apply + '\')">' + search_mini_js(cover_preview, new_title) + '</a>';
 }
 
 
@@ -700,44 +700,44 @@ function initiate_algolia() {
     });
 }
 
-function source_cover(chainsourcetype, sourceid, counter, first_segment) {
+function handle_cover(chainhandletype, handleid, counter, first_segment) {
 
-    if ($('.coinssource_' + sourceid + '_' + chainsourcetype).html().length) {
+    if ($('.coinshandle_' + handleid + '_' + chainhandletype).html().length) {
         //Already loaded:
         return false;
     }
 
-    $('.coinssource_' + sourceid + '_' + chainsourcetype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coinshandle_' + handleid + '_' + chainhandletype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/source_cover", {
-        chainsourcetype: chainsourcetype,
-        sourceid: sourceid,
+    $.post("/controller/handle_cover", {
+        chainhandletype: chainhandletype,
+        handleid: handleid,
         counter: counter,
         first_segment: first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coinssource_' + sourceid + '_' + chainsourcetype).html(data);
+        $('.coinshandle_' + handleid + '_' + chainhandletype).html(data);
     });
 
 }
 
-function idea_cover(chainsourcetype, ideaid, counter, first_segment, current_e) {
+function hashtag_cover(chainhandletype, hashtagid, counter, first_segment, current_e) {
 
-    if ($('.coins_idea_' + ideaid + '_' + chainsourcetype).html().length) {
+    if ($('.coins_hashtag_' + hashtagid + '_' + chainhandletype).html().length) {
         //Already loaded:
         return false;
     }
 
-    $('.coins_idea_' + ideaid + '_' + chainsourcetype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_hashtag_' + hashtagid + '_' + chainhandletype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/idea_cover", {
-        chainsourcetype: chainsourcetype,
-        ideaid: ideaid,
+    $.post("/controller/hashtag_cover", {
+        chainhandletype: chainhandletype,
+        hashtagid: hashtagid,
         counter: counter,
         first_segment: first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_idea_' + ideaid + '_' + chainsourcetype).html(data);
+        $('.coins_hashtag_' + hashtagid + '_' + chainhandletype).html(data);
     });
 
 }
@@ -780,13 +780,13 @@ function toggle_finder() {
 
 
 function load_cards() {
-    $(".loadsource_cards, .load_idea_cards").unbind();
+    $(".loadhandle_cards, .load_hashtag_cards").unbind();
 
-    $(".loadsource_cards").click(function (event) {
-        source_cover($(this).attr('load_chainsourcetype'), $(this).attr('load_sourceid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
+    $(".loadhandle_cards").click(function (event) {
+        handle_cover($(this).attr('load_chainhandletype'), $(this).attr('load_handleid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
     });
-    $(".load_idea_cards").click(function (event) {
-        idea_cover($(this).attr('load_chainsourcetype'), $(this).attr('load_ideaid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
+    $(".load_hashtag_cards").click(function (event) {
+        hashtag_cover($(this).attr('load_chainhandletype'), $(this).attr('load_hashtagid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
     });
 }
 
@@ -805,7 +805,7 @@ function js_redirect(url, timer = 0) {
 function load_card_clickers() {
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .chainvalue, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
+    var ignore_clicks = 'a, .btn, textarea, .chainvalue, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_handle, .this_selector';
     $(".card_click").click(function (e) {
         if ($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length) {
             js_redirect($(this).attr('href'));
@@ -821,9 +821,9 @@ function load_card_clickers() {
     */
 
     //For Discovery only:
-    if (typeof focus_ideatype !== 'undefined' && focus_ideatype > 0) {
+    if (typeof focus_hashtagtype !== 'undefined' && focus_hashtagtype > 0) {
 
-        var is_single_choice = (focus_ideatype == 6684);
+        var is_single_choice = (focus_hashtagtype == 6684);
 
         if ($(".this_selector").length == 1) {
             //Auto select if only 1 choice is available:
@@ -831,10 +831,10 @@ function load_card_clickers() {
         }
 
         $(".this_selector").click(function (e) {
-            if ($('.this_selector_' + $(this).attr('selection_ideaid') + ' i').hasClass('fa-square-check')) {
+            if ($('.this_selector_' + $(this).attr('selection_hashtagid') + ' i').hasClass('fa-square-check')) {
 
                 //Already selected, so unselect:
-                $('.this_selector_' + $(this).attr('selection_ideaid') + ' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
+                $('.this_selector_' + $(this).attr('selection_hashtagid') + ' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
 
             } else {
 
@@ -844,14 +844,14 @@ function load_card_clickers() {
                     console.log('Single Choice');
 
                     //Unselect the previously selected:
-                    $('.this_selector:not(.this_selector_' + $(this).attr('selection_ideaid') + ') i.fa-square-check').each(function () {
+                    $('.this_selector:not(.this_selector_' + $(this).attr('selection_hashtagid') + ') i.fa-square-check').each(function () {
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
                     });
                     //Go Next:
-                    if (!$('.input_ui_' + $(this).attr('selection_ideaid'))[0]) {
+                    if (!$('.input_ui_' + $(this).attr('selection_hashtagid'))[0]) {
                         //Since there is no input for this single select, we can instantly go next:
                         setTimeout(function () {
-                            idea_discovered(0);
+                            hashtag_discovered(0);
                         }, 89);
                     } else {
                         //Make button visible if hidden:
@@ -863,10 +863,10 @@ function load_card_clickers() {
                     $(".fixed-bottom").removeClass('hidden');
                 }
 
-                if ($('.input_ui_' + $(this).attr('selection_ideaid'))[0]) {
-                    $('.input_ui_' + $(this).attr('selection_ideaid') + ' .x_write').focus();
+                if ($('.input_ui_' + $(this).attr('selection_hashtagid'))[0]) {
+                    $('.input_ui_' + $(this).attr('selection_hashtagid') + ' .x_write').focus();
                 }
-                $('.this_selector_' + $(this).attr('selection_ideaid') + ' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
+                $('.this_selector_' + $(this).attr('selection_hashtagid') + ' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
 
             }
         });
@@ -876,9 +876,9 @@ function load_card_clickers() {
 
 var busy_processing = false;
 
-function sale_increment(increment, ideaid, max_allowed, min_allowed, unit_total, unit_fee) {
+function sale_increment(increment, hashtagid, max_allowed, min_allowed, unit_total, unit_fee) {
 
-    var current_quentity = parseInt($('.input_ui_' + ideaid + ' .current_count').text());
+    var current_quentity = parseInt($('.input_ui_' + hashtagid + ' .current_count').text());
     var new_quantity = current_quentity + increment;
 
     if (new_quantity < min_allowed || new_quantity > max_allowed) {
@@ -888,14 +888,14 @@ function sale_increment(increment, ideaid, max_allowed, min_allowed, unit_total,
     }
 
     if (new_quantity > min_allowed) {
-        $(".sale_controller_" + ideaid + " .sale_down>i").removeClass('hidden');
+        $(".sale_controller_" + hashtagid + " .sale_down>i").removeClass('hidden');
     } else {
-        $(".sale_controller_" + ideaid + " .sale_down>i").addClass('hidden');
+        $(".sale_controller_" + hashtagid + " .sale_down>i").addClass('hidden');
     }
     if (new_quantity < max_allowed) {
-        $(".sale_controller_" + ideaid + " .sale_up>i").removeClass('hidden');
+        $(".sale_controller_" + hashtagid + " .sale_up>i").removeClass('hidden');
     } else {
-        $(".sale_controller_" + ideaid + " .sale_up>i").addClass('hidden');
+        $(".sale_controller_" + hashtagid + " .sale_up>i").addClass('hidden');
     }
 
     busy_processing = true;
@@ -905,9 +905,9 @@ function sale_increment(increment, ideaid, max_allowed, min_allowed, unit_total,
     var new_total = (unit_total * new_quantity);
 
     //Update UI:
-    $(".input_ui_" + ideaid + " .ideakey").val(new_quantity);
-    $(".input_ui_" + ideaid + " .current_count").text(new_quantity);
-    $(".input_ui_" + ideaid + " .paypal_handling").val(handling_total);
+    $(".input_ui_" + hashtagid + " .hashtagkey").val(new_quantity);
+    $(".input_ui_" + hashtagid + " .current_count").text(new_quantity);
+    $(".input_ui_" + hashtagid + " .paypal_handling").val(handling_total);
 
     invoice_update(); //to show new numbers
 
@@ -924,9 +924,9 @@ function invoice_update() {
 
     $(".sale_controller").each(function () {
 
-        var item_ideaid = parseInt($(this).attr('ideaid'));
-        var item_idea_title = $('.cache_frame_' + item_ideaid + ' .first_line').text();
-        var current_count = parseFloat($('.input_ui_' + item_ideaid + ' .current_count').text());
+        var item_hashtagid = parseInt($(this).attr('hashtagid'));
+        var item_hashtag_title = $('.cache_frame_' + item_hashtagid + ' .first_line').text();
+        var current_count = parseFloat($('.input_ui_' + item_hashtagid + ' .current_count').text());
         var current_price = parseFloat($(this).attr('unitprice'));
         var current_currency = $(this).attr('unitcurrency');
 
@@ -937,7 +937,7 @@ function invoice_update() {
 
 
     //Update UI:
-    $('.idea_discovered_btn').html('Create Invoice: <span title="" class="small_font inline-block">' + total_currency + ' ' + total_price.toLocaleString('en-US', {
+    $('.hashtag_discovered_btn').html('Create Invoice: <span title="" class="small_font inline-block">' + total_currency + ' ' + total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
     }) + ' [' + total_count + ']</span>');
@@ -1025,18 +1025,18 @@ $(document).ready(function () {
 
     watch_cover();
 
-    //Only for idea page but still:
+    //Only for hashtag page but still:
     set_autosize($('.text__6197_' + parseInt($('#focus__id').val())));
 
     $(document).on('keydown', function (e) {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {
             if (String.fromCharCode(e.which).toLowerCase() === 'i') {
-                //Add Idea
-                idea_editor();
+                //Add Hahstag
+                hashtag_editor();
             } else if (String.fromCharCode(e.which).toLowerCase() === 's') {
-                //Add Source:
-                source_editor(0, 0);
+                //Add Handle:
+                handle_editor(0, 0);
             } else if (String.fromCharCode(e.which).toLowerCase() === 'f' && search_enabled()) {
                 //Finder:
                 toggle_finder();
@@ -1068,7 +1068,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#modal31912 .save_sourcecover').keyup(function () {
+    $('#modal31912 .save_handlecover').keyup(function () {
         update_cover_main($(this).val(), '.demo_cover');
     });
 
@@ -1076,8 +1076,8 @@ $(document).ready(function () {
     set_autosize($('.texttype_lg'));
 
     $('.trigger_modal').click(function (e) {
-        var chainsourcetype = parseInt($(this).attr('chainsourcetype'));
-        $('#modal' + chainsourcetype).modal('show');
+        var chainhandletype = parseInt($(this).attr('chainhandletype'));
+        $('#modal' + chainhandletype).modal('show');
     });
 
 
@@ -1116,7 +1116,7 @@ $(document).ready(function () {
                 match: /(^|\s)\.@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1142,7 +1142,7 @@ $(document).ready(function () {
                 match: /(^|\s),@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1168,7 +1168,7 @@ $(document).ready(function () {
                 match: /(^|\s);@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1194,7 +1194,7 @@ $(document).ready(function () {
                 match: /(^|\s):@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1220,7 +1220,7 @@ $(document).ready(function () {
                 match: /(^|\s)\+@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1246,7 +1246,7 @@ $(document).ready(function () {
                 match: /(^|\s)-@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1272,7 +1272,7 @@ $(document).ready(function () {
                 match: /(^|\s)~@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1298,7 +1298,7 @@ $(document).ready(function () {
                 match: /(^|\s)\*@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1324,7 +1324,7 @@ $(document).ready(function () {
                 match: /(^|\s)\|@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1351,7 +1351,7 @@ $(document).ready(function () {
                 match: /(^|\s)=#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1377,7 +1377,7 @@ $(document).ready(function () {
                 match: /(^|\s)!#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1403,7 +1403,7 @@ $(document).ready(function () {
                 match: /(^|\s)\|#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1429,7 +1429,7 @@ $(document).ready(function () {
                 match: /(^|\s)^#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1455,7 +1455,7 @@ $(document).ready(function () {
                 match: /(^|\s)-#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1481,7 +1481,7 @@ $(document).ready(function () {
                 match: /(^|\s);#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1507,7 +1507,7 @@ $(document).ready(function () {
                 match: /(^|\s):#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1533,7 +1533,7 @@ $(document).ready(function () {
                 match: /(^|\s)\.#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1559,7 +1559,7 @@ $(document).ready(function () {
                 match: /(^|\s),#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1585,7 +1585,7 @@ $(document).ready(function () {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1611,7 +1611,7 @@ $(document).ready(function () {
                 match: /(^|\s)#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31112]['m__message'],
+                        hitsPerPage: js_handles___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1662,7 +1662,7 @@ $(document).ready(function () {
     //TOP SEARCH
     $("#website_finder").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
         {
-            source: function (q, cb) {
+            handle: function (q, cb) {
 
                 icons_listed = [];
 
@@ -1696,7 +1696,7 @@ $(document).ready(function () {
 
                         //For Members:
                         if (!js_session_superpowers_unlocked.includes(12701)) {
-                            //Can view limited Sources:
+                            //Can view limited Handles:
                             if (search_filters.length > 0) {
                                 search_filters += ' AND ';
                             }
@@ -1705,7 +1705,7 @@ $(document).ready(function () {
 
                     } else {
 
-                        //Guest can search ideas only by default as they start typing;
+                        //Guest can search hashtags only by default as they start typing;
                         if (search_filters.length > 0) {
                             search_filters += ' AND ';
                         }
@@ -1715,7 +1715,7 @@ $(document).ready(function () {
 
                     //Append filters:
                     index_algolia.search(q, {
-                        hitsPerPage: js_sources___6404[31113]['m__message'],
+                        hitsPerPage: js_handles___6404[31113]['m__message'],
                         filters: search_filters,
                     }, function (error, content) {
                         if (error) {
@@ -1782,18 +1782,18 @@ function update_cover_mini(cover_code, target_css) {
 }
 
 
-function display_media(mediaframe_id, uploader_id, ideaid) {
-    $(".ui_ideacache_" + ideaid + " .media_display").each(function () {
-        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" sourceid="0"  sourcecover=""></div>');
-        cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('sourcecover'), $(this).attr('sourcevalue'), $(this).attr('sourceid'));
+function display_media(mediaframe_id, uploader_id, hashtagid) {
+    $(".ui_hashtagcache_" + hashtagid + " .media_display").each(function () {
+        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""></div>');
+        cloudinary_prehandle_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('handlecover'), $(this).attr('handlevalue'), $(this).attr('handleid'));
     });
     sort_media(mediaframe_id);
 }
 
-function idea_editor(ideaid = 0, chainid = 0, next_ideaid = 0) {
+function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
 
-    var chainsourcetype = 0;
-    var focus_idea_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
+    var chainhandletype = 0;
+    var focus_hashtag_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
     $("#modal31911 .save_results").html('');
 
     //Reset Fields:
@@ -1801,36 +1801,36 @@ function idea_editor(ideaid = 0, chainid = 0, next_ideaid = 0) {
     $('#modal31911 .media_frame').html('');
     $("#modal31911 .dynamic_item").attr('d__id', '').attr('d_chainid', '');
     $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
-    $('#modal31911 .created_ideaid').val(0);
+    $('#modal31911 .created_hashtagid').val(0);
     $("#modal31911 .unsaved_warning").val('');
     $("#modal31911 .save_frame").addClass('hidden');
-    $('#modal31911 .save_ideaid, #modal31911 .save_chainid').val(0);
+    $('#modal31911 .save_hashtagid, #modal31911 .save_chainid').val(0);
 
-    //Are we adding an idea for a target action tab?
+    //Are we adding an hashtag for a target action tab?
     console.log('i Modal loaded for ' + focus_group);
-    if (focus_idea_id && focus_group > 0 && !next_ideaid && !ideaid && !chainid) {
-        //Next idea group:
-        next_ideaid = focus_idea_id;
+    if (focus_hashtag_id && focus_group > 0 && !next_hashtagid && !hashtagid && !chainid) {
+        //Next hashtag group:
+        next_hashtagid = focus_hashtag_id;
     }
 
-    if (!ideaid && !next_ideaid && focus_idea_id) {
-        next_ideaid = focus_idea_id;
+    if (!hashtagid && !next_hashtagid && focus_hashtag_id) {
+        next_hashtagid = focus_hashtag_id;
     }
 
 
     //Assign updates:
     var insert_message = '';
-    var current_ideatype = 6677;
-    $('#modal31911 .next_ideaid').val(next_ideaid);
+    var current_hashtagtype = 6677;
+    $('#modal31911 .next_hashtagid').val(next_hashtagid);
     $('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
 
 
     //Load Chain addition info, if any:
-    if (next_ideaid && $('.ui_ideahashtag_' + next_ideaid).length) {
+    if (next_hashtagid && $('.ui_hashtaghashtag_' + next_hashtagid).length) {
         //Append to textarea:
-        insert_message = '#'+$('.ui_ideahashtag_'+next_ideaid).val()+' ';
-    } else if (!next_ideaid) {
-        //See where we are at and append anything needed to the idea:
+        insert_message = '#'+$('.ui_hashtaghashtag_'+next_hashtagid).val()+' ';
+    } else if (!next_hashtagid) {
+        //See where we are at and append anything needed to the hashtag:
         var focus__node = parseInt($('#focus__node').val());
         if (focus__node == 12273) {
             insert_message = '#'+$('#focus_handle').val()+' ';
@@ -1840,37 +1840,37 @@ function idea_editor(ideaid = 0, chainid = 0, next_ideaid = 0) {
     }
 
     if (insert_message.length) {
-        $("#modal31911 .save_ideavalue").val(insert_message);
+        $("#modal31911 .save_hashtagvalue").val(insert_message);
     }
 
-    //Idea Type:
-    update_form_select(4737, current_ideatype, 1, false);
+    //Hahstag Type:
+    update_form_select(4737, current_hashtagtype, 1, false);
 
     $('#modal31911').modal('show');
 
     setTimeout(function () {
         //Adjust sizes:
-        set_autosize($('#modal31911 .save_ideavalue'));
+        set_autosize($('#modal31911 .save_hashtagvalue'));
         set_autosize($('#modal31911 .save_chainvalue'));
     }, 233);
 
     setTimeout(function () {
         //Focus on writing a message:
-        $('#modal31911 .save_ideavalue').focus();
+        $('#modal31911 .save_hashtagvalue').focus();
     }, 611);
 
 }
 
-function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
+function load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, initial_loading) {
 
     $(".dynamic_item").addClass('hidden'); //Hide all current items...
     $(".dynamic_editing_loading").removeClass('hidden');
-    var created_ideaid = 0;
+    var created_hashtagid = 0;
 
-    $.post("/controller/idea_editor", {
-        ideaid: ideaid,
+    $.post("/controller/hashtag_editor", {
+        hashtagid: hashtagid,
         chainid: chainid,
-        current_ideatype: current_ideatype,
+        current_hashtagtype: current_hashtagtype,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
@@ -1878,17 +1878,17 @@ function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
 
         if (data.status) {
 
-            if (!ideaid && data.created_ideaid > 0) {
-                console.log('NEW IDEA #' + data.created_ideaid + ' has been created');
-                created_ideaid = data.created_ideaid;
-                $('#modal31911 .created_ideaid').val(created_ideaid);
-                ideaid = created_ideaid;
+            if (!hashtagid && data.created_hashtagid > 0) {
+                console.log('NEW HASHTAG #' + data.created_hashtagid + ' has been created');
+                created_hashtagid = data.created_hashtagid;
+                $('#modal31911 .created_hashtagid').val(created_hashtagid);
+                hashtagid = created_hashtagid;
             }
 
             if (initial_loading) {
 
-                //Initiate Idea  Uploader:
-                load_cloudinary(13572, ideaid, ['#' + ideaid], '.uploader_13572', '#modal31911');
+                //Initiate Hahstag  Uploader:
+                load_cloudinary(13572, hashtagid, ['#' + hashtagid], '.uploader_13572', '#modal31911');
 
                 //Track unsaved changes to prevent unwated modal closure:
                 $("#modal31911 .unsaved_warning").change(function () {
@@ -1900,7 +1900,7 @@ function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
             var current_header = null;
 
             //Dynamic Input Fields:
-            for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
+            for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
 
                 var index_i = i - 1;
 
@@ -1926,7 +1926,7 @@ function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
                 }
 
 
-                var is_locked = js_sourceids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_handleids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if (is_locked && !data.return_inputs[index_i]["d__value"].length) {
                     //Hide since its locked without a value:
                     $("#modal31911 .dynamic_" + i + " .inner_dynamic").addClass('hidden');
@@ -1968,44 +1968,44 @@ function load_idea_dynamic(ideaid, chainid, current_ideatype, initial_loading) {
 
         }
     });
-    return created_ideaid;
+    return created_hashtagid;
 }
 
 
 var i_saving = false; //Prevent double saving
-function idea_update() {
+function hashtag_update() {
 
     if (i_saving) {
-        console.log('Idea updating aborted');
+        console.log('Hahstag updating aborted');
         return false;
     }
 
     i_saving = true;
-    $(".idea_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".hashtag_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
-    var current_ideaid = parseInt($('#modal31911 .save_ideaid').val());
-    var created_ideaid = parseInt($('#modal31911 .created_ideaid').val());
-    console.log('Idea updating begins #' + current_ideaid);
+    var current_hashtagid = parseInt($('#modal31911 .save_hashtagid').val());
+    var created_hashtagid = parseInt($('#modal31911 .created_hashtagid').val());
+    console.log('Hahstag updating begins #' + current_hashtagid);
 
     //TODO Preview Media
 
     var modify_data = {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        save_ideaid: (current_ideaid > 0 ? current_ideaid : created_ideaid),
+        save_hashtagid: (current_hashtagid > 0 ? current_hashtagid : created_hashtagid),
         save_chainid: $('#modal31911 .save_chainid').val(),
-        next_ideaid: $('#modal31911 .next_ideaid').val(),
+        next_hashtagid: $('#modal31911 .next_hashtagid').val(),
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
-        save_ideavalue: $('#modal31911 .save_ideavalue').val().trim(),
-        save_ideahashtag: $('#modal31911 .save_ideahashtag').val().trim(),
-        save_ideatype: $('.dropd_form_4737').attr('selected_value').trim(),
+        save_hashtagvalue: $('#modal31911 .save_hashtagvalue').val().trim(),
+        save_hashtaghashtag: $('#modal31911 .save_hashtaghashtag').val().trim(),
+        save_hashtagtype: $('.dropd_form_4737').attr('selected_value').trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
-    for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
+    for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
         if ($('#modal31911 .dynamic_' + i).attr('d__id').length) {
             modify_data['save_dynamic_' + i] = $('#modal31911 .dynamic_' + i).attr('d_chainid').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_' + i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_' + i).val().trim();
         } else {
@@ -2014,11 +2014,11 @@ function idea_update() {
         }
     }
 
-    $.post("/controller/idea_update", modify_data, function (data) {
+    $.post("/controller/hashtag_update", modify_data, function (data) {
 
         //Load Images:
         i_saving = false;
-        $(".idea_update").html('SAVE');
+        $(".hashtag_update").html('SAVE');
 
         if (!data.status) {
 
@@ -2027,33 +2027,33 @@ function idea_update() {
 
         } else {
 
-            if (data.redirect_idea) {
+            if (data.redirect_hashtag) {
                 //Give option to open the post:
                 $(".i_footer_note").removeClass('hidden');
-                $(".i_footer_note a").attr('href', data.redirect_idea);
+                $(".i_footer_note a").attr('href', data.redirect_hashtag);
                 setTimeout(function () {
                     $(".i_footer_note").addClass('hidden');
                 }, 6765);
             }
 
             //Update Handle & Href chains if needed:
-            var old_handle = $(".ui_ideahashtag_" + modify_data['save_ideaid'] + ':first').text();
-            var new_handle = modify_data['save_ideahashtag'];
-            var on_focus__idea = parseInt($('#focus__node').val()) == 12273 && modify_data['save_ideaid'] == parseInt($('#focus__id').val());
+            var old_handle = $(".ui_hashtaghashtag_" + modify_data['save_hashtagid'] + ':first').text();
+            var new_handle = modify_data['save_hashtaghashtag'];
+            var on_focus__hashtag = parseInt($('#focus__node').val()) == 12273 && modify_data['save_hashtagid'] == parseInt($('#focus__id').val());
 
-            //Update Idea Type:
-            $('.s__12273_' + modify_data['save_ideaid']).attr('ideatype', modify_data['save_ideatype']);
-            ui_instant_select(4737, modify_data['save_ideatype'], modify_data['save_ideaid'], modify_data['save_chainid'], false);
+            //Update Hahstag Type:
+            $('.s__12273_' + modify_data['save_hashtagid']).attr('hashtagtype', modify_data['save_hashtagtype']);
+            ui_instant_select(4737, modify_data['save_hashtagtype'], modify_data['save_hashtagid'], modify_data['save_chainid'], false);
 
             //Update Handle & Href chains if needed:
             if (old_handle != new_handle) {
-                if (on_focus__idea) {
+                if (on_focus__hashtag) {
                     //Refresh page since focus item handle changed:
-                    js_redirect(js_sources___42903[33286]['m__message'] + new_handle);
+                    js_redirect(js_handles___42903[33286]['m__message'] + new_handle);
                 } else {
                     //Update Hashtag & Chain:
-                    $('.s__12273_' + modify_data['save_ideaid']).attr('ideahashtag', new_handle);
-                    $(".ui_ideahashtag_" + modify_data['save_ideaid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+                    $('.s__12273_' + modify_data['save_hashtagid']).attr('hashtaghashtag', new_handle);
+                    $(".ui_hashtaghashtag_" + modify_data['save_hashtagid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
                 }
             }
 
@@ -2061,31 +2061,31 @@ function idea_update() {
             has_unsaved_changes = false;
             $('#modal31911').modal('hide');
 
-            //Update Idea Message:
-            $('.ui_ideavalue_' + modify_data['save_ideaid']).text(modify_data['save_ideavalue']);
+            //Update Hahstag Message:
+            $('.ui_hashtagvalue_' + modify_data['save_hashtagid']).text(modify_data['save_hashtagvalue']);
 
-            //Insert idea into the page if new:
+            //Insert hashtag into the page if new:
             console.log('START INSERTING');
-            if (!current_ideaid && created_ideaid > 0 && focus_group > 0) {
+            if (!current_hashtagid && created_hashtagid > 0 && focus_group > 0) {
 
-                $("#list-in-" + focus_group).append(data.return_ideacache_full);
+                $("#list-in-" + focus_group).append(data.return_hashtagcache_full);
 
                 chain_counter(focus_group, 1);
 
                 setTimeout(function () {
-                    idea_sort_load(focus_group);
+                    hashtag_sort_load(focus_group);
                 }, 987);
 
             } else {
 
                 //Update Cache otherwise:
-                $('.ui_ideacache_' + modify_data['save_ideaid']).html(data.return_ideacache_chains);
+                $('.ui_hashtagcache_' + modify_data['save_hashtagid']).html(data.return_hashtagcache_chains);
 
             }
 
-            //Show more if on focus idea:
-            if (on_focus__idea) {
-                show_more(modify_data['save_ideaid']);
+            //Show more if on focus hashtag:
+            if (on_focus__hashtag) {
+                show_more(modify_data['save_hashtagid']);
             }
 
             if (modify_data['save_chainid'] && modify_data['save_chainvalue'] != 'IGNORE_INPUT') {
@@ -2119,19 +2119,19 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
     console.log('Initiating Uploader @' + uploader_id + ' with tags ' + uploader_tags.join(' & '));
 
-    if (js_sources___42363[uploader_id] == undefined) {
+    if (js_handles___42363[uploader_id] == undefined) {
         console.log('Unknown Uploader @' + uploader_id + ' Missing in @42363');
         return false;
     }
 
     media_cache[uploader_id] = [];
     //Fetch global defaults:
-    var default_max_file_count = parseFloat(js_sources___6404[42382]['m__message']);
+    var default_max_file_count = parseFloat(js_handles___6404[42382]['m__message']);
 
     var global_tags = ['@' + uploader_id, '@' + website_id, '@' + js_pl_id];
-    var allow_videos = js_sources___42390[uploader_id] !== undefined;
-    var allow_imgaes = js_sources___42389[uploader_id] !== undefined;
-    var allow_audio = js_sources___42644[uploader_id] !== undefined;
+    var allow_videos = js_handles___42390[uploader_id] !== undefined;
+    var allow_imgaes = js_handles___42389[uploader_id] !== undefined;
+    var allow_audio = js_handles___42644[uploader_id] !== undefined;
 
     if (!allow_videos && !allow_imgaes && !allow_audio) {
         //Assume all are allowed:
@@ -2141,21 +2141,21 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
     }
 
     //Initiate CLoudiary for cover:
-    var max_file_count = (js_sources___42382[uploader_id] !== undefined && parseFloat(js_sources___42382[uploader_id]['m__message']) > 0 && parseFloat(js_sources___42382[uploader_id]['m__message']) < default_max_file_count ? parseFloat(js_sources___42382[uploader_id]['m__message']) : default_max_file_count);
+    var max_file_count = (js_handles___42382[uploader_id] !== undefined && parseFloat(js_handles___42382[uploader_id]['m__message']) > 0 && parseFloat(js_handles___42382[uploader_id]['m__message']) < default_max_file_count ? parseFloat(js_handles___42382[uploader_id]['m__message']) : default_max_file_count);
 
-    var enable_crop = (js_sources___42386[uploader_id] !== undefined);
-    var force_crop = (js_sources___42387[uploader_id] !== undefined);
+    var enable_crop = (js_handles___42386[uploader_id] !== undefined);
+    var force_crop = (js_handles___42387[uploader_id] !== undefined);
 
 
     var clientAllowedFormats = [];
     if (allow_videos) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_sources___42641[4258]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_handles___42641[4258]['m__message'].split(' '));
     }
     if (allow_imgaes) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_sources___42641[4260]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_handles___42641[4260]['m__message'].split(' '));
     }
     if (allow_audio) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_sources___42641[4259]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_handles___42641[4259]['m__message'].split(' '));
     }
 
     var widget_setting = {
@@ -2172,15 +2172,15 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         cropping: enable_crop,
         showSkipCropButton: !force_crop,
         croppingShowBackButton: !force_crop,
-        croppingAspectRatio: (js_sources___42388[uploader_id] !== undefined && parseFloat(js_sources___42388[uploader_id]['m__message']) > 0 ? parseFloat(js_sources___42388[uploader_id]['m__message']) : null),
+        croppingAspectRatio: (js_handles___42388[uploader_id] !== undefined && parseFloat(js_handles___42388[uploader_id]['m__message']) > 0 ? parseFloat(js_handles___42388[uploader_id]['m__message']) : null),
 
-        minImageWidth: (js_sources___42407[uploader_id] !== undefined && parseInt(js_sources___42407[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42407[uploader_id]['m__message']) : null),
-        maxImageWidth: (js_sources___42408[uploader_id] !== undefined && parseInt(js_sources___42408[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42408[uploader_id]['m__message']) : null),
-        minImageHeight: (js_sources___42409[uploader_id] !== undefined && parseInt(js_sources___42409[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42409[uploader_id]['m__message']) : null),
-        maxImageHeight: (js_sources___42410[uploader_id] !== undefined && parseInt(js_sources___42410[uploader_id]['m__message']) > 0 ? parseInt(js_sources___42410[uploader_id]['m__message']) : null),
+        minImageWidth: (js_handles___42407[uploader_id] !== undefined && parseInt(js_handles___42407[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42407[uploader_id]['m__message']) : null),
+        maxImageWidth: (js_handles___42408[uploader_id] !== undefined && parseInt(js_handles___42408[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42408[uploader_id]['m__message']) : null),
+        minImageHeight: (js_handles___42409[uploader_id] !== undefined && parseInt(js_handles___42409[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42409[uploader_id]['m__message']) : null),
+        maxImageHeight: (js_handles___42410[uploader_id] !== undefined && parseInt(js_handles___42410[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42410[uploader_id]['m__message']) : null),
 
-        validateMaxWidthHeight: (js_sources___42411[uploader_id] !== undefined),
-        croppingValidateDimensions: (js_sources___42412[uploader_id] !== undefined),
+        validateMaxWidthHeight: (js_handles___42411[uploader_id] !== undefined),
+        croppingValidateDimensions: (js_handles___42412[uploader_id] !== undefined),
 
         inlineContainer: loading_inline_container,
 
@@ -2191,8 +2191,8 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         autoMinimize: true,
         theme: 'minimal',
         tags: global_tags.concat(uploader_tags),
-        sources: ['local', 'url', 'image_search', 'camera', 'unsplash'], //, 'google_drive', 'dropbox'
-        defaultSource: 'local',
+        handles: ['local', 'url', 'image_search', 'camera', 'unsplash'], //, 'google_drive', 'dropbox'
+        defaultHandle: 'local',
         styles: {
             palette: {
                 window: "#FFFFFF",
@@ -2207,7 +2207,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 error: "#FC1B44",
                 inProgress: "#000000",
                 complete: "#000000",
-                sourceBg: "#FFFFFF"
+                handleBg: "#FFFFFF"
             },
             frame: {
                 background: "#999999"
@@ -2236,7 +2236,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Enable Sorting:
             if (uploader_id == 13572) {
 
-                //Ideator Uploader
+                //Hahstagtor Uploader
                 sort_media('media_editor_frame');
 
             } else if (uploader_id == 43004) {
@@ -2255,19 +2255,19 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Append loaders:
             if (uploader_id == 42359) {
 
-                //Source Cover Uploader:
-                updatsourcecover('fas fa-yin-yang fa-spin');
+                //Handle Cover Uploader:
+                updathandlecover('fas fa-yin-yang fa-spin');
 
             } else if (uploader_id == 13572) {
 
-                //Ideator Uploader
+                //Hahstagtor Uploader
                 has_unsaved_changes = true;
-                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             } else if (uploader_id == 43004) {
 
                 //Discovery Uploader
-                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" sourceid="0"  sourcecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
@@ -2279,27 +2279,27 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Add uploaded media:
             if (uploader_id == 42359) {
 
-                //Source Cover Uploader:
-                updatsourcecover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+                //Handle Cover Uploader:
+                updathandlecover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
 
             } else if (uploader_id == 13572 || uploader_id == 43004) {
 
-                //Idea Uploader
+                //Hahstag Uploader
                 var playback_code = '';
                 var media_typeid = 0;
                 var media_typename = '';
                 if (result.info.format && result.info.format.length > 0) {
-                    if (js_sources___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
+                    if (js_handles___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
                         //Audio
                         media_typeid = 4259;
                         media_typename = 'Audio';
                         playback_code = result.info.secure_url;
-                    } else if (js_sources___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'image') {
+                    } else if (js_handles___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.rehandle_type == 'image') {
                         //Image
                         media_typeid = 4260;
                         media_typename = 'Image';
                         playback_code = (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'w_1597,h_1597,c_fit') : result.info.secure_url);
-                    } else if (js_sources___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'video') {
+                    } else if (js_handles___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.rehandle_type == 'video') {
                         //Video
                         media_typeid = 4258;
                         media_typename = 'Video';
@@ -2307,10 +2307,10 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                     }
                 }
 
-                //Append this to the main Source:
+                //Append this to the main Handle:
                 if (media_typeid) {
 
-                    cloudinary_presource_view(uploader_id, result.info.id, media_typeid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), (result.info.original_filename ? media_typename + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : media_typename + ' File'));
+                    cloudinary_prehandle_view(uploader_id, result.info.id, media_typeid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), (result.info.original_filename ? media_typename + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : media_typename + ' File'));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log(media_cache);
@@ -2349,36 +2349,36 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
 
 function play_video(public_id) {
-    var cld = cloudinary.videoPlayer('video_source_' + public_id, {cloudName: 'menchcloud'});
-    cld.source(public_id);
+    var cld = cloudinary.videoPlayer('video_handle_' + public_id, {cloudName: 'menchcloud'});
+    cld.handle(public_id);
 }
 
-function cloudinary_presource_view(uploader_id, info_id, media_typeid, playback_code, sourcecover, sourcevalue, sourceid = 0) {
+function cloudinary_prehandle_view(uploader_id, info_id, media_typeid, playback_code, handlecover, handlevalue, handleid = 0) {
 
     //Update meta variables:
-    $('#' + info_id).attr('media_typeid', media_typeid).attr('playback_code', playback_code).attr('sourceid', sourceid).attr('sourcecover', sourcecover);
+    $('#' + info_id).attr('media_typeid', media_typeid).attr('playback_code', playback_code).attr('handleid', handleid).attr('handlecover', handlecover);
 
     if (media_typeid == 4258) {
 
         //Video
-        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="Video"><i class="far fa-play-circle" aria-hidden="true"></i></span><img src="' + sourcecover + '" />');
-        //<video id="video_source_'+playback_code+'" controls class="cld-video-source vjs-fade-out cld-fluid cld-video-source-skin-light" poster="'+sourcecover+'"></video>
+        $('#' + info_id).html('<input type="text" value="' + handlevalue + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Video"><i class="far fa-play-circle" aria-hidden="true"></i></span><img src="' + handlecover + '" />');
+        //<video id="video_handle_'+playback_code+'" controls class="cld-video-handle vjs-fade-out cld-fluid cld-video-handle-skin-light" poster="'+handlecover+'"></video>
         //play_video(playback_code);
 
     } else if (media_typeid == 4260) {
 
         //Image
-        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><img src="' + sourcecover + '" />');
+        $('#' + info_id).html('<input type="text" value="' + handlevalue + '" placeholder="Handle Title" class="hidden_superpower__10939" /><img src="' + handlecover + '" />');
 
     } else if (media_typeid == 4259) {
 
         //Audio
-        $('#' + info_id).html('<input type="text" value="' + sourcevalue + '" placeholder="Source Title" class="hidden_superpower__10939" /><span title="Audio"><i class="far fa-volume-up" aria-hidden="true"></i></span><audio controls src="' + playback_code + '"></audio>');
+        $('#' + info_id).html('<input type="text" value="' + handlevalue + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Audio"><i class="far fa-volume-up" aria-hidden="true"></i></span><audio controls src="' + playback_code + '"></audio>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
-        alert('Upload Error: Uploaded File ' + sourcevalue + ' is not a valid Video, Image or Audio file.');
+        alert('Upload Error: Uploaded File ' + handlevalue + ' is not a valid Video, Image or Audio file.');
 
     }
 
@@ -2386,7 +2386,7 @@ function cloudinary_presource_view(uploader_id, info_id, media_typeid, playback_
 }
 
 
-function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue = null) {
+function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue = null) {
 
     $('#modal31912').modal('show');
 
@@ -2400,23 +2400,23 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
     $("#modal31912 .dynamic_item").attr('d__id', '').attr('d_chainid', '');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
-    //Source resets:
+    //Handle resets:
     $('#search_cover').val('');
     $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
-    var current_title = source_title(sourceid);
-    var current_cover = $('.ui_sourcecover_' + sourceid + ':first').attr('raw_cover');
+    var current_title = handle_title(handleid);
+    var current_cover = $('.ui_handlecover_' + handleid + ':first').attr('raw_cover');
 
-    $('#modal31912 .save_sourceid').val(sourceid);
+    $('#modal31912 .save_handleid').val(handleid);
     $('#modal31912 .save_chainid').val(chainid);
-    $('#modal31912 .save_sourcehandle').val($('.ui_sourcehandle_' + sourceid + ':first').text());
-    $('#modal31912 .save_sourcevalue').val(current_title);
+    $('#modal31912 .save_handlehandle').val($('.ui_handlehandle_' + handleid + ':first').text());
+    $('#modal31912 .save_handlevalue').val(current_title);
 
 
     $('#modal31912 .random_animal').html('<i class="' + random_animal(true) + '"></i>');
-    updatsourcecover(current_cover, false);
+    updathandlecover(current_cover, false);
 
 
     if (chainid) {
@@ -2427,26 +2427,26 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
         }, 377);
     }
     setTimeout(function () {
-        set_autosize($('#modal31912 .save_sourcevalue'));
+        set_autosize($('#modal31912 .save_handlevalue'));
     }, 377);
 
 
-    $.post("/controller/source_editor", {
-        sourceid: sourceid,
+    $.post("/controller/handle_editor", {
+        handleid: handleid,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
         if (data.status) {
 
-            //Initiate Source Cover Uploader:
-            load_cloudinary(42359, sourceid, ['@' + sourceid], '.uploader_42359', '#modal31912');
+            //Initiate Handle Cover Uploader:
+            load_cloudinary(42359, handleid, ['@' + handleid], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
-            var index_idea_content = 0;
+            var index_hashtag_content = 0;
             var current_header = null;
 
-            for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
+            for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
 
                 var index_i = i - 1;
                 if (data.return_inputs[index_i] == undefined) {
@@ -2459,7 +2459,7 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
                     data.return_inputs[index_i]["d__placeholder"] = '';
                     $("#modal31912 .dynamic_" + i).addClass('hidden');
                 } else {
-                    index_idea_content++;
+                    index_hashtag_content++;
                     $("#modal31912 .dynamic_" + i).removeClass('hidden');
                 }
 
@@ -2474,7 +2474,7 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
                 $("#modal31912 .dynamic_" + i + " .radio_frame").remove();
                 $("#modal31912 .dynamic_" + i).attr('d__id', data.return_inputs[index_i]["d__id"]).attr('d_chainid', data.return_inputs[index_i]["d_chainid"]);
 
-                var is_locked = js_sourceids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_handleids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if (is_locked && !data.return_inputs[index_i]["d__value"].length) {
                     //Hide since its locked without a value:
                     $("#modal31912 .dynamic_" + i + " .inner_dynamic").addClass('hidden');
@@ -2491,7 +2491,7 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
                     $("#modal31912 .dynamic_" + i + " h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_" + i + " input").attr('placeholder', data.return_inputs[index_i]["d__placeholder"]).attr('type', data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if (chainid && ((parseInt($('#focus__node').val()) == 12274 && data.return_inputs[index_i]["d__id"] == parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"] == sourceid)) {
+                    if (chainid && ((parseInt($('#focus__node').val()) == 12274 && data.return_inputs[index_i]["d__id"] == parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"] == handleid)) {
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         //$("#modal31912 .save_chainvalue").val('IGNORE_INPUT');
                         //$("#modal31912 .save_frame").addClass('hidden');
@@ -2500,8 +2500,8 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
             }
 
             //Add a second save button at the bottom if we have too much data:
-            if (index_idea_content > 5) {
-                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default source_save_edit post_button" onclick="source_save_edit()">SAVE</button>');
+            if (index_hashtag_content > 5) {
+                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default handle_save_edit post_button" onclick="handle_save_edit()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
             }
@@ -2528,28 +2528,28 @@ function source_editor(sourceid = 0, chainid = 0, bar_title = null, chainvalue =
 
 e_saving = false;
 
-function source_save_edit() {
+function handle_save_edit() {
 
     if (e_saving) {
         return false;
     }
 
     e_saving = true;
-    $(".source_save_edit").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".handle_save_edit").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
-        save_sourceid: $('#modal31912 .save_sourceid').val(),
-        save_sourcevalue: $('#modal31912 .save_sourcevalue').val().trim(),
-        save_sourcecover: $('#modal31912 .save_sourcecover').val().trim(),
-        save_sourcehandle: $('#modal31912 .save_sourcehandle').val().trim(),
+        save_handleid: $('#modal31912 .save_handleid').val(),
+        save_handlevalue: $('#modal31912 .save_handlevalue').val().trim(),
+        save_handlecover: $('#modal31912 .save_handlecover').val().trim(),
+        save_handlehandle: $('#modal31912 .save_handlehandle').val().trim(),
         save_chainid: $('#modal31912 .save_chainid').val(),
         save_chainvalue: $('#modal31912 .save_chainvalue').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
-    for (let i = 1; i <= js_sources___6404[42206]['m__message']; i++) {
+    for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
         if ($('#modal31912 .dynamic_' + i).attr('d__id').length) {
             modify_data['save_dynamic_' + i] = $('#modal31912 .dynamic_' + i).attr('d_chainid').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_' + i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_' + i).val().trim();
         } else {
@@ -2558,10 +2558,10 @@ function source_save_edit() {
         }
     }
 
-    $.post("/controller/source_save_edit", modify_data, function (data) {
+    $.post("/controller/handle_save_edit", modify_data, function (data) {
 
         e_saving = false;
-        $(".source_save_edit").html('SAVE');
+        $(".handle_save_edit").html('SAVE');
 
         if (!data.status) {
 
@@ -2571,28 +2571,28 @@ function source_save_edit() {
         } else {
 
             //Update Handle & Href chains if needed:
-            var old_handle = $(".ui_sourcehandle_" + modify_data['save_sourceid'] + ':first').text();
-            var new_handle = modify_data['save_sourcehandle'];
+            var old_handle = $(".ui_handlehandle_" + modify_data['save_handleid'] + ':first').text();
+            var new_handle = modify_data['save_handlehandle'];
             if (old_handle != new_handle) {
-                if (parseInt($('#focus__node').val()) == 12274 && modify_data['save_sourceid'] == parseInt($('#focus__id').val())) {
+                if (parseInt($('#focus__node').val()) == 12274 && modify_data['save_handleid'] == parseInt($('#focus__id').val())) {
                     //Refresh page since focus item handle changed:
-                    return js_redirect(js_sources___42903[42902]['m__message'] + new_handle);
+                    return js_redirect(js_handles___42903[42902]['m__message'] + new_handle);
                 } else {
                     //Make adjustments to current page:
-                    $('.s__12274_' + modify_data['save_sourceid']).attr('sourcehandle', new_handle);
-                    $('.ui_sourcehandle_' + modify_data['save_sourceid']).text(new_handle);
-                    $(".handle_hrefsource_" + modify_data['save_sourceid']).attr('href', $(".handle_hrefsource_" + modify_data['save_sourceid'] + ':first').attr('href').replaceAll(old_handle, new_handle));
+                    $('.s__12274_' + modify_data['save_handleid']).attr('handlehandle', new_handle);
+                    $('.ui_handlehandle_' + modify_data['save_handleid']).text(new_handle);
+                    $(".handle_hrefhandle_" + modify_data['save_handleid']).attr('href', $(".handle_hrefhandle_" + modify_data['save_handleid'] + ':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
 
             //Update Title:
-            update_text_name(6197, modify_data['save_sourceid'], modify_data['save_sourcevalue']);
+            update_text_name(6197, modify_data['save_handleid'], modify_data['save_handlevalue']);
 
             //Update Raw Cover:
-            $('.ui_sourcecover_' + modify_data['save_sourceid'] + ':first').attr('raw_cover', modify_data['save_sourcecover']);
+            $('.ui_handlecover_' + modify_data['save_handleid'] + ':first').attr('raw_cover', modify_data['save_handlecover']);
 
             //Update Main Cover:
-            update_cover_main(modify_data['save_sourcecover'], '.s__12274_' + modify_data['save_sourceid']);
+            update_cover_main(modify_data['save_handlecover'], '.s__12274_' + modify_data['save_handleid']);
 
             if (modify_data['save_chainid'] && modify_data['save_chainvalue'] != 'IGNORE_INPUT') {
                 $('.ui_chainvalue_' + modify_data['save_chainid']).text(modify_data['save_chainvalue']);
@@ -2608,9 +2608,9 @@ function source_save_edit() {
             $('#modal31912').modal('hide');
 
             //Do we need to refresh the page?
-            if (parseInt($('#focus__node').val()) == 12274 && parseInt($('#focus__id').val()) == modify_data['save_sourceid']) {
-                //Refresh page since Source edited their own profile:
-                js_redirect(js_sources___42903[42902]['m__message'] + $('#focus_handle').val());
+            if (parseInt($('#focus__node').val()) == 12274 && parseInt($('#focus__id').val()) == modify_data['save_handleid']) {
+                //Refresh page since Handle edited their own profile:
+                js_redirect(js_handles___42903[42902]['m__message'] + $('#focus_handle').val());
             }
 
         }
@@ -2634,7 +2634,7 @@ function chain_page_load() {
     }
 
     var current_total_count = parseInt($('.headline_body_' + focus_group).attr('read-counter')); //Total of that item
-    var has_more_to_load = (current_total_count > parseInt(js_sources___6404[11064]['m__message']) * current_page[focus_group]);
+    var has_more_to_load = (current_total_count > parseInt(js_handles___6404[11064]['m__message']) * current_page[focus_group]);
 
     if (!has_more_to_load) {
         return false;
@@ -2649,7 +2649,7 @@ function chain_page_load() {
     $.post("/controller/chain_page_load", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        chainsourcetype: focus_group,
+        chainhandletype: focus_group,
         current_page: current_page[focus_group],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -2683,46 +2683,46 @@ function toggle_max_view(css_class) {
 }
 
 
-//Adds OR chains Sources to Sources
-var source_is_adding = false;
+//Adds OR chains Handles to Handles
+var handle_is_adding = false;
 
-function source_create(chainsourcetype, source_current_id) {
+function handle_create(chainhandletype, handle_current_id) {
 
-    if (source_is_adding) {
+    if (handle_is_adding) {
         return false;
     }
 
-    //if source_current_id>0 it means we're adding an existing Source, in which case source_new_string should be null
-    //If source_current_id=0 it means we are creating a new Source and then adding it, in which case source_new_string is required
-    source_is_adding = true;
+    //if handle_current_id>0 it means we're adding an existing Handle, in which case handle_new_string should be null
+    //If handle_current_id=0 it means we are creating a new Handle and then adding it, in which case handle_new_string is required
+    handle_is_adding = true;
 
-    var input = $('.new-list-' + chainsourcetype + ' .add-input');
+    var input = $('.new-list-' + chainhandletype + ' .add-input');
 
-    var original_photo = $('.mini-cover.card-12274.card-id-' + source_current_id + ' .cover-btn').html();
-    $('.mini-cover.card-12274.card-id-' + source_current_id + ' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    var source_new_string = null;
-    if (source_current_id == 0) {
-        source_new_string = input.val();
-        if (source_new_string.length < 1) {
-            alert('Missing Source name or URL, try again');
+    var original_photo = $('.mini-cover.card-12274.card-id-' + handle_current_id + ' .cover-btn').html();
+    $('.mini-cover.card-12274.card-id-' + handle_current_id + ' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    var handle_new_string = null;
+    if (handle_current_id == 0) {
+        handle_new_string = input.val();
+        if (handle_new_string.length < 1) {
+            alert('Missing Handle name or URL, try again');
             input.focus();
             return false;
         }
     }
 
     //Add via Ajax:
-    $.post("/controller/source_create", {
+    $.post("/controller/handle_create", {
 
         focus__node: parseInt($('#focus__node').val()),
-        chainsourcetype: chainsourcetype,
+        chainhandletype: chainhandletype,
         focus__id: parseInt($('#focus__id').val()),
-        source_current_id: source_current_id,
-        source_new_string: source_new_string,
+        handle_current_id: handle_current_id,
+        handle_new_string: handle_new_string,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
 
     }, function (data) {
 
-        source_is_adding = false;
+        handle_is_adding = false;
 
         if (data.status) {
 
@@ -2730,15 +2730,15 @@ function source_create(chainsourcetype, source_current_id) {
             //input.focus();
 
             //Add new object to list:
-            chain_counter(chainsourcetype, 1);
+            chain_counter(chainhandletype, 1);
 
             //See if we previously have a list in place?
-            if ($("#list-in-" + chainsourcetype + " .card-12274").length > 0) {
+            if ($("#list-in-" + chainhandletype + " .card-12274").length > 0) {
                 //Downwards add to start"
-                $("#list-in-" + chainsourcetype + " .card-12274:first").before(data.source_new_echo);
+                $("#list-in-" + chainhandletype + " .card-12274:first").before(data.handle_new_echo);
             } else {
                 //Raw list, add before input filed:
-                $("#list-in-" + chainsourcetype).prepend(data.source_new_echo);
+                $("#list-in-" + chainhandletype).prepend(data.handle_new_echo);
             }
 
             //Allow inline editing if enabled:
@@ -2746,11 +2746,11 @@ function source_create(chainsourcetype, source_current_id) {
 
             setTimeout(function () {
                 setup_popover();
-                source_sort_load(chainsourcetype);
+                handle_sort_load(chainhandletype);
             }, 987);
 
             //Hide Coin:
-            $('.mini-cover.card-12274.card-id-' + source_current_id).fadeOut();
+            $('.mini-cover.card-12274.card-id-' + handle_current_id).fadeOut();
 
         } else {
             //We had an error:
@@ -2763,16 +2763,16 @@ function source_create(chainsourcetype, source_current_id) {
 
 var i_is_adding = false;
 
-function idea_create(chainsourcetype, chain_ideaid) {
+function hashtag_create(chainhandletype, chain_hashtagid) {
 
     alert('not up yet');
     return false;
 
     /*
      *
-     * Either creates an IDEA chain between focus_id & chain_ideaid
-     * OR will create a new idea based on input text and then chain it
-     * to #focus_id (In this case chain_ideaid=0)
+     * Either creates an HASHTAG chain between focus_id & chain_hashtagid
+     * OR will create a new hashtag based on input text and then chain it
+     * to #focus_id (In this case chain_hashtagid=0)
      *
      * */
 
@@ -2782,29 +2782,29 @@ function idea_create(chainsourcetype, chain_ideaid) {
 
     //Remove results:
     i_is_adding = true;
-    var sort_idea_grabr = ".card_cover";
-    var input_field = $('.new-list-' + chainsourcetype + ' .add-input');
-    var idea_createtext = input_field.val();
+    var sort_hashtag_grabr = ".card_cover";
+    var input_field = $('.new-list-' + chainhandletype + ' .add-input');
+    var hashtag_createtext = input_field.val();
 
 
-    //We either need the idea name (to create a new idea) or the chain_ideaid>0 to create an IDEA chain:
-    if (!chain_ideaid && idea_createtext.length < 1) {
-        alert('Missing Idea');
+    //We either need the hashtag name (to create a new hashtag) or the chain_hashtagid>0 to create an HASHTAG chain:
+    if (!chain_hashtagid && hashtag_createtext.length < 1) {
+        alert('Missing Hahstag');
         input_field.focus();
         return false;
     }
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(chainsourcetype, sort_idea_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-chain"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(chainhandletype, sort_hashtag_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-chain"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
-    $.post("/controller/idea_create", {
-        chainsourcetype: chainsourcetype,
+    $.post("/controller/hashtag_create", {
+        chainhandletype: chainhandletype,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        idea_createtext: idea_createtext,
-        chain_ideaid: chain_ideaid
+        hashtag_createtext: hashtag_createtext,
+        chain_hashtagid: chain_hashtagid
     }, function (data) {
 
         //Delete loader:
@@ -2815,7 +2815,7 @@ function idea_create(chainsourcetype, chain_ideaid) {
         if (data.status) {
 
             //Add new
-            add_to_list(chainsourcetype, sort_idea_grabr, data.idea_create_html, 1);
+            add_to_list(chainhandletype, sort_hashtag_grabr, data.hashtag_create_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -2823,7 +2823,7 @@ function idea_create(chainsourcetype, chain_ideaid) {
             set_autosize($('.texttype_lg'));
 
             //Hide Coin:
-            $('.mini-cover.card-12273.card-id-' + chain_ideaid).fadeOut();
+            $('.mini-cover.card-12273.card-id-' + chain_hashtagid).fadeOut();
 
         } else {
             //Show errors:
@@ -2875,24 +2875,24 @@ function x_set_start_text() {
     $('.x_set_class_text').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            source_text_update(this);
+            handle_text_update(this);
             e.preventDefault();
         }
     }).change(function () {
-        source_text_update(this);
+        handle_text_update(this);
     });
 }
 
-function update_text_name(cache_sourceid, sourceid, sourcevalue) {
-    var target_element = ".text__" + cache_sourceid + "_" + sourceid;
-    $(target_element).text(sourcevalue).attr('old-value', sourcevalue); //.val(sourcevalue)
+function update_text_name(cache_handleid, handleid, handlevalue) {
+    var target_element = ".text__" + cache_handleid + "_" + handleid;
+    $(target_element).text(handlevalue).attr('old-value', handlevalue); //.val(handlevalue)
     set_autosize($(target_element));
 }
 
 
 var setting_text = false;
 
-function source_text_update(this_grabr) {
+function handle_text_update(this_grabr) {
 
     if (setting_text) {
         return false;
@@ -2900,21 +2900,21 @@ function source_text_update(this_grabr) {
 
     setting_text = true;
     var modify_data = {
-        sourceid: parseInt($(this_grabr).attr('sourceid')),
-        cache_sourceid: parseInt($(this_grabr).attr('cache_sourceid')),
-        idea_createtext: $(this_grabr).val().trim(),
+        handleid: parseInt($(this_grabr).attr('handleid')),
+        cache_handleid: parseInt($(this_grabr).attr('cache_handleid')),
+        hashtag_createtext: $(this_grabr).val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //See if anything changes:
-    if ($(this_grabr).attr('old-value') == modify_data['idea_createtext']) {
+    if ($(this_grabr).attr('old-value') == modify_data['hashtag_createtext']) {
         //Nothing changed:
         return false;
     }
 
     //Grey background to indicate saving
-    var target_element = '.text__' + modify_data['cache_sourceid'] + '_' + modify_data['s__id'];
-    $.post("/controller/source_text_update", modify_data, function (data) {
+    var target_element = '.text__' + modify_data['cache_handleid'] + '_' + modify_data['s__id'];
+    $.post("/controller/handle_text_update", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -2927,7 +2927,7 @@ function source_text_update(this_grabr) {
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_sourceid'], modify_data['s__id'], modify_data['idea_createtext']);
+            update_text_name(modify_data['cache_handleid'], modify_data['s__id'], modify_data['hashtag_createtext']);
 
         }
 
@@ -2937,20 +2937,20 @@ function source_text_update(this_grabr) {
 }
 
 
-function chain_counter(chainsourcetype, adjustment_count) {
-    $('.xtypecounter' + chainsourcetype).text((parseInt($('.headline_body_' + chainsourcetype).attr('read-counter')) + adjustment_count));
+function chain_counter(chainhandletype, adjustment_count) {
+    $('.xtypecounter' + chainhandletype).text((parseInt($('.headline_body_' + chainhandletype).attr('read-counter')) + adjustment_count));
 }
 
 
 function search_enabled() {
-    return universal_search_enabled && parseInt(js_sources___6404[12678]['m__message']);
+    return universal_search_enabled && parseInt(js_handles___6404[12678]['m__message']);
 }
 
 
-function show_more(ideaid) {
-    console.log('SHOW MORE #' + ideaid);
-    $('.cache_frame_' + ideaid + ' .line, .cache_frame_' + ideaid + ' .inner_line').removeClass('hidden');
-    $('.cache_frame_' + ideaid + ' .show_more_line').addClass('hidden');
+function show_more(hashtagid) {
+    console.log('SHOW MORE #' + hashtagid);
+    $('.cache_frame_' + hashtagid + ' .line, .cache_frame_' + hashtagid + ' .inner_line').removeClass('hidden');
+    $('.cache_frame_' + hashtagid + ' .show_more_line').addClass('hidden');
 }
 
 function set_autosize(theobject) {
@@ -2961,47 +2961,47 @@ function set_autosize(theobject) {
 }
 
 
-function idea_sort_load(chainsourcetype) {
+function hashtag_sort_load(chainhandletype) {
 
     load_cards();
 
-    console.log('Tring to load Idea Sort for @' + chainsourcetype);
-    if (!js_sourceids___4603.includes(chainsourcetype)) {
-        console.log(chainsourcetype + ' is not sortable');
+    console.log('Tring to load Hahstag Sort for @' + chainhandletype);
+    if (!js_handleids___4603.includes(chainhandletype)) {
+        console.log(chainhandletype + ' is not sortable');
         return false;
     }
 
     setTimeout(function () {
 
-        var theobject = document.getElementById("list-in-" + chainsourcetype);
+        var theobject = document.getElementById("list-in-" + chainhandletype);
         if (!theobject) {
-            //due to duplicate ideas belonging in this idea:
-            console.log(chainsourcetype + ' failed to find sortable object');
+            //due to duplicate hashtags belonging in this hashtag:
+            console.log(chainhandletype + ' failed to find sortable object');
             return false;
         }
 
         //Make sure beow minimum sorting requirement:
-        if ($("#list-in-" + chainsourcetype + " .sort_draggable").length >= parseInt(js_sources___6404[11064]['m__message'])) {
-            console.log(chainsourcetype + ' has ' + $("#list-in-" + chainsourcetype + " .sort_draggable").length + ' items which is more than the page limit of ' + js_sources___6404[11064]['m__message']);
+        if ($("#list-in-" + chainhandletype + " .sort_draggable").length >= parseInt(js_handles___6404[11064]['m__message'])) {
+            console.log(chainhandletype + ' has ' + $("#list-in-" + chainhandletype + " .sort_draggable").length + ' items which is more than the page limit of ' + js_handles___6404[11064]['m__message']);
             return false;
-        } else if ($("#list-in-" + chainsourcetype + " .sort_draggable").length < 2) {
-            console.log('Less than 2 items to sort ' + chainsourcetype);
+        } else if ($("#list-in-" + chainhandletype + " .sort_draggable").length < 2) {
+            console.log('Less than 2 items to sort ' + chainhandletype);
             return false;
         } else {
 
-            console.log(chainsourcetype + ' sorting load success');
-            $('.sort_idea_frame').removeClass('hidden');
+            console.log(chainhandletype + ' sorting load success');
+            $('.sort_hashtag_frame').removeClass('hidden');
 
             //Load sorter:
             var sort = Sortable.create(theobject, {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: "#list-in-" + chainsourcetype + " .sort_draggable", // Specifies which items inside the element should be sortable
-                handle: "#list-in-" + chainsourcetype + " .sort_idea_grab", // Restricts sort start click/touch to the specified element
+                draggable: "#list-in-" + chainhandletype + " .sort_draggable", // Specifies which items inside the element should be sortable
+                handle: "#list-in-" + chainhandletype + " .sort_hashtag_grab", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
 
                     var sort_rank = 0;
                     var new_x_order = [];
-                    $("#list-in-" + chainsourcetype + " .sort_draggable").each(function () {
+                    $("#list-in-" + chainhandletype + " .sort_draggable").each(function () {
                         var chainid = parseInt($(this).attr('chainid'));
                         if (chainid > 0) {
                             sort_rank++;
@@ -3011,9 +3011,9 @@ function idea_sort_load(chainsourcetype) {
 
                     //Update order:
                     if (sort_rank > 0) {
-                        $.post("/controller/idea_sort_load", {
+                        $.post("/controller/hashtag_sort_load", {
                             new_x_order: new_x_order,
-                            chainsourcetype: chainsourcetype,
+                            chainhandletype: chainhandletype,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
                         }, function (data) {
                             //Update UI to confirm with member:
@@ -3038,15 +3038,15 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function source_select_apply(focus__id, selected_sourceid, enable_mulitiselect, down_sourceid, right_ideaid) {
+function handle_select_apply(focus__id, selected_handleid, enable_mulitiselect, down_handleid, right_hashtagid) {
 
     //Any warning needed?
-    if (js_sourceids___31780.includes(selected_sourceid) && !confirm(js_sources___31780[selected_sourceid]['m__message'])) {
+    if (js_handleids___31780.includes(selected_handleid) && !confirm(js_handles___31780[selected_handleid]['m__message'])) {
         return false;
     }
 
-    var field_required = js_sourceids___28239.includes(focus__id);
-    var was_previously_selected = ($('.radio-' + focus__id + ' .item-' + selected_sourceid).hasClass('active') ? 1 : 0);
+    var field_required = js_handleids___28239.includes(focus__id);
+    var was_previously_selected = ($('.radio-' + focus__id + ' .item-' + selected_handleid).hasClass('active') ? 1 : 0);
 
     //Save the rest of the content:
     if (!enable_mulitiselect && field_required && was_previously_selected) {
@@ -3055,15 +3055,15 @@ function source_select_apply(focus__id, selected_sourceid, enable_mulitiselect, 
     }
 
     //Updating Customizable Theme?
-    if (js_sourceids___13890.includes(focus__id)) {
+    if (js_handleids___13890.includes(focus__id)) {
         current_focus = focus__id;
         $('body').removeClass('custom_ui_' + focus__id + '_');
-        window['js_sourceids___' + focus__id].forEach(remove_ui_class); //Removes all Classes
-        $('body').addClass('custom_ui_' + focus__id + '_' + selected_sourceid);
+        window['js_handleids___' + focus__id].forEach(remove_ui_class); //Removes all Classes
+        $('body').addClass('custom_ui_' + focus__id + '_' + selected_handleid);
     }
 
     //Show spinner on the notification element:
-    var notify_el = '.radio-' + focus__id + ' .item-' + selected_sourceid + ' .change-results';
+    var notify_el = '.radio-' + focus__id + ' .item-' + selected_handleid + ' .change-results';
     var initial_icon = $(notify_el).html();
     $(notify_el).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
@@ -3076,18 +3076,18 @@ function source_select_apply(focus__id, selected_sourceid, enable_mulitiselect, 
 
     //Enable currently selected:
     if ((enable_mulitiselect || !field_required) && was_previously_selected) {
-        $('.radio-' + focus__id + ' .item-' + selected_sourceid).removeClass('active');
-        $('.radio-' + focus__id + ' .item-' + selected_sourceid + ' .checked_icon').remove();
+        $('.radio-' + focus__id + ' .item-' + selected_handleid).removeClass('active');
+        $('.radio-' + focus__id + ' .item-' + selected_handleid + ' .checked_icon').remove();
     } else {
-        $('.radio-' + focus__id + ' .item-' + selected_sourceid).addClass('active');
-        $('.radio-' + focus__id + ' .item-' + selected_sourceid + ' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
+        $('.radio-' + focus__id + ' .item-' + selected_handleid).addClass('active');
+        $('.radio-' + focus__id + ' .item-' + selected_handleid + ' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
     }
 
-    $.post("/controller/source_select_apply", {
+    $.post("/controller/handle_select_apply", {
         focus__id: focus__id,
-        down_sourceid: down_sourceid,
-        right_ideaid: right_ideaid,
-        selected_sourceid: selected_sourceid,
+        down_handleid: down_handleid,
+        right_hashtagid: right_hashtagid,
+        selected_handleid: selected_handleid,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3114,61 +3114,61 @@ function isNormalInteger(str) {
 }
 
 
-function update_form_select(element_id, source_createid, initial_loading, show_title) {
-    console.log('update_form_select: ' + element_id + '/' + source_createid);
+function update_form_select(element_id, handle_createid, initial_loading, show_title) {
+    console.log('update_form_select: ' + element_id + '/' + handle_createid);
 
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
-    $('.dropd_form_' + element_id + ' .optiond_' + source_createid).addClass('active');
-    $('.dropd_form_' + element_id).attr('selected_value', source_createid);
+    $('.dropd_form_' + element_id + ' .optiond_' + handle_createid).addClass('active');
+    $('.dropd_form_' + element_id).attr('selected_value', handle_createid);
     if (show_title) {
-        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_' + source_createid).html());
+        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_' + handle_createid).html());
     } else {
         //Just replace icon:
-        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_' + source_createid + ' span').html());
+        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_' + handle_createid + ' span').html());
     }
 }
 
-function ui_instant_select(element_id, source_createid, o__id, chainid, show_full_name) {
+function ui_instant_select(element_id, handle_createid, o__id, chainid, show_full_name) {
 
     //Update x:
-    console.log('UI instant .dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn' + source_createid);
-    var data_object = eval('js_sources___' + element_id);
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[source_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[source_createid]['m__title'] : ''));
+    console.log('UI instant .dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn' + handle_createid);
+    var data_object = eval('js_handles___' + element_id);
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[handle_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[handle_createid]['m__title'] : ''));
 
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .drop_item_instant_' + element_id + '_' + o__id + '_' + chainid).removeClass('active');
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .optiond_' + source_createid + '_' + o__id + '_' + chainid).addClass('active');
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .optiond_' + handle_createid + '_' + o__id + '_' + chainid).addClass('active');
 
-    var selected_sourceid = $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value');
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value', source_createid);
+    var selected_handleid = $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value');
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value', handle_createid);
 
 
     var main_object_type = 0;
     var main_object_update = false;
 
     if (element_id == 4737) {
-        //Idea Type:
-        $('.s__12273_' + o__id).attr('ideatype', source_createid);
+        //Hahstag Type:
+        $('.s__12273_' + o__id).attr('hashtagtype', handle_createid);
         main_object_type = 12273;
-        main_object_update = 'ideatype';
+        main_object_update = 'hashtagtype';
     }
 
     if (main_object_type > 0 && main_object_update) {
-        $('.s__' + main_object_type + '_' + o__id).attr(main_object_update, source_createid);
+        $('.s__' + main_object_type + '_' + o__id).attr(main_object_update, handle_createid);
     }
 
 }
 
-function idea_delete(ideaid) {
+function hashtag_delete(hashtagid) {
 
-    var migratehandle = prompt("Are you sure you want to permanently delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
+    var migratehandle = prompt("Are you sure you want to permanently delete this hashtag?\nYou can reference #anotherHahstag to migrate to or leave blank to delete permanently...", "#");
     if (migratehandle === null) {
         return false;
     }
 
-    $.post("/controller/idea_delete", {
+    $.post("/controller/hashtag_delete", {
         focus__id: parseInt($('#focus__id').val()),
-        ideaid: ideaid,
+        hashtagid: hashtagid,
         migratehandle: migratehandle,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -3176,12 +3176,12 @@ function idea_delete(ideaid) {
 
             if (data.delete_redirect && data.delete_redirect.length > 0) {
 
-                //Go to main idea page:
+                //Go to main hashtag page:
                 js_redirect(data.delete_redirect);
 
             } else if (data.delete_element && data.delete_element.length > 0) {
 
-                //Go to main idea page:
+                //Go to main hashtag page:
                 setTimeout(function () {
                     //Restore background:
                     $(data.delete_element).fadeOut();
@@ -3204,16 +3204,16 @@ function idea_delete(ideaid) {
 }
 
 
-function source_delete(sourceid) {
+function handle_delete(handleid) {
 
-    var migratehandle = prompt("Are you sure you want to permanently delete this Source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
+    var migratehandle = prompt("Are you sure you want to permanently delete this Handle?\nYou can reference @anotherHandle to migrate to or leave blank to delete permanently...", "@");
     if (migratehandle === null) {
         return false;
     }
 
-    $.post("/controller/source_delete", {
+    $.post("/controller/handle_delete", {
         focus__id: parseInt($('#focus__id').val()),
-        sourceid: sourceid,
+        handleid: handleid,
         migratehandle: migratehandle,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -3221,12 +3221,12 @@ function source_delete(sourceid) {
 
             if (data.delete_redirect && data.delete_redirect.length > 0) {
 
-                //Go to main idea page:
+                //Go to main hashtag page:
                 js_redirect(data.delete_redirect);
 
             } else if (data.delete_element && data.delete_element.length > 0) {
 
-                //Go to main idea page:
+                //Go to main hashtag page:
                 setTimeout(function () {
                     //Restore background:
                     $(data.delete_element).fadeOut();
@@ -3249,7 +3249,7 @@ function source_delete(sourceid) {
 }
 
 
-function selector(element_id, source_createid, o__id = 0, chainid = 0, show_full_name = false) {
+function selector(element_id, handle_createid, o__id = 0, chainid = 0, show_full_name = false) {
 
     /*
     *
@@ -3269,9 +3269,9 @@ function selector(element_id, source_createid, o__id = 0, chainid = 0, show_full
         chainid = $('.dropmenu_instant_' + element_id + ':first').attr('chainid');
     }
 
-    console.log('Attempt to update dropdown @' + element_id + ' to @' + source_createid);
+    console.log('Attempt to update dropdown @' + element_id + ' to @' + handle_createid);
 
-    source_createid = parseInt(source_createid);
+    handle_createid = parseInt(handle_createid);
 
     //Deleting Anything?
     var main_object_type = 0;
@@ -3279,18 +3279,18 @@ function selector(element_id, source_createid, o__id = 0, chainid = 0, show_full
     var migratehandle = null;
 
     //Show Loading
-    var data_object = eval('js_sources___' + element_id);
-    if (!data_object[source_createid]) {
-        alert('Invalid element ID: ' + element_id + '/' + source_createid + '/' + o__id + '/' + chainid + '/' + show_full_name);
+    var data_object = eval('js_handles___' + element_id);
+    if (!data_object[handle_createid]) {
+        alert('Invalid element ID: ' + element_id + '/' + handle_createid + '/' + o__id + '/' + chainid + '/' + show_full_name);
         return false;
     }
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/source_select", {
+    $.post("/controller/handle_select", {
         focus__id: parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
-        source_createid: source_createid,
+        handle_createid: handle_createid,
         migratehandle: migratehandle,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3298,16 +3298,16 @@ function selector(element_id, source_createid, o__id = 0, chainid = 0, show_full
         if (data.status) {
 
             //Update on page:
-            ui_instant_select(element_id, source_createid, o__id, chainid, show_full_name);
+            ui_instant_select(element_id, handle_createid, o__id, chainid, show_full_name);
 
             if (data.delete_redirect && data.delete_redirect.length > 0) {
 
-                //Go to main idea page:
+                //Go to main hashtag page:
                 js_redirect(data.delete_redirect);
 
             } else if (data.delete_element && data.delete_element.length > 0) {
 
-                //Go to main idea page:
+                //Go to main hashtag page:
                 setTimeout(function () {
                     //Restore background:
                     $(data.delete_element).fadeOut();
@@ -3319,9 +3319,9 @@ function selector(element_id, source_createid, o__id = 0, chainid = 0, show_full
 
             }
 
-            if (data.auto_open_idea_modal) {
-                //We need to show idea modal:
-                idea_editor(o__id, $('.s__12273_' + o__id).attr('chainid'));
+            if (data.auto_open_hashtag_modal) {
+                //We need to show hashtag modal:
+                hashtag_editor(o__id, $('.s__12273_' + o__id).attr('chainid'));
             }
 
         } else {
@@ -3334,14 +3334,14 @@ function selector(element_id, source_createid, o__id = 0, chainid = 0, show_full
 }
 
 
-function source_sort_save(chainsourcetype) {
+function handle_sort_save(chainhandletype) {
 
     var new_chainkey = [];
     var sort_rank = 0;
 
-    $("#list-in-" + chainsourcetype + " .card-12274").each(function () {
-        //Fetch variables for this idea:
-        var sourceid = parseInt($(this).attr('sourceid'));
+    $("#list-in-" + chainhandletype + " .card-12274").each(function () {
+        //Fetch variables for this hashtag:
+        var handleid = parseInt($(this).attr('handleid'));
         var chainid = parseInt($(this).attr('chainid'));
 
         sort_rank++;
@@ -3353,9 +3353,9 @@ function source_sort_save(chainsourcetype) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/controller/source_sort_save", {
-            sourceid: parseInt($('#focus__id').val()),
-            chainsourcetype: chainsourcetype,
+        $.post("/controller/handle_sort_save", {
+            handleid: parseInt($('#focus__id').val()),
+            chainhandletype: chainhandletype,
             new_chainkey: new_chainkey,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -3393,11 +3393,11 @@ function chain_sort_reset() {
 
                 //Refresh page:
                 if (focus__node == 12273) {
-                    //Ideation
-                    js_redirect(js_sources___42903[33286]['m__message'] + focus_handle);
+                    //Hahstags
+                    js_redirect(js_handles___42903[33286]['m__message'] + focus_handle);
                 } else if (focus__node == 12274) {
-                    //Sourcing
-                    js_redirect(js_sources___42903[42902]['m__message'] + focus_handle);
+                    //Handles
+                    js_redirect(js_handles___42903[42902]['m__message'] + focus_handle);
                 }
 
             }
@@ -3406,21 +3406,21 @@ function chain_sort_reset() {
 }
 
 
-function chain_clicked(ideaid) {
-    $(".chain_click_" + ideaid).addClass('was_clicked');
+function chain_clicked(hashtagid) {
+    $(".chain_click_" + hashtagid).addClass('was_clicked');
 }
 
 
 var next_processing = false;
 
-function idea_discovered(do_skip) {
+function hashtag_discovered(do_skip) {
 
     if (next_processing) {
         return false;
     }
     next_processing = true;
 
-    var selection_ideaid = [];
+    var selection_hashtagid = [];
 
     if ($(".chain_click")[0] && !$(".was_clicked")[0]) {
         next_processing = false;
@@ -3428,33 +3428,33 @@ function idea_discovered(do_skip) {
         return false;
     }
 
-    if (js_sourceids___7712.includes(focus_ideatype)) {
+    if (js_handleids___7712.includes(focus_hashtagtype)) {
         //Choose
         $(".this_selector").each(function () {
-            var selection_ideaid_this = parseInt($(this).attr('selection_ideaid'));
-            if ($('.this_selector_' + selection_ideaid_this + ' i').hasClass('fa-square-check') || $(".this_selector").length == 1) {
-                selection_ideaid.push(selection_ideaid_this);
+            var selection_hashtagid_this = parseInt($(this).attr('selection_hashtagid'));
+            if ($('.this_selector_' + selection_hashtagid_this + ' i').hasClass('fa-square-check') || $(".this_selector").length == 1) {
+                selection_hashtagid.push(selection_hashtagid_this);
             }
         });
     }
 
-    //Compile all next ideas, if any:
-    var next_idea_data = []; //Aggregate the data for all children
+    //Compile all next hashtags, if any:
+    var next_hashtag_data = []; //Aggregate the data for all children
     $("#list-in-12840 .edge-cover").each(function () {
-        next_idea_data.push({
-            ideaid: parseInt($(this).attr('ideaid')),
-            idea_createtext: ($('.s__12273_' + $(this).attr('ideaid') + ' .x_write').val() ? $('.s__12273_' + $(this).attr('ideaid') + ' .x_write').val() : null),
-            ideakey: ($('.input_ui_' + $(this).attr('ideaid') + ' .ideakey').val() ? $('.input_ui_' + $(this).attr('ideaid') + ' .ideakey').val() : 0),
+        next_hashtag_data.push({
+            hashtagid: parseInt($(this).attr('hashtagid')),
+            hashtag_createtext: ($('.s__12273_' + $(this).attr('hashtagid') + ' .x_write').val() ? $('.s__12273_' + $(this).attr('hashtagid') + ' .x_write').val() : null),
+            hashtagkey: ($('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagkey').val() ? $('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagkey').val() : 0),
         });
     });
 
     //Payment Error?
-    if (focus_ideatype == 26560 && !$(".tickets_issued")[0]) {
+    if (focus_hashtagtype == 26560 && !$(".tickets_issued")[0]) {
         //Ticket not yet issued!
         alert('Pay Now via Paypal before going next.');
         next_processing = false;
         return false;
-    } else if (focus_ideatype == 43758) {
+    } else if (focus_hashtagtype == 43758) {
 
         //Invoice Process, make sure something is in the cart:
         var invoice_items = {};
@@ -3465,15 +3465,15 @@ function idea_discovered(do_skip) {
         $(".sale_controller").each(function (i, e) {
 
             currency_code = $(this).attr('unitcurrency');
-            var item_ideaid = parseInt($(this).attr('ideaid'));
-            var item_title = $('.cache_frame_' + item_ideaid + ' .first_line').text();
-            var quantity = parseFloat($('.input_ui_' + item_ideaid + ' .current_count').text());
+            var item_hashtagid = parseInt($(this).attr('hashtagid'));
+            var item_title = $('.cache_frame_' + item_hashtagid + ' .first_line').text();
+            var quantity = parseFloat($('.input_ui_' + item_hashtagid + ' .current_count').text());
 
             if (quantity > 0) {
                 var this_item = {
-                    ideaid: item_ideaid,
+                    hashtagid: item_hashtagid,
                     name: item_title,
-                    description: $('.cache_frame_' + item_ideaid).text().replace(item_title, ''),
+                    description: $('.cache_frame_' + item_hashtagid).text().replace(item_title, ''),
                     quantity: quantity,
                     currency_code: currency_code,
                     currency_value: parseFloat($(this).attr('unitprice')),
@@ -3488,13 +3488,13 @@ function idea_discovered(do_skip) {
         if (total_count > 0) {
 
             //Load:
-            var original_html = $('.idea_discovered_btn').html();
-            $('.idea_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+            var original_html = $('.hashtag_discovered_btn').html();
+            $('.hashtag_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
             //Submit to go next:
             $.post("/invoice", {
-                target_ideahashtag: $('#target_ideahashtag').val(),
-                target_ideaid: parseInt($('#target_ideaid').val()),
+                target_hashtaghashtag: $('#target_hashtaghashtag').val(),
+                target_hashtagid: parseInt($('#target_hashtagid').val()),
                 focus__id: parseInt($('#focus__id').val()),
                 invoice_items: invoice_items,
                 currency_code: currency_code,
@@ -3508,7 +3508,7 @@ function idea_discovered(do_skip) {
                     js_redirect(data.next__url);
                 } else {
                     //Show error:
-                    $('.idea_discovered_btn').html(original_html);
+                    $('.hashtag_discovered_btn').html(original_html);
                     alert(data.message);
                     next_processing = false;
                 }
@@ -3524,21 +3524,21 @@ function idea_discovered(do_skip) {
 
 
     //Load:
-    var original_html = $('.idea_discovered_btn').html();
-    $('.idea_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    var original_html = $('.hashtag_discovered_btn').html();
+    $('.hashtag_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
-    $.post("/controller/idea_discovered", {
-        target_ideahashtag: $('#target_ideahashtag').val(),
-        target_ideaid: parseInt($('#target_ideaid').val()),
-        source_submitted_data: {
-            ideaid: parseInt($('#focus__id').val()),
-            idea_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
-            ideakey: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideakey').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .ideakey').val() : 0),
+    $.post("/controller/hashtag_discovered", {
+        target_hashtaghashtag: $('#target_hashtaghashtag').val(),
+        target_hashtagid: parseInt($('#target_hashtagid').val()),
+        handle_submitted_data: {
+            hashtagid: parseInt($('#focus__id').val()),
+            hashtag_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
+            hashtagkey: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagkey').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagkey').val() : 0),
         },
         do_skip: do_skip,
-        selection_ideaid: selection_ideaid,
-        next_idea_data: next_idea_data,
+        selection_hashtagid: selection_hashtagid,
+        next_hashtag_data: next_hashtag_data,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
@@ -3547,7 +3547,7 @@ function idea_discovered(do_skip) {
         } else {
             next_processing = false;
             //Show error:
-            $('.idea_discovered_btn').html(original_html);
+            $('.hashtag_discovered_btn').html(original_html);
             alert(data.message);
         }
     });

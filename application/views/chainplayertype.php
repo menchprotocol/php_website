@@ -1,7 +1,7 @@
 <?php
 
 //List all interactions types and their counts:
-$sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
+$handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 $table_sortable = array('#th_primary','#th_count','#th_total','#th_points','#th_perfect');
 $total_count = 0;
 $total_access = array();
@@ -13,7 +13,7 @@ $table_body = '';
 $totals_count = $this->Chains->read(array(), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
-foreach($this->config->item('sources___4593') as $chainsourcetype => $m) {
+foreach($this->config->item('handles___4593') as $chainhandletype => $m) {
 
     $total_count++;
 
@@ -21,13 +21,13 @@ foreach($this->config->item('sources___4593') as $chainsourcetype => $m) {
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
     $table_body .= '<td style="text-align: left;"><a href="'.view_memory(42903,42902).$m['m__handle'].'">'.$m['m__title'].'</a></td>';
-    $table_body .= '<td style="text-align: left;">'.$chainsourcetype.'</td>';
+    $table_body .= '<td style="text-align: left;">'.$chainhandletype.'</td>';
 
     //List all statuses:
-    $listsource_count = $this->Chains->read(array(
-        'chainsourcetype' => $chainsourcetype,
+    $listhandle_count = $this->Chains->read(array(
+        'chainhandletype' => $chainhandletype,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
-    $interactions_this = $listsource_count[0]['totals'];
+    $interactions_this = $listhandle_count[0]['totals'];
     $total_interactions += $interactions_this;
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad(number_format(($interactions_this/$totals_count[0]['totals']*100), 3), 6, '0', STR_PAD_LEFT).'%</th>';

@@ -241,7 +241,7 @@ h3{
 .modal-header .dynamic_selector{
     margin-left: 0px !important;
 }
-.dynamic_editing_input input.form-control.save_ideahashtag,
+.dynamic_editing_input input.form-control.save_hashtaghashtag,
 .left_padded .dynamic_editing_input input.form-control,
 .left_padded .dynamic_editing_input textarea.form-control{
     margin-left: 40px !important;
@@ -1157,7 +1157,7 @@ a.headline {
     border-radius: 0px;
     margin: 0;
 }
-.sort_idea_grab, .sortsource_grab, .fa-sort, .fa-arrows{
+.sort_hashtag_grab, .sorthandle_grab, .fa-sort, .fa-arrows{
     cursor: grab;
 }
 .focus-cover .space-content,
@@ -1180,7 +1180,7 @@ a.headline {
 }
 
 
-.idea_response{
+.hashtag_response{
     display: block;
     line-height: 150%;
     border-left: 2px solid #000000 !important;
@@ -1193,10 +1193,10 @@ a.headline {
     margin-top: -3px;
 }
 
-.idea_response .btn{
+.hashtag_response .btn{
     margin:-10px 0 0 0;
 }
-.idea_response .btn.edit-locked{
+.hashtag_response .btn.edit-locked{
     margin:-3px 0 0 0;
 }
 .title-no-right {
@@ -1790,7 +1790,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
 }
 
 
-.dynamic_editing_input textarea.form-control.save_ideavalue{
+.dynamic_editing_input textarea.form-control.save_hashtagvalue{
     padding-top: px !important;
     margin-left: 40px !important;
 }
@@ -1914,7 +1914,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
 .texttype_sm {
     width:34px;
 }
-.textsource_6197 {
+.texthandle_6197 {
     margin-bottom: 0;
     padding: 0 3px;
 }
@@ -1924,8 +1924,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
 }
 
 
-.card-12274 .inner-content .textsource_6197,
-.card-6287 .inner-content .textsource_6197{
+.card-12274 .inner-content .texthandle_6197,
+.card-6287 .inner-content .texthandle_6197{
     text-align: center;
     padding-left: 0;
 }
@@ -2488,29 +2488,29 @@ input.form-control {
     font-size: 1em;
     display: block;
 }
-.source-social{
+.handle-social{
     display: block;
     text-align: center;
 }
-.source-social ul {
+.handle-social ul {
     padding: 5px 0 0;
     margin: 0;
 }
-.focus-cover.card-12274 .source-social ul {
+.focus-cover.card-12274 .handle-social ul {
     padding: 13px 0 0;
 }
-.source-social ul li {
+.handle-social ul li {
     list-style: auto;
     display: inline-block;
 }
-.source-social ul li a {
+.handle-social ul li a {
     padding: 8px 5px;
 }
 
-.edge-cover .source-social ul {
+.edge-cover .handle-social ul {
     padding: 5px 0;
 }
-.edge-cover .source-social ul li a {
+.edge-cover .handle-social ul li a {
     padding: 5px 3px;
 }
 .modal-body .form-control {
@@ -2591,7 +2591,7 @@ input.form-control {
 .mini-cover .cover-content .inner-content .main__title {
     min-height: 13px;
 }
-.source-info span .main__title {
+.handle-info span .main__title {
     padding:3px 0 0;
     display: inline !important;
     min-height: unset !important;
@@ -2647,7 +2647,7 @@ input.form-control {
     border:0;
     border-radius: 0px;
 }
-.mass_action_toggle, .source_text_finder, .mass_action_item{
+.mass_action_toggle, .handle_text_finder, .mass_action_item{
     width: 100% !important;
 }
 .modal-header{
@@ -2874,7 +2874,7 @@ textarea {
     padding:5px 0 !important;
 }
 
-.card-12273.focus-cover .source-info .source_info_box{
+.card-12273.focus-cover .handle-info .handle_info_box{
     padding:5px 0 5px 40px !important;
     display: block !important;
 }
@@ -3086,14 +3086,14 @@ h4.main__title{
     padding: 0 1px 0 0;
 }
 
-.source_bio{
+.handle_bio{
     padding: 3px 0 8px 0;
     max-height: 144px;
     overflow-y: hidden;
     overflow-x: auto;
     line-height: 113%;
 }
-.edge-cover.card-12274 .source_bio{
+.edge-cover.card-12274 .handle_bio{
     padding: 0 0 5px;
     font-size: 0.79em;
     max-height: 55px;
@@ -3484,7 +3484,7 @@ h4.main__title{
 
 
 
-/* Idea Add Button Hack to make the plus more clear: */
+/* Hahstag Add Button Hack to make the plus more clear: */
 .platform-navigation .block-x a {
     display: block;
     text-align: center;
@@ -3836,7 +3836,7 @@ a,
 
 /* SMALL */
 .small_font,
-.idea_discovered_btn,
+.hashtag_discovered_btn,
 .custom_ui_13491_13492 .i_cache,
 .custom_ui_13491_13492 .regtext {
     font-size:0.79em;
@@ -4262,7 +4262,7 @@ main {
     background-color: #d2f4ea;
 }
 
-.source_info_box{
+.handle_info_box{
     line-height: 121%;
     overflow-x: hidden;
     overflow-y: visible;
@@ -4270,12 +4270,12 @@ main {
     width: 100%;
     padding: 3px 0 3px 40px !important;
 }
-.cover-content .source_info_box{
+.cover-content .handle_info_box{
     padding-left: 3px;
     display: inline !important;
 }
 
-.ticket-notice .source_info_box{
+.ticket-notice .handle_info_box{
     display: inline-block !important;
     padding: 0 !important;
     width: 105px;
@@ -4293,18 +4293,18 @@ main {
     overflow-y: auto;
 }
 
-.source-featured{
+.handle-featured{
     padding: 3px 0 0 !important;
     margin: 0 !important;
 }
 
-.source-info{
+.handle-info{
     padding: 2px 0;
 }
 
 
-.flip-content .source-info,
-.flip-content .source-info .sub_note{
+.flip-content .handle-info,
+.flip-content .handle-info .sub_note{
     color:#FFFFFF !important;
 }
 
@@ -4661,10 +4661,10 @@ main {
     font-size: 3.4em;
 }
 
-.ref_source,
-.source-featured u,
-.source-featured a,
-.source-featured spanaa,
+.ref_handle,
+.handle-featured u,
+.handle-featured a,
+.handle-featured spanaa,
 .i_cache u,
 .i_cache a,
 .i_cache spanaa{
@@ -4672,7 +4672,7 @@ main {
     text-decoration: none !important;
 }
 
-.ref_source {
+.ref_handle {
     cursor: zoom-in;
 }
 

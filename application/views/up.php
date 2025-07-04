@@ -1,17 +1,17 @@
 <?php
 
-//Displays all the up sources of a given source recursively
+//Displays all the up handles of a given handle recursively
 
-echo '<h1>'.$focus_e['sourcevalue'].'</h1>';
+echo '<h1>'.$focus_e['handlevalue'].'</h1>';
 
-$total_parents = source_up($focus_e['sourceid']);
+$total_parents = handle_up($focus_e['handleid']);
 $current_total = count($total_parents);
 $current_i = 0;
 echo '<div class="row justify-content">';
-foreach ($this->Sources->read(array(
-    'sourceid IN (' . join(',', $total_parents) . ')' => null,
+foreach ($this->Handles->read(array(
+    'handleid IN (' . join(',', $total_parents) . ')' => null,
 )) as $e) {
-    echo '<div>'.($current_total-$current_i).') <span class="icon-block">'.view_cover($e['sourcecover']).'</span><span class="main__title">'.$e['sourcevalue'].'</span><span class="grey">@'.$e['sourcehandle'].'</span></div>';
+    echo '<div>'.($current_total-$current_i).') <span class="icon-block">'.view_cover($e['handlecover']).'</span><span class="main__title">'.$e['handlevalue'].'</span><span class="grey">@'.$e['handlehandle'].'</span></div>';
     $current_i++;
 }
 echo '</div>';

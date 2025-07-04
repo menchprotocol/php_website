@@ -1,28 +1,28 @@
 <?php
 
 $community_pills = '';
-$main_source_id = 0;
+$main_handle_id = 0;
 
-echo '<h1>'.$focus_e['sourcevalue'].'</h1>';
+echo '<h1>'.$focus_e['handlevalue'].'</h1>';
 
 //Load Filters:
 $groups_ids = array();
 $groups_all = array();
 
 foreach ($this->Chains->read(array(
-    'chainsourceup' => $focus_e['sourceid'],
-    'chainsourcetype' => 4230, //SOURCE FOLLOW
-), array('chainsourcedown'), 0, 1, source_sort()) as $group) {
-    array_push($groups_ids, intval($group['sourceid']));
-    $groups_all[intval($group['sourceid'])] = $group;
+    'chainhandleinput' => $focus_e['handleid'],
+    'chainhandletype' => 4230, //HANDLE FOLLOW
+), array('chainhandleoutput'), 0, 1, handle_sort()) as $group) {
+    array_push($groups_ids, intval($group['handleid']));
+    $groups_all[intval($group['handleid'])] = $group;
 }
 
 $full_group_ids = array();
 foreach ($this->Chains->read(array(
-    'chainsourceup' => $focus_e['sourceid'],
-    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-), array(), 0, 0, source_sort()) as $group) {
-    array_push($full_group_ids, intval($group['chainsourcedown']));
+    'chainhandleinput' => $focus_e['handleid'],
+    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+), array(), 0, 0, handle_sort()) as $group) {
+    array_push($full_group_ids, intval($group['chainhandleoutput']));
 }
 
 //Load Main:
@@ -30,52 +30,52 @@ $content_ui = '';
 $group_counts = array();
 $content_ui .= '<div class="row justify-content group_content">';
 foreach ($this->Chains->read(array(
-    'chainsourceup' => $focus_e['sourceid'],
-    'chainsourcetype' => 4230, //SOURCE FOLLOW
-), array('chainsourcedown'), 1, 0, source_sort()) as $group_main) {
+    'chainhandleinput' => $focus_e['handleid'],
+    'chainhandletype' => 4230, //HANDLE FOLLOW
+), array('chainhandleoutput'), 1, 0, handle_sort()) as $group_main) {
 
-    $main_source_id = intval($group_main['sourceid']);
+    $main_handle_id = intval($group_main['handleid']);
 
     foreach ($this->Chains->read(array(
-        'chainsourceup' => $group_main['sourceid'],
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-    ), array('chainsourcedown'), 0, 0, source_sort()) as $us) {
+        'chainhandleinput' => $group_main['handleid'],
+        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+    ), array('chainhandleoutput'), 0, 0, handle_sort()) as $us) {
 
-        if(!isset($group_counts[$group_main['sourceid']])){
-            $group_counts[$group_main['sourceid']] = array();
+        if(!isset($group_counts[$group_main['handleid']])){
+            $group_counts[$group_main['handleid']] = array();
         }
-        if(!in_array($us['sourceid'], $group_counts[$group_main['sourceid']])){
-            array_push($group_counts[$group_main['sourceid']], $us['sourceid']);
+        if(!in_array($us['handleid'], $group_counts[$group_main['handleid']])){
+            array_push($group_counts[$group_main['handleid']], $us['handleid']);
         }
 
         //See which filters belong to this member:
         $group_class = 'main_group';
         foreach ($this->Chains->read(array(
-            'chainsourceup IN (' . join(',', $groups_ids) . ')' => null,
-            'chainsourcedown' => $us['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            'chainhandleinput IN (' . join(',', $groups_ids) . ')' => null,
+            'chainhandleoutput' => $us['handleid'],
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
         ), array(), 0) as $filter) {
-            if(!isset($group_counts[$filter['chainsourceup']])){
-                $group_counts[$filter['chainsourceup']] = array();
+            if(!isset($group_counts[$filter['chainhandleinput']])){
+                $group_counts[$filter['chainhandleinput']] = array();
             }
-            if(!in_array($us['sourceid'], $group_counts[$filter['chainsourceup']])){
-                array_push($group_counts[$filter['chainsourceup']], $us['sourceid']);
+            if(!in_array($us['handleid'], $group_counts[$filter['chainhandleinput']])){
+                array_push($group_counts[$filter['chainhandleinput']], $us['handleid']);
 
             }
-            $group_class .= ' group_'.$filter['chainsourceup'];
+            $group_class .= ' group_'.$filter['chainhandleinput'];
         }
 
         $extra_value = '';
         foreach ($this->Chains->read(array(
-            'chainsourceup IN (' . join(',', $full_group_ids) . ')' => null,
-            'chainsourcedown' => $us['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            'chainhandleinput IN (' . join(',', $full_group_ids) . ')' => null,
+            'chainhandleoutput' => $us['handleid'],
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             'LENGTH(chainvalue) > 0' => null,
-        ), array(), 0, 0, source_sort()) as $group) {
-            $extra_value .= '<div class="grey extra_descs hidden extra_desc_'.$group['chainsourceup'].'">'.$group['chainvalue'].'</div>';
+        ), array(), 0, 0, handle_sort()) as $group) {
+            $extra_value .= '<div class="grey extra_descs hidden extra_desc_'.$group['chainhandleinput'].'">'.$group['chainvalue'].'</div>';
         }
 
-        $content_ui .= source_view(1637076, $us, $group_class, $extra_value);
+        $content_ui .= handle_view(1637076, $us, $group_class, $extra_value);
 
     }
 }
@@ -86,13 +86,13 @@ $content_ui .= '</div>';
 
 echo '<ul class="nav nav-tabs nav12274" style="display: flex !important; justify-content: space-evenly;">';
 foreach ($this->Chains->read(array(
-    'chainsourceup' => $focus_e['sourceid'],
-    'chainsourcetype' => 4230, //SOURCE FOLLOW
-), array('chainsourcedown'), 0, 0, source_sort()) as $group) {
-    if(!isset($group_counts[$group['sourceid']]) || !count($group_counts[$group['sourceid']])){
+    'chainhandleinput' => $focus_e['handleid'],
+    'chainhandletype' => 4230, //HANDLE FOLLOW
+), array('chainhandleoutput'), 0, 0, handle_sort()) as $group) {
+    if(!isset($group_counts[$group['handleid']]) || !count($group_counts[$group['handleid']])){
         continue;
     }
-    echo '<li class="nav-item nav-chain '.( $group['sourceid']==$main_source_id ? ' active ' : '' ).' navgroup_'.$group['sourceid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['sourceid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['sourcecover']).'</span><span class="main__title">'.( isset($group_counts[$group['sourceid']]) && count($group_counts[$group['sourceid']])>0 ? count($group_counts[$group['sourceid']]) : '' ).'</span><span class="main__title '.( $group['sourceid']==$main_source_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['sourceid'].'">&nbsp;'.trim(str_replace($focus_e['sourcevalue'], '', $group['sourcevalue'])).'&nbsp;</span></a></li>';
+    echo '<li class="nav-item nav-chain '.( $group['handleid']==$main_handle_id ? ' active ' : '' ).' navgroup_'.$group['handleid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['handleid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['handlecover']).'</span><span class="main__title">'.( isset($group_counts[$group['handleid']]) && count($group_counts[$group['handleid']])>0 ? count($group_counts[$group['handleid']]) : '' ).'</span><span class="main__title '.( $group['handleid']==$main_handle_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['handleid'].'">&nbsp;'.trim(str_replace($focus_e['handlevalue'], '', $group['handlevalue'])).'&nbsp;</span></a></li>';
 }
 echo '</ul>';
 
@@ -102,7 +102,7 @@ echo $content_ui;
 
 <script>
 
-    var main_source_id = <?= $main_source_id ?>;
+    var main_handle_id = <?= $main_handle_id ?>;
     function load_group(group_id){
 
         //Remove all filters:
@@ -114,7 +114,7 @@ echo $content_ui;
         $('.navgroup_'+group_id).addClass('active');
 
 
-        if(main_source_id!=group_id){
+        if(main_handle_id!=group_id){
             $('.main_group').addClass('hidden');
             $('.group_'+group_id).removeClass('hidden');
         } else {

@@ -3,32 +3,32 @@
 //Sync All Adding followers:
 $counter = 0;
 foreach ($this->Chains->read(array(
-    'chainsourcetype' => 7545,
-    'chainsourceup NOT IN (' . join(',', $this->config->item('sourceids___43048')) . ')' => null, //No need to add these special ones... SourceNickname
-), array('chainsourceup'), 0) as $addition_sync) {
+    'chainhandletype' => 7545,
+    'chainhandleinput NOT IN (' . join(',', $this->config->item('handleids___43048')) . ')' => null, //No need to add these special ones... HandleNickname
+), array('chainhandleinput'), 0) as $addition_sync) {
 
     $is_found = false;
-    //Fetch everyone who has idea_discovered this idea:
+    //Fetch everyone who has hashtag_discovered this hashtag:
     foreach ($this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-        'chainidealeft' => $addition_sync['chainidearight'],
-    ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC')) as $dicovered) {
+        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+        'chainhashtaginput' => $addition_sync['chainhashtagoutput'],
+    ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC')) as $dicovered) {
 
         //Any responses by this user?
         $set_chainvalue = $dicovered['chainvalue'];
         foreach ($this->Chains->read(array(
-            'chainsourcetype' => 4228, //Sequence
-            'chainidearight' => $addition_sync['chainidearight'],
-            'chainsourcecreator' => $dicovered['chainsourcecreator'],
-        ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC')) as $response) {
-            $set_chainvalue = $response['ideavalue'];
+            'chainhandletype' => 4228, //Sequence
+            'chainhashtagoutput' => $addition_sync['chainhashtagoutput'],
+            'chainhandlecreator' => $dicovered['chainhandlecreator'],
+        ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC')) as $response) {
+            $set_chainvalue = $response['hashtagvalue'];
         }
 
-        //lets append this Source:
-        if (append_source($addition_sync['chainsourceup'], $dicovered['chainsourcecreator'], $set_chainvalue, $addition_sync['chainidearight'], false)) {
+        //lets append this Handle:
+        if (append_handle($addition_sync['chainhandleinput'], $dicovered['chainhandlecreator'], $set_chainvalue, $addition_sync['chainhashtagoutput'], false)) {
             $counter++;
         }
     }
 }
 
-echo $counter . ' Sources synced.';
+echo $counter . ' Handles synced.';

@@ -1,14 +1,14 @@
 <?php
 
 
-function idea_sort()
+function hashtag_sort()
 {
-    return array('chainsourcetype = \'34513\' DESC' => null, 'chainkey' => 'ASC', 'chaintime' => 'DESC');
+    return array('chainhandletype = \'34513\' DESC' => null, 'chainkey' => 'ASC', 'chaintime' => 'DESC');
 }
 
-function source_sort()
+function handle_sort()
 {
-    return array('chainkey' => 'ASC', 'chaintime' => 'DESC'); //'chainsourcetype = \'41011\' DESC' => null,
+    return array('chainkey' => 'ASC', 'chaintime' => 'DESC'); //'chainhandletype = \'41011\' DESC' => null,
 }
 
 function string_is_date($str)
@@ -26,30 +26,30 @@ function string_is_date($str)
     }
 }
 
-function discover_chainsourcetype()
+function discover_chainhandletype()
 {
     return (isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1) == '/' && substr_count($_POST['js_request_uri'], '/') == 2 ? '/' . strtok(substr($_POST['js_request_uri'], 1), '/') : null);
 }
 
-function source_pinned($sourceid, $return_itself = false, $first_pin_only = true)
+function handle_pinned($handleid, $return_itself = false, $first_pin_only = true)
 {
 
     $CI =& get_instance();
     $pinned_down = $CI->config->item('pinned_down');
-    if (isset($pinned_down[$sourceid])) {
-        return ($first_pin_only ? reset($pinned_down[$sourceid]) : $pinned_down[$sourceid]);
+    if (isset($pinned_down[$handleid])) {
+        return ($first_pin_only ? reset($pinned_down[$handleid]) : $pinned_down[$handleid]);
     }
 
     $pinned_up = $CI->config->item('pinned_up');
-    if (isset($pinned_up[$sourceid])) {
-        return ($first_pin_only ? reset($pinned_up[$sourceid]) : $pinned_up[$sourceid]);
+    if (isset($pinned_up[$handleid])) {
+        return ($first_pin_only ? reset($pinned_up[$handleid]) : $pinned_up[$handleid]);
     }
 
-    return ($first_pin_only ? ($return_itself ? $sourceid : 0) : array());
+    return ($first_pin_only ? ($return_itself ? $handleid : 0) : array());
 
 }
 
-function idea_type_discovery($i, $trying_to_skip = false)
+function hashtag_type_discovery($i, $trying_to_skip = false)
 {
 
     if ($trying_to_skip) {
@@ -57,20 +57,20 @@ function idea_type_discovery($i, $trying_to_skip = false)
     }
 
     $CI =& get_instance();
-    if ($i['ideatype'] == 26560) {
+    if ($i['hashtagtype'] == 26560) {
         $currency_types = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $i['ideaid'],
-            'chainsourceup IN (' . join(',', $CI->config->item('sourceids___26661')) . ')' => null, //Currency
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___26661')) . ')' => null, //Currency
         ));
         $total_dues = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $i['ideaid'],
-            'chainsourceup' => 26562, //Total Due
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput' => 26562, //Total Due
         ));
         return (count($total_dues) && doubleval($total_dues[0]['chainvalue']) && count($currency_types) ? 26595 : 42332);
     } else {
-        return source_pinned($i['ideatype']);
+        return handle_pinned($i['hashtagtype']);
     }
 
 }
@@ -82,19 +82,19 @@ function string_is_icon($string)
 }
 
 
-function idea_number_calculator($i)
+function hashtag_number_calculator($i)
 {
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
     $count_x = $CI->Chains->read(array(
-        '(chainidealeft=' . $i['ideaid'] . ' OR chainidearight=' . $i['ideaid'] . ')' => null,
+        '(chainhashtaginput=' . $i['hashtagid'] . ' OR chainhashtagoutput=' . $i['hashtagid'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $i['ideakey']) {
-        return $CI->Ideas->update($i['ideaid'], array(
-            'ideakey' => $count_x[0]['totals'],
+    if ($count_x[0]['totals'] != $i['hashtagkey']) {
+        return $CI->Hashtags->update($i['hashtagid'], array(
+            'hashtagkey' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -102,19 +102,19 @@ function idea_number_calculator($i)
 
 }
 
-function source_number_calculator($e)
+function handle_number_calculator($e)
 {
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
     $count_x = $CI->Chains->read(array(
-        '(chainsourcedown=' . $e['sourceid'] . ' OR chainsourceup=' . $e['sourceid'] . ' OR chainsourcecreator=' . $e['sourceid'] . ')' => null,
+        '(chainhandleoutput=' . $e['handleid'] . ' OR chainhandleinput=' . $e['handleid'] . ' OR chainhandlecreator=' . $e['handleid'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $e['sourcekey']) {
-        return $CI->Sources->update($e['sourceid'], array(
-            'sourcekey' => $count_x[0]['totals'],
+    if ($count_x[0]['totals'] != $e['handlekey']) {
+        return $CI->Handles->update($e['handleid'], array(
+            'handlekey' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -135,15 +135,15 @@ function random_string($length_of_string)
 }
 
 
-function phone_href($chainsourcetype, $number)
+function phone_href($chainhandletype, $number)
 {
 
     $number = preg_replace("/[^0-9]/", "", $number);
 
-    if ($chainsourcetype == 13815) {
+    if ($chainhandletype == 13815) {
         //WhatsApp
         return 'https://wa.me/' . $number;
-    } elseif ($chainsourcetype == 20337) {
+    } elseif ($chainhandletype == 20337) {
         //Telegram
         return 'https://t.me/' . $number;
     } else {
@@ -152,10 +152,10 @@ function phone_href($chainsourcetype, $number)
     }
 }
 
-function sourcecover_generator($sourceid)
+function handlecover_generator($handleid)
 {
     $CI =& get_instance();
-    $fetch = $CI->config->item('sources___' . $sourceid);
+    $fetch = $CI->config->item('handles___' . $handleid);
     return trim(one_two_explode('class="', '"', $fetch[array_rand($fetch)]['m__cover']));
 }
 
@@ -202,44 +202,44 @@ function prefix_common_words($strs)
 }
 
 
-function reset_cache($chainsourcecreator)
+function reset_cache($chainhandlecreator)
 {
     $CI =& get_instance();
     $count = 0;
     foreach ($CI->Chains->read(array(
-        'chainsourcetype' => 44179, //Triggered
-        'chainsourceup' => 14599, //Cache App
-        'chainsourcedown >' => 0,
+        'chainhandletype' => 44179, //Triggered
+        'chainhandleinput' => 14599, //Cache App
+        'chainhandleoutput >' => 0,
     )) as $delete_cahce) {
         //Void:
-        $count += $CI->Chains->delete($delete_cahce['chainid'], $chainsourcecreator);
+        $count += $CI->Chains->delete($delete_cahce['chainid'], $chainhandlecreator);
     }
     return $count;
 }
 
-function idea_spots_remaining($ideaid)
+function hashtag_spots_remaining($hashtagid)
 {
 
     $CI =& get_instance();
-    $source_session = source_session();
+    $handle_session = handle_session();
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
     $max_available = $CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidearight' => $ideaid,
-        'chainsourceup' => 26189,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+        'chainhashtagoutput' => $hashtagid,
+        'chainhandleinput' => 26189,
     ), array(), 1);
     if (count($max_available) && is_numeric($max_available[0]['chainvalue'])) {
 
         //We have a limit! See if we've met it already:
         $query_filters = array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___40986')) . ')' => null, //DISCOVERIES
-            'chainidealeft' => $ideaid,
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___40986')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $hashtagid,
         );
-        if ($source_session) {
+        if ($handle_session) {
             //Do not count current user to give them option to edit & resubmit:
-            $query_filters['chainsourcecreator !='] = $source_session['sourceid'];
+            $query_filters['chainhandlecreator !='] = $handle_session['handleid'];
         }
 
 
@@ -271,15 +271,15 @@ function object_to_array($obj)
     }
 }
 
-function idea_redirect_url($i)
+function hashtag_redirect_url($i)
 {
     $CI =& get_instance();
-    if (strlen($i['ideavalue']) && count($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $i['ideaid'],
-            'chainsourceup' => 43871, //Redirect URL
+    if (strlen($i['hashtagvalue']) && count($CI->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput' => 43871, //Redirect URL
         )))) {
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['ideavalue'], $match);
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['hashtagvalue'], $match);
         foreach ($match[0] as $url) {
             if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
@@ -290,16 +290,16 @@ function idea_redirect_url($i)
     return false;
 }
 
-function idea_popup_url($i)
+function hashtag_popup_url($i)
 {
-    if (!source_session()) {
+    if (!handle_session()) {
         return false;
     }
     $CI =& get_instance();
     foreach ($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidearight' => $i['ideaid'],
-        'chainsourceup' => 44266, //Popup URL
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+        'chainhashtagoutput' => $i['hashtagid'],
+        'chainhandleinput' => 44266, //Popup URL
     )) as $popup_url) {
         if (filter_var($popup_url['chainvalue'], FILTER_VALIDATE_URL)) {
             return $popup_url['chainvalue'];
@@ -308,13 +308,13 @@ function idea_popup_url($i)
     return false;
 }
 
-function idea_required($i)
+function hashtag_required($i)
 {
     $CI =& get_instance();
     return count($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidearight' => $i['ideaid'],
-        'chainsourceup' => 28239, //Required
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+        'chainhashtagoutput' => $i['hashtagid'],
+        'chainhandleinput' => 28239, //Required
     )));
 }
 
@@ -323,8 +323,8 @@ function get_redirected($url, $message = null, $log_error = false)
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
     $CI =& get_instance();
-    $source_session = source_session();
-    $source_id = ($source_session ? $source_session['sourceid'] : 14068);
+    $handle_session = handle_session();
+    $handle_id = ($handle_session ? $handle_session['handleid'] : 14068);
 
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
@@ -333,8 +333,8 @@ function get_redirected($url, $message = null, $log_error = false)
     if ($log_error) {
         //Log thie error:
         log_error($url . ' ' . stripslashes($message), array(
-            'chainsourcedown' => $source_id,
-            'chainsourcecreator' => $source_id,
+            'chainhandleoutput' => $handle_id,
+            'chainhandlecreator' => $handle_id,
         ));
     }
 
@@ -368,14 +368,14 @@ function verify_cookie()
     $cookie_parts = explode('ABCEFG', $_COOKIE['auth_cookie']);
     $CI =& get_instance();
 
-    $es = $CI->Sources->read(array(
-        'sourceid' => $cookie_parts[0],
+    $es = $CI->Handles->read(array(
+        'handleid' => $cookie_parts[0],
     ));
 
     if (count($es) && $cookie_parts[2] == view_hash($cookie_parts[0] . $cookie_parts[1])) {
 
         //Assign session & log Chain:
-        $CI->Sources->activate($es[0], false, true);
+        $CI->Handles->activate($es[0], false, true);
         return $es[0];
 
     } else {
@@ -393,69 +393,69 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 {
 
     $CI =& get_instance();
-    $has_children = count($i['next_ideas']);
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
+    $has_children = count($i['next_hashtags']);
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
 
     echo '<div class="slim_title">';
 
     echo '<div class="hideIfEmpty">';
 
-    echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['ideaid'] . '\').toggleClass(\'hidden\')">';
-    echo '<span class="icon-block-sm '.( $open_by_default ? 'hidden' : '' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-plus"></i></span>';
-    echo '<span class="icon-block-sm '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '"><i class="far fa-circle-minus"></i></span>';
-    echo '<span class="' . (!isset($i['user_idea_discovered']) || count($i['user_idea_discovered']) ? ' main__title ' : '') . '">' . view_idea_title($i, true).'</span>';
+    echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['hashtagid'] . '\').toggleClass(\'hidden\')">';
+    echo '<span class="icon-block-sm '.( $open_by_default ? 'hidden' : '' ).' frame_id_' . $i['hashtagid'] . '"><i class="far fa-circle-plus"></i></span>';
+    echo '<span class="icon-block-sm '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['hashtagid'] . '"><i class="far fa-circle-minus"></i></span>';
+    echo '<span class="' . (!isset($i['user_hashtag_discovered']) || count($i['user_hashtag_discovered']) ? ' main__title ' : '') . '">' . view_hashtag_title($i, true).'</span>';
     echo '</a>';
 
-    echo(isset($i['user_idea_discovered']['chainkey']) && intval($i['user_idea_discovered']['chainkey']) > 1 ? $i['user_idea_discovered']['chainkey'] . 'x ' : '');
+    echo(isset($i['user_hashtag_discovered']['chainkey']) && intval($i['user_hashtag_discovered']['chainkey']) > 1 ? $i['user_hashtag_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['ideavalue']) && strlen($i['user_written_response']['ideavalue']) ? ' ' . $i['user_written_response']['ideavalue'] : '');
+    echo(isset($i['user_written_response']['hashtagvalue']) && strlen($i['user_written_response']['hashtagvalue']) ? ' ' . $i['user_written_response']['hashtagvalue'] : '');
 
 
-    echo '<span class="float_right inner_items '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
+    echo '<span class="float_right inner_items '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['hashtagid'] . '">';
     //Chain Highlights
-    foreach ($CI->config->item('sources___1592660') as $sourceid => $m) {
+    foreach ($CI->config->item('handles___1592660') as $handleid => $m) {
 
         $opener = '<span ';
         $closer = '</span>';
 
-        if (isset($i['stats']) && $sourceid == 12273 && $i['stats']['all_steps'] > 0) {
+        if (isset($i['stats']) && $handleid == 12273 && $i['stats']['all_steps'] > 0) {
 
             if($CI->uri->segment(1)=='doc'){
-                $opener = '<a href="/'.$i['ideahashtag'].'" ';
+                $opener = '<a href="/'.$i['hashtaghashtag'].'" ';
                 $closer = '</a>';
             }
             echo $opener.'data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_steps'] . '</span>'.$closer;
 
-        } elseif (isset($i['stats']) && $sourceid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
+        } elseif (isset($i['stats']) && $handleid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
 
             if($CI->uri->segment(1)=='doc'){
-                $opener = '<a href="/doc/'.$i['ideahashtag'].'" ';
+                $opener = '<a href="/doc/'.$i['hashtaghashtag'].'" ';
                 $closer = '</a>';
             }
             echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' .$i['current_level'] . '/' . $i['stats']['max_level'] .'</span>'.$closer;
 
-        } elseif (isset($i['stats']) && $sourceid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
+        } elseif (isset($i['stats']) && $handleid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
 
             echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'].'</span>'.$closer;
 
-        } elseif (isset($i['stats']) && $sourceid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
+        } elseif (isset($i['stats']) && $handleid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
 
             echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'].'</span>'.$closer;
 
-        } elseif ($sourceid == 31777 && isset($i['idea_count_discovery']) && intval($i['idea_count_discovery']) > 0) {
+        } elseif ($handleid == 31777 && isset($i['hashtag_count_discovery']) && intval($i['hashtag_count_discovery']) > 0) {
 
-            if(idea_is_startable($i)){
-                $opener = '<a href="/'.$i['ideahashtag'].'/start" ';
+            if(hashtag_is_startable($i)){
+                $opener = '<a href="/'.$i['hashtaghashtag'].'/start" ';
                 $closer = '</a>';
             }
 
             $max_available = $CI->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                'chainidearight' => $i['ideaid'],
-                'chainsourceup' => 26189,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandleinput' => 26189,
             ), array(), 1);
 
-            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . $i['idea_count_discovery'].(count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="'.$sources___11035[26189]['m__title'].'" style="border-bottom: 1px dotted #999;">/'.intval($max_available[0]['chainvalue']).'</span>' : '').'</span>'.$closer;
+            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . $i['hashtag_count_discovery'].(count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="'.$handles___11035[26189]['m__title'].'" style="border-bottom: 1px dotted #999;">/'.intval($max_available[0]['chainvalue']).'</span>' : '').'</span>'.$closer;
 
         } else {
             //block
@@ -465,77 +465,77 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo(isset($i['idea_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">' . view_idea_value($i) . '</div><script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>' : '');
+    echo(isset($i['hashtag_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['hashtagid'] . '">' . view_hashtag_value($i) . '</div><script> $(document).ready(function () {show_more(' . $i['hashtagid'] . '); }); </script>' : '');
     echo '</div>';
 
 
-    //Idea Discovery Expanded List
+    //Hahstag Discovery Expanded List
     if(isset($_GET['expand'])){
         $already_shown = array();
         foreach ($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainidealeft' => $i['ideaid'],
-        ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
-            if(in_array($creator['chainsourcecreator'], $already_shown)){
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $i['hashtagid'],
+        ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
+            if(in_array($creator['chainhandlecreator'], $already_shown)){
                 continue;
             }
-            array_push($already_shown, $creator['chainsourcecreator']);
-            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'" style="padding:3px 0;">'.( strlen($_GET['expand'])>1 ? '<a href="' . view_app_chain(44328) . '/'.$_GET['expand'].'@' . $creator['sourcehandle'] . '" target="_blank" title="' . $sources___11035[44328]['m__title'] . '">' : '' ).'<span class="icon-block-sm grey">' . $sources___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['sourcehandle'].'"><span class="icon-block">'.view_cover($creator['sourcecover']).'</span><span class="grey">@'.$creator['sourcehandle'].'</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['ideahashtag'] . '\')" title="'.$sources___11035[10673]['m__title'].'" class="grey">' . $sources___11035[10673]['m__cover'] . '</a> '.view_time_difference($creator['chaintime'], false).'</span></div>';
+            array_push($already_shown, $creator['chainhandlecreator']);
+            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'" style="padding:3px 0;">'.( strlen($_GET['expand'])>1 ? '<a href="' . view_app_chain(44328) . '/'.$_GET['expand'].'@' . $creator['handlehandle'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '">' : '' ).'<span class="icon-block-sm grey">' . $handles___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['handlehandle'].'"><span class="icon-block">'.view_cover($creator['handlecover']).'</span><span class="grey">@'.$creator['handlehandle'].'</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['hashtaghashtag'] . '\')" title="'.$handles___11035[10673]['m__title'].'" class="grey">' . $handles___11035[10673]['m__cover'] . '</a> '.view_time_difference($creator['chaintime'], false).'</span></div>';
             if(count($already_shown)>=view_memory(6404, 11064)){
                 break;
             }
         }
-    } elseif(isset($focus_e['sourceid']) && !count($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainidealeft' => $i['ideaid'],
-            'chainsourcecreator' => $focus_e['sourceid'],
+    } elseif(isset($focus_e['handleid']) && !count($CI->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $i['hashtagid'],
+            'chainhandlecreator' => $focus_e['handleid'],
         )))){
         //Not discovered by this user:
         echo '<span class="grey inline-block"><span class="icon-block-sm"><i class="far fa-eye-slash"></i></span>Not Yet Discovered</span>';
     }
 
 
-    //Idea Filters:
+    //Hahstag Filters:
     $filters_ui = '';
-    if (isset($i['idea_list_config'])) {
-        //Idea<>Source Settings:
-        $current_sourceid = 0;
-        foreach ($CI->config->item('sources___43006') as $sourceid => $m) {
-            foreach ($i['idea_list_config']['full_config_' . $sourceid] as $filtered_source) {
-                if (!$current_sourceid) {
-                    $current_sourceid = $sourceid;
+    if (isset($i['hashtag_list_config'])) {
+        //Hahstag<>Handle Settings:
+        $current_handleid = 0;
+        foreach ($CI->config->item('handles___43006') as $handleid => $m) {
+            foreach ($i['hashtag_list_config']['full_config_' . $handleid] as $filtered_handle) {
+                if (!$current_handleid) {
+                    $current_handleid = $handleid;
                 }
-                if (strlen($filters_ui) && $current_sourceid != $sourceid) {
-                    $current_sourceid = $sourceid;
+                if (strlen($filters_ui) && $current_handleid != $handleid) {
+                    $current_handleid = $handleid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_source['sourcehandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_source['sourcecover']) . '</span>' . $filtered_source['sourcevalue'] . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_handle['handlehandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_handle['handlecover']) . '</span>' . $filtered_handle['handlevalue'] . '</a></div>';
             }
         }
-        //Idea<>Idea Settings:
-        foreach ($CI->config->item('sources___40792') as $sourceid => $m) {
-            foreach ($i['idea_list_config']['full_config_' . $sourceid] as $filtered_idea) {
-                if (!$current_sourceid) {
-                    $current_sourceid = $sourceid;
+        //Hahstag<>Hahstag Settings:
+        foreach ($CI->config->item('handles___40792') as $handleid => $m) {
+            foreach ($i['hashtag_list_config']['full_config_' . $handleid] as $filtered_hashtag) {
+                if (!$current_handleid) {
+                    $current_handleid = $handleid;
                 }
-                if (strlen($filters_ui) && $current_sourceid != $sourceid) {
-                    $current_sourceid = $sourceid;
+                if (strlen($filters_ui) && $current_handleid != $handleid) {
+                    $current_handleid = $handleid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_idea['ideahashtag'] . '">' . view_idea_title($filtered_idea) . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_hashtag['hashtaghashtag'] . '">' . view_hashtag_title($filtered_hashtag) . '</a></div>';
             }
         }
     }
     if ($filters_ui) {
-        $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
-        echo '<div class="hideIfEmpty filter_data '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
-        echo '<h3>' . $sources___11035[40946]['m__cover'] . ' ' . $sources___11035[40946]['m__title'] . ':</h3>';
+        $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+        echo '<div class="hideIfEmpty filter_data '.( $open_by_default || !$has_children ? '' : 'hidden' ).' frame_id_' . $i['hashtagid'] . '">';
+        echo '<h3>' . $handles___11035[40946]['m__cover'] . ' ' . $handles___11035[40946]['m__title'] . ':</h3>';
         echo $filters_ui;
         echo '</div>';
     }
 
-    foreach ($i['next_ideas'] as $next_i) {
-        echo '<div class="sub_frame '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['ideaid'] . '">';
+    foreach ($i['next_hashtags'] as $next_i) {
+        echo '<div class="sub_frame '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['hashtagid'] . '">';
         view_tree($next_i, ( isset($_GET['view_all']) ? true : false ));
         echo '</div>';
     }
@@ -544,78 +544,78 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 }
 
 
-function idea_list_config($ideaid, $access_limit = true)
+function hashtag_list_config($hashtagid, $access_limit = true)
 {
 
     $CI =& get_instance();
 
-    $idea_list_config = array(); //To compile the settings of this sheet:
+    $hashtag_list_config = array(); //To compile the settings of this sheet:
 
-    foreach ($CI->config->item('sources___40792') as $chainsourcetype => $m) {
-        $idea_list_config[intval($chainsourcetype)] = array(); //Assume no chains for this type
-        $idea_list_config['full_config_' . $chainsourcetype] = array(); //Assume no chains for this type
+    foreach ($CI->config->item('handles___40792') as $chainhandletype => $m) {
+        $hashtag_list_config[intval($chainhandletype)] = array(); //Assume no chains for this type
+        $hashtag_list_config['full_config_' . $chainhandletype] = array(); //Assume no chains for this type
     }
-    foreach ($CI->config->item('sources___43006') as $chainsourcetype => $m) {
-        $idea_list_config[intval($chainsourcetype)] = array(); //Assume no chains for this type
-        $idea_list_config['full_config_' . $chainsourcetype] = array(); //Assume no chains for this type
+    foreach ($CI->config->item('handles___43006') as $chainhandletype => $m) {
+        $hashtag_list_config[intval($chainhandletype)] = array(); //Assume no chains for this type
+        $hashtag_list_config['full_config_' . $chainhandletype] = array(); //Assume no chains for this type
     }
 
-    //Now search for these settings across Sources:
+    //Now search for these settings across Handles:
     foreach ($CI->Chains->read(array(
-        'chainsourceup >' => 0,
-        'chainidearight' => $ideaid,
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___43006')) . ')' => null,
-    ), array('chainsourceup'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
-        array_push($idea_list_config[intval($setting_chain['chainsourcetype'])], intval($setting_chain['chainsourceup']));
-        array_push($idea_list_config['full_config_' . $setting_chain['chainsourcetype']], $setting_chain);
+        'chainhandleinput >' => 0,
+        'chainhashtagoutput' => $hashtagid,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___43006')) . ')' => null,
+    ), array('chainhandleinput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($hashtag_list_config[intval($setting_chain['chainhandletype'])], intval($setting_chain['chainhandleinput']));
+        array_push($hashtag_list_config['full_config_' . $setting_chain['chainhandletype']], $setting_chain);
     }
 
-    //Now search for these settings across ideas:
+    //Now search for these settings across hashtags:
     foreach ($CI->Chains->read(array(
-        'chainidearight >' => 0,
-        'chainidealeft' => $ideaid,
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___40792')) . ')' => null,
-    ), array('chainidearight'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
-        array_push($idea_list_config[intval($setting_chain['chainsourcetype'])], intval($setting_chain['chainidearight']));
-        array_push($idea_list_config['full_config_' . $setting_chain['chainsourcetype']], $setting_chain);
+        'chainhashtagoutput >' => 0,
+        'chainhashtaginput' => $hashtagid,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___40792')) . ')' => null,
+    ), array('chainhashtagoutput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($hashtag_list_config[intval($setting_chain['chainhandletype'])], intval($setting_chain['chainhashtagoutput']));
+        array_push($hashtag_list_config['full_config_' . $setting_chain['chainhandletype']], $setting_chain);
     }
 
-    return $idea_list_config;
+    return $hashtag_list_config;
 }
 
 
-function source_list_config($sourceid, $access_limit = true)
+function handle_list_config($handleid, $access_limit = true)
 {
 
     $CI =& get_instance();
 
-    $source_list_config = array(); //To compile the settings of this sheet:
+    $handle_list_config = array(); //To compile the settings of this sheet:
 
-    foreach ($CI->config->item('sources___1645191') as $chainsourcetype => $m) {
-        $source_list_config[intval($chainsourcetype)] = array(); //Assume no chains for this type
-        $source_list_config['full_config_' . $chainsourcetype] = array(); //Assume no chains for this type
+    foreach ($CI->config->item('handles___1645191') as $chainhandletype => $m) {
+        $handle_list_config[intval($chainhandletype)] = array(); //Assume no chains for this type
+        $handle_list_config['full_config_' . $chainhandletype] = array(); //Assume no chains for this type
     }
 
-    //Now search for these settings across Sources:
+    //Now search for these settings across Handles:
     foreach ($CI->Chains->read(array(
-        'chainsourceup >' => 0,
-        'chainsourcedown' => $sourceid,
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___1645191')) . ')' => null,
-    ), array('chainsourceup'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
-        array_push($source_list_config[intval($setting_chain['chainsourcetype'])], intval($setting_chain['chainsourceup']));
-        array_push($source_list_config['full_config_' . $setting_chain['chainsourcetype']], $setting_chain);
+        'chainhandleinput >' => 0,
+        'chainhandleoutput' => $handleid,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___1645191')) . ')' => null,
+    ), array('chainhandleinput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($handle_list_config[intval($setting_chain['chainhandletype'])], intval($setting_chain['chainhandleinput']));
+        array_push($handle_list_config['full_config_' . $setting_chain['chainhandletype']], $setting_chain);
     }
 
-    return $source_list_config;
+    return $handle_list_config;
 }
 
 
-function idea_settings($ideahashtag, $fetch_contact = false)
+function hashtag_settings($hashtaghashtag, $fetch_contact = false)
 {
 
     $CI =& get_instance();
-    $source_column = array();
-    $idea_column = array();
+    $handle_column = array();
+    $hashtag_column = array();
     $contact_details = array(
         'full_list' => '',
         'email_list' => '',
@@ -623,53 +623,53 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         'phone_count' => 0,
     );
 
-    foreach ($CI->Ideas->read(array(
-        'LOWER(ideahashtag)' => strtolower($ideahashtag),
+    foreach ($CI->Hashtags->read(array(
+        'LOWER(hashtaghashtag)' => strtolower($hashtaghashtag),
     )) as $i) {
 
-        $idea_list_config = idea_list_config($i['ideaid']);
+        $hashtag_list_config = hashtag_list_config($i['hashtagid']);
 
         //Generate filter:
         $query_string_all = array();
-        if (count($idea_list_config[40791])) {
+        if (count($hashtag_list_config[40791])) {
 
-            //If idea_discovered Any
+            //If hashtag_discovered Any
             $query_string_all = $CI->Chains->read(array(
-                'chainidealeft IN (' . join(',', $idea_list_config[40791]) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC'));
+                'chainhashtaginput IN (' . join(',', $hashtag_list_config[40791]) . ')' => null,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC'));
 
-        } elseif (count($idea_list_config[44161])) {
+        } elseif (count($hashtag_list_config[44161])) {
 
-            //If idea_discovered All
+            //If hashtag_discovered All
             $query_string_all = $CI->Chains->read(array(
-                'chainidealeft IN (' . join(',', $idea_list_config[44161]) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            ), array('chainsourcecreator'), 0, 0, array('chainid' => 'DESC'));
+                'chainhashtaginput IN (' . join(',', $hashtag_list_config[44161]) . ')' => null,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC'));
 
-        } elseif (count($idea_list_config[27984])) {
+        } elseif (count($hashtag_list_config[27984])) {
 
             //IF Follows Any
             $query_string_all = $CI->Chains->read(array(
-                'chainsourceup IN (' . join(',', $idea_list_config[27984]) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainsourcedown'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
+                'chainhandleinput IN (' . join(',', $hashtag_list_config[27984]) . ')' => null,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
-        } elseif (count($idea_list_config[43513])) {
+        } elseif (count($hashtag_list_config[43513])) {
 
             //IF Follows All
             $query_string_all = $CI->Chains->read(array(
-                'chainsourceup IN (' . join(',', $idea_list_config[43513]) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainsourcedown'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
+                'chainhandleinput IN (' . join(',', $hashtag_list_config[43513]) . ')' => null,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
         } else {
 
             //All Discoveries:
             $query_string_all = $CI->Chains->read(array(
-                'chainidealeft' => $i['ideaid'],
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            ), array('chainsourcecreator'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
+                'chainhashtaginput' => $i['hashtagid'],
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            ), array('chainhandlecreator'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
         }
 
@@ -677,16 +677,16 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         $query_string_filtered = array();
         $unique_users_count = array();
         foreach ($query_string_all as $key => $x) {
-            if (in_array(intval($x['sourceid']), $unique_users_count)) {
+            if (in_array(intval($x['handleid']), $unique_users_count)) {
                 //Already added:
                 continue;
-            } elseif (!idea_access(null, $i['ideaid'], $i, $x['sourceid'], $idea_list_config)) {
+            } elseif (!hashtag_access(null, $i['hashtagid'], $i, $x['handleid'], $hashtag_list_config)) {
                 //Does not have access:
                 continue;
             } else {
                 //Passed all filters:
                 array_push($query_string_filtered, $x);
-                array_push($unique_users_count, intval($x['sourceid']));
+                array_push($unique_users_count, intval($x['handleid']));
             }
         }
 
@@ -694,27 +694,27 @@ function idea_settings($ideahashtag, $fetch_contact = false)
         //Determine columns if any:
         $pinned_columns = array();
         foreach ($CI->Chains->read(array(
-            'chainidearight' => $i['ideaid'],
-            'chainsourcetype' => 34513, //Pinned
-        ), array('chainsourceup'), 0) as $setting_chain) {
-            array_push($pinned_columns, intval($setting_chain['sourceid']));
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandletype' => 34513, //Pinned
+        ), array('chainhandleinput'), 0) as $setting_chain) {
+            array_push($pinned_columns, intval($setting_chain['handleid']));
         }
         if (count($pinned_columns)) {
 
             //Add to results:
-            $idea_list_config[34513] = $pinned_columns;
+            $hashtag_list_config[34513] = $pinned_columns;
 
-            $source_column = $CI->Chains->read(array(
-                'chainsourceup IN (' . join(',', $pinned_columns) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-            ), array('chainsourcedown'), 0, 0, source_sort());
+            $handle_column = $CI->Chains->read(array(
+                'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            ), array('chainhandleoutput'), 0, 0, handle_sort());
 
             foreach ($CI->Chains->read(array(
-                'chainsourceup IN (' . join(',', $pinned_columns) . ')' => null,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
-                'chainidearight !=' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('ideavalue' => 'ASC')) as $chain_i) {
-                array_push($idea_column, $chain_i);
+                'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                'chainhashtagoutput !=' => $i['hashtagid'],
+            ), array('chainhashtagoutput'), 0, 0, array('hashtagvalue' => 'ASC')) as $chain_i) {
+                array_push($hashtag_column, $chain_i);
             }
         }
 
@@ -724,22 +724,22 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
                 //Fetch email & phone:
                 $fetch_names = $CI->Chains->read(array(
-                    'chainsourceup' => 42584, //First Name
-                    'chainsourcedown' => $x['sourceid'],
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                    'chainhandleinput' => 42584, //First Name
+                    'chainhandleoutput' => $x['handleid'],
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 ));
                 $fetch_emails = $CI->Chains->read(array(
-                    'chainsourceup' => 3288, //Email
-                    'chainsourcedown' => $x['sourceid'],
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                    'chainhandleinput' => 3288, //Email
+                    'chainhandleoutput' => $x['handleid'],
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 ));
                 $fetch_phones = $CI->Chains->read(array(
-                    'chainsourceup' => 4783, //Phone
-                    'chainsourcedown' => $x['sourceid'],
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                    'chainhandleinput' => 4783, //Phone
+                    'chainhandleoutput' => $x['handleid'],
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 ));
 
-                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['sourcevalue']);
+                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['handlevalue']);
                 $query_string_filtered[$count]['extension_email'] = (count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['chainvalue'] : false);
                 $query_string_filtered[$count]['extension_phone'] = (count($fetch_phones) && strlen($fetch_phones[0]['chainvalue']) >= 10 ? $fetch_phones[0]['chainvalue'] : false);
 
@@ -758,9 +758,9 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 
         return array(
             'i' => $i,
-            'list_config' => $idea_list_config,
-            'source_column' => $source_column,
-            'idea_column' => $idea_column,
+            'list_config' => $hashtag_list_config,
+            'handle_column' => $handle_column,
+            'hashtag_column' => $hashtag_column,
             'query_string_filtered' => $query_string_filtered,
             'contact_details' => $contact_details, //Optional addon
         );
@@ -768,13 +768,13 @@ function idea_settings($ideahashtag, $fetch_contact = false)
 }
 
 
-function count_chain_groups($chainsourcetype, $chaintime_start = null, $chaintime_end = null)
+function count_chain_groups($chainhandletype, $chaintime_start = null, $chaintime_end = null)
 {
 
     $CI =& get_instance();
 
     $query_filters = array(
-        'chainsourcetype IN (' . join(',', (is_array($CI->config->item('sourceids___' . $chainsourcetype)) ? $CI->config->item('sourceids___' . $chainsourcetype) : array($chainsourcetype))) . ')' => null,
+        'chainhandletype IN (' . join(',', (is_array($CI->config->item('handleids___' . $chainhandletype)) ? $CI->config->item('handleids___' . $chainhandletype) : array($chainhandletype))) . ')' => null,
     );
 
     if (strtotime($chaintime_start) > 0) {
@@ -794,17 +794,17 @@ function count_chain_groups($chainsourcetype, $chaintime_start = null, $chaintim
 function home_url()
 {
     $CI =& get_instance();
-    $source_session = source_session();
-    return ($source_session ? view_memory(42903, 42902) . $source_session['sourcehandle'] : view_memory(42903, 14565));
+    $handle_session = handle_session();
+    return ($handle_session ? view_memory(42903, 42902) . $handle_session['handlehandle'] : view_memory(42903, 14565));
 }
 
-function idea_is_startable($i)
+function hashtag_is_startable($i)
 {
     $CI =& get_instance();
     return count($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidearight' => $i['ideaid'],
-        'chainsourceup' => 4235,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+        'chainhashtagoutput' => $i['hashtagid'],
+        'chainhandleinput' => 4235,
     )));
 }
 
@@ -815,27 +815,27 @@ function remove_none_utf8($string)
 }
 
 
-function source_session($superpower_sourceid = null, $force_redirect = 0, $session_source_session = false)
+function handle_session($superpower_handleid = null, $force_redirect = 0, $session_handle_session = false)
 {
 
-    if (isset($session_source_session['sourceid'])) {
-        //We have the source!
-        return $session_source_session;
+    if (isset($session_handle_session['handleid'])) {
+        //We have the handle!
+        return $session_handle_session;
     }
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $source_session = $CI->session->userdata('session_source');
+    $handle_session = $CI->session->userdata('session_handle');
 
     //Let's start checking various ways we can give member access:
-    if ($source_session && !$superpower_sourceid) {
+    if ($handle_session && !$superpower_handleid) {
 
         //No minimum level required, grant access IF member is logged in:
-        return $source_session;
+        return $handle_session;
 
-    } elseif ($source_session && in_array($superpower_sourceid, $CI->session->userdata('session_superpowers_unlocked'))) {
+    } elseif ($handle_session && in_array($superpower_handleid, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
-        return $source_session;
+        return $handle_session;
 
     }
 
@@ -848,14 +848,14 @@ function source_session($superpower_sourceid = null, $force_redirect = 0, $sessi
     } else {
 
         //Block access:
-        if ($source_session) {
-            $goto_url = view_memory(42903, 42902) . $source_session['sourcehandle'];
+        if ($handle_session) {
+            $goto_url = view_memory(42903, 42902) . $handle_session['handlehandle'];
         } else {
             $goto_url = view_app_chain(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
         }
 
         //Now redirect:
-        return get_redirected($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' . blocked_reasoning($superpower_sourceid) . '</div>');
+        return get_redirected($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' . blocked_reasoning($superpower_handleid) . '</div>');
     }
 
 }
@@ -869,9 +869,9 @@ function get_server($var_name)
 function html_input_type($data_type)
 {
     $CI =& get_instance();
-    $sources___42291 = $CI->config->item('sources___42291'); //HTML Input Types
-    if (isset($sources___42291[$data_type]['m__message']) && strlen($sources___42291[$data_type]['m__message'])) {
-        return $sources___42291[$data_type]['m__message'];
+    $handles___42291 = $CI->config->item('handles___42291'); //HTML Input Types
+    if (isset($handles___42291[$data_type]['m__message']) && strlen($handles___42291[$data_type]['m__message'])) {
+        return $handles___42291[$data_type]['m__message'];
     } else {
         //Default option:
         return 'text';
@@ -919,17 +919,17 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
     }
 
     if (strlen($suggestion) < 4 || is_numeric($suggestion)) {
-        $suggestion = ($focus__node == 12273 ? 'Idea' : 'Source') . $suggestion;
+        $suggestion = ($focus__node == 12273 ? 'Hahstag' : 'Handle') . $suggestion;
     }
 
 
     //Make sure no duplicates:
-    if ($focus__node == 12273 && count($CI->Ideas->read(array(
-            'LOWER(ideahashtag)' => strtolower($suggestion),
+    if ($focus__node == 12273 && count($CI->Hashtags->read(array(
+            'LOWER(hashtaghashtag)' => strtolower($suggestion),
         )))) {
         return generate_handle(12273, $str, $suggestion, $increment);
-    } elseif ($focus__node == 12274 && count($CI->Sources->read(array(
-            'LOWER(sourcehandle)' => strtolower($suggestion),
+    } elseif ($focus__node == 12274 && count($CI->Handles->read(array(
+            'LOWER(handlehandle)' => strtolower($suggestion),
         )))) {
         return generate_handle(12274, $str, $suggestion, $increment);
     } else {
@@ -940,14 +940,14 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 }
 
 
-function process_media($ideaid, $uploaded_media)
+function process_media($hashtagid, $uploaded_media)
 {
 
     $CI =& get_instance();
-    $source_session = source_session();
+    $handle_session = handle_session();
 
 
-    if (!$source_session) {
+    if (!$handle_session) {
         return false;
     }
 
@@ -959,56 +959,56 @@ function process_media($ideaid, $uploaded_media)
         $sort_count = 0; //Reset sorting to compare to submitted media...
         foreach ($uploaded_media as $upload_media) {
 
-            if (!$upload_media['sourceid']) {
+            if (!$upload_media['handleid']) {
                 //Adding new media...
                 //Search eTag to see if we already have it:
                 $etag_detected = false;
                 if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
-                    //We already have this asset, return source:
+                    //We already have this asset, return handle:
                     foreach ($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                        'chainsourceup' => 42662, //etag
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                        'chainhandleinput' => 42662, //etag
                         'chainvalue' => $upload_media['media_cache']['etag'],
-                    ), array('chainsourcedown'), 1) as $existing_media) {
-                        $upload_media['sourceid'] = $existing_media['sourceid'];
+                    ), array('chainhandleoutput'), 1) as $existing_media) {
+                        $upload_media['handleid'] = $existing_media['handleid'];
                         $etag_detected = true;
                     }
                 }
 
-                if (!$upload_media['sourceid']) {
+                if (!$upload_media['handleid']) {
 
-                    //Create Source for this new media:
-                    $added_e = $CI->Sources->create(array(
-                        'sourcevalue' => $upload_media['sourcevalue'],
-                        'sourcecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['sourcecover']),
-                    ), $source_session['sourceid']);
+                    //Create Handle for this new media:
+                    $added_e = $CI->Handles->create(array(
+                        'handlevalue' => $upload_media['handlevalue'],
+                        'handlecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['handlecover']),
+                    ), $handle_session['handleid']);
                     if (!$added_e['status']) {
-                        log_error('Failed to create a new Source for [' . $upload_media['sourcevalue'] . '] with cover [' . $upload_media['sourcecover'] . ']', array(
-                            'chainsourcedown' => $upload_media['sourceid'],
+                        log_error('Failed to create a new Handle for [' . $upload_media['handlevalue'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
+                            'chainhandleoutput' => $upload_media['handleid'],
                         ));
                         continue;
                     }
 
                     //Create new media and assign ID:
-                    $upload_media['sourceid'] = $added_e['source_create']['sourceid'];
+                    $upload_media['handleid'] = $added_e['handle_create']['handleid'];
 
-                    //new asset, create new Source and insert tags...
-                    $sources___32088 = $CI->config->item('sources___32088'); //Platform Variables
-                    foreach ($CI->config->item('sources___42679') as $chainsourcetype => $m) {
+                    //new asset, create new Handle and insert tags...
+                    $handles___32088 = $CI->config->item('handles___32088'); //Platform Variables
+                    foreach ($CI->config->item('handles___42679') as $chainhandletype => $m) {
 
                         //Ensure variable name exists so we can check the API call:
                         $target_variable = false;
-                        if (isset($sources___32088[$chainsourcetype]['m__message'])) {
+                        if (isset($handles___32088[$chainhandletype]['m__message'])) {
                             //Determine if variable exists...
-                            if (in_array($chainsourcetype, $CI->config->item('sourceids___42763')) && isset($upload_media['media_cache']['video'][$sources___32088[$chainsourcetype]['m__message']])) {
+                            if (in_array($chainhandletype, $CI->config->item('handleids___42763')) && isset($upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']])) {
                                 //Video info:
-                                $target_variable = $upload_media['media_cache']['video'][$sources___32088[$chainsourcetype]['m__message']];
-                            } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___42675')) && isset($upload_media['media_cache']['audio'][$sources___32088[$chainsourcetype]['m__message']])) {
+                                $target_variable = $upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']];
+                            } elseif (in_array($chainhandletype, $CI->config->item('handleids___42675')) && isset($upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']])) {
                                 //Audio info:
-                                $target_variable = $upload_media['media_cache']['audio'][$sources___32088[$chainsourcetype]['m__message']];
-                            } elseif (isset($upload_media['media_cache'][$sources___32088[$chainsourcetype]['m__message']])) {
+                                $target_variable = $upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']];
+                            } elseif (isset($upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']])) {
                                 //Media info:
-                                $target_variable = $upload_media['media_cache'][$sources___32088[$chainsourcetype]['m__message']];
+                                $target_variable = $upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']];
                             }
                         }
                         if (!strlen($target_variable) || $target_variable == '0') {
@@ -1017,50 +1017,50 @@ function process_media($ideaid, $uploaded_media)
                         }
 
                         //We have a variable, see what it is...
-                        if (in_array($chainsourcetype, $CI->config->item('sourceids___33331'))) {
+                        if (in_array($chainhandletype, $CI->config->item('handleids___33331'))) {
 
-                            //Single select that needs auto creation of Sources if missing:
+                            //Single select that needs auto creation of Handles if missing:
                             $child_id = 0;
                             foreach ($CI->Chains->read(array(
-                                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                                'chainsourceup' => $chainsourcetype,
-                                'sourcevalue' => $target_variable,
-                            ), array('chainsourcedown'), 1, 0, array('chainid' => 'ASC')) as $child_source) {
-                                $child_id = $child_source['sourceid'];
+                                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                                'chainhandleinput' => $chainhandletype,
+                                'handlevalue' => $target_variable,
+                            ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $child_handle) {
+                                $child_id = $child_handle['handleid'];
                             }
 
                             //If not found create the child:
                             if (!$child_id) {
-                                $added_child = $CI->Sources->create(array(
-                                    'sourcevalue' => $target_variable,
+                                $added_child = $CI->Handles->create(array(
+                                    'handlevalue' => $target_variable,
                                 ));
                                 if (!$added_child['status']) {
-                                    log_error('Failed to create a new Source for [' . $target_variable . ']', array(
-                                        'chainsourcedown' => $chainsourcetype,
+                                    log_error('Failed to create a new Handle for [' . $target_variable . ']', array(
+                                        'chainhandleoutput' => $chainhandletype,
                                     ));
                                     continue;
                                 }
 
-                                //Add chains for this new Source:
+                                //Add chains for this new Handle:
                                 $CI->Chains->create(array(
-                                    'chainsourcecreator' => $source_session['sourceid'],
-                                    'chainsourceup' => $chainsourcetype,
-                                    'chainsourcedown' => $added_child['source_create']['sourceid'],
-                                    'chainsourcetype' => 4230,
+                                    'chainhandlecreator' => $handle_session['handleid'],
+                                    'chainhandleinput' => $chainhandletype,
+                                    'chainhandleoutput' => $added_child['handle_create']['handleid'],
+                                    'chainhandletype' => 4230,
                                 ));
 
-                                //Assign child Source:
-                                $child_id = $added_child['source_create']['sourceid'];
+                                //Assign child Handle:
+                                $child_id = $added_child['handle_create']['handleid'];
 
                             }
 
                             if ($child_id) {
-                                //Child Source found, simply chain:
+                                //Child Handle found, simply chain:
                                 $CI->Chains->create(array(
-                                    'chainsourcecreator' => $source_session['sourceid'],
-                                    'chainsourceup' => $child_id,
-                                    'chainsourcedown' => $upload_media['sourceid'],
-                                    'chainsourcetype' => 4230,
+                                    'chainhandlecreator' => $handle_session['handleid'],
+                                    'chainhandleinput' => $child_id,
+                                    'chainhandleoutput' => $upload_media['handleid'],
+                                    'chainhandletype' => 4230,
                                 ));
                             }
 
@@ -1068,48 +1068,48 @@ function process_media($ideaid, $uploaded_media)
 
                             //Save variable as is:
                             $CI->Chains->create(array(
-                                'chainsourcecreator' => $source_session['sourceid'],
-                                'chainsourceup' => $chainsourcetype,
-                                'chainsourcedown' => $upload_media['sourceid'],
+                                'chainhandlecreator' => $handle_session['handleid'],
+                                'chainhandleinput' => $chainhandletype,
+                                'chainhandleoutput' => $upload_media['handleid'],
                                 'chainvalue' => $target_variable,
-                                'chainsourcetype' => 4230,
+                                'chainhandletype' => 4230,
                             ));
 
                         }
                     }
                 }
 
-                //By now have the media Source, create necessary chains:
-                if ($upload_media['sourceid'] && $upload_media['media_typeid']) {
+                //By now have the media Handle, create necessary chains:
+                if ($upload_media['handleid'] && $upload_media['media_typeid']) {
 
-                    //Chain to Idea:
+                    //Chain to Hahstag:
                     if (!count($CI->Chains->read(array(
-                        'chainidearight' => $ideaid,
-                        'chainsourceup' => $upload_media['sourceid'],
-                        'chainsourcetype' => $upload_media['media_typeid'],
+                        'chainhashtagoutput' => $hashtagid,
+                        'chainhandleinput' => $upload_media['handleid'],
+                        'chainhandletype' => $upload_media['media_typeid'],
                     )))) {
                         $CI->Chains->create(array(
-                            'chainsourcecreator' => $source_session['sourceid'],
-                            'chainidearight' => $ideaid,
-                            'chainsourceup' => $upload_media['sourceid'],
-                            'chainsourcetype' => $upload_media['media_typeid'],
+                            'chainhandlecreator' => $handle_session['handleid'],
+                            'chainhashtagoutput' => $hashtagid,
+                            'chainhandleinput' => $upload_media['handleid'],
+                            'chainhandletype' => $upload_media['media_typeid'],
                             'chainvalue' => $upload_media['playback_code'],
                             'chainkey' => $sort_count,
                         ));
                     }
 
 
-                    //Chain to Source as Uploader:
+                    //Chain to Handle as Uploader:
                     if (!count($CI->Chains->read(array(
-                        'chainsourceup' => $source_session['sourceid'],
-                        'chainsourcedown' => $upload_media['sourceid'],
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42657')) . ')' => null, //Uploads
+                        'chainhandleinput' => $handle_session['handleid'],
+                        'chainhandleoutput' => $upload_media['handleid'],
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42657')) . ')' => null, //Uploads
                     )))) {
                         $CI->Chains->create(array(
-                            'chainsourcecreator' => $source_session['sourceid'],
-                            'chainsourceup' => $source_session['sourceid'],
-                            'chainsourcedown' => $upload_media['sourceid'],
-                            'chainsourcetype' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
+                            'chainhandlecreator' => $handle_session['handleid'],
+                            'chainhandleinput' => $handle_session['handleid'],
+                            'chainhandleoutput' => $upload_media['handleid'],
+                            'chainhandletype' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
                             'chainvalue' => $upload_media['playback_code'],
                         ));
                     }
@@ -1117,15 +1117,15 @@ function process_media($ideaid, $uploaded_media)
 
                     //Chain to Media Type:
                     if (!count($CI->Chains->read(array(
-                        'chainsourceup' => $upload_media['media_typeid'],
-                        'chainsourcedown' => $upload_media['sourceid'],
-                        'chainsourcetype' => 4230,
+                        'chainhandleinput' => $upload_media['media_typeid'],
+                        'chainhandleoutput' => $upload_media['handleid'],
+                        'chainhandletype' => 4230,
                     )))) {
                         $CI->Chains->create(array(
-                            'chainsourcecreator' => $source_session['sourceid'],
-                            'chainsourceup' => $upload_media['media_typeid'],
-                            'chainsourcedown' => $upload_media['sourceid'],
-                            'chainsourcetype' => 4230,
+                            'chainhandlecreator' => $handle_session['handleid'],
+                            'chainhandleinput' => $upload_media['media_typeid'],
+                            'chainhandleoutput' => $upload_media['handleid'],
+                            'chainhandletype' => 4230,
                             'chainvalue' => $upload_media,
                         ));
                     }
@@ -1134,7 +1134,7 @@ function process_media($ideaid, $uploaded_media)
             }
 
             //Add this to the submitted ones:
-            $upload_media_typeids[$sort_count] = $upload_media['sourceid'];
+            $upload_media_typeids[$sort_count] = $upload_media['handleid'];
             $sort_count++;
 
         }
@@ -1145,18 +1145,18 @@ function process_media($ideaid, $uploaded_media)
 }
 
 
-function append_source($chainsourceup, $chainsourcecreator, $chainvalue, $ideaid, $update_if_existing = true)
+function append_handle($chainhandleinput, $chainhandlecreator, $chainvalue, $hashtagid, $update_if_existing = true)
 {
 
     $CI =& get_instance();
 
     //First validate data type to ensure it matches:
     foreach ($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-        'chainsourceup IN (' . join(',', $CI->config->item('sourceids___4592')) . ')' => null, //Data Types
-        'chainsourcedown' => $chainsourceup,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___4592')) . ')' => null, //Data Types
+        'chainhandleoutput' => $chainhandleinput,
     )) as $data_type) {
-        $data_type_validate = data_type_validate($data_type['chainsourceup'], $chainvalue);
+        $data_type_validate = data_type_validate($data_type['chainhandleinput'], $chainvalue);
         if (!$data_type_validate['status']) {
             //It's not the data type needed:
             return false;
@@ -1166,9 +1166,9 @@ function append_source($chainsourceup, $chainsourcecreator, $chainvalue, $ideaid
     //Now check existing chains:
     $existing_x = $CI->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-        'chainsourceup' => $chainsourceup,
-        'chainsourcedown' => $chainsourcecreator,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        'chainhandleinput' => $chainhandleinput,
+        'chainhandleoutput' => $chainhandlecreator,
     ));
 
     if (count($existing_x)) {
@@ -1184,7 +1184,7 @@ function append_source($chainsourceup, $chainsourcecreator, $chainvalue, $ideaid
         if ($update_if_existing) {
             $CI->Chains->update($existing_x[0]['chainid'], array(
                 'chainvalue' => $chainvalue,
-                'chainsourcecreator' => $chainsourcecreator,
+                'chainhandlecreator' => $chainhandlecreator,
             ));
         }
 
@@ -1192,11 +1192,11 @@ function append_source($chainsourceup, $chainsourcecreator, $chainvalue, $ideaid
 
         //Create Chain:
         $CI->Chains->create(array(
-            'chainsourcetype' => 4230, //Follow Source
+            'chainhandletype' => 4230, //Follow Handle
             'chainvalue' => $chainvalue,
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainsourceup' => $chainsourceup,
-            'chainsourcedown' => $chainsourcecreator,
+            'chainhandlecreator' => $chainhandlecreator,
+            'chainhandleinput' => $chainhandleinput,
+            'chainhandleoutput' => $chainhandlecreator,
         ));
 
     }
@@ -1210,36 +1210,36 @@ function data_type_validate($data_type, $data_value, $data_title = null)
 {
 
     $CI =& get_instance();
-    $sources___4592 = $CI->config->item('sources___4592'); //Data types
+    $handles___4592 = $CI->config->item('handles___4592'); //Data types
 
     if ($data_type == 4319 && !is_numeric($data_value)) {
         //Number:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $sources___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 42181 && (strlen(preg_replace('/[^0-9]/', '', $data_value)) < 10 || strlen(preg_replace('/[^0-9]/', '', $data_value)) > 14)) {
         //Phone Number:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $sources___4592[$data_type]['m__title'] . ' with 10-14 numbers including country code.',
+            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'] . ' with 10-14 numbers including country code.',
         );
     } elseif ($data_type == 4318 && !strtotime($data_value)) {
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $sources___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 4255 && !strlen($data_value)) {
         //Text:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $sources___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 32097 && !filter_var($data_value, FILTER_VALIDATE_EMAIL)) {
         //Email:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $sources___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 42947 && (!is_numeric($data_value) || $data_value < 0 || $data_value > 1)) {
         //Percentage:
@@ -1247,16 +1247,16 @@ function data_type_validate($data_type, $data_value, $data_title = null)
             'status' => 0,
             'message' => $data_title . ' must be set to a number between 0.00 & 1.00.',
         );
-    } elseif (in_array($data_type, $CI->config->item('sourceids___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)) {
+    } elseif (in_array($data_type, $CI->config->item('handleids___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)) {
         //URL:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $sources___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
         );
-    } elseif (in_array($data_type, $CI->config->item('sourceids___42188'))) {
-        //Single Choice of Multi Choice Source types should not be validated here
+    } elseif (in_array($data_type, $CI->config->item('handleids___42188'))) {
+        //Single Choice of Multi Choice Handle types should not be validated here
         log_error('data_type_validate() was asked to validate choice options for @' . $data_type . ' [' . $data_value . '] [' . $data_title . ']', array(
-            'chainsourcedown' => $data_type,
+            'chainhandleoutput' => $data_type,
         ));
     }
 
@@ -1274,7 +1274,7 @@ function data_type_format($data_type, $data_value)
 
     $CI =& get_instance();
 
-    if (in_array($data_type, $CI->config->item('sourceids___4318')) && strtotime($data_value) > 0) {
+    if (in_array($data_type, $CI->config->item('handleids___4318')) && strtotime($data_value) > 0) {
         //Format Time:
         return date(view_memory(6404, 4318), strtotime($data_value));
     }
@@ -1296,13 +1296,13 @@ function change_handle($old_handle)
     }
 }
 
-function sort_by($sourceid, $custom_sort = array())
+function sort_by($handleid, $custom_sort = array())
 {
 
     $CI =& get_instance();
     $order_by = array();
-    foreach ($CI->config->item('sources___' . $sourceid) as $sort_id => $sort) {
-        $order_by['chainsourceup = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($CI->config->item('handles___' . $handleid) as $sort_id => $sort) {
+        $order_by['chainhandleinput = \'' . $sort_id . '\' DESC'] = null;
     }
 
     if (is_array($custom_sort)) {
@@ -1313,19 +1313,19 @@ function sort_by($sourceid, $custom_sort = array())
 }
 
 
-function validate_update_handle($str, $ideaid = null, $sourceid = null)
+function validate_update_handle($str, $hashtagid = null, $handleid = null)
 {
 
     $CI =& get_instance();
-    $source_session = source_session();
+    $handle_session = handle_session();
 
     //Validate:
-    if (($ideaid && $sourceid) || (!$ideaid && !$sourceid)) {
+    if (($hashtagid && $handleid) || (!$hashtagid && !$handleid)) {
 
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Must set either Idea or Source ID! Pick one',
+            'message' => 'Must set either Hahstag or Handle ID! Pick one',
         );
 
     } elseif (!strlen($str)) {
@@ -1360,7 +1360,7 @@ function validate_update_handle($str, $ideaid = null, $sourceid = null)
             'message' => 'Hashtag Must be ' . view_memory(6404, 41985) . ' characters or less',
         );
 
-    } elseif ($ideaid && array_key_exists(strtolower($str), $CI->config->item('handlsources___6287'))) {
+    } elseif ($hashtagid && array_key_exists(strtolower($str), $CI->config->item('handlhandles___6287'))) {
 
         return array(
             'status' => 0,
@@ -1371,11 +1371,11 @@ function validate_update_handle($str, $ideaid = null, $sourceid = null)
     }
 
     //Syntax good! Now let's check the DB for duplicates
-    if ($ideaid > 0) {
+    if ($hashtagid > 0) {
 
-        foreach ($CI->Ideas->read(array(
-            'ideaid !=' => $ideaid,
-            'LOWER(ideahashtag)' => strtolower($str),
+        foreach ($CI->Hashtags->read(array(
+            'hashtagid !=' => $hashtagid,
+            'LOWER(hashtaghashtag)' => strtolower($str),
         ), 0) as $matched) {
             return array(
                 'status' => 0,
@@ -1385,15 +1385,15 @@ function validate_update_handle($str, $ideaid = null, $sourceid = null)
         }
 
         //Since not found we can replace this:
-        $CI->Ideas->update($ideaid, array(
-            'ideahashtag' => change_handle($str),
-        ), $source_session['sourceid']);
+        $CI->Hashtags->update($hashtagid, array(
+            'hashtaghashtag' => change_handle($str),
+        ), $handle_session['handleid']);
 
-    } elseif ($sourceid > 0) {
+    } elseif ($handleid > 0) {
 
-        foreach ($CI->Sources->read(array(
-            'sourceid !=' => $sourceid,
-            'LOWER(sourcehandle)' => strtolower($str),
+        foreach ($CI->Handles->read(array(
+            'handleid !=' => $handleid,
+            'LOWER(handlehandle)' => strtolower($str),
         ), 0) as $matched) {
             //Is it active?
             return array(
@@ -1404,9 +1404,9 @@ function validate_update_handle($str, $ideaid = null, $sourceid = null)
         }
 
         //Since not active we can replace this:
-        $CI->Sources->update($sourceid, array(
-            'sourcehandle' => change_handle($str),
-        ), $source_session['sourceid']);
+        $CI->Handles->update($handleid, array(
+            'handlehandle' => change_handle($str),
+        ), $handle_session['handleid']);
 
     }
 
@@ -1421,7 +1421,7 @@ function validate_update_handle($str, $ideaid = null, $sourceid = null)
 }
 
 
-function validate_sourcevalue($str)
+function validate_handlevalue($str)
 {
 
     //Validate:
@@ -1434,21 +1434,21 @@ function validate_sourcevalue($str)
 
         return array(
             'status' => 0,
-            'message' => 'Source title missing',
+            'message' => 'Handle title missing',
         );
 
     } elseif (strlen(trim($str)) < 1) {
 
         return array(
             'status' => 0,
-            'message' => 'Enter Source title to continue.',
+            'message' => 'Enter Handle title to continue.',
         );
 
     } elseif (strlen($str) > view_memory(6404, 6197)) {
 
         return array(
             'status' => 0,
-            'message' => 'Source title must be ' . view_memory(6404, 6197) . ' characters or less',
+            'message' => 'Handle title must be ' . view_memory(6404, 6197) . ' characters or less',
         );
 
     }
@@ -1456,7 +1456,7 @@ function validate_sourcevalue($str)
     //All good, return success:
     return array(
         'status' => 1,
-        'sourcevalue_clean' => trim($title_clean),
+        'handlevalue_clean' => trim($title_clean),
     );
 
 }
@@ -1488,19 +1488,19 @@ function delete_all_between($beginning, $end, $string)
     return delete_all_between($beginning, $end, str_replace($textToDelete, '', $string)); // recursion to ensure all occurrences are replaced
 }
 
-function user_website($chainsourcecreator)
+function user_website($chainhandlecreator)
 {
     $CI =& get_instance();
     foreach ($CI->Chains->read(array(
-        'chainsourcedown' => $chainsourcecreator,
-        'chainsourcetype' => 4230, //New Source Created
-    ), array(), 1) as $source_created) {
-        return $source_created['chainsourcedomain'];
+        'chainhandleoutput' => $chainhandlecreator,
+        'chainhandletype' => 4230, //New Handle Created
+    ), array(), 1) as $handle_created) {
+        return $handle_created['chainhandledomain'];
     }
     foreach ($CI->Chains->read(array(
-        'chainsourcecreator' => $chainsourcecreator,
-    ), array(), 1) as $source_created) {
-        return $source_created['chainsourcedomain'];
+        'chainhandlecreator' => $chainhandlecreator,
+    ), array(), 1) as $handle_created) {
+        return $handle_created['chainhandledomain'];
     }
     return 0;
 }
@@ -1509,13 +1509,13 @@ function user_website($chainsourcecreator)
 function random_adjective()
 {
 
-    $adjectives = array('Amazing', 'Awesome', 'Adventurous', 'Ambitious', 'Adorable', 'Artistic', 'Agile', 'Acrobatic', 'Attractive', 'Alluring', 'Astonishing', 'Authentic', 'Awkward', 'Ancient', 'American', 'Australian', 'Austrian', 'African', 'Asian', 'Brave', 'Beautiful', 'Bright', 'Busy', 'Big', 'Bold', 'Basic', 'Blissful', 'Bouncy', 'Beneficial', 'Bashful', 'Black', 'Brown', 'Burgundy', 'Broad', 'British', 'Belgian', 'Brazilian', 'Creative', 'Confident', 'Cheerful', 'Calm', 'Cute', 'Clever', 'Curious', 'Charming', 'Courageous', 'Clean', 'Cool', 'Considerate', 'Caring', 'Crazy', 'Classic', 'Chic', 'Cloudy', 'Colombian', 'Chinese', 'Delightful', 'Dreamy', 'Daring', 'Dynamic', 'Dark', 'Decent', 'Drastic', 'Defiant', 'Dedicated', 'Deep', 'Desirable', 'Dirty', 'Dramatic', 'Dizzy', 'Demanding', 'Diligent', 'Dutch', 'Danish', 'Delicious', 'Dazzling', 'Easy', 'Elegant', 'Enthusiastic', 'Eager', 'Efficient', 'Empathetic', 'Excellent', 'Exciting', 'Effective', 'Extravagant', 'Entertaining', 'Exotic', 'Expressive', 'Expensive', 'Elaborate', 'European', 'Egyptian', 'Eastern', 'Elderly', 'Educational', 'Fantastic', 'Fabulous', 'Friendly', 'Funny', 'Fearless', 'Fresh', 'Fascinating', 'Fluffy', 'Fierce', 'Fine', 'Free', 'Frugal', 'French', 'Futuristic', 'Fast', 'Flat', 'Famous', 'Flawless', 'Formal', 'Frizzy', 'Gorgeous', 'Great', 'Gentle', 'Generous', 'Gracious', 'Genuine', 'Glorious', 'Graceful', 'Golden', 'Grand', 'Green', 'Growing', 'Groovy', 'Greek', 'Grumpy', 'Gothic', 'Gargantuan', 'Gigantic', 'German', 'Georgian', 'Happy', 'Hot', 'Humble', 'Honest', 'Healthy', 'Heavy', 'Handsome', 'High', 'Helpful', 'Hilarious', 'Heavenly', 'Harmonious', 'Hardworking', 'Historical', 'Heartfelt', 'Homey', 'Hungry', 'Huge', 'Hispanic', 'Hindu', 'Interesting', 'Intelligent', 'Incredible', 'Inspiring', 'Impressive', 'Imaginative', 'Inquisitive', 'Iconic', 'Indigo', 'Industrious', 'Inevitable', 'Inexpensive', 'Incomparable', 'Idealistic', 'Illustrious', 'Indian', 'Italian', 'Irresistible', 'Irrelevant', 'Icy', 'Joyful', 'Jolly', 'Jovial', 'Jaunty', 'Jaded', 'Jazzy', 'Jumpy', 'Juicy', 'Judgmental', 'Jumbled', 'Japanese', 'Javanese', 'Jewish', 'Jittery', 'Junior', 'Justified', 'Jubilant', 'Jade', 'Jumbo', 'Joint', 'Kind', 'Knowledgeable', 'Keen', 'Kooky', 'Knotty', 'Kinetic', 'Known', 'Keen-eyed', 'Knightly', 'Keen-witted', 'Kempt', 'Knockout', 'Knackered', 'Kindhearted', 'Kenyan', 'Kiddy', 'Knotted', 'Kyrgyzstani', 'Kindred', 'Kentuckian', 'Loud', 'Lively', 'Lazy', 'Loyal', 'Long', 'Lonely', 'Lovely', 'Large', 'Light', 'Low', 'Luxurious', 'Lasting', 'Literal', 'Learned', 'Lucky', 'Magnificent', 'Mysterious', 'Modern', 'Moody', 'Musical', 'Mighty', 'Masculine', 'Mesmerizing', 'Mindful', 'Memorable', 'Multicultural', 'Moral', 'Majestic', 'Mischievous', 'Mouthwatering', 'Mellow', 'Modest', 'Magical', 'Melodic', 'Mature', 'Nervous', 'Natural', 'New', 'Nice', 'Noble', 'Naughty', 'Neat', 'Nonchalant', 'Noisy', 'Narrow', 'Nostalgic', 'Needy', 'Negative', 'Nutritious', 'Nonstop', 'Noteworthy', 'Numerous', 'Notable', 'Nurturing', 'Nifty', 'Obvious', 'Original', 'Optimistic', 'Ordinary', 'Official', 'Outstanding', 'Open', 'Organic', 'Odd', 'Observant', 'Obedient', 'Opaque', 'Obsolete', 'Offensive', 'Oily', 'Old-fashioned', 'Ornate', 'Onyx', 'Overwhelming', 'Oceanic', 'Perfect', 'Patient', 'Positive', 'Powerful', 'Popular', 'Polite', 'Peaceful', 'Playful', 'Pleasant', 'Precious', 'Practical', 'Private', 'Proud', 'Profound', 'Pretty', 'Painful', 'Priceless', 'Puzzled', 'Persistent', 'Passionate', 'Quaint', 'Quick', 'Quiet', 'Quirky', 'Quizzical', 'Queenly', 'Quivering', 'Quotable', 'Qualified', 'Quantifiable', 'Questionable', 'Quarrelsome', 'Queasy', 'Quenched', 'Quack', 'Quilted', 'Quizzing', 'Reliable', 'Responsible', 'Romantic', 'Rich', 'Rude', 'Real', 'Radiant', 'Royal', 'Rough', 'Respectful', 'Red', 'Rational', 'Rustic', 'Radiant', 'Robust', 'Rare', 'Resilient', 'Reckless', 'Ready', 'Rambunctious', 'Strong', 'Smart', 'Serious', 'Sad', 'Special', 'Simple', 'Super', 'Sincere', 'Safe', 'Stunning', 'Sweet', 'Shy', 'Successful', 'Satisfied', 'Shiny', 'Silent', 'Sparkling', 'Strong-willed', 'Scary', 'Surprised', 'Tall', 'Talkative', 'Tasty', 'Tender', 'Terrific', 'Terrible', 'Thoughtful', 'Thrifty', 'Timely', 'Tough', 'Traditional', 'Trustworthy', 'Tremendous', 'Tricky', 'Tolerant', 'Tenacious', 'Tiny', 'Tired', 'Top', 'Trembling', 'Ugly', 'Ultimate', 'Unbelievable', 'Uncertain', 'Uncommon', 'Unconditional', 'Unconscious', 'Understanding', 'Unforgettable', 'Unhappy', 'Unique', 'United', 'Universal', 'Unusual', 'Upbeat', 'Uplifting', 'Urbane', 'Urgent', 'Useful', 'Useless', 'Valuable', 'Vague', 'Valid', 'Vast', 'Various', 'Vengeful', 'Vibrant', 'Victorious', 'Vigorous', 'Villainous', 'Vital', 'Vivacious', 'Vocal', 'Volatile', 'Volcanic', 'Voracious', 'Vulnerable', 'Vicious', 'Velvet', 'Verbal', 'Warm', 'Wild', 'Witty', 'Wise', 'Wonderful', 'Worried', 'Wondrous', 'Wealthy', 'Whimsical', 'Wicked', 'Wide', 'Wavy', 'Watery', 'Weighty', 'Wooden', 'Weak', 'Wary', 'Winning', 'Well-groomed', 'Wholesome', 'Xeric', 'Xerophytic', 'Xerotic', 'Xyloid', 'Xylonic', 'Xylophagous', 'Xanthic', 'Xanthous', 'Xerarch', 'Xylotomous', 'Xerographic', 'Xenial', 'Xenogenetic', 'Xenolithic', 'Xylophilous', 'Yellow', 'Young', 'Yielding', 'Yearly', 'Yummy', 'Yawning', 'Yucky', 'Yearning', 'Yeasty', 'Yielding', 'Youthful', 'Yare', 'Yclept', 'Yellowish', 'Yearlong', 'Youth', 'Zealous', 'Zesty', 'Zigzag', 'Zillionth', 'Zinciferous', 'Zingy', 'Zippered', 'Zippy', 'Zoological', 'Zonal', 'Ambitious', 'Amiable', 'Analytical', 'Assertive', 'Authentic', 'Bold', 'Calm', 'Charismatic', 'Charming', 'Cheerful', 'Compassionate', 'Confident', 'Conscientious', 'Considerate', 'Creative', 'Curious', 'Dependable', 'Diligent', 'Disciplined', 'Easygoing', 'Empathetic', 'Enthusiastic', 'Extraverted', 'Flexible', 'Friendly', 'Generous', 'Genuine', 'Gracious', 'Hardworking', 'Honest', 'Humble', 'Independent', 'Innovative', 'Insightful', 'Intelligent', 'Kind', 'Logical', 'Loyal', 'Open-minded', 'Optimistic', 'Outgoing', 'Passionate', 'Patient', 'Persistent', 'Practical', 'Rational', 'Reliable', 'Resourceful', 'Responsible', 'Self-confident', 'Happy', 'Sad', 'Angry', 'Fearful', 'Anxious', 'Excited', 'Frustrated', 'Nostalgic', 'Hopeful', 'Envious', 'Jealous', 'Empathetic', 'Curious', 'Surprised', 'Disappointed', 'Grateful', 'Confused', 'Content', 'Lonely', 'Loved', 'Joyful', 'Melancholic', 'Irritated', 'Apprehensive', 'Restless', 'Ecstatic', 'Distraught', 'Panicked', 'Annoyed', 'Numb', 'Scared', 'Enraged', 'Heartbroken', 'Amused', 'Overwhelmed', 'Grateful', 'Conflicted', 'Peaceful', 'Devastated', 'Empowered');
+    $adjectives = array('Amazing', 'Awesome', 'Adventurous', 'Ambitious', 'Adorable', 'Artistic', 'Agile', 'Acrobatic', 'Attractive', 'Alluring', 'Astonishing', 'Authentic', 'Awkward', 'Ancient', 'American', 'Australian', 'Austrian', 'African', 'Asian', 'Brave', 'Beautiful', 'Bright', 'Busy', 'Big', 'Bold', 'Basic', 'Blissful', 'Bouncy', 'Beneficial', 'Bashful', 'Black', 'Brown', 'Burgundy', 'Broad', 'British', 'Belgian', 'Brazilian', 'Creative', 'Confident', 'Cheerful', 'Calm', 'Cute', 'Clever', 'Curious', 'Charming', 'Courageous', 'Clean', 'Cool', 'Considerate', 'Caring', 'Crazy', 'Classic', 'Chic', 'Cloudy', 'Colombian', 'Chinese', 'Delightful', 'Dreamy', 'Daring', 'Dynamic', 'Dark', 'Decent', 'Drastic', 'Defiant', 'Dedicated', 'Deep', 'Desirable', 'Dirty', 'Dramatic', 'Dizzy', 'Demanding', 'Diligent', 'Dutch', 'Danish', 'Delicious', 'Dazzling', 'Easy', 'Elegant', 'Enthusiastic', 'Eager', 'Efficient', 'Empathetic', 'Excellent', 'Exciting', 'Effective', 'Extravagant', 'Entertaining', 'Exotic', 'Expressive', 'Expensive', 'Elaborate', 'European', 'Egyptian', 'Eastern', 'Elderly', 'Educational', 'Fantastic', 'Fabulous', 'Friendly', 'Funny', 'Fearless', 'Fresh', 'Fascinating', 'Fluffy', 'Fierce', 'Fine', 'Free', 'Frugal', 'French', 'Futuristic', 'Fast', 'Flat', 'Famous', 'Flawless', 'Formal', 'Frizzy', 'Gorgeous', 'Great', 'Gentle', 'Generous', 'Gracious', 'Genuine', 'Glorious', 'Graceful', 'Golden', 'Grand', 'Green', 'Growing', 'Groovy', 'Greek', 'Grumpy', 'Gothic', 'Gargantuan', 'Gigantic', 'German', 'Georgian', 'Happy', 'Hot', 'Humble', 'Honest', 'Healthy', 'Heavy', 'Handsome', 'High', 'Helpful', 'Hilarious', 'Heavenly', 'Harmonious', 'Hardworking', 'Historical', 'Heartfelt', 'Homey', 'Hungry', 'Huge', 'Hispanic', 'Hindu', 'Interesting', 'Intelligent', 'Incredible', 'Inspiring', 'Impressive', 'Imaginative', 'Inquisitive', 'Iconic', 'Indigo', 'Industrious', 'Inevitable', 'Inexpensive', 'Incomparable', 'Hahstaglistic', 'Illustrious', 'Indian', 'Italian', 'Irresistible', 'Irrelevant', 'Icy', 'Joyful', 'Jolly', 'Jovial', 'Jaunty', 'Jaded', 'Jazzy', 'Jumpy', 'Juicy', 'Judgmental', 'Jumbled', 'Japanese', 'Javanese', 'Jewish', 'Jittery', 'Junior', 'Justified', 'Jubilant', 'Jade', 'Jumbo', 'Joint', 'Kind', 'Knowledgeable', 'Keen', 'Kooky', 'Knotty', 'Kinetic', 'Known', 'Keen-eyed', 'Knightly', 'Keen-witted', 'Kempt', 'Knockout', 'Knackered', 'Kindhearted', 'Kenyan', 'Kiddy', 'Knotted', 'Kyrgyzstani', 'Kindred', 'Kentuckian', 'Loud', 'Lively', 'Lazy', 'Loyal', 'Long', 'Lonely', 'Lovely', 'Large', 'Light', 'Low', 'Luxurious', 'Lasting', 'Literal', 'Learned', 'Lucky', 'Magnificent', 'Mysterious', 'Modern', 'Moody', 'Musical', 'Mighty', 'Masculine', 'Mesmerizing', 'Mindful', 'Memorable', 'Multicultural', 'Moral', 'Majestic', 'Mischievous', 'Mouthwatering', 'Mellow', 'Modest', 'Magical', 'Melodic', 'Mature', 'Nervous', 'Natural', 'New', 'Nice', 'Noble', 'Naughty', 'Neat', 'Nonchalant', 'Noisy', 'Narrow', 'Nostalgic', 'Needy', 'Negative', 'Nutritious', 'Nonstop', 'Noteworthy', 'Numerous', 'Notable', 'Nurturing', 'Nifty', 'Obvious', 'Original', 'Optimistic', 'Ordinary', 'Official', 'Outstanding', 'Open', 'Organic', 'Odd', 'Observant', 'Obedient', 'Opaque', 'Obsolete', 'Offensive', 'Oily', 'Old-fashioned', 'Ornate', 'Onyx', 'Overwhelming', 'Oceanic', 'Perfect', 'Patient', 'Positive', 'Powerful', 'Popular', 'Polite', 'Peaceful', 'Playful', 'Pleasant', 'Precious', 'Practical', 'Private', 'Proud', 'Profound', 'Pretty', 'Painful', 'Priceless', 'Puzzled', 'Persistent', 'Passionate', 'Quaint', 'Quick', 'Quiet', 'Quirky', 'Quizzical', 'Queenly', 'Quivering', 'Quotable', 'Qualified', 'Quantifiable', 'Questionable', 'Quarrelsome', 'Queasy', 'Quenched', 'Quack', 'Quilted', 'Quizzing', 'Reliable', 'Responsible', 'Romantic', 'Rich', 'Rude', 'Real', 'Radiant', 'Royal', 'Rough', 'Respectful', 'Red', 'Rational', 'Rustic', 'Radiant', 'Robust', 'Rare', 'Resilient', 'Reckless', 'Ready', 'Rambunctious', 'Strong', 'Smart', 'Serious', 'Sad', 'Special', 'Simple', 'Super', 'Sincere', 'Safe', 'Stunning', 'Sweet', 'Shy', 'Successful', 'Satisfied', 'Shiny', 'Silent', 'Sparkling', 'Strong-willed', 'Scary', 'Surprised', 'Tall', 'Talkative', 'Tasty', 'Tender', 'Terrific', 'Terrible', 'Thoughtful', 'Thrifty', 'Timely', 'Tough', 'Traditional', 'Trustworthy', 'Tremendous', 'Tricky', 'Tolerant', 'Tenacious', 'Tiny', 'Tired', 'Top', 'Trembling', 'Ugly', 'Ultimate', 'Unbelievable', 'Uncertain', 'Uncommon', 'Unconditional', 'Unconscious', 'Understanding', 'Unforgettable', 'Unhappy', 'Unique', 'United', 'Universal', 'Unusual', 'Upbeat', 'Uplifting', 'Urbane', 'Urgent', 'Useful', 'Useless', 'Valuable', 'Vague', 'Valid', 'Vast', 'Various', 'Vengeful', 'Vibrant', 'Victorious', 'Vigorous', 'Villainous', 'Vital', 'Vivacious', 'Vocal', 'Volatile', 'Volcanic', 'Voracious', 'Vulnerable', 'Vicious', 'Velvet', 'Verbal', 'Warm', 'Wild', 'Witty', 'Wise', 'Wonderful', 'Worried', 'Wondrous', 'Wealthy', 'Whimsical', 'Wicked', 'Wide', 'Wavy', 'Watery', 'Weighty', 'Wooden', 'Weak', 'Wary', 'Winning', 'Well-groomed', 'Wholesome', 'Xeric', 'Xerophytic', 'Xerotic', 'Xyloid', 'Xylonic', 'Xylophagous', 'Xanthic', 'Xanthous', 'Xerarch', 'Xylotomous', 'Xerographic', 'Xenial', 'Xenogenetic', 'Xenolithic', 'Xylophilous', 'Yellow', 'Young', 'Yielding', 'Yearly', 'Yummy', 'Yawning', 'Yucky', 'Yearning', 'Yeasty', 'Yielding', 'Youthful', 'Yare', 'Yclept', 'Yellowish', 'Yearlong', 'Youth', 'Zealous', 'Zesty', 'Zigzag', 'Zillionth', 'Zinciferous', 'Zingy', 'Zippered', 'Zippy', 'Zoological', 'Zonal', 'Ambitious', 'Amiable', 'Analytical', 'Assertive', 'Authentic', 'Bold', 'Calm', 'Charismatic', 'Charming', 'Cheerful', 'Compassionate', 'Confident', 'Conscientious', 'Considerate', 'Creative', 'Curious', 'Dependable', 'Diligent', 'Disciplined', 'Easygoing', 'Empathetic', 'Enthusiastic', 'Extraverted', 'Flexible', 'Friendly', 'Generous', 'Genuine', 'Gracious', 'Hardworking', 'Honest', 'Humble', 'Independent', 'Innovative', 'Insightful', 'Intelligent', 'Kind', 'Logical', 'Loyal', 'Open-minded', 'Optimistic', 'Outgoing', 'Passionate', 'Patient', 'Persistent', 'Practical', 'Rational', 'Reliable', 'Rehandleful', 'Responsible', 'Self-confident', 'Happy', 'Sad', 'Angry', 'Fearful', 'Anxious', 'Excited', 'Frustrated', 'Nostalgic', 'Hopeful', 'Envious', 'Jealous', 'Empathetic', 'Curious', 'Surprised', 'Disappointed', 'Grateful', 'Confused', 'Content', 'Lonely', 'Loved', 'Joyful', 'Melancholic', 'Irritated', 'Apprehensive', 'Restless', 'Ecstatic', 'Distraught', 'Panicked', 'Annoyed', 'Numb', 'Scared', 'Enraged', 'Heartbroken', 'Amused', 'Overwhelmed', 'Grateful', 'Conflicted', 'Peaceful', 'Devastated', 'Empowered');
 
     return $adjectives[array_rand($adjectives)];
 }
 
 
-function dispatch_sms($to_phone, $single_message, $sourceid = 0, $x_data = array(), $template_ideaid = 0, $chainsourcedomain = 0, $log_tr = true, $demo_only = false)
+function dispatch_sms($to_phone, $single_message, $handleid = 0, $x_data = array(), $template_hashtagid = 0, $chainhandledomain = 0, $log_tr = true, $demo_only = false)
 {
 
     $CI =& get_instance();
@@ -1527,9 +1527,9 @@ function dispatch_sms($to_phone, $single_message, $sourceid = 0, $x_data = array
         //No way to send an SMS:
         if ($log_tr) {
             log_error('dispatch_sms() missing either: ' . $twilio_account_sid . ' / ' . $twilio_auth_token . ' / ' . $twilio_from_number, array(
-                'chainsourcedown' => $sourceid,
-                'chainsourcecreator' => $sourceid,
-                'chainsourcedomain' => $chainsourcedomain,
+                'chainhandleoutput' => $handleid,
+                'chainhandlecreator' => $handleid,
+                'chainhandledomain' => $chainhandledomain,
             ));
         }
 
@@ -1567,28 +1567,28 @@ function dispatch_sms($to_phone, $single_message, $sourceid = 0, $x_data = array
     //Log Chain:
     if ($log_tr) {
 
-        $target_source = ($sms_success ? 27676 : 27678);
-        $source_session = source_session();
-        $sourceid = ($sourceid > 0 ? $sourceid : ($source_session ? $source_session['sourceid'] : 14068));
-        if ($template_ideaid && count($CI->Ideas->read(array(
-                'ideaid' => $template_ideaid,
+        $target_handle = ($sms_success ? 27676 : 27678);
+        $handle_session = handle_session();
+        $handleid = ($handleid > 0 ? $handleid : ($handle_session ? $handle_session['handleid'] : 14068));
+        if ($template_hashtagid && count($CI->Hashtags->read(array(
+                'hashtagid' => $template_hashtagid,
             )))) {
-            foreach ($CI->Ideas->read(array(
-                'ideaid' => $template_ideaid,
-            )) as $idea_template) {
-                $CI->Chains->idea_discovered($target_source, $sourceid, 0, $idea_template, array(), array(
+            foreach ($CI->Hashtags->read(array(
+                'hashtagid' => $template_hashtagid,
+            )) as $hashtag_template) {
+                $CI->Chains->hashtag_discovered($target_handle, $handleid, 0, $hashtag_template, array(), array(
                     'chainvalue' => $single_message,
                 ));
             }
-        } elseif ($sourceid > 0) {
+        } elseif ($handleid > 0) {
 
             $CI->Chains->create(array_merge($x_data, array(
-                'chainsourcetype' => 44179, //Triggered
-                'chainsourceup' => $target_source,
-                'chainsourcedown' => $sourceid,
-                'chainsourcecreator' => $sourceid,
+                'chainhandletype' => 44179, //Triggered
+                'chainhandleinput' => $target_handle,
+                'chainhandleoutput' => $handleid,
+                'chainhandlecreator' => $handleid,
                 'chainvalue' => $single_message,
-                'chainidearight' => $template_ideaid,
+                'chainhashtagoutput' => $template_hashtagid,
             )));
         }
 
@@ -1599,18 +1599,18 @@ function dispatch_sms($to_phone, $single_message, $sourceid = 0, $x_data = array
 
 }
 
-function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_data = array(), $template_ideaid = 0, $chainsourcedomain = 0, $log_tr = true, $demo_only = false)
+function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_data = array(), $template_hashtagid = 0, $chainhandledomain = 0, $log_tr = true, $demo_only = false)
 {
 
     $CI =& get_instance();
-    $domain_name = get_domain('m__title', $sourceid, $chainsourcedomain);
-    $domain_email = website_setting(28614, $sourceid, $chainsourcedomain);
+    $domain_name = get_domain('m__title', $handleid, $chainhandledomain);
+    $domain_email = website_setting(28614, $handleid, $chainhandledomain);
 
     if (!strlen($domain_email)) {
         $domain_name = 'MENCH';
         $domain_name = 'support@mench.com';
         log_error('Domain email is missing! (' . $domain_name . ') (' . $domain_email . ') (' . join(' & ', $to_emails) . ')', array(
-            'chainsourcedown' => $sourceid,
+            'chainhandleoutput' => $handleid,
         ));
     }
 
@@ -1618,20 +1618,20 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
     $name = 'New User';
     $ReplyToAddresses = array($email_domain);
 
-    if ($sourceid > 0) {
+    if ($handleid > 0) {
 
-        $es = $CI->Sources->read(array(
-            'sourceid' => $sourceid,
+        $es = $CI->Handles->read(array(
+            'handleid' => $handleid,
         ));
         if (count($es)) {
 
-            $name = $es[0]['sourcevalue'];
+            $name = $es[0]['handlevalue'];
 
             //Also fetch email for this user to populate the reply to:
             $fetch_emails = $CI->Chains->read(array(
-                'chainsourceup' => 3288, //Email
-                'chainsourcedown' => $sourceid,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                'chainhandleinput' => 3288, //Email
+                'chainhandleoutput' => $handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             ));
             if (count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL)) {
                 array_push($ReplyToAddresses, trim($fetch_emails[0]['chainvalue']));
@@ -1640,22 +1640,22 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
     }
 
     //Email has no word limit to add header & footer:
-    $sources___6287 = $CI->config->item('sources___6287'); //APP
-    $base_domain = 'https://' . get_domain('m__message', $sourceid, $chainsourcedomain);
+    $handles___6287 = $CI->config->item('handles___6287'); //APP
+    $base_domain = 'https://' . get_domain('m__message', $handleid, $chainhandledomain);
 
     $email_message = '<div class="line">' . randomize_text(29749) . ' ' . $name . ' ' . randomize_text(29750) . '</div>';
     $email_message .= $email_body . "\n";
     $email_message .= '<div class="line">' . randomize_text(12691) . '</div>';
-    $email_message .= '<div class="line">' . get_domain('m__title', $sourceid, $chainsourcedomain) . '</div>';
+    $email_message .= '<div class="line">' . get_domain('m__title', $handleid, $chainhandledomain) . '</div>';
 
 
-    if ($sourceid > 0 && count($es) && (!$template_ideaid || !count($CI->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42256')) . ')' => null, //Writes
-                'chainsourceup' => 31779, //Mandatory Emails
-                'chainidearight' => $template_ideaid,
+    if ($handleid > 0 && count($es) && (!$template_hashtagid || !count($CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42256')) . ')' => null, //Writes
+                'chainhandleinput' => 31779, //Mandatory Emails
+                'chainhashtagoutput' => $template_hashtagid,
             ))))) {
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?sourcehandle=' . $es[0]['sourcehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['sourcehandle']) . '" style="font-size:13px;">' . $sources___6287[28904]['m__title'] . '</a></div>';
+        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?handlehandle=' . $es[0]['handlehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['handlehandle']) . '" style="font-size:13px;">' . $handles___6287[28904]['m__title'] . '</a></div>';
     }
 
 
@@ -1669,8 +1669,8 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
     $email_message = str_replace('href="/', 'style="display:inline-block;" href="' . $base_domain . '/', $email_message);
 
     $email_data = array(
-        // Source is required
-        'Source' => $email_domain,
+        // Handle is required
+        'Handle' => $email_domain,
         // Destination is required
         'Destination' => array(
             'ToAddresses' => $to_emails,
@@ -1722,36 +1722,36 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
     //Log Chain:
     if ($log_tr) {
 
-        $source_session = source_session();
-        $sourceid = ($sourceid > 0 ? $sourceid : ($source_session ? $source_session['sourceid'] : 14068));
-        if ($template_ideaid && count($CI->Ideas->read(array(
-                'ideaid' => $template_ideaid,
+        $handle_session = handle_session();
+        $handleid = ($handleid > 0 ? $handleid : ($handle_session ? $handle_session['handleid'] : 14068));
+        if ($template_hashtagid && count($CI->Hashtags->read(array(
+                'hashtagid' => $template_hashtagid,
             )))) {
-            foreach ($CI->Ideas->read(array(
-                'ideaid' => $template_ideaid,
-            )) as $idea_template) {
-                $CI->Chains->idea_discovered(29399, $sourceid, 0, $idea_template, array(), array(
+            foreach ($CI->Hashtags->read(array(
+                'hashtagid' => $template_hashtagid,
+            )) as $hashtag_template) {
+                $CI->Chains->hashtag_discovered(29399, $handleid, 0, $hashtag_template, array(), array(
                     'chainvalue' => $subject . "\n" . $email_message,
                 ));
             }
-        } elseif ($sourceid > 0) {
+        } elseif ($handleid > 0) {
 
             $CI->Chains->create(array_merge($x_data, array(
-                'chainsourcetype' => 44179, //Triggered
-                'chainsourceup' => 29399,
-                'chainsourcedown' => $sourceid,
-                'chainsourcecreator' => $sourceid,
+                'chainhandletype' => 44179, //Triggered
+                'chainhandleinput' => 29399,
+                'chainhandleoutput' => $handleid,
+                'chainhandlecreator' => $handleid,
                 'chainvalue' => $subject . "\n" . $email_message,
-                'chainidearight' => $template_ideaid,
+                'chainhashtagoutput' => $template_hashtagid,
             )));
         }
 
         //Can we also mark the discovery as complete?
-        if ($sourceid && isset($x_data['chainidealeft']) && $x_data['chainidealeft'] > 0 && isset($x_data['chainidearight'])) {
-            foreach ($CI->Ideas->read(array(
-                'ideaid' => $x_data['chainidealeft'],
+        if ($handleid && isset($x_data['chainhashtaginput']) && $x_data['chainhashtaginput'] > 0 && isset($x_data['chainhashtagoutput'])) {
+            foreach ($CI->Hashtags->read(array(
+                'hashtagid' => $x_data['chainhashtaginput'],
             )) as $email_i) {
-                $CI->Chains->idea_discovered(idea_type_discovery($email_i), $sourceid, $x_data['chainidearight'], $email_i, $x_data);
+                $CI->Chains->hashtag_discovered(hashtag_type_discovery($email_i), $handleid, $x_data['chainhashtagoutput'], $email_i, $x_data);
             }
         }
 
@@ -1763,51 +1763,51 @@ function dispatch_email($to_emails, $subject, $email_body, $sourceid = 0, $x_dat
 }
 
 
-function website_setting($setting_id = 0, $initiator_sourceid = 0, $chainsourcedomain = 0, $force_website = true)
+function website_setting($setting_id = 0, $initiator_handleid = 0, $chainhandledomain = 0, $force_website = true)
 {
 
     $CI =& get_instance();
-    $source_id = 0; //Assume no domain unless found below
+    $handle_id = 0; //Assume no domain unless found below
 
-    if (!$initiator_sourceid) {
-        $source_session = source_session();
-        if ($source_session && isset($source_session['sourceid']) && $source_session['sourceid'] > 0) {
-            $initiator_sourceid = $source_session['sourceid'];
+    if (!$initiator_handleid) {
+        $handle_session = handle_session();
+        if ($handle_session && isset($handle_session['handleid']) && $handle_session['handleid'] > 0) {
+            $initiator_handleid = $handle_session['handleid'];
         }
     }
 
-    if ($chainsourcedomain && $force_website) {
+    if ($chainhandledomain && $force_website) {
 
-        $source_id = $chainsourcedomain;
+        $handle_id = $chainhandledomain;
 
     } else {
 
         $server_name = get_server('SERVER_NAME');
         if (strlen($server_name)) {
-            foreach ($CI->config->item('sources___14870') as $chainsourcetype => $m) {
+            foreach ($CI->config->item('handles___14870') as $chainhandletype => $m) {
                 if (substr_count($m['m__message'], $server_name) == 1) {
-                    $source_id = $chainsourcetype;
+                    $handle_id = $chainhandletype;
                     break;
                 }
             }
         }
 
-        $source_id = ($source_id ? $source_id : ($chainsourcedomain > 0 ? $chainsourcedomain : 2738 /* Mench */));
+        $handle_id = ($handle_id ? $handle_id : ($chainhandledomain > 0 ? $chainhandledomain : 2738 /* Mench */));
 
     }
 
 
     if (!$setting_id) {
-        return $source_id;
+        return $handle_id;
     }
 
 
-    $sources___domain_sett = $CI->config->item('sources___' . $setting_id); //DOMAINS
+    $handles___domain_sett = $CI->config->item('handles___' . $setting_id); //DOMAINS
 
-    if (!isset($sources___domain_sett[$source_id]) || !strlen($sources___domain_sett[$source_id]['m__message'])) {
-        $target_return = (in_array($setting_id, $CI->config->item('sourceids___6404')) ? view_memory(6404, $setting_id) : false);
+    if (!isset($handles___domain_sett[$handle_id]) || !strlen($handles___domain_sett[$handle_id]['m__message'])) {
+        $target_return = (in_array($setting_id, $CI->config->item('handleids___6404')) ? view_memory(6404, $setting_id) : false);
     } else {
-        $target_return = $sources___domain_sett[$source_id]['m__message'];
+        $target_return = $handles___domain_sett[$handle_id]['m__message'];
     }
 
     return $target_return;
@@ -1815,16 +1815,16 @@ function website_setting($setting_id = 0, $initiator_sourceid = 0, $chainsourced
 }
 
 
-function get_domain($var_field, $initiator_sourceid = 0, $chainsourcedomain = 0, $force_website = true)
+function get_domain($var_field, $initiator_handleid = 0, $chainhandledomain = 0, $force_website = true)
 {
     $CI =& get_instance();
-    $domain_e = website_setting(0, $initiator_sourceid, $chainsourcedomain, $force_website);
-    $sources___14870 = $CI->config->item('sources___14870'); //DOMAINS
-    return $sources___14870[$domain_e][$var_field];
+    $domain_e = website_setting(0, $initiator_handleid, $chainhandledomain, $force_website);
+    $handles___14870 = $CI->config->item('handles___14870'); //DOMAINS
+    return $handles___14870[$domain_e][$var_field];
 }
 
 
-function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replacement_sourceid = false, $source_list_config = array())
+function handle_access($handlehandle = null, $handleid = 0, $e = false, $replacement_handleid = false, $handle_list_config = array())
 {
 
     /*
@@ -1839,24 +1839,24 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
      * */
 
     $CI =& get_instance();
-    $source_session = source_session();
-    if (!$replacement_sourceid && source_session(10939)) {
+    $handle_session = handle_session();
+    if (!$replacement_handleid && handle_session(10939)) {
         return 3;
-    } elseif (!$replacement_sourceid && $source_session && ($sourcehandle == $source_session['sourcehandle'] || $sourceid == $source_session['sourceid'])) {
+    } elseif (!$replacement_handleid && $handle_session && ($handlehandle == $handle_session['handlehandle'] || $handleid == $handle_session['handleid'])) {
         return 3;
     }
 
-    if (strlen($sourcehandle)) {
-        $filters['LOWER(sourcehandle)'] = strtolower($sourcehandle);
-    } elseif (intval($sourceid)) {
-        $filters['sourceid'] = $sourceid;
-    } elseif (!$e || (!$source_session && !$replacement_sourceid)) {
+    if (strlen($handlehandle)) {
+        $filters['LOWER(handlehandle)'] = strtolower($handlehandle);
+    } elseif (intval($handleid)) {
+        $filters['handleid'] = $handleid;
+    } elseif (!$e || (!$handle_session && !$replacement_handleid)) {
         return 0;
     }
 
     if (!$e) {
         //Check privacy first:
-        foreach ($CI->Sources->read($filters) as $match_e) {
+        foreach ($CI->Handles->read($filters) as $match_e) {
             $e = $match_e;
             break;
         }
@@ -1864,59 +1864,59 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
 
 
     //IF Follows Any
-    $chainsourcecreator = ($replacement_sourceid > 0 ? $replacement_sourceid : ( $source_session ? $source_session['sourceid'] : 0 ));
-    if(!count($source_list_config)){
-        $source_list_config = source_list_config($e['sourceid']);
+    $chainhandlecreator = ($replacement_handleid > 0 ? $replacement_handleid : ( $handle_session ? $handle_session['handleid'] : 0 ));
+    if(!count($handle_list_config)){
+        $handle_list_config = handle_list_config($e['handleid']);
     }
-    if (count($source_list_config[1645062])) {
+    if (count($handle_list_config[1645062])) {
         $the_counter = 0;
-        if ($chainsourcecreator) {
-            foreach ($source_list_config[1645062] as $focussourceid) {
-                if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                        'chainsourceup' => $focussourceid,
-                        'chainsourcedown' => $chainsourcecreator,
+        if ($chainhandlecreator) {
+            foreach ($handle_list_config[1645062] as $focushandleid) {
+                if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                        'chainhandleinput' => $focushandleid,
+                        'chainhandleoutput' => $chainhandlecreator,
                     ))))) {
                     $the_counter++;
                     break;
                 }
             }
         }
-        if (!$chainsourcecreator || !$the_counter) {
+        if (!$chainhandlecreator || !$the_counter) {
             return 0;
         }
     }
 
 
     //IF Follows All
-    if (count($source_list_config[1645146])) {
+    if (count($handle_list_config[1645146])) {
         $the_counter = 0;
-        if ($chainsourcecreator) {
-            foreach ($source_list_config[1645146] as $focussourceid) {
-                if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                        'chainsourceup' => $focussourceid,
-                        'chainsourcedown' => $chainsourcecreator,
+        if ($chainhandlecreator) {
+            foreach ($handle_list_config[1645146] as $focushandleid) {
+                if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                        'chainhandleinput' => $focushandleid,
+                        'chainhandleoutput' => $chainhandlecreator,
                     ))))) {
                     $the_counter++;
                 }
             }
         }
-        if (!$chainsourcecreator || $the_counter<count($source_list_config[1645146])) {
+        if (!$chainhandlecreator || $the_counter<count($handle_list_config[1645146])) {
             return 0;
         }
     }
 
 
     //IF Not Follows Any
-    if (count($source_list_config[1645161])) {
+    if (count($handle_list_config[1645161])) {
         $the_counter = 0;
-        if ($chainsourcecreator) {
-            foreach ($source_list_config[1645161] as $focussourceid) {
-                if (($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                        'chainsourceup' => $focussourceid,
-                        'chainsourcedown' => $chainsourcecreator,
+        if ($chainhandlecreator) {
+            foreach ($handle_list_config[1645161] as $focushandleid) {
+                if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                        'chainhandleinput' => $focushandleid,
+                        'chainhandleoutput' => $chainhandlecreator,
                     )))) {
                     //Found an exclusion, so skip this:
                     $the_counter++;
@@ -1924,27 +1924,27 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
                 }
             }
         }
-        if (!$chainsourcecreator || $the_counter > 0) {
+        if (!$chainhandlecreator || $the_counter > 0) {
             return 0;
         }
     }
 
     //IF Not Follows All
-    if (count($source_list_config[1645176])) {
+    if (count($handle_list_config[1645176])) {
         $the_counter = 0;
-        if ($chainsourcecreator) {
-            foreach ($source_list_config[1645176] as $focussourceid) {
-                if (($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                        'chainsourceup' => $focussourceid,
-                        'chainsourcedown' => $chainsourcecreator,
+        if ($chainhandlecreator) {
+            foreach ($handle_list_config[1645176] as $focushandleid) {
+                if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                        'chainhandleinput' => $focushandleid,
+                        'chainhandleoutput' => $chainhandlecreator,
                     )))) {
                     //Found an exclusion, so skip this:
                     $the_counter++;
                 }
             }
         }
-        if (!$chainsourcecreator || $the_counter==count($source_list_config[1645176])) {
+        if (!$chainhandlecreator || $the_counter==count($handle_list_config[1645176])) {
             return 0;
         }
     }
@@ -1952,11 +1952,11 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
 
     $is_public = true;
     $is_author = false;
-    if ($source_session) {
+    if ($handle_session) {
         $is_author = count($CI->Chains->read(array(
-            'chainsourcetype' => 12274,
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainid' => $e['sourceid'],
+            'chainhandletype' => 12274,
+            'chainhandlecreator' => $chainhandlecreator,
+            'chainid' => $e['handleid'],
         )));
     }
 
@@ -1964,22 +1964,22 @@ function source_access($sourcehandle = null, $sourceid = 0, $e = false, $replace
 
 }
 
-function source_up($sourceid, $return_ids = array()){
+function handle_up($handleid, $return_ids = array()){
 
     if(!count($return_ids)){
-        $return_ids = array(intval($sourceid));
+        $return_ids = array(intval($handleid));
     }
     $CI =& get_instance();
     foreach ($CI->Chains->read(array(
-        'chainsourceup > 0' => null,
-        'chainsourcedown' => $sourceid,
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-    ), array(), 0) as $up_source) {
-        if(in_array(intval($up_source['chainsourceup']), $return_ids)){
+        'chainhandleinput > 0' => null,
+        'chainhandleoutput' => $handleid,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+    ), array(), 0) as $up_handle) {
+        if(in_array(intval($up_handle['chainhandleinput']), $return_ids)){
             continue;
         }
-        array_push($return_ids, intval($up_source['chainsourceup']));
-        $return_ids_up = source_up($up_source['chainsourceup'], $return_ids);
+        array_push($return_ids, intval($up_handle['chainhandleinput']));
+        $return_ids_up = handle_up($up_handle['chainhandleinput'], $return_ids);
         foreach($return_ids_up as $return_id_up){
             if(!in_array($return_id_up, $return_ids)){
                 array_push($return_ids, $return_id_up);
@@ -1990,7 +1990,7 @@ function source_up($sourceid, $return_ids = array()){
     return $return_ids;
 }
 
-function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_sourceid = false, $idea_list_config = array(), $is_cahce = false)
+function hashtag_access($hashtaghashtag = null, $hashtagid = 0, $i = false, $replacement_handleid = false, $hashtag_list_config = array(), $is_cahce = false)
 {
 
     /*
@@ -2005,40 +2005,40 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
      * */
 
     $CI =& get_instance();
-    $source_session = source_session();
-    $discovery_mode = ($replacement_sourceid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlsources___6287'))) ? true : false));
+    $handle_session = handle_session();
+    $discovery_mode = ($replacement_handleid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlhandles___6287'))) ? true : false));
 
     if ($is_cahce) {
         return 1;
     }
 
-    if (!$discovery_mode && source_session(12700)) {
+    if (!$discovery_mode && handle_session(12700)) {
         return 3;
     }
 
 
     if (!$i) {
-        if (strlen($ideahashtag)) {
-            $filters['LOWER(ideahashtag)'] = strtolower($ideahashtag);
-        } elseif (intval($ideaid)) {
-            $filters['ideaid'] = $ideaid;
+        if (strlen($hashtaghashtag)) {
+            $filters['LOWER(hashtaghashtag)'] = strtolower($hashtaghashtag);
+        } elseif (intval($hashtagid)) {
+            $filters['hashtagid'] = $hashtagid;
         } elseif (!$i) {
             return 0;
         }
         //Check privacy first:
-        foreach ($CI->Ideas->read($filters) as $match_i) {
+        foreach ($CI->Hashtags->read($filters) as $match_i) {
             $i = $match_i;
             break;
         }
     }
 
-    $chainsourcecreator = ($replacement_sourceid > 0 ? $replacement_sourceid : ($source_session ? $source_session['sourceid'] : 0));
+    $chainhandlecreator = ($replacement_handleid > 0 ? $replacement_handleid : ($handle_session ? $handle_session['handleid'] : 0));
     $is_author = false;
-    if ($chainsourcecreator) {
+    if ($chainhandlecreator) {
         $is_author = count($CI->Chains->read(array(
-            'chainsourcetype' => 12273,
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainid' => $i['ideaid'],
+            'chainhandletype' => 12273,
+            'chainhandlecreator' => $chainhandlecreator,
+            'chainid' => $i['hashtagid'],
         )));
     }
 
@@ -2048,88 +2048,88 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         return ( !$discovery_mode ? 3 : 2 );
 
     } elseif (!$discovery_mode && count($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42953')) . ')' => null, //Mentioned Sources
-            'chainsourceup' => $chainsourcecreator,
-            'chainidearight' => $i['ideaid'],
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42953')) . ')' => null, //Mentioned Handles
+            'chainhandleinput' => $chainhandlecreator,
+            'chainhashtagoutput' => $i['hashtagid'],
         )))) {
 
         //Mentioned can always reply:
         return 2;
 
     } elseif (!$is_author && count($CI->Chains->read(array(
-        'chainidearight' => $i['ideaid'],
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42625')) . ')' => null, //Private Ideas
+        'chainhashtagoutput' => $i['hashtagid'],
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42625')) . ')' => null, //Private Hashtags
         )))) {
 
-        //Private Idea:
+        //Private Hahstag:
         return 0;
 
     } else {
 
 
         //Inventory Limits:
-        if (!count($idea_list_config) && idea_spots_remaining($ideaid) == 0) {
+        if (!count($hashtag_list_config) && hashtag_spots_remaining($hashtagid) == 0) {
             return 0;
         }
 
-        // IDEA RELATION CHECK:
-        $idea_list_config = idea_list_config($ideaid);
+        // HASHTAG RELATION CHECK:
+        $hashtag_list_config = hashtag_list_config($hashtagid);
 
 
-        //If idea_discovered All
-        if (count($idea_list_config[44161])) {
+        //If hashtag_discovered All
+        if (count($hashtag_list_config[44161])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[44161] as $focusideaid) {
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[44161] as $focushashtagid) {
                     if (count($CI->Chains->read(array(
-                        'chainsourcecreator' => $chainsourcecreator,
-                        'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+                        'chainhandlecreator' => $chainhandlecreator,
+                        'chainhashtaginput' => $focushashtagid,
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                     }
                 }
             }
-            if (!$chainsourcecreator || $the_counter < count($idea_list_config[44161])) {
+            if (!$chainhandlecreator || $the_counter < count($hashtag_list_config[44161])) {
                 return 0;
             }
         }
 
-        //If idea_discovered Any
-        if (count($idea_list_config[40791])) {
+        //If hashtag_discovered Any
+        if (count($hashtag_list_config[40791])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[40791] as $focusideaid) {
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[40791] as $focushashtagid) {
                     if (count($CI->Chains->read(array(
-                        'chainsourcecreator' => $chainsourcecreator,
-                        'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+                        'chainhandlecreator' => $chainhandlecreator,
+                        'chainhashtaginput' => $focushashtagid,
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                         break;
                     }
                 }
             }
-            if (!$chainsourcecreator || !$the_counter) {
+            if (!$chainhandlecreator || !$the_counter) {
                 return 0;
             }
         }
 
 
-        //If Not idea_discovered All
-        if (count($idea_list_config[44162])) {
+        //If Not hashtag_discovered All
+        if (count($hashtag_list_config[44162])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[44162] as $focusideaid) {
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[44162] as $focushashtagid) {
                     if (count($CI->Chains->read(array(
-                        'chainsourcecreator' => $chainsourcecreator,
-                        'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+                        'chainhandlecreator' => $chainhandlecreator,
+                        'chainhashtaginput' => $focushashtagid,
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                     }
                 }
-                if (!$chainsourcecreator || $the_counter >= count($idea_list_config[44162])) {
+                if (!$chainhandlecreator || $the_counter >= count($hashtag_list_config[44162])) {
                     return 0;
                 }
             } else {
@@ -2138,80 +2138,80 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
         }
 
 
-        //If Not idea_discovered Any
-        if (count($idea_list_config[40793])) {
+        //If Not hashtag_discovered Any
+        if (count($hashtag_list_config[40793])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[40793] as $focusideaid) {
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[40793] as $focushashtagid) {
                     if (count($CI->Chains->read(array(
-                        'chainsourcecreator' => $chainsourcecreator,
-                        'chainidealeft' => $focusideaid,
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+                        'chainhandlecreator' => $chainhandlecreator,
+                        'chainhashtaginput' => $focushashtagid,
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                         break;
                     }
                 }
             }
-            if (!$chainsourcecreator || $the_counter > 0) {
+            if (!$chainhandlecreator || $the_counter > 0) {
                 return 0;
             }
         }
 
 
-        // SOURCE RELATION CHECK:
+        // HANDLE RELATION CHECK:
 
 
         //IF Follows Any
-        if (count($idea_list_config[27984])) {
+        if (count($hashtag_list_config[27984])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[27984] as $focussourceid) {
-                    if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                            'chainsourceup' => $focussourceid,
-                            'chainsourcedown' => $chainsourcecreator,
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[27984] as $focushandleid) {
+                    if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                            'chainhandleinput' => $focushandleid,
+                            'chainhandleoutput' => $chainhandlecreator,
                         ))))) {
                         $the_counter++;
                         break;
                     }
                 }
             }
-            if (!$chainsourcecreator || !$the_counter) {
+            if (!$chainhandlecreator || !$the_counter) {
                 return 0;
             }
         }
 
 
         //IF Follows All
-        if (count($idea_list_config[43513])) {
+        if (count($hashtag_list_config[43513])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[43513] as $focussourceid) {
-                    if ((($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                            'chainsourceup' => $focussourceid,
-                            'chainsourcedown' => $chainsourcecreator,
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[43513] as $focushandleid) {
+                    if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                            'chainhandleinput' => $focushandleid,
+                            'chainhandleoutput' => $chainhandlecreator,
                         ))))) {
                         $the_counter++;
                     }
                 }
             }
-            if (!$chainsourcecreator || $the_counter < count($idea_list_config[43513])) {
+            if (!$chainhandlecreator || $the_counter < count($hashtag_list_config[43513])) {
                 return 0;
             }
         }
 
 
         //IF Not Follows Any
-        if (count($idea_list_config[43514])) {
+        if (count($hashtag_list_config[43514])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[43514] as $focussourceid) {
-                    if (($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                            'chainsourceup' => $focussourceid,
-                            'chainsourcedown' => $chainsourcecreator,
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[43514] as $focushandleid) {
+                    if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                            'chainhandleinput' => $focushandleid,
+                            'chainhandleoutput' => $chainhandlecreator,
                         )))) {
                         //Found an exclusion, so skip this:
                         $the_counter++;
@@ -2219,27 +2219,27 @@ function idea_access($ideahashtag = null, $ideaid = 0, $i = false, $replacement_
                     }
                 }
             }
-            if (!$chainsourcecreator || $the_counter > 0) {
+            if (!$chainhandlecreator || $the_counter > 0) {
                 return 0;
             }
         }
 
         //IF Not Follows All
-        if (count($idea_list_config[26600])) {
+        if (count($hashtag_list_config[26600])) {
             $the_counter = 0;
-            if ($chainsourcecreator) {
-                foreach ($idea_list_config[26600] as $focussourceid) {
-                    if (($chainsourcecreator == $focussourceid) || count($CI->Chains->read(array(
-                            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                            'chainsourceup' => $focussourceid,
-                            'chainsourcedown' => $chainsourcecreator,
+            if ($chainhandlecreator) {
+                foreach ($hashtag_list_config[26600] as $focushandleid) {
+                    if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
+                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                            'chainhandleinput' => $focushandleid,
+                            'chainhandleoutput' => $chainhandlecreator,
                         )))) {
                         //Found an exclusion, so skip this:
                         $the_counter++;
                     }
                 }
             }
-            if (!$chainsourcecreator || $the_counter == count($idea_list_config[26600])) {
+            if (!$chainhandlecreator || $the_counter == count($hashtag_list_config[26600])) {
                 return 0;
             }
         }
@@ -2286,7 +2286,7 @@ function update_algolia($focus__node = null, $s__id = 0)
      *
      * */
 
-    if ($focus__node && !in_array($focus__node, $CI->config->item('sourceids___12761'))) {
+    if ($focus__node && !in_array($focus__node, $CI->config->item('handleids___12761'))) {
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
@@ -2299,7 +2299,7 @@ function update_algolia($focus__node = null, $s__id = 0)
     }
 
 
-    $sources___4737 = $CI->config->item('sources___4737'); //Idea Status
+    $handles___4737 = $CI->config->item('handles___4737'); //Hahstag Status
 
     //Define the support objects indexed on algolia:
     $s__id = intval($s__id);
@@ -2307,9 +2307,9 @@ function update_algolia($focus__node = null, $s__id = 0)
 
 
     if ($focus__node == 12273) {
-        $focus_field_id = 'ideaid';
+        $focus_field_id = 'hashtagid';
     } elseif ($focus__node == 12274) {
-        $focus_field_id = 'sourceid';
+        $focus_field_id = 'handleid';
     }
 
 
@@ -2328,8 +2328,8 @@ function update_algolia($focus__node = null, $s__id = 0)
 
     } else {
 
-        //Do both ideas and Sources:
-        $fetch_objects = $CI->config->item('sourceids___12761');
+        //Do both hashtags and Handles:
+        $fetch_objects = $CI->config->item('handleids___12761');
 
         //We need to update the entire index, so let's truncate it first:
         $search_index->clearIndex();
@@ -2353,19 +2353,19 @@ function update_algolia($focus__node = null, $s__id = 0)
         if ($loop_obj == 12273) {
 
             if ($s__id) {
-                $filters['ideaid'] = $s__id;
+                $filters['hashtagid'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->Ideas->read($filters, 0);
+            $db_rows[$loop_obj] = $CI->Hashtags->read($filters, 0);
 
         } elseif ($loop_obj == 12274) {
 
-            //SOURCES
+            //HANDLES
             if ($s__id) {
-                $filters['sourceid'] = $s__id;
+                $filters['handleid'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->Sources->read($filters, 0);
+            $db_rows[$loop_obj] = $CI->Handles->read($filters, 0);
 
         }
 
@@ -2382,9 +2382,9 @@ function update_algolia($focus__node = null, $s__id = 0)
             if ($s__id) {
                 //Update weight before updating this object:
                 if ($focus__node == 12273) {
-                    idea_number_calculator($s);
+                    hashtag_number_calculator($s);
                 } elseif ($focus__node == 12274) {
-                    source_number_calculator($s);
+                    handle_number_calculator($s);
                 }
             }
 
@@ -2392,7 +2392,7 @@ function update_algolia($focus__node = null, $s__id = 0)
             //Attempt to fetch Algolia object ID from object Metadata:
             if ($focus__node) {
 
-                $external_name = ($focus__node == 12273 ? 'ideaexternal' : 'sourceexternal');
+                $external_name = ($focus__node == 12273 ? 'hashtagexternal' : 'handleexternal');
 
                 if (intval($s[$external_name]) > 0) {
                     //We found it! Let's just update existing algolia record
@@ -2403,12 +2403,12 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                 //Clear possible metadata algolia ID's that have been cached:
                 if ($loop_obj == 12273) {
-                    $CI->Ideas->update($s['ideaid'], array(
-                        'ideaexternal' => 0,
+                    $CI->Hashtags->update($s['hashtagid'], array(
+                        'hashtagexternal' => 0,
                     ));
                 } elseif ($loop_obj == 12274) {
-                    $CI->Sources->update($s['sourceid'], array(
-                        'sourceexternal' => 0,
+                    $CI->Handles->update($s['handleid'], array(
+                        'handleexternal' => 0,
                     ));
                 }
 
@@ -2421,68 +2421,68 @@ function update_algolia($focus__node = null, $s__id = 0)
             //Now build object-specific index:
             if ($loop_obj == 12273) {
 
-                //IDEAS
-                //See if this idea has a time-range:
+                //HASHTAGS
+                //See if this hashtag has a time-range:
                 $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['ideaid']);
-                $export_row['s__handle'] = $s['ideahashtag'];
-                $export_row['s__url'] = view_memory(42903, 33286) . $s['ideahashtag']; //Default to idea, forward to discovery is lacking superpowers
+                $export_row['s__id'] = intval($s['hashtagid']);
+                $export_row['s__handle'] = $s['hashtaghashtag'];
+                $export_row['s__url'] = view_memory(42903, 33286) . $s['hashtaghashtag']; //Default to hashtag, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['ideavalue'];
-                $export_row['s__cache'] = $s['ideacache'];
-                $export_row['s__weight'] = intval($s['ideakey']);
+                $export_row['s__title'] = $s['hashtagvalue'];
+                $export_row['s__cache'] = $s['hashtagcache'];
+                $export_row['s__weight'] = intval($s['hashtagkey']);
 
-                if (idea_is_startable($s)) {
+                if (hashtag_is_startable($s)) {
                     array_push($export_row['_tags'], 'public_index');
                 }
 
-                //Top/Bottom Idea Keywords
+                //Top/Bottom Hahstag Keywords
                 foreach ($CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-                    'chainidealeft' => $s['ideaid'],
-                ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['ideavalue'] . ' ';
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42345')) . ')' => null, //Active Sequence
+                    'chainhashtaginput' => $s['hashtagid'],
+                ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $i) {
+                    $export_row['s__keywords'] .= $i['hashtagvalue'] . ' ';
                 }
                 foreach ($CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-                    'chainidearight' => $s['ideaid'],
-                ), array('chainidealeft'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['ideavalue'] . ' ';
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42345')) . ')' => null, //Active Sequence
+                    'chainhashtagoutput' => $s['hashtagid'],
+                ), array('chainhashtaginput'), 0, 0, array('chainkey' => 'ASC')) as $i) {
+                    $export_row['s__keywords'] .= $i['hashtagvalue'] . ' ';
                 }
 
-                //Idea Sources Keywords
+                //Hahstag Handles Keywords
                 foreach ($CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
-                    'chainidearight' => $s['ideaid'],
-                ), array('chainsourceup'), 0) as $x) {
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                    'chainhashtagoutput' => $s['hashtagid'],
+                ), array('chainhandleinput'), 0) as $x) {
 
                     //Authored?
-                    $is_author = in_array($x['chainsourcetype'], $CI->config->item('sourceids___31919'));
+                    $is_author = in_array($x['chainhandletype'], $CI->config->item('handleids___31919'));
                     if ($is_author) {
-                        array_push($export_row['_tags'], 'z_' . $x['sourceid']);
+                        array_push($export_row['_tags'], 'z_' . $x['handleid']);
                     }
 
                     //Keywords?
                     if ($is_author || strlen($x['chainvalue'])) {
-                        $export_row['s__keywords'] .= $x['sourcevalue'] . ' ' . (strlen($x['chainvalue']) ? $x['chainvalue'] . ' ' : '');
+                        $export_row['s__keywords'] .= $x['handlevalue'] . ' ' . (strlen($x['chainvalue']) ? $x['chainvalue'] . ' ' : '');
                     }
 
                 }
 
             } elseif ($loop_obj == 12274) {
 
-                //SOURCES
+                //HANDLES
                 $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['sourceid']);
-                $export_row['s__handle'] = $s['sourcehandle'];
-                $export_row['s__url'] = view_memory(42903, 42902) . $s['sourcehandle'];
-                $export_row['s__cover'] = $s['sourcecover'];
-                $export_row['s__title'] = $s['sourcevalue'];
+                $export_row['s__id'] = intval($s['handleid']);
+                $export_row['s__handle'] = $s['handlehandle'];
+                $export_row['s__url'] = view_memory(42903, 42902) . $s['handlehandle'];
+                $export_row['s__cover'] = $s['handlecover'];
+                $export_row['s__title'] = $s['handlevalue'];
                 $export_row['s__cache'] = '';
-                $export_row['s__weight'] = intval($s['sourcekey']);
+                $export_row['s__weight'] = intval($s['handlekey']);
 
                 //Is this an image?
-                if (strlen($s['sourcecover'])) {
+                if (strlen($s['handlecover'])) {
                     array_push($export_row['_tags'], 'has_image');
                 }
 
@@ -2490,15 +2490,15 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                 //Fetch Following:
                 foreach ($CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                    'chainsourcedown' => $s['sourceid'], //This follower Source
-                ), array('chainsourceup'), 0, 0, array('sourcevalue' => 'DESC')) as $x) {
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                    'chainhandleoutput' => $s['handleid'], //This follower Handle
+                ), array('chainhandleinput'), 0, 0, array('handlevalue' => 'DESC')) as $x) {
 
                     //Add tags:
-                    array_push($export_row['_tags'], 'z_' . $x['sourceid']);
+                    array_push($export_row['_tags'], 'z_' . $x['handleid']);
 
                     //Add Keywords:
-                    $export_row['s__keywords'] .= $x['sourcevalue'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
+                    $export_row['s__keywords'] .= $x['handlevalue'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
 
                 }
             }
@@ -2552,12 +2552,12 @@ function update_algolia($focus__node = null, $s__id = 0)
             if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1) {
                 foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
                     if ($focus__node == 12273) {
-                        $CI->Ideas->update($all_db_rows[$key][$focus_field_id], array(
-                            'ideaexternal' => $algolia_id,
+                        $CI->Hashtags->update($all_db_rows[$key][$focus_field_id], array(
+                            'hashtagexternal' => $algolia_id,
                         ));
                     } elseif ($focus__node == 12274) {
-                        $CI->Sources->update($all_db_rows[$key][$focus_field_id], array(
-                            'sourceexternal' => $algolia_id,
+                        $CI->Handles->update($all_db_rows[$key][$focus_field_id], array(
+                            'handleexternal' => $algolia_id,
                         ));
                     }
                 }
@@ -2588,13 +2588,13 @@ function update_algolia($focus__node = null, $s__id = 0)
 
             foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                if (isset($all_db_rows[$key]['ideaid'])) {
-                    $CI->Ideas->update($all_db_rows[$key][(isset($all_db_rows[$key]['ideaid']) ? 'ideaid' : 'sourceid')], array(
-                        'ideaexternal' => intval($algolia_id),
+                if (isset($all_db_rows[$key]['hashtagid'])) {
+                    $CI->Hashtags->update($all_db_rows[$key][(isset($all_db_rows[$key]['hashtagid']) ? 'hashtagid' : 'handleid')], array(
+                        'hashtagexternal' => intval($algolia_id),
                     ));
                 } else {
-                    $CI->Sources->update($all_db_rows[$key][(isset($all_db_rows[$key]['ideaid']) ? 'ideaid' : 'sourceid')], array(
-                        'sourceexternal' => intval($algolia_id),
+                    $CI->Handles->update($all_db_rows[$key][(isset($all_db_rows[$key]['hashtagid']) ? 'hashtagid' : 'handleid')], array(
+                        'handleexternal' => intval($algolia_id),
                     ));
                 }
 
@@ -2636,11 +2636,11 @@ function one_two_explode($one, $two, $str)
 }
 
 
-function idea_creation_time($ideaid)
+function hashtag_creation_time($hashtagid)
 {
     $CI =& get_instance();
     foreach ($CI->Chains->read(array(
-        'chainid' => $ideaid,
+        'chainid' => $hashtagid,
     )) as $x) {
         return $x['chaintime'];
     }
@@ -2764,13 +2764,13 @@ function chainhash($x)
 {
     return sha1(
         substr(strtotime($x['chaintime']), 0, 10) .
-        $x['chainsourcedomain'] .
-        $x['chainsourcecreator'] .
-        $x['chainsourcetype'] .
-        (isset($x['chainsourceup']) ? $x['chainsourceup'] : 0) .
-        (isset($x['chainsourcedown']) ? $x['chainsourcedown'] : 0) .
-        (isset($x['chainidealeft']) ? $x['chainidealeft'] : 0) .
-        (isset($x['chainidearight']) ? $x['chainidearight'] : 0) .
+        $x['chainhandledomain'] .
+        $x['chainhandlecreator'] .
+        $x['chainhandletype'] .
+        (isset($x['chainhandleinput']) ? $x['chainhandleinput'] : 0) .
+        (isset($x['chainhandleoutput']) ? $x['chainhandleoutput'] : 0) .
+        (isset($x['chainhashtaginput']) ? $x['chainhashtaginput'] : 0) .
+        (isset($x['chainhashtagoutput']) ? $x['chainhashtagoutput'] : 0) .
         (isset($x['chainvalue']) ? $x['chainvalue'] : '') .
         (isset($x['chainkey']) ? $x['chainkey'] : 0) .
         $x['chainprevious']
@@ -2783,62 +2783,62 @@ function chain_view($x)
     $CI =& get_instance();
     $row1 = '<tr width="100%" style="border-top: 1px solid #999999;">';
     $row2 = '<tr width="100%">';
-    foreach ($CI->config->item('sources___4341') as $sourceid => $m) {
+    foreach ($CI->config->item('handles___4341') as $handleid => $m) {
 
         $column_value = null;
 
         if (in_array(6160, $m['m__following'])) {
 
-            //SOURCE
+            //HANDLE
             $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
-                foreach ($CI->Sources->read(array('sourceid' => $x[$m['m__handle']])) as $focus_e) {
-                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['sourcehandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['sourcevalue'] . '" class="icon-block-sm">' . view_cover($focus_e['sourcecover'], '<i class="far fa-at"></i>') . '</a>';
+                foreach ($CI->Handles->read(array('handleid' => $x[$m['m__handle']])) as $focus_e) {
+                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['handlehandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['handlevalue'] . '" class="icon-block-sm">' . view_cover($focus_e['handlecover'], '<i class="far fa-at"></i>') . '</a>';
                 }
             }
             $column_value .= '</div></td>';
 
         } elseif (in_array(6202, $m['m__following'])) {
 
-            //IDEA
+            //HASHTAG
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
-                foreach ($CI->Ideas->read(array('ideaid' => $x[$m['m__handle']])) as $focus_i) {
-                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['ideahashtag'] . '" data-toggle="popover">#' . $focus_i['ideahashtag'] . '</a>';
+                foreach ($CI->Hashtags->read(array('hashtagid' => $x[$m['m__handle']])) as $focus_i) {
+                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['hashtaghashtag'] . '" data-toggle="popover">#' . $focus_i['hashtaghashtag'] . '</a>';
                 }
             }
             $column_value .= '</div></td>';
 
-        } elseif ($sourceid == 4367) {
+        } elseif ($handleid == 4367) {
 
             //Chain ID
 
             //Determine chain group:
-            $sourcehandle_sign = '';
-            if (in_array($x['chainsourcetype'], array(12273, 12274))) {
-                $sources___4593 = $CI->config->item('sources___4593'); //Chain Type
-                $sourcehandle_sign = '<span class="group_sign" title="' . $sources___4593[$x['chainsourcetype']]['m__title'] . '">' . $sources___4593[$x['chainsourcetype']]['m__cover'] . '</span>';
+            $handlehandle_sign = '';
+            if (in_array($x['chainhandletype'], array(12273, 12274))) {
+                $handles___4593 = $CI->config->item('handles___4593'); //Chain Type
+                $handlehandle_sign = '<span class="group_sign" title="' . $handles___4593[$x['chainhandletype']]['m__title'] . '">' . $handles___4593[$x['chainhandletype']]['m__cover'] . '</span>';
             } else {
-                foreach ($CI->config->item('sources___31770') as $groupid => $groupm) {
-                    if (in_array($x['chainsourcetype'], $CI->config->item('sourceids___' . $groupid))) {
-                        $sourcehandle_sign = '<span class="group_sign" title="' . $groupm['m__title'] . '">' . $groupm['m__cover'] . '</span>';
+                foreach ($CI->config->item('handles___31770') as $groupid => $groupm) {
+                    if (in_array($x['chainhandletype'], $CI->config->item('handleids___' . $groupid))) {
+                        $handlehandle_sign = '<span class="group_sign" title="' . $groupm['m__title'] . '">' . $groupm['m__cover'] . '</span>';
                         break;
                     }
                 }
             }
 
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $sourcehandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $handlehandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
-        } elseif ($sourceid == 44395) {
+        } elseif ($handleid == 44395) {
 
             //Void:
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
-        } elseif ($sourceid == 4362) {
+        } elseif ($handleid == 4362) {
 
             //TIME
             $column_value .= '<td style="width:25px !important;">';
@@ -2847,7 +2847,7 @@ function chain_view($x)
             $column_value .= '</div>';
             $column_value .= '</td>';
 
-        } elseif (in_array($sourceid, array(1579301, 1579321))) {
+        } elseif (in_array($handleid, array(1579301, 1579321))) {
 
             //HASH
             $column_value .= '<td style="width:50px !important;">';
@@ -2856,14 +2856,14 @@ function chain_view($x)
             $column_value .= '</div>';
             $column_value .= '</td>';
 
-        } elseif ($sourceid == 4370) {
+        } elseif ($handleid == 4370) {
 
             //Number
             $column_value .= '<td>';
             $column_value .= ($x['chainkey'] > 0 ? $x['chainkey'] : '&nbsp;');
             $column_value .= '</td>';
 
-        } elseif ($sourceid == 4372) {
+        } elseif ($handleid == 4372) {
 
             //Text
             $column_value .= '<td>';
@@ -2872,7 +2872,7 @@ function chain_view($x)
 
         }
 
-        if (in_array($sourceid, $CI->config->item('sourceids___1579727'))) {
+        if (in_array($handleid, $CI->config->item('handleids___1579727'))) {
             //Second row:
             $row2 .= $column_value;
         } else {
@@ -2943,7 +2943,7 @@ function view_app_chain($app_id)
 function view_memory($following, $follower, $filed = 'm__message')
 {
     $CI =& get_instance();
-    $memory_tree = @$CI->config->item('sources___' . $following);
+    $memory_tree = @$CI->config->item('handles___' . $following);
     if (is_array($memory_tree) && count($memory_tree) && isset($memory_tree[$follower][$filed])) {
         return $memory_tree[$follower][$filed];
     } else {
@@ -2952,21 +2952,21 @@ function view_memory($following, $follower, $filed = 'm__message')
 }
 
 
-function view_cache($following, $sourceid, $micro_status = true, $data_placement = 'top', $ideaid = 0)
+function view_cache($following, $handleid, $micro_status = true, $data_placement = 'top', $hashtagid = 0)
 {
 
     /*
      *
-     * UI for Platform Cache Sources
+     * UI for Platform Cache Handles
      *
      * */
 
     $CI =& get_instance();
-    $config_array = $CI->config->item('sources___' . $following);
-    if (!isset($config_array[$sourceid])) {
+    $config_array = $CI->config->item('handles___' . $following);
+    if (!isset($config_array[$handleid])) {
         return false;
     }
-    $cache = $config_array[$sourceid];
+    $cache = $config_array[$handleid];
     if (!$cache) {
         //Could not find matching item
         return false;
@@ -2982,30 +2982,30 @@ function view_cache($following, $sourceid, $micro_status = true, $data_placement
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="' . ($micro_status ? 'cache_micro_' . $following . '_' . $ideaid : '') . '" ' . ($micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
+        return '<span class="' . ($micro_status ? 'cache_micro_' . $following . '_' . $hashtagid : '') . '" ' . ($micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
     }
 }
 
 
-function view_card($href, $is_current, $chainsourcetype, $o__type, $o__title, $chainvalue = null)
+function view_card($href, $is_current, $chainhandletype, $o__type, $o__title, $chainvalue = null)
 {
     $CI =& get_instance();
-    $sources___4593 = $CI->config->item('sources___4593');
+    $handles___4593 = $CI->config->item('handles___4593');
     return '<a href="' . ($is_current ? 'javascript:alert(\'You are here already!\');' : $href) . '" class="dropdown-item ' . ($is_current ? ' active ' : '') . '">' .
-        (in_array($chainsourcetype, $CI->config->item('sourceids___32172')) ? '<span class="icon-block-xs">' . $sources___4593[$chainsourcetype]['m__cover'] . '</span>' : '') .
+        (in_array($chainhandletype, $CI->config->item('handleids___32172')) ? '<span class="icon-block-xs">' . $handles___4593[$chainhandletype]['m__cover'] . '</span>' : '') .
         (strlen($o__type) ? '<span class="icon-block-xs">' . $o__type . '</span>' : '&nbsp;') . //Type or Cover
         $o__title .
-        (strlen($chainvalue) && source_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
+        (strlen($chainvalue) && handle_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
         '</a>';
 }
 
-function view_more($href, $is_current, $chainsourcetype, $o__type, $o__title, $chainvalue = null)
+function view_more($href, $is_current, $chainhandletype, $o__type, $o__title, $chainvalue = null)
 {
     return '<a href="' . ($is_current ? 'javascript:alert(\'You are here already!\');' : $href) . '" class="dropdown-item ' . ($is_current ? ' active ' : '') . '">' .
-        ($chainsourcetype ? '<span class="icon-block-xs">' . $chainsourcetype . '</span>' : '') .
+        ($chainhandletype ? '<span class="icon-block-xs">' . $chainhandletype . '</span>' : '') .
         (strlen($o__type) ? '<span class="icon-block-xs">' . $o__type . '</span>' : '&nbsp;') . //Type or Cover
         $o__title .
-        (strlen($chainvalue) && source_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
+        (strlen($chainvalue) && handle_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
         '</a>';
 }
 
@@ -3026,21 +3026,21 @@ function log_error($error_message, $error_data = array(), $log_error = true)
 {
 
     //Log in PHP File:
-    $source_session = source_session();
+    $handle_session = handle_session();
 
     if ($log_error) {
 
         $CI =& get_instance();
         log_message('error', 'MENCH ERROR: ' . $error_message
-            . ($source_session ? ' | PLAYER: ' . print_r($source_session, true) : '')
-            . ($source_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
+            . ($handle_session ? ' | PLAYER: ' . print_r($handle_session, true) : '')
+            . ($handle_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
         $CI->Chains->create(array_merge($error_data, array(
-            'chainsourceup' => 4246, //Platform Bug Reports
-            'chainsourcetype' => 44179, //Triggered
+            'chainhandleinput' => 4246, //Platform Bug Reports
+            'chainhandletype' => 44179, //Triggered
             'chainvalue' => $error_message,
-            'chainsourcecreator' => (isset($error_data['chainsourcecreator']) && $error_data['chainsourcecreator'] > 0 ? $error_data['chainsourcecreator'] : ($source_session ? $source_session['sourceid'] : 0)),
+            'chainhandlecreator' => (isset($error_data['chainhandlecreator']) && $error_data['chainhandlecreator'] > 0 ? $error_data['chainhandlecreator'] : ($handle_session ? $handle_session['handleid'] : 0)),
         )));
 
     }
@@ -3048,160 +3048,160 @@ function log_error($error_message, $error_data = array(), $log_error = true)
     return array(
         'status' => 0,
         'message' => $error_message,
-        'source_session' => $source_session,
+        'handle_session' => $handle_session,
         'error_data' => $error_data,
     );
 
 }
 
 
-function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_card_icon = true, $chainsourcesub = 0)
+function handles_query($chainhandletype, $handleid, $current_page = 0, $append_card_icon = true, $chainhandlesub = 0)
 {
 
     /*
      *
-     * Loads Source
+     * Loads Handle
      *
      * */
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if ($chainsourcetype==12273) {
+    if ($chainhandletype==12273) {
 
-        //Ideas Created
+        //Hashtags Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainidearight');
+        $joins_objects = array('chainhashtagoutput');
         $query_filters = array(
-            'chainsourcecreator' => $sourceid,
-            'chainsourcetype' => $chainsourcetype,
+            'chainhandlecreator' => $handleid,
+            'chainhandletype' => $chainhandletype,
         );
 
-    } elseif ($chainsourcetype==12274) {
+    } elseif ($chainhandletype==12274) {
 
-        //Source Created
+        //Handle Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainsourcedown');
+        $joins_objects = array('chainhandleoutput');
         $query_filters = array(
-            'chainsourcecreator' => $sourceid,
-            'chainsourcetype' => $chainsourcetype,
+            'chainhandlecreator' => $handleid,
+            'chainhandletype' => $chainhandletype,
         );
 
-    } elseif(!in_array($chainsourcetype, $CI->config->item('sourceids___4527')) || !is_array($CI->config->item('sourceids___' . $chainsourcetype)) || !count($CI->config->item('sourceids___' . $chainsourcetype))){
+    } elseif(!in_array($chainhandletype, $CI->config->item('handleids___4527')) || !is_array($CI->config->item('handleids___' . $chainhandletype)) || !count($CI->config->item('handleids___' . $chainhandletype))){
 
-        log_error('sources_query() @' . $chainsourcetype . ' Empty Array in Cache @4527');
+        log_error('handles_query() @' . $chainhandletype . ' Empty Array in Cache @4527');
         return false;
 
-    } elseif ($chainsourcetype==42373) {
+    } elseif ($chainhandletype==42373) {
 
-        $order_columns = source_sort();
-        $joins_objects = array('chainsourcedown');
+        $order_columns = handle_sort();
+        $joins_objects = array('chainhandleoutput');
 
-        if(in_array($chainsourcesub, $CI->config->item('sourceids___32292'))) {
+        if(in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
 
             //Down/Followers Sub
             $query_filters = array(
-                'chainsourceup' => $sourceid,
-                'chainsourcetype' => $chainsourcesub,
+                'chainhandleinput' => $handleid,
+                'chainhandletype' => $chainhandlesub,
             );
 
         } else {
 
-            //Down/Followers Source Chain Groups:
+            //Down/Followers Handle Chain Groups:
             $query_filters = array(
-                'chainsourceup' => $sourceid,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
+                'chainhandleinput' => $handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HANDLE CHAINS
             );
 
         }
 
-    } elseif ($chainsourcetype==42279) {
+    } elseif ($chainhandletype==42279) {
 
-        $order_columns = source_sort();
-        $joins_objects = array('chainsourceup');
+        $order_columns = handle_sort();
+        $joins_objects = array('chainhandleinput');
 
-        if(in_array($chainsourcesub, $CI->config->item('sourceids___32292'))) {
+        if(in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
 
             //Up/Following Sub
             $query_filters = array(
-                'chainsourcedown' => $sourceid,
-                'chainsourcetype' => $chainsourcesub,
+                'chainhandleoutput' => $handleid,
+                'chainhandletype' => $chainhandlesub,
             );
 
         } else {
 
-            //Up/Following Source Chain Groups:
+            //Up/Following Handle Chain Groups:
             $query_filters = array(
-                'chainsourcedown' => $sourceid,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //SOURCE CHAINS
+                'chainhandleoutput' => $handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HANDLE CHAINS
             );
 
         }
 
-    } elseif ($chainsourcetype==13550) {
+    } elseif ($chainhandletype==13550) {
 
-        $joins_objects = array('chainidearight');
-        $order_columns = idea_sort();
+        $joins_objects = array('chainhashtagoutput');
+        $order_columns = hashtag_sort();
 
-        if (in_array($chainsourcesub, $CI->config->item('sourceids___13550'))) {
+        if (in_array($chainhandlesub, $CI->config->item('handleids___13550'))) {
             //Mentions Sub
             $query_filters = array(
-                'chainsourcetype' => $chainsourcesub,
-                'chainsourceup' => $sourceid,
+                'chainhandletype' => $chainhandlesub,
+                'chainhandleinput' => $handleid,
             );
         } else {
             //Mentions
             $query_filters = array(
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null,
-                'chainsourceup' => $sourceid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
+                'chainhandleinput' => $handleid,
             );
         }
 
-    } elseif ($chainsourcetype==4486) {
+    } elseif ($chainhandletype==4486) {
 
         $order_columns = array();
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainidearight');
+        $joins_objects = array('chainhashtagoutput');
 
 
-        if (in_array($chainsourcesub, $CI->config->item('sourceids___4486'))) {
+        if (in_array($chainhandlesub, $CI->config->item('handleids___4486'))) {
 
-            //Ideas Sub
+            //Hashtags Sub
             $query_filters = array(
-                'chainsourcecreator' => $sourceid,
-                'chainsourcetype' => $chainsourcesub,
+                'chainhandlecreator' => $handleid,
+                'chainhandletype' => $chainhandlesub,
             );
 
         } else {
 
-            //Ideas
+            //Hashtags
             $query_filters = array(
-                'chainsourcecreator' => $sourceid,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //DISCOVERY GROUP
+                'chainhandlecreator' => $handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //DISCOVERY GROUP
             );
 
         }
 
-    } elseif ($chainsourcetype==31777) {
+    } elseif ($chainhandletype==31777) {
 
         $order_columns = array();
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainidealeft');
+        $joins_objects = array('chainhashtaginput');
 
-        if (in_array($chainsourcesub, $CI->config->item('sourceids___31777'))) {
+        if (in_array($chainhandlesub, $CI->config->item('handleids___31777'))) {
 
             //Discoveries SUB
             $query_filters = array(
-                'chainsourcecreator' => $sourceid,
-                'chainsourcetype' => $chainsourcesub,
+                'chainhandlecreator' => $handleid,
+                'chainhandletype' => $chainhandlesub,
             );
 
         } else {
 
             //Discoveries
             $query_filters = array(
-                'chainsourcecreator' => $sourceid,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //DISCOVERY GROUP
+                'chainhandlecreator' => $handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //DISCOVERY GROUP
             );
 
         }
@@ -3222,12 +3222,12 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
 
     } else {
 
-        $sources___11035 = $CI->config->item('sources___11035');
-        if (!isset($sources___11035[$chainsourcetype]['m__title'])) {
-            log_error('@' . $chainsourcetype . ' Missing from Nav @11035', array(
-                'chainsourcedown' => $chainsourcetype,
+        $handles___11035 = $CI->config->item('handles___11035');
+        if (!isset($handles___11035[$chainhandletype]['m__title'])) {
+            log_error('@' . $chainhandletype . ' Missing from Nav @11035', array(
+                'chainhandleoutput' => $chainhandletype,
             ));
-            $sources___11035[$chainsourcetype] = array(
+            $handles___11035[$chainhandletype] = array(
                 'm__title' => '',
                 'm__cover' => '',
             );
@@ -3235,7 +3235,7 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
         $query = $CI->Chains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">' . view_number($count_query) . '<span>';
-        $title_desc = number_format($count_query, 0) . ' ' . $sources___11035[$chainsourcetype]['m__title'];
+        $title_desc = number_format($count_query, 0) . ' ' . $handles___11035[$chainhandletype]['m__title'];
 
         if ($append_card_icon) {
 
@@ -3243,11 +3243,11 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-xs">' . $sources___11035[$chainsourcetype]['m__cover'] . '</span>';
+            $card_icon = '<span class="icon-block-xs">' . $handles___11035[$chainhandletype]['m__cover'] . '</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding loadsource_cards button_of_' . $sourceid . '_' . $chainsourcetype . '" id="cardsource_group_' . $chainsourcetype . '_' . $sourceid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainsourcetype="' . $chainsourcetype . '" load_sourceid="' . $sourceid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
-            $ui .= '<div class="dropdown-menu dropdown_' . $chainsourcetype . ' coinssource_' . $sourceid . '_' . $chainsourcetype . '" aria-labelledby="cardsource_group_' . $chainsourcetype . '_' . $sourceid . '">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding loadhandle_cards button_of_' . $handleid . '_' . $chainhandletype . '" id="cardhandle_group_' . $chainhandletype . '_' . $handleid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainhandletype="' . $chainhandletype . '" load_handleid="' . $handleid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
+            $ui .= '<div class="dropdown-menu dropdown_' . $chainhandletype . ' coinshandle_' . $handleid . '_' . $chainhandletype . '" aria-labelledby="cardhandle_group_' . $chainhandletype . '_' . $handleid . '">';
             //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
             $ui .= '</div>';
@@ -3262,61 +3262,61 @@ function sources_query($chainsourcetype, $sourceid, $current_page = 0, $append_c
 }
 
 
-function ideas_query($chainsourcetype, $ideaid, $current_page = 0, $append_card_icon = true, $headline_authors = array())
+function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append_card_icon = true, $headline_authors = array())
 {
 
     /*
      *
-     * Loads Idea
+     * Loads Hahstag
      *
      * */
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if ($chainsourcetype==13550) {
+    if ($chainhandletype==13550) {
 
-        //SOURCES
-        $joins_objects = array('chainsourceup');
+        //HANDLES
+        $joins_objects = array('chainhandleinput');
         $query_filters = array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null,
-            'chainidearight' => $ideaid,
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
+            'chainhashtagoutput' => $hashtagid,
         );
-        if ($chainsourcetype == 42256 && count($headline_authors)) {
+        if ($chainhandletype == 42256 && count($headline_authors)) {
             //Exclude Headline Authors since they have already been listed:
-            $query_filters['chainsourceup NOT IN (' . join(',', $headline_authors) . ')'] = null;
+            $query_filters['chainhandleinput NOT IN (' . join(',', $headline_authors) . ')'] = null;
         }
 
-        $order_columns = idea_sort();
+        $order_columns = hashtag_sort();
 
-    } elseif ($chainsourcetype==11019) {
+    } elseif ($chainhandletype==11019) {
 
-        //IDEA Chain Groups Previous
+        //HASHTAG Chain Groups Previous
         $order_columns = array('chainid' => 'DESC');
-        $joins_objects = array('chainidealeft');
+        $joins_objects = array('chainhashtaginput');
         $query_filters = array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //IDEA CHAINS
-            'chainidearight' => $ideaid,
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HASHTAG CHAINS
+            'chainhashtagoutput' => $hashtagid,
         );
 
-    } elseif ($chainsourcetype==12840) {
+    } elseif ($chainhandletype==12840) {
 
-        //IDEA Chain Groups Next
+        //HASHTAG Chain Groups Next
         $order_columns = array('chainkey' => 'ASC');
-        $joins_objects = array('chainidearight');
+        $joins_objects = array('chainhashtagoutput');
         $query_filters = array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null,
-            'chainidealeft' => $ideaid,
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
+            'chainhashtaginput' => $hashtagid,
         );
 
-    } elseif (in_array($chainsourcetype, $CI->config->item('sourceids___12144'))) {
+    } elseif (in_array($chainhandletype, $CI->config->item('handleids___12144'))) {
 
         //DISCOVERIES
         $order_columns = array('chainid' => 'DESC');
-        $joins_objects = array('chainsourcecreator');
+        $joins_objects = array('chainhandlecreator');
         $query_filters = array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___' . $chainsourcetype)) . ')' => null, //DISCOVERIES
-            'chainidealeft' => $ideaid,
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $hashtagid,
         );
 
     } else {
@@ -3334,11 +3334,11 @@ function ideas_query($chainsourcetype, $ideaid, $current_page = 0, $append_card_
 
     } else {
 
-        $sources___11035 = $CI->config->item('sources___11035'); //COINS
+        $handles___11035 = $CI->config->item('handles___11035'); //COINS
         $query = $CI->Chains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">' . view_number($count_query) . '<span>';
-        $title_desc = number_format($count_query, 0) . (isset($sources___11035[$chainsourcetype]['m__title']) ? ' ' . $sources___11035[$chainsourcetype]['m__title'] : '');
+        $title_desc = number_format($count_query, 0) . (isset($handles___11035[$chainhandletype]['m__title']) ? ' ' . $handles___11035[$chainhandletype]['m__title'] : '');
 
         if ($append_card_icon) {
 
@@ -3346,13 +3346,13 @@ function ideas_query($chainsourcetype, $ideaid, $current_page = 0, $append_card_
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-sm">' . $sources___11035[$chainsourcetype]['m__cover'] . '</span>';
+            $card_icon = '<span class="icon-block-sm">' . $handles___11035[$chainhandletype]['m__cover'] . '</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_idea_cards button_of_' . $ideaid . '_' . $chainsourcetype . '" id="card_group_idea_' . $chainsourcetype . '_' . $ideaid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainsourcetype="' . $chainsourcetype . '" load_ideaid="' . $ideaid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_hashtag_cards button_of_' . $hashtagid . '_' . $chainhandletype . '" id="card_group_hashtag_' . $chainhandletype . '_' . $hashtagid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainhandletype="' . $chainhandletype . '" load_hashtagid="' . $hashtagid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
 
             //Menu To be loaded dynamically via AJAX:
-            $ui .= '<div class="dropdown-menu dropdown_' . $chainsourcetype . ' coins_idea_' . $ideaid . '_' . $chainsourcetype . '" aria-labelledby="card_group_idea_' . $chainsourcetype . '_' . $ideaid . '"></div>';
+            $ui .= '<div class="dropdown-menu dropdown_' . $chainhandletype . ' coins_hashtag_' . $hashtagid . '_' . $chainhandletype . '" aria-labelledby="card_group_hashtag_' . $chainhandletype . '_' . $hashtagid . '"></div>';
 
             $ui .= '</div>';
 
@@ -3366,30 +3366,30 @@ function ideas_query($chainsourcetype, $ideaid, $current_page = 0, $append_card_
 
 }
 
-function view_dynamic_headline($dynamic_sourceid, $m, $selected_e = null)
+function view_dynamic_headline($dynamic_handleid, $m, $selected_e = null)
 {
 
     $CI =& get_instance();
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
 
     $headline = '<span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': ';
 
-    if (in_array($dynamic_sourceid, $CI->config->item('sourceids___28239'))) {
-        $headline .= '<span class="icon-block-sm" title="' . $sources___11035[28239]['m__message'] . '" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">' . $sources___11035[28239]['m__cover'] . '</span>';
+    if (in_array($dynamic_handleid, $CI->config->item('handleids___28239'))) {
+        $headline .= '<span class="icon-block-sm" title="' . $handles___11035[28239]['m__message'] . '" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">' . $handles___11035[28239]['m__cover'] . '</span>';
     }
-    if (in_array($dynamic_sourceid, $CI->config->item('sourceids___32145'))) {
-        $headline .= '<span class="icon-block-sm" title="' . $sources___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $sources___11035[32145]['m__cover'] . '</span>';
+    if (in_array($dynamic_handleid, $CI->config->item('handleids___32145'))) {
+        $headline .= '<span class="icon-block-sm" title="' . $handles___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $handles___11035[32145]['m__cover'] . '</span>';
     }
 
-    if (isset($sources___11035[$dynamic_sourceid]) && strlen($sources___11035[$dynamic_sourceid]['m__message'])) {
-        $headline .= '<span class="doregular info_blob ' . (strlen($sources___11035[$dynamic_sourceid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $sources___11035[$dynamic_sourceid]['m__message'] . '</span></span>';
+    if (isset($handles___11035[$dynamic_handleid]) && strlen($handles___11035[$dynamic_handleid]['m__message'])) {
+        $headline .= '<span class="doregular info_blob ' . (strlen($handles___11035[$dynamic_handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$dynamic_handleid]['m__message'] . '</span></span>';
     }
 
     return $headline;
 }
 
 
-function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
+function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 0)
 {
 
     /*
@@ -3397,20 +3397,20 @@ function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
      * */
 
     $CI =& get_instance();
-    $sources___42179 = $CI->config->item('sources___42179'); //Dynamic Input Fields
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
-    $sources___4527 = $CI->config->item('sources___4527'); //Memory
-    $is_compact = in_array($focus__id, $CI->config->item('sourceids___42191'));
-    $single_select = in_array($focus__id, $CI->config->item('sourceids___33331'));
-    $multi_select = in_array($focus__id, $CI->config->item('sourceids___33332'));
-    $access_locked = in_array($focus__id, $CI->config->item('sourceids___32145'));
-    $focus_select = $CI->config->item($single_select ? 'sources___33331' : 'sources___33332');
+    $handles___42179 = $CI->config->item('handles___42179'); //Dynamic Input Fields
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $handles___4527 = $CI->config->item('handles___4527'); //Memory
+    $is_compact = in_array($focus__id, $CI->config->item('handleids___42191'));
+    $single_select = in_array($focus__id, $CI->config->item('handleids___33331'));
+    $multi_select = in_array($focus__id, $CI->config->item('handleids___33332'));
+    $access_locked = in_array($focus__id, $CI->config->item('handleids___32145'));
+    $focus_select = $CI->config->item($single_select ? 'handles___33331' : 'handles___33332');
 
     if (!$single_select && !$multi_select) {
         //Must be either:
         log_error('view_instant_select() @' . $focus__id . ' not in single select @33331 or multi select 33332', array(
-            'chainsourcedown' => $focus__id,
-            'chainidearight' => $right_ideaid,
+            'chainhandleoutput' => $focus__id,
+            'chainhashtagoutput' => $right_hashtagid,
         ));
         return false;
     }
@@ -3418,11 +3418,11 @@ function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
     $already_selected = array();
     $selection_ids = array();
     $selection_options = $CI->Chains->read(array(
-        'chainsourceup' => $focus__id,
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-    ), array('chainsourcedown'), 0, 0, array('chainkey' => 'ASC'));
+        'chainhandleinput' => $focus__id,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+    ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC'));
     foreach ($selection_options as $list_item) {
-        array_push($selection_ids, $list_item['sourceid']);
+        array_push($selection_ids, $list_item['handleid']);
     }
 
     //UI for Single select or multi?
@@ -3432,39 +3432,39 @@ function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
     }
     $ui .= '<div class="list-group list-radio-select grey-line radio-' . $focus__id . ($is_compact ? ' is_compact ' : '') . '">';
 
-    if ($down_sourceid > 0) {
+    if ($down_handleid > 0) {
 
-        //Source Focus:
+        //Handle Focus:
         if (count($selection_ids)) {
             foreach ($CI->Chains->read(array(
-                'chainsourceup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-                'chainsourcedown' => $down_sourceid,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                'chainhandleinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+                'chainhandleoutput' => $down_handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             )) as $sel) {
-                array_push($already_selected, $sel['chainsourceup']);
+                array_push($already_selected, $sel['chainhandleinput']);
             }
         }
 
-        if (!count($already_selected) && $single_select && source_session()) {
+        if (!count($already_selected) && $single_select && handle_session()) {
             //FIND DEFAULT if set in session of this user:
             $var_id = @$CI->session->userdata('session_custom_ui_' . $focus__id);
-            foreach ($selection_ids as $sourceid2) {
-                if ($var_id == $sourceid2) {
-                    $already_selected = array($sourceid2);
+            foreach ($selection_ids as $handleid2) {
+                if ($var_id == $handleid2) {
+                    $already_selected = array($handleid2);
                     break;
                 }
             }
         }
 
-    } elseif ($right_ideaid > 0) {
+    } elseif ($right_hashtagid > 0) {
 
-        //Idea focus:
+        //Hahstag focus:
         foreach ($CI->Chains->read(array(
-            'chainsourceup IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-            'chainidearight' => $right_ideaid,
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
+            'chainhandleinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+            'chainhashtagoutput' => $right_hashtagid,
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
         )) as $sel) {
-            array_push($already_selected, $sel['chainsourceup']);
+            array_push($already_selected, $sel['chainhandleinput']);
         }
 
     }
@@ -3474,46 +3474,46 @@ function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
     $has_selected = count($already_selected);
     $has_multiple = count($selection_options) > 1;
     $overflow_reached = false;
-    $exclude_fonts = (in_array($focus__id, $CI->config->item('sourceids___42417')) ? 'exclude_fonts' : '');
-    $sources___42179 = $CI->config->item('sources___42179'); //Dynamic Input Fields
+    $exclude_fonts = (in_array($focus__id, $CI->config->item('handleids___42417')) ? 'exclude_fonts' : '');
+    $handles___42179 = $CI->config->item('handles___42179'); //Dynamic Input Fields
 
     foreach ($selection_options as $list_item) {
 
         //Has superpower?
-        if (isset($sources___42179[$list_item['sourceid']]['m__following']) && count($sources___42179[$list_item['sourceid']]['m__following'])) {
-            $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $sources___42179[$list_item['sourceid']]['m__following']);
-            if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+        if (isset($handles___42179[$list_item['handleid']]['m__following']) && count($handles___42179[$list_item['handleid']]['m__following'])) {
+            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $handles___42179[$list_item['handleid']]['m__following']);
+            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                 continue;
             }
         }
 
-        $selected = in_array($list_item['sourceid'], $already_selected);
+        $selected = in_array($list_item['handleid'], $already_selected);
         if (!$overflow_reached && $unselected_count >= $overflow_unselected_limit && !$selected && !$is_compact) {
             $overflow_reached = true;
         }
 
-        $headline = '<span class="inner_headline">' . (strlen($list_item['sourcecover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['sourcecover']) . '</span>' : '') . $list_item['sourcevalue'] . '</span>';
-        if (in_array($list_item['sourceid'], $CI->config->item('sourceids___32145'))) {
-            $headline .= '<span class="icon-block-sm" title="' . $sources___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $sources___11035[32145]['m__cover'] . '</span>';
+        $headline = '<span class="inner_headline">' . (strlen($list_item['handlecover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['handlecover']) . '</span>' : '') . $list_item['handlevalue'] . '</span>';
+        if (in_array($list_item['handleid'], $CI->config->item('handleids___32145'))) {
+            $headline .= '<span class="icon-block-sm" title="' . $handles___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $handles___11035[32145]['m__cover'] . '</span>';
         }
         if ($selected) {
             $headline .= '<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>';
         }
-        if (in_array($list_item['sourceid'], $CI->config->item('sourceids___11035')) && strlen($sources___11035[$list_item['sourceid']]['m__message']) > 0) {
-            $headline .= '<span class="doregular info_blob ' . (strlen($sources___11035[$list_item['sourceid']]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $sources___11035[$list_item['sourceid']]['m__message'] . '</span></span>';
+        if (in_array($list_item['handleid'], $CI->config->item('handleids___11035')) && strlen($handles___11035[$list_item['handleid']]['m__message']) > 0) {
+            $headline .= '<span class="doregular info_blob ' . (strlen($handles___11035[$list_item['handleid']]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$list_item['handleid']]['m__message'] . '</span></span>';
         }
 
 
         if ($selected) {
             if ($access_locked) {
-                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['sourcevalue']) . '">' . $headline . '</span>';
+                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlevalue']) . '">' . $headline . '</span>';
             } elseif ($has_multiple) {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['sourcevalue']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlevalue']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
             }
         }
 
         if (!$access_locked) {
-            $ui .= '<a href="javascript:void(0);" onclick="source_select_apply(' . $focus__id . ',' . $list_item['sourceid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_sourceid . ',' . $right_ideaid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['sourceid'] . ' ' . $exclude_fonts . ' item-' . $list_item['sourceid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['sourcevalue']) . '">' . $headline . '</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="handle_select_apply(' . $focus__id . ',' . $list_item['handleid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_handleid . ',' . $right_hashtagid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' item-' . $list_item['handleid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['handlevalue']) . '">' . $headline . '</a>';
         }
 
 
@@ -3533,44 +3533,44 @@ function view_instant_select($focus__id, $down_sourceid = 0, $right_ideaid = 0)
 }
 
 
-function searchingle_select_form($cache_sourceid, $selected_sourceid, $show_dropdown_arrow = false, $show_title = false)
+function searchingle_select_form($cache_handleid, $selected_handleid, $show_dropdown_arrow = false, $show_title = false)
 {
 
     $CI =& get_instance();
-    $sources___this = $CI->config->item('sources___' . $cache_sourceid);
-    $sources___4527 = $CI->config->item('sources___4527'); //Memory
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
+    $handles___this = $CI->config->item('handles___' . $cache_handleid);
+    $handles___4527 = $CI->config->item('handles___4527'); //Memory
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
 
-    if (!$selected_sourceid || !isset($sources___this[$selected_sourceid])) {
+    if (!$selected_handleid || !isset($handles___this[$selected_handleid])) {
         return false;
     }
 
     //Make sure it's not locked:
-    $ui = '<div class="dropdown inline-block dropd_form_' . $cache_sourceid . '" selected_value="' . $selected_sourceid . '">';
+    $ui = '<div class="dropdown inline-block dropd_form_' . $cache_handleid . '" selected_value="' . $selected_handleid . '">';
 
-    $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_' . $cache_sourceid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+    $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_' . $cache_handleid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-    $ui .= '<span class="current_content"><span class="icon-block-sm">' . $sources___this[$selected_sourceid]['m__cover'] . '</span>' . ($show_title ? $sources___this[$selected_sourceid]['m__title'] : '') . '</span>' . ($show_dropdown_arrow ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '');
+    $ui .= '<span class="current_content"><span class="icon-block-sm">' . $handles___this[$selected_handleid]['m__cover'] . '</span>' . ($show_title ? $handles___this[$selected_handleid]['m__title'] : '') . '</span>' . ($show_dropdown_arrow ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '');
 
     $ui .= '</button>';
 
-    $ui .= '<div class="dropdown-menu dropmenu_form_' . $cache_sourceid . '" aria-labelledby="dropdown_form_' . $cache_sourceid . '">';
+    $ui .= '<div class="dropdown-menu dropmenu_form_' . $cache_handleid . '" aria-labelledby="dropdown_form_' . $cache_handleid . '">';
 
     if (!$show_title) {
-        $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">' . $sources___4527[$cache_sourceid]['m__cover'] . '</span>' . $sources___4527[$cache_sourceid]['m__title'] . ':' . (isset($sources___11035[$cache_sourceid]) && strlen($sources___11035[$cache_sourceid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($sources___11035[$cache_sourceid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $sources___11035[$cache_sourceid]['m__message'] . '</span></span>' : '') . '</div>';
+        $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">' . $handles___4527[$cache_handleid]['m__cover'] . '</span>' . $handles___4527[$cache_handleid]['m__title'] . ':' . (isset($handles___11035[$cache_handleid]) && strlen($handles___11035[$cache_handleid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($handles___11035[$cache_handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$cache_handleid]['m__message'] . '</span></span>' : '') . '</div>';
     }
 
-    foreach ($sources___this as $sourceid => $m) {
+    foreach ($handles___this as $handleid => $m) {
 
-        if (in_array($sourceid, $CI->config->item('sourceids___32145'))) {
+        if (in_array($handleid, $CI->config->item('handleids___32145'))) {
             continue; //Locked Dropdown
         }
-        $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m['m__following']);
-        if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m['m__following']);
+        if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
             continue;
         }
 
-        $ui .= '<a class="dropdown-item main__title optiond_' . $sourceid . ' ' . ($sourceid == $selected_sourceid ? ' active ' : '') . '" href="javascript:void();" this_id="' . $sourceid . '" onclick="update_form_select(' . $cache_sourceid . ', ' . $sourceid . ', 0, ' . intval($show_title) . ')"><span class="content_' . $sourceid . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . '</span>' . (isset($sources___11035[$sourceid]) && strlen($sources___11035[$sourceid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($sources___11035[$sourceid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $sources___11035[$sourceid]['m__message'] . '</span></span>' : '') . '</a>';
+        $ui .= '<a class="dropdown-item main__title optiond_' . $handleid . ' ' . ($handleid == $selected_handleid ? ' active ' : '') . '" href="javascript:void();" this_id="' . $handleid . '" onclick="update_form_select(' . $cache_handleid . ', ' . $handleid . ', 0, ' . intval($show_title) . ')"><span class="content_' . $handleid . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . '</span>' . (isset($handles___11035[$handleid]) && strlen($handles___11035[$handleid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($handles___11035[$handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$handleid]['m__message'] . '</span></span>' : '') . '</a>';
 
     }
 
@@ -3581,69 +3581,69 @@ function searchingle_select_form($cache_sourceid, $selected_sourceid, $show_drop
 }
 
 
-function searchingle_select_instant($cache_sourceid, $selected_sourceid, $idea_access = 0, $show_title = true, $o__id = 0, $chainid = 0)
+function searchingle_select_instant($cache_handleid, $selected_handleid, $hashtag_access = 0, $show_title = true, $o__id = 0, $chainid = 0)
 {
 
     $CI =& get_instance();
-    $sources___this = $CI->config->item('sources___' . $cache_sourceid);
-    $source_session = source_session();
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
-    $unselected_radio = in_array($cache_sourceid, $CI->config->item('sourceids___33331')) && !$selected_sourceid;
-    $sources___4527 = $CI->config->item('sources___4527'); //Memory
+    $handles___this = $CI->config->item('handles___' . $cache_handleid);
+    $handle_session = handle_session();
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $unselected_radio = in_array($cache_handleid, $CI->config->item('handleids___33331')) && !$selected_handleid;
+    $handles___4527 = $CI->config->item('handles___4527'); //Memory
 
-    if ($selected_sourceid && !isset($sources___this[$selected_sourceid])) {
+    if ($selected_handleid && !isset($handles___this[$selected_handleid])) {
 
         return false;
 
         /*
-    } elseif(!$selected_sourceid && $idea_access && $source_session){
+    } elseif(!$selected_handleid && $hashtag_access && $handle_session){
 
         //See if this user has any of these options:
         foreach($CI->Chains->read(array(
-            'chainsourceup IN (' . join(',', $CI->config->item('sourceids___'.$cache_sourceid)) . ')' => null, //SOURCE CHAINS
-            'chainsourcedown' => $source_session['sourceid'],
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___'.$cache_handleid)) . ')' => null, //HANDLE CHAINS
+            'chainhandleoutput' => $handle_session['handleid'],
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
         )) as $x) {
             //Supports one for now
-            $selected_sourceid = $x['chainsourceup'];
+            $selected_handleid = $x['chainhandleinput'];
             break;
         }
     */
     }
 
     //Make sure it's not locked:
-    $idea_access = (!in_array($cache_sourceid, $CI->config->item('sourceids___32145')) && !in_array($selected_sourceid, $CI->config->item('sourceids___32145')) ? $idea_access : 0);
+    $hashtag_access = (!in_array($cache_handleid, $CI->config->item('handleids___32145')) && !in_array($selected_handleid, $CI->config->item('handleids___32145')) ? $hashtag_access : 0);
 
-    $ui = '<div class="dropdown ' . ($show_title ? 'dropdown_type_' . $cache_sourceid : '') . ' inline-block dropd_instant_' . $cache_sourceid . '_' . $o__id . '_' . $chainid . '" selected_value="' . $selected_sourceid . '">';
+    $ui = '<div class="dropdown ' . ($show_title ? 'dropdown_type_' . $cache_handleid : '') . ' inline-block dropd_instant_' . $cache_handleid . '_' . $o__id . '_' . $chainid . '" selected_value="' . $selected_handleid . '">';
 
-    $ui .= '<button type="button" ' . ($idea_access >= 3 ? 'class="btn no-left-padding ' . ($show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock') . '" id="dropdown_instant_' . $cache_sourceid . '_' . $o__id . '_' . $chainid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn ' . (!$show_title ? 'no-padding' : '') . ' edit-locked" ') . '>';
+    $ui .= '<button type="button" ' . ($hashtag_access >= 3 ? 'class="btn no-left-padding ' . ($show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock') . '" id="dropdown_instant_' . $cache_handleid . '_' . $o__id . '_' . $chainid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn ' . (!$show_title ? 'no-padding' : '') . ' edit-locked" ') . '>';
 
-    $ui .= '<span class="current_content">' . (isset($sources___this[$selected_sourceid]['m__cover']) ? '<span class="icon-block-sm">' . $sources___this[$selected_sourceid]['m__cover'] . '</span>' . ($show_title ? $sources___this[$selected_sourceid]['m__title'] : '') : '<span class="icon-block-sm">' . $sources___11035[$cache_sourceid]['m__cover'] . '</span>' . ($show_title ? $sources___11035[$cache_sourceid]['m__title'] : '')) . '</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
+    $ui .= '<span class="current_content">' . (isset($handles___this[$selected_handleid]['m__cover']) ? '<span class="icon-block-sm">' . $handles___this[$selected_handleid]['m__cover'] . '</span>' . ($show_title ? $handles___this[$selected_handleid]['m__title'] : '') : '<span class="icon-block-sm">' . $handles___11035[$cache_handleid]['m__cover'] . '</span>' . ($show_title ? $handles___11035[$cache_handleid]['m__title'] : '')) . '</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
 
     $ui .= '</button>';
 
-    if ($idea_access >= 3) {
+    if ($hashtag_access >= 3) {
 
-        $ui .= '<div class="dropdown-menu dropmenu_instant_' . $cache_sourceid . '" o__id="' . $o__id . '" chainid="' . $chainid . '" aria-labelledby="dropdown_instant_' . $cache_sourceid . '_' . $o__id . '_' . $chainid . '">';
+        $ui .= '<div class="dropdown-menu dropmenu_instant_' . $cache_handleid . '" o__id="' . $o__id . '" chainid="' . $chainid . '" aria-labelledby="dropdown_instant_' . $cache_handleid . '_' . $o__id . '_' . $chainid . '">';
 
         if (!$show_title) {
-            $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">' . $sources___4527[$cache_sourceid]['m__cover'] . '</span>' . $sources___4527[$cache_sourceid]['m__title'] . ':' . (isset($sources___11035[$cache_sourceid]) && strlen($sources___11035[$cache_sourceid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($sources___11035[$cache_sourceid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $sources___11035[$cache_sourceid]['m__message'] . '</span></span>' : '') . '</div>';
+            $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">' . $handles___4527[$cache_handleid]['m__cover'] . '</span>' . $handles___4527[$cache_handleid]['m__title'] . ':' . (isset($handles___11035[$cache_handleid]) && strlen($handles___11035[$cache_handleid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($handles___11035[$cache_handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$cache_handleid]['m__message'] . '</span></span>' : '') . '</div>';
         }
 
-        foreach ($sources___this as $sourceid => $m) {
+        foreach ($handles___this as $handleid => $m) {
 
-            if (in_array($sourceid, $CI->config->item('sourceids___32145'))) {
+            if (in_array($handleid, $CI->config->item('handleids___32145'))) {
                 continue; //Locked Dropdown
             }
-            $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m['m__following']);
-            if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m['m__following']);
+            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                 continue;
             }
 
-            $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m['m__following']);
-            $removal_option = in_array($sourceid, $CI->config->item('sourceids___42850'));
+            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m['m__following']);
+            $removal_option = in_array($handleid, $CI->config->item('handleids___42850'));
 
-            $ui .= '<a class="dropdown-item drop_item_instant_' . $sourceid . '_' . $o__id . '_' . $chainid . ' main__title optiond_' . $sourceid . '_' . $o__id . '_' . $chainid . ' ' . ($sourceid == $selected_sourceid ? ' active ' : '') . ($removal_option ? ' removal_option ' . ($unselected_radio ? ' hidden ' : '') : '') . '" href="javascript:void();" this_id="' . $sourceid . '" onclick="selector(' . $cache_sourceid . ', ' . $sourceid . ', ' . $o__id . ', ' . $chainid . ', ' . intval($show_title) . ')"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . (isset($sources___11035[$sourceid]) && strlen($sources___11035[$sourceid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($sources___11035[$sourceid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $sources___11035[$sourceid]['m__message'] . '</span></span>' : '') . '</a>';
+            $ui .= '<a class="dropdown-item drop_item_instant_' . $handleid . '_' . $o__id . '_' . $chainid . ' main__title optiond_' . $handleid . '_' . $o__id . '_' . $chainid . ' ' . ($handleid == $selected_handleid ? ' active ' : '') . ($removal_option ? ' removal_option ' . ($unselected_radio ? ' hidden ' : '') : '') . '" href="javascript:void();" this_id="' . $handleid . '" onclick="selector(' . $cache_handleid . ', ' . $handleid . ', ' . $o__id . ', ' . $chainid . ', ' . intval($show_title) . ')"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . (isset($handles___11035[$handleid]) && strlen($handles___11035[$handleid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($handles___11035[$handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$handleid]['m__message'] . '</span></span>' : '') . '</a>';
 
 
         }
@@ -3658,26 +3658,26 @@ function searchingle_select_instant($cache_sourceid, $selected_sourceid, $idea_a
 }
 
 
-function randomize_text($sourceid)
+function randomize_text($handleid)
 {
     $CI =& get_instance();
-    $sources___12687 = $CI->config->item('sources___12687');
-    $line_messages = explode("\n", $sources___12687[$sourceid]['m__message']);
+    $handles___12687 = $CI->config->item('handles___12687');
+    $line_messages = explode("\n", $handles___12687[$handleid]['m__message']);
     return $line_messages[rand(0, (count($line_messages) - 1))];
 }
 
-function blocked_reasoning($superpower_sourceid = 0)
+function blocked_reasoning($superpower_handleid = 0)
 {
 
-    if (!source_session()) {
+    if (!handle_session()) {
 
         return 'Sign-in to continue';
 
-    } elseif ($superpower_sourceid && !source_session($superpower_sourceid)) {
+    } elseif ($superpower_handleid && !handle_session($superpower_handleid)) {
 
         $CI =& get_instance();
-        $sources___10957 = $CI->config->item('sources___10957');
-        return 'Error: You are missing access to ' . $sources___10957[$superpower_sourceid]['m__title'];
+        $handles___10957 = $CI->config->item('handles___10957');
+        return 'Error: You are missing access to ' . $handles___10957[$superpower_handleid]['m__title'];
 
     } else {
 
@@ -3695,54 +3695,54 @@ function view_hash($string)
 }
 
 
-function view_idea_title($i, $string_only = false)
+function view_hashtag_title($i, $string_only = false)
 {
 
-    if (!isset($i['ideavalue'])) {
+    if (!isset($i['hashtagvalue'])) {
         return null;
     }
 
     //Break down by lines:
-    foreach (explode("\n", $i['ideavalue']) as $line) {
+    foreach (explode("\n", $i['hashtagvalue']) as $line) {
         if (strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)) {
             return ($string_only ? $line : '<span class="main__title">' . $line . '</span>');
         }
     }
 
     //If not yet found we need to use other data to generate title:
-    return (isset($i['ideahashtag']) && strlen($i['ideahashtag']) ? $i['ideahashtag'] : (isset($i['ideaid']) && intval($i['ideaid']) ? 'Idea Number ' . $i['ideaid'] : 'Idea' . rand(100000000000, 999999999999)));
+    return (isset($i['hashtaghashtag']) && strlen($i['hashtaghashtag']) ? $i['hashtaghashtag'] : (isset($i['hashtagid']) && intval($i['hashtagid']) ? 'Hahstag Number ' . $i['hashtagid'] : 'Hahstag' . rand(100000000000, 999999999999)));
 
 }
 
-function view_valid_handle_source($string, $check_db = false)
+function view_valid_handle_handle($string, $check_db = false)
 {
     $CI =& get_instance();
-    return (substr($string, 0, 1) == '@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Sources->read(array(
-            'LOWER(sourcehandle)' => strtolower(substr($string, 1)),
+    return (substr($string, 0, 1) == '@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Handles->read(array(
+            'LOWER(handlehandle)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false);
 }
 
-function view_valid_handle_idea($string, $check_db = false)
+function view_valid_handle_hashtag($string, $check_db = false)
 {
     $CI =& get_instance();
-    return (substr($string, 0, 1) == '#' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Ideas->read(array(
-            'LOWER(ideahashtag)' => strtolower(substr($string, 1)),
+    return (substr($string, 0, 1) == '#' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Hashtags->read(array(
+            'LOWER(hashtaghashtag)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false);
 }
 
-function view_valid_handle_reverse_idea($string, $check_db = false)
+function view_valid_handle_reverse_hashtag($string, $check_db = false)
 {
     $CI =& get_instance();
-    return (substr($string, 0, 2) == '!#' && ctype_alnum(substr($string, 2)) && (!$check_db || count($CI->Ideas->read(array(
-            'LOWER(ideahashtag)' => strtolower(substr($string, 2)),
+    return (substr($string, 0, 2) == '!#' && ctype_alnum(substr($string, 2)) && (!$check_db || count($CI->Hashtags->read(array(
+            'LOWER(hashtaghashtag)' => strtolower(substr($string, 2)),
         )))) ? substr($string, 2) : false);
 }
 
 
-function view_idea_value($i, $sourceid = 0, $replace_chains = true, $focus__node = false)
+function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__node = false)
 {
 
-    if (!isset($i['ideaid'])) {
+    if (!isset($i['hashtagid'])) {
         return null;
     }
 
@@ -3750,31 +3750,31 @@ function view_idea_value($i, $sourceid = 0, $replace_chains = true, $focus__node
     $CI =& get_instance();
 
     if ($replace_chains) {
-        $i['ideacache'] = str_replace('spanaa', 'a', $i['ideacache']);
+        $i['hashtagcache'] = str_replace('spanaa', 'a', $i['hashtagcache']);
     }
 
-    if ($sourceid > 0) {
+    if ($handleid > 0) {
         foreach ($CI->Chains->read(array(
-            'chainidearight' => $i['ideaid'],
-            'chainsourcetype' => 31835, //References
-        ), array('chainsourceup'), 0) as $message_references) {
-            if (!substr_count(strtolower($i['ideacache']), '>@' . strtolower($message_references['sourcehandle']))) {
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandletype' => 31835, //References
+        ), array('chainhandleinput'), 0) as $message_references) {
+            if (!substr_count(strtolower($i['hashtagcache']), '>@' . strtolower($message_references['handlehandle']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
                 $CI->Chains->delete($message_references['chainid']);
                 continue;
             }
             foreach ($CI->Chains->read(array(
-                'chainsourceup' => $message_references['sourceid'],
-                'chainsourcedown' => $sourceid,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                'chainhandleinput' => $message_references['handleid'],
+                'chainhandleoutput' => $handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 'LENGTH(chainvalue) > 0' => null,
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['chainvalue'])) {
                     if (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL)) {
-                        $i['ideacache'] = str_ireplace('@' . $message_references['sourcehandle'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i['ideacache']);
+                        $i['hashtagcache'] = str_ireplace('@' . $message_references['handlehandle'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i['hashtagcache']);
 
                     } else {
-                        $i['ideacache'] = str_ireplace('@' . $message_references['sourcehandle'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['sourcehandle'] . ' ') . $reference_profile['chainvalue'], $i['ideacache']);
+                        $i['hashtagcache'] = str_ireplace('@' . $message_references['handlehandle'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handlehandle'] . ' ') . $reference_profile['chainvalue'], $i['hashtagcache']);
                     }
                 }
             }
@@ -3782,11 +3782,11 @@ function view_idea_value($i, $sourceid = 0, $replace_chains = true, $focus__node
     }
 
     return
-        $i['ideacache'] . view_idea_media($i) . ($focus__node || !substr_count($i['ideacache'], 'show_more_line') ? view_list_source($i, !$replace_chains) : '');
+        $i['hashtagcache'] . view_hashtag_media($i) . ($focus__node || !substr_count($i['hashtagcache'], 'show_more_line') ? view_list_handle($i, !$replace_chains) : '');
 }
 
 
-function ideacache($save_ideaid, $str)
+function hashtagcache($save_hashtagid, $str)
 {
 
     /*
@@ -3806,18 +3806,18 @@ function ideacache($save_ideaid, $str)
 
 
     //All the possible reference types that can be found:
-    $idea_references = array(
+    $hashtag_references = array(
         4256 => array(), //Generic URL
-        31834 => array(), //Idea Synonym
-        42337 => array(), //Idea Antonym
-        31835 => array(), //Source Mention
+        31834 => array(), //Hahstag Synonym
+        42337 => array(), //Hahstag Antonym
+        31835 => array(), //Handle Mention
     );
 
     $ui_template = array(
         4256 => '<spanaa href="%s" target="_blank"><span class="url_truncate">%s</span></spanaa>',
-        31834 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_idea">%s</spanaa>', //Ideation
-        42337 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_idea">%s</spanaa>', //Ideation
-        31835 => '<spanaa href="' . view_memory(42903, 42902) . '%s" data-toggle="popover" class="ref_source">%s</spanaa>', //Sourcing
+        31834 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
+        42337 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
+        31835 => '<spanaa href="' . view_memory(42903, 42902) . '%s" data-toggle="popover" class="ref_handle">%s</spanaa>', //Handles
     );
 
 
@@ -3827,7 +3827,7 @@ function ideacache($save_ideaid, $str)
     $line_inwards = 3;
     $chain_words = 13; //The number of words a chain is counted as
 
-    $ideacache = '<div class="i_cache cache_frame_' . $save_ideaid . '">';
+    $hashtagcache = '<div class="i_cache cache_frame_' . $save_hashtagid . '">';
     $line_count = 0;
     $hidden_started = false;
     $hidden_closed = false;
@@ -3837,100 +3837,100 @@ function ideacache($save_ideaid, $str)
         if (strlen($line)) {
             $line_count++;
         }
-        $ideacache_line = '';
+        $hashtagcache_line = '';
 
         foreach (explode(' ', $line) as $word_index => $word) {
 
             $reference_type = 0;
             if ($word_count >= $word_limit && !$hidden_started && (!$line_inwards || $word_index >= $line_inwards)) {
-                $ideacache_line .= '<span class="hidden inner_line">';
+                $hashtagcache_line .= '<span class="hidden inner_line">';
                 $hidden_started = true;
             }
-            $ideacache_line .= ($word_index > 0 ? ' ' : '');
+            $hashtagcache_line .= ($word_index > 0 ? ' ' : '');
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
                 //Generic URL:
                 $reference_type = 4256;
-                array_push($idea_references[$reference_type], $word);
-                $ideacache_line .= @sprintf($ui_template[$reference_type], $word, $word);
+                array_push($hashtag_references[$reference_type], $word);
+                $hashtagcache_line .= @sprintf($ui_template[$reference_type], $word, $word);
                 $word_count += $chain_words;
 
-            } elseif (view_valid_handle_source($word, true)) {
+            } elseif (view_valid_handle_handle($word, true)) {
 
-                //Idea Synonym
+                //Hahstag Synonym
                 $reference_type = 31835;
-                array_push($idea_references[$reference_type], $word);
-                $ideacache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                array_push($hashtag_references[$reference_type], $word);
+                $hashtagcache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
-            } elseif (view_valid_handle_reverse_idea($word, true)) {
+            } elseif (view_valid_handle_reverse_hashtag($word, true)) {
 
-                //Idea Antonym
+                //Hahstag Antonym
                 $reference_type = 42337;
-                array_push($idea_references[$reference_type], $word);
-                $ideacache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
+                array_push($hashtag_references[$reference_type], $word);
+                $hashtagcache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
                 $word_count++;
 
-            } elseif (view_valid_handle_idea($word, true)) {
+            } elseif (view_valid_handle_hashtag($word, true)) {
 
-                //Source Mention
+                //Handle Mention
                 $reference_type = 31834;
-                array_push($idea_references[$reference_type], $word);
-                $ideacache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                array_push($hashtag_references[$reference_type], $word);
+                $hashtagcache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } else {
 
                 //This word is not referencing anything!
-                $ideacache_line .= htmlentities($word);
+                $hashtagcache_line .= htmlentities($word);
                 $word_count++;
 
             }
         }
 
 
-        $ideacache .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_ideaid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
-        $ideacache .= $ideacache_line;
+        $hashtagcache .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
+        $hashtagcache .= $hashtagcache_line;
         if ($hidden_started && !$hidden_closed) {
-            $ideacache .= '</span>';
+            $hashtagcache .= '</span>';
             $hidden_closed = true;
         }
-        $ideacache .= '</div>';
+        $hashtagcache .= '</div>';
 
     }
 
 
-    if ($save_ideaid && ($hidden_started || ($word_count >= $word_limit && $line_count > 2))) {
+    if ($save_hashtagid && ($hidden_started || ($word_count >= $word_limit && $line_count > 2))) {
         //Add show more button:
-        $ideacache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
+        $hashtagcache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
     }
 
 
-    $ideacache .= '</div>';
+    $hashtagcache .= '</div>';
 
-    if (intval($save_ideaid) > 0) {
+    if (intval($save_hashtagid) > 0) {
 
         //Save Found references to remove the ones who exist in DB:
-        $references_add_to_db = $idea_references;
-        $source_session = source_session();
+        $references_add_to_db = $hashtag_references;
+        $handle_session = handle_session();
         foreach ($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___4736')) . ')' => null, //Idea Message Chains 3x
-            'chainidearight' => $save_ideaid,
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___4736')) . ')' => null, //Hahstag Message Chains 3x
+            'chainhashtagoutput' => $save_hashtagid,
         )) as $x) {
 
             //Is this still valid?
-            if (!in_array($x['chainvalue'], $idea_references[$x['chainsourcetype']])) {
+            if (!in_array($x['chainvalue'], $hashtag_references[$x['chainhandletype']])) {
 
                 //Not valid, must be removed:
-                $CI->Chains->delete($x['chainid'], $source_session['sourceid']);
+                $CI->Chains->delete($x['chainid'], $handle_session['handleid']);
 
             } else {
 
                 //Remove from add new to DB list (Since we dont need to add this):
-                foreach ($references_add_to_db[$x['chainsourcetype']] as $key => $val) {
+                foreach ($references_add_to_db[$x['chainhandletype']] as $key => $val) {
                     if ($val == $x['chainvalue']) {
-                        unset($references_add_to_db[$x['chainsourcetype']][$key]);
+                        unset($references_add_to_db[$x['chainhandletype']][$key]);
                         break;
                     }
                 }
@@ -3941,119 +3941,119 @@ function ideacache($save_ideaid, $str)
         foreach ($references_add_to_db as $db_type => $db_vals) {
             foreach ($db_vals as $db_val) {
 
-                //Additional Source/idea reference?
-                $chainidealeft = 0;
-                $chainsourceup = 0;
+                //Additional Handle/hashtag reference?
+                $chainhashtaginput = 0;
+                $chainhandleinput = 0;
                 $chainvalue = '';
 
                 if ($db_type == 31834) {
-                    $chainsourcetype = 31834;
-                    foreach ($CI->Ideas->read(array(
-                        'LOWER(ideahashtag)' => strtolower(substr($db_val, 1)),
+                    $chainhandletype = 31834;
+                    foreach ($CI->Hashtags->read(array(
+                        'LOWER(hashtaghashtag)' => strtolower(substr($db_val, 1)),
                     )) as $target) {
-                        $chainidealeft = $target['ideaid'];
+                        $chainhashtaginput = $target['hashtagid'];
                     }
                 } elseif ($db_type == 42337) {
-                    $chainsourcetype = 42337;
-                    foreach ($CI->Ideas->read(array(
-                        'LOWER(ideahashtag)' => strtolower(substr($db_val, 2)),
+                    $chainhandletype = 42337;
+                    foreach ($CI->Hashtags->read(array(
+                        'LOWER(hashtaghashtag)' => strtolower(substr($db_val, 2)),
                     )) as $target) {
-                        $chainidealeft = $target['ideaid'];
+                        $chainhashtaginput = $target['hashtagid'];
                     }
                 } elseif ($db_type == 31835) {
-                    $chainsourcetype = 31835;
-                    foreach ($CI->Sources->read(array(
-                        'LOWER(sourcehandle)' => strtolower(substr($db_val, 1)),
+                    $chainhandletype = 31835;
+                    foreach ($CI->Handles->read(array(
+                        'LOWER(handlehandle)' => strtolower(substr($db_val, 1)),
                     )) as $target) {
-                        $str = str_replace('@' . $target['sourceid'], '@' . $target['sourcehandle'], $str); //TODO Remove!
-                        $chainsourceup = $target['sourceid'];
+                        $str = str_replace('@' . $target['handleid'], '@' . $target['handlehandle'], $str); //TODO Remove!
+                        $chainhandleinput = $target['handleid'];
                     }
                 } else {
-                    $chainsourcetype = $db_type; //Message URLs
-                    $source_session = source_session();
-                    $chainsourceup = ($source_session ? $source_session['sourceid'] : 14068);
+                    $chainhandletype = $db_type; //Message URLs
+                    $handle_session = handle_session();
+                    $chainhandleinput = ($handle_session ? $handle_session['handleid'] : 14068);
                     foreach ($CI->Chains->read(array(
-                        'chainid' => $save_ideaid,
+                        'chainid' => $save_hashtagid,
                     ), array()) as $x) {
-                        $chainsourceup = $x['chainsourceup'];
+                        $chainhandleinput = $x['chainhandleinput'];
                         break;
                     }
                     $chainvalue = $db_val;
                 }
 
                 $CI->Chains->create(array(
-                    'chaintime' => idea_creation_time($save_ideaid),
-                    'chainsourcetype' => $chainsourcetype,
-                    'chainsourcecreator' => $source_session['sourceid'],
+                    'chaintime' => hashtag_creation_time($save_hashtagid),
+                    'chainhandletype' => $chainhandletype,
+                    'chainhandlecreator' => $handle_session['handleid'],
                     'chainvalue' => $chainvalue,
-                    'chainidearight' => $save_ideaid,
-                    'chainidealeft' => $chainidealeft,
-                    'chainsourceup' => $chainsourceup,
+                    'chainhashtagoutput' => $save_hashtagid,
+                    'chainhashtaginput' => $chainhashtaginput,
+                    'chainhandleinput' => $chainhandleinput,
                 ));
 
             }
         }
     }
 
-    return $ideacache;
+    return $hashtagcache;
 
 }
 
 
-function view_featured_chains($chainsourcetype, $location, $m = null, $focus__node)
+function view_featured_chains($chainhandletype, $location, $m = null, $focus__node)
 {
     $CI =& get_instance();
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
-    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['sourcehandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['sourcehandle'] . '">' : '') . '<span class="grey ' . ($chainsourcetype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $sources___11035[$chainsourcetype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainsourcetype == 41949 ? 'mini-font' : '') . '">' . $location['sourcevalue'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['handlehandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['handlehandle'] . '">' : '') . '<span class="grey ' . ($chainhandletype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $handles___11035[$chainhandletype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainhandletype == 41949 ? 'mini-font' : '') . '">' . $location['handlevalue'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
 }
 
 
-function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
+function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
 {
 
     $CI =& get_instance();
     $coins_count = array();
     $body_content = '';
-    $source_session = source_session();
-    $ideation_pen = source_session(10939);
-    $sources___loading_order = $CI->config->item('sources___' . ($discovery_mode ? 26005 : 26005));
+    $handle_session = handle_session();
+    $hashtagtion_pen = handle_session(10939);
+    $handles___loading_order = $CI->config->item('handles___' . ($discovery_mode ? 26005 : 26005));
 
-    if ($source_session && !is_array($x_completes)) {
+    if ($handle_session && !is_array($x_completes)) {
         $x_completes = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainsourcecreator' => $source_session['sourceid'],
-            'chainidealeft' => $focus_i['ideaid'],
-        ), array('chainidearight'));
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhandlecreator' => $handle_session['handleid'],
+            'chainhashtaginput' => $focus_i['hashtagid'],
+        ), array('chainhashtagoutput'));
     }
 
-    $discovery_next_hide = $source_session && $discovery_mode && !count($x_completes) && count($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $focus_i['ideaid'],
-            'chainsourceup' => 44250, //Hide Next Ideas
+    $discovery_next_hide = $handle_session && $discovery_mode && !count($x_completes) && count($CI->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $focus_i['hashtagid'],
+            'chainhandleinput' => 44250, //Hide Next Hashtags
         )));
 
     $ui = '';
-    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['ideaid'] . ' hideIfEmpty">';
-    foreach ($CI->config->item('sources___' . ($discovery_mode ? 42877 : 31890)) as $chainsourcetype => $m) {
+    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['hashtagid'] . ' hideIfEmpty">';
+    foreach ($CI->config->item('handles___' . ($discovery_mode ? 42877 : 31890)) as $chainhandletype => $m) {
 
-        $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m['m__following']);
-        if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m['m__following']);
+        if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
             continue;
         }
 
 
-        $coins_count[$chainsourcetype] = ideas_query($chainsourcetype, $focus_i['ideaid'], 0, false);
-        if (!$coins_count[$chainsourcetype] && ($discovery_mode || in_array($chainsourcetype, $CI->config->item('sourceids___12144')))) {
+        $coins_count[$chainhandletype] = hashtags_query($chainhandletype, $focus_i['hashtagid'], 0, false);
+        if (!$coins_count[$chainhandletype] && ($discovery_mode || in_array($chainhandletype, $CI->config->item('handleids___12144')))) {
             continue;
         }
 
 
-        if (($source_session && in_array($chainsourcetype, $CI->config->item('sourceids___42945'))) || $coins_count[$chainsourcetype] > 0) {
-            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainsourcetype . ' hidden" read-counter="' . $coins_count[$chainsourcetype] . '"><div class="tab_content"></div></div>';
+        if (($handle_session && in_array($chainhandletype, $CI->config->item('handleids___42945'))) || $coins_count[$chainhandletype] > 0) {
+            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainhandletype . ' hidden" read-counter="' . $coins_count[$chainhandletype] . '"><div class="tab_content"></div></div>';
 
 
-            if ($chainsourcetype != 12840 || !$discovery_next_hide) {
-                $ui .= '<li class="nav-item thepill' . $chainsourcetype . '"><a class="nav-chain handle_nav_' . $m['m__handle'] . '" chainsourcetype="' . $chainsourcetype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainsourcetype . '">' . view_number($coins_count[$chainsourcetype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainsourcetype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
+            if ($chainhandletype != 12840 || !$discovery_next_hide) {
+                $ui .= '<li class="nav-item thepill' . $chainhandletype . '"><a class="nav-chain handle_nav_' . $m['m__handle'] . '" chainhandletype="' . $chainhandletype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainhandletype . '">' . view_number($coins_count[$chainhandletype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainhandletype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
             }
 
         }
@@ -4067,14 +4067,14 @@ function view_idea_nav($discovery_mode, $focus_i, $x_completes = false)
     }
 
 
-    if (in_array($focus_i['ideatype'], $CI->config->item('sourceids___34826')) && $source_session && $discovery_mode && !count($x_completes)) {
+    if (in_array($focus_i['hashtagtype'], $CI->config->item('handleids___34826')) && $handle_session && $discovery_mode && !count($x_completes)) {
         foreach ($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $focus_i['ideaid'],
-            'chainsourceup' => 44262, //Skip Next If Unidea_discovered
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $focus_i['hashtagid'],
+            'chainhandleinput' => 44262, //Skip Next If Unhashtag_discovered
         )) as $skip) {
-            //Not yet idea_discovered, lets go next automatically:
-            $ui .= '<script> $(document).ready(function () { setTimeout(function () { idea_discovered(0); }, ' . (is_numeric($skip['chainvalue']) && intval($skip['chainvalue']) > 0 ? intval($skip['chainvalue']) : '2584') . '); }); </script>';
+            //Not yet hashtag_discovered, lets go next automatically:
+            $ui .= '<script> $(document).ready(function () { setTimeout(function () { hashtag_discovered(0); }, ' . (is_numeric($skip['chainvalue']) && intval($skip['chainvalue']) > 0 ? intval($skip['chainvalue']) : '2584') . '); }); </script>';
             break;
         }
     }
@@ -4265,328 +4265,328 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 }
 
 
-function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag = null, $focus_sourceid = 0, $x_completes = false)
+function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtaghashtag = null, $focus_handleid = 0, $x_completes = false)
 {
 
-    //Search to see if an idea has a thumbnail:
+    //Search to see if an hashtag has a thumbnail:
     $CI =& get_instance();
 
     $chainid = (isset($i['chainid']) && $i['chainid'] > 0 ? $i['chainid'] : 0);
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
-    $is_cache = in_array($chainsourcetype, $CI->config->item('sourceids___14599'));
-    $goto_start = in_array($chainsourcetype, $CI->config->item('sourceids___42988'));
-    $source_session = source_session();
-    $superpower_10939 = !$is_cache && source_session(10939);
-    $idea_startable = idea_is_startable($i);
-    $chainsourcecreator = ($focus_sourceid > 0 ? $focus_sourceid : ($source_session ? $source_session['sourceid'] : 0));
-    $chain_creator = isset($i['chainsourcecreator']) && $i['chainsourcecreator'] == $chainsourcecreator;
-    $focus__node = in_array($chainsourcetype, $CI->config->item('sourceids___12149')); //NODE COIN
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $is_cache = in_array($chainhandletype, $CI->config->item('handleids___14599'));
+    $goto_start = in_array($chainhandletype, $CI->config->item('handleids___42988'));
+    $handle_session = handle_session();
+    $superpower_10939 = !$is_cache && handle_session(10939);
+    $hashtag_startable = hashtag_is_startable($i);
+    $chainhandlecreator = ($focus_handleid > 0 ? $focus_handleid : ($handle_session ? $handle_session['handleid'] : 0));
+    $chain_creator = isset($i['chainhandlecreator']) && $i['chainhandlecreator'] == $chainhandlecreator;
+    $focus__node = in_array($chainhandletype, $CI->config->item('handleids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
     $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
-    $discovery_mode = $chainsourcecreator && ($discovery_uri || $discovery_seg);
-    $idea_access = idea_access($i['ideahashtag'], 0, $i, false, array(), $is_cache);
-    $focus_idea_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
-    $focus_idea_seg = ($discovery_seg ? $CI->uri->segment(2) : false);
-    $focus_ideahashtag = ($focus_idea_uri ? $focus_idea_uri : ($focus_idea_seg ? $focus_idea_seg : false));
+    $discovery_mode = $chainhandlecreator && ($discovery_uri || $discovery_seg);
+    $hashtag_access = hashtag_access($i['hashtaghashtag'], 0, $i, false, array(), $is_cache);
+    $focus_hashtag_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
+    $focus_hashtag_seg = ($discovery_seg ? $CI->uri->segment(2) : false);
+    $focus_hashtaghashtag = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
 
-    if ($discovery_mode && !$target_ideahashtag && ($discovery_uri || $discovery_seg)) {
-        $target_ideahashtag = ($discovery_uri ? $discovery_uri : $discovery_seg);
+    if ($discovery_mode && !$target_hashtaghashtag && ($discovery_uri || $discovery_seg)) {
+        $target_hashtaghashtag = ($discovery_uri ? $discovery_uri : $discovery_seg);
     }
-    if ($target_ideahashtag && $focus_ideahashtag && $focus_ideahashtag == $i['ideahashtag']) {
-        $focus_ideahashtag = false;
+    if ($target_hashtaghashtag && $focus_hashtaghashtag && $focus_hashtaghashtag == $i['hashtaghashtag']) {
+        $focus_hashtaghashtag = false;
     }
 
     //Log Preview:
-    $chainsourcecreator_id = ($chainsourcecreator > 0 ? $chainsourcecreator : 14068 /* GUEST */);
+    $chainhandlecreator_id = ($chainhandlecreator > 0 ? $chainhandlecreator : 14068 /* GUEST */);
 
-    if ($chainsourcecreator && !is_array($x_completes)) {
+    if ($chainhandlecreator && !is_array($x_completes)) {
         //Fetch discovery
         $x_completes = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainidealeft' => $i['ideaid'],
-        ), array('chainidearight'));
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhandlecreator' => $chainhandlecreator,
+            'chainhashtaginput' => $i['hashtagid'],
+        ), array('chainhashtagoutput'));
     }
 
-    $focus_idea_or = false;
-    if ($discovery_mode && $focus_ideahashtag && !$focus__node && $chainsourcecreator && isset($previous_i['ideatype']) && $previous_i['ideatype'] != 43758) {
-        foreach ($CI->Ideas->read(array(
-            'LOWER(ideahashtag)' => strtolower($focus_ideahashtag),
-            'ideatype IN (' . join(',', $CI->config->item('sourceids___7712')) . ')' => null, //Input Choice
+    $focus_hashtag_or = false;
+    if ($discovery_mode && $focus_hashtaghashtag && !$focus__node && $chainhandlecreator && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758) {
+        foreach ($CI->Hashtags->read(array(
+            'LOWER(hashtaghashtag)' => strtolower($focus_hashtaghashtag),
+            'hashtagtype IN (' . join(',', $CI->config->item('handleids___7712')) . ')' => null, //Input Choice
         )) as $focus_i) {
-            $focus_idea_or = $focus_i;
+            $focus_hashtag_or = $focus_i;
         }
     }
 
-    $has_sortable = $chainid > 0 && !$focus__node && $idea_access >= 3 && in_array($chainsourcetype, $CI->config->item('sourceids___4603')) && ($chainsourcetype != 42256 || $i['chainsourcetype'] == 34513);
-    $has_idea_discovered = 0;
-    if (!$is_cache && $chainsourcecreator) {
+    $has_sortable = $chainid > 0 && !$focus__node && $hashtag_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___4603')) && ($chainhandletype != 42256 || $i['chainhandletype'] == 34513);
+    $has_hashtag_discovered = 0;
+    if (!$is_cache && $chainhandlecreator) {
         $discoveries = $CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainidealeft' => $i['ideaid'],
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhandlecreator' => $chainhandlecreator,
+            'chainhashtaginput' => $i['hashtagid'],
         ));
-        $has_idea_discovered = count($discoveries);
+        $has_hashtag_discovered = count($discoveries);
     }
-    if ($has_idea_discovered && $discovery_mode) {
+    if ($has_hashtag_discovered && $discovery_mode) {
         $i = array_merge($i, $discoveries[0]);
     }
 
-    $target_ideahashtag_discover = null;
-    if ($has_idea_discovered && !$target_ideahashtag) {
+    $target_hashtaghashtag_discover = null;
+    if ($has_hashtag_discovered && !$target_hashtaghashtag) {
         foreach ($CI->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainsourcecreator' => $chainsourcecreator,
-            'chainidealeft' => $i['ideaid'],
-            'chainidearight > 0' => null,
-        ), array('chainidearight')) as $CI_dis) {
-            $target_ideahashtag_discover = $CI_dis['ideahashtag'];
-            $target_ideahashtag = $target_ideahashtag_discover;
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhandlecreator' => $chainhandlecreator,
+            'chainhashtaginput' => $i['hashtagid'],
+            'chainhashtagoutput > 0' => null,
+        ), array('chainhashtagoutput')) as $CI_dis) {
+            $target_hashtaghashtag_discover = $CI_dis['hashtaghashtag'];
+            $target_hashtaghashtag = $target_hashtaghashtag_discover;
         }
     }
 
-    $is_locked = ($discovery_mode && !$has_idea_discovered && !$focus__node);
+    $is_locked = ($discovery_mode && !$has_hashtag_discovered && !$focus__node);
 
-    if (($goto_start || !$superpower_10939) && $idea_startable) {
-        $href = view_memory(42903, 30795) . $i['ideahashtag'] . '/' . view_memory(6404, 4235);
+    if (($goto_start || !$superpower_10939) && $hashtag_startable) {
+        $href = view_memory(42903, 30795) . $i['hashtaghashtag'] . '/' . view_memory(6404, 4235);
     } elseif ($is_locked) {
         $href = null;
-    } elseif ($discovery_mode && $target_ideahashtag) {
-        $href = view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'];
-    //} elseif ($target_ideahashtag_discover) {
-        //$href = view_memory(42903, 30795) . $target_ideahashtag_discover . '/' . $i['ideahashtag'];
+    } elseif ($discovery_mode && $target_hashtaghashtag) {
+        $href = view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'];
+    //} elseif ($target_hashtaghashtag_discover) {
+        //$href = view_memory(42903, 30795) . $target_hashtaghashtag_discover . '/' . $i['hashtaghashtag'];
     } elseif ($discovery_mode) {
-        $href = view_memory(42903, 33286) . $i['ideahashtag'];
+        $href = view_memory(42903, 33286) . $i['hashtaghashtag'];
     } else {
-        $href = view_memory(42903, 33286) . $i['ideahashtag'];
+        $href = view_memory(42903, 33286) . $i['hashtaghashtag'];
     }
 
 
     //Top action menu:
-    $ui = '<div ideaid="' . $i['ideaid'] . '" ideahashtag="' . $i['ideahashtag'] . '" ideatype="' . $i['ideatype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_idea_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['ideaid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_idea_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
+    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtaghashtag="' . $i['hashtaghashtag'] . '" hashtagtype="' . $i['hashtagtype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+     ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['hashtagid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_hashtag_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
 
-    if ($discovery_mode && $chainsourcecreator && $focus__node) {
-        $ui .= '<style> .add_idea{ display:none; } </style>';
+    if ($discovery_mode && $chainhandlecreator && $focus__node) {
+        $ui .= '<style> .add_hashtag{ display:none; } </style>';
     }
-    if (1 || ($discovery_mode && ($is_locked || $focus_idea_or))) {
-        $ui .= '<script> $(document).ready(function () {show_more(' . $i['ideaid'] . '); }); </script>';
+    if (1 || ($discovery_mode && ($is_locked || $focus_hashtag_or))) {
+        $ui .= '<script> $(document).ready(function () {show_more(' . $i['hashtagid'] . '); }); </script>';
     }
 
     $is_required = count($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidearight' => $i['ideaid'],
-        'chainsourceup' => 28239, //Required
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+        'chainhashtagoutput' => $i['hashtagid'],
+        'chainhandleinput' => 28239, //Required
     )));
 
     if ($is_required) {
         //Add required icon:
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_' . $i['ideaid'] . ' .first_line:first\').append(\'<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' asterisk" title="Required">*</span>\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_' . $i['hashtagid'] . ' .first_line:first\').append(\'<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' asterisk" title="Required">*</span>\'); }); </script>';
     }
 
-    if ($focus_idea_or) {
-        $ui .= '<div class="this_selector this_selector_' . $i['ideaid'] . '" selection_ideaid="' . $i['ideaid'] . '"><span class="icon-block-sm">' . (count($CI->Chains->read(array(
-                'chainsourcetype' => 7712, //Input Choice
-                'chainsourcecreator' => $chainsourcecreator,
-                'chainidealeft' => $focus_idea_or['ideaid'],
-                'chainidearight' => $i['ideaid'],
+    if ($focus_hashtag_or) {
+        $ui .= '<div class="this_selector this_selector_' . $i['hashtagid'] . '" selection_hashtagid="' . $i['hashtagid'] . '"><span class="icon-block-sm">' . (count($CI->Chains->read(array(
+                'chainhandletype' => 7712, //Input Choice
+                'chainhandlecreator' => $chainhandlecreator,
+                'chainhashtaginput' => $focus_hashtag_or['hashtagid'],
+                'chainhashtagoutput' => $i['hashtagid'],
             ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>') . '</span></div>';
     }
 
-    $ui .= '<div class="cover-content ' . ($focus_idea_or ? ' cover_selector ' : '') . '">';
+    $ui .= '<div class="cover-content ' . ($focus_hashtag_or ? ' cover_selector ' : '') . '">';
     $ui .= '<div class="inner-content">';
     $ui .= '<div class="cover-text">';
 
     //Show Chain User:
-    $ui .= '<div class="creator_frame creator_frame_' . $i['ideaid'] . '">';
+    $ui .= '<div class="creator_frame creator_frame_' . $i['hashtagid'] . '">';
 
     //Show Creator if any:
     $headline_authors = array();
     foreach ($CI->Chains->read(array(
-        'chainsourcetype' => 12273, //Idea Created
-        'chainidearight' => $i['ideaid'],
-    ), array('chainsourceup')) as $creator) {
+        'chainhandletype' => 12273, //Hahstag Created
+        'chainhashtagoutput' => $i['hashtagid'],
+    ), array('chainhandleinput')) as $creator) {
 
-        array_push($headline_authors, $creator['sourceid']);
+        array_push($headline_authors, $creator['handleid']);
         $follow_btn = null;
         /*
-        if ($focus__node && $chainsourcecreator && $chainsourcecreator != $creator['sourceid']) {
+        if ($focus__node && $chainhandlecreator && $chainhandlecreator != $creator['handleid']) {
             $followings = $CI->Chains->read(array(
-                'chainsourceup' => $creator['sourceid'],
-                'chainsourcedown' => $chainsourcecreator,
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42795')) . ')' => null, //Follow
+                'chainhandleinput' => $creator['handleid'],
+                'chainhandleoutput' => $chainhandlecreator,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42795')) . ')' => null, //Follow
             ), array(), 1, 0, array('chainkey' => 'ASC'));
-            $follow_btn = searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainsourcetype'] : 0), $idea_access, false, $creator['sourceid'], (count($followings) ? $followings[0]['chainid'] : 0));
+            $follow_btn = searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainhandletype'] : 0), $hashtag_access, false, $creator['handleid'], (count($followings) ? $followings[0]['chainid'] : 0));
         }
         */
 
-        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['sourcehandle'] . '"><span class="icon-block">' . view_cover($creator['sourcecover']) . '</span><b class="hidden">' . $creator['sourcevalue'] . '</b><span class="grey mini-font mini-frame">@' . $creator['sourcehandle'] . '</span></a>' . (!in_array($creator['sourceid'], $CI->config->item('sourceids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
+        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handlehandle'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlevalue'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handlehandle'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['ideaid'] . '" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainsourcecreator) ? ' hidden ' : '') . '">#<span class="ui_ideahashtag_' . $i['ideaid'] . '">' . $i['ideahashtag'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['hashtagid'] . '" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainhandlecreator) ? ' hidden ' : '') . '">#<span class="ui_hashtaghashtag_' . $i['hashtagid'] . '">' . $i['hashtaghashtag'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
     $bottom_bar_ui = '';
 
     //Determine Chain Group
-    $chainsourcetype_id = 4593; //Chain Type
-    $chainsourcetype_ui = '';
+    $chainhandletype_id = 4593; //Chain Type
+    $chainhandletype_ui = '';
     if (!$focus__node && $chainid && !$is_cache) {
-        foreach ($CI->config->item('sources___31770') as $chainsourcetype1 => $m1) {
-            if (in_array($i['chainsourcetype'], $CI->config->item('sourceids___' . $chainsourcetype1))) {
+        foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
+            if (in_array($i['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
                 foreach ($CI->Chains->read(array(
                     'chainid' => $chainid,
-                ), array('chainsourcecreator')) as $chainer) {
-                    $chainsourcetype_ui .= '<span class="icon-block-sm">';
-                    $chainsourcetype_ui .= searchingle_select_instant($chainsourcetype1, $i['chainsourcetype'], $idea_access, false, $i['ideaid'], $chainid);
-                    $chainsourcetype_ui .= '</span>';
+                ), array('chainhandlecreator')) as $chainer) {
+                    $chainhandletype_ui .= '<span class="icon-block-sm">';
+                    $chainhandletype_ui .= searchingle_select_instant($chainhandletype1, $i['chainhandletype'], $hashtag_access, false, $i['hashtagid'], $chainid);
+                    $chainhandletype_ui .= '</span>';
                 }
-                $chainsourcetype_id = $chainsourcetype1;
+                $chainhandletype_id = $chainhandletype1;
                 break;
             }
         }
-        if (!$chainsourcetype_ui) {
-            $chainsourcetype_ui .= '<span class="icon-block-sm">';
-            $chainsourcetype_ui .= searchingle_select_instant(4593, $i['chainsourcetype'], false, false, $i['ideaid'], $chainid);
-            $chainsourcetype_ui .= '</span>';
+        if (!$chainhandletype_ui) {
+            $chainhandletype_ui .= '<span class="icon-block-sm">';
+            $chainhandletype_ui .= searchingle_select_instant(4593, $i['chainhandletype'], false, false, $i['hashtagid'], $chainid);
+            $chainhandletype_ui .= '</span>';
         }
     }
 
-    foreach ($CI->config->item('sources___31904') as $chainsourcetype_target_bar => $m_target_bar) {
+    foreach ($CI->config->item('handles___31904') as $chainhandletype_target_bar => $m_target_bar) {
 
         //See if missing superpower?
-        $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_target_bar['m__following']);
-        if (count($superpowers_required) && (!source_session(end($superpowers_required)) || $is_cache)) {
+        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_target_bar['m__following']);
+        if (count($superpowers_required) && (!handle_session(end($superpowers_required)) || $is_cache)) {
             continue;
         }
 
         //Determine hover state:
-        if ($chainsourcetype_target_bar == 31770 && !$discovery_mode && $chainsourcetype_ui && $superpower_10939) {
+        if ($chainhandletype_target_bar == 31770 && !$discovery_mode && $chainhandletype_ui && $superpower_10939) {
 
             //Chains
-            $bottom_bar_ui .= $chainsourcetype_ui;
+            $bottom_bar_ui .= $chainhandletype_ui;
 
-        } elseif ($chainsourcetype_target_bar == 4362 && !$is_cache && !$discovery_mode && $source_session && isset($i['chaintime']) && strtotime($i['chaintime']) > 0 && $chainsourcetype_ui && ($idea_access >= 3 || ($source_session && $chainsourcecreator == $i['chainsourcecreator']))) {
+        } elseif ($chainhandletype_target_bar == 4362 && !$is_cache && !$discovery_mode && $handle_session && isset($i['chaintime']) && strtotime($i['chaintime']) > 0 && $chainhandletype_ui && ($hashtag_access >= 3 || ($handle_session && $chainhandlecreator == $i['chainhandlecreator']))) {
 
             //Chain Time / Creator
             $creator_details = '';
             $time_diff = view_time_difference($i['chaintime'], true);
             $creator_name = '';
-            if ($i['chainsourcecreator'] > 0) {
-                foreach ($CI->Sources->read(array(
-                    'sourceid' => $i['chainsourcecreator'],
+            if ($i['chainhandlecreator'] > 0) {
+                foreach ($CI->Handles->read(array(
+                    'handleid' => $i['chainhandlecreator'],
                 )) as $creator) {
-                    $creator_name = 'Chained by ' . $creator['sourcevalue'] . ' @' . $creator['sourcehandle'] . ' on ';
-                    $creator_details = '<a href="' . view_memory(42903, 33286) . $i['ideahashtag'] . '"><span class="icon-block-sm">' . view_cover($creator['sourcecover']) . '</span></a>';
+                    $creator_name = 'Chained by ' . $creator['handlevalue'] . ' @' . $creator['handlehandle'] . ' on ';
+                    $creator_details = '<a href="' . view_memory(42903, 33286) . $i['hashtaghashtag'] . '"><span class="icon-block-sm">' . view_cover($creator['handlecover']) . '</span></a>';
                 }
             }
 
             $bottom_bar_ui .= '<span class="icon-block-sm"><div class="grey created_time" title="' . $creator_name . date("Y-m-d H:i:s", strtotime($i['chaintime'])) . ' which is ' . $time_diff . ' ago | ID ' . $i['chainid'] . '">' . ($creator_details ? $creator_details : $time_diff) . '</div></span>';
 
-        } elseif ($chainsourcetype_target_bar == 4737 && !$discovery_mode && $superpower_10939) {
+        } elseif ($chainhandletype_target_bar == 4737 && !$discovery_mode && $superpower_10939) {
 
-            //Idea Type
+            //Hahstag Type
             $bottom_bar_ui .= '<span>';
-            $bottom_bar_ui .= searchingle_select_instant(4737, $i['ideatype'], $idea_access, false, $i['ideaid'], $chainid);
+            $bottom_bar_ui .= searchingle_select_instant(4737, $i['hashtagtype'], $hashtag_access, false, $i['hashtagid'], $chainid);
             $bottom_bar_ui .= '</span>';
 
-        } elseif (0 && $chainsourcetype_target_bar == 41037 && $focus_idea_or && !$is_cache) {
+        } elseif (0 && $chainhandletype_target_bar == 41037 && $focus_hashtag_or && !$is_cache) {
 
             //Selector
 
-        } elseif ($chainsourcetype_target_bar == 13909 && $idea_access >= 3 && $has_sortable && !$discovery_mode) {
+        } elseif ($chainhandletype_target_bar == 13909 && $hashtag_access >= 3 && $has_sortable && !$discovery_mode) {
 
-            //Sort Idea
-            $bottom_bar_ui .= '<span class="sort_idea_frame hidden icon-block-sm">';
-            $bottom_bar_ui .= '<span title="' . $m_target_bar['m__title'] . '" class="sort_idea_grab">' . $m_target_bar['m__cover'] . '</span>';
+            //Sort Hahstag
+            $bottom_bar_ui .= '<span class="sort_hashtag_frame hidden icon-block-sm">';
+            $bottom_bar_ui .= '<span title="' . $m_target_bar['m__title'] . '" class="sort_hashtag_grab">' . $m_target_bar['m__cover'] . '</span>';
             $bottom_bar_ui .= '</span>';
 
-        } elseif ($chainsourcetype_target_bar == 14980 && !$is_cache && $idea_access >= 1 && !$discovery_mode) {
+        } elseif ($chainhandletype_target_bar == 14980 && !$is_cache && $hashtag_access >= 1 && !$discovery_mode) {
 
             //Drop Down
             $action_buttons = null;
             if (!$chainid) {
-                $focus_dropdown = 11047; //Idea Dropdown
-            } elseif ($chainsourcetype_id == 4486) { //Idea/Idea Chains
-                $focus_dropdown = 14955; //Idea/Idea Dropdown
-            } elseif ($chainsourcetype_id == 13550) { //Idea/Source Chains
-                $focus_dropdown = 28787; //Idea/Source Dropdown
+                $focus_dropdown = 11047; //Hahstag Dropdown
+            } elseif ($chainhandletype_id == 4486) { //Hahstag/Hahstag Chains
+                $focus_dropdown = 14955; //Hahstag/Hahstag Dropdown
+            } elseif ($chainhandletype_id == 13550) { //Hahstag/Handle Chains
+                $focus_dropdown = 28787; //Hahstag/Handle Dropdown
             } else {
                 //Discoveries
-                $focus_dropdown = 32069; //Idea/Discoveries Dropdown
+                $focus_dropdown = 32069; //Hahstag/Discoveries Dropdown
             }
 
-            if (is_array($CI->config->item('sources___' . $focus_dropdown))) {
-                foreach ($CI->config->item('sources___' . $focus_dropdown) as $sourceid_dropdown => $m_dropdown) {
+            if (is_array($CI->config->item('handles___' . $focus_dropdown))) {
+                foreach ($CI->config->item('handles___' . $focus_dropdown) as $handleid_dropdown => $m_dropdown) {
 
                     //Skip if missing superpower:
-                    $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_dropdown['m__following']);
-                    if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+                    $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_dropdown['m__following']);
+                    if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                         continue;
                     }
 
                     $anchor = '<span class="icon-block-sm">' . $m_dropdown['m__cover'] . '</span>' . $m_dropdown['m__title'];
 
-                    if ($sourceid_dropdown == 12589 && $idea_access >= 3) {
+                    if ($handleid_dropdown == 12589 && $hashtag_access >= 3) {
 
                         //Mass Apply
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(12589,' . $i['ideaid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(12589,' . $i['hashtagid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 33286 && $discovery_mode && $idea_access >= 3) {
+                    } elseif ($handleid_dropdown == 33286 && $discovery_mode && $hashtag_access >= 3) {
 
-                        //Ideation Mode
-                        $action_buttons .= '<a href="' . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Hahstags Mode
+                        $action_buttons .= '<a href="' . view_memory(42903, 33286) . $i['hashtaghashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 31911 && $idea_access >= 3) {
+                    } elseif ($handleid_dropdown == 31911 && $hashtag_access >= 3) {
 
-                        //Idea Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_editor(' . $i['ideaid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Hahstag Editor
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_editor(' . $i['hashtagid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 13007 && $idea_access >= 3) {
+                    } elseif ($handleid_dropdown == 13007 && $hashtag_access >= 3) {
 
                         //Reset Alphabetic order
                         $action_buttons .= '<a href="javascript:void(0);" onclick="chain_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 31911 && $idea_access >= 3 && $discovery_mode) {
+                    } elseif ($handleid_dropdown == 31911 && $hashtag_access >= 3 && $discovery_mode) {
 
-                        //Idea Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_editor(' . $i['ideaid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Hahstag Editor
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_editor(' . $i['hashtagid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 10673 && $chainid && $idea_access >= 3) {
+                    } elseif ($handleid_dropdown == 10673 && $chainid && $hashtag_access >= 3) {
 
                         //Unchain
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $chainsourcetype . ',\'' . $i['ideahashtag'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $chainhandletype . ',\'' . $i['hashtaghashtag'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 30873 && $idea_access >= 3) {
+                    } elseif ($handleid_dropdown == 30873 && $hashtag_access >= 3) {
 
-                        //Clone Idea Tree:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_copy(' . $i['ideaid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Clone Hahstag Tree:
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_copy(' . $i['hashtagid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 33292 && $source_session) {
+                    } elseif ($handleid_dropdown == 33292 && $handle_session) {
 
                         //Stats
-                        $action_buttons .= '<a href="' . view_app_chain(33292) . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain(33292) . view_memory(42903, 33286) . $i['hashtaghashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 29771 && $idea_access >= 3) {
+                    } elseif ($handleid_dropdown == 29771 && $hashtag_access >= 3) {
 
-                        //Clone Single Idea:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="idea_copy(' . $i['ideaid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Clone Single Hahstag:
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_copy(' . $i['hashtagid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 4341 && $idea_access >= 3 && $chainid) {
+                    } elseif ($handleid_dropdown == 4341 && $hashtag_access >= 3 && $chainid) {
 
                         //Chain Details
                         $action_buttons .= '<a href="' . view_app_chain(4341) . '?chainid=' . $chainid . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 42648 && $idea_access >= 3) {
+                    } elseif ($handleid_dropdown == 42648 && $hashtag_access >= 3) {
 
                         //Delete Permanently
                         $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                        $action_buttons .= '<a href="javascript:void();" onclick="idea_delete(' . $i['ideaid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void();" onclick="hashtag_delete(' . $i['hashtagid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($sourceid_dropdown == 28637 && isset($i['chainsourcetype']) && source_session(12700)) {
+                    } elseif ($handleid_dropdown == 28637 && isset($i['chainhandletype']) && handle_session(12700)) {
 
                         //Paypal Details
                         $chainvalue = @unserialize($i['chainvalue']);
@@ -4594,10 +4594,10 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                             $action_buttons .= '<a href="https://www.paypal.com/activity/payment/' . $chainvalue['txn_id'] . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
                         }
 
-                    } elseif (in_array($sourceid_dropdown, $CI->config->item('sourceids___6287')) && $idea_access >= 3) {
+                    } elseif (in_array($handleid_dropdown, $CI->config->item('handleids___6287')) && $hashtag_access >= 3) {
 
                         //Standard button
-                        $action_buttons .= '<a href="' . view_app_chain($sourceid_dropdown) . view_memory(42903, 33286) . $i['ideahashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 33286) . $i['hashtaghashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     }
                 }
@@ -4606,12 +4606,12 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             //Any items found?
             if ($action_buttons && $focus_dropdown > 0) {
                 //Right Action Menu
-                $sources___14980 = $CI->config->item('sources___14980'); //Dropdowns
+                $handles___14980 = $CI->config->item('handles___14980'); //Dropdowns
 
                 $bottom_bar_ui .= '<span>';
                 $bottom_bar_ui .= '<div class="dropdown inline-block">';
-                $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="action_menu_idea_' . $i['ideaid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $sources___14980[$focus_dropdown]['m__title'] . '">' . $sources___14980[$focus_dropdown]['m__cover'] . '</button>';
-                $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_idea_' . $i['ideaid'] . '">';
+                $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="action_menu_hashtag_' . $i['hashtagid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $handles___14980[$focus_dropdown]['m__title'] . '">' . $handles___14980[$focus_dropdown]['m__cover'] . '</button>';
+                $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_hashtag_' . $i['hashtagid'] . '">';
                 $bottom_bar_ui .= $action_buttons;
                 $bottom_bar_ui .= '</div>';
                 $bottom_bar_ui .= '</div>';
@@ -4628,16 +4628,16 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     }
 
 
-    //Idea Location if any:
+    //Hahstag Location if any:
     foreach ($CI->Chains->read(array(
-        'chainsourcetype' => 41949, //Locate
-        'chainidearight' => $i['ideaid'],
-    ), array('chainsourceup')) as $location) {
+        'chainhandletype' => 41949, //Locate
+        'chainhashtagoutput' => $i['hashtagid'],
+    ), array('chainhandleinput')) as $location) {
         $ui .= view_featured_chains(41949, $location, null, $focus__node);
     }
 
     //Chain Message if any:
-    if ($chainid && $source_session) {
+    if ($chainid && $handle_session) {
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '" style="padding-left:40px;">' . htmlentities($i['chainvalue']) . '</div>';
     }
 
@@ -4645,18 +4645,18 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     $ui .= '</div>';
 
 
-    //Idea Message (Remaining)
-    $ui .= '<div class="ui_ideacache_' . $i['ideaid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_idea_value($i, $chainsourcecreator, ($focus__node || 1), $focus__node) . '</div>';
+    //Hahstag Message (Remaining)
+    $ui .= '<div class="ui_hashtagcache_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, ($focus__node || 1), $focus__node) . '</div>';
 
-    $idea_popup_url = idea_popup_url($i);
-    if ($idea_popup_url) {
-        $ui .= '<div class="ignore-click chain_click chain_click_' . $i['ideaid'] . ' hideIfEmpty"><a href="' . $idea_popup_url . '" class="hideIfEmpty" target="_blank" onclick="chain_clicked(' . $i['ideaid'] . ')">' . $idea_popup_url . '</a></div>';
+    $hashtag_popup_url = hashtag_popup_url($i);
+    if ($hashtag_popup_url) {
+        $ui .= '<div class="ignore-click chain_click chain_click_' . $i['hashtagid'] . ' hideIfEmpty"><a href="' . $hashtag_popup_url . '" class="hideIfEmpty" target="_blank" onclick="chain_clicked(' . $i['hashtagid'] . ')">' . $hashtag_popup_url . '</a></div>';
     }
 
 
     //Raw Data:
-    $ui .= '<div class="ui_ideavalue_' . $i['ideaid'] . '
-     hidden">' . $i['ideavalue'] . '</div>';
+    $ui .= '<div class="ui_hashtagvalue_' . $i['hashtagid'] . '
+     hidden">' . $i['hashtagvalue'] . '</div>';
 
 
     $ui .= '</div>';
@@ -4666,8 +4666,8 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
 
-        //Any inputs for this idea?
-        if (isset($previous_i['ideatype']) && ($previous_i['ideatype'] == 43758 || (in_array($i['ideatype'], $CI->config->item('sourceids___41055')) && $focus__node && $i['ideatype'] != 43758))) {
+        //Any inputs for this hashtag?
+        if (isset($previous_i['hashtagtype']) && ($previous_i['hashtagtype'] == 43758 || (in_array($i['hashtagtype'], $CI->config->item('handleids___41055')) && $focus__node && $i['hashtagtype'] != 43758))) {
 
             //PAYMENT TICKET
             if (isset($_GET['cancel_pay']) && !count($x_completes)) {
@@ -4679,9 +4679,9 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
                 //Referesh soon so we can check if completed or not
-                js_php_redirect(view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'] . '?process_pay=1', 987);
+                js_php_redirect(view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'] . '?process_pay=1', 987);
 
-            } elseif (isset($previous_i['ideatype']) && $previous_i['ideatype'] != 43758 && count($x_completes)) {
+            } elseif (isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && count($x_completes)) {
 
                 foreach ($x_completes as $x_complete) {
 
@@ -4695,7 +4695,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 }
 
                 $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $chainvalue['mc_gross'] . '">';
-                $input_ui .= '<input type="hidden" class="ideakey" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" class="hashtagkey" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
 
             } else {
 
@@ -4704,24 +4704,24 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 $paypal_email = website_setting(30882);
 
                 $currency_types = $CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                    'chainidearight' => ( isset($previous_i['ideatype']) && $previous_i['ideatype'] == 43758 ? $previous_i['ideaid'] : $i['ideaid']),
-                    'chainsourceup IN (' . join(',', $CI->config->item('sourceids___26661')) . ')' => null, //Currency
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => ( isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 ? $previous_i['hashtagid'] : $i['hashtagid']),
+                    'chainhandleinput IN (' . join(',', $CI->config->item('handleids___26661')) . ')' => null, //Currency
                 ));
                 $total_dues = $CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                    'chainidearight' => $i['ideaid'],
-                    'chainsourceup' => 26562, //Total Due
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 26562, //Total Due
                 ));
                 $cart_max = $CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                    'chainidearight' => $i['ideaid'],
-                    'chainsourceup' => 29651, //Cart Max Quantity
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 29651, //Cart Max Quantity
                 ));
                 $cart_min = $CI->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                    'chainidearight' => $i['ideaid'],
-                    'chainsourceup' => 31008, //Cart Min Quantity
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 31008, //Cart Min Quantity
                 ));
 
 
@@ -4731,69 +4731,69 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
                 $unit_price = 0;
                 $unit_fee = 0;
                 $max_allowed = (count($cart_max) && is_numeric($cart_max[0]['chainvalue']) && $cart_max[0]['chainvalue'] > 0 ? intval($cart_max[0]['chainvalue']) : view_memory(6404, 29651));
-                $spots_remaining = idea_spots_remaining($i['ideaid']);
+                $spots_remaining = hashtag_spots_remaining($i['hashtagid']);
                 $starting_point = ($is_required ? 1 : 0);
                 $max_allowed = ($spots_remaining > -1 && $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed);
 
                 $min_allowed = (count($cart_min) && is_numeric($cart_min[0]['chainvalue']) && intval($cart_min[0]['chainvalue']) > $starting_point ? intval($cart_min[0]['chainvalue']) : $starting_point);
-                $sources___26661 = $CI->config->item('sources___26661'); //Currency
+                $handles___26661 = $CI->config->item('handles___26661'); //Currency
                 if (count($currency_types)) {
-                    $unit_currency = $sources___26661[$currency_types[0]['chainsourceup']]['m__message'];
+                    $unit_currency = $handles___26661[$currency_types[0]['chainhandleinput']]['m__message'];
                 }
 
 
-                if ($chainsourcecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && isset($previous_i['ideatype']) && $previous_i['ideatype'] != 43758 && $total_dues[0]['chainvalue'] > 0 && count($currency_types) == 1) {
+                if ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && $total_dues[0]['chainvalue'] > 0 && count($currency_types) == 1) {
 
                     $valid_instant_pay = true;
 
                     $digest_fees = count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => $i['ideaid'],
-                        'chainsourceup' => 30589, //Digest Fees
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $i['hashtagid'],
+                        'chainhandleinput' => 30589, //Digest Fees
                     )));
 
                     //Break down amount & currency
                     $unit_price = doubleval($total_dues[0]['chainvalue']);
-                    $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainsourcecreator)) + doubleval(website_setting(27017, $chainsourcecreator))) / 100), 2, ".", "");
+                    $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
 
                     //Append information to cart about Paypal:
                     $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
 
-                } elseif ($chainsourcecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['ideatype']) && $previous_i['ideatype'] == 43758 && count($total_dues) && $total_dues[0]['chainvalue'] > 0) {
+                } elseif ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 && count($total_dues) && $total_dues[0]['chainvalue'] > 0) {
 
                     $digest_fees = count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => ( isset($previous_i['ideatype']) ? $previous_i['ideaid'] : -1 ) ,
-                        'chainsourceup' => 30589, //Digest Fees
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => ( isset($previous_i['hashtagtype']) ? $previous_i['hashtagid'] : -1 ) ,
+                        'chainhandleinput' => 30589, //Digest Fees
                     )));
 
                     //Break down amount & currency
                     $unit_price = doubleval($total_dues[0]['chainvalue']);
-                    $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainsourcecreator)) + doubleval(website_setting(27017, $chainsourcecreator))) / 100), 2, ".", "");
+                    $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
 
                 }
 
 
                 $current_value = $min_allowed;
                 foreach ($CI->Chains->read(array(
-                    'chainsourcetype' => 7712, //Input Choice
-                    'chainsourcecreator' => $source_session['sourceid'],
-                    'chainidearight' => $i['ideaid'],
+                    'chainhandletype' => 7712, //Input Choice
+                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainhashtagoutput' => $i['hashtagid'],
                 ), array(), 1) as $x_selection) {
                     $current_value = $x_selection['chainkey'];
                 }
 
 
                 //Is multi selectable, allow show down for quantity:
-                $input_ui .= '<div class="source-info ticket-notice" title="' . $sources___11035[44242]['m__title'] . '">'
-                    . '<span class="icon-block">' . $sources___11035[44242]['m__cover'] . '</span>'
-                    . '<div class="source_info_box">';
+                $input_ui .= '<div class="handle-info ticket-notice" title="' . $handles___11035[44242]['m__title'] . '">'
+                    . '<span class="icon-block">' . $handles___11035[44242]['m__cover'] . '</span>'
+                    . '<div class="handle_info_box">';
 
                 if ($max_allowed > 0 || $min_allowed > 0) {
-                    $input_ui .= '<div class="sale_controller sale_controller_' . $i['ideaid'] . '" unitprice="' . $unit_price . '" unitcurrency="' . $unit_currency . '" ideaid="' . $i['ideaid'] . '">';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,' . $i['ideaid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_down"><i class="fas fa-minus ' . ($current_value == $min_allowed ? ' hidden ' : '') . '"></i></a>';
+                    $input_ui .= '<div class="sale_controller sale_controller_' . $i['hashtagid'] . '" unitprice="' . $unit_price . '" unitcurrency="' . $unit_currency . '" hashtagid="' . $i['hashtagid'] . '">';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_down"><i class="fas fa-minus ' . ($current_value == $min_allowed ? ' hidden ' : '') . '"></i></a>';
                     $input_ui .= '<span class="main__title current_count">' . $current_value . '</span>';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,' . $i['ideaid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_up">' . ($max_allowed == $min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>') . '</a>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_up">' . ($max_allowed == $min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>') . '</a>';
                     $input_ui .= '</div>';
                 } else {
                     $input_ui .= '<span class="current_count" style="display: none;">' . $min_allowed . '</span>';
@@ -4807,22 +4807,22 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
                 if ($valid_instant_pay) {
 
-                    $sources___14870 = $CI->config->item('sources___14870'); //DOMAINS
+                    $handles___14870 = $CI->config->item('handles___14870'); //DOMAINS
 
                     //Load Paypal Pay button:
                     $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="ideakey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
-                    $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_idea_title($i, true)) . '">';
-                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_ideahashtag ? $target_ideahashtag . ' #' : '') . $i['ideahashtag'] . ' @' . get_domain('m__handle') . ' @' . $source_session['sourcehandle'] . '">';
+                    $input_ui .= '<input type="hidden" class="hashtagkey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_hashtag_title($i, true)) . '">';
+                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtaghashtag ? $target_hashtaghashtag . ' #' : '') . $i['hashtaghashtag'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handlehandle'] . '">';
 
                     $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                     $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
                     $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
-                    $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $sources___14870[2738]['m__message'] . view_app_chain(26595) . '">';
-                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'] . '?cancel_pay=1">';
-                    $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_ideahashtag . '/' . $i['ideahashtag'] . '?process_pay=1">';
+                    $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $handles___14870[2738]['m__message'] . view_app_chain(26595) . '">';
+                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'] . '?cancel_pay=1">';
+                    $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'] . '?process_pay=1">';
                     $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                     $input_ui .= '<input type="hidden" name="business" value="' . $paypal_email . '">';
 
@@ -4830,47 +4830,47 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
                     $input_ui .= '</form>';
 
-                    $input_ui .= '<script> $(document).ready(function () { $(\'.idea_discovered_btn\').hide(); }); </script>';
+                    $input_ui .= '<script> $(document).ready(function () { $(\'.hashtag_discovered_btn\').hide(); }); </script>';
 
                 } else {
 
                     //FREE TICKET
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="ideakey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" class="hashtagkey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
 
                 }
             }
 
-        } elseif (in_array($i['ideatype'], $CI->config->item('sourceids___33532'))) {
+        } elseif (in_array($i['hashtagtype'], $CI->config->item('handleids___33532'))) {
 
-            //Find the created idea if any:
-            $source_private_replies = $CI->Chains->read(array(
-                'chainsourcetype' => 4228,
-                'chainidearight' => $i['ideaid'],
-                'chainsourcecreator' => $chainsourcecreator,
-            ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC'));
+            //Find the created hashtag if any:
+            $handle_private_replies = $CI->Chains->read(array(
+                'chainhandletype' => 4228,
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandlecreator' => $chainhandlecreator,
+            ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC'));
 
             $input_attributes = '';
-            $previous_response = ($chainsourcecreator && isset($source_private_replies[0]['ideavalue']) ? $source_private_replies[0]['ideavalue'] : '');
+            $previous_response = ($chainhandlecreator && isset($handle_private_replies[0]['hashtagvalue']) ? $handle_private_replies[0]['hashtagvalue'] : '');
 
-            if (in_array($i['ideatype'], $CI->config->item('sourceids___43002'))) {
+            if (in_array($i['hashtagtype'], $CI->config->item('handleids___43002'))) {
 
                 //Textarea
-                $sources___6201 = $CI->config->item('sources___6201'); //IDEA Cache
-                $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($sources___6201[4736]['m__message']) ? $sources___6201[4736]['m__message'] : $sources___6201[4736]['m__title'] . '...') . '">' . $previous_response . '</textarea>';
+                $handles___6201 = $CI->config->item('handles___6201'); //HASHTAG Cache
+                $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($handles___6201[4736]['m__message']) ? $handles___6201[4736]['m__message'] : $handles___6201[4736]['m__title'] . '...') . '">' . $previous_response . '</textarea>';
                 $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
 
-            } elseif (in_array($i['ideatype'], $CI->config->item('sourceids___43003'))) {
+            } elseif (in_array($i['hashtagtype'], $CI->config->item('handleids___43003'))) {
 
                 //Input
 
-                if ($i['ideatype'] == 31794) {
+                if ($i['hashtagtype'] == 31794) {
 
                     //Number
                     if (count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => $i['ideaid'],
-                        'chainsourceup' => 42181, //Phone
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $i['hashtagid'],
+                        'chainhandleinput' => 42181, //Phone
                     )))) {
                         //It's a phone number:
                         $input_type = 'text';
@@ -4883,9 +4883,9 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
                     //Steps
                     foreach ($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => $i['ideaid'],
-                        'chainsourceup' => 31813, //Steps
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $i['hashtagid'],
+                        'chainhandleinput' => 31813, //Steps
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
                             $input_attributes .= ' step="' . $num_steps['chainvalue'] . '" ';
@@ -4894,9 +4894,9 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
                     //Min Value
                     foreach ($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => $i['ideaid'],
-                        'chainsourceup' => 31800, //Min Value
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $i['hashtagid'],
+                        'chainhandleinput' => 31800, //Min Value
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
                             $input_attributes .= ' min="' . $num_steps['chainvalue'] . '" ';
@@ -4905,33 +4905,33 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
                     //Max Value
                     foreach ($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => $i['ideaid'],
-                        'chainsourceup' => 31801, //Max Value
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $i['hashtagid'],
+                        'chainhandleinput' => 31801, //Max Value
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
                             $input_attributes .= ' max="' . $num_steps['chainvalue'] . '" ';
                         }
                     }
 
-                } elseif ($i['ideatype'] == 30350) {
+                } elseif ($i['hashtagtype'] == 30350) {
 
                     $has_time = count($CI->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                        'chainidearight' => $i['ideaid'],
-                        'chainsourceup' => 32442, //Select Time
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $i['hashtagid'],
+                        'chainhandleinput' => 32442, //Select Time
                     )));
 
                     $input_type = ($has_time ? 'datetime-local' : 'date');
                     $placeholder = ($has_time ? 'Select Date & Time...' : 'Select Date...');
 
-                } elseif ($i['ideatype'] == 42915) {
+                } elseif ($i['hashtagtype'] == 42915) {
 
                     //URL
                     $input_type = 'url';
                     $placeholder = 'Paste URL...';
 
-                } elseif ($i['ideatype'] == 43005) {
+                } elseif ($i['hashtagtype'] == 43005) {
 
                     //Input Text
                     $input_type = 'text';
@@ -4944,24 +4944,24 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
             }
 
             //Uploader
-            if (in_array($i['ideatype'], $CI->config->item('sourceids___43004'))) {
+            if (in_array($i['hashtagtype'], $CI->config->item('handleids___43004'))) {
 
-                if ($i['ideahashtag'] == 'ProfilePicture' && $source_session && $chainsourcecreator) {
+                if ($i['hashtaghashtag'] == 'ProfilePicture' && $handle_session && $chainhandlecreator) {
 
                     //TODO REMOVE HACK: This is a profile picture hack:
-                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="source_editor(' . $chainsourcecreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['ideaid'] . '"><span class="icon-block-sm">' . $sources___11035[7637]['m__cover'] . '</span>' . $sources___11035[7637]['m__title'] . '</a></div>';
+                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="handle_editor(' . $chainhandlecreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</a></div>';
 
                 } else {
                     $input_ui .= '<div class="media_outer_frame hideIfEmpty">
-                        <div id="media_outer_' . $i['ideaid'] . '" class="media_frame media_frame_' . $i['ideaid'] . ' hideIfEmpty"></div>
+                        <div id="media_outer_' . $i['hashtagid'] . '" class="media_frame media_frame_' . $i['hashtagid'] . ' hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>';
-                    $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['ideaid'] . '"><span class="icon-block-sm">' . $sources___11035[7637]['m__cover'] . '</span>' . $sources___11035[7637]['m__title'] . '</div></div>';
-                    $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['ideaid'] . ', [\'#' . $i['ideaid'] . '\'], \'.inner_uploader_' . $i['ideaid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $i['ideaid'] . '); }, 144); }); </script>';
+                    $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</div></div>';
+                    $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['hashtagid'] . ', [\'#' . $i['hashtagid'] . '\'], \'.inner_uploader_' . $i['hashtagid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['hashtagid'] . '\', 43004, ' . $i['hashtagid'] . '); }, 144); }); </script>';
 
-                    foreach ($source_private_replies as $x_response) {
-                        $input_ui .= '<div class="hidden">' . idea_view(31777, $x_response) . '</div>';
-                        $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_' . $i['ideaid'] . '\', 43004, ' . $x_response['ideaid'] . '); }, 144); }); </script>';
+                    foreach ($handle_private_replies as $x_response) {
+                        $input_ui .= '<div class="hidden">' . hashtag_view(31777, $x_response) . '</div>';
+                        $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_' . $i['hashtagid'] . '\', 43004, ' . $x_response['hashtagid'] . '); }, 144); }); </script>';
                     }
                 }
 
@@ -4970,7 +4970,7 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
         }
 
         if (strlen($input_ui)) {
-            $ui .= '<div class="ignore-click input_ui input_ui_' . $i['ideaid'] . '">' . $input_ui . '</div>';
+            $ui .= '<div class="ignore-click input_ui input_ui_' . $i['hashtagid'] . '">' . $input_ui . '</div>';
         }
 
 
@@ -4979,50 +4979,50 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
     $bottom_menu_ui = '';
 
 
-    foreach ($CI->config->item('sources___44257') as $chainsourcetype_target_bar => $m_target_bar) {
+    foreach ($CI->config->item('handles___44257') as $chainhandletype_target_bar => $m_target_bar) {
 
         //See if missing superpower?
-        $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_target_bar['m__following']);
-        if (count($superpowers_required) && (!source_session(end($superpowers_required)) || $is_cache)) {
+        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_target_bar['m__following']);
+        if (count($superpowers_required) && (!handle_session(end($superpowers_required)) || $is_cache)) {
             continue;
         }
 
         //Determine hover state:
-        if ($chainsourcetype_target_bar == 33532 && !$is_cache && $source_session && $idea_access >= 2 && !$is_locked) {
+        if ($chainhandletype_target_bar == 33532 && !$is_cache && $handle_session && $hashtag_access >= 2 && !$is_locked) {
 
-            //Idea Reply
+            //Hahstag Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="idea_editor(0,0,' . $i['ideaid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="hashtag_editor(0,0,' . $i['hashtagid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
-        } elseif ($chainsourcetype_target_bar == 42260 && $source_session && !$is_locked && !$is_cache && 0) {
+        } elseif ($chainhandletype_target_bar == 42260 && $handle_session && !$is_locked && !$is_cache && 0) {
 
             //Reactions... Check to see if they have any?
             $reactions = $CI->Chains->read(array(
-                'chainsourceup' => $chainsourcecreator,
-                'chainidearight' => $i['ideaid'],
-                'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42260')) . ')' => null, //Reactions
+                'chainhandleinput' => $chainhandlecreator,
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42260')) . ')' => null, //Reactions
             ), array(), 1);
             $bottom_menu_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
-            $bottom_menu_ui .= searchingle_select_instant(42260, (count($reactions) ? $reactions[0]['chainsourcetype'] : 0), $source_session, 0 && $focus__node, $i['ideaid'], (count($reactions) ? $reactions[0]['chainid'] : 0));
+            $bottom_menu_ui .= searchingle_select_instant(42260, (count($reactions) ? $reactions[0]['chainhandletype'] : 0), $handle_session, 0 && $focus__node, $i['hashtagid'], (count($reactions) ? $reactions[0]['chainid'] : 0));
             $bottom_menu_ui .= '</div></span>';
 
-        } elseif ($chainsourcetype_target_bar == 4235 && (!$discovery_mode && $idea_startable && $idea_access >= 1)) {
+        } elseif ($chainhandletype_target_bar == 4235 && (!$discovery_mode && $hashtag_startable && $hashtag_access >= 1)) {
 
             //Start
-            $bottom_menu_ui .= '<span><a href="' . view_memory(42903, 30795) . $i['ideahashtag'] . '/' . view_memory(6404, 4235) . '" class="btn btn-sm btn-black"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span><a href="' . view_memory(42903, 30795) . $i['hashtaghashtag'] . '/' . view_memory(6404, 4235) . '" class="btn btn-sm btn-black"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
-        } elseif ($chainsourcetype_target_bar == 42924 && $discovery_mode && $focus__node) {
+        } elseif ($chainhandletype_target_bar == 42924 && $discovery_mode && $focus__node) {
 
             //Next
-            $sources___31777 = $CI->config->item('sources___31777');
-            $focus_menu = ($has_idea_discovered ? $m_target_bar : $sources___31777[idea_type_discovery($i)]);
-            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="idea_discovered(0)" class="btn btn-sm post_button idea_discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
+            $handles___31777 = $CI->config->item('handles___31777');
+            $focus_menu = ($has_hashtag_discovered ? $m_target_bar : $handles___31777[hashtag_type_discovery($i)]);
+            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="hashtag_discovered(0)" class="btn btn-sm post_button hashtag_discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
-        } elseif ($chainsourcetype_target_bar == 31022 && $discovery_mode && $focus__node && $source_session && !count($x_completes) && !in_array($i['ideatype'], $CI->config->item('sourceids___43009')) && !idea_required($i)) {
+        } elseif ($chainhandletype_target_bar == 31022 && $discovery_mode && $focus__node && $handle_session && !count($x_completes) && !in_array($i['hashtagtype'], $CI->config->item('handleids___43009')) && !hashtag_required($i)) {
 
             //Skip
-            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="idea_discovered(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="hashtag_discovered(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
         }
     }
@@ -5030,14 +5030,14 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
     //Bottom Bar menu
     if (!$focus__node && !$is_locked && !$is_cache) {
-        foreach ($CI->config->item('sources___' . ($discovery_mode ? 42877 : 31890)) as $sourceid_bottom_bar => $m_bottom_bar) {
+        foreach ($CI->config->item('handles___' . ($discovery_mode ? 42877 : 31890)) as $handleid_bottom_bar => $m_bottom_bar) {
 
-            $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_bottom_bar['m__following']);
-            if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_bottom_bar['m__following']);
+            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                 continue;
             }
 
-            $coins_ui = ideas_query($sourceid_bottom_bar, $i['ideaid'], 0, true, $headline_authors);
+            $coins_ui = hashtags_query($handleid_bottom_bar, $i['hashtagid'], 0, true, $headline_authors);
             if (strlen($coins_ui)) {
                 $bottom_menu_ui .= '<span class="hideIfEmpty">';
                 $bottom_menu_ui .= $coins_ui;
@@ -5065,68 +5065,68 @@ function idea_view($chainsourcetype, $i, $previous_i = null, $target_ideahashtag
 
 function view_random_title()
 {
-    $sourcecover_generator = sourcecover_generator(12279);
-    return random_adjective() . str_replace('Badger Honey', 'Honey Badger', str_replace('Black Widow', '', ucwords(str_replace('-', ' ', one_two_explode('fa-', ' ', $sourcecover_generator)))));
+    $handlecover_generator = handlecover_generator(12279);
+    return random_adjective() . str_replace('Badger Honey', 'Honey Badger', str_replace('Black Widow', '', ucwords(str_replace('-', ' ', one_two_explode('fa-', ' ', $handlecover_generator)))));
 }
 
-function view_list_source($i, $plain_no_html = false)
+function view_list_handle($i, $plain_no_html = false)
 {
 
     $CI =& get_instance();
     $message_append = '';
 
     //Define Order:
-    $sources___42421 = $CI->config->item('sources___42421');
+    $handles___42421 = $CI->config->item('handles___42421');
     $order_columns = array();
-    foreach ($sources___42421 as $sort_id => $sort) {
-        $order_columns['chainsourceup = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($handles___42421 as $sort_id => $sort) {
+        $order_columns['chainhandleinput = \'' . $sort_id . '\' DESC'] = null;
     }
 
-    //Query Relevant Sources:
+    //Query Relevant Handles:
     foreach ($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___33602')) . ')' => null, //Writer Chains Active
-        'chainidearight' => $i['ideaid'],
-        'chainsourceup IN (' . join(',', $CI->config->item('sourceids___42421')) . ')' => null, //Featured Inputs
-    ), array('chainsourceup'), 0, 0, $order_columns) as $x) {
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Writer Chains Active
+        'chainhashtagoutput' => $i['hashtagid'],
+        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___42421')) . ')' => null, //Featured Inputs
+    ), array('chainhandleinput'), 0, 0, $order_columns) as $x) {
 
         //Format data if needed:
-        $x['chainvalue'] = data_type_format($x['chainsourceup'], $x['chainvalue']);
+        $x['chainvalue'] = data_type_format($x['chainhandleinput'], $x['chainvalue']);
 
-        $message_append .= '<div class="source-info">'
-            . '<span class="icon-block">' . $sources___42421[$x['chainsourceup']]['m__cover'] . '</span>' . $sources___42421[$x['chainsourceup']]['m__title'] . (strlen($x['chainvalue']) ? ':' : '')
-            . (strlen($x['chainvalue']) ? '<div class="source_info_box"><div class="sub_note main__title">' . (!$plain_no_html ? nl2br(view_url($x['chainvalue'])) : $x['chainvalue']) . '</div></div>' : '')
+        $message_append .= '<div class="handle-info">'
+            . '<span class="icon-block">' . $handles___42421[$x['chainhandleinput']]['m__cover'] . '</span>' . $handles___42421[$x['chainhandleinput']]['m__title'] . (strlen($x['chainvalue']) ? ':' : '')
+            . (strlen($x['chainvalue']) ? '<div class="handle_info_box"><div class="sub_note main__title">' . (!$plain_no_html ? nl2br(view_url($x['chainvalue'])) : $x['chainvalue']) . '</div></div>' : '')
             . '</div>';
 
     }
 
-    return (strlen($message_append) ? ($plain_no_html ? $message_append : '<div class="source-featured">' . $message_append . '</div>') : false);
+    return (strlen($message_append) ? ($plain_no_html ? $message_append : '<div class="handle-featured">' . $message_append . '</div>') : false);
 
 }
 
 
-function view_idea_media($i)
+function view_hashtag_media($i)
 {
 
     $CI =& get_instance();
     $message_append = '';
 
-    //Query Relevant Sources:
+    //Query Relevant Handles:
     foreach ($CI->Chains->read(array(
-        'chainsourcetype IN (0)' => null, //Media TODO
-        'chainidearight' => $i['ideaid'],
-    ), array('chainsourceup'), 0, 0, array('chainkey' => 'ASC')) as $x) {
+        'chainhandletype IN (0)' => null, //Media TODO
+        'chainhashtagoutput' => $i['hashtagid'],
+    ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $x) {
 
-        if ($x['chainsourcetype'] == 4258) {
+        if ($x['chainhandletype'] == 4258) {
 
             //Video
-            $template = '<video id="video_source_' . $x['chainvalue'] . '" controls class="cld-video-source cld-fluid cld-video-source-skin-light" poster="' . $x['sourcecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
+            $template = '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $x['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
 
-        } elseif ($x['chainsourcetype'] == 4259) {
+        } elseif ($x['chainhandletype'] == 4259) {
 
             //Audio
             $template = '<audio controls src="' . $x['chainvalue'] . '"></audio>';
 
-        } elseif ($x['chainsourcetype'] == 4260) {
+        } elseif ($x['chainhandletype'] == 4260) {
 
             //Image
             $template = '<img src="' . $x['chainvalue'] . '"></video>';
@@ -5136,7 +5136,7 @@ function view_idea_media($i)
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_' . $x['chainsourcetype'] . ($x['chainsourcetype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainsourcetype'] . '" sourceid="' . $x['sourceid'] . '"  sourcecover="' . $x['sourcecover'] . '" playback_code="' . $x['chainvalue'] . '" sourcevalue="' . $x['sourcevalue'] . '">' . $template . '</div>';
+        $message_append .= '<div class="media_display media_display_' . $x['chainhandletype'] . ($x['chainhandletype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainhandletype'] . '" handleid="' . $x['handleid'] . '"  handlecover="' . $x['handlecover'] . '" playback_code="' . $x['chainvalue'] . '" handlevalue="' . $x['handlevalue'] . '">' . $template . '</div>';
 
     }
 
@@ -5145,51 +5145,51 @@ function view_idea_media($i)
 }
 
 
-function view_pill($focus__node, $chainsourcetype, $counter, $m, $ui = null, $is_open = true)
+function view_pill($focus__node, $chainhandletype, $counter, $m, $ui = null, $is_open = true)
 {
 
-    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainsourcetype . '"><a class="nav-chain" chainsourcetype="' . $chainsourcetype . '" href="#' . $m['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainsourcetype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
-        '<div class="headlinebody pillbody hidden headline_body_' . $chainsourcetype . '" read-counter="' . $counter . '">' . $ui . '</div>';
+    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainhandletype . '"><a class="nav-chain" chainhandletype="' . $chainhandletype . '" href="#' . $m['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainhandletype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
+        '<div class="headlinebody pillbody hidden headline_body_' . $chainhandletype . '" read-counter="' . $counter . '">' . $ui . '</div>';
 
 }
 
 
-function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = null)
+function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = null)
 {
 
     $CI =& get_instance();
 
-    if (!isset($e['sourceid']) || !isset($e['sourcevalue'])) {
-        log_error('source_view() Missing core variables', array(
-            'chainsourcedown' => $chainsourcetype,
+    if (!isset($e['handleid']) || !isset($e['handlevalue'])) {
+        log_error('handle_view() Missing core variables', array(
+            'chainhandleoutput' => $chainhandletype,
         ));
         return 'Missing core variables';
     }
 
     $chainid = (isset($e['chainid']) ? $e['chainid'] : 0);
-    $is_cache = in_array($chainsourcetype, $CI->config->item('sourceids___14599'));
-    $source_access = ( $is_cache ? 1 : source_access($e['sourcehandle'], 0, $e) );
-    $superpower_10939 = ( !$is_cache && source_session(10939) );
-    $source_session = ( !$is_cache ? source_session() : false );
-    $sources___11035 = $CI->config->item('sources___11035'); //Encyclopedia
-    $focus__node = in_array($chainsourcetype, $CI->config->item('sourceids___12149')); //NODE COIN
-    $is_app = $chainsourcetype == 6287;
-    $href = ($is_app ? view_app_chain($e['sourceid']) : view_memory(42903, 42902) . $e['sourcehandle']);
-    $cover_is_image = filter_var($e['sourcecover'], FILTER_VALIDATE_URL);
-    $has_sortable = $chainid > 0 && $source_access >= 3 && in_array($chainsourcetype, $CI->config->item('sourceids___13911'));
+    $is_cache = in_array($chainhandletype, $CI->config->item('handleids___14599'));
+    $handle_access = ( $is_cache ? 1 : handle_access($e['handlehandle'], 0, $e) );
+    $superpower_10939 = ( !$is_cache && handle_session(10939) );
+    $handle_session = ( !$is_cache ? handle_session() : false );
+    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $focus__node = in_array($chainhandletype, $CI->config->item('handleids___12149')); //NODE COIN
+    $is_app = $chainhandletype == 6287;
+    $href = ($is_app ? view_app_chain($e['handleid']) : view_memory(42903, 42902) . $e['handlehandle']);
+    $cover_is_image = filter_var($e['handlecover'], FILTER_VALIDATE_URL);
+    $has_sortable = $chainid > 0 && $handle_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___13911'));
 
 
     //Log preview view:
-    $chainsourcecreator_id = ($source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : 14068 /* GUEST */);
+    $chainhandlecreator_id = ($handle_session && isset($handle_session['handleid']) ? $handle_session['handleid'] : 14068 /* GUEST */);
 
-    //Source UI
-    $ui = '<div sourceid="' . $e['sourceid'] . '" sourcehandle="' . $e['sourcehandle'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardsource_cover no-padding card-12274 s__12274_' . $e['sourceid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
+    //Handle UI
+    $ui = '<div handleid="' . $e['handleid'] . '" handlehandle="' . $e['handlehandle'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardhandle_cover no-padding card-12274 s__12274_' . $e['handleid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
 
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= (!$focus__node ? '<a href="' . $href . '"' : '<div') . ' class="handle_hrefsource_' . $e['sourceid'] . ' coinType12274 ' . ($source_access >= 3 ? '' : ' ready-only ') . ' black-background-obs cover-chain" ' . ($cover_is_image ? 'style="background-image:url(\'' . $e['sourcecover'] . '\');"' : '') . '>';
-    $ui .= '<div class="cover-btn ui_sourcecover_' . $e['sourceid'] . '" raw_cover="' . $e['sourcecover'] . '">' . (!$cover_is_image && $e['sourcecover'] ? view_cover($e['sourcecover'], true) : '') . '</div>';
+    $ui .= (!$focus__node ? '<a href="' . $href . '"' : '<div') . ' class="handle_hrefhandle_' . $e['handleid'] . ' coinType12274 ' . ($handle_access >= 3 ? '' : ' ready-only ') . ' black-background-obs cover-chain" ' . ($cover_is_image ? 'style="background-image:url(\'' . $e['handlecover'] . '\');"' : '') . '>';
+    $ui .= '<div class="cover-btn ui_handlecover_' . $e['handleid'] . '" raw_cover="' . $e['handlecover'] . '">' . (!$cover_is_image && $e['handlecover'] ? view_cover($e['handlecover'], true) : '') . '</div>';
     $ui .= (!$focus__node ? '</a>' : '</div>');
 
     $ui .= '</div>';
@@ -5200,41 +5200,41 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
     $ui .= '<div class="inner-content">';
 
 
-    if ($source_access >= 3) {
+    if ($handle_access >= 3) {
         //Editable:
-        $ui .= view_source_input(6197, $e['sourcevalue'], $e['sourceid'], $source_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
-        $ui .= '<div class="hidden text__6197_' . $e['sourceid'] . '">' . $e['sourcevalue'] . '</div>';
+        $ui .= view_handle_input(6197, $e['handlevalue'], $e['handleid'], $handle_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
+        $ui .= '<div class="hidden text__6197_' . $e['handleid'] . '">' . $e['handlevalue'] . '</div>';
     } else {
         //Static:
-        $ui .= '<input type="hidden" class="text__6197_' . $e['sourceid'] . '" value="' . $e['sourcevalue'] . '">';
+        $ui .= '<input type="hidden" class="text__6197_' . $e['handleid'] . '" value="' . $e['handlevalue'] . '">';
         $ui .= '<div class="center">';
-        $ui .= '<span class="main__title text__6197_' . $e['sourceid'] . '">' . $e['sourcevalue'] . '</span>';
+        $ui .= '<span class="main__title text__6197_' . $e['handleid'] . '">' . $e['handlevalue'] . '</span>';
         $ui .= '</div>';
     }
 
 
-    //Source Handle
+    //Handle Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_sourcehandle_' . $e['sourceid'] . '" title="ID ' . $e['sourceid'] . '">' . $e['sourcehandle'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_handlehandle_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handlehandle'] . '</span></div>';
 
-    //Source Location:
-    $sources___42777 = $CI->config->item('sources___42777');
+    //Handle Location:
+    $handles___42777 = $CI->config->item('handles___42777');
     $order_columns = array();
-    foreach ($sources___42777 as $sort_id => $sort) {
-        $order_columns['chainsourcetype = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($handles___42777 as $sort_id => $sort) {
+        $order_columns['chainhandletype = \'' . $sort_id . '\' DESC'] = null;
     }
     foreach ($CI->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42777')) . ')' => null, //Featured Profile
-        'chainsourcedown' => $e['sourceid'],
-    ), array('chainsourceup'), 0, 0, $order_columns) as $location) {
-        $ui .= view_featured_chains($location['chainsourcetype'], $location, $sources___42777[$location['chainsourcetype']], $focus__node);
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42777')) . ')' => null, //Featured Profile
+        'chainhandleoutput' => $e['handleid'],
+    ), array('chainhandleinput'), 0, 0, $order_columns) as $location) {
+        $ui .= view_featured_chains($location['chainhandletype'], $location, $handles___42777[$location['chainhandletype']], $focus__node);
     }
 
 
     if ($is_app && isset($e['chainvalue']) && strlen($e['chainvalue']) && !$is_cache && $superpower_10939) {
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $e['chainvalue'] . '"><i class="far fa-info-circle"></i></span>';
-    } else if ($chainid && $source_access >= 3 && !$is_cache && $superpower_10939) {
+    } else if ($chainid && $handle_access >= 3 && !$is_cache && $superpower_10939) {
         //Main description:
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '">' . htmlentities($e['chainvalue']) . '</div>';
     }
@@ -5247,30 +5247,30 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
 
 
     //Start with Chain Note
-    $featured_sources = '';
+    $featured_handles = '';
 
 
-    //Featured Sources
+    //Featured Handles
     $bio = null;
-    $sources___14036 = $CI->config->item('sources___14036');
+    $handles___14036 = $CI->config->item('handles___14036');
     $order_columns = array();
-    foreach ($sources___14036 as $sort_id => $sort) {
-        $order_columns['chainsourceup = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($handles___14036 as $sort_id => $sort) {
+        $order_columns['chainhandleinput = \'' . $sort_id . '\' DESC'] = null;
     }
     foreach ($CI->Chains->read(array(
-        'chainsourceup IN (' . join(',', $CI->config->item('sourceids___14036')) . ')' => null, //Featured Sources
-        'chainsourcedown' => $e['sourceid'],
-        'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___14036')) . ')' => null, //Featured Handles
+        'chainhandleoutput' => $e['handleid'],
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
     ), array(), 0, 0, $order_columns) as $social_chain) {
 
-        if (in_array($social_chain['chainsourceup'], $CI->config->item('sourceids___32172'))) {
+        if (in_array($social_chain['chainhandleinput'], $CI->config->item('handleids___32172'))) {
             /*
              *
              * Before showing this we must enture all information is updated...
              *
             if (strlen($social_chain['chainvalue'])) {
                 //Must always see, show content here:
-                $bio .= '<div class="source_bio grey center">' . $social_chain['chainvalue'] . '</div>';
+                $bio .= '<div class="handle_bio grey center">' . $social_chain['chainvalue'] . '</div>';
             }
             */
             continue;
@@ -5279,159 +5279,159 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
         //Determine chain type:
         $social_url = false;
 
-        if (in_array(4256, $sources___14036[$social_chain['chainsourceup']]['m__following'])) {
+        if (in_array(4256, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
             //We made sure not the current website:
             $social_url = 'href="' . $social_chain['chainvalue'] . '" target="_blank"';
-        } elseif (in_array(32097, $sources___14036[$social_chain['chainsourceup']]['m__following'])) {
+        } elseif (in_array(32097, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
             $social_url = 'href="mailto:' . $social_chain['chainvalue'] . '"';
-        } elseif (in_array(42181, $sources___14036[$social_chain['chainsourceup']]['m__following'])) {
+        } elseif (in_array(42181, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
             //Phone Number
-            $social_url = 'href="' . phone_href($social_chain['chainsourceup'], $social_chain['chainvalue']) . '"';
+            $social_url = 'href="' . phone_href($social_chain['chainhandleinput'], $social_chain['chainvalue']) . '"';
         }
 
-        $info = (strlen($social_chain['chainvalue']) && !$social_url ? $sources___14036[$social_chain['chainsourceup']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $sources___14036[$social_chain['chainsourceup']]['m__title']));
+        $info = (strlen($social_chain['chainvalue']) && !$social_url ? $handles___14036[$social_chain['chainhandleinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $handles___14036[$social_chain['chainhandleinput']]['m__title']));
 
         //Append to chains:
-        $featured_sources .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $sources___14036[$social_chain['chainsourceup']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $sources___14036[$social_chain['chainsourceup']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $sources___14036[$social_chain['chainsourceup']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $sources___14036[$social_chain['chainsourceup']]['m__cover'] . '</span>')) . '</span>';
+        $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $handles___14036[$social_chain['chainhandleinput']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</span>')) . '</span>';
 
     }
 
 
     //Start with top bar:
-    if (!$is_app && !$is_cache && $source_access >= 1) {
+    if (!$is_app && !$is_cache && $handle_access >= 1) {
 
-        //Source Chain Groups
-        $chainsourcetype_id = 0;
-        $chainsourcetype_ui = '';
+        //Handle Chain Groups
+        $chainhandletype_id = 0;
+        $chainhandletype_ui = '';
         if ($chainid) {
-            foreach ($CI->config->item('sources___31770') as $chainsourcetype1 => $m1) {
-                if (in_array($e['chainsourcetype'], $CI->config->item('sourceids___' . $chainsourcetype1))) {
+            foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
+                if (in_array($e['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
                     foreach ($CI->Chains->read(array(
                         'chainid' => $chainid,
-                    ), array('chainsourcecreator')) as $chainer) {
-                        $chainsourcetype_ui .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
-                        $chainsourcetype_ui .= searchingle_select_instant($chainsourcetype1, $e['chainsourcetype'], $source_access, false, $e['sourceid'], $chainid);
-                        $chainsourcetype_ui .= '</span>';
+                    ), array('chainhandlecreator')) as $chainer) {
+                        $chainhandletype_ui .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
+                        $chainhandletype_ui .= searchingle_select_instant($chainhandletype1, $e['chainhandletype'], $handle_access, false, $e['handleid'], $chainid);
+                        $chainhandletype_ui .= '</span>';
                     }
-                    $chainsourcetype_id = $chainsourcetype1;
+                    $chainhandletype_id = $chainhandletype1;
                     break;
                 }
             }
         }
 
         //Top Bar
-        foreach ($CI->config->item('sources___31963') as $chainsourcetype_target_bar => $m_target_bar) {
+        foreach ($CI->config->item('handles___31963') as $chainhandletype_target_bar => $m_target_bar) {
 
             //See if missing superpower?
-            $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_target_bar['m__following']);
-            if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_target_bar['m__following']);
+            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                 continue;
             }
 
-            if ($chainsourcetype_target_bar == 31770 && $chainid && $superpower_10939) {
+            if ($chainhandletype_target_bar == 31770 && $chainid && $superpower_10939) {
 
-                $featured_sources .= $chainsourcetype_ui;
+                $featured_handles .= $chainhandletype_ui;
 
-            } elseif (0 && $chainsourcetype_target_bar == 42795 && $source_session && $source_session['sourceid'] != $e['sourceid'] && count($CI->Chains->read(array(
-                    'chainsourcedown' => $e['sourceid'],
-                    'chainsourceup' => 4430, //Active Member
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            } elseif (0 && $chainhandletype_target_bar == 42795 && $handle_session && $handle_session['handleid'] != $e['handleid'] && count($CI->Chains->read(array(
+                    'chainhandleoutput' => $e['handleid'],
+                    'chainhandleinput' => 4430, //Active Member
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 )))) {
 
-                //Allow to follow fellow sources:
+                //Allow to follow fellow handles:
                 $followings = $CI->Chains->read(array(
-                    'chainsourceup' => $e['sourceid'],
-                    'chainsourcedown' => $source_session['sourceid'],
-                    'chainsourcetype IN (' . join(',', $CI->config->item('sourceids___42795')) . ')' => null, //Follow
+                    'chainhandleinput' => $e['handleid'],
+                    'chainhandleoutput' => $handle_session['handleid'],
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42795')) . ')' => null, //Follow
                 ), array(), 1, 0, array('chainkey' => 'ASC'));
 
-                if (count($followings) || $source_access >= 3) {
-                    $featured_sources .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainsourcetype'] : 0), $source_session && $source_access >= 3, false, $e['sourceid'], (count($followings) ? $followings[0]['chainid'] : 0)) . '</span>';
+                if (count($followings) || $handle_access >= 3) {
+                    $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainhandletype'] : 0), $handle_session && $handle_access >= 3, false, $e['handleid'], (count($followings) ? $followings[0]['chainid'] : 0)) . '</span>';
                 }
 
-            } elseif ($chainsourcetype_target_bar == 41037 && $source_access >= 3 && !$focus__node) {
+            } elseif ($chainhandletype_target_bar == 41037 && $handle_access >= 3 && !$focus__node) {
 
                 //Selector
-                $featured_sources .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' ignore-click">';
-                $featured_sources .= '<input class="form-check-input" type="checkbox" value="" sourceid="' . $e['sourceid'] . '" id="selectorsource_' . $e['sourceid'] . '" aria-label="...">';
-                $featured_sources .= '</span>';
+                $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' ignore-click">';
+                $featured_handles .= '<input class="form-check-input" type="checkbox" value="" handleid="' . $e['handleid'] . '" id="selectorhandle_' . $e['handleid'] . '" aria-label="...">';
+                $featured_handles .= '</span>';
 
-            } elseif ($chainsourcetype_target_bar == 13006 && $has_sortable && $source_access >= 3) {
+            } elseif ($chainhandletype_target_bar == 13006 && $has_sortable && $handle_access >= 3) {
 
-                //Sort Source
-                $featured_sources .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' sortsource_frame hidden">';
-                $featured_sources .= '<span title="' . $m_target_bar['m__title'] . '" class="sortsource_grab">' . $m_target_bar['m__cover'] . '</span>';
-                $featured_sources .= '</span>';
+                //Sort Handle
+                $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' sorthandle_frame hidden">';
+                $featured_handles .= '<span title="' . $m_target_bar['m__title'] . '" class="sorthandle_grab">' . $m_target_bar['m__cover'] . '</span>';
+                $featured_handles .= '</span>';
 
-            } elseif ($chainsourcetype_target_bar == 14980 && $source_access >= 3) {
+            } elseif ($chainhandletype_target_bar == 14980 && $handle_access >= 3) {
 
                 $action_buttons = null;
 
                 if (!$chainid) {
-                    $focus_dropdown = 12887; //Source Dropdown
-                } elseif ($chainsourcetype_id == 32292) { //Source/Source Chains
-                    $focus_dropdown = 14956; //Source/Source Dropdown
-                } elseif ($chainsourcetype_id == 31777 || $chainsourcetype_id == 31777) { //Discoveries
-                    $focus_dropdown = 32070; //Source>Discoveries Dropdown
-                } elseif ($chainsourcetype_id == 13550) { //Idea/Source Chains
-                    $focus_dropdown = 28792; //Source/Idea Dropdown
+                    $focus_dropdown = 12887; //Handle Dropdown
+                } elseif ($chainhandletype_id == 32292) { //Handle/Handle Chains
+                    $focus_dropdown = 14956; //Handle/Handle Dropdown
+                } elseif ($chainhandletype_id == 31777 || $chainhandletype_id == 31777) { //Discoveries
+                    $focus_dropdown = 32070; //Handle>Discoveries Dropdown
+                } elseif ($chainhandletype_id == 13550) { //Hahstag/Handle Chains
+                    $focus_dropdown = 28792; //Handle/Hahstag Dropdown
                 } else {
                     $focus_dropdown = 0;
                 }
 
-                if ($focus_dropdown > 0 && is_array($CI->config->item('sources___' . $focus_dropdown))) {
-                    foreach ($CI->config->item('sources___' . $focus_dropdown) as $sourceid_dropdown => $m_dropdown) {
+                if ($focus_dropdown > 0 && is_array($CI->config->item('handles___' . $focus_dropdown))) {
+                    foreach ($CI->config->item('handles___' . $focus_dropdown) as $handleid_dropdown => $m_dropdown) {
 
                         //Skip if missing superpower:
-                        $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_dropdown['m__following']);
-                        if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+                        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_dropdown['m__following']);
+                        if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                             continue;
                         }
 
                         $anchor = '<span class="icon-block">' . $m_dropdown['m__cover'] . '</span>' . $m_dropdown['m__title'];
 
 
-                        if ($sourceid_dropdown == 4997) {
+                        if ($handleid_dropdown == 4997) {
 
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(4997,' . $e['sourceid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(4997,' . $e['handleid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($sourceid_dropdown == 6287) {
+                        } elseif ($handleid_dropdown == 6287) {
 
                             //App Store
-                            if (in_array($e['sourceid'], $CI->config->item('sourceids___6287'))) {
-                                $action_buttons .= '<a href="' . view_app_chain($e['sourceid']) . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                            if (in_array($e['handleid'], $CI->config->item('handleids___6287'))) {
+                                $action_buttons .= '<a href="' . view_app_chain($e['handleid']) . '" class="dropdown-item main__title">' . $anchor . '</a>';
                             }
 
-                        } elseif ($sourceid_dropdown == 31912 && $source_access >= 3) {
+                        } elseif ($handleid_dropdown == 31912 && $handle_access >= 3) {
 
-                            //Edit Source
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="source_editor(' . $e['sourceid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            //Edit Handle
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="handle_editor(' . $e['handleid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($sourceid_dropdown == 29771 && $source_access >= 3) {
+                        } elseif ($handleid_dropdown == 29771 && $handle_access >= 3) {
 
                             //Clone:
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="source_copy(' . $e['sourceid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="handle_copy(' . $e['handleid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($sourceid_dropdown == 10673 && $chainid > 0 && $source_access >= 3 && $superpower_10939) {
+                        } elseif ($handleid_dropdown == 10673 && $chainid > 0 && $handle_access >= 3 && $superpower_10939) {
 
                             //UNCHAIN
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $e['chainsourcetype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $e['chainhandletype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
 
-                        } elseif ($sourceid_dropdown == 42649 && $source_access >= 3) {
+                        } elseif ($handleid_dropdown == 42649 && $handle_access >= 3) {
 
-                            //Delete Source
+                            //Delete Handle
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" onclick="source_delete(' . $e['sourceid'] . ', ' . $chainid . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void();" onclick="handle_delete(' . $e['handleid'] . ', ' . $chainid . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($sourceid_dropdown == 13007 && $source_access >= 3) {
+                        } elseif ($handleid_dropdown == 13007 && $handle_access >= 3) {
 
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="chain_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif (in_array($sourceid_dropdown, $CI->config->item('sourceids___6287')) && $source_access >= 3) {
+                        } elseif (in_array($handleid_dropdown, $CI->config->item('handleids___6287')) && $handle_access >= 3) {
 
                             //Standard button
-                            $action_buttons .= '<a href="' . view_app_chain($sourceid_dropdown) . view_memory(42903, 42902) . $e['sourcehandle'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 42902) . $e['handlehandle'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         }
                     }
@@ -5440,16 +5440,16 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
                 //Any items found?
                 if ($action_buttons && $focus_dropdown > 0) {
                     //Right Action Menu
-                    $sources___14980 = $CI->config->item('sources___14980'); //Dropdowns
+                    $handles___14980 = $CI->config->item('handles___14980'); //Dropdowns
 
-                    $featured_sources .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
-                    $featured_sources .= '<div class="dropdown inline-block">';
-                    $featured_sources .= '<button type="button" class="btn no-left-padding no-right-padding" id="action_menusource_' . $e['sourceid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $sources___14980[$focus_dropdown]['m__title'] . '">' . $sources___14980[$focus_dropdown]['m__cover'] . '</button>';
-                    $featured_sources .= '<div class="dropdown-menu" aria-labelledby="action_menusource_' . $e['sourceid'] . '">';
-                    $featured_sources .= $action_buttons;
-                    $featured_sources .= '</div>';
-                    $featured_sources .= '</div>';
-                    $featured_sources .= '</span>';
+                    $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
+                    $featured_handles .= '<div class="dropdown inline-block">';
+                    $featured_handles .= '<button type="button" class="btn no-left-padding no-right-padding" id="action_menuhandle_' . $e['handleid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $handles___14980[$focus_dropdown]['m__title'] . '">' . $handles___14980[$focus_dropdown]['m__cover'] . '</button>';
+                    $featured_handles .= '<div class="dropdown-menu" aria-labelledby="action_menuhandle_' . $e['handleid'] . '">';
+                    $featured_handles .= $action_buttons;
+                    $featured_handles .= '</div>';
+                    $featured_handles .= '</div>';
+                    $featured_handles .= '</span>';
                 }
             }
         }
@@ -5460,7 +5460,7 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
 
     if ($focus__node) {
         $ui .= '<div class="center-block">';
-        $ui .= $featured_sources;
+        $ui .= $featured_handles;
         $ui .= '</div>';
     }
 
@@ -5470,23 +5470,23 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
 
 
     //Bottom Bar
-    if (!$is_app && $source_access >= 1) {
+    if (!$is_app && $handle_access >= 1) {
 
         $ui .= '<div class="card_cards hideIfEmpty">';
 
         if (!$focus__node) {
 
-            $ui .= $featured_sources;
+            $ui .= $featured_handles;
 
             //Also Append bottom bar / main menu:
-            foreach ($CI->config->item('sources___31916') as $sourceid_bottom_bar => $m_bottom_bar) {
-                $superpowers_required = array_intersect($CI->config->item('sourceids___10957'), $m_bottom_bar['m__following']);
-                if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+            foreach ($CI->config->item('handles___31916') as $handleid_bottom_bar => $m_bottom_bar) {
+                $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_bottom_bar['m__following']);
+                if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                     continue;
                 }
 
                 $ui .= '<span class="hideIfEmpty">';
-                $ui .= sources_query($sourceid_bottom_bar, $e['sourceid']);
+                $ui .= handles_query($handleid_bottom_bar, $e['handleid']);
                 $ui .= '</span>';
             }
         }
@@ -5502,22 +5502,22 @@ function source_view($chainsourcetype, $e, $extra_class = null, $extra_value = n
 }
 
 
-function view_source_input($cache_sourceid, $current_value, $s__id, $idea_access, $tabindex = 0, $extra_large = false)
+function view_handle_input($cache_handleid, $current_value, $s__id, $hashtag_access, $tabindex = 0, $extra_large = false)
 {
 
     $CI =& get_instance();
-    $sources___12112 = $CI->config->item('sources___12112');
+    $handles___12112 = $CI->config->item('handles___12112');
     $current_value = htmlentities($current_value);
-    $name = 'input' . substr(md5($cache_sourceid . $current_value . $s__id . $idea_access . $tabindex), 0, 8);
+    $name = 'input' . substr(md5($cache_handleid . $current_value . $s__id . $hashtag_access . $tabindex), 0, 8);
 
     //Define element attributes:
-    $attributes = ($idea_access >= 3 ? '' : 'disabled') . ' spellcheck="false" tabindex="' . $tabindex . '" old-value="' . $current_value . '" id="input_' . $cache_sourceid . '_' . $s__id . '" class="form-control 
-     inline-block editing-mode x_set_class_text text__' . $cache_sourceid . '_' . $s__id . ($extra_large ? ' texttype_lg ' : ' texttype_sm ') . ' textsource_' . $cache_sourceid . '" cache_sourceid="' . $cache_sourceid . '" sourceid="' . $s__id . '" ';
+    $attributes = ($hashtag_access >= 3 ? '' : 'disabled') . ' spellcheck="false" tabindex="' . $tabindex . '" old-value="' . $current_value . '" id="input_' . $cache_handleid . '_' . $s__id . '" class="form-control 
+     inline-block editing-mode x_set_class_text text__' . $cache_handleid . '_' . $s__id . ($extra_large ? ' texttype_lg ' : ' texttype_sm ') . ' texthandle_' . $cache_handleid . '" cache_handleid="' . $cache_handleid . '" handleid="' . $s__id . '" ';
 
     //Also Append Counter to the end?
     if ($extra_large) {
 
-        $focus_element = '<textarea name="' . $name . '" placeholder="' . $sources___12112[$cache_sourceid]['m__title'] . '" ' . $attributes . '>' . $current_value . '</textarea>';
+        $focus_element = '<textarea name="' . $name . '" placeholder="' . $handles___12112[$cache_handleid]['m__title'] . '" ' . $attributes . '>' . $current_value . '</textarea>';
 
     } else {
 
@@ -5525,7 +5525,7 @@ function view_source_input($cache_sourceid, $current_value, $s__id, $idea_access
 
     }
 
-    return '<span class="span__' . $cache_sourceid . ' ' . (!($idea_access >= 3) ? ' edit-locked ' : '') . '">' . $focus_element . '</span>';
+    return '<span class="span__' . $cache_handleid . ' ' . (!($hashtag_access >= 3) ? ' edit-locked ' : '') . '">' . $focus_element . '</span>';
 
 }
 

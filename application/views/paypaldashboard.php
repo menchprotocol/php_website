@@ -1,7 +1,7 @@
 <?php
 
 $commission_rate = intval(website_setting(27017))/100;
-$sources___6287 = $this->config->item('sources___6287'); //APP
+$handles___6287 = $this->config->item('handles___6287'); //APP
 $gross_chains = 0;
 $gross_sales = 0;
 $gross_revenue = 0;
@@ -9,44 +9,44 @@ $gross_paypal_fee = 0;
 $gross_commission = 0;
 $gross_payout = 0;
 $gross_currencies = array();
-$idea_query = array();
+$hashtag_query = array();
 $daily_sales = array();
 $origin_sales = array();
 $all_e = array();
 
 
 
-if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['sourcehandle'] || $_GET['sourcehandle']=='0'){
+if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['handlehandle'] || $_GET['handlehandle']=='0'){
     
-    echo '<h1>'.$sources___6287[27004]['m__title'].'</h1>';
-    foreach($this->Sources->tree(11029, $source_session['sourceid'], array(27004)) as $e){
-        echo '<div><a href="'.view_app_chain(27004).view_memory(42903,42902).$e['sourcehandle'].'" class="main__title">'.$e['sourcevalue'].'</a></div>';
+    echo '<h1>'.$handles___6287[27004]['m__title'].'</h1>';
+    foreach($this->Handles->tree(11029, $handle_session['handleid'], array(27004)) as $e){
+        echo '<div><a href="'.view_app_chain(27004).view_memory(42903,42902).$e['handlehandle'].'" class="main__title">'.$e['handlevalue'].'</a></div>';
     }
 
 } else {
 
 
     //Show header:
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_chain(27004).'"><b>'.$sources___6287[27004]['m__title'].'</b></a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_chain(27004).'"><b>'.$handles___6287[27004]['m__title'].'</b></a></div>';
 
-    $es = $this->Sources->read(array(
-        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+    $es = $this->Handles->read(array(
+        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
     ));
-    echo '<h2>'.$es[0]['sourcevalue'].' @'.$es[0]['sourcehandle'].'</h2>';
+    echo '<h2>'.$es[0]['handlevalue'].' @'.$es[0]['handlehandle'].'</h2>';
 
-    $idea_query = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
-        'ideatype IN (' . join(',', $this->config->item('sourceids___41055')) . ')' => null, //Payment Ideas
-        'chainsourceup' => $es[0]['sourceid'],
-    ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'));
+    $hashtag_query = $this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+        'hashtagtype IN (' . join(',', $this->config->item('handleids___41055')) . ')' => null, //Payment Hashtags
+        'chainhandleinput' => $es[0]['handleid'],
+    ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'));
 
 
-    //List all payment Ideas and their total earnings
+    //List all payment Hashtags and their total earnings
     $x_updated = 0;
-    echo '<p>'.count($idea_query).' results found:</p>';
+    echo '<p>'.count($hashtag_query).' results found:</p>';
 
     $sale_type_content = '';
-    foreach($idea_query as $i){
+    foreach($hashtag_query as $i){
 
         //Total earnings:
         $chain_content = '';
@@ -57,15 +57,15 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
         $currencies = array();
 
         foreach($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainidealeft' => $i['ideaid'],
-        ), array(), 0, 0, array('chainsourcecreator' => 'ASC')) as $x){
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $i['hashtagid'],
+        ), array(), 0, 0, array('chainhandlecreator' => 'ASC')) as $x){
 
             $chainvalue = unserialize($x['chainvalue']);
             $total_chains++;
             $this_quantity = 1;//Default assumption:
 
-            //Source for quantity?
+            //Handle for quantity?
             unset($chainvalue2);
 
             if(isset($chainvalue2) && $chainvalue2['quantity']>1){
@@ -77,8 +77,8 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
                 $this_quantity = $x2['chainkey'];
             }
 
-            //Count only if a TICKET idea:
-            if(!in_array($x['chainsourcetype'], $this->config->item('sourceids___30469'))){
+            //Count only if a TICKET hashtag:
+            if(!in_array($x['chainhandletype'], $this->config->item('handleids___30469'))){
                 $chainvalue['mc_gross'] = 0;
                 $chainvalue['mc_fee'] = 0;
                 $chainvalue['mc_currency'] = '';
@@ -112,15 +112,15 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
             }
 
             $item_parts = explode('-',$chainvalue['item_number']);
-            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['chainsourcecreator'] );
+            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['chainhandlecreator'] );
             array_push($all_e, $this_e);
-            $es = $this->Sources->read(array(
-                'sourceid' => $this_e,
+            $es = $this->Handles->read(array(
+                'handleid' => $this_e,
             ));
 
 
-            $chain_content .= '<tr class="chain_columns chains_'.$i['ideaid'].' hidden">';
-            $chain_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['sourcecover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['sourcehandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['sourcevalue'].'</a> ' : '' ).$chainvalue['first_name'].' '.$chainvalue['last_name'].'</td>';
+            $chain_content .= '<tr class="chain_columns chains_'.$i['hashtagid'].' hidden">';
+            $chain_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['handlecover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['handlehandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['handlevalue'].'</a> ' : '' ).$chainvalue['first_name'].' '.$chainvalue['last_name'].'</td>';
             $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $chainvalue['mc_gross']!=0 && strlen($chainvalue['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$chainvalue['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Chain"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_chain(4341).'?chainid='.$x['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';
             $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $chain_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
@@ -141,7 +141,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
                     $daily_sales[$date] = $this_payout;
                 }
 
-                $origin_e = $x['chainidearight'];
+                $origin_e = $x['chainhashtagoutput'];
                 if(isset($origin_sales[$origin_e])){
                     $origin_sales[$origin_e] += number_format($this_payout, 0, '','');
                 } else {
@@ -155,7 +155,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
         $payout = $total_revenue-$total_commission-$total_paypal_fee;
 
 
-        if($i['ideatype']==6183 && !$total_chains){
+        if($i['hashtagtype']==6183 && !$total_chains){
             continue;
         }
 
@@ -167,9 +167,9 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
         $gross_payout += $payout;
 
         $max_available = $this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $i['ideaid'],
-            'chainsourceup' => 26189,
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput' => 26189,
         ), array(), 1);
         $available_chains = (count($max_available) && is_numeric($max_available[0]['chainvalue']) ? intval($max_available[0]['chainvalue']) : '∞');
 
@@ -178,7 +178,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.chains_'.$i['ideaid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;">'.view_idea_title($i).'</a>' : view_idea_title($i) ).' <a href="'.view_memory(42903,33286).$i['ideahashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.chains_'.$i['hashtagid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;">'.view_hashtag_title($i).'</a>' : view_hashtag_title($i) ).' <a href="'.view_memory(42903,33286).$i['hashtaghashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_chains.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_chains.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
@@ -193,7 +193,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
 
     }
 
-    $othersource_content = '';
+    $otherhandle_content = '';
 
 
 
@@ -207,17 +207,17 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
 
     $other_es = array();
 
-    foreach($this->Sources->read(array(
-        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+    foreach($this->Handles->read(array(
+        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
     )) as $e){
         $filters = array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-            'chainsourceup' => $e['sourceid'], //Member
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            'chainhandleinput' => $e['handleid'], //Member
         );
         if(count($all_e)){
-            $filters[ 'chainsourcedown NOT IN (' . join(',', $all_e) . ')'] = null;
+            $filters[ 'chainhandleoutput NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Chains->read($filters, array('chainsourcedown'), 0);
+        $other_es = $this->Chains->read($filters, array('chainhandleoutput'), 0);
     }
 
 
@@ -226,37 +226,37 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
 
     if(count($other_es)){
 
-        $sources___4593 = $this->config->item('sources___4593');
+        $handles___4593 = $this->config->item('handles___4593');
 
-        //Show Other Sources:
-        $othersource_content .= '<tr class="main__title">';
-        $othersource_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_e\').toggleClass(\'hidden\');" style="font-weight:bold;">'.$sources___4593[29393]['m__title'].'</a></td>';
-        $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
-        $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
-        $othersource_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
-        $othersource_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $othersource_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $othersource_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $othersource_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
-        $othersource_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
-        $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-        $othersource_content .= '</tr>';
+        //Show Other Handles:
+        $otherhandle_content .= '<tr class="main__title">';
+        $otherhandle_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_e\').toggleClass(\'hidden\');" style="font-weight:bold;">'.$handles___4593[29393]['m__title'].'</a></td>';
+        $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
+        $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
+        $otherhandle_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
+        $otherhandle_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $otherhandle_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $otherhandle_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $otherhandle_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
+        $otherhandle_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
+        $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+        $otherhandle_content .= '</tr>';
 
 
         //Doo We Have other?
         foreach($other_es as $other_e){
-            $othersource_content .= '<tr class="chain_columns thr_e hidden">';
-            $othersource_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['sourcecover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['sourcehandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['sourcevalue'].'</a></td>';
-            $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $othersource_content .= '<td style="text-align: right;"><a href="'.view_app_chain(4341).'?chainid='.$other_e['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';
-            $othersource_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $othersource_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $othersource_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $othersource_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
-            $othersource_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
-            $othersource_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $othersource_content .= '</tr>';
+            $otherhandle_content .= '<tr class="chain_columns thr_e hidden">';
+            $otherhandle_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['handlecover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['handlehandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['handlevalue'].'</a></td>';
+            $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $otherhandle_content .= '<td style="text-align: right;"><a href="'.view_app_chain(4341).'?chainid='.$other_e['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';
+            $otherhandle_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $otherhandle_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $otherhandle_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $otherhandle_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
+            $otherhandle_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
+            $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $otherhandle_content .= '</tr>';
             $gross_sales++;
         }
 
@@ -266,7 +266,7 @@ if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle']) || !$_GET['so
 
 
 
-if(count($idea_query)){
+if(count($hashtag_query)){
 
     echo '<table id="sortable_table" class="table table-sm image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
     echo '<tr style="vertical-align: baseline;" class="main__title">';
@@ -282,7 +282,7 @@ if(count($idea_query)){
     echo '<th style="text-align: right;" id="th_currency" class="advance_columns hidden">&nbsp;</th>';
     echo '</tr>';
 
-    echo $othersource_content;
+    echo $otherhandle_content;
     echo $sale_type_content;
 
     echo '<tr class="main__title">';
@@ -349,19 +349,19 @@ if(count($idea_query)){
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->Chains->read(array(
-                                                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                            'chainidearight' => $origin,
-                            'chainsourceup' => 30564, //None Promoter
+                                                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                            'chainhashtagoutput' => $origin,
+                            'chainhandleinput' => 30564, //None Promoter
                         )))){
                         //This item has more than 50% of sales, remove it:
                         continue;
                     }
                     if($sales > 0){
                         //Fetch this origin:
-                        $is = $this->Ideas->read(array(
-                            'ideaid' => $origin,
+                        $is = $this->Hashtags->read(array(
+                            'hashtagid' => $origin,
                         ));
-                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_idea_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
+                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_hashtag_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
                     }
                 }
                 ?>

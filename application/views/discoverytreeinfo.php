@@ -1,27 +1,27 @@
 <?php
 
-if(!isset($_GET['ideahashtag'])){
-    die('Missing Idea Hashtag');
+if(!isset($_GET['hashtaghashtag'])){
+    die('Missing Hahstag Hashtag');
 }
 
 
-//Define the user to fetch their discoveries for this idea:
-if(!isset($_GET['sourcehandle']) || !strlen($_GET['sourcehandle'])){
-    $_GET['sourcehandle'] = $source_session['sourcehandle'];
+//Define the user to fetch their discoveries for this hashtag:
+if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle'])){
+    $_GET['handlehandle'] = $handle_session['handlehandle'];
 }
 
 
 //Generate list & settings:
-$idea_settings = idea_settings($_GET['ideahashtag']);
-echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
+$hashtag_settings = hashtag_settings($_GET['hashtaghashtag']);
+echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 
 
-foreach($this->Sources->read(array(
-    'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+foreach($this->Handles->read(array(
+    'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
 )) as $e){
-    //List the idea:
+    //List the hashtag:
     print_r(array(
-        'next_ideas' => $this->Chains->next_ideas($e['sourceid'], $idea_settings['i']['ideahashtag'], $idea_settings['i'], 0, false),
-        'progress' => $this->Chains->progress($e['sourceid'], $idea_settings['i']),
+        'next_hashtags' => $this->Chains->next_hashtags($e['handleid'], $hashtag_settings['i']['hashtaghashtag'], $hashtag_settings['i'], 0, false),
+        'progress' => $this->Chains->progress($e['handleid'], $hashtag_settings['i']),
     ));
 }

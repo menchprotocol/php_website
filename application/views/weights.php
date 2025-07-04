@@ -6,36 +6,36 @@ $obj = ( isset($_GET['obj']) ? $_GET['obj'] : false );
 
 $stats = array(
     'start_time' => time(),
-    'idea_scanned' => 0,
-    'idea_updated' => 0,
-    'idea_total_weights' => 0,
-    'source_scanned' => 0,
-    'source_changed' => 0,
+    'hashtag_scanned' => 0,
+    'hashtag_updated' => 0,
+    'hashtag_total_weights' => 0,
+    'handle_scanned' => 0,
+    'handle_changed' => 0,
 );
 
 if(!$obj || $obj==12273){
 
-    //Update the weights for active ideas
-    foreach($this->Ideas->read(array()) as $in) {
-        $stats['idea_scanned']++;
-        $stats['idea_updated'] += idea_number_calculator($in);
+    //Update the weights for active hashtags
+    foreach($this->Hashtags->read(array()) as $in) {
+        $stats['hashtag_scanned']++;
+        $stats['hashtag_updated'] += hashtag_number_calculator($in);
     }
 
 }
 
 
 if(!$obj || $obj==12274){
-    //Update the weights for active Sources:
-    foreach($this->Sources->read(array(
+    //Update the weights for active Handles:
+    foreach($this->Handles->read(array(
         )) as $en) {
-        $stats['source_scanned']++;
-        $stats['source_changed'] += source_number_calculator($en);
+        $stats['handle_scanned']++;
+        $stats['handle_changed'] += handle_number_calculator($en);
     }
 }
 
 $stats['end_time'] = time();
 $stats['total_seconds'] = $stats['end_time'] - $stats['start_time'];
-$stats['total_items'] = $stats['source_scanned'] + $stats['idea_scanned'];
+$stats['total_items'] = $stats['handle_scanned'] + $stats['hashtag_scanned'];
 if($stats['total_seconds'] > 0){
     $stats['millisecond_speed'] = round(($stats['total_seconds'] / $stats['total_items'] * 1000), 3);
 }

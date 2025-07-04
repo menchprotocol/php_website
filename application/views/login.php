@@ -2,16 +2,16 @@
 
 $sign_i = array();
 
-if(isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag'])){
-    $sign_i = $this->Ideas->read(array(
-        'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
+if(isset($_GET['hashtaghashtag']) && strlen($_GET['hashtaghashtag'])){
+    $sign_i = $this->Hashtags->read(array(
+        'LOWER(hashtaghashtag)' => strtolower($_GET['hashtaghashtag']),
     ));
 }
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . view_memory(42903, 33286) . $sign_i[0]['ideahashtag'] : home_url()) );
-$sources___14870 = $this->config->item('sources___14870'); //Website Partner
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . view_memory(42903, 33286) . $sign_i[0]['hashtaghashtag'] : home_url()) );
+$handles___14870 = $this->config->item('handles___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
-if(source_session()) {
+if(handle_session()) {
 
     //Lead member and above, go to console:
     js_php_redirect($next_url, 13);
@@ -22,15 +22,15 @@ if(source_session()) {
 
     js_php_redirect($next_url, 13);
 
-} elseif(isset($_GET['sourcehandle']) && $_GET['sourcehandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['sourcehandle'])==$_GET['hash']){
+} elseif(isset($_GET['handlehandle']) && $_GET['handlehandle']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handlehandle'])==$_GET['hash']){
 
-    $es = $this->Sources->read(array(
-        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+    $es = $this->Handles->read(array(
+        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
     ));
 
     if(count($es)){
         //Assign session & log Chain:
-        $this->Sources->activate($es[0], false, true);
+        $this->Handles->activate($es[0], false, true);
     }
 
     js_php_redirect($next_url, 13);
@@ -42,7 +42,7 @@ if(source_session()) {
         //Assign Session variable so we can detect upon social login:
         $session_data = $this->session->all_userdata();
         if(count($sign_i)){
-            $session_data['login_ideahashtag'] = $sign_i[0]['ideahashtag'];
+            $session_data['login_hashtaghashtag'] = $sign_i[0]['hashtaghashtag'];
         }
         if(isset($_GET['url'])){
             $session_data['redirect_url'] = urldecode($_GET['url']);
@@ -51,40 +51,40 @@ if(source_session()) {
     }
 
 
-    $sources___4269 = $this->config->item('sources___4269');
-    $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
+    $handles___4269 = $this->config->item('handles___4269');
+    $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
 
 
-    $current_sign_idea_attempt = array(); //Will try to find this
-    $current_sign_idea_attempts = $this->session->userdata('sign_idea_attempts');
-    if(is_array($current_sign_idea_attempts) && count($current_sign_idea_attempts) > 0){
+    $current_sign_hashtag_attempt = array(); //Will try to find this
+    $current_sign_hashtag_attempts = $this->session->userdata('sign_hashtag_attempts');
+    if(is_array($current_sign_hashtag_attempts) && count($current_sign_hashtag_attempts) > 0){
         //See if any of the current sign-in attempts match this:
-        foreach($current_sign_idea_attempts as $sign_idea_attempt){
+        foreach($current_sign_hashtag_attempts as $sign_hashtag_attempt){
             $all_match = true;
-            if(count($sign_i) && $sign_i[0]['ideaid'] != intval($sign_idea_attempt['chainidealeft'])){
+            if(count($sign_i) && $sign_i[0]['hashtagid'] != intval($sign_hashtag_attempt['chainhashtaginput'])){
                 $all_match = false;
                 break;
             }
             if($all_match){
                 //We found a match!
-                $current_sign_idea_attempt = $sign_idea_attempt;
+                $current_sign_hashtag_attempt = $sign_hashtag_attempt;
                 break;
             }
         }
     } else {
-        $current_sign_idea_attempts = array();
+        $current_sign_hashtag_attempts = array();
     }
 
 
     //See what to do based on current matches:
-    if(count($current_sign_idea_attempt)==0){
+    if(count($current_sign_hashtag_attempt)==0){
 
         //Grow the array:
-        array_push($current_sign_idea_attempts, $current_sign_idea_attempt);
+        array_push($current_sign_hashtag_attempts, $current_sign_hashtag_attempt);
 
         //Add this sign-in attempt to session:
-        $this->session->set_userdata(array('sign_idea_attempts' => $current_sign_idea_attempts));
+        $this->session->set_userdata(array('sign_hashtag_attempts' => $current_sign_hashtag_attempts));
 
     }
     ?>
@@ -101,7 +101,7 @@ if(source_session()) {
             //Watch for 4 digit code:
             $("#input_code").on("input", function() {
                 if($(this).val().length==4){
-                    source_authenticate();
+                    handle_authenticate();
                 }
             });
 
@@ -115,8 +115,8 @@ if(source_session()) {
         });
 
 
-        var next_icon = '<?= $sources___11035[26104]['m__cover'] ?>';
-        var sign_ideaid = <?= ( count($sign_i) ? $sign_i[0]['ideaid'] : 0 ) ?>;
+        var next_icon = '<?= $handles___11035[26104]['m__cover'] ?>';
+        var sign_hashtagid = <?= ( count($sign_i) ? $sign_i[0]['hashtagid'] : 0 ) ?>;
         var referrer_url = '<?= @$_GET['url'] ?>';
         var logged_messenger = false;
         var logged_website = false;
@@ -130,9 +130,9 @@ if(source_session()) {
                 //Watch for action keys:
                 if (e.keyCode==13) {
                     if(step_count==2){
-                        source_verify();
+                        handle_verify();
                     } else if(step_count==3){
-                        source_authenticate();
+                        handle_authenticate();
                     }
                 }
             });
@@ -154,7 +154,7 @@ if(source_session()) {
 
 
         var verifying_contact = false;
-        function source_verify(){
+        function handle_verify(){
 
             if(verifying_contact){
                 return false;
@@ -169,10 +169,10 @@ if(source_session()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/controller/source_verify", {
+            $.post("/controller/handle_verify", {
 
                 account_email_phone: account_email_phone,
-                sign_ideaid: sign_ideaid,
+                sign_hashtagid: sign_hashtagid,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
 
             }, function (data) {
@@ -224,7 +224,7 @@ if(source_session()) {
 
 
         var code_checking = false;
-        function source_authenticate(){
+        function handle_authenticate(){
 
             if(code_checking){
                 return false;
@@ -236,13 +236,13 @@ if(source_session()) {
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:
-            $.post("/controller/source_authenticate", {
+            $.post("/controller/handle_authenticate", {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),
                 input_code: $('#input_code').val(),
                 referrer_url: referrer_url,
-                sign_ideaid: sign_ideaid,
+                sign_hashtagid: sign_hashtagid,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
                 if (data.status) {
@@ -276,15 +276,15 @@ if(source_session()) {
             <!-- Step 1: Enter Email -->
             <div id="step2" class="signup-steps hidden">
 
-                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$sources___4269[32079]['m__cover'].'</span>'.$sources___4269[32079]['m__title'] ?></span>
+                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$handles___4269[32079]['m__cover'].'</span>'.$handles___4269[32079]['m__title'] ?></span>
 
-                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $sources___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
+                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $handles___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
 
                 <div id="account_email_phone_errors" class="margin-top-down hideIfEmpty"></div>
 
 
                 <span>
-                    <a href="javascript:void(0)" onclick="source_verify()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $sources___11035[26104]['m__title'] ?>"><?= $sources___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="handle_verify()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $handles___11035[26104]['m__title'] ?>"><?= $handles___11035[26104]['m__cover'] ?></a>
                 </span>
 
 
@@ -296,9 +296,9 @@ if(source_session()) {
                 if(intval(view_memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_chain(14938).view_memory(42903,33286) . $sign_i[0]['ideahashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
-                    echo $sources___11035[14938]['m__title'].' '.$sources___11035[14938]['m__cover'];
-                    echo ( strlen($sources___11035[14938]['m__message']) ? ': '.$sources___11035[14938]['m__message'] : '' );
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_chain(14938).view_memory(42903,33286) . $sign_i[0]['hashtaghashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo $handles___11035[14938]['m__title'].' '.$handles___11035[14938]['m__cover'];
+                    echo ( strlen($handles___11035[14938]['m__message']) ? ': '.$handles___11035[14938]['m__message'] : '' );
                     echo '</a></div>';
                     echo '</div>';
                 }
@@ -319,11 +319,11 @@ if(source_session()) {
                 <!-- New Account (If not found) -->
                 <div class="margin-top-down new_account hidden">
 
-                    <div class="main__title"><span class="icon-block"><?= $sources___4269[14026]['m__cover'] ?></span><?= $sources___4269[14026]['m__title'] ?></div>
+                    <div class="main__title"><span class="icon-block"><?= $handles___4269[14026]['m__cover'] ?></span><?= $handles___4269[14026]['m__title'] ?></div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
-                        <div class="main__title"><span class="icon-block"><?= $sources___4269[3288]['m__cover'] ?></span><?= $sources___4269[3288]['m__title'] ?></div>
+                        <div class="main__title"><span class="icon-block"><?= $handles___4269[3288]['m__cover'] ?></span><?= $handles___4269[3288]['m__title'] ?></div>
                         <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title input_border" /></div>
                     </div>
                     <div class="doclear">&nbsp;</div>
@@ -331,15 +331,15 @@ if(source_session()) {
 
 
                 <!-- Sign in Code -->
-                <div style="padding:8px 0;">Enter the <?= $sources___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span> (Also check spam folder):</div>
+                <div style="padding:8px 0;">Enter the <?= $handles___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span> (Also check spam folder):</div>
                 <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border input_border" /></div>
                 <div id="sign_code_errors" class="margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
 
                 <div id="step3buttons">
-                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $sources___11035[12991]['m__title'] ?>"><?= $sources___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="source_authenticate()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $sources___11035[26104]['m__title'] ?>"><?= $sources___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $handles___11035[12991]['m__title'] ?>"><?= $handles___11035[12991]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="handle_authenticate()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $handles___11035[26104]['m__title'] ?>"><?= $handles___11035[26104]['m__cover'] ?></a>
                 </div>
 
                 <div class="doclear">&nbsp;</div>

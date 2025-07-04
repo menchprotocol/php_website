@@ -2,18 +2,18 @@
 
 
 
-$sourcehandle = ( isset($_GET['sourcehandle']) && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['sourcehandle'])==$_GET['hash'] ? $_GET['sourcehandle'] : $source_session['sourcehandle'] );
+$handlehandle = ( isset($_GET['handlehandle']) && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handlehandle'])==$_GET['hash'] ? $_GET['handlehandle'] : $handle_session['handlehandle'] );
 
-if(strlen($sourcehandle)){
+if(strlen($handlehandle)){
 
     //Notification Settings
-    foreach($this->Sources->read(array(
-        'sourcehandle' => $sourcehandle,
+    foreach($this->Handles->read(array(
+        'handlehandle' => $handlehandle,
     )) as $e){
-        echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['sourcevalue'].'</h3>';
+        echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['handlevalue'].'</h3>';
     }
 
-    echo '<div style="max-width:610px; margin: 0 auto;">'.view_instant_select(28904, $e['sourceid'], 0).'</div>';
+    echo '<div style="max-width:610px; margin: 0 auto;">'.view_instant_select(28904, $e['handleid'], 0).'</div>';
 
 } else {
 

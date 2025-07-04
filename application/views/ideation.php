@@ -1,31 +1,31 @@
 <?php
 
-$chainsourcecreator = ( $source_session ? $source_session['sourceid'] : 14068 /* GUEST */ );
+$chainhandlecreator = ( $handle_session ? $handle_session['handleid'] : 14068 /* GUEST */ );
 //Log view:
 $this->Chains->create(array(
-    'chainsourcetype' => 1309378, //Idea Viewed
-    'chainsourcecreator' => $chainsourcecreator,
-    'chainsourceup' => $chainsourcecreator,
-    'chainidealeft' => $focus_i['ideaid'],
+    'chainhandletype' => 1309378, //Hahstag Viewed
+    'chainhandlecreator' => $chainhandlecreator,
+    'chainhandleinput' => $chainhandlecreator,
+    'chainhashtaginput' => $focus_i['hashtagid'],
 ));
 
 //See if we need to redirect to starting point?
-if($source_session && !source_session(10939) && count($this->Chains->read(array(
-        'chainsourcecreator' => $source_session['sourceid'],
-        'chainsourcetype' => 4235, //Get started
-        'chainidealeft' => $focus_i['ideaid'],
+if($handle_session && !handle_session(10939) && count($this->Chains->read(array(
+        'chainhandlecreator' => $handle_session['handleid'],
+        'chainhandletype' => 4235, //Get started
+        'chainhashtaginput' => $focus_i['hashtagid'],
     )))){
-    //Source without editing superpowers has viewed an idea they have idea_discovered already, so get them there:
-    js_php_redirect('/'.$focus_i['ideahashtag'].'/start', 13);
+    //Handle without editing superpowers has viewed an hashtag they have hashtag_discovered already, so get them there:
+    js_php_redirect('/'.$focus_i['hashtaghashtag'].'/start', 13);
 }
 
-//Focus Idea:
+//Focus Hahstag:
 echo '<div class="view_12273 row justify-content">';
-echo idea_view(42288,  $focus_i);
+echo hashtag_view(42288,  $focus_i);
 echo '</div>';
 
-if(source_session(10939) || isset($_GET['open'])){
-    echo view_idea_nav(false, $focus_i);
+if(handle_session(10939) || isset($_GET['open'])){
+    echo view_hashtag_nav(false, $focus_i);
 }
 
 ?>
@@ -33,6 +33,6 @@ if(source_session(10939) || isset($_GET['open'])){
 <script>
     $(document).ready(function () {
         load_hashtag_menu();
-        show_more(<?= $focus_i['ideaid'] ?>);
+        show_more(<?= $focus_i['hashtagid'] ?>);
     });
 </script>

@@ -1,10 +1,10 @@
 <?php
 
-//Idea List Duplicates
+//Hahstag List Duplicates
 
 
-//Do a query to detect Ideas with the exact same title:
-$q = $this->db->query('select in1.* from cacheideas in1 where (select count(*) from cacheideas in2 where in2.ideavalue = in1.ideavalue ORDER BY in1.ideavalue ASC');
+//Do a query to detect Hashtags with the exact same title:
+$q = $this->db->query('select in1.* from cachehashtags in1 where (select count(*) from cachehashtags in2 where in2.hashtagvalue = in1.hashtagvalue ORDER BY in1.hashtagvalue ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
@@ -12,12 +12,12 @@ if(count($duplicates) > 0){
     $prev_title = null;
 
     foreach($duplicates as $in) {
-        if ($prev_title != $in['ideavalue']) {
+        if ($prev_title != $in['hashtagvalue']) {
             echo '<hr />';
-            $prev_title = $in['ideavalue'];
+            $prev_title = $in['hashtagvalue'];
         }
 
-        echo '<div><a href="' . view_memory(42903,33286). $in['ideahashtag'] . '"><b>' . $in['ideavalue'] . '</b></a> #' . $in['ideaid'] . '</div>';
+        echo '<div><a href="' . view_memory(42903,33286). $in['hashtaghashtag'] . '"><b>' . $in['hashtagvalue'] . '</b></a> #' . $in['hashtagid'] . '</div>';
     }
 
 } else {

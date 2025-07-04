@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Chains extends CIdea_cache
+class Chains extends CHahstag_cache
 {
 
     function __construct()
@@ -12,17 +12,17 @@ class Chains extends CIdea_cache
     {
 
         //Required field:
-        if (!isset($add_fields['chainsourcetype']) || !in_array($add_fields['chainsourcetype'], $this->config->item('sourceids___4593'))) {
-            log_error('Chains->create() failed to create because of invalid Chain type @' . $add_fields['chainsourcetype'], array(
-                'chainsourcecreator' => $add_fields['chainsourcecreator'],
-                'chainsourcedown' => $add_fields['chainsourcetype'],
+        if (!isset($add_fields['chainhandletype']) || !in_array($add_fields['chainhandletype'], $this->config->item('handleids___4593'))) {
+            log_error('Chains->create() failed to create because of invalid Chain type @' . $add_fields['chainhandletype'], array(
+                'chainhandlecreator' => $add_fields['chainhandlecreator'],
+                'chainhandleoutput' => $add_fields['chainhandletype'],
             ));
             return false;
         }
 
         //Set some defaults:
-        if (!isset($add_fields['chainsourcecreator']) || intval($add_fields['chainsourcecreator']) < 1) {
-            $add_fields['chainsourcecreator'] = 14068; //GUEST MEMBER
+        if (!isset($add_fields['chainhandlecreator']) || intval($add_fields['chainhandlecreator']) < 1) {
+            $add_fields['chainhandlecreator'] = 14068; //GUEST MEMBER
         }
 
         //Set some defaults:
@@ -33,14 +33,14 @@ class Chains extends CIdea_cache
         }
 
         //Set some zero defaults if not set:
-        foreach (array('chainidearight', 'chainidealeft', 'chainsourcedown', 'chainsourceup', 'chainkey') as $dz) {
+        foreach (array('chainhashtagoutput', 'chainhashtaginput', 'chainhandleoutput', 'chainhandleinput', 'chainkey') as $dz) {
             if (!isset($add_fields[$dz])) {
                 $add_fields[$dz] = 0;
             }
         }
 
         //Is this an observation chain that should replace an older observation, if any:
-        if($update_observed && in_array($add_fields['chainsourcetype'], $this->config->item('sourceids___1308453'))){
+        if($update_observed && in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
             $read_fields = $add_fields;
             if(isset($read_fields['chainvalue'])){
                 unset($read_fields['chainvalue']);
@@ -52,8 +52,8 @@ class Chains extends CIdea_cache
         }
 
         //Append Domain:
-        if (!isset($add_fields['chainsourcedomain']) || $add_fields['chainsourcedomain'] < 1) {
-            $add_fields['chainsourcedomain'] = website_setting(0, $add_fields['chainsourcecreator']);
+        if (!isset($add_fields['chainhandledomain']) || $add_fields['chainhandledomain'] < 1) {
+            $add_fields['chainhandledomain'] = website_setting(0, $add_fields['chainhandlecreator']);
         }
 
         //Append time:
@@ -69,7 +69,7 @@ class Chains extends CIdea_cache
         $insert_chain_id = ( isset($add_fields['chainid']) ? $add_fields['chainid'] : 0 );
         $add_fields['chainprevious'] = chainprevious();
         $add_fields['chainhash'] = chainhash($add_fields);
-        $this->db->insert('ideachain', $add_fields);
+        $this->db->insert('hashtagchain', $add_fields);
 
         //Fetch inserted id:
         $add_fields['chainid'] = ( $insert_chain_id>0 ? $insert_chain_id : $this->db->insert_id() );
@@ -77,68 +77,68 @@ class Chains extends CIdea_cache
         //All good?
         if ($add_fields['chainid'] < 1) {
             log_error('Chains->create() Failed to create', array(
-                'chainsourcecreator' => $add_fields['chainsourcecreator'],
-                'chainsourcedown' => $add_fields['chainsourcecreator'],
+                'chainhandlecreator' => $add_fields['chainhandlecreator'],
+                'chainhandleoutput' => $add_fields['chainhandlecreator'],
             ));
             return false;
         }
 
         //Sync algolia?
         if ($external_sync) {
-            if ($add_fields['chainsourceup'] > 0) {
-                update_algolia(12274, $add_fields['chainsourceup']);
+            if ($add_fields['chainhandleinput'] > 0) {
+                update_algolia(12274, $add_fields['chainhandleinput']);
             }
-            if ($add_fields['chainsourcedown'] > 0) {
-                update_algolia(12274, $add_fields['chainsourcedown']);
+            if ($add_fields['chainhandleoutput'] > 0) {
+                update_algolia(12274, $add_fields['chainhandleoutput']);
             }
-            if ($add_fields['chainidealeft'] > 0) {
-                update_algolia(12273, $add_fields['chainidealeft']);
+            if ($add_fields['chainhashtaginput'] > 0) {
+                update_algolia(12273, $add_fields['chainhashtaginput']);
             }
-            if ($add_fields['chainidearight'] > 0) {
-                update_algolia(12273, $add_fields['chainidearight']);
+            if ($add_fields['chainhashtagoutput'] > 0) {
+                update_algolia(12273, $add_fields['chainhashtagoutput']);
             }
         }
 
 
         //See if this Chain type has any followers that are essentially subscribed to it:
-        $tr_watchers = $this->Sources->tree(42381, $add_fields['chainsourcetype'], $this->config->item('sourceids___30820'), array(), 1);
+        $tr_watchers = $this->Handles->tree(42381, $add_fields['chainhandletype'], $this->config->item('handleids___30820'), array(), 1);
         if (is_array($tr_watchers) && count($tr_watchers)) {
 
             //yes, start drafting email to be sent to them
             $u_name = 'Unknown';
-            if ($add_fields['chainsourcecreator'] > 0) {
+            if ($add_fields['chainhandlecreator'] > 0) {
                 //Fetch member details:
-                $add_e = $this->Sources->read(array(
-                    'sourceid' => $add_fields['chainsourcecreator'],
+                $add_e = $this->Handles->read(array(
+                    'handleid' => $add_fields['chainhandlecreator'],
                 ));
                 if (count($add_e)) {
-                    $u_name = $add_e[0]['sourcevalue'];
+                    $u_name = $add_e[0]['handlevalue'];
                 }
             }
 
             //Email Subject:
-            $sources___4593 = $this->config->item('sources___4593'); //Chain Types
-            $subject = $u_name . ' ' . $sources___4593[$add_fields['chainsourcetype']]['m__title'];
+            $handles___4593 = $this->config->item('handles___4593'); //Chain Types
+            $subject = $u_name . ' ' . $handles___4593[$add_fields['chainhandletype']]['m__title'];
 
             //Compose email body, start with Chain content:
             $html_message = (strlen($add_fields['chainvalue']) > 0 ? $add_fields['chainvalue'] : '') . "\n";
 
 
             //Append Chain object Chains:
-            foreach ($this->config->item('sources___4341') as $sourceid => $m) {
+            foreach ($this->config->item('handles___4341') as $handleid => $m) {
 
                 if (in_array(6202, $m['m__following'])) {
 
-                    //IDEA
-                    foreach ($this->Ideas->read(array('ideaid' => $add_fields[$m['m__handle']])) as $this_i) {
-                        $html_message .= $m['m__title'] . ': ' . view_idea_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['ideahashtag'] . "\n\n";
+                    //HASHTAG
+                    foreach ($this->Hashtags->read(array('hashtagid' => $add_fields[$m['m__handle']])) as $this_i) {
+                        $html_message .= $m['m__title'] . ': ' . view_hashtag_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['hashtaghashtag'] . "\n\n";
                     }
 
                 } elseif (in_array(6160, $m['m__following'])) {
 
-                    //SOURCE
-                    foreach ($this->Sources->read(array('sourceid' => $add_fields[$m['m__handle']])) as $this_e) {
-                        $html_message .= $m['m__title'] . ': ' . $this_e['sourcevalue'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['sourcehandle'] . "\n\n";
+                    //HANDLE
+                    foreach ($this->Handles->read(array('handleid' => $add_fields[$m['m__handle']])) as $this_e) {
+                        $html_message .= $m['m__title'] . ': ' . $this_e['handlevalue'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['handlehandle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
@@ -156,12 +156,12 @@ class Chains extends CIdea_cache
             //Message Watchers:
             foreach ($tr_watchers as $tr_watcher) {
                 //Do not inform the member who just took the action:
-                if ($tr_watcher['sourceid'] != $add_fields['chainsourcecreator']) {
-                    $this->Chains->message($tr_watcher['sourceid'], $subject, $html_message, array(
-                        'chainidearight' => $add_fields['chainidearight'],
-                        'chainidealeft' => $add_fields['chainidealeft'],
-                        'chainsourcedown' => $add_fields['chainsourcedown'],
-                        'chainsourceup' => $add_fields['chainsourceup'],
+                if ($tr_watcher['handleid'] != $add_fields['chainhandlecreator']) {
+                    $this->Chains->message($tr_watcher['handleid'], $subject, $html_message, array(
+                        'chainhashtagoutput' => $add_fields['chainhashtagoutput'],
+                        'chainhashtaginput' => $add_fields['chainhashtaginput'],
+                        'chainhandleoutput' => $add_fields['chainhandleoutput'],
+                        'chainhandleinput' => $add_fields['chainhandleinput'],
                     ));
                 }
             }
@@ -181,41 +181,41 @@ class Chains extends CIdea_cache
         }
 
         $this->db->select($select);
-        $this->db->from('ideachain');
+        $this->db->from('hashtagchain');
 
-        //IDEA JOIN?
-        $idea_join = false;
-        if (in_array('chainidealeft', $joins_objects)) {
-            $idea_join = true;
-            $this->db->join('cacheideas', 'chainidealeft=ideaid', 'left');
-        } elseif (in_array('chainidearight', $joins_objects)) {
-            $idea_join = true;
-            $this->db->join('cacheideas', 'chainidearight=ideaid', 'left');
-        } elseif (in_array('chainideaid', $joins_objects)) {
-            $idea_join = true;
-            $this->db->join('cacheideas', 'chainid=ideaid', 'left');
+        //HASHTAG JOIN?
+        $hashtag_join = false;
+        if (in_array('chainhashtaginput', $joins_objects)) {
+            $hashtag_join = true;
+            $this->db->join('cachehashtags', 'chainhashtaginput=hashtagid', 'left');
+        } elseif (in_array('chainhashtagoutput', $joins_objects)) {
+            $hashtag_join = true;
+            $this->db->join('cachehashtags', 'chainhashtagoutput=hashtagid', 'left');
+        } elseif (in_array('chainhashtagid', $joins_objects)) {
+            $hashtag_join = true;
+            $this->db->join('cachehashtags', 'chainid=hashtagid', 'left');
         }
 
         //PLAYER JOIN?
-        $source_join = false;
-        if (in_array('chainsourceup', $joins_objects)) {
-            $source_join = true;
-            $this->db->join('cachesources', 'chainsourceup=sourceid', 'left');
-        } elseif (in_array('chainsourcedown', $joins_objects)) {
-            $source_join = true;
-            $this->db->join('cachesources', 'chainsourcedown=sourceid', 'left');
-        } elseif (in_array('chainsourcetype', $joins_objects)) {
-            $source_join = true;
-            $this->db->join('cachesources', 'chainsourcetype=sourceid', 'left');
-        } elseif (in_array('chainsourcecreator', $joins_objects)) {
-            $source_join = true;
-            $this->db->join('cachesources', 'chainsourcecreator=sourceid', 'left');
-        } elseif (in_array('chainsourcedomain', $joins_objects)) {
-            $source_join = true;
-            $this->db->join('cachesources', 'chainsourcedomain=sourceid', 'left');
-        } elseif (in_array('chainsourceid', $joins_objects)) {
-            $source_join = true;
-            $this->db->join('cachesources', 'chainid=sourceid', 'left');
+        $handle_join = false;
+        if (in_array('chainhandleinput', $joins_objects)) {
+            $handle_join = true;
+            $this->db->join('cachehandles', 'chainhandleinput=handleid', 'left');
+        } elseif (in_array('chainhandleoutput', $joins_objects)) {
+            $handle_join = true;
+            $this->db->join('cachehandles', 'chainhandleoutput=handleid', 'left');
+        } elseif (in_array('chainhandletype', $joins_objects)) {
+            $handle_join = true;
+            $this->db->join('cachehandles', 'chainhandletype=handleid', 'left');
+        } elseif (in_array('chainhandlecreator', $joins_objects)) {
+            $handle_join = true;
+            $this->db->join('cachehandles', 'chainhandlecreator=handleid', 'left');
+        } elseif (in_array('chainhandledomain', $joins_objects)) {
+            $handle_join = true;
+            $this->db->join('cachehandles', 'chainhandledomain=handleid', 'left');
+        } elseif (in_array('chainhandleid', $joins_objects)) {
+            $handle_join = true;
+            $this->db->join('cachehandles', 'chainid=handleid', 'left');
         }
 
         $chain_void_found = false;
@@ -233,11 +233,11 @@ class Chains extends CIdea_cache
             //Auto add:
             $this->db->where('chainvoid', 0); //Not Void
         }
-        if($idea_join){
-            $this->db->where('ideaid >', 0);
+        if($hashtag_join){
+            $this->db->where('hashtagid >', 0);
         }
-        if($source_join){
-            $this->db->where('sourceid >', 0);
+        if($handle_join){
+            $this->db->where('handleid >', 0);
         }
 
 
@@ -258,17 +258,17 @@ class Chains extends CIdea_cache
 
         //Verify Access to each item:
         if ($access_limit && $select == '*' && isset($_SERVER['SERVER_NAME'])) {
-            if (array_intersect(array('chainidealeft', 'chainidearight'), $joins_objects)) {
-                //Idea results:
+            if (array_intersect(array('chainhashtaginput', 'chainhashtagoutput'), $joins_objects)) {
+                //Hahstag results:
                 foreach ($results as $key => $value) {
-                    if (!idea_access(null, $value['ideaid'], $value)) {
+                    if (!hashtag_access(null, $value['hashtagid'], $value)) {
                         unset($results[$key]); //Remove this option
                     }
                 }
-            } elseif (array_intersect(array('chainsourceup', 'chainsourcedown'), $joins_objects)) {
-                //Source results:
+            } elseif (array_intersect(array('chainhandleinput', 'chainhandleoutput'), $joins_objects)) {
+                //Handle results:
                 foreach ($results as $key => $value) {
-                    if (!source_access(null, $value['sourceid'], $value)) {
+                    if (!handle_access(null, $value['handleid'], $value)) {
                         unset($results[$key]); //Remove this option
                     }
                 }
@@ -280,7 +280,7 @@ class Chains extends CIdea_cache
     }
 
 
-    function update($chainid, $update_columns, $chainsourcecreator = 0)
+    function update($chainid, $update_columns, $chainhandlecreator = 0)
     {
 
         //Fetch Chain before updating:
@@ -288,14 +288,14 @@ class Chains extends CIdea_cache
             'chainid' => $chainid,
         )) as $old_x) {
 
-            if (!isset($update_columns['chainsourcecreator'])) {
-                //Fetch session source:
-                $update_columns['chainsourcecreator'] = ($chainsourcecreator > 0 ? $chainsourcecreator : $old_x['chainsourcecreator'] );
+            if (!isset($update_columns['chainhandlecreator'])) {
+                //Fetch session handle:
+                $update_columns['chainhandlecreator'] = ($chainhandlecreator > 0 ? $chainhandlecreator : $old_x['chainhandlecreator'] );
             }
 
             //Make sure something changed:
             $something_changed = false;
-            foreach(array('chainsourcetype','chainsourceup','chainsourcedown','chainidealeft','chainidearight','chainkey','chainvalue','chainvoid') as $must_change){
+            foreach(array('chainhandletype','chainhandleinput','chainhandleoutput','chainhashtaginput','chainhashtagoutput','chainkey','chainvalue','chainvoid') as $must_change){
                 $this_changed = isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change];
                 if(!isset($update_columns[$must_change])){
                     $update_columns[$must_change] = $old_x[$must_change];
@@ -314,7 +314,7 @@ class Chains extends CIdea_cache
 
             if ($new_x['chainid'] > 0) {
                 //Void Old Chain:
-                $this->db->query("UPDATE ideachain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
+                $this->db->query("UPDATE hashtagchain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
                 return $this->db->affected_rows();
             }
 
@@ -326,7 +326,7 @@ class Chains extends CIdea_cache
     }
 
 
-    function delete($chainid, $chainsourcecreator = 0)
+    function delete($chainid, $chainhandlecreator = 0)
     {
 
         //Validate $chainid
@@ -334,33 +334,33 @@ class Chains extends CIdea_cache
             'chainid' => $chainid,
         )) as $old_x) {
 
-            //Set default source:
-            if (!$chainsourcecreator) {
-                //Fetch session source:
-                $source_session = source_session();
-                $chainsourcecreator = ($source_session ? $source_session['sourceid'] : ($old_x['chainsourcecreator'] > 0 ? $old_x['chainsourcecreator'] : 14068 /* Guest Member */));
+            //Set default handle:
+            if (!$chainhandlecreator) {
+                //Fetch session handle:
+                $handle_session = handle_session();
+                $chainhandlecreator = ($handle_session ? $handle_session['handleid'] : ($old_x['chainhandlecreator'] > 0 ? $old_x['chainhandlecreator'] : 14068 /* Guest Member */));
             }
 
             //Determine VOID chain type in 1 of the 4 chain groups:
-            if (in_array($old_x['chainsourcetype'], $this->config->item('sourceids___31777'))) {
+            if (in_array($old_x['chainhandletype'], $this->config->item('handleids___31777'))) {
                 //Discovery
-                $chainsourcetype = 44397;
-            } elseif (in_array($old_x['chainsourcetype'], $this->config->item('sourceids___4486'))) {
-                //Ideation
-                $chainsourcetype = 44396;
-            } elseif (in_array($old_x['chainsourcetype'], $this->config->item('sourceids___13550'))) {
+                $chainhandletype = 44397;
+            } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___4486'))) {
+                //Hahstags
+                $chainhandletype = 44396;
+            } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___13550'))) {
                 //Contribution
-                $chainsourcetype = 44399; //TODO Adjust this
-            } elseif (in_array($old_x['chainsourcetype'], $this->config->item('sourceids___32292'))) {
-                //Sourcing
-                $chainsourcetype = 44399; //TODO Adjust this
+                $chainhandletype = 44399; //TODO Adjust this
+            } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___32292'))) {
+                //Handles
+                $chainhandletype = 44399; //TODO Adjust this
             } else {
                 return 0; //Should not happen
             }
 
             $new_x = $this->Chains->create(array(
-                'chainsourcecreator' => $chainsourcecreator,
-                'chainsourcetype' => $chainsourcetype,
+                'chainhandlecreator' => $chainhandlecreator,
+                'chainhandletype' => $chainhandletype,
                 'chainvoid' => $chainid, //We insert as void since this is a void chain only
             ));
 
@@ -369,7 +369,7 @@ class Chains extends CIdea_cache
             }
 
             //Void this Chain:
-            $this->db->query("UPDATE ideachain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
+            $this->db->query("UPDATE hashtagchain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
             return $this->db->affected_rows();
 
         }
@@ -411,14 +411,14 @@ class Chains extends CIdea_cache
     }
 
 
-    function select($focus__id, $o__id, $element_id, $source_createid, $migratehandle, $chainid = 0)
+    function select($focus__id, $o__id, $element_id, $handle_createid, $migratehandle, $chainid = 0)
     {
 
         //Authenticate Member:
         $migratehandle = trim(substr($migratehandle, 0, 1) == '@' ? trim(substr($migratehandle, 1)) : $migratehandle);
         $migratehandle = trim(substr($migratehandle, 0, 1) == '#' ? trim(substr($migratehandle, 1)) : $migratehandle);
-        $source_session = source_session();
-        if (!$source_session) {
+        $handle_session = handle_session();
+        if (!$handle_session) {
             return array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -428,12 +428,12 @@ class Chains extends CIdea_cache
                 'status' => 0,
                 'message' => 'Missing Target ID',
             );
-        } elseif (intval($element_id) < 1 || !count($this->config->item('sourceids___' . $element_id))) {
+        } elseif (intval($element_id) < 1 || !count($this->config->item('handleids___' . $element_id))) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Variable ID [' . $element_id . ']',
             );
-        } elseif (intval($source_createid) < 1 || !in_array($source_createid, $this->config->item('sourceids___' . $element_id))) {
+        } elseif (intval($handle_createid) < 1 || !in_array($handle_createid, $this->config->item('handleids___' . $element_id))) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Value ID',
@@ -442,7 +442,7 @@ class Chains extends CIdea_cache
 
 
         //See if anything is being deleted:
-        $auto_open_idea_modal = 0;
+        $auto_open_hashtag_modal = 0;
         $delete_redirect = null;
         $delete_element = null;
         $chains_removed = -1;
@@ -452,36 +452,36 @@ class Chains extends CIdea_cache
 
         if ($element_id == 4486 && $chainid > 0) {
 
-            //IDEA CHAIN TYPE
+            //HASHTAG CHAIN TYPE
             $status = $this->Chains->update($chainid, array(
-                'chainsourcecreator' => $source_session['sourceid'],
-                'chainsourcetype' => $source_createid,
+                'chainhandlecreator' => $handle_session['handleid'],
+                'chainhandletype' => $handle_createid,
             ));
 
         } elseif ($element_id == 13550 && $chainid > 0) {
 
-            //SOURCE CHAIN TYPE
+            //HANDLE CHAIN TYPE
             $status = $this->Chains->update($chainid, array(
-                'chainsourcetype' => $source_createid,
-                'chainsourcecreator' => $source_session['sourceid'],
+                'chainhandletype' => $handle_createid,
+                'chainhandlecreator' => $handle_session['handleid'],
             ));
 
         } elseif ($element_id == 32292 && $chainid > 0) {
 
-            //SOURCE/SOURCE CHAIN
+            //HANDLE/HANDLE CHAIN
             $status = $this->Chains->update($chainid, array(
-                'chainsourcetype' => $source_createid,
-                'chainsourcecreator' => $source_session['sourceid'],
+                'chainhandletype' => $handle_createid,
+                'chainhandlecreator' => $handle_session['handleid'],
             ));
 
-        } elseif (0 && $element_id == 42795 && $o__id > 0 && $source_createid && $source_session) {
+        } elseif (0 && $element_id == 42795 && $o__id > 0 && $handle_createid && $handle_session) {
 
             if (!$chainid) {
                 //Double check database as it may be updating newly selected value:
                 foreach ($this->Chains->read(array(
-                    'chainsourceup' => $o__id,
-                    'chainsourcedown' => $source_session['sourceid'],
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42795')) . ')' => null, //Follow
+                    'chainhandleinput' => $o__id,
+                    'chainhandleoutput' => $handle_session['handleid'],
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42795')) . ')' => null, //Follow
                 ), array(), 1) as $found_x) {
                     $chainid = $found_x['chainid'];
                 }
@@ -490,34 +490,34 @@ class Chains extends CIdea_cache
             //Follow
             if ($chainid > 0) {
                 //Updating reaction:
-                if (in_array($source_createid, $this->config->item('sourceids___42850'))) {
+                if (in_array($handle_createid, $this->config->item('handleids___42850'))) {
                     //Unsubscribe
-                    $status = $this->Chains->delete($chainid, $source_session['sourceid']); //Media Removed
+                    $status = $this->Chains->delete($chainid, $handle_session['handleid']); //Media Removed
                 } else {
                     $status = $this->Chains->update($chainid, array(
-                        'chainsourcetype' => $source_createid,
-                        'chainsourcecreator' => $source_session['sourceid'],
+                        'chainhandletype' => $handle_createid,
+                        'chainhandlecreator' => $handle_session['handleid'],
                     ));
                 }
             } else {
                 //Inserting new reaction:
                 $status = count($this->Chains->create(array(
-                    'chainsourcecreator' => $source_session['sourceid'],
-                    'chainsourceup' => $o__id,
-                    'chainsourcedown' => $source_session['sourceid'],
-                    'chainsourcetype' => $source_createid,
+                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainhandleinput' => $o__id,
+                    'chainhandleoutput' => $handle_session['handleid'],
+                    'chainhandletype' => $handle_createid,
                 )));
             }
 
-        } elseif ($element_id == 42260 && $o__id > 0 && $source_createid && $source_session) {
+        } elseif ($element_id == 42260 && $o__id > 0 && $handle_createid && $handle_session) {
 
             //Check if current value?
             if (!$chainid) {
                 //Double check database as it may be updating newly selected value:
                 foreach ($this->Chains->read(array(
-                    'chainsourceup' => $source_session['sourceid'],
-                    'chainidearight' => $o__id,
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42260')) . ')' => null, //Reactions
+                    'chainhandleinput' => $handle_session['handleid'],
+                    'chainhashtagoutput' => $o__id,
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42260')) . ')' => null, //Reactions
                 ), array(), 1) as $found_x) {
                     $chainid = $found_x['chainid'];
                 }
@@ -525,51 +525,51 @@ class Chains extends CIdea_cache
 
             //Reactions...
             if ($chainid > 0) {
-                if (in_array($source_createid, $this->config->item('sourceids___42850'))) {
-                    $status = $this->Chains->delete($chainid, $source_session['sourceid']); //Removed
+                if (in_array($handle_createid, $this->config->item('handleids___42850'))) {
+                    $status = $this->Chains->delete($chainid, $handle_session['handleid']); //Removed
                 } else {
                     //Updating reaction:
                     $status = $this->Chains->update($chainid, array(
-                        'chainsourcetype' => $source_createid,
-                        'chainsourcecreator' => $source_session['sourceid'],
+                        'chainhandletype' => $handle_createid,
+                        'chainhandlecreator' => $handle_session['handleid'],
                     ));
                 }
             } else {
                 //Inserting new reaction:
                 $status = count($this->Chains->create(array(
-                    'chainsourcecreator' => $source_session['sourceid'],
-                    'chainsourceup' => $source_session['sourceid'],
-                    'chainidearight' => $o__id,
-                    'chainsourcetype' => $source_createid,
+                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainhandleinput' => $handle_session['handleid'],
+                    'chainhashtagoutput' => $o__id,
+                    'chainhandletype' => $handle_createid,
                 )));
             }
 
         } elseif ($element_id == 4737) {
 
-            //Idea Type
-            $status = $this->Ideas->update($o__id, array(
-                'ideatype' => $source_createid,
-            ), $source_session['sourceid']);
+            //Hahstag Type
+            $status = $this->Hashtags->update($o__id, array(
+                'hashtagtype' => $handle_createid,
+            ), $handle_session['handleid']);
 
-            //See if we need to popup the idea edit modal here:
+            //See if we need to popup the hashtag edit modal here:
 
-            $sources___42179 = $this->config->item('sources___42179'); //Dynamic Input Fields
-            foreach (array_intersect($this->config->item('sourceids___' . $source_createid), $this->config->item('sourceids___42179')) as $dynamic_sourceid) {
+            $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
+            foreach (array_intersect($this->config->item('handleids___' . $handle_createid), $this->config->item('handleids___42179')) as $dynamic_handleid) {
 
-                $superpowers_required = array_intersect($this->config->item('sourceids___10957'), $sources___42179[$dynamic_sourceid]['m__following']);
-                if (count($superpowers_required) && !source_session(end($superpowers_required))) {
+                $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
+                if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
                     continue;
                 }
 
                 //Let's determine the data type:
-                $data_types = array_intersect($sources___42179[$dynamic_sourceid]['m__following'], $this->config->item('sourceids___4592'));
+                $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
 
                 //ASSUME that we found 1 match as expected:
                 foreach ($data_types as $data_type_this) {
                     $data_type = $data_type_this;
                     break;
                 }
-                $is_required = in_array($dynamic_sourceid, $this->config->item('sourceids___28239')); //Required Settings
+                $is_required = in_array($dynamic_handleid, $this->config->item('handleids___28239')); //Required Settings
 
                 if (!$is_required) {
                     //We are only interested in what is required
@@ -577,28 +577,28 @@ class Chains extends CIdea_cache
                 }
 
                 //See if we are missing value:
-                if (in_array($data_type, $this->config->item('sourceids___42188'))) {
+                if (in_array($data_type, $this->config->item('handleids___42188'))) {
 
                     //Single or Multiple Choice:
                     $already_responded = count($this->Chains->read(array(
-                        'chainsourceup IN (' . join(',', $this->config->item('sourceids___' . $dynamic_sourceid)) . ')' => null, //All possible answers
-                        'chainidearight' => $o__id,
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
+                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___' . $dynamic_handleid)) . ')' => null, //All possible answers
+                        'chainhashtagoutput' => $o__id,
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
                     )));
 
                 } else {
 
                     $already_responded = count($this->Chains->read(array(
-                        'chainsourceup' => $dynamic_sourceid,
-                        'chainidearight' => $o__id,
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___33602')) . ')' => null, //Idea/Source Chains Active
+                        'chainhandleinput' => $dynamic_handleid,
+                        'chainhashtagoutput' => $o__id,
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
                     )));
 
                 }
 
                 if (!$already_responded) {
                     //We are missing a required response, auto open modal:
-                    $auto_open_idea_modal = 1;
+                    $auto_open_hashtag_modal = 1;
                 }
 
             }
@@ -610,27 +610,27 @@ class Chains extends CIdea_cache
             'message' => 'Delete status [' . $status . '] with ' . $chains_removed . ' Chains removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
-            'auto_open_idea_modal' => $auto_open_idea_modal,
+            'auto_open_hashtag_modal' => $auto_open_hashtag_modal,
         );
 
     }
 
-    function message($sourceid, $subject, $html_message, $x_data = array(), $template_ideaid = 0, $chainsourcedomain = 0, $log_tr = true, $demo_only = false)
+    function message($handleid, $subject, $html_message, $x_data = array(), $template_hashtagid = 0, $chainhandledomain = 0, $log_tr = true, $demo_only = false)
     {
 
         $sms_subscriber = false;
 
         //Bypass notifications?
         if (!count($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42256')) . ')' => null, //Writes
-            'chainsourceup' => 31779, //Mandatory Emails
-            'chainidearight' => $template_ideaid,
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42256')) . ')' => null, //Writes
+            'chainhandleinput' => 31779, //Mandatory Emails
+            'chainhashtagoutput' => $template_hashtagid,
         )))) {
 
             $notification_levels = $this->Chains->read(array(
-                'chainsourceup IN (' . join(',', $this->config->item('sourceids___30820')) . ')' => null, //Active Subscriber
-                'chainsourcedown' => $sourceid,
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+                'chainhandleinput IN (' . join(',', $this->config->item('handleids___30820')) . ')' => null, //Active Subscriber
+                'chainhandleoutput' => $handleid,
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             ));
             if (!count($notification_levels)) {
                 return array(
@@ -638,7 +638,7 @@ class Chains extends CIdea_cache
                     'message' => 'User is not an active subscriber',
                 );
             }
-            $sms_subscriber = in_array($notification_levels[0]['chainsourceup'], $this->config->item('sourceids___28915'));
+            $sms_subscriber = in_array($notification_levels[0]['chainhandleinput'], $this->config->item('handleids___28915'));
         }
 
         //Make sure not recently contacted:
@@ -647,8 +647,8 @@ class Chains extends CIdea_cache
          *
         $minutes_limit = 60;
         foreach($this->Chains->read(array(
-            'chainsourcetype' => 29399,
-            'chainsourcecreator' => $sourceid,
+            'chainhandletype' => 29399,
+            'chainhandlecreator' => $handleid,
             'chaintime >=' => date("Y-m-d H:i:s", strtotime('-'.$minutes_limit.' minutes')),
         )) as $recent_email){
             return array(
@@ -667,24 +667,24 @@ class Chains extends CIdea_cache
 
         //Send Emails:
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-            'chainsourceup' => 3288, //Email
-            'chainsourcedown' => $sourceid,
-        )) as $source_data) {
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            'chainhandleinput' => 3288, //Email
+            'chainhandleoutput' => $handleid,
+        )) as $handle_data) {
 
-            if (!filter_var($source_data['chainvalue'], FILTER_VALIDATE_EMAIL)) {
-                $this->Chains->delete($source_data['chainid'], $sourceid);
+            if (!filter_var($handle_data['chainvalue'], FILTER_VALIDATE_EMAIL)) {
+                $this->Chains->delete($handle_data['chainid'], $handleid);
                 continue;
             }
 
-            if(!in_array($source_data['chainvalue'],$stats['email_addresses'])){
-                array_push($stats['email_addresses'], $source_data['chainvalue']);
+            if(!in_array($handle_data['chainvalue'],$stats['email_addresses'])){
+                array_push($stats['email_addresses'], $handle_data['chainvalue']);
             }
         }
 
         if (count($stats['email_addresses']) > 0) {
             //Send email:
-            dispatch_email($stats['email_addresses'], $subject, $html_message, $sourceid, $x_data, $template_ideaid, $chainsourcedomain, $log_tr, $demo_only);
+            dispatch_email($stats['email_addresses'], $subject, $html_message, $handleid, $x_data, $template_hashtagid, $chainhandledomain, $log_tr, $demo_only);
         }
 
 
@@ -695,28 +695,28 @@ class Chains extends CIdea_cache
         if ($sms_subscriber && $twilio_account_sid && $twilio_auth_token && $twilio_from_number) {
 
             //Yes, generate message
-            $sms_message = get_domain('m__title', $sourceid, $chainsourcedomain) . ' Emailed [' . $subject . '] to ' . join(' & ', $stats['email_addresses']) . ' (Also Check Spam)';
+            $sms_message = get_domain('m__title', $handleid, $chainhandledomain) . ' Emailed [' . $subject . '] to ' . join(' & ', $stats['email_addresses']) . ' (Also Check Spam)';
 
             //Breakup into smaller SMS friendly messages
             $sms_message = str_replace("\n", " ", $sms_message);
 
             //Send SMS
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                'chainsourceup' => 4783, //Phone
-                'chainsourcedown' => $sourceid,
-            )) as $source_data) {
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                'chainhandleinput' => 4783, //Phone
+                'chainhandleoutput' => $handleid,
+            )) as $handle_data) {
 
-                $clean_number = preg_replace('/[^0-9.]+/', '', $source_data['chainvalue']);
+                $clean_number = preg_replace('/[^0-9.]+/', '', $handle_data['chainvalue']);
 
                 foreach (explode('|||', wordwrap($sms_message, view_memory(6404, 27891), "|||")) as $single_message) {
                     if(!in_array($clean_number,$stats['sms_numbers'])){
                         $stats['phone_count']++;
                         array_push($stats['sms_numbers'], $clean_number);
-                        $sms_sent = dispatch_sms($clean_number, $single_message, $sourceid, $x_data, $template_ideaid, $chainsourcedomain, $log_tr, $demo_only);
+                        $sms_sent = dispatch_sms($clean_number, $single_message, $handleid, $x_data, $template_hashtagid, $chainhandledomain, $log_tr, $demo_only);
                         if (!$sms_sent) {
                             //bad number, remove it:
-                            $this->Chains->delete($source_data['chainid'], $sourceid);
+                            $this->Chains->delete($handle_data['chainid'], $handleid);
                         }
                     }
                 }
@@ -733,46 +733,46 @@ class Chains extends CIdea_cache
     }
 
 
-    function broadcast($list_of_sourceid, $i, $chainsourcedomain = 0, $ensure_unidea_discovered = true, $demo_only = false)
+    function broadcast($list_of_handleid, $i, $chainhandledomain = 0, $ensure_unhashtag_discovered = true, $demo_only = false)
     {
 
         $total_sent = 0;
-        $chainsourcedomain = ($chainsourcedomain > 0 ? $chainsourcedomain : (isset($i['chainsourcedomain']) ? $i['chainsourcedomain'] : 0));
-        $subject_line = view_idea_title($i, true);
+        $chainhandledomain = ($chainhandledomain > 0 ? $chainhandledomain : (isset($i['chainhandledomain']) ? $i['chainhandledomain'] : 0));
+        $subject_line = view_hashtag_title($i, true);
         $wacth_repeat_handles = array();
 
-        foreach ($list_of_sourceid as $count => $x) {
+        foreach ($list_of_handleid as $count => $x) {
 
-            if (in_array($x['sourcehandle'], $wacth_repeat_handles)) {
+            if (in_array($x['handlehandle'], $wacth_repeat_handles)) {
                 //This should not happen! Report bug:
-                log_error('Chains->broadcast() Detected duplicate Source Handle Bug: ' . $x['sourcehandle'], array(
-                    'chainsourcedown' => $x['sourceid'],
+                log_error('Chains->broadcast() Detected duplicate Handle Handle Bug: ' . $x['handlehandle'], array(
+                    'chainhandleoutput' => $x['handleid'],
                 ));
                 break; //Stop sending more messages!
             }
 
             //Map this handle:
-            array_push($wacth_repeat_handles, $x['sourcehandle']);
+            array_push($wacth_repeat_handles, $x['handlehandle']);
 
 
-            if (!isset($x['sourceid'])) {
+            if (!isset($x['handleid'])) {
                 //Invalid input for sending:
-                log_error('Chains->broadcast() Invalid Source', array(
-                    'chainsourcecreator' => $x['sourceid'],
-                    'chainsourcedown' => 26582, //Messener
+                log_error('Chains->broadcast() Invalid Handle', array(
+                    'chainhandlecreator' => $x['handleid'],
+                    'chainhandleoutput' => 26582, //Messener
                 ));
                 continue;
-                } elseif ($ensure_unidea_discovered && count($this->Chains->read(array(
-                    'chainidealeft' => $i['ideaid'],
-                    'chainsourcecreator' => $x['sourceid'],
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+                } elseif ($ensure_unhashtag_discovered && count($this->Chains->read(array(
+                    'chainhashtaginput' => $i['hashtagid'],
+                    'chainhandlecreator' => $x['handleid'],
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                 )))) {
-                //Already idea_discovered:
+                //Already hashtag_discovered:
                 continue;
             }
 
 
-            $content_message = view_idea_value($i, $x['sourceid'], true); //Hide the show more content if any
+            $content_message = view_hashtag_value($i, $x['handleid'], true); //Hide the show more content if any
             if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
                 //Let's remove the first line since it's used in the title:
                 $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);
@@ -781,12 +781,12 @@ class Chains extends CIdea_cache
             //Append children as options:
             $html_message = '';
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-                'chainidealeft' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
-                //Has this user idea_discovered this idea or no?
-                $html_message .= '<div class="line">' . view_idea_title($down_or, true) . ':</div>';
-                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['sourceid'], $chainsourcedomain) . view_memory(42903, 33286) . $down_or['ideahashtag'] . (idea_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?sourcehandle=' . $x['sourcehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['sourcehandle']) . '</div>';
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+                'chainhashtaginput' => $i['hashtagid'],
+            ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
+                //Has this user hashtag_discovered this hashtag or no?
+                $html_message .= '<div class="line">' . view_hashtag_title($down_or, true) . ':</div>';
+                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtaghashtag'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?handlehandle=' . $x['handlehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handlehandle']) . '</div>';
             }
 
             //Where to place the next step?
@@ -797,9 +797,9 @@ class Chains extends CIdea_cache
                 $content_message = $content_message . $html_message;
             }
 
-            $message = $this->Chains->message($x['sourceid'], $subject_line, $content_message, array(
-                'chainidealeft' => $i['ideaid'],
-            ), $i['ideaid'], $chainsourcedomain, true, $demo_only);
+            $message = $this->Chains->message($x['handleid'], $subject_line, $content_message, array(
+                'chainhashtaginput' => $i['hashtagid'],
+            ), $i['hashtagid'], $chainhandledomain, true, $demo_only);
 
             if ($message['status'] && !$demo_only) {
                 $total_sent++;
@@ -811,44 +811,44 @@ class Chains extends CIdea_cache
     }
 
 
-    function previousidea($sourceid, $target_ideahashtag, $focus_ideaid, $loop_breaker_ids = array())
+    function previoushashtag($handleid, $target_hashtaghashtag, $focus_hashtagid, $loop_breaker_ids = array())
     {
 
-        //echo 'Previous:'.$sourceid.'/'.$target_ideahashtag.'/'.$focus_ideaid;
+        //echo 'Previous:'.$handleid.'/'.$target_hashtaghashtag.'/'.$focus_hashtagid;
 
-        if (count($loop_breaker_ids) > 0 && in_array($focus_ideaid, $loop_breaker_ids)) {
+        if (count($loop_breaker_ids) > 0 && in_array($focus_hashtagid, $loop_breaker_ids)) {
             return array();
         }
-        array_push($loop_breaker_ids, intval($focus_ideaid));
+        array_push($loop_breaker_ids, intval($focus_hashtagid));
 
         //Fetch followings:
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-            'chainidearight' => $focus_ideaid,
-        ), array('chainidealeft')) as $idea_previous) {
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+            'chainhashtagoutput' => $focus_hashtagid,
+        ), array('chainhashtaginput')) as $hashtag_previous) {
 
             //Validate Selection:
-            $input__selection = in_array($idea_previous['ideatype'], $this->config->item('sourceids___7712'));
+            $input__selection = in_array($hashtag_previous['hashtagtype'], $this->config->item('handleids___7712'));
             $is_selected = count($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___7704')) . ')' => null, //Discovery Expansion
-                'chainidealeft' => $idea_previous['ideaid'],
-                'chainidearight' => $focus_ideaid,
-                'chainsourcecreator' => $sourceid,
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___7704')) . ')' => null, //Discovery Expansion
+                'chainhashtaginput' => $hashtag_previous['hashtagid'],
+                'chainhashtagoutput' => $focus_hashtagid,
+                'chainhandlecreator' => $handleid,
             )));
 
-            if ($sourceid > 0 && !$is_selected && $input__selection) {
+            if ($handleid > 0 && !$is_selected && $input__selection) {
                 continue;
             }
 
             //Did we find it?
-            if ($idea_previous['ideahashtag'] == $target_ideahashtag) {
-                return array($idea_previous);
+            if ($hashtag_previous['hashtaghashtag'] == $target_hashtaghashtag) {
+                return array($hashtag_previous);
             }
 
             //Keep looking further up:
-            $website_finder = $this->Chains->previousidea($sourceid, $target_ideahashtag, $idea_previous['ideaid'], $loop_breaker_ids);
+            $website_finder = $this->Chains->previoushashtag($handleid, $target_hashtaghashtag, $hashtag_previous['hashtagid'], $loop_breaker_ids);
             if (count($website_finder)) {
-                array_push($website_finder, $idea_previous);
+                array_push($website_finder, $hashtag_previous);
                 return $website_finder;
             }
         }
@@ -859,34 +859,34 @@ class Chains extends CIdea_cache
     }
 
 
-    function previousidea_discovered($focus_ideaid, $chainsourcecreator, $loop_breaker_ids = array())
+    function previoushashtag_discovered($focus_hashtagid, $chainhandlecreator, $loop_breaker_ids = array())
     {
 
         /*
          *
-         * Returns hashtag if idea_discovered upwards
+         * Returns hashtag if hashtag_discovered upwards
          *
          * */
 
-        if (count($loop_breaker_ids) > 0 && in_array($focus_ideaid, $loop_breaker_ids)) {
+        if (count($loop_breaker_ids) > 0 && in_array($focus_hashtagid, $loop_breaker_ids)) {
             return false;
         }
-        array_push($loop_breaker_ids, intval($focus_ideaid));
+        array_push($loop_breaker_ids, intval($focus_hashtagid));
 
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-            'chainidearight' => $focus_ideaid,
-        ), array('chainidealeft')) as $prev_i) {
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+            'chainhashtagoutput' => $focus_hashtagid,
+        ), array('chainhashtaginput')) as $prev_i) {
 
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-                'chainsourcecreator' => $chainsourcecreator,
-                'chainidealeft' => $prev_i['ideaid'],
-            ), array('chainidearight')) as $x) {
-                return $x['ideahashtag'];
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+                'chainhandlecreator' => $chainhandlecreator,
+                'chainhashtaginput' => $prev_i['hashtagid'],
+            ), array('chainhashtagoutput')) as $x) {
+                return $x['hashtaghashtag'];
             }
 
-            return $this->Chains->previousideaidea_discovered($prev_i['ideaid'], $chainsourcecreator, $loop_breaker_ids);
+            return $this->Chains->previoushashtaghashtag_discovered($prev_i['hashtagid'], $chainhandlecreator, $loop_breaker_ids);
         }
 
         //Did not find!
@@ -895,33 +895,33 @@ class Chains extends CIdea_cache
     }
 
 
-    function next_ideas($sourceid, $target_ideahashtag, $i, $find_after_ideaid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
+    function next_hashtags($handleid, $target_hashtaghashtag, $i, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
         /*
-        foreach ($this->Ideas->read(array(
-            'LOWER(ideahashtag)' => strtolower($target_ideahashtag),
+        foreach ($this->Hashtags->read(array(
+            'LOWER(hashtaghashtag)' => strtolower($target_hashtaghashtag),
         )) as $i_new) {
             $i = $i_new;
         }
         */
 
-        if (count($loop_breaker_ids) > 0 && in_array($i['ideaid'], $loop_breaker_ids)) {
+        if (count($loop_breaker_ids) > 0 && in_array($i['hashtagid'], $loop_breaker_ids)) {
             return null;
         }
-        array_push($loop_breaker_ids, intval($i['ideaid']));
+        array_push($loop_breaker_ids, intval($i['hashtagid']));
 
-        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
+        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
         $found_trigger = null;
 
         foreach ($this->Chains->read(array(
-            'chainidealeft' => $i['ideaid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-        ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
+            'chainhashtaginput' => $i['hashtagid'],
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+        ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
 
             //Validate Find After:
-            if ($find_after_ideaid && !$found_trigger) {
-                if ($next_i['ideaid'] == $find_after_ideaid) {
+            if ($find_after_hashtagid && !$found_trigger) {
+                if ($next_i['hashtagid'] == $find_after_hashtagid) {
                     $found_trigger = true;
                 }
                 continue;
@@ -929,10 +929,10 @@ class Chains extends CIdea_cache
 
             //Validate Selection:
             $is_selected = count($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___7704')) . ')' => null, //Discovery Expansion
-                'chainidealeft' => $i['ideaid'],
-                'chainidearight' => $next_i['ideaid'],
-                'chainsourcecreator' => $sourceid,
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___7704')) . ')' => null, //Discovery Expansion
+                'chainhashtaginput' => $i['hashtagid'],
+                'chainhashtagoutput' => $next_i['hashtagid'],
+                'chainhandlecreator' => $handleid,
             )));
             if ($input__selection && !$is_selected) {
                 continue;
@@ -941,15 +941,15 @@ class Chains extends CIdea_cache
 
             //Return this if everything is completed, or if this is incomplete:
             if ($target_completed || !count($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-                    'chainsourcecreator' => $sourceid,
-                    'chainidealeft' => $next_i['ideaid'],
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+                    'chainhandlecreator' => $handleid,
+                    'chainhashtaginput' => $next_i['hashtagid'],
                 )))) {
-                return $next_i['ideahashtag'];
+                return $next_i['hashtaghashtag'];
             }
 
             //Keep looking deeper:
-            $next__url = $this->Chains->next_ideas($sourceid, $target_ideahashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
+            $next__url = $this->Chains->next_hashtags($handleid, $target_hashtaghashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
             if ($next__url) {
                 return $next__url;
             }
@@ -957,16 +957,16 @@ class Chains extends CIdea_cache
         }
 
 
-        if ($search_up && $target_ideahashtag != $i['ideahashtag']) {
+        if ($search_up && $target_hashtaghashtag != $i['hashtaghashtag']) {
             //Check Previous/Up
-            $current_previous = $i['ideaid'];
-            foreach (array_reverse($this->Chains->previousidea($sourceid, $target_ideahashtag, $i['ideaid'])) as $p_i) {
+            $current_previous = $i['hashtagid'];
+            foreach (array_reverse($this->Chains->previoushashtag($handleid, $target_hashtaghashtag, $i['hashtagid'])) as $p_i) {
                 //Find the next siblings:
-                $next__url = $this->Chains->next_ideas($sourceid, $target_ideahashtag, $p_i, $current_previous, false, $target_completed);
+                $next__url = $this->Chains->next_hashtags($handleid, $target_hashtaghashtag, $p_i, $current_previous, false, $target_completed);
                 if ($next__url) {
                     return $next__url;
                 }
-                $current_previous = $p_i['ideaid'];
+                $current_previous = $p_i['hashtagid'];
             }
         }
 
@@ -976,48 +976,48 @@ class Chains extends CIdea_cache
     }
 
 
-    function idea_discovered($chainsourcetype, $chainsourcecreator, $target_ideaid = 0, $i, $source_submitted_data = array(), $x_data = array())
+    function hashtag_discovered($chainhandletype, $chainhandlecreator, $target_hashtagid = 0, $i, $handle_submitted_data = array(), $x_data = array())
     {
 
-        if (!$chainsourcecreator || !in_array($chainsourcetype, $this->config->item('sourceids___31777' /* DISCOVERIES */))) {
-            return log_error('idea_discovered() Invalid chainsourcetype @' . $chainsourcetype . ' missing in @31777 OR Missing $chainsourcecreator', array(
-                'chainsourcedown' => $chainsourcecreator,
-                'chainsourcecreator' => $chainsourcecreator,
+        if (!$chainhandlecreator || !in_array($chainhandletype, $this->config->item('handleids___31777' /* DISCOVERIES */))) {
+            return log_error('hashtag_discovered() Invalid chainhandletype @' . $chainhandletype . ' missing in @31777 OR Missing $chainhandlecreator', array(
+                'chainhandleoutput' => $chainhandlecreator,
+                'chainhandlecreator' => $chainhandlecreator,
             ));
         }
 
         //Do we need to save text/upload ?
-        $source_session = source_session();
-        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
-        $input__upload = in_array($i['ideatype'], $this->config->item('sourceids___43004'));
-        $input__text = in_array($i['ideatype'], $this->config->item('sourceids___43002')) || in_array($i['ideatype'], $this->config->item('sourceids___43003'));
+        $handle_session = handle_session();
+        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
+        $input__upload = in_array($i['hashtagtype'], $this->config->item('handleids___43004'));
+        $input__text = in_array($i['hashtagtype'], $this->config->item('handleids___43002')) || in_array($i['hashtagtype'], $this->config->item('handleids___43003'));
         $is_required = count($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $i['ideaid'],
-            'chainsourceup' => 28239, //Required
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput' => 28239, //Required
         )));
 
 
         if ($input__upload || $input__text) {
 
-            if (!isset($source_submitted_data['idea_createtext'])) {
-                $source_submitted_data['idea_createtext'] = null;
+            if (!isset($handle_submitted_data['hashtag_createtext'])) {
+                $handle_submitted_data['hashtag_createtext'] = null;
             }
 
-            //Must add a new idea, but first let's validate the input:
-            if ($i['ideatype'] == 31794 && strlen($source_submitted_data['idea_createtext']) && !is_numeric($source_submitted_data['idea_createtext'])) {
+            //Must add a new hashtag, but first let's validate the input:
+            if ($i['hashtagtype'] == 31794 && strlen($handle_submitted_data['hashtag_createtext']) && !is_numeric($handle_submitted_data['hashtag_createtext'])) {
                 //Number Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Number',
                 );
-            } elseif ($i['ideatype'] == 42915 && strlen($source_submitted_data['idea_createtext']) && !filter_var($source_submitted_data['idea_createtext'], FILTER_VALIDATE_URL)) {
+            } elseif ($i['hashtagtype'] == 42915 && strlen($handle_submitted_data['hashtag_createtext']) && !filter_var($handle_submitted_data['hashtag_createtext'], FILTER_VALIDATE_URL)) {
                 //Chain Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid URL',
                 );
-            } elseif ($i['ideatype'] == 30350 && strlen($source_submitted_data['idea_createtext']) && !strtotime($source_submitted_data['idea_createtext'])) {
+            } elseif ($i['hashtagtype'] == 30350 && strlen($handle_submitted_data['hashtag_createtext']) && !strtotime($handle_submitted_data['hashtag_createtext'])) {
                 //Date Input
                 return array(
                     'status' => 0,
@@ -1026,50 +1026,50 @@ class Chains extends CIdea_cache
             }
 
             //Find most recent answers by this user:
-            $source_private_replies = $this->Chains->read(array(
-                'chainsourcetype' => 4228,
-                'chainidearight' => $i['ideaid'],
-                'chainsourcecreator' => $chainsourcecreator,
-            ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC'));
+            $handle_private_replies = $this->Chains->read(array(
+                'chainhandletype' => 4228,
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandlecreator' => $chainhandlecreator,
+            ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC'));
 
 
-            //All validated, lets create the new idea:
-            if (strlen($source_submitted_data['idea_createtext'])) {
+            //All validated, lets create the new hashtag:
+            if (strlen($handle_submitted_data['hashtag_createtext'])) {
 
-                if (count($source_private_replies)) {
+                if (count($handle_private_replies)) {
 
                     //Update existing response if different:
-                    if ($source_submitted_data['idea_createtext'] != $source_private_replies[0]['ideavalue']) {
+                    if ($handle_submitted_data['hashtag_createtext'] != $handle_private_replies[0]['hashtagvalue']) {
 
-                        $this->Ideas->update($source_private_replies[0]['ideaid'], array(
-                            'ideavalue' => $source_submitted_data['idea_createtext'],
-                        ), $chainsourcecreator);
+                        $this->Hashtags->update($handle_private_replies[0]['hashtagid'], array(
+                            'hashtagvalue' => $handle_submitted_data['hashtag_createtext'],
+                        ), $chainhandlecreator);
 
                     }
 
-                    $this_ideaid = $source_private_replies[0]['ideaid'];
+                    $this_hashtagid = $handle_private_replies[0]['hashtagid'];
 
                 } else {
 
-                    //Create a new idea:
-                    $idea_new = $this->Ideas->create(array(
-                        'ideavalue' => $source_submitted_data['idea_createtext'],
-                        'ideatype' => 6677,
-                    ), $chainsourcecreator);
+                    //Create a new hashtag:
+                    $hashtag_new = $this->Hashtags->create(array(
+                        'hashtagvalue' => $handle_submitted_data['hashtag_createtext'],
+                        'hashtagtype' => 6677,
+                    ), $chainhandlecreator);
 
-                    $this_ideaid = $idea_new['idea_create']['ideaid'];
+                    $this_hashtagid = $hashtag_new['hashtag_create']['hashtagid'];
 
-                    //Chain to this idea:
+                    //Chain to this hashtag:
                     $this->Chains->create(array(
-                        'chainsourcetype' => 4228,
-                        'chainsourcecreator' => $chainsourcecreator,
-                        'chainidearight' => $i['ideaid'],
-                        'chainidealeft' => $idea_new['idea_create']['ideaid'],
+                        'chainhandletype' => 4228,
+                        'chainhandlecreator' => $chainhandlecreator,
+                        'chainhashtagoutput' => $i['hashtagid'],
+                        'chainhashtaginput' => $hashtag_new['hashtag_create']['hashtagid'],
                     ));
 
                 }
 
-            } elseif (count($source_private_replies)) {
+            } elseif (count($handle_private_replies)) {
 
                 if ($is_required) {
                     return array(
@@ -1078,53 +1078,53 @@ class Chains extends CIdea_cache
                     );
                 } else {
                     //Delete Chains
-                    $chains_removed = $this->Ideas->delete($source_private_replies[0]['ideaid'], $chainsourcecreator);
+                    $chains_removed = $this->Hashtags->delete($handle_private_replies[0]['hashtagid'], $chainhandlecreator);
                 }
 
             }
 
         }
 
-        $x_data['chainsourcecreator'] = $chainsourcecreator;
-        $x_data['chainsourceup'] = $chainsourcecreator;
-        $x_data['chainsourcetype'] = $chainsourcetype;
-        $x_data['chainidealeft'] = $i['ideaid']; //Always add Idea to chainidealeft
+        $x_data['chainhandlecreator'] = $chainhandlecreator;
+        $x_data['chainhandleinput'] = $chainhandlecreator;
+        $x_data['chainhandletype'] = $chainhandletype;
+        $x_data['chainhashtaginput'] = $i['hashtagid']; //Always add Hahstag to chainhashtaginput
 
-        //Add chain right only if we have a target idea we are navigating to
-        if ($target_ideaid > 0 && (!isset($x_data['chainidearight']) || !intval($x_data['chainidearight']))) {
-            $x_data['chainidearight'] = $target_ideaid;
+        //Add chain right only if we have a target hashtag we are navigating to
+        if ($target_hashtagid > 0 && (!isset($x_data['chainhashtagoutput']) || !intval($x_data['chainhashtagoutput']))) {
+            $x_data['chainhashtagoutput'] = $target_hashtagid;
         }
 
         if (!isset($x_data['chainvalue'])) {
             $x_data['chainvalue'] = null;
         }
 
-        $es_creator = $this->Sources->read(array(
-            'sourceid' => $chainsourcecreator,
+        $es_creator = $this->Handles->read(array(
+            'handleid' => $chainhandlecreator,
         ));
 
         //Make sure not duplicate:
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainidealeft' => (isset($x_data['chainidealeft']) ? $x_data['chainidealeft'] : 0),
-            'chainidearight' => (isset($x_data['chainidearight']) ? $x_data['chainidearight'] : 0),
-            'chainsourcecreator' => $chainsourcecreator,
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => (isset($x_data['chainhashtaginput']) ? $x_data['chainhashtaginput'] : 0),
+            'chainhashtagoutput' => (isset($x_data['chainhashtagoutput']) ? $x_data['chainhashtagoutput'] : 0),
+            'chainhandlecreator' => $chainhandlecreator,
             'chainvalue' => $x_data['chainvalue'],
-        )) as $already_idea_discovered) {
+        )) as $already_hashtag_discovered) {
 
             //Update:
-            $this->Chains->update($already_idea_discovered['chainid'], $x_data);
+            $this->Chains->update($already_hashtag_discovered['chainid'], $x_data);
 
-            //Already idea_discovered!
+            //Already hashtag_discovered!
             return array(
                 'status' => 1,
-                'message' => 'Already idea_discovered',
-                'new_x' => $already_idea_discovered,
+                'message' => 'Already hashtag_discovered',
+                'new_x' => $already_hashtag_discovered,
             );
         }
 
         //Add new Chain:
-        $domain_url = get_domain('m__message', $chainsourcecreator);
+        $domain_url = get_domain('m__message', $chainhandlecreator);
 
         //Create Chain:
         $new_x = $this->Chains->create($x_data);
@@ -1132,64 +1132,64 @@ class Chains extends CIdea_cache
         //Auto Complete OR Answers:
         if ($input__selection) {
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___7704')) . ')' => null, //Discovery Expansion
-                'chainsourcecreator' => $x_data['chainsourcecreator'],
-                'chainidealeft' => $i['ideaid'],
-            ), array('chainidearight'), 0) as $next_i) {
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___7704')) . ')' => null, //Discovery Expansion
+                'chainhandlecreator' => $x_data['chainhandlecreator'],
+                'chainhashtaginput' => $i['hashtagid'],
+            ), array('chainhashtagoutput'), 0) as $next_i) {
 
-                if (in_array($next_i['ideatype'], $this->config->item('sourceids___43039'))) {
+                if (in_array($next_i['hashtagtype'], $this->config->item('handleids___43039'))) {
                     continue;
                 }
 
                 $has_children = count($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-                    'chainidealeft' => $next_i['ideaid'],
-                ), array('chainidearight'), 0, 0));
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+                    'chainhashtaginput' => $next_i['hashtagid'],
+                ), array('chainhashtagoutput'), 0, 0));
 
                 if (!$has_children) {
                     //Mark as complete:
-                    $this->Chains->idea_discovered(idea_type_discovery($next_i), $x_data['chainsourcecreator'], $target_ideaid, $next_i, $x_data);
+                    $this->Chains->hashtag_discovered(hashtag_type_discovery($next_i), $x_data['chainhandlecreator'], $target_hashtagid, $next_i, $x_data);
                 }
             }
         }
 
-        if ($x_data['chainsourcecreator'] && in_array($x_data['chainsourcetype'], $this->config->item('sourceids___40986'))) {
+        if ($x_data['chainhandlecreator'] && in_array($x_data['chainhandletype'], $this->config->item('handleids___40986'))) {
 
             //Discovery Triggers?
             $clone_urls = '';
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___32275')) . ')' => null, //DISCOVERY TRIGGERS
-                'chainidealeft' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $clone_i) {
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___32275')) . ')' => null, //DISCOVERY TRIGGERS
+                'chainhashtaginput' => $i['hashtagid'],
+            ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $clone_i) {
 
-                if ($clone_i['chainsourcetype'] == 32247) {
+                if ($clone_i['chainhandletype'] == 32247) {
 
                     //Discovery Clone
-                    $new_title = $es_creator[0]['sourcevalue'] . ' ' . $clone_i['ideavalue'];
-                    $result = $this->Ideas->copy($clone_i['ideaid'], 0, $x_data['chainsourcecreator'], null, $new_title);
+                    $new_title = $es_creator[0]['handlevalue'] . ' ' . $clone_i['hashtagvalue'];
+                    $result = $this->Hashtags->copy($clone_i['hashtagid'], 0, $x_data['chainhandlecreator'], null, $new_title);
                     if ($result['status']) {
 
                         //Add as watcher:
                         $this->Chains->create(array(
-                            'chainsourcetype' => 10573, //WATCHERS
-                            'chainsourcecreator' => $x_data['chainsourcecreator'],
-                            'chainsourceup' => $x_data['chainsourcecreator'],
-                            'chainidearight' => $result['idea_createid'],
+                            'chainhandletype' => 10573, //WATCHERS
+                            'chainhandlecreator' => $x_data['chainhandlecreator'],
+                            'chainhandleinput' => $x_data['chainhandlecreator'],
+                            'chainhashtagoutput' => $result['hashtag_createid'],
                         ));
 
                         //New chain:
-                        $clone_urls .= $new_title . ':' . "\n" . 'https://' . get_domain('m__message', $x_data['chainsourcecreator']) . view_memory(42903, 33286) . $result['idea_createhashtag'] . "\n\n";
+                        $clone_urls .= $new_title . ':' . "\n" . 'https://' . get_domain('m__message', $x_data['chainhandlecreator']) . view_memory(42903, 33286) . $result['hashtag_createhashtag'] . "\n\n";
                     }
 
-                } elseif ($clone_i['chainsourcetype'] == 32304) {
+                } elseif ($clone_i['chainhandletype'] == 32304) {
 
                     //Discovery Forget: Remove all Discoveries made by this user:
                     foreach ($this->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-                        'chainidealeft' => $i['ideaid'],
-                        'chainsourcecreator' => $x_data['chainsourcecreator'],
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+                        'chainhashtaginput' => $i['hashtagid'],
+                        'chainhandlecreator' => $x_data['chainhandlecreator'],
                     )) as $remove_x) {
-                        $this->Chains->delete($remove_x['chainid'], $x_data['chainsourcecreator']);
+                        $this->Chains->delete($remove_x['chainid'], $x_data['chainhandlecreator']);
                     }
 
                 }
@@ -1197,52 +1197,52 @@ class Chains extends CIdea_cache
             }
 
             if (strlen($clone_urls)) {
-                //Send DM with all the new clone idea URLs:
+                //Send DM with all the new clone hashtag URLs:
                 $clone_urls = $clone_urls . 'You have been added as a subscriber so you will be notified when anyone start using your chain.';
-                $idea_title = view_idea_title($i, true);
-                $this->Chains->message($x_data['chainsourcecreator'], $idea_title, $clone_urls);
-                //Also DM all watchers of the idea:
+                $hashtag_title = view_hashtag_title($i, true);
+                $this->Chains->message($x_data['chainhandlecreator'], $hashtag_title, $clone_urls);
+                //Also DM all watchers of the hashtag:
                 foreach ($this->Chains->read(array(
-                    'chainsourcetype' => 10573, //WATCHERS
-                    'chainidearight' => $i['ideaid'],
+                    'chainhandletype' => 10573, //WATCHERS
+                    'chainhashtagoutput' => $i['hashtagid'],
                 ), array(), 0) as $watcher) {
-                    $this->Chains->message($watcher['chainsourceup'], $idea_title, $clone_urls);
+                    $this->Chains->message($watcher['chainhandleinput'], $hashtag_title, $clone_urls);
                 }
             }
 
 
             //ADD PROFILE?
             foreach ($this->Chains->read(array(
-                'chainsourcetype' => 7545, //Following Add
-                'chainidearight' => $i['ideaid'],
-            ), array('chainsourceup')) as $this_tag) {
+                'chainhandletype' => 7545, //Following Add
+                'chainhashtagoutput' => $i['hashtagid'],
+            ), array('chainhandleinput')) as $this_tag) {
 
                 //Check if special profile add?
-                if (in_array($this_tag['chainsourceup'], $this->config->item('sourceids___43048'))) {
+                if (in_array($this_tag['chainhandleinput'], $this->config->item('handleids___43048'))) {
 
                     //Special Addition:
 
-                    if ($this_tag['chainsourceup'] == 6197 && strlen(trim($x_data['chainvalue'])) >= 2) {
+                    if ($this_tag['chainhandleinput'] == 6197 && strlen(trim($x_data['chainvalue'])) >= 2) {
 
-                        //Update Source Title:
-                        $this->Sources->update($x_data['chainsourcecreator'], array(
-                            'sourcevalue' => $x_data['chainvalue'],
-                        ), $x_data['chainsourcecreator']);
+                        //Update Handle Title:
+                        $this->Handles->update($x_data['chainhandlecreator'], array(
+                            'handlevalue' => $x_data['chainvalue'],
+                        ), $x_data['chainhandlecreator']);
 
                         //Update live session as well:
-                        $es_creator[0]['sourcevalue'] = $x_data['chainvalue'];
-                        $this->Sources->activate($es_creator[0], true);
+                        $es_creator[0]['handlevalue'] = $x_data['chainvalue'];
+                        $this->Handles->activate($es_creator[0], true);
 
                     }
 
                 } else {
 
                     //Assign tag if following/follower Chain NOT previously assigned:
-                    $append_source = append_source($this_tag['chainsourceup'], $x_data['chainsourcecreator'], (isset($source_submitted_data['idea_createtext']) ? $source_submitted_data['idea_createtext'] : null), $i['ideaid']);
+                    $append_handle = append_handle($this_tag['chainhandleinput'], $x_data['chainhandlecreator'], (isset($handle_submitted_data['hashtag_createtext']) ? $handle_submitted_data['hashtag_createtext'] : null), $i['hashtagid']);
 
                     //See if Session needs to be updated:
-                    if ($source_session && $source_session['sourceid']==$x_data['chainsourcecreator'] && $append_source) {
-                        $this->Sources->activate($source_session, true);
+                    if ($handle_session && $handle_session['handleid']==$x_data['chainhandlecreator'] && $append_handle) {
+                        $this->Handles->activate($handle_session, true);
                     }
 
                 }
@@ -1251,23 +1251,23 @@ class Chains extends CIdea_cache
 
             //REMOVE PROFILE?
             foreach ($this->Chains->read(array(
-                'chainsourcetype' => 26599, //Following Remove
-                'chainidearight' => $i['ideaid'],
+                'chainhandletype' => 26599, //Following Remove
+                'chainhashtagoutput' => $i['hashtagid'],
             )) as $this_tag) {
 
                 //Remove Following IF previously assigned:
                 foreach ($this->Chains->read(array(
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                    'chainsourceup' => $this_tag['chainsourceup'], //CERTIFICATES saved here
-                    'chainsourcedown' => $x_data['chainsourcecreator'],
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                    'chainhandleinput' => $this_tag['chainhandleinput'], //CERTIFICATES saved here
+                    'chainhandleoutput' => $x_data['chainhandlecreator'],
                 )) as $existing_x) {
 
-                    $this->Chains->delete($existing_x['chainid'], $x_data['chainsourcecreator']);
+                    $this->Chains->delete($existing_x['chainid'], $x_data['chainhandlecreator']);
 
                     //See if Session needs to be updated:
-                    if ($source_session && $source_session['sourceid'] == $x_data['chainsourcecreator']) {
+                    if ($handle_session && $handle_session['handleid'] == $x_data['chainhandlecreator']) {
                         //Yes, update session:
-                        $this->Sources->activate($es_creator[0], true);
+                        $this->Handles->activate($es_creator[0], true);
                     }
                 }
             }
@@ -1275,40 +1275,40 @@ class Chains extends CIdea_cache
 
             //Notify watchers IF any:
             $watchers = $this->Chains->read(array(
-                'chainsourcetype' => 10573, //WATCHERS
-                'chainidearight' => $i['ideaid'],
+                'chainhandletype' => 10573, //WATCHERS
+                'chainhashtagoutput' => $i['hashtagid'],
             ), array(), 0);
             if (count($watchers)) {
 
-                $es_discoverer = $this->Sources->read(array(
-                    'sourceid' => $x_data['chainsourcecreator'],
+                $es_discoverer = $this->Handles->read(array(
+                    'handleid' => $x_data['chainhandlecreator'],
                 ));
                 if (count($es_discoverer)) {
 
                     //Fetch Discoverer contact:
                     $discoverer_contact = '';
-                    foreach ($this->config->item('sources___34541') as $chainsourcetype => $m) {
+                    foreach ($this->config->item('handles___34541') as $chainhandletype => $m) {
                         foreach ($this->Chains->read(array(
-                            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                            'chainsourcedown' => $x_data['chainsourcecreator'],
-                            'chainsourceup' => $chainsourcetype,
+                            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                            'chainhandleoutput' => $x_data['chainhandlecreator'],
+                            'chainhandleinput' => $chainhandletype,
                             'LENGTH(chainvalue)>0' => null,
                         )) as $x_progress) {
                             $discoverer_contact .= $m['m__title'] . ':' . "\n" . $x_progress['chainvalue'] . "\n\n";
                         }
                     }
 
-                    //Notify Idea Watchers
+                    //Notify Hahstag Watchers
                     $sent_watchers = array();
                     foreach ($watchers as $watcher) {
-                        if (!in_array(intval($watcher['chainsourceup']), $sent_watchers)) {
-                            array_push($sent_watchers, intval($watcher['chainsourceup']));
+                        if (!in_array(intval($watcher['chainhandleinput']), $sent_watchers)) {
+                            array_push($sent_watchers, intval($watcher['chainhandleinput']));
 
-                            $this->Chains->message($watcher['chainsourceup'], $es_discoverer[0]['sourcevalue'] . ' idea_discovered: ' . view_idea_title($i, true),
+                            $this->Chains->message($watcher['chainhandleinput'], $es_discoverer[0]['handlevalue'] . ' hashtag_discovered: ' . view_hashtag_title($i, true),
                                 //Message Body:
-                                view_idea_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['ideahashtag'] . "\n\n" .
+                                view_hashtag_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['hashtaghashtag'] . "\n\n" .
                                 (strlen($x_data['chainvalue']) ? $x_data['chainvalue'] . "\n\n" : '') .
-                                $es_discoverer[0]['sourcevalue'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['sourcehandle'] . "\n\n" .
+                                $es_discoverer[0]['handlevalue'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['handlehandle'] . "\n\n" .
                                 $discoverer_contact
                             );
                         }
@@ -1326,73 +1326,73 @@ class Chains extends CIdea_cache
     }
 
 
-    function history($i, $sourceid, $current_level = 0)
+    function history($i, $handleid, $current_level = 0)
     {
 
-        unset($i['ideaexternal']);
-        unset($i['ideacache']);
-        unset($i['chainsourcetype']);
-        unset($i['chainsourceup']);
-        unset($i['chainsourcedown']);
+        unset($i['hashtagexternal']);
+        unset($i['hashtagcache']);
+        unset($i['chainhandletype']);
+        unset($i['chainhandleinput']);
+        unset($i['chainhandleoutput']);
         unset($i['chainkey']);
-        unset($i['chainsourcedomain']);
+        unset($i['chainhandledomain']);
         unset($i['chainvoid']);
-        unset($i['chainsourcecreator']);
-        unset($i['chainidealeft']);
-        unset($i['chainidearight']);
+        unset($i['chainhandlecreator']);
+        unset($i['chainhashtaginput']);
+        unset($i['chainhashtagoutput']);
         unset($i['chainid']);
         unset($i['chainvalue']);
 
-        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
-        $input__text = in_array($i['ideatype'], $this->config->item('sourceids___43002'));
-        $i['user_idea_discovered'] = array();
+        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
+        $input__text = in_array($i['hashtagtype'], $this->config->item('handleids___43002'));
+        $i['user_hashtag_discovered'] = array();
         $i['user_written_response'] = array();
         $i['current_level'] = $current_level;
-        $i['next_ideas'] = array();
+        $i['next_hashtags'] = array();
         $current_level++;
 
         //TODO Append media
 
         //Append Discovery if any:
         foreach ($this->Chains->read(array(
-            'chainidealeft' => $i['ideaid'],
-            'chainsourcecreator' => $sourceid,
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $i['hashtagid'],
+            'chainhandlecreator' => $handleid,
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
         ), array(), 1) as $x) {
 
-            unset($x['chainsourcetype']);
-            unset($x['chainsourceup']);
-            unset($x['chainsourcedown']);
+            unset($x['chainhandletype']);
+            unset($x['chainhandleinput']);
+            unset($x['chainhandleoutput']);
             unset($x['chainkey']);
-            unset($x['chainsourcedomain']);
+            unset($x['chainhandledomain']);
             unset($x['chainvoid']);
-            unset($x['chainidealeft']);
-            unset($x['chainidearight']);
-            unset($x['chainsourcecreator']);
+            unset($x['chainhashtaginput']);
+            unset($x['chainhashtagoutput']);
+            unset($x['chainhandlecreator']);
             unset($x['chainvalue']);
             unset($x['chainid']);
 
-            $i['user_idea_discovered'] = $x;
+            $i['user_hashtag_discovered'] = $x;
 
             if ($input__text) {
-                //Since it has been idea_discovered and its a text input, lots fetch the written response:
+                //Since it has been hashtag_discovered and its a text input, lots fetch the written response:
                 foreach ($this->Chains->read(array(
-                    'chainsourcetype' => 4228,
-                    'chainidearight' => $i['ideaid'],
-                    'chainsourcecreator' => $sourceid,
-                ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC')) as $response) {
+                    'chainhandletype' => 4228,
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandlecreator' => $handleid,
+                ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC')) as $response) {
                     $i['user_written_response'] = $response;
                 }
             }
         }
 
 
-        if ($i['user_idea_discovered']) {
+        if ($i['user_hashtag_discovered']) {
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-                'chainidealeft' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
-                array_push($i['next_ideas'], $this->Chains->history($next_i, $sourceid, $current_level));
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+                'chainhashtaginput' => $i['hashtagid'],
+            ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
+                array_push($i['next_hashtags'], $this->Chains->history($next_i, $handleid, $current_level));
             }
         }
 
@@ -1401,47 +1401,47 @@ class Chains extends CIdea_cache
 
     }
 
-    function historyidea_discovered($i, $sourceid, $current_level = 0)
+    function historyhashtag_discovered($i, $handleid, $current_level = 0)
     {
 
-        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
-        $input__text = in_array($i['ideatype'], $this->config->item('sourceids___43002'));
+        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
+        $input__text = in_array($i['hashtagtype'], $this->config->item('handleids___43002'));
         $i['current_level'] = $current_level;
-        $i['next_ideas'] = array();
-        $i['user_idea_discovered'] = array();
+        $i['next_hashtags'] = array();
+        $i['user_hashtag_discovered'] = array();
         $i['user_written_response'] = array();
         $current_level++;
 
         //Append Discovery if any:
         foreach ($this->Chains->read(array(
-            'chainidealeft' => $i['ideaid'],
-            'chainsourcecreator' => $sourceid,
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $i['hashtagid'],
+            'chainhandlecreator' => $handleid,
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
         ), array(), 1) as $x) {
-            $i['user_idea_discovered'] = $x;
+            $i['user_hashtag_discovered'] = $x;
         }
 
         if ($input__text) {
             foreach ($this->Chains->read(array(
-                'chainsourcetype' => 4228,
-                'chainidearight' => $i['ideaid'],
-                'chainsourcecreator' => $sourceid,
-            ), array('chainidealeft'), 0, 1, array('chainid' => 'DESC')) as $response) {
+                'chainhandletype' => 4228,
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandlecreator' => $handleid,
+            ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC')) as $response) {
                 $i['user_written_response'] = $response;
             }
         }
 
 
-        if ($i['user_idea_discovered']) {
+        if ($i['user_hashtag_discovered']) {
             foreach (($input__selection ? $this->Chains->read(array(
-                'chainsourcetype' => 7712, //Input Choice
-                'chainsourcecreator' => $sourceid,
-                'chainidealeft' => $i['ideaid'],
-            ), array('chainidearight')) : $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-                'chainidealeft' => $i['ideaid'],
-            ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'))) as $next_i) {
-                array_push($i['next_ideas'], $this->Chains->historyidea_discovered($next_i, $sourceid, $current_level));
+                'chainhandletype' => 7712, //Input Choice
+                'chainhandlecreator' => $handleid,
+                'chainhashtaginput' => $i['hashtagid'],
+            ), array('chainhashtagoutput')) : $this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+                'chainhashtaginput' => $i['hashtagid'],
+            ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'))) as $next_i) {
+                array_push($i['next_hashtags'], $this->Chains->historyhashtag_discovered($next_i, $handleid, $current_level));
             }
         }
 
@@ -1454,25 +1454,25 @@ class Chains extends CIdea_cache
     {
 
         $total_next = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42345')) . ')' => null, //Active Sequence
-            'chainidealeft' => $i['ideaid'],
-        ), array('chainidearight'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
-        $input__selection = in_array($i['ideatype'], $this->config->item('sourceids___7712'));
-        $single_choice = in_array($i['ideatype'], $this->config->item('sourceids___33331'));
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
+            'chainhashtaginput' => $i['hashtagid'],
+        ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
+        $single_choice = in_array($i['hashtagtype'], $this->config->item('handleids___33331'));
 
         if(isset($_GET['skip_config'])) {
-            unset($i['ideaexternal']);
-            unset($i['ideakey']);
-            unset($i['ideacache']);
-            unset($i['ideatype']);
+            unset($i['hashtagexternal']);
+            unset($i['hashtagkey']);
+            unset($i['hashtagcache']);
+            unset($i['hashtagtype']);
             if(isset($i['chainid'])){
-                unset($i['chainsourcedomain']);
-                unset($i['chainsourcecreator']);
-                unset($i['chainsourcetype']);
-                unset($i['chainsourceup']);
-                unset($i['chainsourcedown']);
-                unset($i['chainidealeft']);
-                unset($i['chainidearight']);
+                unset($i['chainhandledomain']);
+                unset($i['chainhandlecreator']);
+                unset($i['chainhandletype']);
+                unset($i['chainhandleinput']);
+                unset($i['chainhandleoutput']);
+                unset($i['chainhashtaginput']);
+                unset($i['chainhashtagoutput']);
                 unset($i['chainkey']);
                 unset($i['chainvalue']);
                 unset($i['chainvoid']);
@@ -1482,14 +1482,14 @@ class Chains extends CIdea_cache
         } else {
             $i['current_level'] = $current_level;
             $is_required = count($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-                'chainidearight' => $i['ideaid'],
-                'chainsourceup' => 28239, //Required
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandleinput' => 28239, //Required
             )));
 
             $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
             $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
-            $i['idea_list_config'] = idea_list_config($i['ideaid'], false);
+            $i['hashtag_list_config'] = hashtag_list_config($i['hashtagid'], false);
             $i['stats'] = array(
                 'max_level' => $current_level,
                 'all_steps' => 1,
@@ -1500,23 +1500,23 @@ class Chains extends CIdea_cache
             );
         }
 
-        $i['next_ideas'] = array();
+        $i['next_hashtags'] = array();
         $current_level++;
 
         //Append Total Discoveries if any:
         if(!isset($_GET['skip_config'])) {
             $sub_counter = $this->Chains->read(array(
-                'chainidealeft' => $i['ideaid'],
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+                'chainhashtaginput' => $i['hashtagid'],
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
-            $i['idea_count_discovery'] = $sub_counter[0]['totals'];
+            $i['hashtag_count_discovery'] = $sub_counter[0]['totals'];
         }
 
 
         foreach ($total_next as $next_i) {
 
             $result_i = $this->Chains->flat_tree($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
-            array_push($i['next_ideas'], $result_i);
+            array_push($i['next_hashtags'], $result_i);
 
             if(!isset($_GET['skip_config'])) {
                 $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
@@ -1541,69 +1541,69 @@ class Chains extends CIdea_cache
     }
 
 
-    function progress($sourceid, $i, $current_level = 0, $loop_breaker_ids = array())
+    function progress($handleid, $i, $current_level = 0, $loop_breaker_ids = array())
     {
 
-        if (count($loop_breaker_ids) > 0 && in_array($i['ideaid'], $loop_breaker_ids)) {
+        if (count($loop_breaker_ids) > 0 && in_array($i['hashtagid'], $loop_breaker_ids)) {
             return false;
         }
 
-        $copy = $this->Ideas->ids($i, 'AND');
-        if (!isset($copy['recursive_idea_ids']) || !count($copy['recursive_idea_ids'])) {
+        $copy = $this->Hashtags->ids($i, 'AND');
+        if (!isset($copy['recursive_hashtag_ids']) || !count($copy['recursive_hashtag_ids'])) {
             return false;
         }
 
         $current_level++;
-        array_push($loop_breaker_ids, intval($i['ideaid']));
+        array_push($loop_breaker_ids, intval($i['hashtagid']));
 
         //Count completed:
-        $list_idea_discovered = array();
+        $list_hashtag_discovered = array();
         foreach ($this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-            'chainsourcecreator' => $sourceid, //Belongs to this Member
-            'chainidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
-        ), array('chainidealeft'), 0) as $completed) {
-            if (!in_array($completed['ideahashtag'], $list_idea_discovered)) {
-                array_push($list_idea_discovered, $completed['ideahashtag']);
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            'chainhandlecreator' => $handleid, //Belongs to this Member
+            'chainhashtaginput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
+        ), array('chainhashtaginput'), 0) as $completed) {
+            if (!in_array($completed['hashtaghashtag'], $list_hashtag_discovered)) {
+                array_push($list_hashtag_discovered, $completed['hashtaghashtag']);
             }
         }
 
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
-            'fixed_total' => count($copy['recursive_idea_ids']),
-            'list_total' => $copy['recursive_idea_ids'],
-            'fixed_idea_discovered' => count($list_idea_discovered),
-            'list_idea_discovered' => $list_idea_discovered,
+            'fixed_total' => count($copy['recursive_hashtag_ids']),
+            'list_total' => $copy['recursive_hashtag_ids'],
+            'fixed_hashtag_discovered' => count($list_hashtag_discovered),
+            'list_hashtag_discovered' => $list_hashtag_discovered,
         );
 
         //Now let's check possible expansions:
-        if (count($copy['recursive_idea_ids'])) {
+        if (count($copy['recursive_hashtag_ids'])) {
             foreach ($this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___7704')) . ')' => null, //Discovery Expansion
-                'chainsourcecreator' => $sourceid, //Belongs to this Member
-                'chainidealeft IN (' . join(',', $copy['recursive_idea_ids']) . ')' => null,
-            ), array('chainidearight')) as $expansion_in) {
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___7704')) . ')' => null, //Discovery Expansion
+                'chainhandlecreator' => $handleid, //Belongs to this Member
+                'chainhashtaginput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
+            ), array('chainhashtagoutput')) as $expansion_in) {
 
                 //Fetch recursive:
-                $progress = $this->Chains->progress($sourceid, $expansion_in, $current_level, $loop_breaker_ids);
+                $progress = $this->Chains->progress($handleid, $expansion_in, $current_level, $loop_breaker_ids);
 
                 if (!$progress && !count($this->Chains->read(array(
-                        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-                        'chainsourcecreator' => $sourceid, //Belongs to this Member
-                        'chainidealeft' => $expansion_in['ideaid'],
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+                        'chainhandlecreator' => $handleid, //Belongs to this Member
+                        'chainhashtaginput' => $expansion_in['hashtagid'],
                     )))) {
                     $progress = array(
                         'fixed_total' => 1,
-                        'list_total' => array($expansion_in['ideaid']),
-                        'fixed_idea_discovered' => 0,
-                        'list_idea_discovered' => array(),
+                        'list_total' => array($expansion_in['hashtagid']),
+                        'fixed_hashtag_discovered' => 0,
+                        'list_hashtag_discovered' => array(),
                     );
                 }
 
                 //Addup completion stats for this:
                 $metadata_this['fixed_total'] += $progress['fixed_total'];
-                $metadata_this['fixed_idea_discovered'] += $progress['fixed_idea_discovered'];
+                $metadata_this['fixed_hashtag_discovered'] += $progress['fixed_hashtag_discovered'];
 
                 if ($progress['list_total'] && count($progress['list_total'])) {
                     foreach ($progress['list_total'] as $tree_id) {
@@ -1613,10 +1613,10 @@ class Chains extends CIdea_cache
                     }
                 }
 
-                if ($progress['list_idea_discovered'] && count($progress['list_idea_discovered'])) {
-                    foreach ($progress['list_idea_discovered'] as $tree_id) {
-                        if (!in_array($tree_id, $metadata_this['list_idea_discovered'])) {
-                            array_push($metadata_this['list_idea_discovered'], $tree_id);
+                if ($progress['list_hashtag_discovered'] && count($progress['list_hashtag_discovered'])) {
+                    foreach ($progress['list_hashtag_discovered'] as $tree_id) {
+                        if (!in_array($tree_id, $metadata_this['list_hashtag_discovered'])) {
+                            array_push($metadata_this['list_hashtag_discovered'], $tree_id);
                         }
                     }
                 }
@@ -1644,7 +1644,7 @@ class Chains extends CIdea_cache
 
             //Calculate completion rate based on estimated time cost:
             if ($metadata_this['fixed_total'] > 0) {
-                $metadata_this['fixed_completed_percentage'] = intval(floor($metadata_this['fixed_idea_discovered'] / $metadata_this['fixed_total'] * 100));
+                $metadata_this['fixed_completed_percentage'] = intval(floor($metadata_this['fixed_hashtag_discovered'] / $metadata_this['fixed_total'] * 100));
             }
 
 

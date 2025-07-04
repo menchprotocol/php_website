@@ -1,28 +1,28 @@
 <?php
 
-if(!isset($_GET['ideahashtag'])){
-    die('Missing Idea ID ideahashtag');
+if(!isset($_GET['hashtaghashtag'])){
+    die('Missing Hahstag ID hashtaghashtag');
 }
 
 
 //Generate list & settings:
-$idea_settings = idea_settings($_GET['ideahashtag']);
-echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
+$hashtag_settings = hashtag_settings($_GET['hashtaghashtag']);
+echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 
 
-//Display idea info:
-$copy = $this->Ideas->ids($idea_settings['i'], 'ALL');
+//Display hashtag info:
+$copy = $this->Hashtags->ids($hashtag_settings['i'], 'ALL');
 
 
-//Main Idea:
-echo '<h2><a href="'.view_memory(42903,33286).$idea_settings['i']['ideahashtag'].'">'.view_idea_title($idea_settings['i'], true).'</a> '.count($copy['recursive_idea_ids']).' IDEAS</h2>';
+//Main Hahstag:
+echo '<h2><a href="'.view_memory(42903,33286).$hashtag_settings['i']['hashtaghashtag'].'">'.view_hashtag_title($hashtag_settings['i'], true).'</a> '.count($copy['recursive_hashtag_ids']).' HASHTAGS</h2>';
 
 echo '<div class="row justify-content">';
-foreach($copy['recursive_idea_ids'] as $recursive_down_id){
-    foreach($this->Ideas->read(array(
-        'ideaid' => $recursive_down_id,
+foreach($copy['recursive_hashtag_ids'] as $recursive_down_id){
+    foreach($this->Hashtags->read(array(
+        'hashtagid' => $recursive_down_id,
     ), 0) as $this_i){
-        echo idea_view(42288, $this_i);
+        echo hashtag_view(42288, $this_i);
     }
 }
 echo '</div>';

@@ -4,17 +4,17 @@
 if (!isset($_GET['confirm'])) {
 
     //Asl user to confirm:
-    echo '<div class="alert alert-warning" role="alert">You are about to delete all discoveries for @' . $focus_e['sourcehandle'] . '... Are you sure you want to continue?</div>';
-    echo '<a href="' . view_app_chain(6415) . view_memory(42903, 42902) . $focus_e['sourcehandle'] . '?confirm=1" class="btn btn-default">Confirm</a>';
+    echo '<div class="alert alert-warning" role="alert">You are about to delete all discoveries for @' . $focus_e['handlehandle'] . '... Are you sure you want to continue?</div>';
+    echo '<a href="' . view_app_chain(6415) . view_memory(42903, 42902) . $focus_e['handlehandle'] . '?confirm=1" class="btn btn-default">Confirm</a>';
     echo ' - OR - ';
-    echo '<a href="' . view_memory(42903, 42902) . $focus_e['sourcehandle'] . '" class="btn btn-default">Cancel & Return to @' . $focus_e['sourcehandle'] . '</a>';
+    echo '<a href="' . view_memory(42903, 42902) . $focus_e['handlehandle'] . '" class="btn btn-default">Cancel & Return to @' . $focus_e['handlehandle'] . '</a>';
 
 } else {
 
     //Fetch their current progress chains:
     $progress_x = $this->Chains->read(array(
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
-        'chainsourcecreator' => $focus_e['sourceid'],
+        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+        'chainhandlecreator' => $focus_e['handleid'],
     ), array(), 0);
 
     if (count($progress_x) > 0) {
@@ -24,7 +24,7 @@ if (!isset($_GET['confirm'])) {
 
         //Delete all progressions:
         foreach ($progress_x as $progress_x) {
-            $this->Chains->delete($progress_x['chainid'], $focus_e['sourceid']);
+            $this->Chains->delete($progress_x['chainid'], $focus_e['handleid']);
         }
 
     } else {
@@ -37,7 +37,7 @@ if (!isset($_GET['confirm'])) {
     //Show basic UI for now:
     echo $message;
 
-    //return get_redirected(view_memory(42903,42902).$focus_e['sourcehandle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
+    //return get_redirected(view_memory(42903,42902).$focus_e['handlehandle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
 
 
 }

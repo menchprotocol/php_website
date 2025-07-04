@@ -6,31 +6,31 @@ if(isset($_GET['search_for'])){
 
     $icon_keyword = $_GET['search_for'];
 
-} elseif(isset($_GET['sourcehandle']) && $_GET['sourcehandle']){
+} elseif(isset($_GET['handlehandle']) && $_GET['handlehandle']){
 
-    $es = $this->Sources->read(array(
-        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
+    $es = $this->Handles->read(array(
+        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
     ));
     if(!count($es)){
         return view_json(array(
             'status' => 0,
-            'message' => 'Invalid Source ID #1'
+            'message' => 'Invalid Handle ID #1'
         ));
-    } elseif(!strlen($es[0]['sourcecover'])) {
+    } elseif(!strlen($es[0]['handlecover'])) {
         return view_json(array(
             'status' => 0,
-            'message' => 'Source Missing Cover'
+            'message' => 'Handle Missing Cover'
         ));
     }
 
-    if(string_is_icon($es[0]['sourcecover'])){
+    if(string_is_icon($es[0]['handlecover'])){
 
         //Exclude Cover settings:
-        $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['sourcecover']);
+        $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['handlecover']);
 
     } else {
 
-        $icon_keyword = $es[0]['sourcecover'];
+        $icon_keyword = $es[0]['handlecover'];
 
     }
 }
@@ -46,8 +46,8 @@ echo '<input type="submit" class="btn" value="Search">';
 
 if($icon_keyword){
 
-    $matching_results = $this->Sources->read(array(
-        'LOWER(sourcecover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
+    $matching_results = $this->Handles->read(array(
+        'LOWER(handlecover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 
     //List the matching search:
@@ -70,21 +70,21 @@ if($icon_keyword){
         foreach($matching_results as $count=>$en){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
-                $replaced += $this->Sources->update($en['sourceid'], array(
-                    'sourcecover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['sourcecover']),
-                ), $source_session['sourceid']);
+                $replaced += $this->Handles->update($en['handleid'], array(
+                    'handlecover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['handlecover']),
+                ), $handle_session['handleid']);
 
             }
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['sourcecover']).'</span><a href="'.view_memory(42903,42902).$en['sourcehandle'].'">'.$en['sourcevalue'].'</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['handlecover']).'</span><a href="'.view_memory(42903,42902).$en['handlehandle'].'">'.$en['handlevalue'].'</a></td>';
             echo '</tr>';
 
         }
 
         if($replaced > 0){
-            echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>Updated icons for '.$replaced.' Sources.';
+            echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>Updated icons for '.$replaced.' Handles.';
         }
 
     }

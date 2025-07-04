@@ -2,10 +2,10 @@
 
 //List orphans:
 echo '<div class="row justify-content">';
-foreach($this->Ideas->read(array(
-    ' NOT EXISTS (SELECT 1 FROM ideachain WHERE ideaid=chainidearight AND chainvoid=0 AND chainsourcetype IN (' . join(',', $this->config->item('sourceids___4486')) . ')) ' => null,
+foreach($this->Hashtags->read(array(
+    ' NOT EXISTS (SELECT 1 FROM hashtagchain WHERE hashtagid=chainhashtagoutput AND chainvoid=0 AND chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')) ' => null,
 ), 0, 0) as $i) {
-    echo idea_view(7260, $i);
+    echo hashtag_view(7260, $i);
 
 }
 echo '</div>';

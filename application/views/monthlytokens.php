@@ -5,26 +5,26 @@ $start_month = 01;
 
 echo '<table>';
 
-foreach ($this->config->item('sources___14874') as $chainsourcetype => $m) {
+foreach ($this->config->item('handles___14874') as $chainhandletype => $m) {
 
-    if ($chainsourcetype == 12273) {
+    if ($chainhandletype == 12273) {
 
-        //IDEAS
+        //HASHTAGS
         $unique = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13480')) . ')' => null, //UNIQUE IDEAS
-        ), array('chainidearight'), 0, 0, array(), 'COUNT(chainid) as totals');
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13480')) . ')' => null, //UNIQUE HASHTAGS
+        ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif ($chainsourcetype == 12274) {
+    } elseif ($chainhandletype == 12274) {
 
-        //SOURCE
+        //HANDLE
         $unique = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //AUTHORED SOURCES
-        ), array('chainsourcedown'), 0, 0, array(), 'COUNT(chainid) as totals');
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //AUTHORED HANDLES
+        ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif ($chainsourcetype==31777) {
+    } elseif ($chainhandletype==31777) {
 
         $unique = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___' . $chainsourcetype)) . ')' => null,
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___' . $chainhandletype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } else {
@@ -47,28 +47,28 @@ foreach ($this->config->item('sources___14874') as $chainsourcetype => $m) {
         $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i, 1, $start_year));
         $time_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i + 1, 1, $start_year));
 
-        if ($chainsourcetype == 12273) {
+        if ($chainhandletype == 12273) {
 
-            //IDEAS
+            //HASHTAGS
             $query = $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13480')) . ')' => null, //UNIQUE IDEAS
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___13480')) . ')' => null, //UNIQUE HASHTAGS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
-            ), array('chainidearight'), 0, 0, array(), 'COUNT(chainid) as totals');
+            ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-        } elseif ($chainsourcetype == 12274) {
+        } elseif ($chainhandletype == 12274) {
 
-            //SOURCE
+            //HANDLE
             $query = $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //UNIQUE SOURCES
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //UNIQUE HANDLES
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
-            ), array('chainsourcedown'), 0, 0, array(), 'COUNT(chainid) as totals');
+            ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-        } elseif ($chainsourcetype == 31777) {
+        } elseif ($chainhandletype == 31777) {
 
             $query = $this->Chains->read(array(
-                'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');

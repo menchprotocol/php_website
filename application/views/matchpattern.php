@@ -1,16 +1,16 @@
 <?php
 
-if (isset($_GET['ideahashtag'])) {
-    foreach ($this->Ideas->read(array(
-        'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
+if (isset($_GET['hashtaghashtag'])) {
+    foreach ($this->Hashtags->read(array(
+        'LOWER(hashtaghashtag)' => strtolower($_GET['hashtaghashtag']),
     )) as $i) {
 
-        echo '<h2>' . view_idea_title($i) . '</h2>';
+        echo '<h2>' . view_hashtag_title($i) . '</h2>';
 
         $preg_query = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-            'chainidearight' => $i['ideaid'],
-            'chainsourceup' => 26611,
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput' => 26611,
         ));
 
         if (count($preg_query)) {
@@ -21,8 +21,8 @@ if (isset($_GET['ideahashtag'])) {
             echo '<p>Mismatches against [' . $preg_query[0]['chainvalue'] . '] are:</p>';
 
             foreach ($this->Chains->read(array(
-                'chainsourcetype' => 6144, //Written Response
-                'chainidealeft' => $i['ideaid'],
+                'chainhandletype' => 6144, //Written Response
+                'chainhashtaginput' => $i['hashtagid'],
             ), array(), 0) as $x) {
                 $responses++;
                 if (!preg_match($preg_query[0]['chainvalue'], $x['chainvalue'])) {
@@ -41,7 +41,7 @@ if (isset($_GET['ideahashtag'])) {
 
         } else {
 
-            echo 'Preg match not set for this idea';
+            echo 'Preg match not set for this hashtag';
 
         }
     }

@@ -13,18 +13,18 @@
 $query_filters = array();
 $joined_by = array();
 
-//We have a special OR filter when combined with sourcehandle & ideahashtag
-$input_e = (isset($_GET['sourcehandle']) && strlen($_GET['sourcehandle']) > 0);
+//We have a special OR filter when combined with handlehandle & hashtaghashtag
+$input_e = (isset($_GET['handlehandle']) && strlen($_GET['handlehandle']) > 0);
 $focus_e = false;
-$input_i = (isset($_GET['ideahashtag']) && strlen($_GET['ideahashtag']) > 0);
+$input_i = (isset($_GET['hashtaghashtag']) && strlen($_GET['hashtaghashtag']) > 0);
 $focus_i = false;
 
 if ($input_e) {
-    foreach ($this->Sources->read(array(
-        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
-    )) as $source_found) {
-        $focus_e = $source_found;
-        $_GET['sourcehandle'] = $source_found['sourcehandle'];
+    foreach ($this->Handles->read(array(
+        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+    )) as $handle_found) {
+        $focus_e = $handle_found;
+        $_GET['handlehandle'] = $handle_found['handlehandle'];
     }
     if (!$focus_e) {
         //Invalid input!
@@ -33,11 +33,11 @@ if ($input_e) {
 }
 
 if ($input_i) {
-    foreach ($this->Ideas->read(array(
-        'LOWER(ideahashtag)' => strtolower($_GET['ideahashtag']),
-    )) as $idea_found) {
-        $focus_i = $idea_found;
-        $_GET['ideahashtag'] = $idea_found['ideahashtag'];
+    foreach ($this->Hashtags->read(array(
+        'LOWER(hashtaghashtag)' => strtolower($_GET['hashtaghashtag']),
+    )) as $hashtag_found) {
+        $focus_i = $hashtag_found;
+        $_GET['hashtaghashtag'] = $hashtag_found['hashtaghashtag'];
     }
     if (!$focus_i) {
         //Invalid input!
@@ -45,52 +45,52 @@ if ($input_i) {
     }
 }
 
-$any_ideasource_set = $input_i || $input_e;
+$any_hashtaghandle_set = $input_i || $input_e;
 
 
-if (isset($_GET['chainsourcecreator']) && strlen($_GET['chainsourcecreator']) > 0) {
-    if (substr_count($_GET['chainsourcecreator'], ',') > 0) {
+if (isset($_GET['chainhandlecreator']) && strlen($_GET['chainhandlecreator']) > 0) {
+    if (substr_count($_GET['chainhandlecreator'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainsourcecreator IN (' . $_GET['chainsourcecreator'] . '))'] = null;
-    } elseif (intval($_GET['chainsourcecreator']) > 0) {
-        $query_filters['chainsourcecreator'] = $_GET['chainsourcecreator'];
+        $query_filters['( chainhandlecreator IN (' . $_GET['chainhandlecreator'] . '))'] = null;
+    } elseif (intval($_GET['chainhandlecreator']) > 0) {
+        $query_filters['chainhandlecreator'] = $_GET['chainhandlecreator'];
     }
 }
 
 
-if (isset($_GET['chainsourceup']) && strlen($_GET['chainsourceup']) > 0) {
-    if (substr_count($_GET['chainsourceup'], ',') > 0) {
+if (isset($_GET['chainhandleinput']) && strlen($_GET['chainhandleinput']) > 0) {
+    if (substr_count($_GET['chainhandleinput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainsourceup IN (' . $_GET['chainsourceup'] . '))'] = null;
-    } elseif (intval($_GET['chainsourceup']) > 0) {
-        $query_filters['chainsourceup'] = $_GET['chainsourceup'];
+        $query_filters['( chainhandleinput IN (' . $_GET['chainhandleinput'] . '))'] = null;
+    } elseif (intval($_GET['chainhandleinput']) > 0) {
+        $query_filters['chainhandleinput'] = $_GET['chainhandleinput'];
     }
 }
 
-if (isset($_GET['chainsourcedown']) && strlen($_GET['chainsourcedown']) > 0) {
-    if (substr_count($_GET['chainsourcedown'], ',') > 0) {
+if (isset($_GET['chainhandleoutput']) && strlen($_GET['chainhandleoutput']) > 0) {
+    if (substr_count($_GET['chainhandleoutput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainsourcedown IN (' . $_GET['chainsourcedown'] . '))'] = null;
-    } elseif (intval($_GET['chainsourcedown']) > 0) {
-        $query_filters['chainsourcedown'] = $_GET['chainsourcedown'];
+        $query_filters['( chainhandleoutput IN (' . $_GET['chainhandleoutput'] . '))'] = null;
+    } elseif (intval($_GET['chainhandleoutput']) > 0) {
+        $query_filters['chainhandleoutput'] = $_GET['chainhandleoutput'];
     }
 }
 
-if (isset($_GET['chainidealeft']) && strlen($_GET['chainidealeft']) > 0) {
-    if (substr_count($_GET['chainidealeft'], ',') > 0) {
+if (isset($_GET['chainhashtaginput']) && strlen($_GET['chainhashtaginput']) > 0) {
+    if (substr_count($_GET['chainhashtaginput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainidealeft IN (' . $_GET['chainidealeft'] . '))'] = null;
-    } elseif (intval($_GET['chainidealeft']) > 0) {
-        $query_filters['chainidealeft'] = $_GET['chainidealeft'];
+        $query_filters['( chainhashtaginput IN (' . $_GET['chainhashtaginput'] . '))'] = null;
+    } elseif (intval($_GET['chainhashtaginput']) > 0) {
+        $query_filters['chainhashtaginput'] = $_GET['chainhashtaginput'];
     }
 }
 
-if (isset($_GET['chainidearight']) && strlen($_GET['chainidearight']) > 0) {
-    if (substr_count($_GET['chainidearight'], ',') > 0) {
+if (isset($_GET['chainhashtagoutput']) && strlen($_GET['chainhashtagoutput']) > 0) {
+    if (substr_count($_GET['chainhashtagoutput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainidearight IN (' . $_GET['chainidearight'] . '))'] = null;
-    } elseif (intval($_GET['chainidearight']) > 0) {
-        $query_filters['chainidearight'] = $_GET['chainidearight'];
+        $query_filters['( chainhashtagoutput IN (' . $_GET['chainhashtagoutput'] . '))'] = null;
+    } elseif (intval($_GET['chainhashtagoutput']) > 0) {
+        $query_filters['chainhashtagoutput'] = $_GET['chainhashtagoutput'];
     }
 }
 
@@ -105,13 +105,13 @@ if (isset($_GET['chainid']) && strlen($_GET['chainid']) > 0) {
 
 if ($input_e) {
     //We need to look for both following/follower
-    $query_filters['( chainsourcedown = ' . $focus_e['sourceid'] . ' OR chainsourceup = ' . $focus_e['sourceid'] . ' OR chainsourcecreator = ' . $focus_e['sourceid'] . ' )'] = null;
+    $query_filters['( chainhandleoutput = ' . $focus_e['handleid'] . ' OR chainhandleinput = ' . $focus_e['handleid'] . ' OR chainhandlecreator = ' . $focus_e['handleid'] . ' )'] = null;
 }
 
 
 if ($input_i) {
     //We need to look for both following/follower
-    $query_filters['( chainidearight = ' . $focus_i['ideaid'] . ' OR chainidealeft = ' . $focus_i['ideaid'] . ')'] = null;
+    $query_filters['( chainhashtagoutput = ' . $focus_i['hashtagid'] . ' OR chainhashtaginput = ' . $focus_i['hashtagid'] . ')'] = null;
 
 }
 
@@ -156,20 +156,20 @@ $query_filters['chainvoid >='] = 0; //Any Chain
 
 
 //Make sure its a valid type considering other filters:
-if (isset($_GET['chainsourcetype'])) {
+if (isset($_GET['chainhandletype'])) {
 
-    if (substr_count($_GET['chainsourcetype'], ',') > 0) {
+    if (substr_count($_GET['chainhandletype'], ',') > 0) {
         //This is multiple:
-        $query_filters['chainsourcetype IN (' . $_GET['chainsourcetype'] . ')'] = null;
-    } elseif (intval($_GET['chainsourcetype']) > 0) {
-        $query_filters['chainsourcetype'] = intval($_GET['chainsourcetype']);
+        $query_filters['chainhandletype IN (' . $_GET['chainhandletype'] . ')'] = null;
+    } elseif (intval($_GET['chainhandletype']) > 0) {
+        $query_filters['chainhandletype'] = intval($_GET['chainhandletype']);
     }
 
 }
 
 $has_filters = (count($_GET) > 0);
 
-$sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
+$handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
 ?>
 
@@ -214,7 +214,7 @@ $sources___11035 = $this->config->item('sources___11035'); //Encyclopedia
                 alert(data.message);
             } else {
                 //Load Report:
-                $('#table_ideachain tr:last').after(data.message);
+                $('#table_hashtagchain tr:last').after(data.message);
                 if (data.overall_stats.length) {
                     $('.overall_stats').html(data.overall_stats);
                 }
@@ -258,32 +258,32 @@ echo '<form action="" method="GET">';
 
 echo '<table class="table table-sm maxout" style="vertical-align: top;"><tr>';
 
-//ANY IDEA
+//ANY HASHTAG
 echo '<td><div>';
-echo '<span class="mini-header">ANY IDEA:</span>';
-echo '<input type="text" name="ideahashtag" value="' . ($input_i ? $_GET['ideahashtag'] : '') . '" class="form-control border">';
+echo '<span class="mini-header">ANY HASHTAG:</span>';
+echo '<input type="text" name="hashtaghashtag" value="' . ($input_i ? $_GET['hashtaghashtag'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="chainidealeft" value="' . ((isset($_GET['chainidealeft'])) ? $_GET['chainidealeft'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">HASHTAG PREVIOUS:</span><input type="text" name="chainhashtaginput" value="' . ((isset($_GET['chainhashtaginput'])) ? $_GET['chainhashtaginput'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="chainidearight" value="' . ((isset($_GET['chainidearight'])) ? $_GET['chainidearight'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">HASHTAG NEXT:</span><input type="text" name="chainhashtagoutput" value="' . ((isset($_GET['chainhashtagoutput'])) ? $_GET['chainhashtagoutput'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
 
 echo '<table class="table table-sm maxout"><tr>';
 
-//ANY SOURCE
+//ANY HANDLE
 echo '<td><div>';
-echo '<span class="mini-header">ANY SOURCE:</span>';
-echo '<input type="text" name="sourcehandle" value="' . ($input_e ? $_GET['sourcehandle'] : '') . '" class="form-control border">';
+echo '<span class="mini-header">ANY HANDLE:</span>';
+echo '<input type="text" name="handlehandle" value="' . ($input_e ? $_GET['handlehandle'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="chainsourcecreator" value="' . ((isset($_GET['chainsourcecreator'])) ? $_GET['chainsourcecreator'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">HANDLE CREATOR:</span><input type="text" name="chainhandlecreator" value="' . ((isset($_GET['chainhandlecreator'])) ? $_GET['chainhandlecreator'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="chainsourceup" value="' . ((isset($_GET['chainsourceup'])) ? $_GET['chainsourceup'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">HANDLE PROFILE:</span><input type="text" name="chainhandleinput" value="' . ((isset($_GET['chainhandleinput'])) ? $_GET['chainhandleinput'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="chainsourcedown" value="' . ((isset($_GET['chainsourcedown'])) ? $_GET['chainsourcedown'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">HANDLE followers:</span><input type="text" name="chainhandleoutput" value="' . ((isset($_GET['chainhandleoutput'])) ? $_GET['chainhandleoutput'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -310,7 +310,7 @@ echo '<span class="mini-header">Chain MESSAGE SEARCH:</span>';
 echo '<input type="text" name="chainvalue_find" value="' . ((isset($_GET['chainvalue_find'])) ? $_GET['chainvalue_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0 && source_session(12701)) {
+if (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0 && handle_session(12701)) {
     //Give Option to Replace:
     echo '<td><div>';
     echo '<span class="mini-header">Chain MESSAGE REPLACE:</span>';
@@ -341,23 +341,23 @@ echo '<td>';
 echo '<div>';
 echo '<span class="mini-header">Chain TYPE:</span>';
 
-if (isset($_GET['chainsourcetype']) && substr_count($_GET['chainsourcetype'], ',') > 0) {
+if (isset($_GET['chainhandletype']) && substr_count($_GET['chainhandletype'], ',') > 0) {
 
     //We have multiple predefined Chain types, so we must use a text input:
-    echo '<input type="text" name="chainsourcetype" value="' . $_GET['chainsourcetype'] . '" class="form-control border">';
+    echo '<input type="text" name="chainhandletype" value="' . $_GET['chainhandletype'] . '" class="form-control border">';
 
 } else {
 
-    echo '<select class="form-control border" name="chainsourcetype" id="chainsourcetype" class="border" style="width: 100% !important;">';
+    echo '<select class="form-control border" name="chainhandletype" id="chainhandletype" class="border" style="width: 100% !important;">';
 
-    if (isset($_GET['chainsourcecreator'])) {
+    if (isset($_GET['chainhandlecreator'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach ($this->Chains->read($ini_filter, array('chainsourcetype'), 0, 0, source_sort(), 'COUNT(chainsourcetype) as total_count, sourcevalue, chainsourcetype', 'chainsourcetype, sourcevalue') as $x) {
+        foreach ($this->Chains->read($ini_filter, array('chainhandletype'), 0, 0, handle_sort(), 'COUNT(chainhandletype) as total_count, handlevalue, chainhandletype', 'chainhandletype, handlevalue') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['chainsourcetype'] . '" ' . ((isset($_GET['chainsourcetype']) && $_GET['chainsourcetype'] == $x['chainsourcetype']) ? 'selected="selected"' : '') . '>' . $x['sourcevalue'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['chainhandletype'] . '" ' . ((isset($_GET['chainhandletype']) && $_GET['chainhandletype'] == $x['chainhandletype']) ? 'selected="selected"' : '') . '>' . $x['handlevalue'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 
@@ -369,9 +369,9 @@ if (isset($_GET['chainsourcetype']) && substr_count($_GET['chainsourcetype'], ',
 
         //Load all fast:
         echo '<option value="0">ALL Chain TYPES</option>';
-        foreach ($this->config->item('sources___4593') /* DISCOVERY Types */ as $sourceid => $m) {
+        foreach ($this->config->item('handles___4593') /* DISCOVERY Types */ as $handleid => $m) {
             //Echo drop down:
-            echo '<option value="' . $sourceid . '" ' . ((isset($_GET['chainsourcetype']) && $_GET['chainsourcetype'] == $sourceid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+            echo '<option value="' . $handleid . '" ' . ((isset($_GET['chainhandletype']) && $_GET['chainhandletype'] == $handleid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
 
     }
@@ -403,21 +403,21 @@ echo '</div>';
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
 
-echo '<div class="filter_right grey">'.(source_session(12701) ? '<span class="icon-block-xs">' . $sources___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $sources___11035[12707]['m__title'] . '</a>' : '').'</div>';
+echo '<div class="filter_right grey">'.(handle_session(12701) ? '<span class="icon-block-xs">' . $handles___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $handles___11035[12707]['m__title'] . '</a>' : '').'</div>';
 
 
 //Table Header
 $row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 3px solid #999999; border-bottom: 0px solid #FFFFFF !important;">';
 $row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 3px solid #999999;">';
-foreach ($this->config->item('sources___4341') as $chainsourcetype => $m) {
-    if($chainsourcetype==4362 || in_array($chainsourcetype, $this->config->item('sourceids___6160'))){
-        //Source Cover:
+foreach ($this->config->item('handles___4341') as $chainhandletype => $m) {
+    if($chainhandletype==4362 || in_array($chainhandletype, $this->config->item('handleids___6160'))){
+        //Handle Cover:
         $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
         $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
     }
-    if(in_array($chainsourcetype, $this->config->item('sourceids___1579727'))) {
+    if(in_array($chainhandletype, $this->config->item('handleids___1579727'))) {
         //Second row:
         $row2 .= $column_value;
     } else {
@@ -426,7 +426,7 @@ foreach ($this->config->item('sources___4341') as $chainsourcetype => $m) {
 }
 $row1 .= '</tr>';
 $row2 .= '</tr>';
-echo '<table id="table_ideachain" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
+echo '<table id="table_hashtagchain" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
 
 //Table Data
 echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';

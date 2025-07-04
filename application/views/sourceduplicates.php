@@ -1,16 +1,16 @@
 <?php
 
-//SOURCE LIST DUPLICATES
+//HANDLE LIST DUPLICATES
 
-if(isset($_GET['sourcehandle'])){
+if(isset($_GET['handlehandle'])){
 
-    //Find Chain Content Duplicates for this Source:
+    //Find Chain Content Duplicates for this Handle:
     $main_index = array();
     $duplicates_found = array();
     foreach($this->Chains->read(array(
-        'LOWER(sourcehandle)' => strtolower($_GET['sourcehandle']),
-        'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-        ), array('chainsourceup'), 0) as $x) {
+        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        ), array('chainhandleinput'), 0) as $x) {
         $chainvalue_md5 = substr(md5($x['chainvalue']), 0, 16);
         if(!isset($main_index[$chainvalue_md5])){
             $main_index[$chainvalue_md5] = array();
@@ -19,10 +19,10 @@ if(isset($_GET['sourcehandle'])){
             if(!isset($duplicates_found[$chainvalue_md5])){
                 $duplicates_found[$chainvalue_md5] = $main_index[$chainvalue_md5];
             }
-            array_push($duplicates_found[$chainvalue_md5], $x['chainsourcedown']);
+            array_push($duplicates_found[$chainvalue_md5], $x['chainhandleoutput']);
         }
 
-        array_push($main_index[$chainvalue_md5], $x['chainsourcedown']);
+        array_push($main_index[$chainvalue_md5], $x['chainhandleoutput']);
 
     }
 
@@ -31,12 +31,12 @@ if(isset($_GET['sourcehandle'])){
 
 } elseif(!isset($_GET['search_by_name'])){
 
-    echo '<p>Either enter ?sourceid= in URL to search specific Source Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_chain(7268).'?search_by_name=1"><b>Find Duplicate Sources by Name</b></a></p>.';
+    echo '<p>Either enter ?handleid= in URL to search specific Handle Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_chain(7268).'?search_by_name=1"><b>Find Duplicate Handles by Name</b></a></p>.';
 
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from  cachesources en1 where (select count(*) from  cachesources en2 where en2.sourcevalue = en1.sourcevalue ORDER BY en1.sourcevalue ASC');
+    $q = $this->db->query('select en1.* from  cachehandles en1 where (select count(*) from  cachehandles en2 where en2.handlevalue = en1.handlevalue ORDER BY en1.handlevalue ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -45,12 +45,12 @@ if(isset($_GET['sourcehandle'])){
 
         foreach($duplicates as $en) {
 
-            if ($prev_title != $en['sourcevalue']) {
+            if ($prev_title != $en['handlevalue']) {
                 echo '<hr />';
-                $prev_title = $en['sourcevalue'];
+                $prev_title = $en['handlevalue'];
             }
 
-            echo '<a href="'.view_memory(42903,42902) . $en['sourcehandle'] . '"><b>' . $en['sourcevalue'] . '</b></a> @' . $en['sourceid'] . '<br />';
+            echo '<a href="'.view_memory(42903,42902) . $en['handlehandle'] . '"><b>' . $en['handlevalue'] . '</b></a> @' . $en['handleid'] . '<br />';
         }
 
     } else {

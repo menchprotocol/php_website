@@ -1,35 +1,35 @@
 <?php
 
-if(!isset($_GET['ideahashtag'])){
-    die('Missing Idea ID ideahashtag');
+if(!isset($_GET['hashtaghashtag'])){
+    die('Missing Hahstag ID hashtaghashtag');
 }
 
 
 //Generate list & settings:
-$idea_settings = idea_settings($_GET['ideahashtag'], true);
-echo '<h1 class="no-print">' . view_idea_title($idea_settings['i']) . '</h1>';
+$hashtag_settings = hashtag_settings($_GET['hashtaghashtag'], true);
+echo '<h1 class="no-print">' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 
 
-if(!isset($idea_settings['list_config'][34513]) || !count($idea_settings['list_config'][34513])){
+if(!isset($hashtag_settings['list_config'][34513]) || !count($hashtag_settings['list_config'][34513])){
     die('Missing Pin @34513');
 }
 
 
 foreach($this->Chains->read(array(
-    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-    'chainsourceup IN (' . join(',', $idea_settings['list_config'][34513]) . ')' => null, //Active Writes
-), array('chainidearight'), 0, 0, array('chainkey' => 'ASC')) as $chain_i){
+    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+    'chainhandleinput IN (' . join(',', $hashtag_settings['list_config'][34513]) . ')' => null, //Active Writes
+), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i){
 
-    $idea_settings = idea_settings($chain_i['ideahashtag'], true);
-    if(!count($idea_settings['query_string_filtered'])){
+    $hashtag_settings = hashtag_settings($chain_i['hashtaghashtag'], true);
+    if(!count($hashtag_settings['query_string_filtered'])){
         continue;
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$chain_i['ideahashtag'].'">'.view_idea_title($chain_i).'</a> ['.count($idea_settings['query_string_filtered']).' Total]</h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$chain_i['hashtaghashtag'].'">'.view_hashtag_title($chain_i).'</a> ['.count($hashtag_settings['query_string_filtered']).' Total]</h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-    foreach($idea_settings['query_string_filtered'] as $count => $x){
+    foreach($hashtag_settings['query_string_filtered'] as $count => $x){
         echo '<td><div class="this_name">'.$x['extension_name'].'</div></td>';
         if(fmod($count,3)==2){
             echo '</tr><tr class="panel-title down-border" style="font-weight:bold !important;">';

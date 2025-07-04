@@ -18,7 +18,7 @@ if(!isset($_GET['chainid']) || !intval($_GET['chainid'])){
 
         echo 'Invalid Chain ID';
 
-    } elseif(!source_session(12701)) {
+    } elseif(!handle_session(12701)) {
 
         echo blocked_reasoning(12701);
 

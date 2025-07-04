@@ -1,15 +1,15 @@
 <?php
 
-if(!isset($_GET['ideahashtag'])){
-    die('Missing Idea ID ideahashtag');
+if(!isset($_GET['hashtaghashtag'])){
+    die('Missing Hahstag ID hashtaghashtag');
 }
 
 //Sheet
-$sources___6287 = $this->config->item('sources___6287'); //APP
-$sources___4737 = $this->config->item('sources___4737'); //Idea Types
+$handles___6287 = $this->config->item('handles___6287'); //APP
+$handles___4737 = $this->config->item('handles___4737'); //Hahstag Types
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
-$recursive_idea_ids = array();
+$recursive_hashtag_ids = array();
 $is_with_action_es = array();
 $es_added = array();
 $count = 0;
@@ -21,27 +21,27 @@ $count_totals = array(
 
 
 //Generate list & settings:
-$idea_settings = idea_settings($_GET['ideahashtag']);
+$hashtag_settings = hashtag_settings($_GET['hashtaghashtag']);
 
-echo '<h1>' . view_idea_title($idea_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_idea_value($idea_settings['i'], ( isset($source_session['sourceid']) ? $source_session['sourceid'] : 0 )) . '</div>';
+echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_hashtag_value($hashtag_settings['i'], ( isset($handle_session['handleid']) ? $handle_session['handleid'] : 0 )) . '</div>';
 
 echo 'Filter:';
 
-foreach($idea_settings['query_string_filtered'] as $x){
+foreach($hashtag_settings['query_string_filtered'] as $x){
 
     $body_content .= '<tr class="body_tr">';
 
-    //IDEAS
-    $idea_content = '';
+    //HASHTAGS
+    $hashtag_content = '';
     $this_quantity = 1;
     $name = '';
-    foreach($idea_settings['idea_column'] as $idea_var){
+    foreach($hashtag_settings['hashtag_column'] as $hashtag_var){
 
         $discoveries = $this->Chains->read(array(
-            'chainidealeft' => $idea_var['ideaid'],
-            'chainsourcecreator' => $x['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___31777')) . ')' => null, //DISCOVERIES
+            'chainhashtaginput' => $hashtag_var['hashtagid'],
+            'chainhandlecreator' => $x['handleid'],
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                 ), array(), 1);
 
         if(count($discoveries)){
@@ -53,13 +53,13 @@ foreach($idea_settings['query_string_filtered'] as $x){
 
         }
 
-        $idea_content .= '<td title="'.$x['sourcevalue'].' x '.view_idea_title($idea_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chainvalue']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chainvalue'].'</p>' : '<span title="'.view_idea_title($idea_var, true).': '.$discoveries[0]['chainvalue'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_idea_title($idea_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
+        $hashtag_content .= '<td title="'.$x['handlevalue'].' x '.view_hashtag_title($hashtag_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chainvalue']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_hashtag_title($hashtag_var, true).': '.$discoveries[0]['chainvalue'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chainvalue'].'</p>' : '<span title="'.view_hashtag_title($hashtag_var, true).': '.$discoveries[0]['chainvalue'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_hashtag_title($hashtag_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
 
         if(count($discoveries)){
-            if(!isset($count_totals['i'][$idea_var['ideaid']])){
-                $count_totals['i'][$idea_var['ideaid']] = 0;
+            if(!isset($count_totals['i'][$hashtag_var['hashtagid']])){
+                $count_totals['i'][$hashtag_var['hashtagid']] = 0;
             }
-            $count_totals['i'][$idea_var['ideaid']]++;
+            $count_totals['i'][$hashtag_var['hashtagid']]++;
         }
 
     }
@@ -71,23 +71,23 @@ foreach($idea_settings['query_string_filtered'] as $x){
 
     $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
 
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['sourcecover'], true).'</span><a href="'.view_memory(42903,42902).$x['sourcehandle'].'" style="font-weight:bold;">'.$x['sourcevalue'].'</a>'.$name.$plus_info.'</td>';
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['handlecover'], true).'</span><a href="'.view_memory(42903,42902).$x['handlehandle'].'" style="font-weight:bold;">'.$x['handlevalue'].'</a>'.$name.$plus_info.'</td>';
 
 
 
-    //SOURCES
-    foreach($idea_settings['source_column'] as $e){
+    //HANDLES
+    foreach($hashtag_settings['handle_column'] as $e){
 
         $require_writing = count($this->Chains->read(array(
-            'chainsourceup IN (' . join(',', $this->config->item('sourceids___43510')) . ')' => null, //Require Written Answers
-            'chainsourcedown' => $e['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43510')) . ')' => null, //Require Written Answers
+            'chainhandleoutput' => $e['handleid'],
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 )));
 
         $fetch_data = $this->Chains->read(array(
-                    'chainsourcedown' => $x['sourceid'],
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-            'chainsourceup' => $e['sourceid'],
+                    'chainhandleoutput' => $x['handleid'],
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            'chainhandleinput' => $e['handleid'],
         ));
 
         $message_clean = '';
@@ -95,39 +95,39 @@ foreach($idea_settings['query_string_filtered'] as $x){
             if(strlen($fetch_data[0]['chainvalue'])){
                 if(filter_var($fetch_data[0]['chainvalue'], FILTER_VALIDATE_URL)){
                     //Sheet Click to Expand
-                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['chainvalue'].'" target="_blank" title="Open in a New Window">'.view_cover($e['sourcecover'], '🔗️', ' ').'</a>';
-                } elseif(!isset($_GET['expand']) && in_array($e['sourceid'], $this->config->item('sourceids___40945'))){
+                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['chainvalue'].'" target="_blank" title="Open in a New Window">'.view_cover($e['handlecover'], '🔗️', ' ').'</a>';
+                } elseif(!isset($_GET['expand']) && in_array($e['handleid'], $this->config->item('handleids___40945'))){
                     //Sheet Click to Expand
-                    $message_clean = '<span class="click_2_see_'.$e['sourceid'].'_'.$fetch_data[0]['chainid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['sourceid'].'_'.$fetch_data[0]['chainid'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['chainvalue'].' [Click to Expand]">'.view_cover($e['sourcecover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['sourceid'].'_'.$fetch_data[0]['chainid'].' hidden">'.$fetch_data[0]['chainvalue'].'</span>';
+                    $message_clean = '<span class="click_2_see_'.$e['handleid'].'_'.$fetch_data[0]['chainid'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['handleid'].'_'.$fetch_data[0]['chainid'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['chainvalue'].' [Click to Expand]">'.view_cover($e['handlecover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['handleid'].'_'.$fetch_data[0]['chainid'].' hidden">'.$fetch_data[0]['chainvalue'].'</span>';
                 } elseif(isset($_GET['expand']) || $require_writing){
                     $message_clean = $fetch_data[0]['chainvalue'];
                 } else {
-                    $message_clean = '<span '.$underdot_class.' title="'.$fetch_data[0]['chainvalue'].'">'.view_cover($e['sourcecover'], '✔️', ' ').'</span>';
+                    $message_clean = '<span '.$underdot_class.' title="'.$fetch_data[0]['chainvalue'].'">'.view_cover($e['handlecover'], '✔️', ' ').'</span>';
                 }
             } else {
-                $message_clean = '<span class="icon-block-xs">'.view_cover($e['sourcecover'], '✔️', ' ').'</span>';
+                $message_clean = '<span class="icon-block-xs">'.view_cover($e['handlecover'], '✔️', ' ').'</span>';
             }
         }
 
 
-        $body_content .= '<td title="'.$x['sourcevalue'].' x '.$e['sourcevalue'].'" class="'.( source_session(10939) && !in_array($e['sourceid'], $this->config->item('sourceids___37695')) ? 'editable chainsourcecreator_'.$e['sourceid'].'_'.$x['sourceid'] : '' ).'" ideaid="0" sourceid="'.$e['sourceid'].'" chainsourcecreator="'.$x['sourceid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" chainid="'.$x['chainid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['handlevalue'].' x '.$e['handlevalue'].'" class="'.( handle_session(10939) && !in_array($e['handleid'], $this->config->item('handleids___37695')) ? 'editable chainhandlecreator_'.$e['handleid'].'_'.$x['handleid'] : '' ).'" hashtagid="0" handleid="'.$e['handleid'].'" chainhandlecreator="'.$x['handleid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" chainid="'.$x['chainid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
-            if(!isset($count_totals['e'][$e['sourceid']])){
-                $count_totals['e'][$e['sourceid']] = 0;
+            if(!isset($count_totals['e'][$e['handleid']])){
+                $count_totals['e'][$e['handleid']] = 0;
             }
 
-            $count_totals['e'][$e['sourceid']] = $count_totals['e'][$e['sourceid']] + ( count($this->Chains->read(array(
-                                    'chainsourcedown' => $e['sourceid'],
-                    'chainsourcetype IN (' . join(',', $this->config->item('sourceids___13548')) . ')' => null, //SOURCE CHAINS
-                    'chainsourceup IN (' . join(',', $this->config->item('sourceids___39609')) . ')' => null, //ADDUP NUMBER
+            $count_totals['e'][$e['handleid']] = $count_totals['e'][$e['handleid']] + ( count($this->Chains->read(array(
+                                    'chainhandleoutput' => $e['handleid'],
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                    'chainhandleinput IN (' . join(',', $this->config->item('handleids___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['chainvalue'])) : 1 );
         }
     }
 
 
-    $body_content .= $idea_content;
+    $body_content .= $hashtag_content;
 
     $body_content .= '</tr>';
     $count++;
@@ -139,24 +139,24 @@ $table_sortable = array('#th_primary','#th_done');
 echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
-foreach($idea_settings['source_column'] as $e){
-    array_push($table_sortable, '#thsource_'.$e['sourceid']);
-    echo '<th id="thsource_'.$e['sourceid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['sourcehandle'].'" target="_blank" title="Open in New Window">'.view_cover($e['sourcecover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['sourceid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['sourceid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['sourcevalue'].'</span></th>';
+echo '<th id="th_primary" style="width:200px;">'.$count.' Handles</th>';
+foreach($hashtag_settings['handle_column'] as $e){
+    array_push($table_sortable, '#thhandle_'.$e['handleid']);
+    echo '<th id="thhandle_'.$e['handleid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['handlehandle'].'" target="_blank" title="Open in New Window">'.view_cover($e['handlecover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['handleid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['handleid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['handlevalue'].'</span></th>';
 }
-foreach($idea_settings['idea_column'] as $idea_var){
+foreach($hashtag_settings['hashtag_column'] as $hashtag_var){
 
     $max_available = $this->Chains->read(array(
-            'chainsourcetype IN (' . join(',', $this->config->item('sourceids___42991')) . ')' => null, //Active Writes
-        'chainidearight' => $idea_var['ideaid'],
-        'chainsourceup' => 26189,
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+        'chainhashtagoutput' => $hashtag_var['hashtagid'],
+        'chainhandleinput' => 26189,
     ), array(), 1);
-    $current_x = ( isset($count_totals['i'][$idea_var['ideaid']]) ? $count_totals['i'][$idea_var['ideaid']] : 0 );
+    $current_x = ( isset($count_totals['i'][$hashtag_var['hashtagid']]) ? $count_totals['i'][$hashtag_var['hashtagid']] : 0 );
     $max_limit = (count($max_available) && is_numeric($max_available[0]['chainvalue']) && intval($max_available[0]['chainvalue'])>0 ? intval($max_available[0]['chainvalue']) : 0 );
 
-    array_push($table_sortable, '#th_idea_'.$idea_var['ideaid']);
+    array_push($table_sortable, '#th_hashtag_'.$hashtag_var['hashtagid']);
 
-    echo '<th id="th_idea_'.$idea_var['ideaid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$idea_var['ideahashtag'].'" target="_blank" title="Open in New Window">'.$sources___4737[$idea_var['ideatype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($idea_var['chainvalue']) ? $idea_var['chainvalue'] : view_idea_title($idea_var, true) ).'</span></th>';
+    echo '<th id="th_hashtag_'.$hashtag_var['hashtagid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$hashtag_var['hashtaghashtag'].'" target="_blank" title="Open in New Window">'.$handles___4737[$hashtag_var['hashtagtype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true) ).'</span></th>';
 
 }
 echo '</tr>';
@@ -172,7 +172,7 @@ echo '</table>';
     <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
 
-    <?php if(count($idea_settings['list_config'][34513])){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
+    <?php if(count($hashtag_settings['list_config'][34513])){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
 
     .mini-header,
     #sortable_table td>p{
@@ -249,33 +249,33 @@ echo '</table>';
             var written_answer = '';
             if(require_writing){
 
-                //return source_editor(sourceid = 0, chainid = 0, $(this).attr('title'), $('.chainsourcecreator_' + $(this).attr('sourceid') + '_' + $(this).attr('chainsourcecreator')).text());
+                //return handle_editor(handleid = 0, chainid = 0, $(this).attr('title'), $('.chainhandlecreator_' + $(this).attr('handleid') + '_' + $(this).attr('chainhandlecreator')).text());
 
-                written_answer = prompt($(this).attr('title') + ":", $('.chainsourcecreator_' + $(this).attr('sourceid') + '_' + $(this).attr('chainsourcecreator')).text());
+                written_answer = prompt($(this).attr('title') + ":", $('.chainhandlecreator_' + $(this).attr('handleid') + '_' + $(this).attr('chainhandlecreator')).text());
                 if(written_answer == null){
                     return false;
                 }
             }
 
             var modify_data = {
-                ideaid: $(this).attr('ideaid'),
-                sourceid: $(this).attr('sourceid'),
-                chainsourcecreator: $(this).attr('chainsourcecreator'),
+                hashtagid: $(this).attr('hashtagid'),
+                handleid: $(this).attr('handleid'),
+                chainhandlecreator: $(this).attr('chainhandlecreator'),
                 chainid: $(this).attr('chainid'),
                 require_writing: require_writing,
                 written_answer: written_answer,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             };
 
-            $('.chainsourcecreator_' + modify_data['sourceid'] + '_' + modify_data['chainsourcecreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
+            $('.chainhandlecreator_' + modify_data['handleid'] + '_' + modify_data['chainhandlecreator']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
-            $.post("/controller/source_toggle_follow", modify_data, function (data) {
+            $.post("/controller/handle_toggle_follow", modify_data, function (data) {
 
                 if (data.status) {
 
-                    //Update Source id IF existed previously:
-                    $('.chainsourcecreator_' + modify_data['sourceid'] + '_' + modify_data['chainsourcecreator']).html(data.message);
+                    //Update Handle id IF existed previously:
+                    $('.chainhandlecreator_' + modify_data['handleid'] + '_' + modify_data['chainhandlecreator']).html(data.message);
 
                 } else {
                     alert('ERROR:' + data.message);

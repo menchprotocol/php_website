@@ -14,12 +14,12 @@ $replace_with_confirmed = false;
 
 if($search_for_set){
 
-    $matching_results = $this->Sources->read(array(
-            'sourcevalue LIKE \'%'.$_GET['search_for'].'%\'' => null,
+    $matching_results = $this->Handles->read(array(
+            'handlevalue LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
     //List the matching search:
-    echo '<div>'.count($matching_results).' Sources Found</div>';
+    echo '<div>'.count($matching_results).' Handles Found</div>';
     if(count($matching_results) < 1){
 
         $replace_with_set = false;
@@ -39,18 +39,18 @@ if($search_for_set){
 
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $en['sourcevalue'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['sourcevalue']) . $append_text;
+                $en['handlevalue'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['handlevalue']) . $append_text;
 
                 if($replace_with_confirmed){
-                    //Update source:
-                    $res = $this->Sources->update($en['sourceid'], array(
-                        'sourcevalue' => $en['sourcevalue'],
-                    ), $source_session['sourceid']);
+                    //Update handle:
+                    $res = $this->Handles->update($en['handleid'], array(
+                        'handlevalue' => $en['handlevalue'],
+                    ), $handle_session['handleid']);
                     $replaced++;
                 }
             }
 
-            echo source_view(12730, $en, null);
+            echo handle_view(12730, $en, null);
         }
         echo '</div>';
 
