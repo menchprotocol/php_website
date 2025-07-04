@@ -2,12 +2,15 @@
 
 $chainsourcecreator = ( $source_session && isset($source_session['sourceid']) ? $source_session['sourceid'] : 14068 /* GUEST */ );
 //Log view:
-$this->Chains->create(array(
-    'chainsourcetype' => 44176, //Source View
-    'chainsourceup' => $focus_e['sourceid'],
-    'chainsourcedown' => $chainsourcecreator,
-    'chainsourcecreator' => $chainsourcecreator,
-));
+if($focus_e['sourceid']!=$chainsourcecreator){
+    $this->Chains->create(array(
+        'chainsourcetype' => 44176, //Source View
+        'chainsourceup' => $focus_e['sourceid'],
+        'chainsourcedown' => $chainsourcecreator,
+        'chainsourcecreator' => $chainsourcecreator,
+    ));
+}
+
 
 //Focus Source:
 echo '<div class="view_12274 row justify-content">';

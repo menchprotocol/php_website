@@ -3117,7 +3117,7 @@ class Controller extends CI_Controller
                     intval($_POST['do_skip'])
                     || ($input__selection && !$total_selected)
                     || ($input__upload && !strlen($_POST['source_submitted_data']['idea_createtext'])) //TODO Check Media
-                    || !strlen($_POST['source_submitted_data']['idea_createtext'])
+                    || (!$input__selection && !$input__upload && !strlen($_POST['source_submitted_data']['idea_createtext']))
                 );
             $idea_required = idea_required($focus_i);
 
