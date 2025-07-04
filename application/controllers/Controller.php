@@ -31,7 +31,7 @@ class Controller extends CI_Controller
 
         if (
             !$handle_session
-            && !array_key_exists(strtolower($first_segment), $this->config->item('handlhandles___14582'))
+            && !array_key_exists(strtolower($first_segment), @$this->config->item('handlhandles___14582'))
             && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
         ) {
 
