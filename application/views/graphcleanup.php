@@ -73,7 +73,7 @@ foreach($this->Chains->read(array(
         echo '<tr><td>'.$previous['chainhandlecreator'].'</td><td>'.$handles___4593[$previous['chainhandletype']]['m__title'].'</td><td>'.$previous['chaintime'].'</td><td>'.$previous['chainhandlecreator'].'</td><td>'.$previous['chainhandleinput'].'</td><td>'.$previous['chainhandleoutput'].'</td><td>'.$previous['chainhashtagoutput'].'</td><td>'.$previous['chainhashtaginput'].'</td><td>'.$previous['chainvalue'].'</td><td>'.$previous['chainhandletype'].'</td><td>'.$previous['chainhandletype'].'</td></tr>';
         echo '<tr style="background-color: #CCC;"><td>'.$discover['chainhandlecreator'].'</td><td>'.$handles___4593[$discover['chainhandletype']]['m__title'].'</td><td>'.$discover['chaintime'].'</td><td>'.$discover['chainhandlecreator'].'</td><td>'.$discover['chainhandleinput'].'</td><td>'.$discover['chainhandleoutput'].'</td><td>'.$discover['chainhashtagoutput'].'</td><td>'.$discover['chainhashtaginput'].'</td><td>'.$discover['chainvalue'].'</td><td>'.$discover['chainhandletype'].'</td><td>'.$discover['chainhandletype'].'</td></tr>';
 
-        $this->db->query("DELETE FROM hashtagchain WHERE chainid=".$discover['chainid'].";");
+        $this->db->query("DELETE FROM ideachain WHERE chainid=".$discover['chainid'].";");
 
     }
 

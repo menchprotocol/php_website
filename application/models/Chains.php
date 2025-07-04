@@ -69,7 +69,7 @@ class Chains extends CIdea_cache
         $insert_chain_id = ( isset($add_fields['chainid']) ? $add_fields['chainid'] : 0 );
         $add_fields['chainprevious'] = chainprevious();
         $add_fields['chainhash'] = chainhash($add_fields);
-        $this->db->insert('hashtagchain', $add_fields);
+        $this->db->insert('ideachain', $add_fields);
 
         //Fetch inserted id:
         $add_fields['chainid'] = ( $insert_chain_id>0 ? $insert_chain_id : $this->db->insert_id() );
@@ -181,7 +181,7 @@ class Chains extends CIdea_cache
         }
 
         $this->db->select($select);
-        $this->db->from('hashtagchain');
+        $this->db->from('ideachain');
 
         //HASHTAG JOIN?
         $hashtag_join = false;
@@ -314,7 +314,7 @@ class Chains extends CIdea_cache
 
             if ($new_x['chainid'] > 0) {
                 //Void Old Chain:
-                $this->db->query("UPDATE hashtagchain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
+                $this->db->query("UPDATE ideachain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
                 return $this->db->affected_rows();
             }
 
@@ -369,7 +369,7 @@ class Chains extends CIdea_cache
             }
 
             //Void this Chain:
-            $this->db->query("UPDATE hashtagchain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
+            $this->db->query("UPDATE ideachain SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
             return $this->db->affected_rows();
 
         }
