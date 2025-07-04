@@ -1872,7 +1872,7 @@ function handle_access($handlehandle = null, $handleid = 0, $e = false, $replace
     if(!count($handle_list_config)){
         $handle_list_config = handle_list_config($e['handleid']);
     }
-    if (count($handle_list_config[1645062])) {
+    if (is_array($handle_list_config[1645062]) && count($handle_list_config[1645062])) {
         $the_counter = 0;
         if ($chainhandlecreator) {
             foreach ($handle_list_config[1645062] as $focushandleid) {
