@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Hashtags extends CHahstag_cache
+class Hashtags extends CIdea_cache
 {
 
     function __construct()
@@ -42,14 +42,14 @@ class Hashtags extends CHahstag_cache
             $add_fields['hashtaghashtag'] = random_string(8);
         }
         $this->Chains->create(array(
-            'chainhandletype' => 42275, //Hahstag Trigger
-            'chainhandleinput' => 32337, //Hahstag Hashtag
+            'chainhandletype' => 42275, //Hashtag Trigger
+            'chainhandleinput' => 32337, //Hashtag Hashtag
             'chainhandlecreator' => $chainhandlecreator,
             'chainhashtagoutput' => $new_x['chainid'],
             'chainvalue' => $add_fields['hashtaghashtag'],
         ));
 
-        //Save Hahstag
+        //Save Hashtag
         $add_fields['hashtagid'] = $new_x['chainid'];
         $add_fields['hashtagcache'] = hashtagcache($add_fields['hashtagid'], $add_fields['hashtagvalue']);
         if (!count($this->Hashtags->read(array('hashtagid' => $add_fields['hashtagid'])))) {
@@ -70,12 +70,12 @@ class Hashtags extends CHahstag_cache
         $chainkey = 0;
         foreach ($pinned_followers as $x_pinned) {
             if (!in_array($x_pinned['handleid'], $handle_appended) && !count($this->Chains->read(array(
-                    'chainhandletype' => 4983, //Hahstag Created
+                    'chainhandletype' => 4983, //Hashtag Created
                     'chainhandleinput' => $x_pinned['handleid'],
                     'chainhashtagoutput' => $add_fields['hashtagid'],
                 )))) {
                 $this->Chains->create(array(
-                    'chainhandletype' => 4983, //Hahstag Created
+                    'chainhandletype' => 4983, //Hashtag Created
                     'chainhandleinput' => $x_pinned['handleid'],
                     'chainhashtagoutput' => $add_fields['hashtagid'],
                     'chainhandlecreator' => $chainhandlecreator,
@@ -86,7 +86,7 @@ class Hashtags extends CHahstag_cache
             }
         }
 
-        //Fetch to return the complete Hahstag
+        //Fetch to return the complete Hashtag
         $is = $this->Hashtags->read(array(
             'hashtagid' => $add_fields['hashtagid'],
         ));
@@ -148,10 +148,10 @@ class Hashtags extends CHahstag_cache
 
         $hashtags_found = $this->Hashtags->read(array('hashtagid' => $chainid));
         if (!count($hashtags_found)) {
-            log_error('Hahstag #' . $chainid . ' not found in Hashtags table');
+            log_error('Hashtag #' . $chainid . ' not found in Hashtags table');
             return false;
         } elseif (!count($this->Chains->read(array('chainid' => $chainid)))) {
-            log_error('Hahstag #' . $chainid . ' not found in Chains table');
+            log_error('Hashtag #' . $chainid . ' not found in Chains table');
             return false;
         }
 
@@ -161,7 +161,7 @@ class Hashtags extends CHahstag_cache
             $must_sync_found = false;
             $skip_sync_ledger = array('hashtagcache', 'hashtagexternal', 'hashtagkey', 'hashtagtype');
             $must_sync_ledger = array(
-                'hashtagvalue' => 4736, //Hahstag Text
+                'hashtagvalue' => 4736, //Hashtag Text
                 'hashtaghashtag' => 32337,
             );
 
@@ -171,7 +171,7 @@ class Hashtags extends CHahstag_cache
                     //Update if anything changed:
                     if ($value != $hashtag_current[$key]) {
                         $this->Chains->create(array(
-                            'chainhandletype' => 42275, //Hahstag Trigger
+                            'chainhandletype' => 42275, //Hashtag Trigger
                             'chainhandleinput' => $must_sync_ledger[$key],
                             'chainhandlecreator' => $chainhandlecreator,
                             'chainhashtagoutput' => $chainid,
@@ -191,7 +191,7 @@ class Hashtags extends CHahstag_cache
             }
 
             if (isset($update_columns['hashtagvalue']) && !isset($update_columns['hashtagcache'])) {
-                //Update Hahstag Text:
+                //Update Hashtag Text:
                 $update_columns['hashtagcache'] = hashtagcache($chainid, $update_columns['hashtagvalue']);
             }
 
@@ -302,7 +302,7 @@ class Hashtags extends CHahstag_cache
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Hahstag. Format must be: #HahstagHashtag',
+                'message' => 'Unknown Hashtag. Format must be: #HashtagHashtag',
             );
 
         }
@@ -333,7 +333,7 @@ class Hashtags extends CHahstag_cache
                 )) as $e) {
 
                     $hashtag_has_e = $this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                         'chainhashtagoutput' => $next_i['hashtagid'],
                         'chainhandleinput' => $e['handleid'],
                     ));
@@ -459,7 +459,7 @@ class Hashtags extends CHahstag_cache
         if (0 && $chainhandletype == 4228 && count($this->Chains->previoushashtag(0, $next_i['hashtaghashtag'], $i['hashtagid']))) {
             return array(
                 'status' => 0,
-                'message' => 'Hahstag already added in the inverse direction, so it cannot be added here',
+                'message' => 'Hashtag already added in the inverse direction, so it cannot be added here',
             );
         } elseif (count($this->Chains->read(array(
             'chainhashtaginput' => $i['hashtagid'],
@@ -469,11 +469,11 @@ class Hashtags extends CHahstag_cache
             //Make sure not a duplicate chain:
             return array(
                 'status' => 0,
-                'message' => 'Hahstag is already chained here',
+                'message' => 'Hashtag is already chained here',
             );
         }
 
-        //Adding PREVIOUS or NEXT Hahstag from Hahstag
+        //Adding PREVIOUS or NEXT Hashtag from Hashtag
         $this->Chains->create(array(
             'chainhandlecreator' => $chainhandlecreator,
             'chainhashtaginput' => $i['hashtagid'],
@@ -543,7 +543,7 @@ class Hashtags extends CHahstag_cache
     {
 
         //Create Clone -or- Chain & move-on?
-        //Validate Hahstag:
+        //Validate Hashtag:
         $this_i = $this->Hashtags->read(array(
             'hashtagid' => $hashtagid,
         ));
@@ -563,7 +563,7 @@ class Hashtags extends CHahstag_cache
 
         //Always Chain Handles:
         $filters = array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___41302')) . ')' => null, //Clone Hahstag Handle Chains
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___41302')) . ')' => null, //Clone Hashtag Handle Chains
             'chainhashtagoutput' => $hashtagid,
         );
 
@@ -604,9 +604,9 @@ class Hashtags extends CHahstag_cache
         ), array('chainhashtagoutput'), 0) as $x) {
 
             if ($do_recursive && !count($this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                     'chainhashtagoutput' => $hashtagid,
-                    'chainhandleinput' => 42208, //No-Clone Hahstag
+                    'chainhandleinput' => 42208, //No-Clone Hashtag
                 )))) {
                 //Clone Followers Recursively:
                 $this->Hashtags->copy($x['hashtagid'], $do_recursive, $chainhandlecreator, $this_i[0]);

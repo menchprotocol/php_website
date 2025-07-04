@@ -178,7 +178,7 @@ foreach ($this->Chains->read(array(
         'chainhandleinput' => 44330,
         'chainhandleoutput' => $app['handleid'], //Required
     )))) {
-        //Handle AND Hahstag Input
+        //Handle AND Hashtag Input
         $routes_text .= '$route[\'(?i)' . $app['handlehandle'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$2/$1' . '";' . "\n";
         $routes_text .= '$route[\'(?i)' . $app['handlehandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n"; //Should give error
         $routes_text .= '$route[\'(?i)' . $app['handlehandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$1/0' . '";' . "\n"; //Should give error
@@ -198,7 +198,7 @@ foreach ($this->Chains->read(array(
         'chainhandleinput' => 42911,
         'chainhandleoutput' => $app['handleid'], //Required
     )))) {
-        //Hahstag Input
+        //Hashtag Input
         if ($special_routes) {
             $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n";
         } else {

@@ -1,12 +1,12 @@
 <?php
 
 if(!isset($_GET['hashtaghashtag'])){
-    die('Missing Hahstag ID hashtaghashtag');
+    die('Missing Hashtag ID hashtaghashtag');
 }
 
 //Sheet
 $handles___6287 = $this->config->item('handles___6287'); //APP
-$handles___4737 = $this->config->item('handles___4737'); //Hahstag Types
+$handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 $recursive_hashtag_ids = array();

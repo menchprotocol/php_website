@@ -36,7 +36,7 @@ view_json(array(
 
 if(0){
 
-//Hahstag cache update
+//Hashtag cache update
 
 $edited = 0;
 $edited_handles = 0;

@@ -469,7 +469,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</div>';
 
 
-    //Hahstag Discovery Expanded List
+    //Hashtag Discovery Expanded List
     if(isset($_GET['expand'])){
         $already_shown = array();
         foreach ($CI->Chains->read(array(
@@ -495,10 +495,10 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     }
 
 
-    //Hahstag Filters:
+    //Hashtag Filters:
     $filters_ui = '';
     if (isset($i['hashtag_list_config'])) {
-        //Hahstag<>Handle Settings:
+        //Hashtag<>Handle Settings:
         $current_handleid = 0;
         foreach ($CI->config->item('handles___43006') as $handleid => $m) {
             foreach ($i['hashtag_list_config']['full_config_' . $handleid] as $filtered_handle) {
@@ -512,7 +512,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                 $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_handle['handlehandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_handle['handlecover']) . '</span>' . $filtered_handle['handlevalue'] . '</a></div>';
             }
         }
-        //Hahstag<>Hahstag Settings:
+        //Hashtag<>Hashtag Settings:
         foreach ($CI->config->item('handles___40792') as $handleid => $m) {
             foreach ($i['hashtag_list_config']['full_config_' . $handleid] as $filtered_hashtag) {
                 if (!$current_handleid) {
@@ -711,7 +711,7 @@ function hashtag_settings($hashtaghashtag, $fetch_contact = false)
 
             foreach ($CI->Chains->read(array(
                 'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                 'chainhashtagoutput !=' => $i['hashtagid'],
             ), array('chainhashtagoutput'), 0, 0, array('hashtagvalue' => 'ASC')) as $chain_i) {
                 array_push($hashtag_column, $chain_i);
@@ -919,7 +919,7 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
     }
 
     if (strlen($suggestion) < 4 || is_numeric($suggestion)) {
-        $suggestion = ($focus__node == 12273 ? 'Hahstag' : 'Handle') . $suggestion;
+        $suggestion = ($focus__node == 12273 ? 'Hashtag' : 'Handle') . $suggestion;
     }
 
 
@@ -1082,7 +1082,7 @@ function process_media($hashtagid, $uploaded_media)
                 //By now have the media Handle, create necessary chains:
                 if ($upload_media['handleid'] && $upload_media['media_typeid']) {
 
-                    //Chain to Hahstag:
+                    //Chain to Hashtag:
                     if (!count($CI->Chains->read(array(
                         'chainhashtagoutput' => $hashtagid,
                         'chainhandleinput' => $upload_media['handleid'],
@@ -1325,7 +1325,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Must set either Hahstag or Handle ID! Pick one',
+            'message' => 'Must set either Hashtag or Handle ID! Pick one',
         );
 
     } elseif (!strlen($str)) {
@@ -1509,7 +1509,7 @@ function user_website($chainhandlecreator)
 function random_adjective()
 {
 
-    $adjectives = array('Amazing', 'Awesome', 'Adventurous', 'Ambitious', 'Adorable', 'Artistic', 'Agile', 'Acrobatic', 'Attractive', 'Alluring', 'Astonishing', 'Authentic', 'Awkward', 'Ancient', 'American', 'Australian', 'Austrian', 'African', 'Asian', 'Brave', 'Beautiful', 'Bright', 'Busy', 'Big', 'Bold', 'Basic', 'Blissful', 'Bouncy', 'Beneficial', 'Bashful', 'Black', 'Brown', 'Burgundy', 'Broad', 'British', 'Belgian', 'Brazilian', 'Creative', 'Confident', 'Cheerful', 'Calm', 'Cute', 'Clever', 'Curious', 'Charming', 'Courageous', 'Clean', 'Cool', 'Considerate', 'Caring', 'Crazy', 'Classic', 'Chic', 'Cloudy', 'Colombian', 'Chinese', 'Delightful', 'Dreamy', 'Daring', 'Dynamic', 'Dark', 'Decent', 'Drastic', 'Defiant', 'Dedicated', 'Deep', 'Desirable', 'Dirty', 'Dramatic', 'Dizzy', 'Demanding', 'Diligent', 'Dutch', 'Danish', 'Delicious', 'Dazzling', 'Easy', 'Elegant', 'Enthusiastic', 'Eager', 'Efficient', 'Empathetic', 'Excellent', 'Exciting', 'Effective', 'Extravagant', 'Entertaining', 'Exotic', 'Expressive', 'Expensive', 'Elaborate', 'European', 'Egyptian', 'Eastern', 'Elderly', 'Educational', 'Fantastic', 'Fabulous', 'Friendly', 'Funny', 'Fearless', 'Fresh', 'Fascinating', 'Fluffy', 'Fierce', 'Fine', 'Free', 'Frugal', 'French', 'Futuristic', 'Fast', 'Flat', 'Famous', 'Flawless', 'Formal', 'Frizzy', 'Gorgeous', 'Great', 'Gentle', 'Generous', 'Gracious', 'Genuine', 'Glorious', 'Graceful', 'Golden', 'Grand', 'Green', 'Growing', 'Groovy', 'Greek', 'Grumpy', 'Gothic', 'Gargantuan', 'Gigantic', 'German', 'Georgian', 'Happy', 'Hot', 'Humble', 'Honest', 'Healthy', 'Heavy', 'Handsome', 'High', 'Helpful', 'Hilarious', 'Heavenly', 'Harmonious', 'Hardworking', 'Historical', 'Heartfelt', 'Homey', 'Hungry', 'Huge', 'Hispanic', 'Hindu', 'Interesting', 'Intelligent', 'Incredible', 'Inspiring', 'Impressive', 'Imaginative', 'Inquisitive', 'Iconic', 'Indigo', 'Industrious', 'Inevitable', 'Inexpensive', 'Incomparable', 'Hahstaglistic', 'Illustrious', 'Indian', 'Italian', 'Irresistible', 'Irrelevant', 'Icy', 'Joyful', 'Jolly', 'Jovial', 'Jaunty', 'Jaded', 'Jazzy', 'Jumpy', 'Juicy', 'Judgmental', 'Jumbled', 'Japanese', 'Javanese', 'Jewish', 'Jittery', 'Junior', 'Justified', 'Jubilant', 'Jade', 'Jumbo', 'Joint', 'Kind', 'Knowledgeable', 'Keen', 'Kooky', 'Knotty', 'Kinetic', 'Known', 'Keen-eyed', 'Knightly', 'Keen-witted', 'Kempt', 'Knockout', 'Knackered', 'Kindhearted', 'Kenyan', 'Kiddy', 'Knotted', 'Kyrgyzstani', 'Kindred', 'Kentuckian', 'Loud', 'Lively', 'Lazy', 'Loyal', 'Long', 'Lonely', 'Lovely', 'Large', 'Light', 'Low', 'Luxurious', 'Lasting', 'Literal', 'Learned', 'Lucky', 'Magnificent', 'Mysterious', 'Modern', 'Moody', 'Musical', 'Mighty', 'Masculine', 'Mesmerizing', 'Mindful', 'Memorable', 'Multicultural', 'Moral', 'Majestic', 'Mischievous', 'Mouthwatering', 'Mellow', 'Modest', 'Magical', 'Melodic', 'Mature', 'Nervous', 'Natural', 'New', 'Nice', 'Noble', 'Naughty', 'Neat', 'Nonchalant', 'Noisy', 'Narrow', 'Nostalgic', 'Needy', 'Negative', 'Nutritious', 'Nonstop', 'Noteworthy', 'Numerous', 'Notable', 'Nurturing', 'Nifty', 'Obvious', 'Original', 'Optimistic', 'Ordinary', 'Official', 'Outstanding', 'Open', 'Organic', 'Odd', 'Observant', 'Obedient', 'Opaque', 'Obsolete', 'Offensive', 'Oily', 'Old-fashioned', 'Ornate', 'Onyx', 'Overwhelming', 'Oceanic', 'Perfect', 'Patient', 'Positive', 'Powerful', 'Popular', 'Polite', 'Peaceful', 'Playful', 'Pleasant', 'Precious', 'Practical', 'Private', 'Proud', 'Profound', 'Pretty', 'Painful', 'Priceless', 'Puzzled', 'Persistent', 'Passionate', 'Quaint', 'Quick', 'Quiet', 'Quirky', 'Quizzical', 'Queenly', 'Quivering', 'Quotable', 'Qualified', 'Quantifiable', 'Questionable', 'Quarrelsome', 'Queasy', 'Quenched', 'Quack', 'Quilted', 'Quizzing', 'Reliable', 'Responsible', 'Romantic', 'Rich', 'Rude', 'Real', 'Radiant', 'Royal', 'Rough', 'Respectful', 'Red', 'Rational', 'Rustic', 'Radiant', 'Robust', 'Rare', 'Resilient', 'Reckless', 'Ready', 'Rambunctious', 'Strong', 'Smart', 'Serious', 'Sad', 'Special', 'Simple', 'Super', 'Sincere', 'Safe', 'Stunning', 'Sweet', 'Shy', 'Successful', 'Satisfied', 'Shiny', 'Silent', 'Sparkling', 'Strong-willed', 'Scary', 'Surprised', 'Tall', 'Talkative', 'Tasty', 'Tender', 'Terrific', 'Terrible', 'Thoughtful', 'Thrifty', 'Timely', 'Tough', 'Traditional', 'Trustworthy', 'Tremendous', 'Tricky', 'Tolerant', 'Tenacious', 'Tiny', 'Tired', 'Top', 'Trembling', 'Ugly', 'Ultimate', 'Unbelievable', 'Uncertain', 'Uncommon', 'Unconditional', 'Unconscious', 'Understanding', 'Unforgettable', 'Unhappy', 'Unique', 'United', 'Universal', 'Unusual', 'Upbeat', 'Uplifting', 'Urbane', 'Urgent', 'Useful', 'Useless', 'Valuable', 'Vague', 'Valid', 'Vast', 'Various', 'Vengeful', 'Vibrant', 'Victorious', 'Vigorous', 'Villainous', 'Vital', 'Vivacious', 'Vocal', 'Volatile', 'Volcanic', 'Voracious', 'Vulnerable', 'Vicious', 'Velvet', 'Verbal', 'Warm', 'Wild', 'Witty', 'Wise', 'Wonderful', 'Worried', 'Wondrous', 'Wealthy', 'Whimsical', 'Wicked', 'Wide', 'Wavy', 'Watery', 'Weighty', 'Wooden', 'Weak', 'Wary', 'Winning', 'Well-groomed', 'Wholesome', 'Xeric', 'Xerophytic', 'Xerotic', 'Xyloid', 'Xylonic', 'Xylophagous', 'Xanthic', 'Xanthous', 'Xerarch', 'Xylotomous', 'Xerographic', 'Xenial', 'Xenogenetic', 'Xenolithic', 'Xylophilous', 'Yellow', 'Young', 'Yielding', 'Yearly', 'Yummy', 'Yawning', 'Yucky', 'Yearning', 'Yeasty', 'Yielding', 'Youthful', 'Yare', 'Yclept', 'Yellowish', 'Yearlong', 'Youth', 'Zealous', 'Zesty', 'Zigzag', 'Zillionth', 'Zinciferous', 'Zingy', 'Zippered', 'Zippy', 'Zoological', 'Zonal', 'Ambitious', 'Amiable', 'Analytical', 'Assertive', 'Authentic', 'Bold', 'Calm', 'Charismatic', 'Charming', 'Cheerful', 'Compassionate', 'Confident', 'Conscientious', 'Considerate', 'Creative', 'Curious', 'Dependable', 'Diligent', 'Disciplined', 'Easygoing', 'Empathetic', 'Enthusiastic', 'Extraverted', 'Flexible', 'Friendly', 'Generous', 'Genuine', 'Gracious', 'Hardworking', 'Honest', 'Humble', 'Independent', 'Innovative', 'Insightful', 'Intelligent', 'Kind', 'Logical', 'Loyal', 'Open-minded', 'Optimistic', 'Outgoing', 'Passionate', 'Patient', 'Persistent', 'Practical', 'Rational', 'Reliable', 'Rehandleful', 'Responsible', 'Self-confident', 'Happy', 'Sad', 'Angry', 'Fearful', 'Anxious', 'Excited', 'Frustrated', 'Nostalgic', 'Hopeful', 'Envious', 'Jealous', 'Empathetic', 'Curious', 'Surprised', 'Disappointed', 'Grateful', 'Confused', 'Content', 'Lonely', 'Loved', 'Joyful', 'Melancholic', 'Irritated', 'Apprehensive', 'Restless', 'Ecstatic', 'Distraught', 'Panicked', 'Annoyed', 'Numb', 'Scared', 'Enraged', 'Heartbroken', 'Amused', 'Overwhelmed', 'Grateful', 'Conflicted', 'Peaceful', 'Devastated', 'Empowered');
+    $adjectives = array('Amazing', 'Awesome', 'Adventurous', 'Ambitious', 'Adorable', 'Artistic', 'Agile', 'Acrobatic', 'Attractive', 'Alluring', 'Astonishing', 'Authentic', 'Awkward', 'Ancient', 'American', 'Australian', 'Austrian', 'African', 'Asian', 'Brave', 'Beautiful', 'Bright', 'Busy', 'Big', 'Bold', 'Basic', 'Blissful', 'Bouncy', 'Beneficial', 'Bashful', 'Black', 'Brown', 'Burgundy', 'Broad', 'British', 'Belgian', 'Brazilian', 'Creative', 'Confident', 'Cheerful', 'Calm', 'Cute', 'Clever', 'Curious', 'Charming', 'Courageous', 'Clean', 'Cool', 'Considerate', 'Caring', 'Crazy', 'Classic', 'Chic', 'Cloudy', 'Colombian', 'Chinese', 'Delightful', 'Dreamy', 'Daring', 'Dynamic', 'Dark', 'Decent', 'Drastic', 'Defiant', 'Dedicated', 'Deep', 'Desirable', 'Dirty', 'Dramatic', 'Dizzy', 'Demanding', 'Diligent', 'Dutch', 'Danish', 'Delicious', 'Dazzling', 'Easy', 'Elegant', 'Enthusiastic', 'Eager', 'Efficient', 'Empathetic', 'Excellent', 'Exciting', 'Effective', 'Extravagant', 'Entertaining', 'Exotic', 'Expressive', 'Expensive', 'Elaborate', 'European', 'Egyptian', 'Eastern', 'Elderly', 'Educational', 'Fantastic', 'Fabulous', 'Friendly', 'Funny', 'Fearless', 'Fresh', 'Fascinating', 'Fluffy', 'Fierce', 'Fine', 'Free', 'Frugal', 'French', 'Futuristic', 'Fast', 'Flat', 'Famous', 'Flawless', 'Formal', 'Frizzy', 'Gorgeous', 'Great', 'Gentle', 'Generous', 'Gracious', 'Genuine', 'Glorious', 'Graceful', 'Golden', 'Grand', 'Green', 'Growing', 'Groovy', 'Greek', 'Grumpy', 'Gothic', 'Gargantuan', 'Gigantic', 'German', 'Georgian', 'Happy', 'Hot', 'Humble', 'Honest', 'Healthy', 'Heavy', 'Handsome', 'High', 'Helpful', 'Hilarious', 'Heavenly', 'Harmonious', 'Hardworking', 'Historical', 'Heartfelt', 'Homey', 'Hungry', 'Huge', 'Hispanic', 'Hindu', 'Interesting', 'Intelligent', 'Incredible', 'Inspiring', 'Impressive', 'Imaginative', 'Inquisitive', 'Iconic', 'Indigo', 'Industrious', 'Inevitable', 'Inexpensive', 'Incomparable', 'Hashtaglistic', 'Illustrious', 'Indian', 'Italian', 'Irresistible', 'Irrelevant', 'Icy', 'Joyful', 'Jolly', 'Jovial', 'Jaunty', 'Jaded', 'Jazzy', 'Jumpy', 'Juicy', 'Judgmental', 'Jumbled', 'Japanese', 'Javanese', 'Jewish', 'Jittery', 'Junior', 'Justified', 'Jubilant', 'Jade', 'Jumbo', 'Joint', 'Kind', 'Knowledgeable', 'Keen', 'Kooky', 'Knotty', 'Kinetic', 'Known', 'Keen-eyed', 'Knightly', 'Keen-witted', 'Kempt', 'Knockout', 'Knackered', 'Kindhearted', 'Kenyan', 'Kiddy', 'Knotted', 'Kyrgyzstani', 'Kindred', 'Kentuckian', 'Loud', 'Lively', 'Lazy', 'Loyal', 'Long', 'Lonely', 'Lovely', 'Large', 'Light', 'Low', 'Luxurious', 'Lasting', 'Literal', 'Learned', 'Lucky', 'Magnificent', 'Mysterious', 'Modern', 'Moody', 'Musical', 'Mighty', 'Masculine', 'Mesmerizing', 'Mindful', 'Memorable', 'Multicultural', 'Moral', 'Majestic', 'Mischievous', 'Mouthwatering', 'Mellow', 'Modest', 'Magical', 'Melodic', 'Mature', 'Nervous', 'Natural', 'New', 'Nice', 'Noble', 'Naughty', 'Neat', 'Nonchalant', 'Noisy', 'Narrow', 'Nostalgic', 'Needy', 'Negative', 'Nutritious', 'Nonstop', 'Noteworthy', 'Numerous', 'Notable', 'Nurturing', 'Nifty', 'Obvious', 'Original', 'Optimistic', 'Ordinary', 'Official', 'Outstanding', 'Open', 'Organic', 'Odd', 'Observant', 'Obedient', 'Opaque', 'Obsolete', 'Offensive', 'Oily', 'Old-fashioned', 'Ornate', 'Onyx', 'Overwhelming', 'Oceanic', 'Perfect', 'Patient', 'Positive', 'Powerful', 'Popular', 'Polite', 'Peaceful', 'Playful', 'Pleasant', 'Precious', 'Practical', 'Private', 'Proud', 'Profound', 'Pretty', 'Painful', 'Priceless', 'Puzzled', 'Persistent', 'Passionate', 'Quaint', 'Quick', 'Quiet', 'Quirky', 'Quizzical', 'Queenly', 'Quivering', 'Quotable', 'Qualified', 'Quantifiable', 'Questionable', 'Quarrelsome', 'Queasy', 'Quenched', 'Quack', 'Quilted', 'Quizzing', 'Reliable', 'Responsible', 'Romantic', 'Rich', 'Rude', 'Real', 'Radiant', 'Royal', 'Rough', 'Respectful', 'Red', 'Rational', 'Rustic', 'Radiant', 'Robust', 'Rare', 'Resilient', 'Reckless', 'Ready', 'Rambunctious', 'Strong', 'Smart', 'Serious', 'Sad', 'Special', 'Simple', 'Super', 'Sincere', 'Safe', 'Stunning', 'Sweet', 'Shy', 'Successful', 'Satisfied', 'Shiny', 'Silent', 'Sparkling', 'Strong-willed', 'Scary', 'Surprised', 'Tall', 'Talkative', 'Tasty', 'Tender', 'Terrific', 'Terrible', 'Thoughtful', 'Thrifty', 'Timely', 'Tough', 'Traditional', 'Trustworthy', 'Tremendous', 'Tricky', 'Tolerant', 'Tenacious', 'Tiny', 'Tired', 'Top', 'Trembling', 'Ugly', 'Ultimate', 'Unbelievable', 'Uncertain', 'Uncommon', 'Unconditional', 'Unconscious', 'Understanding', 'Unforgettable', 'Unhappy', 'Unique', 'United', 'Universal', 'Unusual', 'Upbeat', 'Uplifting', 'Urbane', 'Urgent', 'Useful', 'Useless', 'Valuable', 'Vague', 'Valid', 'Vast', 'Various', 'Vengeful', 'Vibrant', 'Victorious', 'Vigorous', 'Villainous', 'Vital', 'Vivacious', 'Vocal', 'Volatile', 'Volcanic', 'Voracious', 'Vulnerable', 'Vicious', 'Velvet', 'Verbal', 'Warm', 'Wild', 'Witty', 'Wise', 'Wonderful', 'Worried', 'Wondrous', 'Wealthy', 'Whimsical', 'Wicked', 'Wide', 'Wavy', 'Watery', 'Weighty', 'Wooden', 'Weak', 'Wary', 'Winning', 'Well-groomed', 'Wholesome', 'Xeric', 'Xerophytic', 'Xerotic', 'Xyloid', 'Xylonic', 'Xylophagous', 'Xanthic', 'Xanthous', 'Xerarch', 'Xylotomous', 'Xerographic', 'Xenial', 'Xenogenetic', 'Xenolithic', 'Xylophilous', 'Yellow', 'Young', 'Yielding', 'Yearly', 'Yummy', 'Yawning', 'Yucky', 'Yearning', 'Yeasty', 'Yielding', 'Youthful', 'Yare', 'Yclept', 'Yellowish', 'Yearlong', 'Youth', 'Zealous', 'Zesty', 'Zigzag', 'Zillionth', 'Zinciferous', 'Zingy', 'Zippered', 'Zippy', 'Zoological', 'Zonal', 'Ambitious', 'Amiable', 'Analytical', 'Assertive', 'Authentic', 'Bold', 'Calm', 'Charismatic', 'Charming', 'Cheerful', 'Compassionate', 'Confident', 'Conscientious', 'Considerate', 'Creative', 'Curious', 'Dependable', 'Diligent', 'Disciplined', 'Easygoing', 'Empathetic', 'Enthusiastic', 'Extraverted', 'Flexible', 'Friendly', 'Generous', 'Genuine', 'Gracious', 'Hardworking', 'Honest', 'Humble', 'Independent', 'Innovative', 'Insightful', 'Intelligent', 'Kind', 'Logical', 'Loyal', 'Open-minded', 'Optimistic', 'Outgoing', 'Passionate', 'Patient', 'Persistent', 'Practical', 'Rational', 'Reliable', 'Rehandleful', 'Responsible', 'Self-confident', 'Happy', 'Sad', 'Angry', 'Fearful', 'Anxious', 'Excited', 'Frustrated', 'Nostalgic', 'Hopeful', 'Envious', 'Jealous', 'Empathetic', 'Curious', 'Surprised', 'Disappointed', 'Grateful', 'Confused', 'Content', 'Lonely', 'Loved', 'Joyful', 'Melancholic', 'Irritated', 'Apprehensive', 'Restless', 'Ecstatic', 'Distraught', 'Panicked', 'Annoyed', 'Numb', 'Scared', 'Enraged', 'Heartbroken', 'Amused', 'Overwhelmed', 'Grateful', 'Conflicted', 'Peaceful', 'Devastated', 'Empowered');
 
     return $adjectives[array_rand($adjectives)];
 }
@@ -2061,7 +2061,7 @@ function hashtag_access($hashtaghashtag = null, $hashtagid = 0, $i = false, $rep
         'chainhandletype IN (' . join(',', $CI->config->item('handleids___42625')) . ')' => null, //Private Hashtags
         )))) {
 
-        //Private Hahstag:
+        //Private Hashtag:
         return 0;
 
     } else {
@@ -2299,7 +2299,7 @@ function update_algolia($focus__node = null, $s__id = 0)
     }
 
 
-    $handles___4737 = $CI->config->item('handles___4737'); //Hahstag Status
+    $handles___4737 = $CI->config->item('handles___4737'); //Hashtag Status
 
     //Define the support objects indexed on algolia:
     $s__id = intval($s__id);
@@ -2436,7 +2436,7 @@ function update_algolia($focus__node = null, $s__id = 0)
                     array_push($export_row['_tags'], 'public_index');
                 }
 
-                //Top/Bottom Hahstag Keywords
+                //Top/Bottom Hashtag Keywords
                 foreach ($CI->Chains->read(array(
                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___42345')) . ')' => null, //Active Sequence
                     'chainhashtaginput' => $s['hashtagid'],
@@ -2450,9 +2450,9 @@ function update_algolia($focus__node = null, $s__id = 0)
                     $export_row['s__keywords'] .= $i['hashtagvalue'] . ' ';
                 }
 
-                //Hahstag Handles Keywords
+                //Hashtag Handles Keywords
                 foreach ($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                     'chainhashtagoutput' => $s['hashtagid'],
                 ), array('chainhandleinput'), 0) as $x) {
 
@@ -3267,7 +3267,7 @@ function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append
 
     /*
      *
-     * Loads Hahstag
+     * Loads Hashtag
      *
      * */
 
@@ -3458,11 +3458,11 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
 
     } elseif ($right_hashtagid > 0) {
 
-        //Hahstag focus:
+        //Hashtag focus:
         foreach ($CI->Chains->read(array(
             'chainhandleinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
             'chainhashtagoutput' => $right_hashtagid,
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
         )) as $sel) {
             array_push($already_selected, $sel['chainhandleinput']);
         }
@@ -3710,7 +3710,7 @@ function view_hashtag_title($i, $string_only = false)
     }
 
     //If not yet found we need to use other data to generate title:
-    return (isset($i['hashtaghashtag']) && strlen($i['hashtaghashtag']) ? $i['hashtaghashtag'] : (isset($i['hashtagid']) && intval($i['hashtagid']) ? 'Hahstag Number ' . $i['hashtagid'] : 'Hahstag' . rand(100000000000, 999999999999)));
+    return (isset($i['hashtaghashtag']) && strlen($i['hashtaghashtag']) ? $i['hashtaghashtag'] : (isset($i['hashtagid']) && intval($i['hashtagid']) ? 'Hashtag Number ' . $i['hashtagid'] : 'Hashtag' . rand(100000000000, 999999999999)));
 
 }
 
@@ -3808,8 +3808,8 @@ function hashtagcache($save_hashtagid, $str)
     //All the possible reference types that can be found:
     $hashtag_references = array(
         4256 => array(), //Generic URL
-        31834 => array(), //Hahstag Synonym
-        42337 => array(), //Hahstag Antonym
+        31834 => array(), //Hashtag Synonym
+        42337 => array(), //Hashtag Antonym
         31835 => array(), //Handle Mention
     );
 
@@ -3858,7 +3858,7 @@ function hashtagcache($save_hashtagid, $str)
 
             } elseif (view_valid_handle_handle($word, true)) {
 
-                //Hahstag Synonym
+                //Hashtag Synonym
                 $reference_type = 31835;
                 array_push($hashtag_references[$reference_type], $word);
                 $hashtagcache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
@@ -3866,7 +3866,7 @@ function hashtagcache($save_hashtagid, $str)
 
             } elseif (view_valid_handle_reverse_hashtag($word, true)) {
 
-                //Hahstag Antonym
+                //Hashtag Antonym
                 $reference_type = 42337;
                 array_push($hashtag_references[$reference_type], $word);
                 $hashtagcache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
@@ -3915,7 +3915,7 @@ function hashtagcache($save_hashtagid, $str)
         $references_add_to_db = $hashtag_references;
         $handle_session = handle_session();
         foreach ($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___4736')) . ')' => null, //Hahstag Message Chains 3x
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___4736')) . ')' => null, //Hashtag Message Chains 3x
             'chainhashtagoutput' => $save_hashtagid,
         )) as $x) {
 
@@ -4403,7 +4403,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
     //Show Creator if any:
     $headline_authors = array();
     foreach ($CI->Chains->read(array(
-        'chainhandletype' => 12273, //Hahstag Created
+        'chainhandletype' => 12273, //Hashtag Created
         'chainhashtagoutput' => $i['hashtagid'],
     ), array('chainhandleinput')) as $creator) {
 
@@ -4488,7 +4488,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
 
         } elseif ($chainhandletype_target_bar == 4737 && !$discovery_mode && $superpower_10939) {
 
-            //Hahstag Type
+            //Hashtag Type
             $bottom_bar_ui .= '<span>';
             $bottom_bar_ui .= searchingle_select_instant(4737, $i['hashtagtype'], $hashtag_access, false, $i['hashtagid'], $chainid);
             $bottom_bar_ui .= '</span>';
@@ -4499,7 +4499,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
 
         } elseif ($chainhandletype_target_bar == 13909 && $hashtag_access >= 3 && $has_sortable && !$discovery_mode) {
 
-            //Sort Hahstag
+            //Sort Hashtag
             $bottom_bar_ui .= '<span class="sort_hashtag_frame hidden icon-block-sm">';
             $bottom_bar_ui .= '<span title="' . $m_target_bar['m__title'] . '" class="sort_hashtag_grab">' . $m_target_bar['m__cover'] . '</span>';
             $bottom_bar_ui .= '</span>';
@@ -4509,14 +4509,14 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
             //Drop Down
             $action_buttons = null;
             if (!$chainid) {
-                $focus_dropdown = 11047; //Hahstag Dropdown
-            } elseif ($chainhandletype_id == 4486) { //Hahstag/Hahstag Chains
-                $focus_dropdown = 14955; //Hahstag/Hahstag Dropdown
-            } elseif ($chainhandletype_id == 13550) { //Hahstag/Handle Chains
-                $focus_dropdown = 28787; //Hahstag/Handle Dropdown
+                $focus_dropdown = 11047; //Hashtag Dropdown
+            } elseif ($chainhandletype_id == 4486) { //Hashtag/Hashtag Chains
+                $focus_dropdown = 14955; //Hashtag/Hashtag Dropdown
+            } elseif ($chainhandletype_id == 13550) { //Hashtag/Handle Chains
+                $focus_dropdown = 28787; //Hashtag/Handle Dropdown
             } else {
                 //Discoveries
-                $focus_dropdown = 32069; //Hahstag/Discoveries Dropdown
+                $focus_dropdown = 32069; //Hashtag/Discoveries Dropdown
             }
 
             if (is_array($CI->config->item('handles___' . $focus_dropdown))) {
@@ -4537,12 +4537,12 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
 
                     } elseif ($handleid_dropdown == 33286 && $discovery_mode && $hashtag_access >= 3) {
 
-                        //Hahstags Mode
+                        //Hashtags Mode
                         $action_buttons .= '<a href="' . view_memory(42903, 33286) . $i['hashtaghashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 31911 && $hashtag_access >= 3) {
 
-                        //Hahstag Editor
+                        //Hashtag Editor
                         $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_editor(' . $i['hashtagid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 13007 && $hashtag_access >= 3) {
@@ -4552,7 +4552,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
 
                     } elseif ($handleid_dropdown == 31911 && $hashtag_access >= 3 && $discovery_mode) {
 
-                        //Hahstag Editor
+                        //Hashtag Editor
                         $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_editor(' . $i['hashtagid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 10673 && $chainid && $hashtag_access >= 3) {
@@ -4562,7 +4562,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
 
                     } elseif ($handleid_dropdown == 30873 && $hashtag_access >= 3) {
 
-                        //Clone Hahstag Tree:
+                        //Clone Hashtag Tree:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_copy(' . $i['hashtagid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 33292 && $handle_session) {
@@ -4572,7 +4572,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
 
                     } elseif ($handleid_dropdown == 29771 && $hashtag_access >= 3) {
 
-                        //Clone Single Hahstag:
+                        //Clone Single Hashtag:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_copy(' . $i['hashtagid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 4341 && $hashtag_access >= 3 && $chainid) {
@@ -4628,7 +4628,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
     }
 
 
-    //Hahstag Location if any:
+    //Hashtag Location if any:
     foreach ($CI->Chains->read(array(
         'chainhandletype' => 41949, //Locate
         'chainhashtagoutput' => $i['hashtagid'],
@@ -4645,7 +4645,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
     $ui .= '</div>';
 
 
-    //Hahstag Message (Remaining)
+    //Hashtag Message (Remaining)
     $ui .= '<div class="ui_hashtagcache_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, ($focus__node || 1), $focus__node) . '</div>';
 
     $hashtag_popup_url = hashtag_popup_url($i);
@@ -4990,7 +4990,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
         //Determine hover state:
         if ($chainhandletype_target_bar == 33532 && !$is_cache && $handle_session && $hashtag_access >= 2 && !$is_locked) {
 
-            //Hahstag Reply
+            //Hashtag Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
             $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="hashtag_editor(0,0,' . $i['hashtagid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
@@ -5373,8 +5373,8 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
                     $focus_dropdown = 14956; //Handle/Handle Dropdown
                 } elseif ($chainhandletype_id == 31777 || $chainhandletype_id == 31777) { //Discoveries
                     $focus_dropdown = 32070; //Handle>Discoveries Dropdown
-                } elseif ($chainhandletype_id == 13550) { //Hahstag/Handle Chains
-                    $focus_dropdown = 28792; //Handle/Hahstag Dropdown
+                } elseif ($chainhandletype_id == 13550) { //Hashtag/Handle Chains
+                    $focus_dropdown = 28792; //Handle/Hashtag Dropdown
                 } else {
                     $focus_dropdown = 0;
                 }

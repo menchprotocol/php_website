@@ -1032,7 +1032,7 @@ $(document).ready(function () {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {
             if (String.fromCharCode(e.which).toLowerCase() === 'i') {
-                //Add Hahstag
+                //Add Hashtag
                 hashtag_editor();
             } else if (String.fromCharCode(e.which).toLowerCase() === 's') {
                 //Add Handle:
@@ -1843,7 +1843,7 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
         $("#modal31911 .save_hashtagvalue").val(insert_message);
     }
 
-    //Hahstag Type:
+    //Hashtag Type:
     update_form_select(4737, current_hashtagtype, 1, false);
 
     $('#modal31911').modal('show');
@@ -1887,7 +1887,7 @@ function load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, initial_l
 
             if (initial_loading) {
 
-                //Initiate Hahstag  Uploader:
+                //Initiate Hashtag  Uploader:
                 load_cloudinary(13572, hashtagid, ['#' + hashtagid], '.uploader_13572', '#modal31911');
 
                 //Track unsaved changes to prevent unwated modal closure:
@@ -1976,7 +1976,7 @@ var i_saving = false; //Prevent double saving
 function hashtag_update() {
 
     if (i_saving) {
-        console.log('Hahstag updating aborted');
+        console.log('Hashtag updating aborted');
         return false;
     }
 
@@ -1986,7 +1986,7 @@ function hashtag_update() {
 
     var current_hashtagid = parseInt($('#modal31911 .save_hashtagid').val());
     var created_hashtagid = parseInt($('#modal31911 .created_hashtagid').val());
-    console.log('Hahstag updating begins #' + current_hashtagid);
+    console.log('Hashtag updating begins #' + current_hashtagid);
 
     //TODO Preview Media
 
@@ -2041,7 +2041,7 @@ function hashtag_update() {
             var new_handle = modify_data['save_hashtaghashtag'];
             var on_focus__hashtag = parseInt($('#focus__node').val()) == 12273 && modify_data['save_hashtagid'] == parseInt($('#focus__id').val());
 
-            //Update Hahstag Type:
+            //Update Hashtag Type:
             $('.s__12273_' + modify_data['save_hashtagid']).attr('hashtagtype', modify_data['save_hashtagtype']);
             ui_instant_select(4737, modify_data['save_hashtagtype'], modify_data['save_hashtagid'], modify_data['save_chainid'], false);
 
@@ -2061,7 +2061,7 @@ function hashtag_update() {
             has_unsaved_changes = false;
             $('#modal31911').modal('hide');
 
-            //Update Hahstag Message:
+            //Update Hashtag Message:
             $('.ui_hashtagvalue_' + modify_data['save_hashtagid']).text(modify_data['save_hashtagvalue']);
 
             //Insert hashtag into the page if new:
@@ -2236,7 +2236,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Enable Sorting:
             if (uploader_id == 13572) {
 
-                //Hahstagtor Uploader
+                //Hashtagtor Uploader
                 sort_media('media_editor_frame');
 
             } else if (uploader_id == 43004) {
@@ -2260,7 +2260,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
             } else if (uploader_id == 13572) {
 
-                //Hahstagtor Uploader
+                //Hashtagtor Uploader
                 has_unsaved_changes = true;
                 $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
@@ -2284,7 +2284,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
             } else if (uploader_id == 13572 || uploader_id == 43004) {
 
-                //Hahstag Uploader
+                //Hashtag Uploader
                 var playback_code = '';
                 var media_typeid = 0;
                 var media_typename = '';
@@ -2789,7 +2789,7 @@ function hashtag_create(chainhandletype, chain_hashtagid) {
 
     //We either need the hashtag name (to create a new hashtag) or the chain_hashtagid>0 to create an HASHTAG chain:
     if (!chain_hashtagid && hashtag_createtext.length < 1) {
-        alert('Missing Hahstag');
+        alert('Missing Hashtag');
         input_field.focus();
         return false;
     }
@@ -2965,7 +2965,7 @@ function hashtag_sort_load(chainhandletype) {
 
     load_cards();
 
-    console.log('Tring to load Hahstag Sort for @' + chainhandletype);
+    console.log('Tring to load Hashtag Sort for @' + chainhandletype);
     if (!js_handleids___4603.includes(chainhandletype)) {
         console.log(chainhandletype + ' is not sortable');
         return false;
@@ -3147,7 +3147,7 @@ function ui_instant_select(element_id, handle_createid, o__id, chainid, show_ful
     var main_object_update = false;
 
     if (element_id == 4737) {
-        //Hahstag Type:
+        //Hashtag Type:
         $('.s__12273_' + o__id).attr('hashtagtype', handle_createid);
         main_object_type = 12273;
         main_object_update = 'hashtagtype';
@@ -3161,7 +3161,7 @@ function ui_instant_select(element_id, handle_createid, o__id, chainid, show_ful
 
 function hashtag_delete(hashtagid) {
 
-    var migratehandle = prompt("Are you sure you want to permanently delete this hashtag?\nYou can reference #anotherHahstag to migrate to or leave blank to delete permanently...", "#");
+    var migratehandle = prompt("Are you sure you want to permanently delete this hashtag?\nYou can reference #anotherHashtag to migrate to or leave blank to delete permanently...", "#");
     if (migratehandle === null) {
         return false;
     }
@@ -3393,7 +3393,7 @@ function chain_sort_reset() {
 
                 //Refresh page:
                 if (focus__node == 12273) {
-                    //Hahstags
+                    //Hashtags
                     js_redirect(js_handles___42903[33286]['m__message'] + focus_handle);
                 } else if (focus__node == 12274) {
                     //Handles

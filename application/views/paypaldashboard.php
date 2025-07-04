@@ -35,7 +35,7 @@ if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['ha
     echo '<h2>'.$es[0]['handlevalue'].' @'.$es[0]['handlehandle'].'</h2>';
 
     $hashtag_query = $this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
         'hashtagtype IN (' . join(',', $this->config->item('handleids___41055')) . ')' => null, //Payment Hashtags
         'chainhandleinput' => $es[0]['handleid'],
     ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'));

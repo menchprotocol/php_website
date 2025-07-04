@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Chains extends CHahstag_cache
+class Chains extends CIdea_cache
 {
 
     function __construct()
@@ -259,7 +259,7 @@ class Chains extends CHahstag_cache
         //Verify Access to each item:
         if ($access_limit && $select == '*' && isset($_SERVER['SERVER_NAME'])) {
             if (array_intersect(array('chainhashtaginput', 'chainhashtagoutput'), $joins_objects)) {
-                //Hahstag results:
+                //Hashtag results:
                 foreach ($results as $key => $value) {
                     if (!hashtag_access(null, $value['hashtagid'], $value)) {
                         unset($results[$key]); //Remove this option
@@ -346,7 +346,7 @@ class Chains extends CHahstag_cache
                 //Discovery
                 $chainhandletype = 44397;
             } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___4486'))) {
-                //Hahstags
+                //Hashtags
                 $chainhandletype = 44396;
             } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___13550'))) {
                 //Contribution
@@ -546,7 +546,7 @@ class Chains extends CHahstag_cache
 
         } elseif ($element_id == 4737) {
 
-            //Hahstag Type
+            //Hashtag Type
             $status = $this->Hashtags->update($o__id, array(
                 'hashtagtype' => $handle_createid,
             ), $handle_session['handleid']);
@@ -583,7 +583,7 @@ class Chains extends CHahstag_cache
                     $already_responded = count($this->Chains->read(array(
                         'chainhandleinput IN (' . join(',', $this->config->item('handleids___' . $dynamic_handleid)) . ')' => null, //All possible answers
                         'chainhashtagoutput' => $o__id,
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                     )));
 
                 } else {
@@ -591,7 +591,7 @@ class Chains extends CHahstag_cache
                     $already_responded = count($this->Chains->read(array(
                         'chainhandleinput' => $dynamic_handleid,
                         'chainhashtagoutput' => $o__id,
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                     )));
 
                 }
@@ -1088,7 +1088,7 @@ class Chains extends CHahstag_cache
         $x_data['chainhandlecreator'] = $chainhandlecreator;
         $x_data['chainhandleinput'] = $chainhandlecreator;
         $x_data['chainhandletype'] = $chainhandletype;
-        $x_data['chainhashtaginput'] = $i['hashtagid']; //Always add Hahstag to chainhashtaginput
+        $x_data['chainhashtaginput'] = $i['hashtagid']; //Always add Hashtag to chainhashtaginput
 
         //Add chain right only if we have a target hashtag we are navigating to
         if ($target_hashtagid > 0 && (!isset($x_data['chainhashtagoutput']) || !intval($x_data['chainhashtagoutput']))) {
@@ -1298,7 +1298,7 @@ class Chains extends CHahstag_cache
                         }
                     }
 
-                    //Notify Hahstag Watchers
+                    //Notify Hashtag Watchers
                     $sent_watchers = array();
                     foreach ($watchers as $watcher) {
                         if (!in_array(intval($watcher['chainhandleinput']), $sent_watchers)) {

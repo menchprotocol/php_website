@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_GET['hashtaghashtag'])) {
-    die('Missing Hahstag ID hashtaghashtag');
+    die('Missing Hashtag ID hashtaghashtag');
 }
 
 //Sheet
@@ -136,7 +136,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
                 //Fetch primary filter:
                 foreach ($this->Chains->read(array(
                     'chainhashtaginput' => $focus_i['hashtagid'],
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___44344')) . ')' => null, //Hahstag Filter Additions
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___44344')) . ')' => null, //Hashtag Filter Additions
                 ), array('chainhashtagoutput'), 1) as $target_i) {
 
                     //See History for this user:

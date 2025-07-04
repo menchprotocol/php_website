@@ -3,7 +3,7 @@
 $chainhandlecreator = ( $handle_session ? $handle_session['handleid'] : 14068 /* GUEST */ );
 //Log view:
 $this->Chains->create(array(
-    'chainhandletype' => 1309378, //Hahstag Viewed
+    'chainhandletype' => 1309378, //Hashtag Viewed
     'chainhandlecreator' => $chainhandlecreator,
     'chainhandleinput' => $chainhandlecreator,
     'chainhashtaginput' => $focus_i['hashtagid'],
@@ -19,7 +19,7 @@ if($handle_session && !handle_session(10939) && count($this->Chains->read(array(
     js_php_redirect('/'.$focus_i['hashtaghashtag'].'/start', 13);
 }
 
-//Focus Hahstag:
+//Focus Hashtag:
 echo '<div class="view_12273 row justify-content">';
 echo hashtag_view(42288,  $focus_i);
 echo '</div>';

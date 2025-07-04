@@ -15,7 +15,7 @@ $this->db->query("TRUNCATE TABLE public.gephinodes CONTINUE IDENTITY RESTRICT;")
 //Load HASHTAG CHAINS:
 $handles___4593 = $this->config->item('handles___4593');
 
-//To make sure Hahstag/Handle IDs are unique:
+//To make sure Hashtag/Handle IDs are unique:
 $id_prefix = array(
     12273 => 100,
     12274 => 200,
@@ -25,12 +25,12 @@ $id_prefix = array(
 $is = $this->Hashtags->read(array());
 foreach ($is as $in) {
 
-    //Add Hahstag node:
+    //Add Hashtag node:
     $this->db->insert('gephinodes', array(
         'id' => $id_prefix[12273] . $in['hashtagid'],
         'label' => $in['hashtagvalue'],
         'size' => 1,
-        'node_type' => 1, //Hahstag
+        'node_type' => 1, //Hashtag
     ));
 
     //Fetch Next Hashtags:

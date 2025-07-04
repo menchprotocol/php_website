@@ -1,7 +1,7 @@
 <?php
 
 if(!isset($_GET['hashtaghashtag'])){
-    die('Missing Hahstag ID hashtaghashtag');
+    die('Missing Hashtag ID hashtaghashtag');
 }
 
 
@@ -14,7 +14,7 @@ echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 $copy = $this->Hashtags->ids($hashtag_settings['i'], 'ALL');
 
 
-//Main Hahstag:
+//Main Hashtag:
 echo '<h2><a href="'.view_memory(42903,33286).$hashtag_settings['i']['hashtaghashtag'].'">'.view_hashtag_title($hashtag_settings['i'], true).'</a> '.count($copy['recursive_hashtag_ids']).' HASHTAGS</h2>';
 
 echo '<div class="row justify-content">';

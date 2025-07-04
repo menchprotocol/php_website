@@ -97,7 +97,7 @@ class Controller extends CI_Controller
         $handles___6287 = $this->config->item('handles___6287'); //APP
         $flash_message = false;
         $focus_e = null; //Handles
-        $focus_i = null; //Hahstags
+        $focus_i = null; //Hashtags
         $target_i = null; //Discovery
 
 
@@ -130,7 +130,7 @@ class Controller extends CI_Controller
 
         if (strlen($_GET['hashtaghashtag'])) {
 
-            //Validate Focus Hahstag:
+            //Validate Focus Hashtag:
             if ($target_i && $_GET['hashtaghashtag'] == view_memory(6404, 4235)) {
 
                 //This is the starting point:
@@ -268,7 +268,7 @@ class Controller extends CI_Controller
         //MEMBER REDIRECT?
         if ($handle_http_request && $memory_detected) {
 
-            //Missing App, Handle or Hahstag Access?
+            //Missing App, Handle or Hashtag Access?
             $missing_access = false; //Assume they have access
             $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___6287[$app_handleid]['m__following']);
             if ($handle_session && in_array($app_handleid, $this->config->item('handleids___14639'))) {
@@ -515,7 +515,7 @@ class Controller extends CI_Controller
             if (!count($is)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Hahstag is no longer active',
+                    'message' => 'Hashtag is no longer active',
                 ));
             } elseif (!hashtag_access($is[0]['hashtaghashtag'], 0, $is[0])) {
                 return view_json(array(
@@ -546,7 +546,7 @@ class Controller extends CI_Controller
 
         //Fetch dynamic data based on hashtag type:
         $return_inputs = array();
-        $handles___4737 = $this->config->item('handles___4737'); // Hahstag Status
+        $handles___4737 = $this->config->item('handles___4737'); // Hashtag Status
         $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
         $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
@@ -734,7 +734,7 @@ class Controller extends CI_Controller
 
         return view_json(array(
             'status' => ($chains_removed > 0 ? 1 : 0),
-            'message' => 'Hahstag successfully removed',
+            'message' => 'Hashtag successfully removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
         ));
@@ -856,7 +856,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Hahstag',
+                'message' => 'Missing Hashtag',
             ));
 
         } elseif (!isset($_POST['focus__node']) || !isset($_POST['focus__id'])) {
@@ -877,7 +877,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Hahstag ID',
+                'message' => 'Missing Hashtag ID',
             ));
 
         } elseif (!isset($_POST['next_hashtagid'])) {
@@ -902,7 +902,7 @@ class Controller extends CI_Controller
         } elseif (strlen($_POST['save_hashtagvalue']) > view_memory(6404, 4736)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Hahstag message must be less than ' . view_memory(6404, 4736) . ' characters.',
+                'message' => 'Hashtag message must be less than ' . view_memory(6404, 4736) . ' characters.',
             ));
         }
 
@@ -913,7 +913,7 @@ class Controller extends CI_Controller
         if (!count($is)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Hahstag Not Valid',
+                'message' => 'Hashtag Not Valid',
             ));
         }
 
@@ -942,7 +942,7 @@ class Controller extends CI_Controller
                         if (!$valid_hashtag && handle_session(10939, 0, $this->handle_session)) {
                             return view_json(array(
                                 'status' => 0,
-                                'message' => 'ERROR: ' . $word . ' is not a valid/active Hahstag',
+                                'message' => 'ERROR: ' . $word . ' is not a valid/active Hashtag',
                             ));
                         }
                     }
@@ -991,7 +991,7 @@ class Controller extends CI_Controller
 
         }
 
-        //Validate Hahstag Message:
+        //Validate Hashtag Message:
         if (!strlen(trim($_POST['save_hashtagvalue']))) {
             //Since we do not have media, we must have a message:
             return view_json(array(
@@ -1104,7 +1104,7 @@ class Controller extends CI_Controller
             //Now Handles everywhere they are referenced:
             foreach ($this->Chains->read(array(
                 'chainhashtaginput' => $is[0]['hashtagid'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42341')) . ')' => null, //Hahstag References
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42341')) . ')' => null, //Hashtag References
             ), array('chainhashtagoutput')) as $ref) {
 
                 $this->Hashtags->update($ref['hashtagid'], array(
@@ -1202,7 +1202,7 @@ class Controller extends CI_Controller
             } elseif (in_array($_POST['chainhandletype'], $this->config->item('handleids___11020'))) {
 
                 //HASHTAGS
-                $handles___4737 = $this->config->item('handles___4737'); //Hahstag Types
+                $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
                 $current_hashtaghashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
@@ -1366,7 +1366,7 @@ class Controller extends CI_Controller
 
         if ($_POST['chainhandletype']==13550 || $_POST['chainhandletype']==12273) {
 
-            //Hahstag/Handle Link Groups
+            //Hashtag/Handle Link Groups
             //Hashtags:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
             foreach ($handles_query as $i) {
@@ -1428,7 +1428,7 @@ class Controller extends CI_Controller
 
                 //HASHTAGS
                 $current_hashtaghashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
-                $handles___4737 = $this->config->item('handles___4737'); //Hahstag Types
+                $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
                 $discover_chainhandletype = discover_chainhandletype();
 
@@ -1658,7 +1658,7 @@ class Controller extends CI_Controller
 
         //Hashtags:
         foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___41302')) . ')' => null, //Clone Hahstag Handle Chains
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___41302')) . ')' => null, //Clone Hashtag Handle Chains
             'chainhandleinput' => $_POST['handleid'],
         ), array(), 0) as $x) {
             if (!count($this->Chains->read(array(
@@ -1716,7 +1716,7 @@ class Controller extends CI_Controller
         } elseif (!isset($_POST['hashtag_createtext']) || !isset($_POST['chain_hashtagid'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing either Hahstag Outcome OR Follower Hahstag ID',
+                'message' => 'Missing either Hashtag Outcome OR Follower Hashtag ID',
             ));
         }
 
@@ -1743,15 +1743,15 @@ class Controller extends CI_Controller
                 'hashtagid' => intval($_POST['chain_hashtagid']),
             ));
             if (count($x_i) == 0) {
-                //validate Hahstag:
+                //validate Hashtag:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Hahstag #' . $_POST['chain_hashtagid'] . ' is not active.',
+                    'message' => 'Hashtag #' . $_POST['chain_hashtagid'] . ' is not active.',
                 ));
             }
         }
 
-        //All seems good, go ahead and try to create/chain the Hahstag:
+        //All seems good, go ahead and try to create/chain the Hashtag:
         return view_json($this->Hashtags->create_or_chain($_POST['focus_card'], $_POST['chainhandletype'], trim($_POST['hashtag_createtext']), $member_e['handleid'], $_POST['focus_id'], $_POST['chain_hashtagid']));
 
     }
@@ -1790,7 +1790,7 @@ class Controller extends CI_Controller
 
         if ($adding_to_i) {
 
-            //Validate Hahstag:
+            //Validate Hashtag:
             $fetch_o = $this->Hashtags->read(array(
                 'hashtagid' => $_POST['focus__id'],
             ));
@@ -2458,7 +2458,7 @@ class Controller extends CI_Controller
                 $delete_query = $this->Chains->read(array(
                     'chainhandleinput IN (' . join(',', $possible_answers) . ')' => null,
                     'chainhashtagoutput' => $_POST['right_hashtagid'],
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                 ));
             }
 
@@ -3101,7 +3101,7 @@ class Controller extends CI_Controller
             $_POST['next_hashtag_data'] = array();
         }
 
-        //Discover Focus Hahstag:
+        //Discover Focus Hashtag:
         $primary_hashtagid = null;
         foreach ($this->Hashtags->read(array(
             'hashtagid' => $_POST['handle_submitted_data']['hashtagid'],
@@ -3311,7 +3311,7 @@ class Controller extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 0,
-            'message' => 'Invalid Hahstag',
+            'message' => 'Invalid Hashtag',
         ));
 
     }
@@ -3344,7 +3344,7 @@ class Controller extends CI_Controller
             )))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migratehandle'] . ' is an invalid Hahstag Hashtag. Try again if you want to migrate this hashtag chains or leave the field blank.',
+                    'message' => $_POST['migratehandle'] . ' is an invalid Hashtag Hashtag. Try again if you want to migrate this hashtag chains or leave the field blank.',
                 ));
             }
         } else {
@@ -3390,7 +3390,7 @@ class Controller extends CI_Controller
             ));
         }
 
-        //Remove Hahstag
+        //Remove Hashtag
         $this->Chains->delete($_POST['chainid'], $handle_session['handleid']);
 
         return view_json(array(
@@ -3533,14 +3533,14 @@ class Controller extends CI_Controller
                 if (!is_array($this->config->item('handles___' . $handle_pinned)) || !count($this->config->item('handles___' . $handle_pinned))) {
                     continue;
                 }
-                foreach ($this->config->item('handles___' . $handle_pinned) as $chainhandletype3 => $m3) { //Handle/Hahstag/Discovery
+                foreach ($this->config->item('handles___' . $handle_pinned) as $chainhandletype3 => $m3) { //Handle/Hashtag/Discovery
 
                     if ($chainhandletype2 == 12273) {
 
                         if ($has_handle) {
 
                             $sub_counter = $this->Chains->read(array(
-                                'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                                'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                                 'chainhandleinput' => $es[0]['handleid'],
                             ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -3570,7 +3570,7 @@ class Controller extends CI_Controller
 
                             //See stats for this hashtag:
                             $sub_counter = $this->Chains->read(array(
-                                'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hahstag/Handle Chains Active
+                                'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                                 'chainhashtagoutput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
                             ), array('chainhandleinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 

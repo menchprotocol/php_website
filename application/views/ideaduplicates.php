@@ -1,6 +1,6 @@
 <?php
 
-//Hahstag List Duplicates
+//Hashtag List Duplicates
 
 
 //Do a query to detect Hashtags with the exact same title:

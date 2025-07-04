@@ -1,7 +1,7 @@
 <?php
 
 if(!isset($_GET['hashtaghashtag'])){
-    die('Missing Hahstag ID hashtaghashtag');
+    die('Missing Hashtag ID hashtaghashtag');
 }
 
 

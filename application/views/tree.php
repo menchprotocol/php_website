@@ -7,7 +7,7 @@ echo '</div>';
 
 $_GET['view_all'] = true;
 
-//Hahstag Tree:
+//Hashtag Tree:
 echo '<div class="row justify-content">';
 view_tree($this->Chains->historyhashtag_discovered($focus_i, $focus_e['handleid']), true, $focus_e);
 echo '</div>';

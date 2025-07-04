@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Handles extends CHahstag_cache
+class Handles extends CIdea_cache
 {
 
     function __construct()
@@ -175,7 +175,7 @@ class Handles extends CHahstag_cache
                         $this->Chains->create(array(
                             'chainhandlecreator' => $chainhandlecreator,
                             'chainhandletype' => 44179, //Trigerred
-                            'chainhandleinput' => $must_sync_ledger[$key], //Hahstag Hashtag
+                            'chainhandleinput' => $must_sync_ledger[$key], //Hashtag Hashtag
                             'chainvalue' => $value,
                             'chainhandleoutput' => $chainid,
                         ));

@@ -356,7 +356,7 @@ if ($focus_i){
                         echo '<td class="block-x icon_finder enlarge hidden"><a href="javascript:void(0);" onclick="toggle_finder()">'.$handles___11035[13401]['m__cover'].'</a></td>';
                     }
 
-                    //New Hahstag?
+                    //New Hashtag?
                     if($handle_session){
                         echo '<td class="block-x enlarge add_hashtag"><a href="javascript:void(0);" onclick="hashtag_editor()" title="'.$handles___11035[44403]['m__title'].'">'.$handles___11035[44403]['m__cover'].'</a></td>';
                     }
@@ -718,7 +718,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
         ?>
 
 
-        <!-- Edit Hahstag Modal -->
+        <!-- Edit Hashtag Modal -->
         <div class="i_footer_note hidden">Hashtags saved. <a href=""><b>View</b></a></div>
         <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -740,13 +740,13 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <input type="hidden" class="save_chainid" value="0" />
                         <input type="hidden" class="next_hashtagid" value="0" />
 
-                        <!-- Hahstag Hashtag -->
+                        <!-- Hashtag Hashtag -->
                         <div class="dynamic_editing_input single_line hash_group" title="<?= $handles___6201[32337]['m__title'] ?>">
                             <h3 class="mini-font"><span class="icon-block"><?= $handles___6201[32337]['m__cover']  ?></span></h3>
                             <input type="text" class="form-control unsaved_warning save_hashtaghashtag no-border" placeholder="<?= $handles___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
                         </div>
 
-                        <!-- Hahstag Creator(s) -->
+                        <!-- Hashtag Creator(s) -->
                         <div class="creator_box">
                             <?php
                             foreach($this->Chains->read(array(
@@ -762,7 +762,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             ?>
                         </div>
 
-                        <!-- Hahstag Message -->
+                        <!-- Hashtag Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
                             <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_hashtagvalue" placeholder="<?= ( strlen($handles___6201[4736]['m__message']) ? $handles___6201[4736]['m__message'] : $handles___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="media_outer_frame hideIfEmpty" style="margin-left: 40px;">
@@ -775,13 +775,13 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             <?php
                             foreach($this->config->item('handles___44168') as $handleid => $m){
 
-                                if($handleid==44169){ //Hahstag Reference
+                                if($handleid==44169){ //Hashtag Reference
 
                                     echo '<div class="dynamic_editing_input hidden no_padded">
                                         <a class="add_hashtag_44169 icon-block" href="javascript:void(0)" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>
                                     </div>';
 
-                                } elseif($handleid==4737){ //Hahstag Type
+                                } elseif($handleid==4737){ //Hashtag Type
 
                                     echo '<div class="dynamic_editing_input no_padded">
                                         <div class="dynamic_selector">'.searchingle_select_form(4737, 6677).'</div>
