@@ -23,6 +23,7 @@ class Controller extends CI_Controller
         //AUTO Login handle if has cookie?
         $is_ajax = false;
         $handle_user = false;
+        $memory_detected = is_array($this->config->item('handleids___6287')) && count($this->config->item('handleids___6287'));
         $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $this->uri->segment(1));
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
         $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_chain(4269));
@@ -30,8 +31,9 @@ class Controller extends CI_Controller
         $is_login_verified = isset($_GET['handlehandle']) && $_GET['handlehandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['handlehandle']) && view_hash($_GET['time'] . $_GET['handlehandle']) == $_GET['hash'];
 
         if (
+            $memory_detected &&
             !$handle_session
-            && !array_key_exists(strtolower($first_segment), @$this->config->item('handlhandles___14582'))
+            && !array_key_exists(strtolower($first_segment), $this->config->item('handlhandles___14582'))
             && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
         ) {
 
