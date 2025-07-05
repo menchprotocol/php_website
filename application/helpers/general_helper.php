@@ -5116,7 +5116,7 @@ function view_hashtag_media($i)
 
     //Query Relevant Handles:
     foreach ($CI->Chains->read(array(
-        'chainhandletype IN (0)' => null, //Media TODO
+        'chainhandletype IN (4258,4259,4260)' => null, //Media TODO
         'chainhashtagoutput' => $i['hashtagid'],
     ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $x) {
 
