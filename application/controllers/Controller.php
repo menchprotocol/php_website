@@ -976,8 +976,8 @@ class Controller extends CI_Controller
 
                         return view_json(array(
                             'status' => 1,
-                            'return_hashtagcache_chains' => '',
-                            'return_hashtagcache_full' => hashtag_view($_POST['focus_group'], $return_i),
+                            'return_hashtaghtml_chains' => '',
+                            'return_hashtaghtml_full' => hashtag_view($_POST['focus_group'], $return_i),
                             'redirect_hashtag' => view_memory(42903, 33286) . $return_i['hashtaghashtag'],
                             'message' => count($hashtag_references) . ' hashtags chained',
                         ));
@@ -1164,8 +1164,8 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 1,
-                'return_hashtagcache_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node, $focus__node),
-                'return_hashtagcache_full' => hashtag_view($_POST['focus_group'], $new_i),
+                'return_hashtaghtml_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node, $focus__node),
+                'return_hashtaghtml_full' => hashtag_view($_POST['focus_group'], $new_i),
                 'save_hashtagid' => $is[0]['hashtagid'],
                 'save_hashtagvalue' => trim($_POST['save_hashtagvalue']),
                 'text_updated' => $text_updated,

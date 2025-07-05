@@ -44,7 +44,7 @@ foreach($this->Hashtags->read(array(
 ), 0) as $hashtag_fix){
 
     $this->Hashtags->update($hashtag_fix['hashtagid'], array(
-        'hashtagcache' => hashtagcache($hashtag_fix['hashtagid'], $hashtag_fix['hashtagvalue']),
+        'hashtaghtml' => hashtaghtml($hashtag_fix['hashtagid'], $hashtag_fix['hashtagvalue']),
     ), $handle_session['handleid']);
 
 }
@@ -104,7 +104,7 @@ if(isset($_GET['action']) && $_GET['action']=='hashtag_messages'){
     ), 0) as $hashtag_fix){
 
         $this->Hashtags->update($hashtag_fix['hashtagid'], array(
-            'hashtagcache' => hashtagcache($hashtag_fix['hashtagid'], $hashtag_fix['hashtagvalue']),
+            'hashtaghtml' => hashtaghtml($hashtag_fix['hashtagid'], $hashtag_fix['hashtagvalue']),
         ), $handle_session['handleid']);
 
     }
