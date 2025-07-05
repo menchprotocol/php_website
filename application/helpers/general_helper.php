@@ -2791,7 +2791,7 @@ function chain_view($x)
 
         $column_value = null;
 
-        if (in_array(6160, $m['m__following'])) {
+        if (in_array($handleid, array(4593,14870,4364,4366,4429))) {
 
             //HANDLE
             $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
@@ -2802,7 +2802,7 @@ function chain_view($x)
             }
             $column_value .= '</div></td>';
 
-        } elseif (in_array(6202, $m['m__following'])) {
+        } elseif (in_array($handleid, array(4368,4369))) {
 
             //HASHTAG
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
