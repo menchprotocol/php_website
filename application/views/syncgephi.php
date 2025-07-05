@@ -9,7 +9,7 @@
 
 
 //Empty both tables:
-$this->db->query("TRUNCATE TABLE public.gephichains CONTINUE IDENTITY RESTRICT;");
+$this->db->query("TRUNCATE TABLE public.gephilinks CONTINUE IDENTITY RESTRICT;");
 $this->db->query("TRUNCATE TABLE public.gephinodes CONTINUE IDENTITY RESTRICT;");
 
 //Load HASHTAG CHAINS:
@@ -39,8 +39,8 @@ foreach ($is as $in) {
         'chainhashtaginput' => $in['hashtagid'],
     ), array('chainhashtagoutput'), 0, 0) as $next_i) {
 
-        $this->db->insert('gephichains', array(
-            'handle' => $id_prefix[12273] . $next_i['chainhashtaginput'],
+        $this->db->insert('gephilinks', array(
+            'source' => $id_prefix[12273] . $next_i['chainhashtaginput'],
             'target' => $id_prefix[12273] . $next_i['chainhashtagoutput'],
             'label' => $handles___4593[$next_i['chainhandletype']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
@@ -69,8 +69,8 @@ foreach ($es as $en) {
         'chainhandleinput' => $en['handleid'],
     ), array('chainhandleoutput'), 0, 0) as $handle_down) {
 
-        $this->db->insert('gephichains', array(
-            'handle' => $id_prefix[12274] . $handle_down['chainhandleinput'],
+        $this->db->insert('gephilinks', array(
+            'source' => $id_prefix[12274] . $handle_down['chainhandleinput'],
             'target' => $id_prefix[12274] . $handle_down['chainhandleoutput'],
             'label' => $handles___4593[$handle_down['chainhandletype']]['m__title'] . ': ' . $handle_down['chainvalue'],
             'weight' => 1,

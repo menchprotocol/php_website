@@ -1674,7 +1674,7 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
 
     $email_data = array(
         // Handle is required
-        'Handle' => $email_domain,
+        'Source' => $email_domain,
         // Destination is required
         'Destination' => array(
             'ToAddresses' => $to_emails,
