@@ -177,7 +177,7 @@ function load_editor() {
 
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
-        handle: function (q, cb) {
+        source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12274' + search_and_filter,
                 hitsPerPage: js_handles___6404[31112]['m__message'],
@@ -209,7 +209,7 @@ function load_editor() {
 
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
-        handle: function (q, cb) {
+        source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12273' + search_and_filter,
                 hitsPerPage: js_handles___6404[31112]['m__message'],
@@ -383,7 +383,7 @@ function handle_sort_load(chainhandletype) {
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: "#list-in-" + chainhandletype + " .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-" + chainhandletype + " .sorthandle_grab", // Restricts sort start click/touch to the specified element
+            source: "#list-in-" + chainhandletype + " .sorthandle_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
                 handle_sort_save(chainhandletype);
             }
@@ -1662,7 +1662,7 @@ $(document).ready(function () {
     //TOP SEARCH
     $("#website_finder").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
         {
-            handle: function (q, cb) {
+            source: function (q, cb) {
 
                 icons_listed = [];
 
@@ -2105,7 +2105,7 @@ function sort_media(sort_id) {
     var sort = Sortable.create(document.getElementById(sort_id), {
         animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".media_item", // Specifies which items inside the element should be sortable
-        handle: ".media_item", // Restricts sort start click/touch to the specified element
+        source: ".media_item", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             //Nothing we need to do since the order will be grabbed upon submission...
             //Just mark as unsaved again to make sure it saves:
@@ -2996,7 +2996,7 @@ function hashtag_sort_load(chainhandletype) {
             var sort = Sortable.create(theobject, {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
                 draggable: "#list-in-" + chainhandletype + " .sort_draggable", // Specifies which items inside the element should be sortable
-                handle: "#list-in-" + chainhandletype + " .sort_hashtag_grab", // Restricts sort start click/touch to the specified element
+                source: "#list-in-" + chainhandletype + " .sort_hashtag_grab", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
 
                     var sort_rank = 0;
