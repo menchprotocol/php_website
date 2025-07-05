@@ -50,6 +50,7 @@ if($search_for_set){
                 }
             }
 
+
             echo handle_view(12730, $en, null);
         }
         echo '</div>';

@@ -12,7 +12,7 @@ class Chains extends CIdea_cache
     {
 
         //Required field:
-        if (!isset($add_fields['chainhandletype']) || !in_array($add_fields['chainhandletype'], $this->config->item('handleids___4593'))) {
+        if (!isset($add_fields['chainhandletype']) || ($add_fields['chainhandletype']!=44395 && !in_array($add_fields['chainhandletype'], $this->config->item('handleids___4593')))) {
             log_error('Chains->create() failed to create because of invalid Chain type @' . $add_fields['chainhandletype'], array(
                 'chainhandlecreator' => $add_fields['chainhandlecreator'],
                 'chainhandleoutput' => $add_fields['chainhandletype'],
@@ -341,26 +341,9 @@ class Chains extends CIdea_cache
                 $chainhandlecreator = ($handle_session ? $handle_session['handleid'] : ($old_x['chainhandlecreator'] > 0 ? $old_x['chainhandlecreator'] : 14068 /* Guest Member */));
             }
 
-            //Determine VOID chain type in 1 of the 4 chain groups:
-            if (in_array($old_x['chainhandletype'], $this->config->item('handleids___31777'))) {
-                //Discovery
-                $chainhandletype = 44397;
-            } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___4486'))) {
-                //Hashtags
-                $chainhandletype = 44396;
-            } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___13550'))) {
-                //Contribution
-                $chainhandletype = 44399; //TODO Adjust this
-            } elseif (in_array($old_x['chainhandletype'], $this->config->item('handleids___32292'))) {
-                //Handles
-                $chainhandletype = 44399; //TODO Adjust this
-            } else {
-                return 0; //Should not happen
-            }
-
             $new_x = $this->Chains->create(array(
                 'chainhandlecreator' => $chainhandlecreator,
-                'chainhandletype' => $chainhandletype,
+                'chainhandletype' => 44395, //CHAIN VOID
                 'chainvoid' => $chainid, //We insert as void since this is a void chain only
             ));
 
