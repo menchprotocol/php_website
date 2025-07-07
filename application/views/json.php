@@ -12,7 +12,6 @@ $ideas = $this->config->item('handles___4486');
 //Translator
 echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
-
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
@@ -28,7 +27,6 @@ foreach($this->Chains->read(array(
     }
 
     $new_value = '#'.$x['hashtaghashtag']."\n".$current_value;
-
 
 
     //HASHTAG
