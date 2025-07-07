@@ -1376,7 +1376,7 @@ class Controller extends CI_Controller
             }
             $ui .= '</div>';
 
-        } elseif (in_array($_POST['chainhandletype'], $this->config->item('handleids___11028'))) {
+        } elseif ($_POST['chainhandletype']==32292 || in_array($_POST['chainhandletype'], $this->config->item('handleids___11028'))) {
 
             //Handles:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
