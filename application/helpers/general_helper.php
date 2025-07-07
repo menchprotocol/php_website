@@ -3090,10 +3090,6 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
     } elseif ($chainhandletype==32292) {
 
         //Relationships
-
-
-    } elseif ($chainhandletype==42373) {
-
         $order_columns['chainid'] = 'DESC';
         $joins_objects = array('chainhandleoutput');
         $query_filters = array(
@@ -3102,6 +3098,29 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
             'chainhandleinput !=' => $handleid,
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HANDLE CHAINS
         );
+
+    } elseif ($chainhandletype==42373) {
+
+        $order_columns = handle_sort();
+        $joins_objects = array('chainhandleoutput');
+
+        if(in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
+
+            //Down/Followers Sub
+            $query_filters = array(
+                'chainhandleinput' => $handleid,
+                'chainhandletype' => $chainhandlesub,
+            );
+
+        } else {
+
+            //Down/Followers Handle Chain Groups:
+            $query_filters = array(
+                'chainhandleinput' => $handleid,
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HANDLE CHAINS
+            );
+
+        }
 
     } elseif ($chainhandletype==42279) {
 
