@@ -10,27 +10,24 @@ $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
 
 //Translator
-
+$updated = 0;
 foreach($this->Chains->read(array(
     'chainhandletype' => 33600,
 ), array('chainhashtagoutput')) as $x){
-
     foreach ($this->Handles->read(array(
         'handleid' => $x['chainhandleinput'],
     )) as $handle) {
-
-        $x['hashtagvalue'] = $x['hashtagvalue']."\n@".$handle['handlehandle'];
-
-        echo $x['hashtagvalue']."\n\n\n";
-
-        //Fetch from Cache table:
-        /*
+        $this->Hashtags->update($x['hashtagid'], array(
+            'hashtagvalue' => $x['hashtagvalue']."\n@".$handle['handlehandle'],
+        ));
         $this->Chains->update($x['chainid'], array(
             'chainhandletype' => 31835,
         ));
-        */
+        $updated++;
     }
 }
+
+echo $updated.' Done';
 
 if(0){
 
