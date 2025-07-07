@@ -3154,13 +3154,15 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
             //Mentions Sub
             $query_filters = array(
                 'chainhandletype' => $chainhandlesub,
-                '(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.')' => null,
+                'chainhandleinput' => $handleid,
+                //'(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.')' => null,
             );
         } else {
             //Mentions
             $query_filters = array(
                 'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
-                '(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.')' => null,
+                'chainhandleinput' => $handleid,
+                //'(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.')' => null,
             );
         }
 
