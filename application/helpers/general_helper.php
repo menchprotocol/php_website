@@ -4632,9 +4632,11 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
     }
 
     //Chain Message if any:
+    /*
     if ($chainid && $handle_session) {
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '" style="padding-left:40px;">' . htmlentities($i['chainvalue']) . '</div>';
     }
+    */
 
 
     $ui .= '</div>';
