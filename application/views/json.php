@@ -10,7 +10,6 @@ $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
 
 //Translator
-echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 foreach($this->Chains->read(array(
     'chainhandletype' => 33600,
@@ -34,6 +33,8 @@ foreach($this->Chains->read(array(
 }
 
 exit;
+
+echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 
 foreach($this->Chains->read(array(
