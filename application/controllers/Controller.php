@@ -2409,11 +2409,11 @@ class Controller extends CI_Controller
             //Dispatch Any Emails Necessary:
             if (isset($_POST['selected_handleid']) && intval($_POST['selected_handleid']) > 0) {
                 foreach ($this->Chains->read(array(
-                    'chainhandletype' => 33600, //Draft
+                    'chainhandletype' => 31835, //Mention
                     'chainhandleinput' => $_POST['selected_handleid'],
                 ), array('chainhashtagoutput'), 0) as $i) {
                     if (count($this->Chains->read(array(
-                        'chainhandletype' => 33600, //Draft
+                        'chainhandletype' => 31835, //Mention
                         'chainhandleinput' => 31065, //Choice Update Email Templates
                         'chainhashtagoutput' => $i['hashtagid'], //Is this the template?
                     )))) {

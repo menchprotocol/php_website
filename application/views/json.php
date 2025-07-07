@@ -6,12 +6,34 @@ $stats = array(
     'handles_all' => 0,
     'handles_void' => 0,
 );
-
 $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
 
 //Translator
 echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
+
+foreach($this->Chains->read(array(
+    'chainhandletype' => 33600,
+), array('chainhashtagoutput')) as $x){
+
+    foreach ($this->Handles->read(array(
+        'handleid' => $x['chainhandleinput'],
+    )) as $handle) {
+
+        $x['hashtagvalue'] = $x['hashtagvalue']."\n@".$handle['handlehandle'];
+
+        //Fetch from Cache table:
+        /*
+        $this->Chains->update($x['chainid'], array(
+            'chainhandletype' => 31835,
+        ));
+        */
+    }
+}
+
+exit;
+
+
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
@@ -40,7 +62,7 @@ foreach($this->Chains->read(array(
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhashtagoutput' => $x['hashtagid'],
-        'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 32235, 33600, 27984, 43513, 43514, 26600)) . ')' => null, //HANDLE CHAINS
+        'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 32235, 31835, 27984, 43513, 43514, 26600)) . ')' => null, //HANDLE CHAINS
     ), array('chainhandleinput')) as $x2){
         $new_value .= "\n";
     }

@@ -775,11 +775,11 @@ class Handles extends CIdea_cache
         //Send Welcome Email if any:
         if ($email) {
             foreach ($this->Chains->read(array(
-                'chainhandletype' => 33600, //Draft
+                'chainhandletype' => 31835, //Mention
                 'chainhandleinput' => 14929, //Website Welcome Email Templates
             ), array('chainhashtagoutput'), 0) as $i) {
                 if (count($this->Chains->read(array(
-                    'chainhandletype' => 33600, //Draft
+                    'chainhandletype' => 31835, //Mention
                     'chainhandleinput' => $chainhandledomain, //for Current website
                     'chainhashtagoutput' => $i['hashtagid'], //Is this the template?
                 )))) {
