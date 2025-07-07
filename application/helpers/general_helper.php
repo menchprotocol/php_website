@@ -2060,16 +2060,7 @@ function hashtag_access($hashtaghashtag = null, $hashtagid = 0, $i = false, $rep
         //Mentioned can always reply:
         return 2;
 
-    } elseif (!$is_author && count($CI->Chains->read(array(
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42625')) . ')' => null, //Private Hashtags
-        )))) {
-
-        //Private Hashtag:
-        return 0;
-
     } else {
-
 
         //Inventory Limits:
         if (!count($hashtag_list_config) && hashtag_spots_remaining($hashtagid) == 0) {
