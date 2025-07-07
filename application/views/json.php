@@ -21,7 +21,7 @@ foreach($this->Chains->read(array(
 
         $x['hashtagvalue'] = $x['hashtagvalue']."\n@".$handle['handlehandle'];
 
-        echo $x['hashtagvalue'].'<ht />';
+        echo $x['hashtagvalue']."\n\n\n";
 
         //Fetch from Cache table:
         /*
