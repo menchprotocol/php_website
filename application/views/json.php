@@ -152,14 +152,14 @@ foreach($this->Chains->read(array(
         }
     }
 
-    echo '<tr style="border-bottom: 1px solid #000000;">';
+    echo '<tr>';
     echo '<td>'.$count.'</td>';
     echo '<td>'.$x['chainid'].'</td>';
     echo '<td>VOID '.$x['chainvoid'].'</td>';
     echo '<td>T@'.$x['chainhandletype'].'</td>';
     echo '<td>C@'.$x['chainhandlecreator'].'</td>';
     echo '<td>'.( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).$x['chainvalue'].'</td>';
-    echo '<td>'.nl2br(trim($current_value)).'</td>';
+    echo '<td>'.nl2br(trim(htmlentities($current_value))).'</td>';
     echo '</tr>';
 
 }
@@ -169,6 +169,7 @@ echo '<tr>';
 echo '<td>&nbsp;</td>';
 echo '<td>#'.$stats['hashtags_all'].'</td>';
 echo '<td>VOID '.$stats['hashtags_void'].'</td>';
+echo '<td>&nbsp;</td>';
 echo '<td>&nbsp;</td>';
 echo '<td>&nbsp;</td>';
 echo '<td>&nbsp;</td>';
