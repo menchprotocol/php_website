@@ -13,7 +13,7 @@ $ideas = $this->config->item('handles___4486');
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
 foreach($this->Chains->read(array(
-    'chainvoid >=' => 0, //Any Chain
+    'chainvoid =' => 0, //Any Chain
     'chainhandletype' => 12273,
 ), array('chainhashtagoutput'), 100) as $x){
 
