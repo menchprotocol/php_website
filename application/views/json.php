@@ -83,7 +83,9 @@ foreach($this->Chains->read(array(
         'chainhandleinput !=' => 32337, //No hashtag
         'chainhandletype' => 4983, //Authors
     ), array('chainhandleinput')) as $x2){
+        continue;
         $core_idea .= "\n@".$x2['handlehandle'];
+
         if (filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)) {
             //Create URL:
             $current_value .= "\n@".$x2['handlehandle'];
