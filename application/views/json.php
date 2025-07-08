@@ -9,6 +9,7 @@ $stats = array(
     'hashtags_void' => 0,
     'hashtags_void_cachevalid' => 0,
     'hashtags_valid_cachevoid' => 0,
+
     'handles_all' => 0,
     'handles_void' => 0,
 );
@@ -18,7 +19,7 @@ $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
 
 
 //Translator
-echo '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
+$table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
 $count = 0;
 foreach($this->Chains->read(array(
@@ -157,13 +158,16 @@ foreach($this->Chains->read(array(
         }
     }
 
-    echo '<tr>';
-    echo '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'</td>';
-    echo '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'</td>';
-    echo '<td><div style="max-width: 200px;">'.( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).$x['chainvalue'].'</div></td>';
-    echo '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
-    //echo '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
-    echo '</tr>';
+    $table .= '<tr>';
+    $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
+        ( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).
+        ( $x['chainvoid']>0 && count($is) ? '[hashtags_void_cachevalid]' : '' ).
+        ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
+        '</td>';
+    $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'</td>';
+    $table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
+    //$table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
+    $table .= '</tr>';
 
 }
 
@@ -210,11 +214,11 @@ echo '</tr>';
 
 */
 
-echo '</table>';
+$table .= '</table>';
 
 
 print_r($stats);
-
+echo $table;
 
 //$_GET['skip_config'] = true;
 //view_json($this->Chains->flat_tree($focus_i));
