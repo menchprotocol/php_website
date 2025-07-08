@@ -1002,7 +1002,6 @@ class Controller extends CI_Controller
             ));
         }
 
-
         //Process dynamic inputs if any:
         $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
         if ($_POST['save_hashtagid'] > 0) {

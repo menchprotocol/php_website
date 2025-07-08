@@ -58,7 +58,7 @@ foreach($this->Chains->read(array(
             'chainhandleinput' => 32337,
             'LENGTH(chainvalue)>0' => null,
         ), array('chainhandleinput')) as $x2) {
-            $current_value = '#'.$x2['chainvalue']."\n".$x['chainvalue'].' ';
+            $current_value = '##'.$x2['chainvalue']."\n".$x['chainvalue'].' ';
         }
 
     }
@@ -171,6 +171,7 @@ foreach($this->Chains->read(array(
 
     $table .= '<tr>';
     $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
+        ( $x['chainvoid']>0 ? '[VOID]' : '' ).
         ( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).
         ( $x['chainvoid']>0 && count($is) ? '[hashtags_void_cachevalid]' : '' ).
         ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
@@ -179,7 +180,6 @@ foreach($this->Chains->read(array(
     $table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
     //$table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
     $table .= '</tr>';
-
 }
 
 
