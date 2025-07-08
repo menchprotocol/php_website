@@ -42,6 +42,17 @@ foreach($this->Chains->read(array(
         $stats['hashtags_valid_cachevoid']++;
     }
 
+    if(count($is)){
+        $core_idea = trim($is[0]['hashtagvalue']);
+        //Fetch from Cache table:
+        $current_value = '#'.$is[0]['hashtaghashtag']."\n".$is[0]['hashtagvalue'].' ';
+    } else {
+        $current_value = '';
+        $core_idea = '';
+    }
+
+
+
     //Add Ideas:
     foreach ($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
@@ -52,18 +63,11 @@ foreach($this->Chains->read(array(
     }
 
 
-    if(count($is)){
-        $core_idea = trim($is[0]['hashtagvalue']);
-        //Fetch from Cache table:
-        $current_value = '#'.$is[0]['hashtaghashtag']."\n".$is[0]['hashtagvalue'].' ';
-        //Add Idea Type:
-        if($is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle'])){
-            $current_value .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
-        }
-    } else {
-        $current_value = '';
-        $core_idea = '';
+    //Add Idea Type:
+    if(count($is) && $is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle'])){
+        $current_value .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
     }
+
 
     //Replace mentions?
     foreach($this->Chains->read(array(
