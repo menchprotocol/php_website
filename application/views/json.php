@@ -2,6 +2,7 @@
 
 $stats = array(
     'hashtags_all' => 0,
+    'hashtags_empty' => 0,
     'hashtags_void' => 0,
     'handles_all' => 0,
     'handles_void' => 0,
@@ -9,6 +10,7 @@ $stats = array(
 $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
 $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
+
 
 //Translator
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
@@ -25,7 +27,7 @@ foreach($this->Chains->read(array(
         $stats['hashtags_void']++;
     }
 
-    $core_idea = $x['hashtagvalue'];
+    $core_idea = trim($x['hashtagvalue']);
 
     //Fetch from Cache table:
     $current_value = '#'.$x['hashtaghashtag']."\n".$x['hashtagvalue'].' ';
@@ -123,6 +125,10 @@ foreach($this->Chains->read(array(
     ), array('chainhandleinput')) as $x2){
         $core_idea .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
         $current_value .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
+    }
+
+    if(!strlen(trim($core_idea))){
+        $stats['hashtags_empty']++;
     }
 
 
