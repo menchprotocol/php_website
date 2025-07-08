@@ -10,7 +10,7 @@ $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
 
 //Translator
-echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
+echo '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
@@ -86,7 +86,7 @@ foreach($this->Chains->read(array(
     }
 
 
-    echo '<tr style="border-bottom: 1px solid #000;">';
+    echo '<tr style="border-bottom: 1px solid #000000;">';
     echo '<td>'.$x['chainid'].'</td>';
     echo '<td>VOID '.$x['chainvoid'].'</td>';
     echo '<td>T@'.$x['chainhandletype'].'</td>';
