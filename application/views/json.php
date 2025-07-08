@@ -17,7 +17,7 @@ foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
     //'chainid' => 130806,
-), array('chainhashtagoutput'), 1000) as $x){
+), array('chainhashtagoutput'), 0) as $x){
 
     //HASHTAG
     $stats['hashtags_all']++;
