@@ -48,7 +48,7 @@ foreach($this->Chains->read(array(
     }
 
     //Add Idea Type:
-    if($x['hashtagtype']>0 && $x['hashtagtype']!=6677){
+    if($x['hashtagtype']>0 && $x['hashtagtype']!=6677 && isset($handles___4737[$x['hashtagtype']]['m__handle'])){
         $current_value .= "\n@".$handles___4737[$x['hashtagtype']]['m__handle'];
     }
 
