@@ -23,6 +23,7 @@ echo '<table class="table table-sm table-striped stats-table mini-stats-table" b
 $count = 0;
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
+    'chainid' => 8789,
     'chainhandletype' => 12273,
 ), array(), 0) as $x){
 
