@@ -5,6 +5,7 @@ boost_power();
 $stats = array(
     'hashtags_all' => 0,
     'hashtags_empty' => 0,
+    'hashtags_duplicate' => 0,
     'hashtags_empty_notvoid' => 0,
     'hashtags_void' => 0,
     'hashtags_voidcreaetor' => 0,
@@ -14,6 +15,7 @@ $stats = array(
     'handles_all' => 0,
     'handles_void' => 0,
 );
+$chainhashtagoutput = array();
 $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
 $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
@@ -27,6 +29,14 @@ foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
 ), array(), 0) as $x){
+
+    $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
+
+    if(!$is_duplicate){
+        array_push($chainhashtagoutput, $x['chainhashtagoutput']);
+    } else {
+        $stats['hashtags_duplicate']++;
+    }
 
     $count++;
     $is = $this->Hashtags->read(array(
@@ -179,7 +189,7 @@ foreach($this->Chains->read(array(
     $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
         ( $x['chainvoid']>0 ? '[VOID]' : '' ).
         ( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).
-        ( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).
+        ( $is_duplicate ? '[DUPLICATE]' : '' ).
         ( !$x['chainvoid'] && !count($es) ? '[hashtags_voidcreaetor]' : '' ).
         ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
         '</td>';
