@@ -44,12 +44,23 @@ foreach($this->Chains->read(array(
     }
 
     if(count($is)){
+
         $core_idea = trim($is[0]['hashtagvalue']);
         //Fetch from Cache table:
         $current_value = '#'.$is[0]['hashtaghashtag']."\n".$is[0]['hashtagvalue'].' ';
+
     } else {
-        $current_value = '';
+
+        $current_value = $x['chainvalue'].' ';
         $core_idea = '';
+        foreach($this->Chains->read(array(
+            'chainhashtagoutput' => $x['chainhashtagoutput'],
+            'chainhandleinput' => 32337,
+            'LENGTH(chainvalue)>0' => null,
+        ), array('chainhandleinput')) as $x2) {
+            $current_value = '#'.$x2['chainvalue']."\n".$x['chainvalue'].' ';
+        }
+
     }
 
 
