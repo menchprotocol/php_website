@@ -25,15 +25,18 @@ foreach($this->Chains->read(array(
         $stats['hashtags_void']++;
     }
 
+    $core_idea = $x['hashtagvalue'];
+
     //Fetch from Cache table:
     $current_value = '#'.$x['hashtaghashtag']."\n".$x['hashtagvalue'].' ';
 
-    //Add Hashtags:
+    //Add Ideas:
     foreach ($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
         'chainhashtaginput' => $x['hashtagid'],
     ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $x2) {
         $current_value .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
+        $core_idea .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
     }
 
     //Replace mentions?
@@ -57,6 +60,7 @@ foreach($this->Chains->read(array(
         'chainhandleinput !=' => 32337, //No hashtag
         'chainhandletype' => 4983, //Authors
     ), array('chainhandleinput')) as $x2){
+        $core_idea .= "\n@".$x2['handlehandle'];
         if (filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)) {
             //Create URL:
             $current_value .= "\n@".$x2['handlehandle'];
@@ -96,7 +100,7 @@ foreach($this->Chains->read(array(
         $current_value .= "\n@".$added_e['handle_create']['handlehandle'];
         */
 
-        $current_value = str_replace($x2['chainvalue'], '@URL'.$url_key, $current_value);
+        $current_value = str_replace(trim($x2['chainvalue']), '@URL'.$url_key, $current_value);
     }
 
 
@@ -106,16 +110,18 @@ foreach($this->Chains->read(array(
         'chainhandleinput !=' => $x['chainhandlecreator'],
         'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
     ), array('chainhandleinput')) as $x2){
+        $core_idea .= "\n@".$x2['handlehandle'];
         $current_value .= "\n@".$x2['handlehandle'];
     }
 
 
-    //Fetch from Cache table:
+    //Fetch Mentions
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhashtagoutput' => $x['hashtagid'],
         'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
     ), array('chainhandleinput')) as $x2){
+        $core_idea .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
         $current_value .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
     }
 
@@ -125,8 +131,8 @@ foreach($this->Chains->read(array(
     echo '<td>VOID '.$x['chainvoid'].'</td>';
     echo '<td>T@'.$x['chainhandletype'].'</td>';
     echo '<td>C@'.$x['chainhandlecreator'].'</td>';
-    echo '<td>'.$x['chainvalue'].'</td>';
-    echo '<td>'.nl2br($current_value).'</td>';
+    echo '<td>'.( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).$x['chainvalue'].'</td>';
+    echo '<td>'.nl2br(trim($current_value)).'</td>';
     echo '</tr>';
 
 }
