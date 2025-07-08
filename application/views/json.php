@@ -92,7 +92,7 @@ foreach($this->Chains->read(array(
     echo '<td>T@'.$x['chainhandletype'].'</td>';
     echo '<td>C@'.$x['chainhandlecreator'].'</td>';
     echo '<td>'.$x['chainvalue'].'</td>';
-    echo '<td>'.$current_value.'</td>';
+    echo '<td>'.nl2br($current_value).'</td>';
     echo '</tr>';
 
 }
