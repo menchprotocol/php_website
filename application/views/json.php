@@ -15,19 +15,7 @@ echo '<table class="table table-sm table-striped stats-table mini-stats-table">'
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
-), array('chainhashtagoutput')) as $x){
-
-    //Fetch from Cache table:
-    $current_value = $x['hashtagvalue'];
-    foreach($this->Chains->read(array(
-        'chainhashtagoutput' => $x['hashtagid'],
-        'chainhandletype IN (' . join(',', array(31835)) . ')' => null,
-    ), array('chainhandleinput')) as $x2){
-        $current_value .= "\n";
-    }
-
-    $new_value = '#'.$x['hashtaghashtag']."\n".$current_value;
-
+), array('chainhashtagoutput'), 100) as $x){
 
     //HASHTAG
     $stats['hashtags_all']++;
@@ -36,26 +24,91 @@ foreach($this->Chains->read(array(
     }
 
     //Fetch from Cache table:
+    $current_value = '#'.$x['hashtaghashtag']."\n".$x['hashtagvalue'].' ';
+    foreach($this->Chains->read(array(
+        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhandletype' => 31835, //Mentions
+    ), array('chainhandleinput')) as $x2){
+        //$current_value = str_replace('@'.$x2['handlehandle'].' ', '@'.$x2['handleid'].' ', $current_value);
+    }
+
+
+    //Append authors:
+    foreach($this->Chains->read(array(
+        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhandleinput !=' => $x['chainhandlecreator'],
+        'chainhandletype' => 4983, //Authors
+    ), array('chainhandleinput')) as $x2){
+        $current_value .= "\n@".$x2['handlehandle'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
+    }
+
+
+    //Transform URLs:
+    foreach($this->Chains->read(array(
+        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhandleinput !=' => $x['chainhandlecreator'],
+        'chainhandletype' => 4256,
+    ), array('chainhandleinput')) as $x2){
+
+        $url_key = random_string(8);
+
+        //Create new handle:
+        /*
+        $added_e = $this->Handles->create(array(
+            'handlehandle' => 'URL'.$url_key,
+            'handlevalue' => 'URL '.$url_key,
+            'handlecover' => 'fas fa-browser',
+        ), $x['chainhandlecreator']);
+        $current_value .= "\n@".$added_e['handle_create']['handlehandle'];
+        */
+
+        $current_value = str_replace($x2['chainvalue'], '@URL'.$url_key, $current_value);
+    }
+
+
+    //Append Media:
+    foreach($this->Chains->read(array(
+        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhandleinput !=' => $x['chainhandlecreator'],
+        'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
+    ), array('chainhandleinput')) as $x2){
+        $current_value .= "\n@".$x2['handlehandle'];
+    }
+
+
+    //Fetch from Cache table:
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhashtagoutput' => $x['hashtagid'],
-        'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 32235, 31835, 27984, 43513, 43514, 26600)) . ')' => null, //HANDLE CHAINS
+        'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
     ), array('chainhandleinput')) as $x2){
-        $new_value .= "\n";
+        $current_value .= "\n".$mentions[$x2['chainhandletype']]['m__handle'].$x2['handlehandle'];
     }
 
 
     echo '<tr>';
     echo '<td>'.$x['chainid'].'</td>';
     echo '<td>VOID '.$x['chainvoid'].'</td>';
-    echo '<td>@'.$x['chainhandletype'].'</td>';
+    echo '<td>T@'.$x['chainhandletype'].'</td>';
+    echo '<td>C@'.$x['chainhandlecreator'].'</td>';
     echo '<td>'.$x['chainvalue'].'</td>';
-    echo '<td>'.$new_value.'</td>';
+    echo '<td>'.$current_value.'</td>';
     echo '</tr>';
 
 }
 
+//Show stats:
+echo '<tr>';
+echo '<td>#'.$stats['hashtags_all'].'</td>';
+echo '<td>VOID '.$stats['hashtags_void'].'</td>';
+echo '<td>&nbsp;</td>';
+echo '<td>&nbsp;</td>';
+echo '<td>&nbsp;</td>';
+echo '</tr>';
 
+
+
+/*
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12274,
@@ -86,15 +139,6 @@ foreach($this->Chains->read(array(
 
 }
 
-//Show STats:
-echo '<tr>';
-echo '<td>#'.$stats['hashtags_all'].'</td>';
-echo '<td>VOID '.$stats['hashtags_void'].'</td>';
-echo '<td>&nbsp;</td>';
-echo '<td>&nbsp;</td>';
-echo '<td>&nbsp;</td>';
-echo '</tr>';
-
 
 echo '<tr>';
 echo '<td>@'.$stats['handles_all'].'</td>';
@@ -103,6 +147,8 @@ echo '<td>&nbsp;</td>';
 echo '<td>&nbsp;</td>';
 echo '<td>&nbsp;</td>';
 echo '</tr>';
+
+*/
 
 echo '</table>';
 

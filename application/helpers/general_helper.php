@@ -922,7 +922,7 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 
     }
 
-    if (strlen($suggestion) < 4 || is_numeric($suggestion)) {
+    if (strlen($suggestion) < 3 || is_numeric($suggestion)) {
         $suggestion = ($focus__node == 12273 ? 'Hashtag' : 'Handle') . $suggestion;
     }
 
