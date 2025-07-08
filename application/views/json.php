@@ -7,6 +7,7 @@ $stats = array(
     'hashtags_empty' => 0,
     'hashtags_empty_notvoid' => 0,
     'hashtags_void' => 0,
+    'hashtags_voidcreaetor' => 0,
     'hashtags_void_cachevalid' => 0,
     'hashtags_valid_cachevoid' => 0,
 
@@ -31,10 +32,15 @@ foreach($this->Chains->read(array(
     $is = $this->Hashtags->read(array(
         'hashtagid' => $x['chainhashtagoutput'],
     ));
+    $es = $this->Handles->read(array(
+        'handleid' => $x['chainhandlecreator'],
+    ));
 
     $stats['hashtags_all']++;
     if($x['chainvoid']>0){
         $stats['hashtags_void']++;
+    } elseif(!count($es)){
+        $stats['hashtags_voidcreaetor']++;
     }
     if($x['chainvoid']>0 && count($is)){
         $stats['hashtags_void_cachevalid']++;
@@ -42,6 +48,7 @@ foreach($this->Chains->read(array(
     if(!$x['chainvoid'] && !count($is)){
         $stats['hashtags_valid_cachevoid']++;
     }
+
 
     if(count($is)){
 
@@ -172,7 +179,8 @@ foreach($this->Chains->read(array(
     $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
         ( $x['chainvoid']>0 ? '[VOID]' : '' ).
         ( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).
-        ( $x['chainvoid']>0 && count($is) ? '[hashtags_void_cachevalid]' : '' ).
+        ( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).
+        ( !$x['chainvoid'] && !count($es) ? '[hashtags_voidcreaetor]' : '' ).
         ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
         '</td>';
     $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'</td>';
