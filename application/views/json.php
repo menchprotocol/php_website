@@ -162,7 +162,7 @@ foreach($this->Chains->read(array(
     echo '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'</td>';
     echo '<td><div style="max-width: 200px;">'.( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).$x['chainvalue'].'</div></td>';
     echo '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
-    echo '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
+    //echo '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
     echo '</tr>';
 
 }
