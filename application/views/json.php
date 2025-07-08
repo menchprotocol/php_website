@@ -86,7 +86,7 @@ foreach($this->Chains->read(array(
     }
 
 
-    echo '<tr>';
+    echo '<tr style="border-bottom: 1px solid #000;">';
     echo '<td>'.$x['chainid'].'</td>';
     echo '<td>VOID '.$x['chainvoid'].'</td>';
     echo '<td>T@'.$x['chainhandletype'].'</td>';
