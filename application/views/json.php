@@ -1,9 +1,14 @@
 <?php
 
+boost_power();
+
 $stats = array(
     'hashtags_all' => 0,
     'hashtags_empty' => 0,
+    'hashtags_empty_notvoid' => 0,
     'hashtags_void' => 0,
+    'hashtags_void_cachevalid' => 0,
+    'hashtags_valid_cachevoid' => 0,
     'handles_all' => 0,
     'handles_void' => 0,
 );
@@ -15,27 +20,45 @@ $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
 //Translator
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
+$count = 0;
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
-    //'chainid' => 130806,
-), array('chainhashtagoutput'), 0) as $x){
+), array(), 0) as $x){
 
-    //HASHTAG
+    $count++;
+    $is = $this->Hashtags->read(array(
+        'hashtagid' => $x['chainhashtagoutput'],
+    ));
+
     $stats['hashtags_all']++;
     if($x['chainvoid']>0){
         $stats['hashtags_void']++;
     }
+    if($x['chainvoid']>0 && count($is)){
+        $stats['hashtags_void_cachevalid']++;
+    }
+    if(!$x['chainvoid'] && !count($is)){
+        $stats['hashtags_valid_cachevoid']++;
+    }
 
-    $core_idea = trim($x['hashtagvalue']);
-
-    //Fetch from Cache table:
-    $current_value = '#'.$x['hashtaghashtag']."\n".$x['hashtagvalue'].' ';
+    if(count($is)){
+        $core_idea = trim($is[0]['hashtagvalue']);
+        //Fetch from Cache table:
+        $current_value = '#'.$is[0]['hashtaghashtag']."\n".$is[0]['hashtagvalue'].' ';
+        //Add Idea Type:
+        if($is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle'])){
+            $current_value .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
+        }
+    } else {
+        $current_value = '';
+        $core_idea = '';
+    }
 
     //Add Ideas:
     foreach ($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
-        'chainhashtaginput' => $x['hashtagid'],
+        'chainhashtaginput' => $x['chainhashtagoutput'],
     ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $x2) {
         $current_value .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
         $core_idea .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
@@ -43,20 +66,15 @@ foreach($this->Chains->read(array(
 
     //Replace mentions?
     foreach($this->Chains->read(array(
-        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhashtagoutput' => $x['chainhashtagoutput'],
         'chainhandletype' => 31835, //Mentions
     ), array('chainhandleinput')) as $x2){
         //$current_value = str_replace('@'.$x2['handlehandle'].' ', '@'.$x2['handleid'].' ', $current_value);
     }
 
-    //Add Idea Type:
-    if($x['hashtagtype']>0 && $x['hashtagtype']!=6677 && isset($handles___4737[$x['hashtagtype']]['m__handle'])){
-        $current_value .= "\n@".$handles___4737[$x['hashtagtype']]['m__handle'];
-    }
-
     //Append authors:
     foreach($this->Chains->read(array(
-        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhashtagoutput' => $x['chainhashtagoutput'],
         'chainhandleinput !=' => $x['chainhandlecreator'],
         'chainhandleinput !=' => 1,
         'chainhandleinput !=' => 32337, //No hashtag
@@ -85,7 +103,7 @@ foreach($this->Chains->read(array(
 
     //Transform URLs:
     foreach($this->Chains->read(array(
-        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhashtagoutput' => $x['chainhashtagoutput'],
         'chainhandleinput !=' => $x['chainhandlecreator'],
         'chainhandletype' => 4256,
     ), array('chainhandleinput')) as $x2){
@@ -108,7 +126,7 @@ foreach($this->Chains->read(array(
 
     //Append Media:
     foreach($this->Chains->read(array(
-        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhashtagoutput' => $x['chainhashtagoutput'],
         'chainhandleinput !=' => $x['chainhandlecreator'],
         'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
     ), array('chainhandleinput')) as $x2){
@@ -120,7 +138,7 @@ foreach($this->Chains->read(array(
     //Fetch Mentions
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
-        'chainhashtagoutput' => $x['hashtagid'],
+        'chainhashtagoutput' => $x['chainhashtagoutput'],
         'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
     ), array('chainhandleinput')) as $x2){
         $core_idea .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
@@ -129,10 +147,13 @@ foreach($this->Chains->read(array(
 
     if(!strlen(trim($core_idea))){
         $stats['hashtags_empty']++;
+        if(!$x['chainvoid']){
+            $stats['hashtags_empty_notvoid']++;
+        }
     }
 
-
     echo '<tr style="border-bottom: 1px solid #000000;">';
+    echo '<td>'.$count.'</td>';
     echo '<td>'.$x['chainid'].'</td>';
     echo '<td>VOID '.$x['chainvoid'].'</td>';
     echo '<td>T@'.$x['chainhandletype'].'</td>';
@@ -145,6 +166,7 @@ foreach($this->Chains->read(array(
 
 //Show stats:
 echo '<tr>';
+echo '<td>&nbsp;</td>';
 echo '<td>#'.$stats['hashtags_all'].'</td>';
 echo '<td>VOID '.$stats['hashtags_void'].'</td>';
 echo '<td>&nbsp;</td>';
