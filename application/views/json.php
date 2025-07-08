@@ -15,7 +15,7 @@ echo '<table class="table table-sm table-striped stats-table mini-stats-table" b
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
-    'chainid' => 130806,
+    //'chainid' => 130806,
 ), array('chainhashtagoutput'), 0) as $x){
 
     //HASHTAG
@@ -32,9 +32,10 @@ foreach($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
         'chainhashtaginput' => $x['hashtagid'],
     ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $x2) {
-        $current_value .= "\n".$ideas[$x2['chainhandletype']]['m__handle'].$x2['hashtaghashtag'];
+        $current_value .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
     }
 
+    //Replace mentions?
     foreach($this->Chains->read(array(
         'chainhashtagoutput' => $x['hashtagid'],
         'chainhandletype' => 31835, //Mentions
@@ -91,7 +92,7 @@ foreach($this->Chains->read(array(
         'chainhashtagoutput' => $x['hashtagid'],
         'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
     ), array('chainhandleinput')) as $x2){
-        $current_value .= "\n".$mentions[$x2['chainhandletype']]['m__handle'].$x2['handlehandle'];
+        $current_value .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
     }
 
 
