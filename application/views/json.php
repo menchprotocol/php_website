@@ -154,7 +154,6 @@ foreach($this->Chains->read(array(
 
     //Fetch Mentions
     foreach($this->Chains->read(array(
-        'chainvoid >=' => 0, //Any Chain
         'chainhashtagoutput' => $x['chainhashtagoutput'],
         'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
     ), array('chainhandleinput')) as $x2){
