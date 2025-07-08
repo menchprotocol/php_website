@@ -15,6 +15,7 @@ echo '<table class="table table-sm table-striped stats-table mini-stats-table" b
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
+    'chainid' => 130806,
 ), array('chainhashtagoutput'), 0) as $x){
 
     //HASHTAG
@@ -45,11 +46,11 @@ foreach($this->Chains->read(array(
     foreach($this->Chains->read(array(
         'chainhashtagoutput' => $x['hashtagid'],
         'chainhandleinput !=' => $x['chainhandlecreator'],
+        'chainhandleinput !=' => 32337, //No hashtag
         'chainhandletype' => 4983, //Authors
     ), array('chainhandleinput')) as $x2){
         $current_value .= "\n@".$x2['handlehandle'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
     }
-
 
     //Transform URLs:
     foreach($this->Chains->read(array(
