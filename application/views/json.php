@@ -26,6 +26,14 @@ foreach($this->Chains->read(array(
     //Fetch from Cache table:
     $current_value = '#'.$x['hashtaghashtag']."\n".$x['hashtagvalue'].' ';
 
+    //Add Hashtags:
+    foreach ($this->Chains->read(array(
+        'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
+        'chainhashtaginput' => $x['hashtagid'],
+    ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $x2) {
+        $current_value .= "\n".$ideas[$x2['chainhandletype']]['m__handle'].$x2['hashtaghashtag'];
+    }
+
     foreach($this->Chains->read(array(
         'chainhashtagoutput' => $x['hashtagid'],
         'chainhandletype' => 31835, //Mentions
