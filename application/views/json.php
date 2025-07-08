@@ -77,13 +77,10 @@ foreach($this->Chains->read(array(
     //Append authors:
     foreach($this->Chains->read(array(
         'chainhashtagoutput' => $x['chainhashtagoutput'],
-        'chainhandleinput !=' => $x['chainhandlecreator'],
-        'chainhandleinput !=' => 1,
-        'chainhandleinput !=' => 2,
-        'chainhandleinput !=' => 32337, //No hashtag
+        'chainhandleinput NOT IN ('.$x['chainhandlecreator'].',1,2,32337)' => null,
         'chainhandletype' => 4983, //Authors
     ), array('chainhandleinput')) as $x2){
-        continue;
+
         $core_idea .= "\n@".$x2['handlehandle'];
 
         if (filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)) {
