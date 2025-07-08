@@ -164,18 +164,6 @@ foreach($this->Chains->read(array(
 
 }
 
-//Show stats:
-echo '<tr>';
-echo '<td>&nbsp;</td>';
-echo '<td>#'.$stats['hashtags_all'].'</td>';
-echo '<td>VOID '.$stats['hashtags_void'].'</td>';
-echo '<td>&nbsp;</td>';
-echo '<td>&nbsp;</td>';
-echo '<td>&nbsp;</td>';
-echo '<td>&nbsp;</td>';
-echo '</tr>';
-
-
 
 /*
 foreach($this->Chains->read(array(
@@ -220,6 +208,9 @@ echo '</tr>';
 */
 
 echo '</table>';
+
+
+print_r($stats);
 
 
 //$_GET['skip_config'] = true;
