@@ -8,6 +8,7 @@ $stats = array(
 );
 $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
+$handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
 
 //Translator
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
@@ -43,14 +44,37 @@ foreach($this->Chains->read(array(
         //$current_value = str_replace('@'.$x2['handlehandle'].' ', '@'.$x2['handleid'].' ', $current_value);
     }
 
+    //Add Idea Type:
+    if($x['hashtagtype']!=6677){
+        $current_value .= "\n@".$handles___4737[$x['hashtagtype']]['m__handle'];
+    }
+
     //Append authors:
     foreach($this->Chains->read(array(
         'chainhashtagoutput' => $x['hashtagid'],
         'chainhandleinput !=' => $x['chainhandlecreator'],
+        'chainhandleinput !=' => 1,
         'chainhandleinput !=' => 32337, //No hashtag
         'chainhandletype' => 4983, //Authors
     ), array('chainhandleinput')) as $x2){
-        $current_value .= "\n@".$x2['handlehandle'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
+        if (filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)) {
+            //Create URL:
+            $current_value .= "\n@".$x2['handlehandle'];
+
+            //Create new URL:
+            /*
+            $added_e = $this->Handles->create(array(
+                'handlehandle' => 'URL'.$url_key,
+                'handlevalue' => 'URL '.$url_key,
+                'handlecover' => 'fas fa-browser',
+            ), $x['chainhandlecreator']);
+            $current_value .= "\n@".$added_e['handle_create']['handlehandle'];
+            */
+
+            $current_value .= "\n@URL".random_string(8);
+        } else {
+            $current_value .= "\n@".$x2['handlehandle'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
+        }
     }
 
     //Transform URLs:
@@ -62,7 +86,7 @@ foreach($this->Chains->read(array(
 
         $url_key = random_string(8);
 
-        //Create new handle:
+        //Create new URL:
         /*
         $added_e = $this->Handles->create(array(
             'handlehandle' => 'URL'.$url_key,
