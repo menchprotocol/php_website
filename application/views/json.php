@@ -60,14 +60,12 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
         }
 
 
-        $core_content = trim($es_cache[0]['hashtagvalue']);
         //Fetch from Cache table:
         if(count($es_cache)){
             $current_value = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
         } else {
             $current_value = '@?'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
         }
-
 
         if(!strlen(trim($es_cache[0]['handlevalue']))){
             $stats['handles_empty']++;
@@ -76,7 +74,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             }
         }
 
-        $delete = $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
+        $delete = $x['chainvoid']>0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
         if($delete){
             $stats['handles_delete']++;
         }
@@ -85,7 +83,6 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
         $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
             ( $delete ? '[DELETE]' : '' ).
             ( $x['chainvoid']>0 ? '[VOID]' : '' ).
-            ( !strlen(trim($core_content)) ? '[EMPTY]' : '' ).
             ( $is_duplicate ? '[DUPLICATE]' : '' ).
             ( !$x['chainvoid'] && !count($es) ? '[handles_voidcreaetor]' : '' ).
             ( !$x['chainvoid'] && !count($es_cache) ? '[handles_valid_cachevoid]' : '' ).
