@@ -5,6 +5,7 @@ boost_power();
 $stats = array(
     'hashtags_all' => 0,
     'hashtags_empty' => 0,
+    'hashtags_delete' => 0,
     'hashtags_duplicate' => 0,
     'hashtags_empty_notvoid' => 0,
     'hashtags_void' => 0,
@@ -28,7 +29,7 @@ $count = 0;
 foreach($this->Chains->read(array(
     'chainvoid >=' => 0, //Any Chain
     'chainhandletype' => 12273,
-), array(), 0) as $x){
+), array(), 0, 0, array('chainid' => 'ASC')) as $x){
 
     $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -136,6 +137,7 @@ foreach($this->Chains->read(array(
     }
 
     //Transform URLs:
+    /*
     foreach($this->Chains->read(array(
         'chainhashtagoutput' => $x['chainhashtagoutput'],
         'chainhandleinput !=' => $x['chainhandlecreator'],
@@ -152,11 +154,11 @@ foreach($this->Chains->read(array(
             'handlecover' => 'fas fa-browser',
         ), $x['chainhandlecreator']);
         $current_value .= "\n@".$added_e['handle_create']['handlehandle'];
-        */
+        *//*
 
         $current_value = str_replace(trim($x2['chainvalue']), '@URL'.$url_key, $current_value);
     }
-
+    */
 
     //Append Media:
     foreach($this->Chains->read(array(
@@ -185,15 +187,21 @@ foreach($this->Chains->read(array(
         }
     }
 
+    $delete = $x['chainvoid']>0 || !strlen(trim($core_idea)) || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($is));
+    if($delete){
+        $stats['hashtags_delete']++;
+    }
+
     $table .= '<tr>';
     $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
+        ( $delete ? '[DELETE]' : '' ).
         ( $x['chainvoid']>0 ? '[VOID]' : '' ).
         ( !strlen(trim($core_idea)) ? '[EMPTY]' : '' ).
         ( $is_duplicate ? '[DUPLICATE]' : '' ).
         ( !$x['chainvoid'] && !count($es) ? '[hashtags_voidcreaetor]' : '' ).
         ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
         '</td>';
-    $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'</td>';
+    $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
     $table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
     //$table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
     $table .= '</tr>';
