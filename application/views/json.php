@@ -29,7 +29,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12274,
-    ), array(), 10, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 0, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhandleoutput'], $chainhandleoutput);
         if(!$is_duplicate){
@@ -64,7 +64,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
         if(count($es_cache)){
             $current_value = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
         } else {
-            $current_value = '@?'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
+            $current_value = '@???'.$x['chainvalue'];
         }
 
         if(!strlen(trim($es_cache[0]['handlevalue']))){
@@ -112,7 +112,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
-    ), array(), 10, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 0, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
