@@ -1426,7 +1426,7 @@ $(document).ready(function () {
 
         $('.algolia__e').textcomplete([
             {
-                match: /(^|\s)^#(\w*(?:\s*\w*))$/,
+                match: /(^|\s)@#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
                         hitsPerPage: js_handles___6404[31112]['m__message'],
@@ -1442,10 +1442,10 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return search_js_line(suggestion, '^#');
+                    return search_js_line(suggestion, '@#');
                 },
                 replace: function (suggestion) {
-                    return ' ^#' + suggestion.s__handle + ' ';
+                    return ' @#' + suggestion.s__handle + ' ';
                 }
             },
         ]);
