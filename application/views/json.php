@@ -10,7 +10,7 @@ $count = 0;
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
-if($focus_i['hashtaghashtag']=='YourBio'){
+if($focus_i['hashtaghashtag']!='Discotique2025'){
 
     //HANDLE
     $chainhandleoutput = array();
@@ -29,10 +29,9 @@ if($focus_i['hashtaghashtag']=='YourBio'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12274,
-    ), array(), 0, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 10, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhandleoutput'], $chainhandleoutput);
-
         if(!$is_duplicate){
             array_push($chainhandleoutput, $x['chainhandleoutput']);
         } else {
@@ -63,7 +62,11 @@ if($focus_i['hashtaghashtag']=='YourBio'){
 
         $core_content = trim($es_cache[0]['hashtagvalue']);
         //Fetch from Cache table:
-        $current_value = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
+        if(count($es_cache)){
+            $current_value = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
+        } else {
+            $current_value = '@?'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
+        }
 
 
         if(!strlen(trim($es_cache[0]['handlevalue']))){
@@ -112,7 +115,7 @@ if($focus_i['hashtaghashtag']=='YourBio'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
-    ), array(), 0, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 10, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
