@@ -16,10 +16,8 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
     $chainhandleoutput = array();
     $stats = array(
         'handles_all' => 0,
-        'handles_empty' => 0,
         'handles_delete' => 0,
         'handles_duplicate' => 0,
-        'handles_empty_notvoid' => 0,
         'handles_void' => 0,
         'handles_voidcreaetor' => 0,
         'handles_void_cachevalid' => 0,
@@ -65,13 +63,6 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             $current_value = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
         } else {
             $current_value = '@???'.$x['chainvalue'];
-        }
-
-        if(!strlen(trim($es_cache[0]['handlevalue']))){
-            $stats['handles_empty']++;
-            if(!$x['chainvoid']){
-                $stats['handles_empty_notvoid']++;
-            }
         }
 
         $delete = $x['chainvoid']>0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
