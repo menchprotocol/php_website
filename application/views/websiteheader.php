@@ -861,7 +861,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                         <!-- Handle Title -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[6197]['m__cover'].'</span><textarea class="form-control unsaved_warning save_handlevalue main__title" style="margin-top: -20px;" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[6197]['m__cover'].'</span><textarea class="form-control unsaved_warning save_handlevalue main__title" style="margin-top: -30px;" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>';  ?></h3>
 
                         </div>
 
