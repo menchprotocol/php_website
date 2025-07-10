@@ -854,16 +854,15 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <input type="hidden" class="save_chainid" value="0" />
 
 
-                        <!-- Handle Title -->
-                        <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[6197]['m__cover'].'</span>'.$handles___6206[6197]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control unsaved_warning save_handlevalue main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                        </div>
-
-
                         <!-- Handle Handle -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_handlehandle" placeholder="...">';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_handlehandle" style="margin-top: -20px;" placeholder="...">';  ?></h3>
+                        </div>
+
+                        <!-- Handle Title -->
+                        <div class="dynamic_editing_input">
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[6197]['m__cover'].'</span><textarea class="form-control unsaved_warning save_handlevalue main__title" style="margin-top: -20px;" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>';  ?></h3>
+
                         </div>
 
                         <!-- HANDLE COVER -->
