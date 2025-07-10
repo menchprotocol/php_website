@@ -5132,6 +5132,11 @@ function view_hashtag_media($i)
             //Video
             $template = '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $x['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
 
+        } elseif ($x['chainhandletype'] == 1718521) {
+
+            //Video URL
+            $template = '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $x['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
+
         } elseif ($x['chainhandletype'] == 4259) {
 
             //Audio

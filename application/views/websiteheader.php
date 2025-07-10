@@ -863,8 +863,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                         <!-- Handle Handle -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[32338]['m__cover'].'</span>'.$handles___6206[32338]['m__title'].': ';  ?></h3>
-                            <input type="text" class="form-control unsaved_warning save_handlehandle" placeholder="...">
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_handlehandle" placeholder="...">';  ?></h3>
                         </div>
 
                         <!-- HANDLE COVER -->
