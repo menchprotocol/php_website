@@ -60,9 +60,9 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
 
         //Fetch from Cache table:
         if(count($es_cache)){
-            $current_value = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
+            $hashtagvalue = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
         } else {
-            $current_value = '@???'.$x['chainvalue'];
+            $hashtagvalue = '@???'.$x['chainvalue'];
         }
 
         $delete = $x['chainvoid']>0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
@@ -79,13 +79,24 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             ( !$x['chainvoid'] && !count($es_cache) ? '[handles_valid_cachevoid]' : '' ).
             '</td>';
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />@'.$x['chainhandleoutput'].'</td>';
-        $table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
-        //$table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
+        $table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>';
+        //$table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>';
         $table .= '</tr>';
     }
 
 } else {
 
+    //Headline
+    $table .= '<tr>';
+    $table .= '<td>&nbsp;</td>';
+    $table .= '<td>&nbsp;</td>';
+    $table .= '<td><div>hashtagvalue</div></td>'; //RAW
+    $table .= '<td><div>hashtagvaluetext</div></td>'; //TEXT
+    $table .= '<td><div>hashtaghtmlwrite</div></td>'; //EDITOR
+    $table .= '<td><div>hashtaghtmlread</div></td>'; //DISCOVERY
+    $table .= '</tr>';
+
+    //HASHTAGS
     $chainhashtagoutput = array();
     $stats = array(
         'hashtags_all' => 0,
@@ -99,7 +110,6 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
         'hashtags_valid_cachevoid' => 0,
     );
 
-    //HASHTAG
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
@@ -139,18 +149,18 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
 
             $core_content = trim($is[0]['hashtagvalue']);
             //Fetch from Cache table:
-            $current_value = '#'.$is[0]['hashtaghashtag']."\n".$is[0]['hashtagvalue'].' ';
+            $hashtagvalue = '#'.$is[0]['hashtaghashtag']."\n".$is[0]['hashtagvalue'].' ';
 
         } else {
 
-            $current_value = $x['chainvalue'].' ';
+            $hashtagvalue = $x['chainvalue'].' ';
             $core_content = '';
             foreach($this->Chains->read(array(
                 'chainhashtagoutput' => $x['chainhashtagoutput'],
                 'chainhandleinput' => 32337,
                 'LENGTH(chainvalue)>0' => null,
             ), array('chainhandleinput')) as $x2) {
-                $current_value = '##'.$x2['chainvalue']."\n".$x['chainvalue'].' ';
+                $hashtagvalue = '##'.$x2['chainvalue']."\n".$x['chainvalue'].' ';
             }
 
         }
@@ -162,14 +172,14 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
             'chainhashtaginput' => $x['chainhashtagoutput'],
         ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $x2) {
-            $current_value .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
+            $hashtagvalue .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
             $core_content .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtaghashtag'];
         }
 
 
         //Add Idea Type:
         if(count($is) && $is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle'])){
-            $current_value .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
+            $hashtagvalue .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
         }
 
 
@@ -178,7 +188,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             'chainhashtagoutput' => $x['chainhashtagoutput'],
             'chainhandletype' => 31835, //Mentions
         ), array('chainhandleinput')) as $x2){
-            //$current_value = str_replace('@'.$x2['handlehandle'].' ', '@'.$x2['handleid'].' ', $current_value);
+            //$hashtagvalue = str_replace('@'.$x2['handlehandle'].' ', '@'.$x2['handleid'].' ', $hashtagvalue);
         }
 
         //Append authors:
@@ -192,7 +202,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
 
             if (filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)) {
                 //Create URL:
-                $current_value .= "\n@".$x2['handlehandle'];
+                $hashtagvalue .= "\n@".$x2['handlehandle'];
 
                 //Create new URL:
                 /*
@@ -201,12 +211,12 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
                     'handlevalue' => 'URL '.$url_key,
                     'handlecover' => 'fas fa-browser',
                 ), $x['chainhandlecreator']);
-                $current_value .= "\n@".$added_e['handle_create']['handlehandle'];
+                $hashtagvalue .= "\n@".$added_e['handle_create']['handlehandle'];
                 */
 
-                $current_value .= "\n@NEWURL".random_string(8);
+                $hashtagvalue .= "\n@NEWURL".random_string(8);
             } else {
-                $current_value .= "\n@".$x2['handlehandle'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
+                $hashtagvalue .= "\n@".$x2['handlehandle'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
             }
         }
 
@@ -227,10 +237,10 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
                 'handlevalue' => 'URL '.$url_key,
                 'handlecover' => 'fas fa-browser',
             ), $x['chainhandlecreator']);
-            $current_value .= "\n@".$added_e['handle_create']['handlehandle'];
+            $hashtagvalue .= "\n@".$added_e['handle_create']['handlehandle'];
             *//*
 
-        $current_value = str_replace(trim($x2['chainvalue']), '@URL'.$url_key, $current_value);
+        $hashtagvalue = str_replace(trim($x2['chainvalue']), '@URL'.$url_key, $hashtagvalue);
     }
     */
 
@@ -241,7 +251,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
         ), array('chainhandleinput')) as $x2){
             $core_content .= "\n@".$x2['handlehandle'];
-            $current_value .= "\n@".$x2['handlehandle'];
+            $hashtagvalue .= "\n@".$x2['handlehandle'];
         }
 
 
@@ -251,7 +261,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
         ), array('chainhandleinput')) as $x2){
             $core_content .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
-            $current_value .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
+            $hashtagvalue .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
         }
 
         if(!strlen(trim($core_content))){
@@ -276,8 +286,10 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
             ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
             '</td>';
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
-        $table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
-        //$table .= '<td><div>'.nl2br(trim(htmlentities($current_value))).'</div></td>';
+        $table .= '<td><div>'.nl2br(trim(htmlentities($x['chainvalue']))).'</div></td>'; //RAW
+        $table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //TEXT
+        $table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //EDITOR
+        $table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //DISCOVERY
         $table .= '</tr>';
     }
 
