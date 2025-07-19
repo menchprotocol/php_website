@@ -288,8 +288,8 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
         $table .= '<td><div>'.nl2br(trim(htmlentities($x['chainvalue']))).'</div></td>'; //RAW
         $table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //TEXT
-        $table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //EDITOR
-        $table .= '<td><div>'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //DISCOVERY
+        $table .= '<td><div>hashtaghtmlwrite</div></td>'; //EDITOR
+        $table .= '<td><div>hashtaghtmlread</div></td>'; //DISCOVERY
         $table .= '</tr>';
     }
 
