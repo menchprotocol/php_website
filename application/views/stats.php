@@ -1,14 +1,14 @@
 <?php
 
-$handlestring = (isset($_GET['handlestring']) ? $_GET['handlestring'] : null);
-$hashtagstring = (!$handlestring && isset($_GET['hashtagstring']) ? $_GET['hashtagstring'] : null);
+$handleterm = (isset($_GET['handleterm']) ? $_GET['handleterm'] : null);
+$hashtagstring = (!$handleterm && isset($_GET['hashtagstring']) ? $_GET['hashtagstring'] : null);
 $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
-if ($handlestring) {
+if ($handleterm) {
     foreach ($this->Handles->read(array(
-        'LOWER(handlestring)' => strtolower($handlestring),
+        'LOWER(handleterm)' => strtolower($handleterm),
     )) as $e) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $handlestring . '"><span class="icon-block">' . view_cover($e['handlecover']) . '</span> ' . $e['handlename'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $handleterm . '"><span class="icon-block">' . view_cover($e['handlecover']) . '</span> ' . $e['handlename'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif ($hashtagstring) {
     foreach ($this->Hashtags->read(array(
@@ -102,7 +102,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
     function chain_graph() {
         $.post("/controller/chain_graph", {
-            handlestring: '<?= $handlestring ?>',
+            handleterm: '<?= $handleterm ?>',
             hashtagstring: '<?= $hashtagstring ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {

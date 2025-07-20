@@ -11,7 +11,7 @@ echo '<div class="row justify-content">';
 foreach ($this->Handles->read(array(
     'handleid IN (' . join(',', $total_parents) . ')' => null,
 )) as $e) {
-    echo '<div>'.($current_total-$current_i).') <span class="icon-block">'.view_cover($e['handlecover']).'</span><span class="main__title">'.$e['handlename'].'</span><span class="grey">@'.$e['handlestring'].'</span></div>';
+    echo '<div>'.($current_total-$current_i).') <span class="icon-block">'.view_cover($e['handlecover']).'</span><span class="main__title">'.$e['handlename'].'</span><span class="grey">@'.$e['handleterm'].'</span></div>';
     $current_i++;
 }
 echo '</div>';

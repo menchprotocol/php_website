@@ -109,7 +109,7 @@ if(!$basic_header_footer){
 
     echo ' var insert_text = \'' . (isset($_GET['insert']) ? $_GET['insert'] : '')  . '\'; ';
     echo ' var js_pl_id = ' . ( $handle_session && isset($handle_session['handleid']) ? $handle_session['handleid'] : '0' ) . '; ';
-    echo ' var js_pl_handle = \'' . ( $handle_session && isset($handle_session['handlestring']) ? $handle_session['handlestring'] : '' ) . '\'; ';
+    echo ' var js_pl_handle = \'' . ( $handle_session && isset($handle_session['handleterm']) ? $handle_session['handleterm'] : '' ) . '\'; ';
     echo ' var js_pl_name = \'' . ( $handle_session && isset($handle_session['handlename']) ? str_replace('\'','\\\'',trim($handle_session['handlename'])) : '' ) . '\'; ';
     echo ' var js_request_uri = \'' . $_SERVER['REQUEST_URI'] . '\'; ';
     echo ' var universal_search_enabled = ' . intval($this->config->item('universal_search_enabled')) . '; ';
@@ -326,7 +326,7 @@ if ($focus_i){
     }
 } elseif($focus_e){
     echo '<input type="hidden" id="focus__node" value="12274" />
-<input type="hidden" id="focus_handle" value="'.$focus_e['handlestring'].'" />
+<input type="hidden" id="focus_handle" value="'.$focus_e['handleterm'].'" />
 <input type="hidden" id="focus__id" value="'.$focus_e['handleid'].'" />';
 }
 
@@ -389,8 +389,8 @@ if ($focus_i){
 
                             //Profile View
                             $m['m__cover'] = view_cover($handle_session['handlecover'], 1);
-                            $m['m__title'] = '<div class="type_head main__title">'.$handle_session['handlename'].'</div><div class="grey type_handle">@'.$handle_session['handlestring'].'</div>';
-                            $href = 'href="'.view_memory(42903,42902).$handle_session['handlestring'].'" ';
+                            $m['m__title'] = '<div class="type_head main__title">'.$handle_session['handlename'].'</div><div class="grey type_handle">@'.$handle_session['handleterm'].'</div>';
+                            $href = 'href="'.view_memory(42903,42902).$handle_session['handleterm'].'" ';
 
                         } elseif($chainhandletype==42246 && $handle_session) {
 
@@ -753,7 +753,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                                 'chainhandleinput' => $handle_session['handleid'],
                                 'chainhandletype' => 41011, //PINNED FOLLOWER
                                             ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $x_pinned) {
-                                echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['handlecover']).'</span><b>'.$x_pinned['handlename'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['handlestring'].'</span></div>';
+                                echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['handlecover']).'</span><b>'.$x_pinned['handlename'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['handleterm'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }
 
@@ -856,7 +856,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                         <!-- Handle Handle -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_handlestring" style="margin-top: -20px;" placeholder="...">';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$handles___6206[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_handleterm" style="margin-top: -20px;" placeholder="...">';  ?></h3>
                         </div>
 
                         <!-- Handle Title -->

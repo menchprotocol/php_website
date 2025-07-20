@@ -6,10 +6,10 @@ if(isset($_GET['search_for'])){
 
     $icon_keyword = $_GET['search_for'];
 
-} elseif(isset($_GET['handlestring']) && $_GET['handlestring']){
+} elseif(isset($_GET['handleterm']) && $_GET['handleterm']){
 
     $es = $this->Handles->read(array(
-        'LOWER(handlestring)' => strtolower($_GET['handlestring']),
+        'LOWER(handleterm)' => strtolower($_GET['handleterm']),
     ));
     if(!count($es)){
         return view_json(array(
@@ -78,7 +78,7 @@ if($icon_keyword){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['handlecover']).'</span><a href="'.view_memory(42903,42902).$en['handlestring'].'">'.$en['handlename'].'</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['handlecover']).'</span><a href="'.view_memory(42903,42902).$en['handleterm'].'">'.$en['handlename'].'</a></td>';
             echo '</tr>';
 
         }

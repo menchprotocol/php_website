@@ -2,13 +2,13 @@
 
 
 
-$handlestring = ( isset($_GET['handlestring']) && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handlestring'])==$_GET['hash'] ? $_GET['handlestring'] : $handle_session['handlestring'] );
+$handleterm = ( isset($_GET['handleterm']) && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handleterm'])==$_GET['hash'] ? $_GET['handleterm'] : $handle_session['handleterm'] );
 
-if(strlen($handlestring)){
+if(strlen($handleterm)){
 
     //Notification Settings
     foreach($this->Handles->read(array(
-        'handlestring' => $handlestring,
+        'handleterm' => $handleterm,
     )) as $e){
         echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['handlename'].'</h3>';
     }

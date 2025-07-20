@@ -86,7 +86,7 @@ echo $duplicate.'/'.$count.' are duplicate';
 
 
 //Various cleanup functions
-echo @$_GET['handlestring'];
+echo @$_GET['handleterm'];
 
 
 if(isset($_GET['action']) && $_GET['action']=='hashtag_messages'){
@@ -117,9 +117,9 @@ if(isset($_GET['action']) && $_GET['action']=='hashtag_messages'){
 
     //Import Discoveries?
     $flash_message = '';
-    if(isset($_GET['handlestring'])){
+    if(isset($_GET['handleterm'])){
         foreach($this->Handles->read(array(
-            'LOWER(handlestring)' => strtolower($_GET['handlestring']),
+            'LOWER(handleterm)' => strtolower($_GET['handleterm']),
         )) as $handle_append){
             $completed = 0;
             foreach($this->Chains->read(array(
@@ -144,7 +144,7 @@ if(isset($_GET['action']) && $_GET['action']=='hashtag_messages'){
                 }
             }
 
-            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span> '.$completed.' Handles who played this hashtag added to @'.$handle_append['handlestring'].'</div>';
+            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span> '.$completed.' Handles who played this hashtag added to @'.$handle_append['handleterm'].'</div>';
         }
     }
 

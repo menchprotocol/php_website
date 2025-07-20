@@ -6,8 +6,8 @@ if(!isset($_GET['hashtagstring'])){
 
 
 //Define the user to fetch their discoveries for this hashtag:
-if(!isset($_GET['handlestring']) || !strlen($_GET['handlestring'])){
-    $_GET['handlestring'] = $handle_session['handlestring'];
+if(!isset($_GET['handleterm']) || !strlen($_GET['handleterm'])){
+    $_GET['handleterm'] = $handle_session['handleterm'];
 }
 
 
@@ -17,7 +17,7 @@ echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 
 
 foreach($this->Handles->read(array(
-    'LOWER(handlestring)' => strtolower($_GET['handlestring']),
+    'LOWER(handleterm)' => strtolower($_GET['handleterm']),
 )) as $e){
     //List the hashtag:
     print_r(array(

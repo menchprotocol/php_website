@@ -328,7 +328,7 @@ class Hashtags extends CIdea_cache
 
                 //Check if it has this item:
                 foreach ($this->Handles->read(array(
-                    'LOWER(handlestring)' => strtolower(view_valid_handle_handle($action_command1)),
+                    'LOWER(handleterm)' => strtolower(view_valid_handle_handle($action_command1)),
                 )) as $e) {
 
                     $hashtag_has_e = $this->Chains->read(array(

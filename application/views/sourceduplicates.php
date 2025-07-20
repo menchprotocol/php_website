@@ -2,13 +2,13 @@
 
 //HANDLE LIST DUPLICATES
 
-if(isset($_GET['handlestring'])){
+if(isset($_GET['handleterm'])){
 
     //Find Chain Content Duplicates for this Handle:
     $main_index = array();
     $duplicates_found = array();
     foreach($this->Chains->read(array(
-        'LOWER(handlestring)' => strtolower($_GET['handlestring']),
+        'LOWER(handleterm)' => strtolower($_GET['handleterm']),
         'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
         ), array('chainhandleinput'), 0) as $x) {
         $chainvalue_md5 = substr(md5($x['chainvalue']), 0, 16);
@@ -50,7 +50,7 @@ if(isset($_GET['handlestring'])){
                 $prev_title = $en['handlename'];
             }
 
-            echo '<a href="'.view_memory(42903,42902) . $en['handlestring'] . '"><b>' . $en['handlename'] . '</b></a> @' . $en['handleid'] . '<br />';
+            echo '<a href="'.view_memory(42903,42902) . $en['handleterm'] . '"><b>' . $en['handlename'] . '</b></a> @' . $en['handleid'] . '<br />';
         }
 
     } else {

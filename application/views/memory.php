@@ -31,7 +31,7 @@ foreach ($this->Chains->read(array(
     $total_nodes += (1 + count($down__e));
     if (count($down__e) > $biggest_handle_count) {
         $biggest_handle_count = count($down__e);
-        $biggest_handle_handle = '@' . $en['handlestring'];
+        $biggest_handle_handle = '@' . $en['handleterm'];
     }
 
     //Generate raw IDs:
@@ -85,7 +85,7 @@ foreach ($this->Chains->read(array(
         }
 
         $memory_text .= '     ' . $follower['handleid'] . ' => array(' . "\n";
-        $memory_text .= '        \'m__handle\' => \'' . $follower['handlestring'] . '\',' . "\n";
+        $memory_text .= '        \'m__handle\' => \'' . $follower['handleterm'] . '\',' . "\n";
         $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['handlename']))) . '\',' . "\n";
         $memory_text .= '        \'m__message\' => \'' . (str_replace('\'', '\\\'', $follower['chainvalue'])) . '\',' . "\n";
         $memory_text .= '        \'m__cover\' => \'' . str_replace('\'', '\\\'', view_cover($follower['handlecover'])) . '\',' . "\n";
@@ -110,7 +110,7 @@ foreach ($this->Chains->read(array(
         'chainhandleinput' => $handle['handleid'],
         'chainhandletype' => 4230,
     ), array('chainhandleoutput'), 0) as $app) {
-        $memory_text .= '     \'' . strtolower($app['handlestring']) . '\' => ' . $app['handleid'] . ',' . "\n";
+        $memory_text .= '     \'' . strtolower($app['handleterm']) . '\' => ' . $app['handleid'] . ',' . "\n";
     }
     $memory_text .= ');' . "\n";
 }
@@ -179,9 +179,9 @@ foreach ($this->Chains->read(array(
         'chainhandleoutput' => $app['handleid'], //Required
     )))) {
         //Handle AND Hashtag Input
-        $routes_text .= '$route[\'(?i)' . $app['handlestring'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$2/$1' . '";' . "\n";
-        $routes_text .= '$route[\'(?i)' . $app['handlestring'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n"; //Should give error
-        $routes_text .= '$route[\'(?i)' . $app['handlestring'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$1/0' . '";' . "\n"; //Should give error
+        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$2/$1' . '";' . "\n";
+        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n"; //Should give error
+        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$1/0' . '";' . "\n"; //Should give error
     } elseif (count($this->Chains->read(array(
         'chainhandletype' => 4230,
         'chainhandleinput' => 42905,
@@ -191,7 +191,7 @@ foreach ($this->Chains->read(array(
         if ($special_routes) {
             $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['handleid'] . '/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['handlestring'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$1' . '";' . "\n";
         }
     } elseif (count($this->Chains->read(array(
         'chainhandletype' => 4230,
@@ -202,7 +202,7 @@ foreach ($this->Chains->read(array(
         if ($special_routes) {
             $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['handlestring'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n";
         }
     } elseif (count($this->Chains->read(array(
         'chainhandletype' => 4230,
@@ -213,13 +213,13 @@ foreach ($this->Chains->read(array(
         if ($special_routes) {
             $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['handleid'] . '/0/$2/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['handlestring'] . '/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$2/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$2/$1' . '";' . "\n";
         }
     }
 
     //Always Have no Input option:
     if (!$special_routes) {
-        $routes_text .= '$route[\'(?i)' . $app['handlestring'] . '\'] = "controller/load/' . $app['handleid'] . '";' . "\n";
+        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '\'] = "controller/load/' . $app['handleid'] . '";' . "\n";
     }
 
 }
