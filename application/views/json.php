@@ -27,7 +27,7 @@ if($focus_i['hashtagterm']!='Discotique2025'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12274,
-    ), array(), 21, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 377, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhandleoutput'], $chainhandleoutput);
         if(!$is_duplicate){
@@ -122,7 +122,7 @@ if($focus_i['hashtagterm']!='Discotique2025'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
-    ), array(), 21, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 377, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
