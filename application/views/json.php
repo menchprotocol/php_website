@@ -92,8 +92,8 @@ if($focus_i['hashtagterm']!='Discotique2025'){
     $table .= '<td>&nbsp;</td>';
     $table .= '<td><div style="max-width:233px;">chainvalue</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">hashtagvalue</div></td>'; //TEXT
-    $table .= '<td><div style="max-width:233px;">hashtagwrite</div></td>'; //EDITOR
-    $table .= '<td><div style="max-width:233px;">hashtagread</div></td>'; //DISCOVERY
+    $table .= '<td><div style="max-width:233px;">hashtaghtml</div></td>'; //EDITOR
+    $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
     $table .= '</tr>';
 
     $chainhashtagoutput = array();
@@ -283,8 +283,8 @@ if($focus_i['hashtagterm']!='Discotique2025'){
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($x['chainvalue']))).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //TEXT
-        $table .= '<td><div style="max-width:233px;">hashtagwrite</div></td>'; //EDITOR
-        $table .= '<td><div style="max-width:233px;">hashtagread</div></td>'; //DISCOVERY
+        $table .= '<td><div style="max-width:233px;">hashtaghtml</div></td>'; //EDITOR
+        $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
         $table .= '</tr>';
     }
 

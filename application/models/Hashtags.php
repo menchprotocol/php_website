@@ -49,7 +49,7 @@ class Hashtags extends CIdea_cache
         //Save Hashtag
         $add_fields['hashtagid'] = $new_x['chainid'];
         //$add_fields['hashtagvalue'] = '#'.$add_fields['hashtagterm']."\n".$add_fields['hashtagvalue'];
-        $add_fields['hashtagread'] = hashtagread($add_fields['hashtagid'], $add_fields['hashtagvalue']);
+        $add_fields['hashtagdiscover'] = hashtagdiscover($add_fields['hashtagid'], $add_fields['hashtagvalue']);
         if (!count($this->Hashtags->read(array('hashtagid' => $add_fields['hashtagid'])))) {
             $this->db->insert('ideachainhashtags', $add_fields);
         }
@@ -158,7 +158,7 @@ class Hashtags extends CIdea_cache
         foreach ($hashtags_found as $hashtag_current) {
 
             $must_sync_found = false;
-            $skip_sync_ledger = array('hashtagread', 'hashtagexternal', 'hashtagweight', 'hashtagtype');
+            $skip_sync_ledger = array('hashtagdiscover', 'hashtagexternal', 'hashtagweight', 'hashtagtype');
             $must_sync_ledger = array(
                 'hashtagvalue' => 4736, //Hashtag Text
                 'hashtagterm' => 32337,
@@ -189,9 +189,9 @@ class Hashtags extends CIdea_cache
                 }
             }
 
-            if (isset($update_columns['hashtagvalue']) && !isset($update_columns['hashtagread'])) {
+            if (isset($update_columns['hashtagvalue']) && !isset($update_columns['hashtagdiscover'])) {
                 //Update Hashtag Text:
-                $update_columns['hashtagread'] = hashtagread($chainid, $update_columns['hashtagvalue']);
+                $update_columns['hashtagdiscover'] = hashtagdiscover($chainid, $update_columns['hashtagvalue']);
             }
 
             if (!count($update_columns)) {

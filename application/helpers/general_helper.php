@@ -2424,7 +2424,7 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__url'] = view_memory(42903, 33286) . $s['hashtagterm']; //Default to hashtag, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['hashtagvalue'];
-                $export_row['s__cache'] = $s['hashtagread'];
+                $export_row['s__cache'] = $s['hashtagdiscover'];
                 $export_row['s__weight'] = intval($s['hashtagweight']);
 
                 if (hashtag_is_startable($s)) {
@@ -3753,7 +3753,7 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
     $CI =& get_instance();
 
     if ($replace_chains) {
-        $i['hashtagread'] = str_replace('spanaa', 'a', $i['hashtagread']);
+        $i['hashtagdiscover'] = str_replace('spanaa', 'a', $i['hashtagdiscover']);
     }
 
     if ($handleid > 0) {
@@ -3761,7 +3761,7 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
             'chainhashtagoutput' => $i['hashtagid'],
             'chainhandletype' => 31835, //References
         ), array('chainhandleinput'), 0) as $message_references) {
-            if (!substr_count(strtolower($i['hashtagread']), '>@' . strtolower($message_references['handleterm']))) {
+            if (!substr_count(strtolower($i['hashtagdiscover']), '>@' . strtolower($message_references['handleterm']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
                 $CI->Chains->delete($message_references['chainid']);
                 continue;
@@ -3774,10 +3774,10 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['chainvalue'])) {
                     if (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL)) {
-                        $i['hashtagread'] = str_ireplace('@' . $message_references['handleterm'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i['hashtagread']);
+                        $i['hashtagdiscover'] = str_ireplace('@' . $message_references['handleterm'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i['hashtagdiscover']);
 
                     } else {
-                        $i['hashtagread'] = str_ireplace('@' . $message_references['handleterm'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handleterm'] . ' ') . $reference_profile['chainvalue'], $i['hashtagread']);
+                        $i['hashtagdiscover'] = str_ireplace('@' . $message_references['handleterm'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handleterm'] . ' ') . $reference_profile['chainvalue'], $i['hashtagdiscover']);
                     }
                 }
             }
@@ -3785,7 +3785,7 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
     }
 
     return
-        $i['hashtagread'] . view_hashtag_media($i) . ($focus__node || !substr_count($i['hashtagread'], 'show_more_line') ? view_list_handle($i, !$replace_chains) : '');
+        $i['hashtagdiscover'] . view_hashtag_media($i) . ($focus__node || !substr_count($i['hashtagdiscover'], 'show_more_line') ? view_list_handle($i, !$replace_chains) : '');
 }
 
 function hashtag_text2raw($hashtagterm, $hashtagvalue){
@@ -3795,23 +3795,23 @@ function hashtag_text2raw($hashtagterm, $hashtagvalue){
         if (strlen($line)) {
             $line_count++;
         }
-        $hashtagread_line = '';
+        $hashtagdiscover_line = '';
 
         foreach (explode(' ', $line) as $word_index => $word) {
 
             $reference_type = 0;
             if ($word_count >= $word_limit && !$hidden_started && (!$line_inwards || $word_index >= $line_inwards)) {
-                $hashtagread_line .= '<span class="hidden inner_line">';
+                $hashtagdiscover_line .= '<span class="hidden inner_line">';
                 $hidden_started = true;
             }
-            $hashtagread_line .= ($word_index > 0 ? ' ' : '');
+            $hashtagdiscover_line .= ($word_index > 0 ? ' ' : '');
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
                 //Generic URL:
                 $reference_type = 4256;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], $word, $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $word, $word);
                 $word_count += $chain_words;
 
             } elseif (view_valid_handle_handle($word, true)) {
@@ -3819,7 +3819,7 @@ function hashtag_text2raw($hashtagterm, $hashtagvalue){
                 //Hashtag Synonym
                 $reference_type = 31835;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } elseif (view_valid_handle_reverse_hashtag($word, true)) {
@@ -3827,7 +3827,7 @@ function hashtag_text2raw($hashtagterm, $hashtagvalue){
                 //Hashtag Antonym
                 $reference_type = 42337;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
                 $word_count++;
 
             } elseif (view_valid_handle_hashtag($word, true)) {
@@ -3835,33 +3835,33 @@ function hashtag_text2raw($hashtagterm, $hashtagvalue){
                 //Handle Mention
                 $reference_type = 31834;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } else {
 
                 //This word is not referencing anything!
-                $hashtagread_line .= htmlentities($word);
+                $hashtagdiscover_line .= htmlentities($word);
                 $word_count++;
 
             }
         }
 
 
-        $hashtagread .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
-        $hashtagread .= $hashtagread_line;
+        $hashtagdiscover .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
+        $hashtagdiscover .= $hashtagdiscover_line;
         if ($hidden_started && !$hidden_closed) {
-            $hashtagread .= '</span>';
+            $hashtagdiscover .= '</span>';
             $hidden_closed = true;
         }
-        $hashtagread .= '</div>';
+        $hashtagdiscover .= '</div>';
 
     }
 
 
 }
 
-function hashtagread($save_hashtagid, $str)
+function hashtagdiscover($save_hashtagid, $str)
 {
 
     /*
@@ -3902,7 +3902,7 @@ function hashtagread($save_hashtagid, $str)
     $line_inwards = 3;
     $chain_words = 13; //The number of words a chain is counted as
 
-    $hashtagread = '<div class="i_cache cache_frame_' . $save_hashtagid . '">';
+    $hashtagdiscover = '<div class="i_cache cache_frame_' . $save_hashtagid . '">';
     $line_count = 0;
     $hidden_started = false;
     $hidden_closed = false;
@@ -3912,23 +3912,23 @@ function hashtagread($save_hashtagid, $str)
         if (strlen($line)) {
             $line_count++;
         }
-        $hashtagread_line = '';
+        $hashtagdiscover_line = '';
 
         foreach (explode(' ', $line) as $word_index => $word) {
 
             $reference_type = 0;
             if ($word_count >= $word_limit && !$hidden_started && (!$line_inwards || $word_index >= $line_inwards)) {
-                $hashtagread_line .= '<span class="hidden inner_line">';
+                $hashtagdiscover_line .= '<span class="hidden inner_line">';
                 $hidden_started = true;
             }
-            $hashtagread_line .= ($word_index > 0 ? ' ' : '');
+            $hashtagdiscover_line .= ($word_index > 0 ? ' ' : '');
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
                 //Generic URL:
                 $reference_type = 4256;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], $word, $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $word, $word);
                 $word_count += $chain_words;
 
             } elseif (view_valid_handle_handle($word, true)) {
@@ -3936,7 +3936,7 @@ function hashtagread($save_hashtagid, $str)
                 //Hashtag Synonym
                 $reference_type = 31835;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } elseif (view_valid_handle_reverse_hashtag($word, true)) {
@@ -3944,7 +3944,7 @@ function hashtagread($save_hashtagid, $str)
                 //Hashtag Antonym
                 $reference_type = 42337;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
                 $word_count++;
 
             } elseif (view_valid_handle_hashtag($word, true)) {
@@ -3952,37 +3952,37 @@ function hashtagread($save_hashtagid, $str)
                 //Handle Mention
                 $reference_type = 31834;
                 array_push($hashtag_references[$reference_type], $word);
-                $hashtagread_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } else {
 
                 //This word is not referencing anything!
-                $hashtagread_line .= htmlentities($word);
+                $hashtagdiscover_line .= htmlentities($word);
                 $word_count++;
 
             }
         }
 
 
-        $hashtagread .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
-        $hashtagread .= $hashtagread_line;
+        $hashtagdiscover .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
+        $hashtagdiscover .= $hashtagdiscover_line;
         if ($hidden_started && !$hidden_closed) {
-            $hashtagread .= '</span>';
+            $hashtagdiscover .= '</span>';
             $hidden_closed = true;
         }
-        $hashtagread .= '</div>';
+        $hashtagdiscover .= '</div>';
 
     }
 
 
     if ($save_hashtagid && ($hidden_started || ($word_count >= $word_limit && $line_count > 2))) {
         //Add show more button:
-        $hashtagread .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
+        $hashtagdiscover .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
     }
 
 
-    $hashtagread .= '</div>';
+    $hashtagdiscover .= '</div>';
 
     if (intval($save_hashtagid) > 0) {
 
@@ -4070,7 +4070,7 @@ function hashtagread($save_hashtagid, $str)
         }
     }
 
-    return $hashtagread;
+    return $hashtagdiscover;
 
 }
 
@@ -4723,7 +4723,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagread_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, ($focus__node || 1), $focus__node) . '</div>';
+    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, ($focus__node || 1), $focus__node) . '</div>';
 
     $hashtag_popup_url = hashtag_popup_url($i);
     if ($hashtag_popup_url) {
