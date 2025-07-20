@@ -36,7 +36,7 @@ if(isset($_GET['handlehandle'])){
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from  cachehandles en1 where (select count(*) from  cachehandles en2 where en2.handlevalue = en1.handlevalue ORDER BY en1.handlevalue ASC');
+    $q = $this->db->query('select en1.* from  ideachainhandles en1 where (select count(*) from  ideachainhandles en2 where en2.handlevalue = en1.handlevalue ORDER BY en1.handlevalue ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){

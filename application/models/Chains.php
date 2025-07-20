@@ -200,22 +200,22 @@ class Chains extends CIdea_cache
         $handle_join = false;
         if (in_array('chainhandleinput', $joins_objects)) {
             $handle_join = true;
-            $this->db->join('cachehandles', 'chainhandleinput=handleid', 'left');
+            $this->db->join('ideachainhandles', 'chainhandleinput=handleid', 'left');
         } elseif (in_array('chainhandleoutput', $joins_objects)) {
             $handle_join = true;
-            $this->db->join('cachehandles', 'chainhandleoutput=handleid', 'left');
+            $this->db->join('ideachainhandles', 'chainhandleoutput=handleid', 'left');
         } elseif (in_array('chainhandletype', $joins_objects)) {
             $handle_join = true;
-            $this->db->join('cachehandles', 'chainhandletype=handleid', 'left');
+            $this->db->join('ideachainhandles', 'chainhandletype=handleid', 'left');
         } elseif (in_array('chainhandlecreator', $joins_objects)) {
             $handle_join = true;
-            $this->db->join('cachehandles', 'chainhandlecreator=handleid', 'left');
+            $this->db->join('ideachainhandles', 'chainhandlecreator=handleid', 'left');
         } elseif (in_array('chainhandledomain', $joins_objects)) {
             $handle_join = true;
-            $this->db->join('cachehandles', 'chainhandledomain=handleid', 'left');
+            $this->db->join('ideachainhandles', 'chainhandledomain=handleid', 'left');
         } elseif (in_array('chainhandleid', $joins_objects)) {
             $handle_join = true;
-            $this->db->join('cachehandles', 'chainid=handleid', 'left');
+            $this->db->join('ideachainhandles', 'chainid=handleid', 'left');
         }
 
         $chain_void_found = false;

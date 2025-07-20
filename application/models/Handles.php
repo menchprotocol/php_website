@@ -80,7 +80,7 @@ class Handles extends CIdea_cache
 
         //Add to cache:
         if (!count($this->Handles->read(array('handleid' => $new_x['chainid'])))) {
-            $this->db->insert('cachehandles', $update_data);
+            $this->db->insert('ideachainhandles', $update_data);
         }
 
 
@@ -105,7 +105,7 @@ class Handles extends CIdea_cache
 
         //Fetch the target Handles:
         $this->db->select($select);
-        $this->db->from('cachehandles');
+        $this->db->from('ideachainhandles');
         foreach ($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -198,7 +198,7 @@ class Handles extends CIdea_cache
 
             //Update:
             $this->db->where('handleid', $chainid);
-            $this->db->update('cachehandles', $update_columns);
+            $this->db->update('ideachainhandles', $update_columns);
             $affected_rows = $this->db->affected_rows();
 
             if ($must_sync_found) {
@@ -248,7 +248,7 @@ class Handles extends CIdea_cache
 
         if ($x_adjusted) {
             //Remove from Table:
-            $this->db->query("DELETE FROM cachehandles WHERE handleid = " . $handleid . ";");
+            $this->db->query("DELETE FROM ideachainhandles WHERE handleid = " . $handleid . ";");
 
             //Update Search Index?
             update_algolia(12277, $handleid);
