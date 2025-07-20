@@ -1,12 +1,12 @@
 <?php
 
-if(!isset($_GET['hashtagstring'])){
-    die('Missing Hashtag ID hashtagstring');
+if(!isset($_GET['hashtagterm'])){
+    die('Missing Hashtag ID hashtagterm');
 }
 
 
 //Generate list & settings:
-$hashtag_settings = hashtag_settings($_GET['hashtagstring']);
+$hashtag_settings = hashtag_settings($_GET['hashtagterm']);
 echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 
 
@@ -15,7 +15,7 @@ $copy = $this->Hashtags->ids($hashtag_settings['i'], 'ALL');
 
 
 //Main Hashtag:
-echo '<h2><a href="'.view_memory(42903,33286).$hashtag_settings['i']['hashtagstring'].'">'.view_hashtag_title($hashtag_settings['i'], true).'</a> '.count($copy['recursive_hashtag_ids']).' HASHTAGS</h2>';
+echo '<h2><a href="'.view_memory(42903,33286).$hashtag_settings['i']['hashtagterm'].'">'.view_hashtag_title($hashtag_settings['i'], true).'</a> '.count($copy['recursive_hashtag_ids']).' HASHTAGS</h2>';
 
 echo '<div class="row justify-content">';
 foreach($copy['recursive_hashtag_ids'] as $recursive_down_id){

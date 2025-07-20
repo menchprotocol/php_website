@@ -17,7 +17,7 @@ if(count($duplicates) > 0){
             $prev_title = $in['hashtagvalue'];
         }
 
-        echo '<div><a href="' . view_memory(42903,33286). $in['hashtagstring'] . '"><b>' . $in['hashtagvalue'] . '</b></a> #' . $in['hashtagid'] . '</div>';
+        echo '<div><a href="' . view_memory(42903,33286). $in['hashtagterm'] . '"><b>' . $in['hashtagvalue'] . '</b></a> #' . $in['hashtagid'] . '</div>';
     }
 
 } else {

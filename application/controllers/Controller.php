@@ -109,40 +109,40 @@ class Controller extends CI_Controller
         } elseif ($focus_handle && strlen($focus_handle) && !isset($_GET['handleterm'])) {
             $_GET['handleterm'] = $focus_handle;
         }
-        if ($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['hashtagstring'])) {
-            $_GET['hashtagstring'] = $focus_hashtag;
+        if ($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['hashtagterm'])) {
+            $_GET['hashtagterm'] = $focus_hashtag;
         }
         if (!isset($_GET['handleterm'])) {
             $_GET['handleterm'] = 0;
         }
-        if (!isset($_GET['hashtagstring'])) {
-            $_GET['hashtagstring'] = 0;
+        if (!isset($_GET['hashtagterm'])) {
+            $_GET['hashtagterm'] = 0;
         }
 
 
         if ($target_hashtag && strlen($target_hashtag)) {
             //Verify:
             foreach ($this->Hashtags->read(array(
-                'LOWER(hashtagstring)' => strtolower($target_hashtag),
+                'LOWER(hashtagterm)' => strtolower($target_hashtag),
             )) as $hashtag_found) {
                 $target_i = $hashtag_found;
             }
         }
 
 
-        if (strlen($_GET['hashtagstring'])) {
+        if (strlen($_GET['hashtagterm'])) {
 
             //Validate Focus Hashtag:
-            if ($target_i && $_GET['hashtagstring'] == view_memory(6404, 4235)) {
+            if ($target_i && $_GET['hashtagterm'] == view_memory(6404, 4235)) {
 
                 //This is the starting point:
-                $_GET['hashtagstring'] = $target_hashtag;
+                $_GET['hashtagterm'] = $target_hashtag;
                 $focus_i = $target_i;
 
             } else {
 
                 foreach ($this->Hashtags->read(array(
-                    'LOWER(hashtagstring)' => strtolower($_GET['hashtagstring']),
+                    'LOWER(hashtagterm)' => strtolower($_GET['hashtagterm']),
                 )) as $hashtag_found) {
                     $focus_i = $hashtag_found;
                 }
@@ -151,18 +151,18 @@ class Controller extends CI_Controller
 
             if (!$focus_i) {
                 //See if we can find via ID?
-                if (is_numeric($_GET['hashtagstring'])) {
+                if (is_numeric($_GET['hashtagterm'])) {
                     foreach ($this->Hashtags->read(array(
-                        'hashtagid' => $_GET['hashtagstring'],
+                        'hashtagid' => $_GET['hashtagterm'],
                     )) as $hashtag_found) {
                         $focus_i = $hashtag_found;
                     }
                 }
             }
 
-            if ($app_handleid == 33286 && $focus_i && $focus_i['hashtagstring'] !== $_GET['hashtagstring']) {
+            if ($app_handleid == 33286 && $focus_i && $focus_i['hashtagterm'] !== $_GET['hashtagterm']) {
                 //Adjust URL Case Sensitive:
-                return get_redirected(view_memory(42903, 33286) . $focus_i['hashtagstring']);
+                return get_redirected(view_memory(42903, 33286) . $focus_i['hashtagterm']);
             }
         }
 
@@ -199,9 +199,9 @@ class Controller extends CI_Controller
             if (in_array($app_handleid, $this->config->item('handleids___42905')) && !$focus_e) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['handleterm'] . ' is not a valid Handle handle.</div>');
             } elseif (in_array($app_handleid, $this->config->item('handleids___44329')) && (!$focus_i || !$target_i)) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['hashtagstring'] . ' & #' . $target_hashtag . ' must be valid hashtags.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['hashtagterm'] . ' & #' . $target_hashtag . ' must be valid hashtags.</div>');
             } elseif (in_array($app_handleid, $this->config->item('handleids___42911')) && !$focus_i) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['hashtagstring'] . ' is not a valid hashtag hashtag.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['hashtagterm'] . ' is not a valid hashtag hashtag.</div>');
             }
         }
 
@@ -285,9 +285,9 @@ class Controller extends CI_Controller
             } elseif ($focus_e && !$handle_access) {
                 $missing_access = 'Error: You Cannot Access @' . $focus_e['handleterm'] . ' due to Privacy Settings.';
             } elseif (!$skip_hashtag_privacy_check && $focus_i && !$hashtag_access) {
-                $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['hashtagstring'] . ' due to Privacy Settings.';
+                $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['hashtagterm'] . ' due to Privacy Settings.';
             } elseif (!$skip_hashtag_privacy_check && $target_i && !$target_hashtag_access) {
-                $missing_access = 'Error: You Cannot Access Target #' . $target_i['hashtagstring'] . ' due to Privacy Settings.';
+                $missing_access = 'Error: You Cannot Access Target #' . $target_i['hashtagterm'] . ' due to Privacy Settings.';
             }
 
             if ($missing_access) {
@@ -394,16 +394,16 @@ class Controller extends CI_Controller
 
 
         //Check to ensure they have started:
-        if ($app_handleid == 30795 && $target_i && $focus_i && $handle_session && $target_i['hashtagstring'] == $focus_i['hashtagstring']) {
+        if ($app_handleid == 30795 && $target_i && $focus_i && $handle_session && $target_i['hashtagterm'] == $focus_i['hashtagterm']) {
 
             //Starting point, make sure all good:
             if (!hashtag_is_startable($target_i)) {
 
                 //Not a valid starting point:
-                return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['hashtagstring'] . ' is not an active starting point.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['hashtagterm'] . ' is not an active starting point.</div>');
 
             } elseif (!count($this->Chains->read(array(
-                'LOWER(hashtagstring)' => strtolower($target_i['hashtagstring']),
+                'LOWER(hashtagterm)' => strtolower($target_i['hashtagterm']),
                 'chainhandlecreator' => $handle_session['handleid'],
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
             ), array('chainhashtaginput')))) {
@@ -412,11 +412,11 @@ class Controller extends CI_Controller
                 $completion_status = $this->Chains->hashtag_discovered(4235, $handle_session['handleid'], 0, $target_i);
 
                 //Now return next hashtag:
-                $next__url = $this->Chains->next_hashtags($handle_session['handleid'], $target_i['hashtagstring'], $target_i);
+                $next__url = $this->Chains->next_hashtags($handle_session['handleid'], $target_i['hashtagterm'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
-                    return get_redirected(view_memory(42903, 30795) . $target_i['hashtagstring'] . '/' . $next__url);
+                    return get_redirected(view_memory(42903, 30795) . $target_i['hashtagterm'] . '/' . $next__url);
                 }
 
             }
@@ -463,7 +463,7 @@ class Controller extends CI_Controller
         if (isset($_POST['handle_string']) && strlen($_POST['handle_string']) > 1 && in_array(substr($_POST['handle_string'], 0, 1), array('#', '@'))) {
             if (substr($_POST['handle_string'], 0, 1) == '#') {
                 foreach ($this->Hashtags->read(array(
-                    'LOWER(hashtagstring)' => strtolower(substr($_POST['handle_string'], 1)),
+                    'LOWER(hashtagterm)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $i) {
                     echo hashtag_view(31777, $i);
                     return true;
@@ -519,7 +519,7 @@ class Controller extends CI_Controller
                     'status' => 0,
                     'message' => 'Hashtag is no longer active',
                 ));
-            } elseif (!hashtag_access($is[0]['hashtagstring'], 0, $is[0])) {
+            } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You are missing permission to edit this hashtag',
@@ -681,7 +681,7 @@ class Controller extends CI_Controller
         } elseif (strlen($_POST['migratehandle']) > 1) {
             $valid_handle = $this->Hashtags->read(array(
                 'hashtagid !=' => $_POST['hashtagid'],
-                'LOWER(hashtagstring)' => strtolower(str_replace('#', '', $_POST['migratehandle'])),
+                'LOWER(hashtagterm)' => strtolower(str_replace('#', '', $_POST['migratehandle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
@@ -702,7 +702,7 @@ class Controller extends CI_Controller
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
                 'chainhashtagoutput' => $_POST['hashtagid'],
             ), array('chainhashtaginput'), 1) as $previous_i) {
-                $delete_redirect = view_memory(42903, 33286) . $previous_i['hashtagstring'];
+                $delete_redirect = view_memory(42903, 33286) . $previous_i['hashtagterm'];
             }
 
             //If not found, find active followings:
@@ -711,7 +711,7 @@ class Controller extends CI_Controller
                     'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
                     'chainhashtagoutput' => $_POST['hashtagid'],
                 ), array('chainhashtaginput'), 1) as $previous_i) {
-                    $delete_redirect = view_memory(42903, 33286) . $previous_i['hashtagstring'];
+                    $delete_redirect = view_memory(42903, 33286) . $previous_i['hashtagterm'];
                 }
             }
 
@@ -720,7 +720,7 @@ class Controller extends CI_Controller
                 foreach ($this->Hashtags->read(array(
                     'hashtagid' => $_POST['hashtagid'],
                 )) as $i) {
-                    $delete_redirect = view_memory(42903, 33286) . $i['hashtagstring'];
+                    $delete_redirect = view_memory(42903, 33286) . $i['hashtagterm'];
                 }
             }
 
@@ -868,7 +868,7 @@ class Controller extends CI_Controller
                 'message' => 'Missing focus Card/ID',
             ));
 
-        } elseif (!isset($_POST['save_hashtagstring'])) {
+        } elseif (!isset($_POST['save_hashtagterm'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -935,7 +935,7 @@ class Controller extends CI_Controller
                     if (substr($word, 0, 1) == '#') {
                         $valid_hashtag = false;
                         foreach ($this->Hashtags->read(array(
-                            'LOWER(hashtagstring)' => strtolower(substr($word, 1)),
+                            'LOWER(hashtagterm)' => strtolower(substr($word, 1)),
                         )) as $hashtag_found) {
                             $found_hashtag = true;
                             $valid_hashtag = true;
@@ -978,7 +978,7 @@ class Controller extends CI_Controller
                             'status' => 1,
                             'return_hashtagread_chains' => '',
                             'return_hashtagread_full' => hashtag_view($_POST['focus_group'], $return_i),
-                            'redirect_hashtag' => view_memory(42903, 33286) . $return_i['hashtagstring'],
+                            'redirect_hashtag' => view_memory(42903, 33286) . $return_i['hashtagterm'],
                             'message' => count($hashtag_references) . ' hashtags chained',
                         ));
                     }
@@ -1087,9 +1087,9 @@ class Controller extends CI_Controller
         }
 
 
-        if (strlen($_POST['save_hashtagstring']) && $is[0]['hashtagstring'] !== trim($_POST['save_hashtagstring'])) {
+        if (strlen($_POST['save_hashtagterm']) && $is[0]['hashtagterm'] !== trim($_POST['save_hashtagterm'])) {
 
-            $validate_update_handle = validate_update_handle($_POST['save_hashtagstring'], $is[0]['hashtagid'], null);
+            $validate_update_handle = validate_update_handle($_POST['save_hashtagterm'], $is[0]['hashtagid'], null);
             if (!$validate_update_handle['status']) {
                 return view_json(array(
                     'status' => 0,
@@ -1099,7 +1099,7 @@ class Controller extends CI_Controller
 
             //Save hashtag since changed:
             $this->Hashtags->update($is[0]['hashtagid'], array(
-                'hashtagstring' => trim($_POST['save_hashtagstring']),
+                'hashtagterm' => trim($_POST['save_hashtagterm']),
             ), $handle_session['handleid']);
 
             //Now Handles everywhere they are referenced:
@@ -1109,13 +1109,13 @@ class Controller extends CI_Controller
             ), array('chainhashtagoutput')) as $ref) {
 
                 $this->Hashtags->update($ref['hashtagid'], array(
-                    'hashtagvalue' => str_replace('#' . $is[0]['hashtagstring'], '#' . trim($_POST['save_hashtagstring']), $ref['hashtagvalue']),
+                    'hashtagvalue' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagvalue']),
                 ), $handle_session['handleid']);
 
             }
 
             //Assign new value:
-            $is[0]['hashtagstring'] = trim($_POST['save_hashtagstring']);
+            $is[0]['hashtagterm'] = trim($_POST['save_hashtagterm']);
 
         }
 
@@ -1168,7 +1168,7 @@ class Controller extends CI_Controller
                 'save_hashtagid' => $is[0]['hashtagid'],
                 'save_hashtagvalue' => trim($_POST['save_hashtagvalue']),
                 'text_updated' => $text_updated,
-                'redirect_hashtag' => (isset($new_i['hashtagstring']) ? view_memory(42903, 33286) . $new_i['hashtagstring'] : null),
+                'redirect_hashtag' => (isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null),
                 'message' => 'Success',
             ));
         }
@@ -1205,11 +1205,11 @@ class Controller extends CI_Controller
                 //HASHTAGS
                 $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
-                $current_hashtagstring = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
+                $current_hashtagterm = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
                 foreach (hashtags_query($_POST['chainhandletype'], $_POST['hashtagid'], 1, false) as $next_i) {
                     if (isset($next_i['hashtagid'])) {
-                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagstring'], $next_i['hashtagstring'] == $current_hashtagstring, $next_i['chainhandletype'], (in_array($next_i['hashtagtype'], $this->config->item('handleids___32172')) ? $handles___4737[$next_i['hashtagtype']]['m__cover'] : ''), view_hashtag_title($next_i, true), $next_i['chainvalue']);
+                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], (in_array($next_i['hashtagtype'], $this->config->item('handleids___32172')) ? $handles___4737[$next_i['hashtagtype']]['m__cover'] : ''), view_hashtag_title($next_i, true), $next_i['chainvalue']);
                         $listed_items++;
                     }
                 }
@@ -1221,7 +1221,7 @@ class Controller extends CI_Controller
                 foreach ($this->Hashtags->read(array(
                     'hashtagid' => $_POST['hashtagid'],
                 )) as $i) {
-                    $ui .= view_more($discover_chainhandletype . view_memory(42903, 33286) . $i['hashtagstring'], false, '&nbsp;', '&nbsp;', 'View All');
+                    $ui .= view_more($discover_chainhandletype . view_memory(42903, 33286) . $i['hashtagterm'], false, '&nbsp;', '&nbsp;', 'View All');
                 }
             }
 
@@ -1428,14 +1428,14 @@ class Controller extends CI_Controller
             } elseif ($_POST['chainhandletype']==13550 || $_POST['chainhandletype']==31777 || $_POST['chainhandletype']==12273) {
 
                 //HASHTAGS
-                $current_hashtagstring = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
+                $current_hashtagterm = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
                 $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
                 $discover_chainhandletype = discover_chainhandletype();
 
                 foreach (handles_query($_POST['chainhandletype'], $_POST['handleid'], 1, false) as $next_i) {
                     if (isset($next_i['hashtagid'])) {
-                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagstring'], $next_i['hashtagstring'] == $current_hashtagstring, $next_i['chainhandletype'], (in_array($next_i['hashtagtype'], $this->config->item('handleids___32172')) ? $handles___4737[$next_i['hashtagtype']]['m__cover'] : ''), view_hashtag_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
+                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], (in_array($next_i['hashtagtype'], $this->config->item('handleids___32172')) ? $handles___4737[$next_i['hashtagtype']]['m__cover'] : ''), view_hashtag_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
                         $listed_items++;
                     }
                 }
@@ -1730,7 +1730,7 @@ class Controller extends CI_Controller
 
         if (!$_POST['chain_hashtagid'] && view_valid_handle_hashtag($_POST['hashtag_createtext'])) {
             foreach ($this->Hashtags->read(array(
-                'LOWER(hashtagstring)' => strtolower(view_valid_handle_hashtag($_POST['hashtag_createtext'])),
+                'LOWER(hashtagterm)' => strtolower(view_valid_handle_hashtag($_POST['hashtag_createtext'])),
             )) as $i) {
                 $_POST['chain_hashtagid'] = $i['hashtagid'];
             }
@@ -2632,7 +2632,7 @@ class Controller extends CI_Controller
             foreach ($this->Hashtags->read(array(
                 'hashtagid' => $_POST['sign_hashtagid'],
             )) as $i) {
-                $sign_url = $i['hashtagstring'] . '/' . view_memory(6404, 4235);
+                $sign_url = $i['hashtagterm'] . '/' . view_memory(6404, 4235);
             }
         } elseif (isset($_POST['referrer_url']) && strlen(urldecode($_POST['referrer_url'])) > 1) {
             $sign_url = urldecode($_POST['referrer_url']);
@@ -3085,7 +3085,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['target_hashtagstring']) || !isset($_POST['target_hashtagid']) || !isset($_POST['handle_submitted_data']) || !isset($_POST['do_skip'])) {
+        } elseif (!isset($_POST['target_hashtagterm']) || !isset($_POST['target_hashtagid']) || !isset($_POST['handle_submitted_data']) || !isset($_POST['do_skip'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Data',
@@ -3297,7 +3297,7 @@ class Controller extends CI_Controller
                 $hashtag_redirect_url = hashtag_redirect_url($primary_i);
             }
             if (!$hashtag_redirect_url) {
-                $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagstring'], $focus_i);
+                $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm'], $focus_i);
             }
 
             //All good:
@@ -3341,7 +3341,7 @@ class Controller extends CI_Controller
             }
         } elseif ($first_letter == '#' && strlen($_POST['migratehandle']) > 1) {
             if (!count($this->Hashtags->read(array(
-                'LOWER(hashtagstring)' => strtolower(substr($_POST['migratehandle'], 1)),
+                'LOWER(hashtagterm)' => strtolower(substr($_POST['migratehandle'], 1)),
             )))) {
                 return view_json(array(
                     'status' => 0,
@@ -3472,7 +3472,7 @@ class Controller extends CI_Controller
 
         //See if we have any hashtag or Handle targets to limit our stats:
         $has_handle = isset($_POST['handleterm']) && strlen($_POST['handleterm']) && $_POST['handleterm'];
-        $has_hashtag = isset($_POST['hashtagstring']) && strlen($_POST['hashtagstring']) && $_POST['hashtagstring'];
+        $has_hashtag = isset($_POST['hashtagterm']) && strlen($_POST['hashtagterm']) && $_POST['hashtagterm'];
 
         if ($has_handle) {
 
@@ -3491,7 +3491,7 @@ class Controller extends CI_Controller
 
             //See stats for this hashtag:
             $is = $this->Hashtags->read(array(
-                'LOWER(hashtagstring)' => strtolower($_POST['hashtagstring']),
+                'LOWER(hashtagterm)' => strtolower($_POST['hashtagterm']),
             ));
             if (!count($is)) {
                 return view_json(array(

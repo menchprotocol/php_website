@@ -15,7 +15,7 @@ if (isset($_GET['chainid']) && isset($_GET['handleterm']) && isset($_GET['hash']
             foreach ($this->Hashtags->read(array(
                 'hashtagid' => $x['chainhashtagoutput'],
             )) as $hashtag_from) {
-                echo '<h1><a href="' . view_memory(42903, 33286) . $hashtag_from['hashtagstring'] . '">' . view_hashtag_title($hashtag_from, true) . '</a></h1>';
+                echo '<h1><a href="' . view_memory(42903, 33286) . $hashtag_from['hashtagterm'] . '">' . view_hashtag_title($hashtag_from, true) . '</a></h1>';
             }
 
             if (isset($_GET['submit'])) {
@@ -31,7 +31,7 @@ if (isset($_GET['chainid']) && isset($_GET['handleterm']) && isset($_GET['hash']
                 foreach ($this->Hashtags->read(array(
                     'hashtagid' => $x['chainhashtaginput'],
                 )) as $hashtag_go) {
-                    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="' . view_memory(42903, 33286) . $hashtag_go['hashtagstring'] . '">' . view_hashtag_title($hashtag_go, true) . '</a>.</div>';
+                    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="' . view_memory(42903, 33286) . $hashtag_go['hashtagterm'] . '">' . view_hashtag_title($hashtag_go, true) . '</a>.</div>';
                 }
 
             } else {
@@ -110,7 +110,7 @@ if (isset($_GET['chainid']) && isset($_GET['handleterm']) && isset($_GET['hash']
                             "\n" . $i['hashtagvalue'] .
                             "\n" . 'Start Time: ' . date("D M j G:i:s T", $time_starts) .
                             (count($time_ends) && strtotime($time_ends[0]['chainvalue']) ? "\n" . 'End Time: ' . date("D M j G:i:s T", strtotime($time_ends[0]['chainvalue'])) : '') .
-                            "\n" . 'https://' . get_domain('m__message', $x['handleid'], $user_website) . view_memory(42903, 33286) . $i['hashtagstring'] .
+                            "\n" . 'https://' . get_domain('m__message', $x['handleid'], $user_website) . view_memory(42903, 33286) . $i['hashtagterm'] .
                             "\n" .
                             "\n" . 'If you cannot attend this event please inform us by cancelling here:' .
                             "\n" . 'https://' . get_domain('m__message', $x['handleid'], $user_website) . view_app_chain(42216) . '?chainid=' . $x['chainid'] . '&handleterm=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['handleterm']);
@@ -195,7 +195,7 @@ if (isset($_GET['chainid']) && isset($_GET['handleterm']) && isset($_GET['hash']
 
         //Now let's see who will receive this:
         $total_sent = 0;
-        $hashtag_settings = hashtag_settings($i['hashtagstring']);
+        $hashtag_settings = hashtag_settings($i['hashtagterm']);
         $subject_line = view_hashtag_title($i, true);
 
         foreach ($hashtag_settings['query_string_filtered'] as $x) {
@@ -227,7 +227,7 @@ if (isset($_GET['chainid']) && isset($_GET['handleterm']) && isset($_GET['hash']
                 ));
                 //Has this user hashtag_discovered this hashtag or no?
                 $html_message .= view_hashtag_title($down_or, true) . ":\n";
-                $html_message .= 'https://' . get_domain('m__message', $x['handleid'], $i['chainhandledomain']) . view_memory(42903, 33286) . $down_or['hashtagstring'] . (!count($discoveries) ? '?handleterm=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['handleterm']) : '') . "\n\n";
+                $html_message .= 'https://' . get_domain('m__message', $x['handleid'], $i['chainhandledomain']) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (!count($discoveries) ? '?handleterm=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['handleterm']) : '') . "\n\n";
 
             }
 

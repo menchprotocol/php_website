@@ -10,7 +10,7 @@ $count = 0;
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
-if($focus_i['hashtagstring']!='Discotique2025'){
+if($focus_i['hashtagterm']!='Discotique2025'){
 
     //HANDLE
     $chainhandleoutput = array();
@@ -148,7 +148,7 @@ if($focus_i['hashtagstring']!='Discotique2025'){
 
             $core_content = trim($is[0]['hashtagvalue']);
             //Fetch from Cache table:
-            $chainvalue = hashtag_text2raw($is[0]['hashtagstring'], $is[0]['hashtagvalue']);
+            $chainvalue = hashtag_text2raw($is[0]['hashtagterm'], $is[0]['hashtagvalue']);
             $hashtagvalue = $is[0]['hashtagvalue'].' ';
 
         } else {
@@ -167,8 +167,8 @@ if($focus_i['hashtagstring']!='Discotique2025'){
             'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
             'chainhashtaginput' => $x['chainhashtagoutput'],
         ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $x2) {
-            $hashtagvalue .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagstring'];
-            $core_content .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagstring'];
+            $hashtagvalue .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'];
+            $core_content .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'];
         }
 
 

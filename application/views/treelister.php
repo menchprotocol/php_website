@@ -1,12 +1,12 @@
 <?php
 
-if(!isset($_GET['hashtagstring'])){
-    die('Missing Hashtag ID hashtagstring');
+if(!isset($_GET['hashtagterm'])){
+    die('Missing Hashtag ID hashtagterm');
 }
 
 
 //Generate list & settings:
-$hashtag_settings = hashtag_settings($_GET['hashtagstring'], true);
+$hashtag_settings = hashtag_settings($_GET['hashtagterm'], true);
 echo '<h1 class="no-print">' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 
 
@@ -20,13 +20,13 @@ foreach($this->Chains->read(array(
     'chainhandleinput IN (' . join(',', $hashtag_settings['list_config'][34513]) . ')' => null, //Active Writes
 ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i){
 
-    $hashtag_settings = hashtag_settings($chain_i['hashtagstring'], true);
+    $hashtag_settings = hashtag_settings($chain_i['hashtagterm'], true);
     if(!count($hashtag_settings['query_string_filtered'])){
         continue;
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$chain_i['hashtagstring'].'">'.view_hashtag_title($chain_i).'</a> ['.count($hashtag_settings['query_string_filtered']).' Total]</h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$chain_i['hashtagterm'].'">'.view_hashtag_title($chain_i).'</a> ['.count($hashtag_settings['query_string_filtered']).' Total]</h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     foreach($hashtag_settings['query_string_filtered'] as $count => $x){

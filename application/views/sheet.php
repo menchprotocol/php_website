@@ -1,7 +1,7 @@
 <?php
 
-if (!isset($_GET['hashtagstring'])) {
-    die('Missing Hashtag ID hashtagstring');
+if (!isset($_GET['hashtagterm'])) {
+    die('Missing Hashtag ID hashtagterm');
 }
 
 //Sheet
@@ -18,7 +18,7 @@ $count_totals = array(
 );
 
 //Generate list & settings:
-$hashtag_settings = hashtag_settings($_GET['hashtagstring']);
+$hashtag_settings = hashtag_settings($_GET['hashtagterm']);
 $max_limit = view_memory(6404,11064);
 
 
@@ -140,7 +140,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
                 ), array('chainhashtagoutput'), 1) as $target_i) {
 
                     //See History for this user:
-                    $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['hashtagstring'] . '@' . $x['handleterm'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $handles___11035[44328]['m__cover'] . '</span></a>';
+                    $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['hashtagterm'] . '@' . $x['handleterm'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $handles___11035[44328]['m__cover'] . '</span></a>';
 
                 }
             }
@@ -193,7 +193,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
 
         array_push($table_sortable, '#th_hashtag_' . $hashtag_var['hashtagid']);
 
-        echo '<th id="th_hashtag_' . $hashtag_var['hashtagid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 33286) . $hashtag_var['hashtagstring'] . '" target="_blank" title="Open in New Window" ' . ($max_limit ? ($current_x >= $max_limit ? '' : (($current_x / $max_limit) >= 0.5 ? 'isgold' : 'isred')) : '') . '">' . $current_x . ($max_limit ? '/' . $max_limit : '') . '</a><span class="vertical_col">' . (strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true)) . '</span></th>';
+        echo '<th id="th_hashtag_' . $hashtag_var['hashtagid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 33286) . $hashtag_var['hashtagterm'] . '" target="_blank" title="Open in New Window" ' . ($max_limit ? ($current_x >= $max_limit ? '' : (($current_x / $max_limit) >= 0.5 ? 'isgold' : 'isred')) : '') . '">' . $current_x . ($max_limit ? '/' . $max_limit : '') . '</a><span class="vertical_col">' . (strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true)) . '</span></th>';
 
     }
     echo '</tr>';

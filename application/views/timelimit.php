@@ -8,9 +8,9 @@ $filters = array(
 //Give it some extra time in case they are in Paypal making the payment
 $buffer_time = 300;
 
-if (isset($_GET['hashtagstring']) && strlen($_GET['hashtagstring'])) {
+if (isset($_GET['hashtagterm']) && strlen($_GET['hashtagterm'])) {
     foreach ($this->Hashtags->read(array(
-        'LOWER(hashtagstring)' => strtolower($_GET['hashtagstring']),
+        'LOWER(hashtagterm)' => strtolower($_GET['hashtagterm']),
     )) as $i) {
         $filters['chainhashtagoutput'] = $i['hashtagid'];
         $buffer_time = 0;
@@ -72,6 +72,6 @@ echo '<div style="text-align: center">' . $chains_deleted . '/' . $counter . ' h
 if (isset($filters['chainhashtagoutput'])) {
     foreach ($this->Hashtags->read(array('hashtagid' => $filters['chainhashtagoutput'])) as $i) {
         //We were deleting a single item, redirect back:
-        js_php_redirect(timelimit . view_memory(42903, 33286) . $i['hashtagstring'], 0);
+        js_php_redirect(timelimit . view_memory(42903, 33286) . $i['hashtagterm'], 0);
     }
 }

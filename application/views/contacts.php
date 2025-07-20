@@ -1,7 +1,7 @@
 <?php
 
 //Generate list & settings:
-$hashtag_settings = hashtag_settings($_GET['hashtagstring'], true);
+$hashtag_settings = hashtag_settings($_GET['hashtagterm'], true);
 echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 echo count($hashtag_settings['query_string_filtered']) . ' Contacts<br />';
 echo $hashtag_settings['contact_details']['email_count'] . ' Emails<br />';

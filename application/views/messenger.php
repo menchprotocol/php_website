@@ -46,7 +46,7 @@ foreach ($this->Chains->read(array(
 
     //Now let's see who will receive this:
     $demo_only = false;
-    $hashtag_settings = hashtag_settings($i['hashtagstring']);
+    $hashtag_settings = hashtag_settings($i['hashtagterm']);
     $total_sent = $this->Chains->broadcast($hashtag_settings['query_string_filtered'], $i, $i['chainhandledomain'], true, $demo_only);
 
     echo view_hashtag_title($i) . ' Sent ' . $total_sent . ' Messages to ' . count($hashtag_settings['query_string_filtered']) . ' Members<hr />';

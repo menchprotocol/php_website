@@ -318,10 +318,10 @@ echo $bgVideo;
 //JS Variables for this app on page...
 if ($focus_i){
     echo '<input type="hidden" id="focus__node" value="12273" />
-<input type="hidden" id="focus_handle" value="'.$focus_i['hashtagstring'].'" />
+<input type="hidden" id="focus_handle" value="'.$focus_i['hashtagterm'].'" />
 <input type="hidden" id="focus__id" value="'.$focus_i['hashtagid'].'" />';
     if($target_i){
-        echo '<input type="hidden" id="target_hashtagstring" value="'.$target_i['hashtagstring'].'" />
+        echo '<input type="hidden" id="target_hashtagterm" value="'.$target_i['hashtagterm'].'" />
         <input type="hidden" id="target_hashtagid" value="'.$target_i['hashtagid'].'" />';
     }
 } elseif($focus_e){
@@ -743,7 +743,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <!-- Hashtag Hashtag -->
                         <div class="dynamic_editing_input single_line hash_group" title="<?= $handles___6201[32337]['m__title'] ?>">
                             <h3 class="mini-font"><span class="icon-block"><?= $handles___6201[32337]['m__cover']  ?></span></h3>
-                            <input type="text" class="form-control unsaved_warning save_hashtagstring no-border" placeholder="<?= $handles___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                            <input type="text" class="form-control unsaved_warning save_hashtagterm no-border" placeholder="<?= $handles___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
                         </div>
 
                         <!-- Hashtag Creator(s) -->

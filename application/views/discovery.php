@@ -2,14 +2,14 @@
 
 $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 $chainhandlecreator = ($handle_session ? $handle_session['handleid'] : 0);
-$target_hashtagstring = (count($target_i) && $chainhandlecreator ? $target_i['hashtagstring'] : null);
-$at_starting_point = $target_hashtagstring==$focus_i['hashtagstring'];
+$target_hashtagterm = (count($target_i) && $chainhandlecreator ? $target_i['hashtagterm'] : null);
+$at_starting_point = $target_hashtagterm==$focus_i['hashtagterm'];
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
 if ($chainhandlecreator && !$at_starting_point) {
 
-    $previous = $this->Chains->previoushashtag($chainhandlecreator, $target_hashtagstring, $focus_i['hashtagid']);
+    $previous = $this->Chains->previoushashtag($chainhandlecreator, $target_hashtagterm, $focus_i['hashtagid']);
     if (count($previous)) {
 
         $nav_list = array();
@@ -31,7 +31,7 @@ if ($chainhandlecreator && !$at_starting_point) {
             ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_hashtagstring . '/' . ($followings_i['hashtagstring'] == $target_hashtagstring ? 'start' : $followings_i['hashtagstring']) . '">' . view_hashtag_title($followings_i, true) . '</a>';
+            $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_hashtagterm . '/' . ($followings_i['hashtagterm'] == $target_hashtagterm ? 'start' : $followings_i['hashtagterm']) . '">' . view_hashtag_title($followings_i, true) . '</a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if (count($query_subset) >= 2) {
@@ -48,7 +48,7 @@ if ($chainhandlecreator && !$at_starting_point) {
                         'chainhandlecreator' => $chainhandlecreator,
                         'chainhashtaginput' => $hashtag_subset['hashtagid'],
                     )))) {
-                        $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_hashtagstring . '/' . $hashtag_subset['hashtagstring'] . '" class="dropdown-item ' . (in_array($hashtag_subset['hashtagid'], $main_branch) ? ' active ' : '') . '">' . view_hashtag_title($hashtag_subset, true) . '</a>';
+                        $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_hashtagterm . '/' . $hashtag_subset['hashtagterm'] . '" class="dropdown-item ' . (in_array($hashtag_subset['hashtagid'], $main_branch) ? ' active ' : '') . '">' . view_hashtag_title($hashtag_subset, true) . '</a>';
                     } else {
                         //Locked
                         $breadcrum_content .= '<div class="dropdown-item is_locked ' . (in_array($hashtag_subset['hashtagid'], $main_branch) ? ' active ' : '') . '" title="' . $handles___11035[43010]['m__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">' . $handles___11035[43010]['m__cover'] . '</span>' . view_hashtag_title($hashtag_subset, true) . '</div>';

@@ -42,13 +42,13 @@ class Hashtags extends CIdea_cache
         }
 
         //Save hashtag
-        if (!isset($add_fields['hashtagstring'])) {
-            $add_fields['hashtagstring'] = random_string(8);
+        if (!isset($add_fields['hashtagterm'])) {
+            $add_fields['hashtagterm'] = random_string(8);
         }
 
         //Save Hashtag
         $add_fields['hashtagid'] = $new_x['chainid'];
-        //$add_fields['hashtagvalue'] = '#'.$add_fields['hashtagstring']."\n".$add_fields['hashtagvalue'];
+        //$add_fields['hashtagvalue'] = '#'.$add_fields['hashtagterm']."\n".$add_fields['hashtagvalue'];
         $add_fields['hashtagread'] = hashtagread($add_fields['hashtagid'], $add_fields['hashtagvalue']);
         if (!count($this->Hashtags->read(array('hashtagid' => $add_fields['hashtagid'])))) {
             $this->db->insert('ideachainhashtags', $add_fields);
@@ -127,7 +127,7 @@ class Hashtags extends CIdea_cache
         //Make sure user has access to each item:
         if ($select == '*' && 0) {
             foreach ($results as $key => $value) {
-                if (!hashtag_access($value['hashtagstring'], 0, $value)) {
+                if (!hashtag_access($value['hashtagterm'], 0, $value)) {
                     unset($results[$key]); //Remove this option
                 }
             }
@@ -161,7 +161,7 @@ class Hashtags extends CIdea_cache
             $skip_sync_ledger = array('hashtagread', 'hashtagexternal', 'hashtagweight', 'hashtagtype');
             $must_sync_ledger = array(
                 'hashtagvalue' => 4736, //Hashtag Text
-                'hashtagstring' => 32337,
+                'hashtagterm' => 32337,
             );
 
             //See what is being updated:
@@ -371,7 +371,7 @@ class Hashtags extends CIdea_cache
             } elseif (in_array($action_handleid, array(12611, 12612, 27240, 28801)) && view_valid_handle_hashtag($action_command1)) {
 
                 foreach ($this->Hashtags->read(array(
-                    'LOWER(hashtagstring)' => strtolower(view_valid_handle_hashtag($action_command1)),
+                    'LOWER(hashtagterm)' => strtolower(view_valid_handle_hashtag($action_command1)),
                 )) as $i) {
 
                     if ($action_handleid == 27240) {
@@ -455,7 +455,7 @@ class Hashtags extends CIdea_cache
     {
 
         //Chains hashtags with the causality chain ensuring not a duplicate:
-        if (0 && $chainhandletype == 4228 && count($this->Chains->previoushashtag(0, $next_i['hashtagstring'], $i['hashtagid']))) {
+        if (0 && $chainhandletype == 4228 && count($this->Chains->previoushashtag(0, $next_i['hashtagterm'], $i['hashtagid']))) {
             return array(
                 'status' => 0,
                 'message' => 'Hashtag already added in the inverse direction, so it cannot be added here',
@@ -625,7 +625,7 @@ class Hashtags extends CIdea_cache
         return array(
             'status' => 1,
             'hashtag_createid' => $hashtag_new['hashtag_create']['hashtagid'],
-            'hashtag_createhashtag' => $hashtag_new['hashtag_create']['hashtagstring'],
+            'hashtag_createhashtag' => $hashtag_new['hashtag_create']['hashtagterm'],
         );
 
     }

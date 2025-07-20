@@ -27,7 +27,7 @@ view_json(array(
     'handles_missing' => count($missing_handles),
     //'hashtag_list' => $missing_hashtags,
     //'handles_list' => $missing_handles,
-    //'hashtag_settings' => hashtag_settings($focus_i['hashtagstring'], false),
+    //'hashtag_settings' => hashtag_settings($focus_i['hashtagterm'], false),
     //'history' => $this->Chains->history($focus_i, $focus_e['handleid']),
 ));
 

@@ -1,7 +1,7 @@
 <?php
 
-if(!isset($_GET['hashtagstring'])){
-    die('Missing Hashtag ID hashtagstring');
+if(!isset($_GET['hashtagterm'])){
+    die('Missing Hashtag ID hashtagterm');
 }
 
 //Sheet
@@ -21,7 +21,7 @@ $count_totals = array(
 
 
 //Generate list & settings:
-$hashtag_settings = hashtag_settings($_GET['hashtagstring']);
+$hashtag_settings = hashtag_settings($_GET['hashtagterm']);
 
 echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_hashtag_value($hashtag_settings['i'], ( isset($handle_session['handleid']) ? $handle_session['handleid'] : 0 )) . '</div>';
@@ -156,7 +156,7 @@ foreach($hashtag_settings['hashtag_column'] as $hashtag_var){
 
     array_push($table_sortable, '#th_hashtag_'.$hashtag_var['hashtagid']);
 
-    echo '<th id="th_hashtag_'.$hashtag_var['hashtagid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$hashtag_var['hashtagstring'].'" target="_blank" title="Open in New Window">'.$handles___4737[$hashtag_var['hashtagtype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true) ).'</span></th>';
+    echo '<th id="th_hashtag_'.$hashtag_var['hashtagid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$hashtag_var['hashtagterm'].'" target="_blank" title="Open in New Window">'.$handles___4737[$hashtag_var['hashtagtype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true) ).'</span></th>';
 
 }
 echo '</tr>';

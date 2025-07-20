@@ -6,7 +6,7 @@ if(!$handle_session){
         'status' => 0,
         'message' => blocked_reasoning(),
     ));
-} elseif (!isset($_POST['target_hashtagstring']) || !isset($_POST['target_hashtagid']) || !isset($_POST['invoice_items']) || !isset($_POST['do_skip'])) {
+} elseif (!isset($_POST['target_hashtagterm']) || !isset($_POST['target_hashtagid']) || !isset($_POST['invoice_items']) || !isset($_POST['do_skip'])) {
     return view_json(array(
         'status' => 0,
         'message' => 'Missing Core Data',
@@ -211,7 +211,7 @@ foreach($this->Hashtags->read(array(
         //Find Next:
         $hashtag_redirect_url = hashtag_redirect_url($i);
         if(!$hashtag_redirect_url){
-            $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagstring'], $i);
+            $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm'], $i);
         }
 
 

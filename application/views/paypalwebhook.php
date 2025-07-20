@@ -23,10 +23,10 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
         'LOWER(handleterm)' => $item_numbers['handle_wesbite'],
     ));
     $next_is = $this->Hashtags->read(array(
-        'LOWER(hashtagstring)' => $item_numbers['hashtag_destination'],
+        'LOWER(hashtagterm)' => $item_numbers['hashtag_destination'],
     ));
     $target_is = ($item_numbers['hashtag_target'] ? $this->Hashtags->read(array(
-        'LOWER(hashtagstring)' => $item_numbers['hashtag_target'],
+        'LOWER(hashtagterm)' => $item_numbers['hashtag_target'],
     )) : false);
 
 
