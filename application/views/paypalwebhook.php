@@ -17,10 +17,10 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
 
     //Fetch Objects based on handles:
     $handle_sessions = $this->Handles->read(array(
-        'LOWER(handlehandle)' => $item_numbers['handle_handle'],
+        'LOWER(handlestring)' => $item_numbers['handle_handle'],
     ));
     $website_es = $this->Handles->read(array(
-        'LOWER(handlehandle)' => $item_numbers['handle_wesbite'],
+        'LOWER(handlestring)' => $item_numbers['handle_wesbite'],
     ));
     $next_is = $this->Hashtags->read(array(
         'LOWER(hashtagstring)' => $item_numbers['hashtag_destination'],

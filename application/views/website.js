@@ -2411,7 +2411,7 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
 
     $('#modal31912 .save_handleid').val(handleid);
     $('#modal31912 .save_chainid').val(chainid);
-    $('#modal31912 .save_handlehandle').val($('.ui_handlehandle_' + handleid + ':first').text());
+    $('#modal31912 .save_handlestring').val($('.ui_handlestring_' + handleid + ':first').text());
     $('#modal31912 .save_handlevalue').val(current_title);
 
 
@@ -2542,7 +2542,7 @@ function handle_save_edit() {
         save_handleid: $('#modal31912 .save_handleid').val(),
         save_handlevalue: $('#modal31912 .save_handlevalue').val().trim(),
         save_handlecover: $('#modal31912 .save_handlecover').val().trim(),
-        save_handlehandle: $('#modal31912 .save_handlehandle').val().trim(),
+        save_handlestring: $('#modal31912 .save_handlestring').val().trim(),
         save_chainid: $('#modal31912 .save_chainid').val(),
         save_chainvalue: $('#modal31912 .save_chainvalue').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2571,16 +2571,16 @@ function handle_save_edit() {
         } else {
 
             //Update Handle & Href chains if needed:
-            var old_handle = $(".ui_handlehandle_" + modify_data['save_handleid'] + ':first').text();
-            var new_handle = modify_data['save_handlehandle'];
+            var old_handle = $(".ui_handlestring_" + modify_data['save_handleid'] + ':first').text();
+            var new_handle = modify_data['save_handlestring'];
             if (old_handle != new_handle) {
                 if (parseInt($('#focus__node').val()) == 12274 && modify_data['save_handleid'] == parseInt($('#focus__id').val())) {
                     //Refresh page since focus item handle changed:
                     return js_redirect(js_handles___42903[42902]['m__message'] + new_handle);
                 } else {
                     //Make adjustments to current page:
-                    $('.s__12274_' + modify_data['save_handleid']).attr('handlehandle', new_handle);
-                    $('.ui_handlehandle_' + modify_data['save_handleid']).text(new_handle);
+                    $('.s__12274_' + modify_data['save_handleid']).attr('handlestring', new_handle);
+                    $('.ui_handlestring_' + modify_data['save_handleid']).text(new_handle);
                     $(".handle_hrefhandle_" + modify_data['save_handleid']).attr('href', $(".handle_hrefhandle_" + modify_data['save_handleid'] + ':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }

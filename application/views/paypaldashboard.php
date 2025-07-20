@@ -16,11 +16,11 @@ $all_e = array();
 
 
 
-if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['handlehandle'] || $_GET['handlehandle']=='0'){
+if(!isset($_GET['handlestring']) || !strlen($_GET['handlestring']) || !$_GET['handlestring'] || $_GET['handlestring']=='0'){
     
     echo '<h1>'.$handles___6287[27004]['m__title'].'</h1>';
     foreach($this->Handles->tree(11029, $handle_session['handleid'], array(27004)) as $e){
-        echo '<div><a href="'.view_app_chain(27004).view_memory(42903,42902).$e['handlehandle'].'" class="main__title">'.$e['handlevalue'].'</a></div>';
+        echo '<div><a href="'.view_app_chain(27004).view_memory(42903,42902).$e['handlestring'].'" class="main__title">'.$e['handlevalue'].'</a></div>';
     }
 
 } else {
@@ -30,9 +30,9 @@ if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['ha
     echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_chain(27004).'"><b>'.$handles___6287[27004]['m__title'].'</b></a></div>';
 
     $es = $this->Handles->read(array(
-        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+        'LOWER(handlestring)' => strtolower($_GET['handlestring']),
     ));
-    echo '<h2>'.$es[0]['handlevalue'].' @'.$es[0]['handlehandle'].'</h2>';
+    echo '<h2>'.$es[0]['handlevalue'].' @'.$es[0]['handlestring'].'</h2>';
 
     $hashtag_query = $this->Chains->read(array(
             'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
@@ -120,7 +120,7 @@ if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['ha
 
 
             $chain_content .= '<tr class="chain_columns chains_'.$i['hashtagid'].' hidden">';
-            $chain_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['handlecover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['handlehandle'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['handlevalue'].'</a> ' : '' ).$chainvalue['first_name'].' '.$chainvalue['last_name'].'</td>';
+            $chain_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view_cover($es[0]['handlecover'],true).'</span><a href="'.view_memory(42903,42902).$es[0]['handlestring'].'" style="font-weight:bold; display: inline-block;">'.$es[0]['handlevalue'].'</a> ' : '' ).$chainvalue['first_name'].' '.$chainvalue['last_name'].'</td>';
             $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $chainvalue['mc_gross']!=0 && strlen($chainvalue['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$chainvalue['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Chain"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_chain(4341).'?chainid='.$x['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';
             $chain_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $chain_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
@@ -208,7 +208,7 @@ if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['ha
     $other_es = array();
 
     foreach($this->Handles->read(array(
-        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+        'LOWER(handlestring)' => strtolower($_GET['handlestring']),
     )) as $e){
         $filters = array(
                     'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
@@ -246,7 +246,7 @@ if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['ha
         //Doo We Have other?
         foreach($other_es as $other_e){
             $otherhandle_content .= '<tr class="chain_columns thr_e hidden">';
-            $otherhandle_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['handlecover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['handlehandle'].'" style="font-weight:bold; display: inline-block;">'.$other_e['handlevalue'].'</a></td>';
+            $otherhandle_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['handlecover'],true).'</span><a href="'.view_memory(42903,42902).$other_e['handlestring'].'" style="font-weight:bold; display: inline-block;">'.$other_e['handlevalue'].'</a></td>';
             $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherhandle_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $otherhandle_content .= '<td style="text-align: right;"><a href="'.view_app_chain(4341).'?chainid='.$other_e['chainid'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Chain"><i class="far fa-atlas"></i></a></td>';

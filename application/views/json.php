@@ -60,7 +60,7 @@ if($focus_i['hashtagstring']!='Discotique2025'){
 
         //Fetch from Cache table:
         if(count($es_cache)){
-            $hashtagvalue = '@'.$es_cache[0]['handlehandle']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
+            $hashtagvalue = '@'.$es_cache[0]['handlestring']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
         } else {
             $hashtagvalue = '@???'.$x['chainvalue'];
         }
@@ -183,7 +183,7 @@ if($focus_i['hashtagstring']!='Discotique2025'){
             'chainhashtagoutput' => $x['chainhashtagoutput'],
             'chainhandletype' => 31835, //Mentions
         ), array('chainhandleinput')) as $x2){
-            //$hashtagvalue = str_replace('@'.$x2['handlehandle'].' ', '@'.$x2['handleid'].' ', $hashtagvalue);
+            //$hashtagvalue = str_replace('@'.$x2['handlestring'].' ', '@'.$x2['handleid'].' ', $hashtagvalue);
         }
 
         //Append authors:
@@ -193,25 +193,25 @@ if($focus_i['hashtagstring']!='Discotique2025'){
             'chainhandletype' => 4983, //Authors
         ), array('chainhandleinput')) as $x2){
 
-            $core_content .= "\n@".$x2['handlehandle'];
+            $core_content .= "\n@".$x2['handlestring'];
 
             if (filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)) {
                 //Create URL:
-                $hashtagvalue .= "\n@".$x2['handlehandle'];
+                $hashtagvalue .= "\n@".$x2['handlestring'];
 
                 //Create new URL:
                 /*
                 $added_e = $this->Handles->create(array(
-                    'handlehandle' => 'URL'.$url_key,
+                    'handlestring' => 'URL'.$url_key,
                     'handlevalue' => 'URL '.$url_key,
                     'handlecover' => 'fas fa-browser',
                 ), $x['chainhandlecreator']);
-                $hashtagvalue .= "\n@".$added_e['handle_create']['handlehandle'];
+                $hashtagvalue .= "\n@".$added_e['handle_create']['handlestring'];
                 */
 
                 $hashtagvalue .= "\n@NEWURL".random_string(8);
             } else {
-                $hashtagvalue .= "\n@".$x2['handlehandle'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
+                $hashtagvalue .= "\n@".$x2['handlestring'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
             }
         }
 
@@ -228,11 +228,11 @@ if($focus_i['hashtagstring']!='Discotique2025'){
             //Create new URL:
             /*
             $added_e = $this->Handles->create(array(
-                'handlehandle' => 'URL'.$url_key,
+                'handlestring' => 'URL'.$url_key,
                 'handlevalue' => 'URL '.$url_key,
                 'handlecover' => 'fas fa-browser',
             ), $x['chainhandlecreator']);
-            $hashtagvalue .= "\n@".$added_e['handle_create']['handlehandle'];
+            $hashtagvalue .= "\n@".$added_e['handle_create']['handlestring'];
             *//*
 
         $hashtagvalue = str_replace(trim($x2['chainvalue']), '@URL'.$url_key, $hashtagvalue);
@@ -245,8 +245,8 @@ if($focus_i['hashtagstring']!='Discotique2025'){
             'chainhandleinput !=' => $x['chainhandlecreator'],
             'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
         ), array('chainhandleinput')) as $x2){
-            $core_content .= "\n@".$x2['handlehandle'];
-            $hashtagvalue .= "\n@".$x2['handlehandle'];
+            $core_content .= "\n@".$x2['handlestring'];
+            $hashtagvalue .= "\n@".$x2['handlestring'];
         }
 
 
@@ -255,8 +255,8 @@ if($focus_i['hashtagstring']!='Discotique2025'){
             'chainhashtagoutput' => $x['chainhashtagoutput'],
             'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
         ), array('chainhandleinput')) as $x2){
-            $core_content .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
-            $hashtagvalue .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlehandle'];
+            $core_content .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlestring'];
+            $hashtagvalue .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handlestring'];
         }
 
         if(!strlen(trim($core_content))){

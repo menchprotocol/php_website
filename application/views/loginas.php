@@ -19,6 +19,6 @@ if(!count($this->Chains->read(array(
     //Assign session & log Chain:
     $this->Handles->activate($focus_e);
 
-    js_php_redirect( view_memory(42903, 42902) . $focus_e['handlehandle'], 1597);
+    js_php_redirect( view_memory(42903, 42902) . $focus_e['handlestring'], 1597);
 
 }

@@ -13,18 +13,18 @@
 $query_filters = array();
 $joined_by = array();
 
-//We have a special OR filter when combined with handlehandle & hashtagstring
-$input_e = (isset($_GET['handlehandle']) && strlen($_GET['handlehandle']) > 0);
+//We have a special OR filter when combined with handlestring & hashtagstring
+$input_e = (isset($_GET['handlestring']) && strlen($_GET['handlestring']) > 0);
 $focus_e = false;
 $input_i = (isset($_GET['hashtagstring']) && strlen($_GET['hashtagstring']) > 0);
 $focus_i = false;
 
 if ($input_e) {
     foreach ($this->Handles->read(array(
-        'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+        'LOWER(handlestring)' => strtolower($_GET['handlestring']),
     )) as $handle_found) {
         $focus_e = $handle_found;
-        $_GET['handlehandle'] = $handle_found['handlehandle'];
+        $_GET['handlestring'] = $handle_found['handlestring'];
     }
     if (!$focus_e) {
         //Invalid input!
@@ -276,7 +276,7 @@ echo '<table class="table table-sm maxout"><tr>';
 //ANY HANDLE
 echo '<td><div>';
 echo '<span class="mini-header">ANY HANDLE:</span>';
-echo '<input type="text" name="handlehandle" value="' . ($input_e ? $_GET['handlehandle'] : '') . '" class="form-control border">';
+echo '<input type="text" name="handlestring" value="' . ($input_e ? $_GET['handlestring'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
 echo '<td><span class="mini-header">HANDLE CREATOR:</span><input type="text" name="chainhandlecreator" value="' . ((isset($_GET['chainhandlecreator'])) ? $_GET['chainhandlecreator'] : '') . '" class="form-control border"></td>';

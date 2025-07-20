@@ -54,7 +54,7 @@ foreach ($this->Chains->read($filters, array('chainhashtagoutput'), 0) as $expir
 
             if ($deleted) {
                 $chains_deleted++;
-                echo '<div style="padding-left: 21px;">' . $chains_deleted . ') <a href="' . view_memory(42903, 42902) . $x_progress['handlehandle'] . '">' . $x_progress['handlevalue'] . '</a>: ' . $x_progress['chaintime'] . ' ? ' . $x_progress['chainvalue'] . ' / <a href="' . view_app_chain(12722) . '?chainid=' . $x_progress['chainid'] . '">' . $x_progress['chainid'] . ' / Answer: ' . count($answer_completed) . '</a> ' . (!count($answer_completed) ? ($seconds_left <= 0 ? ' DELETE ' : '[' . $seconds_left . '] SEcs left') : '') . ' (' . intval($expires['chainvalue']) . '+' . $buffer_time . '-' . time() . '-' . strtotime($x_progress['chaintime']) . ' = ' . $seconds_left . ')</div>';
+                echo '<div style="padding-left: 21px;">' . $chains_deleted . ') <a href="' . view_memory(42903, 42902) . $x_progress['handlestring'] . '">' . $x_progress['handlevalue'] . '</a>: ' . $x_progress['chaintime'] . ' ? ' . $x_progress['chainvalue'] . ' / <a href="' . view_app_chain(12722) . '?chainid=' . $x_progress['chainid'] . '">' . $x_progress['chainid'] . ' / Answer: ' . count($answer_completed) . '</a> ' . (!count($answer_completed) ? ($seconds_left <= 0 ? ' DELETE ' : '[' . $seconds_left . '] SEcs left') : '') . ' (' . intval($expires['chainvalue']) . '+' . $buffer_time . '-' . time() . '-' . strtotime($x_progress['chaintime']) . ' = ' . $seconds_left . ')</div>';
             }
 
 

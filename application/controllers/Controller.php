@@ -28,7 +28,7 @@ class Controller extends CI_Controller
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
         $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_chain(4269));
         $handle_session = handle_session();
-        $is_login_verified = isset($_GET['handlehandle']) && $_GET['handlehandle'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['handlehandle']) && view_hash($_GET['time'] . $_GET['handlehandle']) == $_GET['hash'];
+        $is_login_verified = isset($_GET['handlestring']) && $_GET['handlestring'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['handlestring']) && view_hash($_GET['time'] . $_GET['handlestring']) == $_GET['hash'];
 
         if (
             $memory_detected &&
@@ -40,7 +40,7 @@ class Controller extends CI_Controller
             if ($is_login_verified) {
 
                 foreach ($this->Handles->read(array(
-                    'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+                    'LOWER(handlestring)' => strtolower($_GET['handlestring']),
                 )) as $handle_session) {
 
                     //Login:
@@ -103,17 +103,17 @@ class Controller extends CI_Controller
         $target_i = null; //Discovery
 
 
-        if (isset($_GET['handlehandle']) && $_GET['handlehandle'] == 'SuccessfulWhale') {
-            $_GET['handlehandle'] = '';
+        if (isset($_GET['handlestring']) && $_GET['handlestring'] == 'SuccessfulWhale') {
+            $_GET['handlestring'] = '';
             $focus_handle = '';
-        } elseif ($focus_handle && strlen($focus_handle) && !isset($_GET['handlehandle'])) {
-            $_GET['handlehandle'] = $focus_handle;
+        } elseif ($focus_handle && strlen($focus_handle) && !isset($_GET['handlestring'])) {
+            $_GET['handlestring'] = $focus_handle;
         }
         if ($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['hashtagstring'])) {
             $_GET['hashtagstring'] = $focus_hashtag;
         }
-        if (!isset($_GET['handlehandle'])) {
-            $_GET['handlehandle'] = 0;
+        if (!isset($_GET['handlestring'])) {
+            $_GET['handlestring'] = 0;
         }
         if (!isset($_GET['hashtagstring'])) {
             $_GET['hashtagstring'] = 0;
@@ -167,26 +167,26 @@ class Controller extends CI_Controller
         }
 
 
-        if (isset($_GET['handlehandle']) && strlen($_GET['handlehandle'])) {
+        if (isset($_GET['handlestring']) && strlen($_GET['handlestring'])) {
             foreach ($this->Handles->read(array(
-                'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+                'LOWER(handlestring)' => strtolower($_GET['handlestring']),
             )) as $handle_found) {
                 $focus_e = $handle_found;
             }
             if (!$focus_e) {
                 //See if we need to lookup the ID:
-                if (is_numeric($_GET['handlehandle'])) {
+                if (is_numeric($_GET['handlestring'])) {
                     //Maybe its an ID?
                     foreach ($this->Handles->read(array(
-                        'handleid' => $_GET['handlehandle'],
+                        'handleid' => $_GET['handlestring'],
                     )) as $handle_found) {
                         $focus_e = $handle_found;
                     }
                 }
             }
-            if ($app_handleid == 42902 && $focus_e && $focus_e['handlehandle'] !== $_GET['handlehandle']) {
+            if ($app_handleid == 42902 && $focus_e && $focus_e['handlestring'] !== $_GET['handlestring']) {
                 //Adjust URL Case Sensitive:
-                return get_redirected(view_memory(42903, 42902) . $focus_e['handlehandle']);
+                return get_redirected(view_memory(42903, 42902) . $focus_e['handlestring']);
             }
         }
 
@@ -197,7 +197,7 @@ class Controller extends CI_Controller
         } elseif ($memory_detected && !in_array($app_handleid, $this->config->item('handleids___42922'))) {
             //Validate Required App input:
             if (in_array($app_handleid, $this->config->item('handleids___42905')) && !$focus_e) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['handlehandle'] . ' is not a valid Handle handle.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['handlestring'] . ' is not a valid Handle handle.</div>');
             } elseif (in_array($app_handleid, $this->config->item('handleids___44329')) && (!$focus_i || !$target_i)) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['hashtagstring'] . ' & #' . $target_hashtag . ' must be valid hashtags.</div>');
             } elseif (in_array($app_handleid, $this->config->item('handleids___42911')) && !$focus_i) {
@@ -233,7 +233,7 @@ class Controller extends CI_Controller
             if (isset($_GET['hash']) && isset($_GET['time']) && $focus_e) {
 
                 //Validate Hash:
-                if ($_GET['hash'] == view_hash($_GET['time'] . $focus_e['handlehandle'])) {
+                if ($_GET['hash'] == view_hash($_GET['time'] . $focus_e['handlestring'])) {
 
                     if ($focus_i) {
                         if (hashtag_is_startable($focus_i)) {
@@ -275,7 +275,7 @@ class Controller extends CI_Controller
             $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___6287[$app_handleid]['m__following']);
             if ($handle_session && in_array($app_handleid, $this->config->item('handleids___14639'))) {
                 //Should redirect them:
-                return get_redirected(view_memory(42903, 42902) . $handle_session['handlehandle']);
+                return get_redirected(view_memory(42903, 42902) . $handle_session['handlestring']);
             } elseif (!$handle_session && in_array($app_handleid, $this->config->item('handleids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
@@ -283,7 +283,7 @@ class Controller extends CI_Controller
                 $handles___10957 = $this->config->item('handles___10957');
                 $missing_access = 'Error: You Cannot Access ' . $handles___6287[$app_handleid]['m__title'] . ' as it requires the superpower of ' . $handles___10957[end($superpowers_required)]['m__title'] . '.';
             } elseif ($focus_e && !$handle_access) {
-                $missing_access = 'Error: You Cannot Access @' . $focus_e['handlehandle'] . ' due to Privacy Settings.';
+                $missing_access = 'Error: You Cannot Access @' . $focus_e['handlestring'] . ' due to Privacy Settings.';
             } elseif (!$skip_hashtag_privacy_check && $focus_i && !$hashtag_access) {
                 $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['hashtagstring'] . ' due to Privacy Settings.';
             } elseif (!$skip_hashtag_privacy_check && $target_i && !$target_hashtag_access) {
@@ -335,7 +335,7 @@ class Controller extends CI_Controller
             $title .= view_hashtag_title($target_i, true) . ' | ';
         }
         if ($focus_e) {
-            $title .= $focus_e['handlevalue'] . ' @' . $focus_e['handlehandle'] . ' | ';
+            $title .= $focus_e['handlevalue'] . ' @' . $focus_e['handlestring'] . ' | ';
         }
         if (!$title) {
             //Append app name since no title:
@@ -470,7 +470,7 @@ class Controller extends CI_Controller
                 }
             } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
                 foreach ($this->Handles->read(array(
-                    'LOWER(handlehandle)' => strtolower(substr($_POST['handle_string'], 1)),
+                    'LOWER(handlestring)' => strtolower(substr($_POST['handle_string'], 1)),
                 )) as $e) {
                     echo handle_view(42287, $e);
                     return true;
@@ -767,7 +767,7 @@ class Controller extends CI_Controller
         } elseif (strlen($_POST['migratehandle']) > 1) {
             $valid_handle = $this->Handles->read(array(
                 'handleid !=' => $_POST['handleid'],
-                'LOWER(handlehandle)' => strtolower(str_replace('@', '', $_POST['migratehandle'])),
+                'LOWER(handlestring)' => strtolower(str_replace('@', '', $_POST['migratehandle'])),
             ));
             if (!count($valid_handle)) {
                 return view_json(array(
@@ -806,13 +806,13 @@ class Controller extends CI_Controller
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 'chainhandleoutput' => $_POST['handleid'],
             ), array('chainhandleinput'), 1, 0, array('handlevalue' => 'DESC')) as $up_e) {
-                $delete_redirect = view_memory(42903, 42902) . $up_e['handlehandle'];
+                $delete_redirect = view_memory(42903, 42902) . $up_e['handlestring'];
             }
 
             //If still not found, go to main page if no followings found:
             if (!$delete_redirect) {
                 foreach ($this->Handles->read(array('handleid' => $_POST['handleid'])) as $e2) {
-                    $delete_redirect = view_memory(42903, 42902) . e2['handlehandle'];
+                    $delete_redirect = view_memory(42903, 42902) . e2['handlestring'];
                 }
             }
         } else {
@@ -1192,10 +1192,10 @@ class Controller extends CI_Controller
 
                 //HANDLES
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
-                $current_handlehandle = view_valid_handle_handle($_POST['first_segment']);
+                $current_handlestring = view_valid_handle_handle($_POST['first_segment']);
                 foreach (hashtags_query($_POST['chainhandletype'], $_POST['hashtagid'], 1, false) as $handle_session) {
                     if (isset($handle_session['handleid'])) {
-                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlehandle'], $current_handlehandle && $handle_session['handlehandle'] == $current_handlehandle, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlevalue'], $handle_session['chainvalue']);
+                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlestring'], $current_handlestring && $handle_session['handlestring'] == $current_handlestring, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlevalue'], $handle_session['chainvalue']);
                         $listed_items++;
                     }
                 }
@@ -1415,12 +1415,12 @@ class Controller extends CI_Controller
             if (in_array($_POST['chainhandletype'], $this->config->item('handleids___11028')) || $_POST['chainhandletype']==12274) {
 
                 //HANDLES
-                $current_handlehandle = view_valid_handle_handle($_POST['first_segment']);
+                $current_handlestring = view_valid_handle_handle($_POST['first_segment']);
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
 
                 foreach (handles_query($_POST['chainhandletype'], $_POST['handleid'], 1, false) as $handle_session) {
                     if (isset($handle_session['handleid'])) {
-                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlehandle'], $handle_session['handlehandle'] == $current_handlehandle, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlevalue'], (!$is_cache ? $handle_session['chainvalue'] : null));
+                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlestring'], $handle_session['handlestring'] == $current_handlestring, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlevalue'], (!$is_cache ? $handle_session['chainvalue'] : null));
                         $listed_items++;
                     }
                 }
@@ -1447,7 +1447,7 @@ class Controller extends CI_Controller
                 foreach ($this->Handles->read(array(
                     'handleid' => $_POST['handleid'],
                 )) as $handle_this) {
-                    $ui .= view_more(view_memory(42903, 42902) . $handle_this['handlehandle'], false, '&nbsp;', '&nbsp;', 'View All');
+                    $ui .= view_more(view_memory(42903, 42902) . $handle_this['handlestring'], false, '&nbsp;', '&nbsp;', 'View All');
                 }
             }
 
@@ -1685,7 +1685,7 @@ class Controller extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'handle_createhandle' => $focus_e['handlehandle'],
+            'handle_createhandle' => $focus_e['handlestring'],
         ));
 
 
@@ -1825,7 +1825,7 @@ class Controller extends CI_Controller
 
         if (!intval($_POST['handle_current_id']) && view_valid_handle_handle($_POST['handle_new_string'])) {
             foreach ($this->Handles->read(array(
-                'LOWER(handlehandle)' => strtolower(substr($_POST['handle_new_string'], 1)),
+                'LOWER(handlestring)' => strtolower(substr($_POST['handle_new_string'], 1)),
             )) as $e) {
                 $_POST['handle_current_id'] = $e['handleid'];
             }
@@ -1949,7 +1949,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Handle is no longer active',
             ));
-        } elseif (!handle_access($es[0]['handlehandle'], 0, $es[0])) {
+        } elseif (!handle_access($es[0]['handlestring'], 0, $es[0])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are missing permission to edit this Handle',
@@ -1982,7 +1982,7 @@ class Controller extends CI_Controller
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             ), array('chainhandleinput'), 0, 0, $order_42145) as $handle_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($handle_template['handlecover']) . '</span>' . $handle_template['handlevalue'] . '<a href="' . view_memory(42903, 42902) . $handle_group['handlehandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $handle_group['handlevalue'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($handle_group['handlecover']) . '</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($handle_template['handlecover']) . '</span>' . $handle_template['handlevalue'] . '<a href="' . view_memory(42903, 42902) . $handle_group['handlestring'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $handle_group['handlevalue'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($handle_group['handlecover']) . '</span></a></div>';
 
 
                 //Load template:
@@ -2156,7 +2156,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Handle Title',
             ));
-        } elseif (!isset($_POST['save_handlehandle'])) {
+        } elseif (!isset($_POST['save_handlestring'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Handle Handle',
@@ -2273,8 +2273,8 @@ class Controller extends CI_Controller
 
 
         //Validate Handle Handle & save if needed:
-        if ($es[0]['handlehandle'] !== trim($_POST['save_handlehandle'])) {
-            $validate_update_handle = validate_update_handle(trim($_POST['save_handlehandle']), null, $es[0]['handleid']);
+        if ($es[0]['handlestring'] !== trim($_POST['save_handlestring'])) {
+            $validate_update_handle = validate_update_handle(trim($_POST['save_handlestring']), null, $es[0]['handleid']);
             if (!$validate_update_handle['status']) {
                 return view_json(array(
                     'status' => 0,
@@ -2305,23 +2305,23 @@ class Controller extends CI_Controller
         $this->Handles->update($es[0]['handleid'], array(
             'handlevalue' => $validate_handlevalue['handlevalue_clean'],
             'handlecover' => trim($_POST['save_handlecover']),
-            'handlehandle' => trim($_POST['save_handlehandle']),
+            'handlestring' => trim($_POST['save_handlestring']),
         ), $handle_session['handleid']);
 
 
         //Sync handle reference:
-        $new_handle_string = trim($_POST['save_handlehandle']);
-        if ($es[0]['handlehandle'] != $new_handle_string) {
+        $new_handle_string = trim($_POST['save_handlestring']);
+        if ($es[0]['handlestring'] != $new_handle_string) {
             //Update Handles everywhere they are referenced:
             foreach ($this->Chains->read(array(
                 'chainhandleinput' => $es[0]['handleid'],
                 'chainhandletype' => 31835, //Handle Mention
             ), array('chainhashtagoutput')) as $ref) {
                 $this->Hashtags->update($ref['hashtagid'], array(
-                    'hashtagvalue' => str_replace('@' . $es[0]['handlehandle'], '@' . $new_handle_string, $ref['hashtagvalue']),
+                    'hashtagvalue' => str_replace('@' . $es[0]['handlestring'], '@' . $new_handle_string, $ref['hashtagvalue']),
                 ), $handle_session['handleid']);
             }
-            $es[0]['handlehandle'] = $new_handle_string;
+            $es[0]['handlestring'] = $new_handle_string;
         }
 
 
@@ -2625,7 +2625,7 @@ class Controller extends CI_Controller
 
 
         //Set default sign in URL:
-        $sign_url = view_memory(42903, 42902) . $es[0]['handlehandle'];
+        $sign_url = view_memory(42903, 42902) . $es[0]['handlestring'];
 
         //See if we can find a better one:
         if (intval($_POST['sign_hashtagid']) > 0) {
@@ -3332,7 +3332,7 @@ class Controller extends CI_Controller
         $first_letter = substr($_POST['migratehandle'], 0, 1);
         if ($first_letter == '@' && strlen($_POST['migratehandle']) > 1) {
             if (!count($this->Handles->read(array(
-                'LOWER(handlehandle)' => strtolower(substr($_POST['migratehandle'], 1)),
+                'LOWER(handlestring)' => strtolower(substr($_POST['migratehandle'], 1)),
             )))) {
                 return view_json(array(
                     'status' => 0,
@@ -3471,14 +3471,14 @@ class Controller extends CI_Controller
     {
 
         //See if we have any hashtag or Handle targets to limit our stats:
-        $has_handle = isset($_POST['handlehandle']) && strlen($_POST['handlehandle']) && $_POST['handlehandle'];
+        $has_handle = isset($_POST['handlestring']) && strlen($_POST['handlestring']) && $_POST['handlestring'];
         $has_hashtag = isset($_POST['hashtagstring']) && strlen($_POST['hashtagstring']) && $_POST['hashtagstring'];
 
         if ($has_handle) {
 
             //See stats for this Handle:
             $es = $this->Handles->read(array(
-                'LOWER(handlehandle)' => strtolower($_POST['handlehandle']),
+                'LOWER(handlestring)' => strtolower($_POST['handlestring']),
             ));
             if (!count($es)) {
                 return view_json(array(

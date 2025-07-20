@@ -112,9 +112,9 @@ function handle_number_calculator($e)
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $e['handlekey']) {
+    if ($count_x[0]['totals'] != $e['handleweight']) {
         return $CI->Handles->update($e['handleid'], array(
-            'handlekey' => $count_x[0]['totals'],
+            'handleweight' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -480,7 +480,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                 continue;
             }
             array_push($already_shown, $creator['chainhandlecreator']);
-            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'" style="padding:3px 0;">'.( strlen($_GET['expand'])>1 ? '<a href="' . view_app_chain(44328) . '/'.$_GET['expand'].'@' . $creator['handlehandle'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '">' : '' ).'<span class="icon-block-sm grey">' . $handles___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['handlehandle'].'"><span class="icon-block">'.view_cover($creator['handlecover']).'</span><span class="grey">@'.$creator['handlehandle'].'</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['hashtagstring'] . '\')" title="'.$handles___11035[10673]['m__title'].'" class="grey">' . $handles___11035[10673]['m__cover'] . '</a> '.view_time_difference($creator['chaintime'], false).'</span></div>';
+            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'" style="padding:3px 0;">'.( strlen($_GET['expand'])>1 ? '<a href="' . view_app_chain(44328) . '/'.$_GET['expand'].'@' . $creator['handlestring'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '">' : '' ).'<span class="icon-block-sm grey">' . $handles___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['handlestring'].'"><span class="icon-block">'.view_cover($creator['handlecover']).'</span><span class="grey">@'.$creator['handlestring'].'</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['hashtagstring'] . '\')" title="'.$handles___11035[10673]['m__title'].'" class="grey">' . $handles___11035[10673]['m__cover'] . '</a> '.view_time_difference($creator['chaintime'], false).'</span></div>';
             if(count($already_shown)>=view_memory(6404, 11064)){
                 break;
             }
@@ -509,7 +509,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                     $current_handleid = $handleid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_handle['handlehandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_handle['handlecover']) . '</span>' . $filtered_handle['handlevalue'] . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_handle['handlestring'] . '"><span class="icon-block-sm">' . view_cover($filtered_handle['handlecover']) . '</span>' . $filtered_handle['handlevalue'] . '</a></div>';
             }
         }
         //Hashtag<>Hashtag Settings:
@@ -799,7 +799,7 @@ function home_url()
 {
     $CI =& get_instance();
     $handle_session = handle_session();
-    return ($handle_session ? view_memory(42903, 42902) . $handle_session['handlehandle'] : view_memory(42903, 14565));
+    return ($handle_session ? view_memory(42903, 42902) . $handle_session['handlestring'] : view_memory(42903, 14565));
 }
 
 function hashtag_is_startable($i)
@@ -853,7 +853,7 @@ function handle_session($superpower_handleid = null, $force_redirect = 0, $sessi
 
         //Block access:
         if ($handle_session) {
-            $goto_url = view_memory(42903, 42902) . $handle_session['handlehandle'];
+            $goto_url = view_memory(42903, 42902) . $handle_session['handlestring'];
         } else {
             $goto_url = view_app_chain(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
         }
@@ -933,7 +933,7 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
         )))) {
         return generate_handle(12273, $str, $suggestion, $increment);
     } elseif ($focus__node == 12274 && count($CI->Handles->read(array(
-            'LOWER(handlehandle)' => strtolower($suggestion),
+            'LOWER(handlestring)' => strtolower($suggestion),
         )))) {
         return generate_handle(12274, $str, $suggestion, $increment);
     } else {
@@ -1397,7 +1397,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
 
         foreach ($CI->Handles->read(array(
             'handleid !=' => $handleid,
-            'LOWER(handlehandle)' => strtolower($str),
+            'LOWER(handlestring)' => strtolower($str),
         ), 0) as $matched) {
             //Is it active?
             return array(
@@ -1409,7 +1409,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
 
         //Since not active we can replace this:
         $CI->Handles->update($handleid, array(
-            'handlehandle' => change_handle($str),
+            'handlestring' => change_handle($str),
         ), $handle_session['handleid']);
 
     }
@@ -1659,7 +1659,7 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
                 'chainhashtagoutput' => $template_hashtagid,
             ))))) {
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?handlehandle=' . $es[0]['handlehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['handlehandle']) . '" style="font-size:13px;">' . $handles___6287[28904]['m__title'] . '</a></div>';
+        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?handlestring=' . $es[0]['handlestring'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['handlestring']) . '" style="font-size:13px;">' . $handles___6287[28904]['m__title'] . '</a></div>';
     }
 
 
@@ -1828,7 +1828,7 @@ function get_domain($var_field, $initiator_handleid = 0, $chainhandledomain = 0,
 }
 
 
-function handle_access($handlehandle = null, $handleid = 0, $e = false, $replacement_handleid = false, $handle_list_config = array())
+function handle_access($handlestring = null, $handleid = 0, $e = false, $replacement_handleid = false, $handle_list_config = array())
 {
 
     /*
@@ -1846,12 +1846,12 @@ function handle_access($handlehandle = null, $handleid = 0, $e = false, $replace
     $handle_session = handle_session();
     if (!$replacement_handleid && handle_session(10939)) {
         return 3;
-    } elseif (!$replacement_handleid && $handle_session && ($handlehandle == $handle_session['handlehandle'] || $handleid == $handle_session['handleid'])) {
+    } elseif (!$replacement_handleid && $handle_session && ($handlestring == $handle_session['handlestring'] || $handleid == $handle_session['handleid'])) {
         return 3;
     }
 
-    if (strlen($handlehandle)) {
-        $filters['LOWER(handlehandle)'] = strtolower($handlehandle);
+    if (strlen($handlestring)) {
+        $filters['LOWER(handlestring)'] = strtolower($handlestring);
     } elseif (intval($handleid)) {
         $filters['handleid'] = $handleid;
     } elseif (!$e || (!$handle_session && !$replacement_handleid)) {
@@ -2469,12 +2469,12 @@ function update_algolia($focus__node = null, $s__id = 0)
                 //HANDLES
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['handleid']);
-                $export_row['s__handle'] = $s['handlehandle'];
-                $export_row['s__url'] = view_memory(42903, 42902) . $s['handlehandle'];
+                $export_row['s__handle'] = $s['handlestring'];
+                $export_row['s__url'] = view_memory(42903, 42902) . $s['handlestring'];
                 $export_row['s__cover'] = $s['handlecover'];
                 $export_row['s__title'] = $s['handlevalue'];
                 $export_row['s__cache'] = '';
-                $export_row['s__weight'] = intval($s['handlekey']);
+                $export_row['s__weight'] = intval($s['handleweight']);
 
                 //Is this an image?
                 if (strlen($s['handlecover'])) {
@@ -2788,7 +2788,7 @@ function chain_view($x)
             $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Handles->read(array('handleid' => $x[$m['m__handle']])) as $focus_e) {
-                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['handlehandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['handlevalue'] . '" class="icon-block-sm">' . view_cover($focus_e['handlecover'], '<i class="far fa-at"></i>') . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['handlestring'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['handlevalue'] . '" class="icon-block-sm">' . view_cover($focus_e['handlecover'], '<i class="far fa-at"></i>') . '</a>';
                 }
             }
             $column_value .= '</div></td>';
@@ -2809,21 +2809,21 @@ function chain_view($x)
             //Chain ID
 
             //Determine chain group:
-            $handlehandle_sign = '';
+            $handlestring_sign = '';
             if (in_array($x['chainhandletype'], array(12273, 12274))) {
                 $handles___4593 = $CI->config->item('handles___4593'); //Chain Type
-                $handlehandle_sign = '<span class="group_sign" title="' . $handles___4593[$x['chainhandletype']]['m__title'] . '">' . $handles___4593[$x['chainhandletype']]['m__cover'] . '</span>';
+                $handlestring_sign = '<span class="group_sign" title="' . $handles___4593[$x['chainhandletype']]['m__title'] . '">' . $handles___4593[$x['chainhandletype']]['m__cover'] . '</span>';
             } else {
                 foreach ($CI->config->item('handles___31770') as $groupid => $groupm) {
                     if (in_array($x['chainhandletype'], $CI->config->item('handleids___' . $groupid))) {
-                        $handlehandle_sign = '<span class="group_sign" title="' . $groupm['m__title'] . '">' . $groupm['m__cover'] . '</span>';
+                        $handlestring_sign = '<span class="group_sign" title="' . $groupm['m__title'] . '">' . $groupm['m__cover'] . '</span>';
                         break;
                     }
                 }
             }
 
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $handlehandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $handlestring_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($handleid == 44395) {
@@ -3721,7 +3721,7 @@ function view_valid_handle_handle($string, $check_db = false)
 {
     $CI =& get_instance();
     return (substr($string, 0, 1) == '@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Handles->read(array(
-            'LOWER(handlehandle)' => strtolower(substr($string, 1)),
+            'LOWER(handlestring)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false);
 }
 
@@ -3761,7 +3761,7 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
             'chainhashtagoutput' => $i['hashtagid'],
             'chainhandletype' => 31835, //References
         ), array('chainhandleinput'), 0) as $message_references) {
-            if (!substr_count(strtolower($i['hashtagread']), '>@' . strtolower($message_references['handlehandle']))) {
+            if (!substr_count(strtolower($i['hashtagread']), '>@' . strtolower($message_references['handlestring']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
                 $CI->Chains->delete($message_references['chainid']);
                 continue;
@@ -3774,10 +3774,10 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['chainvalue'])) {
                     if (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL)) {
-                        $i['hashtagread'] = str_ireplace('@' . $message_references['handlehandle'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i['hashtagread']);
+                        $i['hashtagread'] = str_ireplace('@' . $message_references['handlestring'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i['hashtagread']);
 
                     } else {
-                        $i['hashtagread'] = str_ireplace('@' . $message_references['handlehandle'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handlehandle'] . ' ') . $reference_profile['chainvalue'], $i['hashtagread']);
+                        $i['hashtagread'] = str_ireplace('@' . $message_references['handlestring'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handlestring'] . ' ') . $reference_profile['chainvalue'], $i['hashtagread']);
                     }
                 }
             }
@@ -4038,9 +4038,9 @@ function hashtagread($save_hashtagid, $str)
                 } elseif ($db_type == 31835) {
                     $chainhandletype = 31835;
                     foreach ($CI->Handles->read(array(
-                        'LOWER(handlehandle)' => strtolower(substr($db_val, 1)),
+                        'LOWER(handlestring)' => strtolower(substr($db_val, 1)),
                     )) as $target) {
-                        $str = str_replace('@' . $target['handleid'], '@' . $target['handlehandle'], $str); //TODO Remove!
+                        $str = str_replace('@' . $target['handleid'], '@' . $target['handlestring'], $str); //TODO Remove!
                         $chainhandleinput = $target['handleid'];
                     }
                 } else {
@@ -4079,7 +4079,7 @@ function view_featured_chains($chainhandletype, $location, $m = null, $focus__no
 {
     $CI =& get_instance();
     $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['handlehandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['handlehandle'] . '">' : '') . '<span class="grey ' . ($chainhandletype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $handles___11035[$chainhandletype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainhandletype == 41949 ? 'mini-font' : '') . '">' . $location['handlevalue'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
+    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['handlestring']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['handlestring'] . '">' : '') . '<span class="grey ' . ($chainhandletype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $handles___11035[$chainhandletype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainhandletype == 41949 ? 'mini-font' : '') . '">' . $location['handlevalue'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
 }
 
 
@@ -4495,7 +4495,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtags
         }
         */
 
-        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handlehandle'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlevalue'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handlehandle'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
+        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handlestring'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlevalue'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handlestring'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
     }
 
@@ -4554,7 +4554,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtags
                 foreach ($CI->Handles->read(array(
                     'handleid' => $i['chainhandlecreator'],
                 )) as $creator) {
-                    $creator_name = 'Chained by ' . $creator['handlevalue'] . ' @' . $creator['handlehandle'] . ' on ';
+                    $creator_name = 'Chained by ' . $creator['handlevalue'] . ' @' . $creator['handlestring'] . ' on ';
                     $creator_details = '<a href="' . view_memory(42903, 33286) . $i['hashtagstring'] . '"><span class="icon-block-sm">' . view_cover($creator['handlecover']) . '</span></a>';
                 }
             }
@@ -4892,7 +4892,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtags
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
                     $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
                     $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_hashtag_title($i, true)) . '">';
-                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtagstring ? $target_hashtagstring . ' #' : '') . $i['hashtagstring'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handlehandle'] . '">';
+                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtagstring ? $target_hashtagstring . ' #' : '') . $i['hashtagstring'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handlestring'] . '">';
 
                     $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                     $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
@@ -5245,13 +5245,13 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
 
     $chainid = (isset($e['chainid']) ? $e['chainid'] : 0);
     $is_cache = in_array($chainhandletype, $CI->config->item('handleids___14599'));
-    $handle_access = ( $is_cache ? 1 : handle_access($e['handlehandle'], 0, $e) );
+    $handle_access = ( $is_cache ? 1 : handle_access($e['handlestring'], 0, $e) );
     $superpower_10939 = ( !$is_cache && handle_session(10939) );
     $handle_session = ( !$is_cache ? handle_session() : false );
     $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
     $focus__node = in_array($chainhandletype, $CI->config->item('handleids___12149')); //NODE COIN
     $is_app = $chainhandletype == 6287;
-    $href = ($is_app ? view_app_chain($e['handleid']) : view_memory(42903, 42902) . $e['handlehandle']);
+    $href = ($is_app ? view_app_chain($e['handleid']) : view_memory(42903, 42902) . $e['handlestring']);
     $cover_is_image = filter_var($e['handlecover'], FILTER_VALIDATE_URL);
     $has_sortable = $chainid > 0 && $handle_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___13911'));
 
@@ -5260,7 +5260,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
     $chainhandlecreator_id = ($handle_session && isset($handle_session['handleid']) ? $handle_session['handleid'] : 14068 /* GUEST */);
 
     //Handle UI
-    $ui = '<div handleid="' . $e['handleid'] . '" handlehandle="' . $e['handlehandle'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardhandle_cover no-padding card-12274 s__12274_' . $e['handleid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
+    $ui = '<div handleid="' . $e['handleid'] . '" handlestring="' . $e['handlestring'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardhandle_cover no-padding card-12274 s__12274_' . $e['handleid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -5293,7 +5293,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
     //Handle Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_handlehandle_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handlehandle'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_handlestring_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handlestring'] . '</span></div>';
 
     //Handle Location:
     $handles___42777 = $CI->config->item('handles___42777');
@@ -5508,7 +5508,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
                         } elseif (in_array($handleid_dropdown, $CI->config->item('handleids___6287')) && $handle_access >= 3) {
 
                             //Standard button
-                            $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 42902) . $e['handlehandle'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 42902) . $e['handlestring'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         }
                     }

@@ -138,7 +138,7 @@ class Chains extends CIdea_cache
 
                     //HANDLE
                     foreach ($this->Handles->read(array('handleid' => $add_fields[$m['m__handle']])) as $this_e) {
-                        $html_message .= $m['m__title'] . ': ' . $this_e['handlevalue'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['handlehandle'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . $this_e['handlevalue'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['handlestring'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
@@ -726,16 +726,16 @@ class Chains extends CIdea_cache
 
         foreach ($list_of_handleid as $count => $x) {
 
-            if (in_array($x['handlehandle'], $wacth_repeat_handles)) {
+            if (in_array($x['handlestring'], $wacth_repeat_handles)) {
                 //This should not happen! Report bug:
-                log_error('Chains->broadcast() Detected duplicate Handle Handle Bug: ' . $x['handlehandle'], array(
+                log_error('Chains->broadcast() Detected duplicate Handle Handle Bug: ' . $x['handlestring'], array(
                     'chainhandleoutput' => $x['handleid'],
                 ));
                 break; //Stop sending more messages!
             }
 
             //Map this handle:
-            array_push($wacth_repeat_handles, $x['handlehandle']);
+            array_push($wacth_repeat_handles, $x['handlestring']);
 
 
             if (!isset($x['handleid'])) {
@@ -769,7 +769,7 @@ class Chains extends CIdea_cache
             ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
                 //Has this user hashtag_discovered this hashtag or no?
                 $html_message .= '<div class="line">' . view_hashtag_title($down_or, true) . ':</div>';
-                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagstring'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?handlehandle=' . $x['handlehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handlehandle']) . '</div>';
+                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagstring'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?handlestring=' . $x['handlestring'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handlestring']) . '</div>';
             }
 
             //Where to place the next step?
@@ -1291,7 +1291,7 @@ class Chains extends CIdea_cache
                                 //Message Body:
                                 view_hashtag_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['hashtagstring'] . "\n\n" .
                                 (strlen($x_data['chainvalue']) ? $x_data['chainvalue'] . "\n\n" : '') .
-                                $es_discoverer[0]['handlevalue'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['handlehandle'] . "\n\n" .
+                                $es_discoverer[0]['handlevalue'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['handlestring'] . "\n\n" .
                                 $discoverer_contact
                             );
                         }

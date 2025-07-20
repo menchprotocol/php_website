@@ -128,7 +128,7 @@ foreach($this->Hashtags->read(array(
 
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $handle_session['handlevalue'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['chainvalue'] : '',
-                'recipient_address_line_1' => 'https://'.get_domain('m__message', $handle_session['handleid']).'/@'.$handle_session['handlehandle'],
+                'recipient_address_line_1' => 'https://'.get_domain('m__message', $handle_session['handleid']).'/@'.$handle_session['handlestring'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
             ];

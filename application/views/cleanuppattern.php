@@ -27,7 +27,7 @@ foreach($this->Hashtags->read(array(
 
 
 
-        if(isset($_GET['handlehandle'])){
+        if(isset($_GET['handlestring'])){
 
             $responses = 0;
             $updated = 0;
@@ -36,7 +36,7 @@ foreach($this->Hashtags->read(array(
             echo '<p>HANDLES Applying against ['.$preg_query[0]['chainvalue'].'] results in:</p>';
 
             foreach($this->Handles->read(array(
-                'LOWER(handlehandle)' => strtolower($_GET['handlehandle']),
+                'LOWER(handlestring)' => strtolower($_GET['handlestring']),
             )) as $e){
                 foreach($this->Chains->read(array(
                     'chainhandleinput' => $e['handleid'],

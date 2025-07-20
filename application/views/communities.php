@@ -2,7 +2,7 @@
 
 $community_pills = '';
 
-foreach ((isset($_GET['handlehandle']) && strlen($_GET['handlehandle']) ? $this->Handles->read(array('LOWER(handlehandle)' => strtolower($_GET['handlehandle']))) : $this->Handles->scissor(website_setting(0), 13207)) as $handle_item) {
+foreach ((isset($_GET['handlestring']) && strlen($_GET['handlestring']) ? $this->Handles->read(array('LOWER(handlestring)' => strtolower($_GET['handlestring']))) : $this->Handles->scissor(website_setting(0), 13207)) as $handle_item) {
 
     foreach ($this->Chains->read(array(
         'chainhandleinput' => $handle_item['handleid'],
@@ -23,7 +23,7 @@ foreach ((isset($_GET['handlehandle']) && strlen($_GET['handlehandle']) ? $this-
                 'm__cover' => view_cover($x['handlecover'], true),
                 'm__title' => $x['handlevalue'],
                 'm__message' => $x['chainvalue'],
-                'm__handle' => $x['handlehandle'],
+                'm__handle' => $x['handlestring'],
             ), $ui);
 
         }

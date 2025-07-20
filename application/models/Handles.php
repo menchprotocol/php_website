@@ -49,20 +49,20 @@ class Handles extends CIdea_cache
         }
 
         //Handle Generation
-        if (!isset($add_fields['handlehandle'])) {
-            $add_fields['handlehandle'] = generate_handle(12274, $validate_handlevalue['handlevalue_clean']);
+        if (!isset($add_fields['handlestring'])) {
+            $add_fields['handlestring'] = generate_handle(12274, $validate_handlevalue['handlevalue_clean']);
         }
         $this->Chains->create(array(
             'chainhandlecreator' => $chainhandlecreator,
             'chainhandletype' => 44179, //Trigerred
             'chainhandleinput' => 32338, //Handle Handle
-            'chainvalue' => $add_fields['handlehandle'],
+            'chainvalue' => $add_fields['handlestring'],
             'chainhandleoutput' => $new_x['chainid'],
         ));
 
         $update_data = array(
             'handleid' => $new_x['chainid'],
-            'handlehandle' => $add_fields['handlehandle'],
+            'handlestring' => $add_fields['handlestring'],
             'handlevalue' => $validate_handlevalue['handlevalue_clean'],
         );
 
@@ -160,9 +160,9 @@ class Handles extends CIdea_cache
         foreach ($handles_found as $handle_current) {
 
             $must_sync_found = false;
-            $skip_sync_ledger = array('handleexternal', 'handlekey');
+            $skip_sync_ledger = array('handleexternal', 'handleweight');
             $must_sync_ledger = array(
-                'handlehandle' => 32338,
+                'handlestring' => 32338,
                 'handlecover' => 6198,
                 'handlevalue' => 6197,
             );
@@ -339,7 +339,7 @@ class Handles extends CIdea_cache
 
                 //What member searched for:
                 foreach ($this->Handles->read(array(
-                    'LOWER(handlehandle)' => strtolower(view_valid_handle_handle($action_command1)),
+                    'LOWER(handlestring)' => strtolower(view_valid_handle_handle($action_command1)),
                 )) as $e) {
 
                     //See if follower Handle has searched followings Handle:
@@ -386,7 +386,7 @@ class Handles extends CIdea_cache
                         } elseif ($action_handleid == 11956 && view_valid_handle_handle($action_command2)) {
 
                             foreach ($this->Handles->read(array(
-                                'LOWER(handlehandle)' => strtolower(view_valid_handle_handle($action_command2)),
+                                'LOWER(handlestring)' => strtolower(view_valid_handle_handle($action_command2)),
                             )) as $e) {
                                 //Add as a followings because it meets the condition
                                 $this->Chains->create(array(

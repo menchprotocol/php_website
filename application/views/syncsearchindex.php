@@ -1,6 +1,6 @@
 <?php
 
-//TODO REplace with $_GET['hashtagstring'] & $_GET['handlehandle']
+//TODO REplace with $_GET['hashtagstring'] & $_GET['handlestring']
 
 $obj = ( isset($_GET['obj']) ? $_GET['obj'] : null );
 $s__id = ( isset($_GET['s__id']) && $obj ? intval($_GET['s__id']) : 0 );
