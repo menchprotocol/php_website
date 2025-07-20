@@ -2,12 +2,12 @@
 
 $sign_i = array();
 
-if(isset($_GET['hashtaghashtag']) && strlen($_GET['hashtaghashtag'])){
+if(isset($_GET['hashtagstring']) && strlen($_GET['hashtagstring'])){
     $sign_i = $this->Hashtags->read(array(
-        'LOWER(hashtaghashtag)' => strtolower($_GET['hashtaghashtag']),
+        'LOWER(hashtagstring)' => strtolower($_GET['hashtagstring']),
     ));
 }
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . view_memory(42903, 33286) . $sign_i[0]['hashtaghashtag'] : home_url()) );
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? login . view_memory(42903, 33286) . $sign_i[0]['hashtagstring'] : home_url()) );
 $handles___14870 = $this->config->item('handles___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
@@ -42,7 +42,7 @@ if(handle_session()) {
         //Assign Session variable so we can detect upon social login:
         $session_data = $this->session->all_userdata();
         if(count($sign_i)){
-            $session_data['login_hashtaghashtag'] = $sign_i[0]['hashtaghashtag'];
+            $session_data['login_hashtagstring'] = $sign_i[0]['hashtagstring'];
         }
         if(isset($_GET['url'])){
             $session_data['redirect_url'] = urldecode($_GET['url']);
@@ -296,7 +296,7 @@ if(handle_session()) {
                 if(intval(view_memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_chain(14938).view_memory(42903,33286) . $sign_i[0]['hashtaghashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_chain(14938).view_memory(42903,33286) . $sign_i[0]['hashtagstring'] . '" onclick="load_away()" class="btn btn-large btn-default">';
                     echo $handles___11035[14938]['m__title'].' '.$handles___11035[14938]['m__cover'];
                     echo ( strlen($handles___11035[14938]['m__message']) ? ': '.$handles___11035[14938]['m__message'] : '' );
                     echo '</a></div>';

@@ -13,10 +13,10 @@
 $query_filters = array();
 $joined_by = array();
 
-//We have a special OR filter when combined with handlehandle & hashtaghashtag
+//We have a special OR filter when combined with handlehandle & hashtagstring
 $input_e = (isset($_GET['handlehandle']) && strlen($_GET['handlehandle']) > 0);
 $focus_e = false;
-$input_i = (isset($_GET['hashtaghashtag']) && strlen($_GET['hashtaghashtag']) > 0);
+$input_i = (isset($_GET['hashtagstring']) && strlen($_GET['hashtagstring']) > 0);
 $focus_i = false;
 
 if ($input_e) {
@@ -34,10 +34,10 @@ if ($input_e) {
 
 if ($input_i) {
     foreach ($this->Hashtags->read(array(
-        'LOWER(hashtaghashtag)' => strtolower($_GET['hashtaghashtag']),
+        'LOWER(hashtagstring)' => strtolower($_GET['hashtagstring']),
     )) as $hashtag_found) {
         $focus_i = $hashtag_found;
-        $_GET['hashtaghashtag'] = $hashtag_found['hashtaghashtag'];
+        $_GET['hashtagstring'] = $hashtag_found['hashtagstring'];
     }
     if (!$focus_i) {
         //Invalid input!
@@ -261,7 +261,7 @@ echo '<table class="table table-sm maxout" style="vertical-align: top;"><tr>';
 //ANY HASHTAG
 echo '<td><div>';
 echo '<span class="mini-header">ANY HASHTAG:</span>';
-echo '<input type="text" name="hashtaghashtag" value="' . ($input_i ? $_GET['hashtaghashtag'] : '') . '" class="form-control border">';
+echo '<input type="text" name="hashtagstring" value="' . ($input_i ? $_GET['hashtagstring'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
 echo '<td><span class="mini-header">HASHTAG PREVIOUS:</span><input type="text" name="chainhashtaginput" value="' . ((isset($_GET['chainhashtaginput'])) ? $_GET['chainhashtaginput'] : '') . '" class="form-control border"></td>';

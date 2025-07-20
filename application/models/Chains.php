@@ -131,7 +131,7 @@ class Chains extends CIdea_cache
 
                     //HASHTAG
                     foreach ($this->Hashtags->read(array('hashtagid' => $add_fields[$m['m__handle']])) as $this_i) {
-                        $html_message .= $m['m__title'] . ': ' . view_hashtag_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['hashtaghashtag'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . view_hashtag_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['hashtagstring'] . "\n\n";
                     }
 
                 } elseif (in_array(6160, $m['m__following'])) {
@@ -769,7 +769,7 @@ class Chains extends CIdea_cache
             ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
                 //Has this user hashtag_discovered this hashtag or no?
                 $html_message .= '<div class="line">' . view_hashtag_title($down_or, true) . ':</div>';
-                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtaghashtag'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?handlehandle=' . $x['handlehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handlehandle']) . '</div>';
+                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagstring'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?handlehandle=' . $x['handlehandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handlehandle']) . '</div>';
             }
 
             //Where to place the next step?
@@ -794,10 +794,10 @@ class Chains extends CIdea_cache
     }
 
 
-    function previoushashtag($handleid, $target_hashtaghashtag, $focus_hashtagid, $loop_breaker_ids = array())
+    function previoushashtag($handleid, $target_hashtagstring, $focus_hashtagid, $loop_breaker_ids = array())
     {
 
-        //echo 'Previous:'.$handleid.'/'.$target_hashtaghashtag.'/'.$focus_hashtagid;
+        //echo 'Previous:'.$handleid.'/'.$target_hashtagstring.'/'.$focus_hashtagid;
 
         if (count($loop_breaker_ids) > 0 && in_array($focus_hashtagid, $loop_breaker_ids)) {
             return array();
@@ -824,12 +824,12 @@ class Chains extends CIdea_cache
             }
 
             //Did we find it?
-            if ($hashtag_previous['hashtaghashtag'] == $target_hashtaghashtag) {
+            if ($hashtag_previous['hashtagstring'] == $target_hashtagstring) {
                 return array($hashtag_previous);
             }
 
             //Keep looking further up:
-            $website_finder = $this->Chains->previoushashtag($handleid, $target_hashtaghashtag, $hashtag_previous['hashtagid'], $loop_breaker_ids);
+            $website_finder = $this->Chains->previoushashtag($handleid, $target_hashtagstring, $hashtag_previous['hashtagid'], $loop_breaker_ids);
             if (count($website_finder)) {
                 array_push($website_finder, $hashtag_previous);
                 return $website_finder;
@@ -866,10 +866,10 @@ class Chains extends CIdea_cache
                 'chainhandlecreator' => $chainhandlecreator,
                 'chainhashtaginput' => $prev_i['hashtagid'],
             ), array('chainhashtagoutput')) as $x) {
-                return $x['hashtaghashtag'];
+                return $x['hashtagstring'];
             }
 
-            return $this->Chains->previoushashtaghashtag_discovered($prev_i['hashtagid'], $chainhandlecreator, $loop_breaker_ids);
+            return $this->Chains->previoushashtagstring_discovered($prev_i['hashtagid'], $chainhandlecreator, $loop_breaker_ids);
         }
 
         //Did not find!
@@ -878,12 +878,12 @@ class Chains extends CIdea_cache
     }
 
 
-    function next_hashtags($handleid, $target_hashtaghashtag, $i, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
+    function next_hashtags($handleid, $target_hashtagstring, $i, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
         /*
         foreach ($this->Hashtags->read(array(
-            'LOWER(hashtaghashtag)' => strtolower($target_hashtaghashtag),
+            'LOWER(hashtagstring)' => strtolower($target_hashtagstring),
         )) as $i_new) {
             $i = $i_new;
         }
@@ -928,11 +928,11 @@ class Chains extends CIdea_cache
                     'chainhandlecreator' => $handleid,
                     'chainhashtaginput' => $next_i['hashtagid'],
                 )))) {
-                return $next_i['hashtaghashtag'];
+                return $next_i['hashtagstring'];
             }
 
             //Keep looking deeper:
-            $next__url = $this->Chains->next_hashtags($handleid, $target_hashtaghashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
+            $next__url = $this->Chains->next_hashtags($handleid, $target_hashtagstring, $next_i, 0, false, $target_completed, $loop_breaker_ids);
             if ($next__url) {
                 return $next__url;
             }
@@ -940,12 +940,12 @@ class Chains extends CIdea_cache
         }
 
 
-        if ($search_up && $target_hashtaghashtag != $i['hashtaghashtag']) {
+        if ($search_up && $target_hashtagstring != $i['hashtagstring']) {
             //Check Previous/Up
             $current_previous = $i['hashtagid'];
-            foreach (array_reverse($this->Chains->previoushashtag($handleid, $target_hashtaghashtag, $i['hashtagid'])) as $p_i) {
+            foreach (array_reverse($this->Chains->previoushashtag($handleid, $target_hashtagstring, $i['hashtagid'])) as $p_i) {
                 //Find the next siblings:
-                $next__url = $this->Chains->next_hashtags($handleid, $target_hashtaghashtag, $p_i, $current_previous, false, $target_completed);
+                $next__url = $this->Chains->next_hashtags($handleid, $target_hashtagstring, $p_i, $current_previous, false, $target_completed);
                 if ($next__url) {
                     return $next__url;
                 }
@@ -1289,7 +1289,7 @@ class Chains extends CIdea_cache
 
                             $this->Chains->message($watcher['chainhandleinput'], $es_discoverer[0]['handlevalue'] . ' hashtag_discovered: ' . view_hashtag_title($i, true),
                                 //Message Body:
-                                view_hashtag_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['hashtaghashtag'] . "\n\n" .
+                                view_hashtag_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['hashtagstring'] . "\n\n" .
                                 (strlen($x_data['chainvalue']) ? $x_data['chainvalue'] . "\n\n" : '') .
                                 $es_discoverer[0]['handlevalue'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['handlehandle'] . "\n\n" .
                                 $discoverer_contact
@@ -1445,7 +1445,7 @@ class Chains extends CIdea_cache
 
         if(isset($_GET['skip_config'])) {
             unset($i['hashtagexternal']);
-            unset($i['hashtagkey']);
+            unset($i['hashtagweight']);
             unset($i['hashtagread']);
             unset($i['hashtagtype']);
             if(isset($i['chainid'])){
@@ -1546,8 +1546,8 @@ class Chains extends CIdea_cache
             'chainhandlecreator' => $handleid, //Belongs to this Member
             'chainhashtaginput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
         ), array('chainhashtaginput'), 0) as $completed) {
-            if (!in_array($completed['hashtaghashtag'], $list_hashtag_discovered)) {
-                array_push($list_hashtag_discovered, $completed['hashtaghashtag']);
+            if (!in_array($completed['hashtagstring'], $list_hashtag_discovered)) {
+                array_push($list_hashtag_discovered, $completed['hashtagstring']);
             }
         }
 

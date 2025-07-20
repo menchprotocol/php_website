@@ -178,7 +178,7 @@ if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle']) || !$_GET['ha
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.chains_'.$i['hashtagid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;">'.view_hashtag_title($i).'</a>' : view_hashtag_title($i) ).' <a href="'.view_memory(42903,33286).$i['hashtaghashtag'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.chains_'.$i['hashtagid'].'\').toggleClass(\'hidden\');" style="font-weight:bold;">'.view_hashtag_title($i).'</a>' : view_hashtag_title($i) ).' <a href="'.view_memory(42903,33286).$i['hashtagstring'].'"><i class="far fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_chains.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_chains.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';

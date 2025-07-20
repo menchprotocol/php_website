@@ -241,7 +241,7 @@ h3{
 .modal-header .dynamic_selector{
     margin-left: 0px !important;
 }
-.dynamic_editing_input input.form-control.save_hashtaghashtag,
+.dynamic_editing_input input.form-control.save_hashtagstring,
 .left_padded .dynamic_editing_input input.form-control,
 .left_padded .dynamic_editing_input textarea.form-control{
     margin-left: 40px !important;

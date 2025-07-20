@@ -641,14 +641,14 @@ function loadtab(chainhandletype, tab_data_id) {
 
 var init_in_process = 0;
 
-function chain_delete(chainid, chainhandletype, hashtaghashtag = null) {
+function chain_delete(chainid, chainhandletype, hashtagstring = null) {
 
     if (init_in_process == chainid) {
         return false;
     }
     init_in_process = chainid;
 
-    var r = confirm("Are you Sure You Want to Unchain" + (hashtaghashtag ? ' #' + hashtaghashtag : '') + "?");
+    var r = confirm("Are you Sure You Want to Unchain" + (hashtagstring ? ' #' + hashtagstring : '') + "?");
     if (!(r == true)) {
         return false;
     }
@@ -657,7 +657,7 @@ function chain_delete(chainid, chainhandletype, hashtaghashtag = null) {
     $.post("/controller/chain_delete", {
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
-        hashtaghashtag: hashtaghashtag, //Always append to AJAX Calls
+        hashtagstring: hashtagstring, //Always append to AJAX Calls
     }, function (data) {
         //Update UI to confirm with member:
         if (!data.status) {
@@ -905,7 +905,7 @@ function sale_increment(increment, hashtagid, max_allowed, min_allowed, unit_tot
     var new_total = (unit_total * new_quantity);
 
     //Update UI:
-    $(".input_ui_" + hashtagid + " .hashtagkey").val(new_quantity);
+    $(".input_ui_" + hashtagid + " .hashtagweight").val(new_quantity);
     $(".input_ui_" + hashtagid + " .current_count").text(new_quantity);
     $(".input_ui_" + hashtagid + " .paypal_handling").val(handling_total);
 
@@ -1826,9 +1826,9 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
 
 
     //Load Chain addition info, if any:
-    if (next_hashtagid && $('.ui_hashtaghashtag_' + next_hashtagid).length) {
+    if (next_hashtagid && $('.ui_hashtagstring_' + next_hashtagid).length) {
         //Append to textarea:
-        insert_message = '#'+$('.ui_hashtaghashtag_'+next_hashtagid).val()+' ';
+        insert_message = '#'+$('.ui_hashtagstring_'+next_hashtagid).val()+' ';
     } else if (!next_hashtagid) {
         //See where we are at and append anything needed to the hashtag:
         var focus__node = parseInt($('#focus__node').val());
@@ -1999,7 +1999,7 @@ function hashtag_update() {
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
         save_hashtagvalue: $('#modal31911 .save_hashtagvalue').val().trim(),
-        save_hashtaghashtag: $('#modal31911 .save_hashtaghashtag').val().trim(),
+        save_hashtagstring: $('#modal31911 .save_hashtagstring').val().trim(),
         save_hashtagtype: $('.dropd_form_4737').attr('selected_value').trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
@@ -2037,8 +2037,8 @@ function hashtag_update() {
             }
 
             //Update Handle & Href chains if needed:
-            var old_handle = $(".ui_hashtaghashtag_" + modify_data['save_hashtagid'] + ':first').text();
-            var new_handle = modify_data['save_hashtaghashtag'];
+            var old_handle = $(".ui_hashtagstring_" + modify_data['save_hashtagid'] + ':first').text();
+            var new_handle = modify_data['save_hashtagstring'];
             var on_focus__hashtag = parseInt($('#focus__node').val()) == 12273 && modify_data['save_hashtagid'] == parseInt($('#focus__id').val());
 
             //Update Hashtag Type:
@@ -2052,8 +2052,8 @@ function hashtag_update() {
                     js_redirect(js_handles___42903[33286]['m__message'] + new_handle);
                 } else {
                     //Update Hashtag & Chain:
-                    $('.s__12273_' + modify_data['save_hashtagid']).attr('hashtaghashtag', new_handle);
-                    $(".ui_hashtaghashtag_" + modify_data['save_hashtagid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+                    $('.s__12273_' + modify_data['save_hashtagid']).attr('hashtagstring', new_handle);
+                    $(".ui_hashtagstring_" + modify_data['save_hashtagid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
                 }
             }
 
@@ -3444,7 +3444,7 @@ function hashtag_discovered(do_skip) {
         next_hashtag_data.push({
             hashtagid: parseInt($(this).attr('hashtagid')),
             hashtag_createtext: ($('.s__12273_' + $(this).attr('hashtagid') + ' .x_write').val() ? $('.s__12273_' + $(this).attr('hashtagid') + ' .x_write').val() : null),
-            hashtagkey: ($('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagkey').val() ? $('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagkey').val() : 0),
+            hashtagweight: ($('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagweight').val() ? $('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagweight').val() : 0),
         });
     });
 
@@ -3493,7 +3493,7 @@ function hashtag_discovered(do_skip) {
 
             //Submit to go next:
             $.post("/invoice", {
-                target_hashtaghashtag: $('#target_hashtaghashtag').val(),
+                target_hashtagstring: $('#target_hashtagstring').val(),
                 target_hashtagid: parseInt($('#target_hashtagid').val()),
                 focus__id: parseInt($('#focus__id').val()),
                 invoice_items: invoice_items,
@@ -3529,12 +3529,12 @@ function hashtag_discovered(do_skip) {
 
     //Submit to go next:
     $.post("/controller/hashtag_discovered", {
-        target_hashtaghashtag: $('#target_hashtaghashtag').val(),
+        target_hashtagstring: $('#target_hashtagstring').val(),
         target_hashtagid: parseInt($('#target_hashtagid').val()),
         handle_submitted_data: {
             hashtagid: parseInt($('#focus__id').val()),
             hashtag_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
-            hashtagkey: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagkey').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagkey').val() : 0),
+            hashtagweight: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagweight').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagweight').val() : 0),
         },
         do_skip: do_skip,
         selection_hashtagid: selection_hashtagid,

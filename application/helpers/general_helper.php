@@ -92,9 +92,9 @@ function hashtag_number_calculator($i)
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $i['hashtagkey']) {
+    if ($count_x[0]['totals'] != $i['hashtagweight']) {
         return $CI->Hashtags->update($i['hashtagid'], array(
-            'hashtagkey' => $count_x[0]['totals'],
+            'hashtagweight' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -421,7 +421,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         if (isset($i['stats']) && $handleid == 12273 && $i['stats']['all_steps'] > 0) {
 
             if($CI->uri->segment(1)=='doc'){
-                $opener = '<a href="/'.$i['hashtaghashtag'].'" ';
+                $opener = '<a href="/'.$i['hashtagstring'].'" ';
                 $closer = '</a>';
             }
             echo $opener.'data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ) . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_steps'] . '</span>'.$closer;
@@ -429,7 +429,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         } elseif (isset($i['stats']) && $handleid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
 
             if($CI->uri->segment(1)=='doc'){
-                $opener = '<a href="/doc/'.$i['hashtaghashtag'].'" ';
+                $opener = '<a href="/doc/'.$i['hashtagstring'].'" ';
                 $closer = '</a>';
             }
             echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' .$i['current_level'] . '/' . $i['stats']['max_level'] .'</span>'.$closer;
@@ -445,7 +445,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         } elseif ($handleid == 31777 && isset($i['hashtag_count_discovery']) && intval($i['hashtag_count_discovery']) > 0) {
 
             if(hashtag_is_startable($i)){
-                $opener = '<a href="/'.$i['hashtaghashtag'].'/start" ';
+                $opener = '<a href="/'.$i['hashtagstring'].'/start" ';
                 $closer = '</a>';
             }
 
@@ -480,7 +480,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                 continue;
             }
             array_push($already_shown, $creator['chainhandlecreator']);
-            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'" style="padding:3px 0;">'.( strlen($_GET['expand'])>1 ? '<a href="' . view_app_chain(44328) . '/'.$_GET['expand'].'@' . $creator['handlehandle'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '">' : '' ).'<span class="icon-block-sm grey">' . $handles___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['handlehandle'].'"><span class="icon-block">'.view_cover($creator['handlecover']).'</span><span class="grey">@'.$creator['handlehandle'].'</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['hashtaghashtag'] . '\')" title="'.$handles___11035[10673]['m__title'].'" class="grey">' . $handles___11035[10673]['m__cover'] . '</a> '.view_time_difference($creator['chaintime'], false).'</span></div>';
+            echo '<div class="maxwidth cover_x_'.$creator['chainid'].'" style="padding:3px 0;">'.( strlen($_GET['expand'])>1 ? '<a href="' . view_app_chain(44328) . '/'.$_GET['expand'].'@' . $creator['handlehandle'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '">' : '' ).'<span class="icon-block-sm grey">' . $handles___11035[44328]['m__cover'] . '</span></a> <a href="'.view_memory(42903,42902).$creator['handlehandle'].'"><span class="icon-block">'.view_cover($creator['handlecover']).'</span><span class="grey">@'.$creator['handlehandle'].'</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['hashtagstring'] . '\')" title="'.$handles___11035[10673]['m__title'].'" class="grey">' . $handles___11035[10673]['m__cover'] . '</a> '.view_time_difference($creator['chaintime'], false).'</span></div>';
             if(count($already_shown)>=view_memory(6404, 11064)){
                 break;
             }
@@ -522,7 +522,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                     $current_handleid = $handleid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_hashtag['hashtaghashtag'] . '">' . view_hashtag_title($filtered_hashtag) . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_hashtag['hashtagstring'] . '">' . view_hashtag_title($filtered_hashtag) . '</a></div>';
             }
         }
     }
@@ -614,7 +614,7 @@ function handle_list_config($handleid, $access_limit = true)
 }
 
 
-function hashtag_settings($hashtaghashtag, $fetch_contact = false)
+function hashtag_settings($hashtagstring, $fetch_contact = false)
 {
 
     $CI =& get_instance();
@@ -628,7 +628,7 @@ function hashtag_settings($hashtaghashtag, $fetch_contact = false)
     );
 
     foreach ($CI->Hashtags->read(array(
-        'LOWER(hashtaghashtag)' => strtolower($hashtaghashtag),
+        'LOWER(hashtagstring)' => strtolower($hashtagstring),
     )) as $i) {
 
         $hashtag_list_config = hashtag_list_config($i['hashtagid']);
@@ -929,7 +929,7 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 
     //Make sure no duplicates:
     if ($focus__node == 12273 && count($CI->Hashtags->read(array(
-            'LOWER(hashtaghashtag)' => strtolower($suggestion),
+            'LOWER(hashtagstring)' => strtolower($suggestion),
         )))) {
         return generate_handle(12273, $str, $suggestion, $increment);
     } elseif ($focus__node == 12274 && count($CI->Handles->read(array(
@@ -1379,7 +1379,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
 
         foreach ($CI->Hashtags->read(array(
             'hashtagid !=' => $hashtagid,
-            'LOWER(hashtaghashtag)' => strtolower($str),
+            'LOWER(hashtagstring)' => strtolower($str),
         ), 0) as $matched) {
             return array(
                 'status' => 0,
@@ -1390,7 +1390,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
 
         //Since not found we can replace this:
         $CI->Hashtags->update($hashtagid, array(
-            'hashtaghashtag' => change_handle($str),
+            'hashtagstring' => change_handle($str),
         ), $handle_session['handleid']);
 
     } elseif ($handleid > 0) {
@@ -1994,7 +1994,7 @@ function handle_up($handleid, $return_ids = array()){
     return $return_ids;
 }
 
-function hashtag_access($hashtaghashtag = null, $hashtagid = 0, $i = false, $replacement_handleid = false, $hashtag_list_config = array(), $is_cahce = false)
+function hashtag_access($hashtagstring = null, $hashtagid = 0, $i = false, $replacement_handleid = false, $hashtag_list_config = array(), $is_cahce = false)
 {
 
     /*
@@ -2022,8 +2022,8 @@ function hashtag_access($hashtaghashtag = null, $hashtagid = 0, $i = false, $rep
 
 
     if (!$i) {
-        if (strlen($hashtaghashtag)) {
-            $filters['LOWER(hashtaghashtag)'] = strtolower($hashtaghashtag);
+        if (strlen($hashtagstring)) {
+            $filters['LOWER(hashtagstring)'] = strtolower($hashtagstring);
         } elseif (intval($hashtagid)) {
             $filters['hashtagid'] = $hashtagid;
         } elseif (!$i) {
@@ -2420,12 +2420,12 @@ function update_algolia($focus__node = null, $s__id = 0)
                 //See if this hashtag has a time-range:
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['hashtagid']);
-                $export_row['s__handle'] = $s['hashtaghashtag'];
-                $export_row['s__url'] = view_memory(42903, 33286) . $s['hashtaghashtag']; //Default to hashtag, forward to discovery is lacking superpowers
+                $export_row['s__handle'] = $s['hashtagstring'];
+                $export_row['s__url'] = view_memory(42903, 33286) . $s['hashtagstring']; //Default to hashtag, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['hashtagvalue'];
                 $export_row['s__cache'] = $s['hashtagread'];
-                $export_row['s__weight'] = intval($s['hashtagkey']);
+                $export_row['s__weight'] = intval($s['hashtagweight']);
 
                 if (hashtag_is_startable($s)) {
                     array_push($export_row['_tags'], 'public_index');
@@ -2799,7 +2799,7 @@ function chain_view($x)
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Hashtags->read(array('hashtagid' => $x[$m['m__handle']])) as $focus_i) {
-                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['hashtaghashtag'] . '" data-toggle="popover">#' . $focus_i['hashtaghashtag'] . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['hashtagstring'] . '" data-toggle="popover">#' . $focus_i['hashtagstring'] . '</a>';
                 }
             }
             $column_value .= '</div></td>';
@@ -3713,7 +3713,7 @@ function view_hashtag_title($i, $string_only = false)
     }
 
     //If not yet found we need to use other data to generate title:
-    return (isset($i['hashtaghashtag']) && strlen($i['hashtaghashtag']) ? $i['hashtaghashtag'] : (isset($i['hashtagid']) && intval($i['hashtagid']) ? 'Hashtag Number ' . $i['hashtagid'] : 'Hashtag' . rand(100000000000, 999999999999)));
+    return (isset($i['hashtagstring']) && strlen($i['hashtagstring']) ? $i['hashtagstring'] : (isset($i['hashtagid']) && intval($i['hashtagid']) ? 'Hashtag Number ' . $i['hashtagid'] : 'Hashtag' . rand(100000000000, 999999999999)));
 
 }
 
@@ -3729,7 +3729,7 @@ function view_valid_handle_hashtag($string, $check_db = false)
 {
     $CI =& get_instance();
     return (substr($string, 0, 1) == '#' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Hashtags->read(array(
-            'LOWER(hashtaghashtag)' => strtolower(substr($string, 1)),
+            'LOWER(hashtagstring)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false);
 }
 
@@ -3737,7 +3737,7 @@ function view_valid_handle_reverse_hashtag($string, $check_db = false)
 {
     $CI =& get_instance();
     return (substr($string, 0, 2) == '!#' && ctype_alnum(substr($string, 2)) && (!$check_db || count($CI->Hashtags->read(array(
-            'LOWER(hashtaghashtag)' => strtolower(substr($string, 2)),
+            'LOWER(hashtagstring)' => strtolower(substr($string, 2)),
         )))) ? substr($string, 2) : false);
 }
 
@@ -3788,7 +3788,7 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
         $i['hashtagread'] . view_hashtag_media($i) . ($focus__node || !substr_count($i['hashtagread'], 'show_more_line') ? view_list_handle($i, !$replace_chains) : '');
 }
 
-function hashtag_text2raw($hashtaghashtag, $hashtagvalue){
+function hashtag_text2raw($hashtagstring, $hashtagvalue){
 
     foreach (explode("\n", $hashtagvalue) as $line_index => $line) {
 
@@ -4024,14 +4024,14 @@ function hashtagread($save_hashtagid, $str)
                 if ($db_type == 31834) {
                     $chainhandletype = 31834;
                     foreach ($CI->Hashtags->read(array(
-                        'LOWER(hashtaghashtag)' => strtolower(substr($db_val, 1)),
+                        'LOWER(hashtagstring)' => strtolower(substr($db_val, 1)),
                     )) as $target) {
                         $chainhashtaginput = $target['hashtagid'];
                     }
                 } elseif ($db_type == 42337) {
                     $chainhandletype = 42337;
                     foreach ($CI->Hashtags->read(array(
-                        'LOWER(hashtaghashtag)' => strtolower(substr($db_val, 2)),
+                        'LOWER(hashtagstring)' => strtolower(substr($db_val, 2)),
                     )) as $target) {
                         $chainhashtaginput = $target['hashtagid'];
                     }
@@ -4340,7 +4340,7 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 }
 
 
-function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtaghashtag = null, $focus_handleid = 0, $x_completes = false)
+function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagstring = null, $focus_handleid = 0, $x_completes = false)
 {
 
     //Search to see if an hashtag has a thumbnail:
@@ -4359,16 +4359,16 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
     $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
     $discovery_mode = $chainhandlecreator && ($discovery_uri || $discovery_seg);
-    $hashtag_access = hashtag_access($i['hashtaghashtag'], 0, $i, false, array(), $is_cache);
+    $hashtag_access = hashtag_access($i['hashtagstring'], 0, $i, false, array(), $is_cache);
     $focus_hashtag_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_hashtag_seg = ($discovery_seg ? $CI->uri->segment(2) : false);
-    $focus_hashtaghashtag = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
+    $focus_hashtagstring = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
 
-    if ($discovery_mode && !$target_hashtaghashtag && ($discovery_uri || $discovery_seg)) {
-        $target_hashtaghashtag = ($discovery_uri ? $discovery_uri : $discovery_seg);
+    if ($discovery_mode && !$target_hashtagstring && ($discovery_uri || $discovery_seg)) {
+        $target_hashtagstring = ($discovery_uri ? $discovery_uri : $discovery_seg);
     }
-    if ($target_hashtaghashtag && $focus_hashtaghashtag && $focus_hashtaghashtag == $i['hashtaghashtag']) {
-        $focus_hashtaghashtag = false;
+    if ($target_hashtagstring && $focus_hashtagstring && $focus_hashtagstring == $i['hashtagstring']) {
+        $focus_hashtagstring = false;
     }
 
     //Log Preview:
@@ -4384,9 +4384,9 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
     }
 
     $focus_hashtag_or = false;
-    if ($discovery_mode && $focus_hashtaghashtag && !$focus__node && $chainhandlecreator && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758) {
+    if ($discovery_mode && $focus_hashtagstring && !$focus__node && $chainhandlecreator && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758) {
         foreach ($CI->Hashtags->read(array(
-            'LOWER(hashtaghashtag)' => strtolower($focus_hashtaghashtag),
+            'LOWER(hashtagstring)' => strtolower($focus_hashtagstring),
             'hashtagtype IN (' . join(',', $CI->config->item('handleids___7712')) . ')' => null, //Input Choice
         )) as $focus_i) {
             $focus_hashtag_or = $focus_i;
@@ -4407,38 +4407,38 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
         $i = array_merge($i, $discoveries[0]);
     }
 
-    $target_hashtaghashtag_discover = null;
-    if ($has_hashtag_discovered && !$target_hashtaghashtag) {
+    $target_hashtagstring_discover = null;
+    if ($has_hashtag_discovered && !$target_hashtagstring) {
         foreach ($CI->Chains->read(array(
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
             'chainhandlecreator' => $chainhandlecreator,
             'chainhashtaginput' => $i['hashtagid'],
             'chainhashtagoutput > 0' => null,
         ), array('chainhashtagoutput')) as $CI_dis) {
-            $target_hashtaghashtag_discover = $CI_dis['hashtaghashtag'];
-            $target_hashtaghashtag = $target_hashtaghashtag_discover;
+            $target_hashtagstring_discover = $CI_dis['hashtagstring'];
+            $target_hashtagstring = $target_hashtagstring_discover;
         }
     }
 
     $is_locked = ($discovery_mode && !$has_hashtag_discovered && !$focus__node);
 
     if (($goto_start || !$superpower_10939) && $hashtag_startable) {
-        $href = view_memory(42903, 30795) . $i['hashtaghashtag'] . '/' . view_memory(6404, 4235);
+        $href = view_memory(42903, 30795) . $i['hashtagstring'] . '/' . view_memory(6404, 4235);
     } elseif ($is_locked) {
         $href = null;
-    } elseif ($discovery_mode && $target_hashtaghashtag) {
-        $href = view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'];
-    //} elseif ($target_hashtaghashtag_discover) {
-        //$href = view_memory(42903, 30795) . $target_hashtaghashtag_discover . '/' . $i['hashtaghashtag'];
+    } elseif ($discovery_mode && $target_hashtagstring) {
+        $href = view_memory(42903, 30795) . $target_hashtagstring . '/' . $i['hashtagstring'];
+    //} elseif ($target_hashtagstring_discover) {
+        //$href = view_memory(42903, 30795) . $target_hashtagstring_discover . '/' . $i['hashtagstring'];
     } elseif ($discovery_mode) {
-        $href = view_memory(42903, 33286) . $i['hashtaghashtag'];
+        $href = view_memory(42903, 33286) . $i['hashtagstring'];
     } else {
-        $href = view_memory(42903, 33286) . $i['hashtaghashtag'];
+        $href = view_memory(42903, 33286) . $i['hashtagstring'];
     }
 
 
     //Top action menu:
-    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtaghashtag="' . $i['hashtaghashtag'] . '" hashtagtype="' . $i['hashtagtype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtagstring="' . $i['hashtagstring'] . '" hashtagtype="' . $i['hashtagtype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['hashtagid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_hashtag_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
 
     if ($discovery_mode && $chainhandlecreator && $focus__node) {
@@ -4500,7 +4500,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['hashtagid'] . '" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainhandlecreator) ? ' hidden ' : '') . '">#<span class="ui_hashtaghashtag_' . $i['hashtagid'] . '">' . $i['hashtaghashtag'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['hashtagid'] . '" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainhandlecreator) ? ' hidden ' : '') . '">#<span class="ui_hashtagstring_' . $i['hashtagid'] . '">' . $i['hashtagstring'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
@@ -4555,7 +4555,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                     'handleid' => $i['chainhandlecreator'],
                 )) as $creator) {
                     $creator_name = 'Chained by ' . $creator['handlevalue'] . ' @' . $creator['handlehandle'] . ' on ';
-                    $creator_details = '<a href="' . view_memory(42903, 33286) . $i['hashtaghashtag'] . '"><span class="icon-block-sm">' . view_cover($creator['handlecover']) . '</span></a>';
+                    $creator_details = '<a href="' . view_memory(42903, 33286) . $i['hashtagstring'] . '"><span class="icon-block-sm">' . view_cover($creator['handlecover']) . '</span></a>';
                 }
             }
 
@@ -4613,7 +4613,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                     } elseif ($handleid_dropdown == 33286 && $discovery_mode && $hashtag_access >= 3) {
 
                         //Hashtags Mode
-                        $action_buttons .= '<a href="' . view_memory(42903, 33286) . $i['hashtaghashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_memory(42903, 33286) . $i['hashtagstring'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 31911 && $hashtag_access >= 3) {
 
@@ -4633,7 +4633,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                     } elseif ($handleid_dropdown == 10673 && $chainid && $hashtag_access >= 3) {
 
                         //Unchain
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $chainhandletype . ',\'' . $i['hashtaghashtag'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $chainhandletype . ',\'' . $i['hashtagstring'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 30873 && $hashtag_access >= 3) {
 
@@ -4643,7 +4643,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                     } elseif ($handleid_dropdown == 33292 && $handle_session) {
 
                         //Stats
-                        $action_buttons .= '<a href="' . view_app_chain(33292) . view_memory(42903, 33286) . $i['hashtaghashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain(33292) . view_memory(42903, 33286) . $i['hashtagstring'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($handleid_dropdown == 29771 && $hashtag_access >= 3) {
 
@@ -4672,7 +4672,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                     } elseif (in_array($handleid_dropdown, $CI->config->item('handleids___6287')) && $hashtag_access >= 3) {
 
                         //Standard button
-                        $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 33286) . $i['hashtaghashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 33286) . $i['hashtagstring'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     }
                 }
@@ -4756,7 +4756,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                 $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
                 //Referesh soon so we can check if completed or not
-                js_php_redirect(view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'] . '?process_pay=1', 987);
+                js_php_redirect(view_memory(42903, 30795) . $target_hashtagstring . '/' . $i['hashtagstring'] . '?process_pay=1', 987);
 
             } elseif (isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && count($x_completes)) {
 
@@ -4772,7 +4772,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                 }
 
                 $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $chainvalue['mc_gross'] . '">';
-                $input_ui .= '<input type="hidden" class="hashtagkey" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
 
             } else {
 
@@ -4890,16 +4890,16 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
                     $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="hashtagkey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
                     $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_hashtag_title($i, true)) . '">';
-                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtaghashtag ? $target_hashtaghashtag . ' #' : '') . $i['hashtaghashtag'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handlehandle'] . '">';
+                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtagstring ? $target_hashtagstring . ' #' : '') . $i['hashtagstring'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handlehandle'] . '">';
 
                     $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                     $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
                     $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
                     $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $handles___14870[2738]['m__message'] . view_app_chain(26595) . '">';
-                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'] . '?cancel_pay=1">';
-                    $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtaghashtag . '/' . $i['hashtaghashtag'] . '?process_pay=1">';
+                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagstring . '/' . $i['hashtagstring'] . '?cancel_pay=1">';
+                    $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagstring . '/' . $i['hashtagstring'] . '?process_pay=1">';
                     $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                     $input_ui .= '<input type="hidden" name="business" value="' . $paypal_email . '">';
 
@@ -4913,7 +4913,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
 
                     //FREE TICKET
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="hashtagkey" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
 
                 }
             }
@@ -5023,7 +5023,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
             //Uploader
             if (in_array($i['hashtagtype'], $CI->config->item('handleids___43004'))) {
 
-                if ($i['hashtaghashtag'] == 'ProfilePicture' && $handle_session && $chainhandlecreator) {
+                if ($i['hashtagstring'] == 'ProfilePicture' && $handle_session && $chainhandlecreator) {
 
                     //TODO REMOVE HACK: This is a profile picture hack:
                     $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="handle_editor(' . $chainhandlecreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</a></div>';
@@ -5087,7 +5087,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagh
         } elseif ($chainhandletype_target_bar == 4235 && (!$discovery_mode && $hashtag_startable && $hashtag_access >= 1)) {
 
             //Start
-            $bottom_menu_ui .= '<span><a href="' . view_memory(42903, 30795) . $i['hashtaghashtag'] . '/' . view_memory(6404, 4235) . '" class="btn btn-sm btn-black"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span><a href="' . view_memory(42903, 30795) . $i['hashtagstring'] . '/' . view_memory(6404, 4235) . '" class="btn btn-sm btn-black"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
         } elseif ($chainhandletype_target_bar == 42924 && $discovery_mode && $focus__node) {
 

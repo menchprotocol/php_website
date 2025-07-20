@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($_GET['hashtaghashtag'])){
+if(!isset($_GET['hashtagstring'])){
     die('Missing Hashtag Hashtag');
 }
 
@@ -12,7 +12,7 @@ if(!isset($_GET['handlehandle']) || !strlen($_GET['handlehandle'])){
 
 
 //Generate list & settings:
-$hashtag_settings = hashtag_settings($_GET['hashtaghashtag']);
+$hashtag_settings = hashtag_settings($_GET['hashtagstring']);
 echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
 
 
@@ -21,7 +21,7 @@ foreach($this->Handles->read(array(
 )) as $e){
     //List the hashtag:
     print_r(array(
-        'next_hashtags' => $this->Chains->next_hashtags($e['handleid'], $hashtag_settings['i']['hashtaghashtag'], $hashtag_settings['i'], 0, false),
+        'next_hashtags' => $this->Chains->next_hashtags($e['handleid'], $hashtag_settings['i']['hashtagstring'], $hashtag_settings['i'], 0, false),
         'progress' => $this->Chains->progress($e['handleid'], $hashtag_settings['i']),
     ));
 }

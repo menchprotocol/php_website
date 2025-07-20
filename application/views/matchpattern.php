@@ -1,8 +1,8 @@
 <?php
 
-if (isset($_GET['hashtaghashtag'])) {
+if (isset($_GET['hashtagstring'])) {
     foreach ($this->Hashtags->read(array(
-        'LOWER(hashtaghashtag)' => strtolower($_GET['hashtaghashtag']),
+        'LOWER(hashtagstring)' => strtolower($_GET['hashtagstring']),
     )) as $i) {
 
         echo '<h2>' . view_hashtag_title($i) . '</h2>';

@@ -16,7 +16,7 @@ if($handle_session && !handle_session(10939) && count($this->Chains->read(array(
         'chainhashtaginput' => $focus_i['hashtagid'],
     )))){
     //Handle without editing superpowers has viewed an hashtag they have hashtag_discovered already, so get them there:
-    js_php_redirect('/'.$focus_i['hashtaghashtag'].'/start', 13);
+    js_php_redirect('/'.$focus_i['hashtagstring'].'/start', 13);
 }
 
 //Focus Hashtag:
