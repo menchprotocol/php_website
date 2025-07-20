@@ -3154,14 +3154,13 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
             //Mentions Sub
             $query_filters = array(
                 'chainhandletype' => $chainhandlesub,
-                'chainhandleinput' => $handleid,
-                //'(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.')' => null,
+                '(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.' OR chainhandleoutput='.$handleid.')' => null,
             );
         } else {
             //Mentions
             $query_filters = array(
                 'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
-                'chainhandleinput' => $handleid,
+                '(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.' OR chainhandleoutput='.$handleid.')' => null,
                 //'(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.')' => null,
             );
         }
@@ -3201,7 +3200,7 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
 
             //Discoveries SUB
             $query_filters = array(
-                'chainhandlecreator' => $handleid,
+                '(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.' OR chainhandleoutput='.$handleid.')' => null,
                 'chainhandletype' => $chainhandlesub,
             );
 
@@ -3209,7 +3208,7 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
 
             //Discoveries
             $query_filters = array(
-                'chainhandlecreator' => $handleid,
+                '(chainhandlecreator='.$handleid.' OR chainhandleinput='.$handleid.' OR chainhandleoutput='.$handleid.')' => null,
                 'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //DISCOVERY GROUP
             );
 
@@ -3291,11 +3290,6 @@ function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
             'chainhashtagoutput' => $hashtagid,
         );
-        if ($chainhandletype == 42256 && count($headline_authors)) {
-            //Exclude Headline Authors since they have already been listed:
-            $query_filters['chainhandleinput NOT IN (' . join(',', $headline_authors) . ')'] = null;
-        }
-
         $order_columns = hashtag_sort();
 
     } elseif ($chainhandletype==11019) {
