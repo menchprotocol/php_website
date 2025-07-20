@@ -509,7 +509,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                     $current_handleid = $handleid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_handle['handlestring'] . '"><span class="icon-block-sm">' . view_cover($filtered_handle['handlecover']) . '</span>' . $filtered_handle['handlevalue'] . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_handle['handlestring'] . '"><span class="icon-block-sm">' . view_cover($filtered_handle['handlecover']) . '</span>' . $filtered_handle['handlename'] . '</a></div>';
             }
         }
         //Hashtag<>Hashtag Settings:
@@ -743,7 +743,7 @@ function hashtag_settings($hashtagstring, $fetch_contact = false)
                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 ));
 
-                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['handlevalue']);
+                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['handlename']);
                 $query_string_filtered[$count]['extension_email'] = (count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['chainvalue'] : false);
                 $query_string_filtered[$count]['extension_phone'] = (count($fetch_phones) && strlen($fetch_phones[0]['chainvalue']) >= 10 ? $fetch_phones[0]['chainvalue'] : false);
 
@@ -983,11 +983,11 @@ function process_media($hashtagid, $uploaded_media)
 
                     //Create Handle for this new media:
                     $added_e = $CI->Handles->create(array(
-                        'handlevalue' => $upload_media['handlevalue'],
+                        'handlename' => $upload_media['handlename'],
                         'handlecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['handlecover']),
                     ), $handle_session['handleid']);
                     if (!$added_e['status']) {
-                        log_error('Failed to create a new Handle for [' . $upload_media['handlevalue'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
+                        log_error('Failed to create a new Handle for [' . $upload_media['handlename'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
                             'chainhandleoutput' => $upload_media['handleid'],
                         ));
                         continue;
@@ -1028,7 +1028,7 @@ function process_media($hashtagid, $uploaded_media)
                             foreach ($CI->Chains->read(array(
                                 'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                                 'chainhandleinput' => $chainhandletype,
-                                'handlevalue' => $target_variable,
+                                'handlename' => $target_variable,
                             ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $child_handle) {
                                 $child_id = $child_handle['handleid'];
                             }
@@ -1036,7 +1036,7 @@ function process_media($hashtagid, $uploaded_media)
                             //If not found create the child:
                             if (!$child_id) {
                                 $added_child = $CI->Handles->create(array(
-                                    'handlevalue' => $target_variable,
+                                    'handlename' => $target_variable,
                                 ));
                                 if (!$added_child['status']) {
                                     log_error('Failed to create a new Handle for [' . $target_variable . ']', array(
@@ -1425,7 +1425,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
 }
 
 
-function validate_handlevalue($str)
+function validate_handlename($str)
 {
 
     //Validate:
@@ -1460,7 +1460,7 @@ function validate_handlevalue($str)
     //All good, return success:
     return array(
         'status' => 1,
-        'handlevalue_clean' => trim($title_clean),
+        'handlename_clean' => trim($title_clean),
     );
 
 }
@@ -1629,7 +1629,7 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
         ));
         if (count($es)) {
 
-            $name = $es[0]['handlevalue'];
+            $name = $es[0]['handlename'];
 
             //Also fetch email for this user to populate the reply to:
             $fetch_emails = $CI->Chains->read(array(
@@ -2459,7 +2459,7 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                     //Keywords?
                     if ($is_author || strlen($x['chainvalue'])) {
-                        $export_row['s__keywords'] .= $x['handlevalue'] . ' ' . (strlen($x['chainvalue']) ? $x['chainvalue'] . ' ' : '');
+                        $export_row['s__keywords'] .= $x['handlename'] . ' ' . (strlen($x['chainvalue']) ? $x['chainvalue'] . ' ' : '');
                     }
 
                 }
@@ -2472,7 +2472,7 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__handle'] = $s['handlestring'];
                 $export_row['s__url'] = view_memory(42903, 42902) . $s['handlestring'];
                 $export_row['s__cover'] = $s['handlecover'];
-                $export_row['s__title'] = $s['handlevalue'];
+                $export_row['s__title'] = $s['handlename'];
                 $export_row['s__cache'] = '';
                 $export_row['s__weight'] = intval($s['handleweight']);
 
@@ -2487,13 +2487,13 @@ function update_algolia($focus__node = null, $s__id = 0)
                 foreach ($CI->Chains->read(array(
                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                     'chainhandleoutput' => $s['handleid'], //This follower Handle
-                ), array('chainhandleinput'), 0, 0, array('handlevalue' => 'DESC')) as $x) {
+                ), array('chainhandleinput'), 0, 0, array('handlename' => 'DESC')) as $x) {
 
                     //Add tags:
                     array_push($export_row['_tags'], 'z_' . $x['handleid']);
 
                     //Add Keywords:
-                    $export_row['s__keywords'] .= $x['handlevalue'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
+                    $export_row['s__keywords'] .= $x['handlename'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
 
                 }
             }
@@ -2788,7 +2788,7 @@ function chain_view($x)
             $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Handles->read(array('handleid' => $x[$m['m__handle']])) as $focus_e) {
-                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['handlestring'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['handlevalue'] . '" class="icon-block-sm">' . view_cover($focus_e['handlecover'], '<i class="far fa-at"></i>') . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['handlestring'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['handlename'] . '" class="icon-block-sm">' . view_cover($focus_e['handlecover'], '<i class="far fa-at"></i>') . '</a>';
                 }
             }
             $column_value .= '</div></td>';
@@ -3495,7 +3495,7 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
             $overflow_reached = true;
         }
 
-        $headline = '<span class="inner_headline">' . (strlen($list_item['handlecover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['handlecover']) . '</span>' : '') . $list_item['handlevalue'] . '</span>';
+        $headline = '<span class="inner_headline">' . (strlen($list_item['handlecover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['handlecover']) . '</span>' : '') . $list_item['handlename'] . '</span>';
         if (in_array($list_item['handleid'], $CI->config->item('handleids___32145'))) {
             $headline .= '<span class="icon-block-sm" title="' . $handles___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $handles___11035[32145]['m__cover'] . '</span>';
         }
@@ -3509,14 +3509,14 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
 
         if ($selected) {
             if ($access_locked) {
-                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlevalue']) . '">' . $headline . '</span>';
+                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlename']) . '">' . $headline . '</span>';
             } elseif ($has_multiple) {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlevalue']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlename']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
             }
         }
 
         if (!$access_locked) {
-            $ui .= '<a href="javascript:void(0);" onclick="handle_select_apply(' . $focus__id . ',' . $list_item['handleid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_handleid . ',' . $right_hashtagid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' item-' . $list_item['handleid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['handlevalue']) . '">' . $headline . '</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="handle_select_apply(' . $focus__id . ',' . $list_item['handleid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_handleid . ',' . $right_hashtagid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' item-' . $list_item['handleid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['handlename']) . '">' . $headline . '</a>';
         }
 
 
@@ -4079,7 +4079,7 @@ function view_featured_chains($chainhandletype, $location, $m = null, $focus__no
 {
     $CI =& get_instance();
     $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['handlestring']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['handlestring'] . '">' : '') . '<span class="grey ' . ($chainhandletype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $handles___11035[$chainhandletype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainhandletype == 41949 ? 'mini-font' : '') . '">' . $location['handlevalue'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
+    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['handlestring']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['handlestring'] . '">' : '') . '<span class="grey ' . ($chainhandletype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $handles___11035[$chainhandletype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainhandletype == 41949 ? 'mini-font' : '') . '">' . $location['handlename'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
 }
 
 
@@ -4495,7 +4495,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtags
         }
         */
 
-        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handlestring'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlevalue'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handlestring'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
+        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handlestring'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlename'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handlestring'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
     }
 
@@ -4554,7 +4554,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtags
                 foreach ($CI->Handles->read(array(
                     'handleid' => $i['chainhandlecreator'],
                 )) as $creator) {
-                    $creator_name = 'Chained by ' . $creator['handlevalue'] . ' @' . $creator['handlestring'] . ' on ';
+                    $creator_name = 'Chained by ' . $creator['handlename'] . ' @' . $creator['handlestring'] . ' on ';
                     $creator_details = '<a href="' . view_memory(42903, 33286) . $i['hashtagstring'] . '"><span class="icon-block-sm">' . view_cover($creator['handlecover']) . '</span></a>';
                 }
             }
@@ -5213,7 +5213,7 @@ function view_hashtag_media($i)
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_' . $x['chainhandletype'] . ($x['chainhandletype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainhandletype'] . '" handleid="' . $x['handleid'] . '"  handlecover="' . $x['handlecover'] . '" playback_code="' . $x['chainvalue'] . '" handlevalue="' . $x['handlevalue'] . '">' . $template . '</div>';
+        $message_append .= '<div class="media_display media_display_' . $x['chainhandletype'] . ($x['chainhandletype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainhandletype'] . '" handleid="' . $x['handleid'] . '"  handlecover="' . $x['handlecover'] . '" playback_code="' . $x['chainvalue'] . '" handlename="' . $x['handlename'] . '">' . $template . '</div>';
 
     }
 
@@ -5236,7 +5236,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
 
     $CI =& get_instance();
 
-    if (!isset($e['handleid']) || !isset($e['handlevalue'])) {
+    if (!isset($e['handleid']) || !isset($e['handlename'])) {
         log_error('handle_view() Missing core variables', array(
             'chainhandleoutput' => $chainhandletype,
         ));
@@ -5279,13 +5279,13 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
 
     if ($handle_access >= 3) {
         //Editable:
-        $ui .= view_handle_input(6197, $e['handlevalue'], $e['handleid'], $handle_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
-        $ui .= '<div class="hidden text__6197_' . $e['handleid'] . '">' . $e['handlevalue'] . '</div>';
+        $ui .= view_handle_input(6197, $e['handlename'], $e['handleid'], $handle_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
+        $ui .= '<div class="hidden text__6197_' . $e['handleid'] . '">' . $e['handlename'] . '</div>';
     } else {
         //Static:
-        $ui .= '<input type="hidden" class="text__6197_' . $e['handleid'] . '" value="' . $e['handlevalue'] . '">';
+        $ui .= '<input type="hidden" class="text__6197_' . $e['handleid'] . '" value="' . $e['handlename'] . '">';
         $ui .= '<div class="center">';
-        $ui .= '<span class="main__title text__6197_' . $e['handleid'] . '">' . $e['handlevalue'] . '</span>';
+        $ui .= '<span class="main__title text__6197_' . $e['handleid'] . '">' . $e['handlename'] . '</span>';
         $ui .= '</div>';
     }
 

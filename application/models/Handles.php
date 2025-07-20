@@ -12,9 +12,9 @@ class Handles extends CIdea_cache
     {
 
         //Validate Title
-        $validate_handlevalue = validate_handlevalue($add_fields['handlevalue']);
-        if (!$validate_handlevalue['status']) {
-            return $validate_handlevalue;
+        $validate_handlename = validate_handlename($add_fields['handlename']);
+        if (!$validate_handlename['status']) {
+            return $validate_handlename;
         }
 
         //Log Chain new Handle:
@@ -27,7 +27,7 @@ class Handles extends CIdea_cache
             'chainhandleinput' => $chainhandlecreator,
             'chainhandleoutput' => $nextchainid,
             'chainhandletype' => 12274, //New Handle Created
-            'chainvalue' => $validate_handlevalue['handlevalue_clean'],
+            'chainvalue' => $validate_handlename['handlename_clean'],
         );
 
         if (isset($add_fields['handleid']) && !count($this->Chains->read(array('chainid' => $add_fields['handleid'])))) {
@@ -50,7 +50,7 @@ class Handles extends CIdea_cache
 
         //Handle Generation
         if (!isset($add_fields['handlestring'])) {
-            $add_fields['handlestring'] = generate_handle(12274, $validate_handlevalue['handlevalue_clean']);
+            $add_fields['handlestring'] = generate_handle(12274, $validate_handlename['handlename_clean']);
         }
         $this->Chains->create(array(
             'chainhandlecreator' => $chainhandlecreator,
@@ -63,7 +63,7 @@ class Handles extends CIdea_cache
         $update_data = array(
             'handleid' => $new_x['chainid'],
             'handlestring' => $add_fields['handlestring'],
-            'handlevalue' => $validate_handlevalue['handlevalue_clean'],
+            'handlename' => $validate_handlename['handlename_clean'],
         );
 
         //Cover saving if any
@@ -164,7 +164,7 @@ class Handles extends CIdea_cache
             $must_sync_ledger = array(
                 'handlestring' => 32338,
                 'handlecover' => 6198,
-                'handlevalue' => 6197,
+                'handlename' => 6197,
             );
 
             //See what is being updated:
@@ -322,7 +322,7 @@ class Handles extends CIdea_cache
             if ($action_handleid == 4998) { //Add Prefix String
 
                 $this->Handles->update($x['handleid'], array(
-                    'handlevalue' => $action_command1 . $x['handlevalue'],
+                    'handlename' => $action_command1 . $x['handlename'],
                 ), $chainhandlecreator);
 
                 $applied_success++;
@@ -330,7 +330,7 @@ class Handles extends CIdea_cache
             } elseif ($action_handleid == 4999) { //Add Postfix String
 
                 $this->Handles->update($x['handleid'], array(
-                    'handlevalue' => $x['handlevalue'] . $action_command1,
+                    'handlename' => $x['handlename'] . $action_command1,
                 ), $chainhandlecreator);
 
                 $applied_success++;
@@ -417,10 +417,10 @@ class Handles extends CIdea_cache
 
                 $applied_success++;
 
-            } elseif ($action_handleid == 5000 && substr_count(strtolower($x['handlevalue']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
+            } elseif ($action_handleid == 5000 && substr_count(strtolower($x['handlename']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
 
                 $this->Handles->update($x['handleid'], array(
-                    'handlevalue' => str_ireplace($action_command1, $action_command2, $x['handlevalue']),
+                    'handlename' => str_ireplace($action_command1, $action_command2, $x['handlename']),
                 ), $chainhandlecreator);
 
                 $applied_success++;
@@ -676,7 +676,7 @@ class Handles extends CIdea_cache
         //All good, create new Handle:
         $new_private_users = in_array($chainhandledomain, $this->config->item('handleids___44011'));
         $added_e = $this->Handles->create(array(
-            'handlevalue' => $full_name,
+            'handlename' => $full_name,
             'handlecover' => ($image_url ? $image_url : handlecover_generator(12279)),
         ));
         if (!$added_e['status']) {

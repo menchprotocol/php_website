@@ -126,7 +126,7 @@ foreach($this->Hashtags->read(array(
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $handle_session['handlevalue'],
+                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $handle_session['handlename'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['chainvalue'] : '',
                 'recipient_address_line_1' => 'https://'.get_domain('m__message', $handle_session['handleid']).'/@'.$handle_session['handlestring'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),

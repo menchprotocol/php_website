@@ -58,7 +58,7 @@ foreach ($es as $en) {
     //Transfer Handle node:
     $this->db->insert('gephinodes', array(
         'id' => $id_prefix[12274] . $en['handleid'],
-        'label' => $en['handlevalue'],
+        'label' => $en['handlename'],
         'size' => 1,
         'node_type' => 2, //Member
     ));

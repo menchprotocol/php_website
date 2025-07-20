@@ -8,7 +8,7 @@ if ($handlestring) {
     foreach ($this->Handles->read(array(
         'LOWER(handlestring)' => strtolower($handlestring),
     )) as $e) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $handlestring . '"><span class="icon-block">' . view_cover($e['handlecover']) . '</span> ' . $e['handlevalue'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $handlestring . '"><span class="icon-block">' . view_cover($e['handlecover']) . '</span> ' . $e['handlename'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif ($hashtagstring) {
     foreach ($this->Hashtags->read(array(

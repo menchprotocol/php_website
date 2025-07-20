@@ -78,7 +78,7 @@ if($icon_keyword){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['handlecover']).'</span><a href="'.view_memory(42903,42902).$en['handlestring'].'">'.$en['handlevalue'].'</a></td>';
+            echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($en['handlecover']).'</span><a href="'.view_memory(42903,42902).$en['handlestring'].'">'.$en['handlename'].'</a></td>';
             echo '</tr>';
 
         }

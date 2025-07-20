@@ -335,7 +335,7 @@ class Controller extends CI_Controller
             $title .= view_hashtag_title($target_i, true) . ' | ';
         }
         if ($focus_e) {
-            $title .= $focus_e['handlevalue'] . ' @' . $focus_e['handlestring'] . ' | ';
+            $title .= $focus_e['handlename'] . ' @' . $focus_e['handlestring'] . ' | ';
         }
         if (!$title) {
             //Append app name since no title:
@@ -805,7 +805,7 @@ class Controller extends CI_Controller
             foreach ($this->Chains->read(array(
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 'chainhandleoutput' => $_POST['handleid'],
-            ), array('chainhandleinput'), 1, 0, array('handlevalue' => 'DESC')) as $up_e) {
+            ), array('chainhandleinput'), 1, 0, array('handlename' => 'DESC')) as $up_e) {
                 $delete_redirect = view_memory(42903, 42902) . $up_e['handlestring'];
             }
 
@@ -1195,7 +1195,7 @@ class Controller extends CI_Controller
                 $current_handlestring = view_valid_handle_handle($_POST['first_segment']);
                 foreach (hashtags_query($_POST['chainhandletype'], $_POST['hashtagid'], 1, false) as $handle_session) {
                     if (isset($handle_session['handleid'])) {
-                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlestring'], $current_handlestring && $handle_session['handlestring'] == $current_handlestring, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlevalue'], $handle_session['chainvalue']);
+                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlestring'], $current_handlestring && $handle_session['handlestring'] == $current_handlestring, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlename'], $handle_session['chainvalue']);
                         $listed_items++;
                     }
                 }
@@ -1420,7 +1420,7 @@ class Controller extends CI_Controller
 
                 foreach (handles_query($_POST['chainhandletype'], $_POST['handleid'], 1, false) as $handle_session) {
                     if (isset($handle_session['handleid'])) {
-                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlestring'], $handle_session['handlestring'] == $current_handlestring, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlevalue'], (!$is_cache ? $handle_session['chainvalue'] : null));
+                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handlestring'], $handle_session['handlestring'] == $current_handlestring, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlename'], (!$is_cache ? $handle_session['chainvalue'] : null));
                         $listed_items++;
                     }
                 }
@@ -1597,7 +1597,7 @@ class Controller extends CI_Controller
 
         //Create:
         $added_e = $this->Handles->create(array(
-            'handlevalue' => $_POST['copy_handle_title'],
+            'handlename' => $_POST['copy_handle_title'],
             'handlecover' => $fetch_o[0]['handlecover'],
         ), $handle_session['handleid']);
         if (!$added_e['status']) {
@@ -1854,7 +1854,7 @@ class Controller extends CI_Controller
 
             //We are creating a new Handle:
             $added_e = $this->Handles->create(array(
-                'handlevalue' => $_POST['handle_new_string'],
+                'handlename' => $_POST['handle_new_string'],
             ), $handle_session['handleid']);
             if (!$added_e['status']) {
                 //We had an error, return it:
@@ -1982,7 +1982,7 @@ class Controller extends CI_Controller
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             ), array('chainhandleinput'), 0, 0, $order_42145) as $handle_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($handle_template['handlecover']) . '</span>' . $handle_template['handlevalue'] . '<a href="' . view_memory(42903, 42902) . $handle_group['handlestring'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $handle_group['handlevalue'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($handle_group['handlecover']) . '</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($handle_template['handlecover']) . '</span>' . $handle_template['handlename'] . '<a href="' . view_memory(42903, 42902) . $handle_group['handlestring'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $handle_group['handlename'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($handle_group['handlecover']) . '</span></a></div>';
 
 
                 //Load template:
@@ -2151,7 +2151,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
             ));
-        } elseif (!isset($_POST['save_handlevalue'])) {
+        } elseif (!isset($_POST['save_handlename'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Handle Title',
@@ -2284,15 +2284,15 @@ class Controller extends CI_Controller
         }
 
         //Validate Handle Title & save if needed:
-        $validate_handlevalue = validate_handlevalue($_POST['save_handlevalue']);
-        if ($es[0]['handlevalue'] != trim($_POST['save_handlevalue'])) {
-            if (!$validate_handlevalue['status']) {
+        $validate_handlename = validate_handlename($_POST['save_handlename']);
+        if ($es[0]['handlename'] != trim($_POST['save_handlename'])) {
+            if (!$validate_handlename['status']) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $validate_handlevalue['message'],
+                    'message' => $validate_handlename['message'],
                 ));
             }
-            $es[0]['handlevalue'] = $validate_handlevalue['handlevalue_clean'];
+            $es[0]['handlename'] = $validate_handlename['handlename_clean'];
         }
 
         //Save Handle Cover if needed:
@@ -2303,7 +2303,7 @@ class Controller extends CI_Controller
 
         //Update:
         $this->Handles->update($es[0]['handleid'], array(
-            'handlevalue' => $validate_handlevalue['handlevalue_clean'],
+            'handlename' => $validate_handlename['handlename_clean'],
             'handlecover' => trim($_POST['save_handlecover']),
             'handlestring' => trim($_POST['save_handlestring']),
         ), $handle_session['handleid']);
@@ -2831,7 +2831,7 @@ class Controller extends CI_Controller
             'status' => 1,
             'account_id' => $chainhandlecreator,
             'valid_email' => ($valid_email ? 1 : 0),
-            'account_preview' => ($chainhandlecreator ? '<span class="icon-block">' . view_cover($u['handlecover'], true) . '</span>' . $u['handlevalue'] : ''),
+            'account_preview' => ($chainhandlecreator ? '<span class="icon-block">' . view_cover($u['handlecover'], true) . '</span>' . $u['handlename'] : ''),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
@@ -2874,22 +2874,22 @@ class Controller extends CI_Controller
             }
 
 
-            $validate_handlevalue = validate_handlevalue($_POST['hashtag_createtext']);
-            if (!$validate_handlevalue['status']) {
-                return view_json(array_merge($validate_handlevalue, array(
-                    'original_val' => $es[0]['handlevalue'],
+            $validate_handlename = validate_handlename($_POST['hashtag_createtext']);
+            if (!$validate_handlename['status']) {
+                return view_json(array_merge($validate_handlename, array(
+                    'original_val' => $es[0]['handlename'],
                 )));
             }
 
             //All good, go ahead and update:
             $this->Handles->update($es[0]['handleid'], array(
-                'handlevalue' => $validate_handlevalue['handlevalue_clean'],
+                'handlename' => $validate_handlename['handlename_clean'],
             ), $handle_session['handleid']);
 
             //Reset member session data if this data belongs to the logged-in member:
             if ($es[0]['handleid'] == $handle_session['handleid']) {
                 //set Session with new data:
-                $es[0]['handlevalue'] = $validate_handlevalue['handlevalue_clean'];
+                $es[0]['handlename'] = $validate_handlename['handlename_clean'];
                 $this->Handles->activate($es[0], true);
             }
 

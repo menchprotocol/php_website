@@ -40,13 +40,13 @@ foreach ($this->Chains->read(array(
     foreach ($down__e as $follower) {
         if ($follower['handleid'] > 0) {
             array_push($down_ids, $follower['handleid']);
-            array_push($down_titles, $follower['handlevalue']);
+            array_push($down_titles, $follower['handlename']);
         }
     }
 
 
     $prefix_common_words = prefix_common_words($down_titles); //Clean Titles
-    $memory_text .= "\n" . '//' . $en['handlevalue'] . ':' . "\n";
+    $memory_text .= "\n" . '//' . $en['handlename'] . ':' . "\n";
     $memory_text .= '$config[\'handleids___' . $en['chainhandleoutput'] . '\'] = array(' . join(',', $down_ids) . ');' . "\n";
     $memory_text .= '$config[\'handles___' . $en['chainhandleoutput'] . '\'] = array(' . (strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "' . trim($prefix_common_words) . '"' : '') . "\n";
     foreach ($down__e as $follower) {
@@ -86,7 +86,7 @@ foreach ($this->Chains->read(array(
 
         $memory_text .= '     ' . $follower['handleid'] . ' => array(' . "\n";
         $memory_text .= '        \'m__handle\' => \'' . $follower['handlestring'] . '\',' . "\n";
-        $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['handlevalue']))) . '\',' . "\n";
+        $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['handlename']))) . '\',' . "\n";
         $memory_text .= '        \'m__message\' => \'' . (str_replace('\'', '\\\'', $follower['chainvalue'])) . '\',' . "\n";
         $memory_text .= '        \'m__cover\' => \'' . str_replace('\'', '\\\'', view_cover($follower['handlecover'])) . '\',' . "\n";
         $memory_text .= '        \'m__following\' => array(' . join(',', $down_up_ids) . '),' . "\n";
@@ -154,7 +154,7 @@ $routes_text .= '//APPS:' . "\n\n";
 foreach ($this->Chains->read(array(
     'chainhandleinput' => 6287, //Apps
     'chainhandletype' => 4230,
-), array('chainhandleoutput'), 0, 0, array('handlevalue' => 'ASC')) as $app) {
+), array('chainhandleoutput'), 0, 0, array('handlename' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;

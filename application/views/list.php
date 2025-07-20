@@ -53,7 +53,7 @@ foreach($hashtag_settings['query_string_filtered'] as $x){
 
         }
 
-        $hashtag_content .= '<td title="'.$x['handlevalue'].' x '.view_hashtag_title($hashtag_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chainvalue']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_hashtag_title($hashtag_var, true).': '.$discoveries[0]['chainvalue'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chainvalue'].'</p>' : '<span title="'.view_hashtag_title($hashtag_var, true).': '.$discoveries[0]['chainvalue'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_hashtag_title($hashtag_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
+        $hashtag_content .= '<td title="'.$x['handlename'].' x '.view_hashtag_title($hashtag_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['chainvalue']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_hashtag_title($hashtag_var, true).': '.$discoveries[0]['chainvalue'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['chainvalue'].'</p>' : '<span title="'.view_hashtag_title($hashtag_var, true).': '.$discoveries[0]['chainvalue'].' ['.$discoveries[0]['chaintime'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_hashtag_title($hashtag_var, true).' ['.$discoveries[0]['chaintime'].']">✔️</span>' )  : '').'</td>';
 
         if(count($discoveries)){
             if(!isset($count_totals['i'][$hashtag_var['hashtagid']])){
@@ -71,7 +71,7 @@ foreach($hashtag_settings['query_string_filtered'] as $x){
 
     $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
 
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['handlecover'], true).'</span><a href="'.view_memory(42903,42902).$x['handlestring'].'" style="font-weight:bold;">'.$x['handlevalue'].'</a>'.$name.$plus_info.'</td>';
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['handlecover'], true).'</span><a href="'.view_memory(42903,42902).$x['handlestring'].'" style="font-weight:bold;">'.$x['handlename'].'</a>'.$name.$plus_info.'</td>';
 
 
 
@@ -110,7 +110,7 @@ foreach($hashtag_settings['query_string_filtered'] as $x){
         }
 
 
-        $body_content .= '<td title="'.$x['handlevalue'].' x '.$e['handlevalue'].'" class="'.( handle_session(10939) && !in_array($e['handleid'], $this->config->item('handleids___37695')) ? 'editable chainhandlecreator_'.$e['handleid'].'_'.$x['handleid'] : '' ).'" hashtagid="0" handleid="'.$e['handleid'].'" chainhandlecreator="'.$x['handleid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" chainid="'.$x['chainid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['handlename'].' x '.$e['handlename'].'" class="'.( handle_session(10939) && !in_array($e['handleid'], $this->config->item('handleids___37695')) ? 'editable chainhandlecreator_'.$e['handleid'].'_'.$x['handleid'] : '' ).'" hashtagid="0" handleid="'.$e['handleid'].'" chainhandlecreator="'.$x['handleid'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" chainid="'.$x['chainid'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
@@ -142,7 +142,7 @@ echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">'.$count.' Handles</th>';
 foreach($hashtag_settings['handle_column'] as $e){
     array_push($table_sortable, '#thhandle_'.$e['handleid']);
-    echo '<th id="thhandle_'.$e['handleid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['handlestring'].'" target="_blank" title="Open in New Window">'.view_cover($e['handlecover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['handleid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['handleid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['handlevalue'].'</span></th>';
+    echo '<th id="thhandle_'.$e['handleid'].'"><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['handlestring'].'" target="_blank" title="Open in New Window">'.view_cover($e['handlecover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['handleid']]) ? str_replace('.00','',number_format($count_totals['e'][$e['handleid']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['handlename'].'</span></th>';
 }
 foreach($hashtag_settings['hashtag_column'] as $hashtag_var){
 

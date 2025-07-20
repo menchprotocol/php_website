@@ -21,7 +21,7 @@ foreach ((isset($_GET['handlestring']) && strlen($_GET['handlestring']) ? $this-
 
             $community_pills .= view_pill(12274, $x['handleid'], $total_count, array(
                 'm__cover' => view_cover($x['handlecover'], true),
-                'm__title' => $x['handlevalue'],
+                'm__title' => $x['handlename'],
                 'm__message' => $x['chainvalue'],
                 'm__handle' => $x['handlestring'],
             ), $ui);
@@ -34,7 +34,7 @@ foreach ((isset($_GET['handlestring']) && strlen($_GET['handlestring']) ? $this-
 if (strlen($community_pills)) {
 
     //Community
-    echo '<h2 class="center">' . $handle_item['handlevalue'] . '</h2>';
+    echo '<h2 class="center">' . $handle_item['handlename'] . '</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 

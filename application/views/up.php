@@ -2,7 +2,7 @@
 
 //Displays all the up handles of a given handle recursively
 
-echo '<h1>'.$focus_e['handlevalue'].'</h1>';
+echo '<h1>'.$focus_e['handlename'].'</h1>';
 
 $total_parents = handle_up($focus_e['handleid']);
 $current_total = count($total_parents);
@@ -11,7 +11,7 @@ echo '<div class="row justify-content">';
 foreach ($this->Handles->read(array(
     'handleid IN (' . join(',', $total_parents) . ')' => null,
 )) as $e) {
-    echo '<div>'.($current_total-$current_i).') <span class="icon-block">'.view_cover($e['handlecover']).'</span><span class="main__title">'.$e['handlevalue'].'</span><span class="grey">@'.$e['handlestring'].'</span></div>';
+    echo '<div>'.($current_total-$current_i).') <span class="icon-block">'.view_cover($e['handlecover']).'</span><span class="main__title">'.$e['handlename'].'</span><span class="grey">@'.$e['handlestring'].'</span></div>';
     $current_i++;
 }
 echo '</div>';

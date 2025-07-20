@@ -75,10 +75,10 @@ foreach($this->Handles->scissor($website_id, 14903) as $handle_item) {
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['handlecover'], FILTER_VALIDATE_URL)){
             $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['handlecover'].'\');"></div>'.'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['handlevalue'].'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['handlename'].'</div>';
         } else {
             $info_item .= '<div class="info_box_cover">'.view_cover($info_element['handlecover']).'</div>';
-            $info_item .= '<div class="info_box_title main__title">'.$info_element['handlevalue'].'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['handlename'].'</div>';
         }
         if(strlen($info_element['chainvalue'])){
             $info_item .= '<div class="info_box_message">'.$info_element['chainvalue'].'</div>';
@@ -88,7 +88,7 @@ foreach($this->Handles->scissor($website_id, 14903) as $handle_item) {
     }
 
     if($info_item){
-        $messages .= '<h2 class="info-head">'.$handle_item['handlevalue'].'</h2>';
+        $messages .= '<h2 class="info-head">'.$handle_item['handlename'].'</h2>';
         if(strlen($handle_item['chainvalue'])){
             $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$handle_item['chainvalue'].'</div>';
         }

@@ -15,7 +15,7 @@ $replace_with_confirmed = false;
 if($search_for_set){
 
     $matching_results = $this->Handles->read(array(
-            'handlevalue LIKE \'%'.$_GET['search_for'].'%\'' => null,
+            'handlename LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
     //List the matching search:
@@ -39,12 +39,12 @@ if($search_for_set){
 
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $en['handlevalue'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['handlevalue']) . $append_text;
+                $en['handlename'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['handlename']) . $append_text;
 
                 if($replace_with_confirmed){
                     //Update handle:
                     $res = $this->Handles->update($en['handleid'], array(
-                        'handlevalue' => $en['handlevalue'],
+                        'handlename' => $en['handlename'],
                     ), $handle_session['handleid']);
                     $replaced++;
                 }

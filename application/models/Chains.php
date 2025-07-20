@@ -112,7 +112,7 @@ class Chains extends CIdea_cache
                     'handleid' => $add_fields['chainhandlecreator'],
                 ));
                 if (count($add_e)) {
-                    $u_name = $add_e[0]['handlevalue'];
+                    $u_name = $add_e[0]['handlename'];
                 }
             }
 
@@ -138,7 +138,7 @@ class Chains extends CIdea_cache
 
                     //HANDLE
                     foreach ($this->Handles->read(array('handleid' => $add_fields[$m['m__handle']])) as $this_e) {
-                        $html_message .= $m['m__title'] . ': ' . $this_e['handlevalue'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['handlestring'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . $this_e['handlename'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['handlestring'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
@@ -1148,7 +1148,7 @@ class Chains extends CIdea_cache
                 if ($clone_i['chainhandletype'] == 32247) {
 
                     //Discovery Clone
-                    $new_title = $es_creator[0]['handlevalue'] . ' ' . $clone_i['hashtagvalue'];
+                    $new_title = $es_creator[0]['handlename'] . ' ' . $clone_i['hashtagvalue'];
                     $result = $this->Hashtags->copy($clone_i['hashtagid'], 0, $x_data['chainhandlecreator'], null, $new_title);
                     if ($result['status']) {
 
@@ -1209,11 +1209,11 @@ class Chains extends CIdea_cache
 
                         //Update Handle Title:
                         $this->Handles->update($x_data['chainhandlecreator'], array(
-                            'handlevalue' => $x_data['chainvalue'],
+                            'handlename' => $x_data['chainvalue'],
                         ), $x_data['chainhandlecreator']);
 
                         //Update live session as well:
-                        $es_creator[0]['handlevalue'] = $x_data['chainvalue'];
+                        $es_creator[0]['handlename'] = $x_data['chainvalue'];
                         $this->Handles->activate($es_creator[0], true);
 
                     }
@@ -1287,11 +1287,11 @@ class Chains extends CIdea_cache
                         if (!in_array(intval($watcher['chainhandleinput']), $sent_watchers)) {
                             array_push($sent_watchers, intval($watcher['chainhandleinput']));
 
-                            $this->Chains->message($watcher['chainhandleinput'], $es_discoverer[0]['handlevalue'] . ' hashtag_discovered: ' . view_hashtag_title($i, true),
+                            $this->Chains->message($watcher['chainhandleinput'], $es_discoverer[0]['handlename'] . ' hashtag_discovered: ' . view_hashtag_title($i, true),
                                 //Message Body:
                                 view_hashtag_title($i, true) . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 33286) . $i['hashtagstring'] . "\n\n" .
                                 (strlen($x_data['chainvalue']) ? $x_data['chainvalue'] . "\n\n" : '') .
-                                $es_discoverer[0]['handlevalue'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['handlestring'] . "\n\n" .
+                                $es_discoverer[0]['handlename'] . ':' . "\n" . 'https://' . $domain_url . view_memory(42903, 42902) . $es_discoverer[0]['handlestring'] . "\n\n" .
                                 $discoverer_contact
                             );
                         }

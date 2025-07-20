@@ -60,7 +60,7 @@ if($focus_i['hashtagstring']!='Discotique2025'){
 
         //Fetch from Cache table:
         if(count($es_cache)){
-            $hashtagvalue = '@'.$es_cache[0]['handlestring']."\n".$es_cache[0]['handlevalue']."\n".$es_cache[0]['handlecover'];
+            $hashtagvalue = '@'.$es_cache[0]['handlestring']."\n".$es_cache[0]['handlename']."\n".$es_cache[0]['handlecover'];
         } else {
             $hashtagvalue = '@???'.$x['chainvalue'];
         }
@@ -203,7 +203,7 @@ if($focus_i['hashtagstring']!='Discotique2025'){
                 /*
                 $added_e = $this->Handles->create(array(
                     'handlestring' => 'URL'.$url_key,
-                    'handlevalue' => 'URL '.$url_key,
+                    'handlename' => 'URL '.$url_key,
                     'handlecover' => 'fas fa-browser',
                 ), $x['chainhandlecreator']);
                 $hashtagvalue .= "\n@".$added_e['handle_create']['handlestring'];
@@ -229,7 +229,7 @@ if($focus_i['hashtagstring']!='Discotique2025'){
             /*
             $added_e = $this->Handles->create(array(
                 'handlestring' => 'URL'.$url_key,
-                'handlevalue' => 'URL '.$url_key,
+                'handlename' => 'URL '.$url_key,
                 'handlecover' => 'fas fa-browser',
             ), $x['chainhandlecreator']);
             $hashtagvalue .= "\n@".$added_e['handle_create']['handlestring'];

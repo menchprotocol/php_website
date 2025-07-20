@@ -1785,7 +1785,7 @@ function update_cover_mini(cover_code, target_css) {
 function display_media(mediaframe_id, uploader_id, hashtagid) {
     $(".ui_hashtagread_" + hashtagid + " .media_display").each(function () {
         $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""></div>');
-        cloudinary_prehandle_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('handlecover'), $(this).attr('handlevalue'), $(this).attr('handleid'));
+        cloudinary_prehandle_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('handlecover'), $(this).attr('handlename'), $(this).attr('handleid'));
     });
     sort_media(mediaframe_id);
 }
@@ -2353,7 +2353,7 @@ function play_video(public_id) {
     cld.handle(public_id);
 }
 
-function cloudinary_prehandle_view(uploader_id, info_id, media_typeid, playback_code, handlecover, handlevalue, handleid = 0) {
+function cloudinary_prehandle_view(uploader_id, info_id, media_typeid, playback_code, handlecover, handlename, handleid = 0) {
 
     //Update meta variables:
     $('#' + info_id).attr('media_typeid', media_typeid).attr('playback_code', playback_code).attr('handleid', handleid).attr('handlecover', handlecover);
@@ -2361,24 +2361,24 @@ function cloudinary_prehandle_view(uploader_id, info_id, media_typeid, playback_
     if (media_typeid == 4258) {
 
         //Video
-        $('#' + info_id).html('<input type="text" value="' + handlevalue + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Video"><i class="far fa-play-circle" aria-hidden="true"></i></span><img src="' + handlecover + '" />');
+        $('#' + info_id).html('<input type="text" value="' + handlename + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Video"><i class="far fa-play-circle" aria-hidden="true"></i></span><img src="' + handlecover + '" />');
         //<video id="video_handle_'+playback_code+'" controls class="cld-video-handle vjs-fade-out cld-fluid cld-video-handle-skin-light" poster="'+handlecover+'"></video>
         //play_video(playback_code);
 
     } else if (media_typeid == 4260) {
 
         //Image
-        $('#' + info_id).html('<input type="text" value="' + handlevalue + '" placeholder="Handle Title" class="hidden_superpower__10939" /><img src="' + handlecover + '" />');
+        $('#' + info_id).html('<input type="text" value="' + handlename + '" placeholder="Handle Title" class="hidden_superpower__10939" /><img src="' + handlecover + '" />');
 
     } else if (media_typeid == 4259) {
 
         //Audio
-        $('#' + info_id).html('<input type="text" value="' + handlevalue + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Audio"><i class="far fa-volume-up" aria-hidden="true"></i></span><audio controls src="' + playback_code + '"></audio>');
+        $('#' + info_id).html('<input type="text" value="' + handlename + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Audio"><i class="far fa-volume-up" aria-hidden="true"></i></span><audio controls src="' + playback_code + '"></audio>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
-        alert('Upload Error: Uploaded File ' + handlevalue + ' is not a valid Video, Image or Audio file.');
+        alert('Upload Error: Uploaded File ' + handlename + ' is not a valid Video, Image or Audio file.');
 
     }
 
@@ -2412,7 +2412,7 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
     $('#modal31912 .save_handleid').val(handleid);
     $('#modal31912 .save_chainid').val(chainid);
     $('#modal31912 .save_handlestring').val($('.ui_handlestring_' + handleid + ':first').text());
-    $('#modal31912 .save_handlevalue').val(current_title);
+    $('#modal31912 .save_handlename').val(current_title);
 
 
     $('#modal31912 .random_animal').html('<i class="' + random_animal(true) + '"></i>');
@@ -2427,7 +2427,7 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
         }, 377);
     }
     setTimeout(function () {
-        set_autosize($('#modal31912 .save_handlevalue'));
+        set_autosize($('#modal31912 .save_handlename'));
     }, 377);
 
 
@@ -2540,7 +2540,7 @@ function handle_save_edit() {
 
     var modify_data = {
         save_handleid: $('#modal31912 .save_handleid').val(),
-        save_handlevalue: $('#modal31912 .save_handlevalue').val().trim(),
+        save_handlename: $('#modal31912 .save_handlename').val().trim(),
         save_handlecover: $('#modal31912 .save_handlecover').val().trim(),
         save_handlestring: $('#modal31912 .save_handlestring').val().trim(),
         save_chainid: $('#modal31912 .save_chainid').val(),
@@ -2586,7 +2586,7 @@ function handle_save_edit() {
             }
 
             //Update Title:
-            update_text_name(6197, modify_data['save_handleid'], modify_data['save_handlevalue']);
+            update_text_name(6197, modify_data['save_handleid'], modify_data['save_handlename']);
 
             //Update Raw Cover:
             $('.ui_handlecover_' + modify_data['save_handleid'] + ':first').attr('raw_cover', modify_data['save_handlecover']);
@@ -2883,9 +2883,9 @@ function x_set_start_text() {
     });
 }
 
-function update_text_name(cache_handleid, handleid, handlevalue) {
+function update_text_name(cache_handleid, handleid, handlename) {
     var target_element = ".text__" + cache_handleid + "_" + handleid;
-    $(target_element).text(handlevalue).attr('old-value', handlevalue); //.val(handlevalue)
+    $(target_element).text(handlename).attr('old-value', handlename); //.val(handlename)
     set_autosize($(target_element));
 }
 

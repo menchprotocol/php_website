@@ -3,7 +3,7 @@
 $community_pills = '';
 $main_handle_id = 0;
 
-echo '<h1>'.$focus_e['handlevalue'].'</h1>';
+echo '<h1>'.$focus_e['handlename'].'</h1>';
 
 //Load Filters:
 $groups_ids = array();
@@ -92,7 +92,7 @@ foreach ($this->Chains->read(array(
     if(!isset($group_counts[$group['handleid']]) || !count($group_counts[$group['handleid']])){
         continue;
     }
-    echo '<li class="nav-item nav-chain '.( $group['handleid']==$main_handle_id ? ' active ' : '' ).' navgroup_'.$group['handleid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['handleid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['handlecover']).'</span><span class="main__title">'.( isset($group_counts[$group['handleid']]) && count($group_counts[$group['handleid']])>0 ? count($group_counts[$group['handleid']]) : '' ).'</span><span class="main__title '.( $group['handleid']==$main_handle_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['handleid'].'">&nbsp;'.trim(str_replace($focus_e['handlevalue'], '', $group['handlevalue'])).'&nbsp;</span></a></li>';
+    echo '<li class="nav-item nav-chain '.( $group['handleid']==$main_handle_id ? ' active ' : '' ).' navgroup_'.$group['handleid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['handleid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['handlecover']).'</span><span class="main__title">'.( isset($group_counts[$group['handleid']]) && count($group_counts[$group['handleid']])>0 ? count($group_counts[$group['handleid']]) : '' ).'</span><span class="main__title '.( $group['handleid']==$main_handle_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['handleid'].'">&nbsp;'.trim(str_replace($focus_e['handlename'], '', $group['handlename'])).'&nbsp;</span></a></li>';
 }
 echo '</ul>';
 

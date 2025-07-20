@@ -10,7 +10,7 @@ if(strlen($handlestring)){
     foreach($this->Handles->read(array(
         'handlestring' => $handlestring,
     )) as $e){
-        echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['handlevalue'].'</h3>';
+        echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['handlename'].'</h3>';
     }
 
     echo '<div style="max-width:610px; margin: 0 auto;">'.view_instant_select(28904, $e['handleid'], 0).'</div>';

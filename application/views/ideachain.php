@@ -355,9 +355,9 @@ if (isset($_GET['chainhandletype']) && substr_count($_GET['chainhandletype'], ',
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach ($this->Chains->read($ini_filter, array('chainhandletype'), 0, 0, handle_sort(), 'COUNT(chainhandletype) as total_count, handlevalue, chainhandletype', 'chainhandletype, handlevalue') as $x) {
+        foreach ($this->Chains->read($ini_filter, array('chainhandletype'), 0, 0, handle_sort(), 'COUNT(chainhandletype) as total_count, handlename, chainhandletype', 'chainhandletype, handlename') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['chainhandletype'] . '" ' . ((isset($_GET['chainhandletype']) && $_GET['chainhandletype'] == $x['chainhandletype']) ? 'selected="selected"' : '') . '>' . $x['handlevalue'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['chainhandletype'] . '" ' . ((isset($_GET['chainhandletype']) && $_GET['chainhandletype'] == $x['chainhandletype']) ? 'selected="selected"' : '') . '>' . $x['handlename'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 

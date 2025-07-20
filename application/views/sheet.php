@@ -46,7 +46,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
             ), array(), 1);
 
-            $hashtag_content .= '<td title="' . $x['handlevalue'] . ' x ' . view_hashtag_title($hashtag_var, true) . '">';
+            $hashtag_content .= '<td title="' . $x['handlename'] . ' x ' . view_hashtag_title($hashtag_var, true) . '">';
 
             if (count($discoveries)) {
 
@@ -92,7 +92,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
         $this_quantity = $this_quantity - 1;
 
 
-        $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">' . view_cover($x['handlecover'], true) . '</span><a href="' . view_memory(42903, 42902) . $x['handlestring'] . '" style="font-weight:bold;">' . $x['handlevalue'] . '</a>' . ($this_quantity > 0 ? ' +' . $this_quantity : '') . '</td>';
+        $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">' . view_cover($x['handlecover'], true) . '</span><a href="' . view_memory(42903, 42902) . $x['handlestring'] . '" style="font-weight:bold;">' . $x['handlename'] . '</a>' . ($this_quantity > 0 ? ' +' . $this_quantity : '') . '</td>';
 
 
         //HANDLES
@@ -145,7 +145,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
                 }
             }
 
-            $body_content .= '<td title="' . $x['handlevalue'] . ' x ' . $e['handlevalue'] . '" class="' . (handle_session(10939) && !in_array($e['handleid'], $this->config->item('handleids___37695')) ? 'editable chainhandlecreator_' . $e['handleid'] . '_' . $x['handleid'] : '') . '" hashtagid="0" handleid="' . $e['handleid'] . '" chainhandlecreator="' . $x['handleid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div></td>'; //<div class="showonhover">'.( !$message_clean ? $view_cover : '' ).'</div>
+            $body_content .= '<td title="' . $x['handlename'] . ' x ' . $e['handlename'] . '" class="' . (handle_session(10939) && !in_array($e['handleid'], $this->config->item('handleids___37695')) ? 'editable chainhandlecreator_' . $e['handleid'] . '_' . $x['handleid'] : '') . '" hashtagid="0" handleid="' . $e['handleid'] . '" chainhandlecreator="' . $x['handleid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div></td>'; //<div class="showonhover">'.( !$message_clean ? $view_cover : '' ).'</div>
 
             if (strlen($message_clean) > 0) {
 
@@ -178,7 +178,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
 
     foreach ($hashtag_settings['handle_column'] as $e) {
         array_push($table_sortable, '#thhandle_' . $e['handleid']);
-        echo '<th id="thhandle_' . $e['handleid'] . '" title="'.(isset($count_totals['e'][$e['handleid']]) ? number_format($count_totals['e'][$e['handleid']], 2) : '').'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['handlestring'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['handleid']]) ? view_number($count_totals['e'][$e['handleid']]) : '0') . '</a><span class="vertical_col">' . view_cover($e['handlecover'], '✔️', ' ') . $e['handlevalue'] . '</span></th>';
+        echo '<th id="thhandle_' . $e['handleid'] . '" title="'.(isset($count_totals['e'][$e['handleid']]) ? number_format($count_totals['e'][$e['handleid']], 2) : '').'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['handlestring'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['handleid']]) ? view_number($count_totals['e'][$e['handleid']]) : '0') . '</a><span class="vertical_col">' . view_cover($e['handlecover'], '✔️', ' ') . $e['handlename'] . '</span></th>';
     }
 
     foreach ($hashtag_settings['hashtag_column'] as $hashtag_var) {

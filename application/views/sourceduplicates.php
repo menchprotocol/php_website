@@ -36,7 +36,7 @@ if(isset($_GET['handlestring'])){
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from  ideachainhandles en1 where (select count(*) from  ideachainhandles en2 where en2.handlevalue = en1.handlevalue ORDER BY en1.handlevalue ASC');
+    $q = $this->db->query('select en1.* from  ideachainhandles en1 where (select count(*) from  ideachainhandles en2 where en2.handlename = en1.handlename ORDER BY en1.handlename ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -45,12 +45,12 @@ if(isset($_GET['handlestring'])){
 
         foreach($duplicates as $en) {
 
-            if ($prev_title != $en['handlevalue']) {
+            if ($prev_title != $en['handlename']) {
                 echo '<hr />';
-                $prev_title = $en['handlevalue'];
+                $prev_title = $en['handlename'];
             }
 
-            echo '<a href="'.view_memory(42903,42902) . $en['handlestring'] . '"><b>' . $en['handlevalue'] . '</b></a> @' . $en['handleid'] . '<br />';
+            echo '<a href="'.view_memory(42903,42902) . $en['handlestring'] . '"><b>' . $en['handlename'] . '</b></a> @' . $en['handleid'] . '<br />';
         }
 
     } else {
