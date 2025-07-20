@@ -1783,7 +1783,7 @@ function update_cover_mini(cover_code, target_css) {
 
 
 function display_media(mediaframe_id, uploader_id, hashtagid) {
-    $(".ui_hashtaghtmlread_" + hashtagid + " .media_display").each(function () {
+    $(".ui_hashtagread_" + hashtagid + " .media_display").each(function () {
         $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""></div>');
         cloudinary_prehandle_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('handlecover'), $(this).attr('handlevalue'), $(this).attr('handleid'));
     });
@@ -2068,7 +2068,7 @@ function hashtag_update() {
             console.log('START INSERTING');
             if (!current_hashtagid && created_hashtagid > 0 && focus_group > 0) {
 
-                $("#list-in-" + focus_group).append(data.return_hashtaghtmlread_full);
+                $("#list-in-" + focus_group).append(data.return_hashtagread_full);
 
                 chain_counter(focus_group, 1);
 
@@ -2079,7 +2079,7 @@ function hashtag_update() {
             } else {
 
                 //Update Cache otherwise:
-                $('.ui_hashtaghtmlread_' + modify_data['save_hashtagid']).html(data.return_hashtaghtmlread_chains);
+                $('.ui_hashtagread_' + modify_data['save_hashtagid']).html(data.return_hashtagread_chains);
 
             }
 

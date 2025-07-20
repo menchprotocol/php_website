@@ -27,7 +27,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12274,
-    ), array(), 0, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 21, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhandleoutput'], $chainhandleoutput);
         if(!$is_duplicate){
@@ -86,17 +86,16 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
 
 } else {
 
-    //Headline
+    //HASHTAGS
     $table .= '<tr>';
     $table .= '<td>&nbsp;</td>';
     $table .= '<td>&nbsp;</td>';
     $table .= '<td><div style="max-width:233px;">chainvalue</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">hashtagvalue</div></td>'; //TEXT
-    $table .= '<td><div style="max-width:233px;">hashtaghtmlwrite</div></td>'; //EDITOR
-    $table .= '<td><div style="max-width:233px;">hashtaghtmlread</div></td>'; //DISCOVERY
+    $table .= '<td><div style="max-width:233px;">hashtagwrite</div></td>'; //EDITOR
+    $table .= '<td><div style="max-width:233px;">hashtagread</div></td>'; //DISCOVERY
     $table .= '</tr>';
 
-    //HASHTAGS
     $chainhashtagoutput = array();
     $stats = array(
         'hashtags_all' => 0,
@@ -113,7 +112,7 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
-    ), array(), 0, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 21, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -149,22 +148,18 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
 
             $core_content = trim($is[0]['hashtagvalue']);
             //Fetch from Cache table:
-            $hashtagvalue = '#'.$is[0]['hashtaghashtag']."\n".$is[0]['hashtagvalue'].' ';
+            $chainvalue = hashtag_text2raw($is[0]['hashtaghashtag'], $is[0]['hashtagvalue']);
+            $hashtagvalue = $is[0]['hashtagvalue'].' ';
 
         } else {
 
-            $hashtagvalue = $x['chainvalue'].' ';
+            $chainvalue = hashtag_text2raw('MISSING!', $x['chainvalue']);
+            $hashtagvalue = $x['chainvalue'];
             $core_content = '';
-            foreach($this->Chains->read(array(
-                'chainhashtagoutput' => $x['chainhashtagoutput'],
-                'chainhandleinput' => 32337,
-                'LENGTH(chainvalue)>0' => null,
-            ), array('chainhandleinput')) as $x2) {
-                $hashtagvalue = '##'.$x2['chainvalue']."\n".$x['chainvalue'].' ';
-            }
 
         }
 
+        $chainvalue .= $x['chainvalue'];
 
 
         //Add Ideas:
@@ -288,8 +283,8 @@ if($focus_i['hashtaghashtag']!='Discotique2025'){
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($x['chainvalue']))).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($hashtagvalue))).'</div></td>'; //TEXT
-        $table .= '<td><div style="max-width:233px;">hashtaghtmlwrite</div></td>'; //EDITOR
-        $table .= '<td><div style="max-width:233px;">hashtaghtmlread</div></td>'; //DISCOVERY
+        $table .= '<td><div style="max-width:233px;">hashtagwrite</div></td>'; //EDITOR
+        $table .= '<td><div style="max-width:233px;">hashtagread</div></td>'; //DISCOVERY
         $table .= '</tr>';
     }
 

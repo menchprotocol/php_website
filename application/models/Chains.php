@@ -1313,7 +1313,7 @@ class Chains extends CIdea_cache
     {
 
         unset($i['hashtagexternal']);
-        unset($i['hashtaghtmlread']);
+        unset($i['hashtagread']);
         unset($i['chainhandletype']);
         unset($i['chainhandleinput']);
         unset($i['chainhandleoutput']);
@@ -1446,7 +1446,7 @@ class Chains extends CIdea_cache
         if(isset($_GET['skip_config'])) {
             unset($i['hashtagexternal']);
             unset($i['hashtagkey']);
-            unset($i['hashtaghtmlread']);
+            unset($i['hashtagread']);
             unset($i['hashtagtype']);
             if(isset($i['chainid'])){
                 unset($i['chainhandledomain']);
