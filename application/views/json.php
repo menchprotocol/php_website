@@ -62,7 +62,17 @@ if($focus_i['hashtagterm']!='Discotique2025'){
         if(count($es_cache)){
             $hashtagtext = '@'.$es_cache[0]['handleterm']."\n".$es_cache[0]['handlename']."\n".$es_cache[0]['handlecover'];
         } else {
-            $hashtagtext = '@???'.$x['chainvalue'];
+            $hashtagtext = '@???'.$x['chainvalue']."\n".$x['chainvalue']."\nfar fa-handle";
+        }
+
+        //Append Description if any
+        foreach ($this->Chains->read(array(
+            'LENGTH(chainvalue) > 0' => null,
+            'chainhandleinput IN (11035,42628)' => null,
+            'chainhandleoutput' => $x['chainhandleoutput'],
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        ), array(), 0, 0) as $social_chain) {
+            $hashtagtext .= "\n".$social_chain['chainvalue'];
         }
 
         $delete = $x['chainvoid']>0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
