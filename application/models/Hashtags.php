@@ -51,7 +51,7 @@ class Hashtags extends CIdea_cache
         //$add_fields['hashtagvalue'] = '#'.$add_fields['hashtaghashtag']."\n".$add_fields['hashtagvalue'];
         $add_fields['hashtagread'] = hashtagread($add_fields['hashtagid'], $add_fields['hashtagvalue']);
         if (!count($this->Hashtags->read(array('hashtagid' => $add_fields['hashtagid'])))) {
-            $this->db->insert('cachehashtags', $add_fields);
+            $this->db->insert('ideachainhashtags', $add_fields);
         }
 
 
@@ -104,7 +104,7 @@ class Hashtags extends CIdea_cache
 
         //The basic fetcher for Hashtags
         $this->db->select($select);
-        $this->db->from('cachehashtags');
+        $this->db->from('ideachainhashtags');
 
         foreach ($query_filters as $key => $value) {
             $this->db->where($key, $value);
@@ -200,7 +200,7 @@ class Hashtags extends CIdea_cache
 
             //Update:
             $this->db->where('hashtagid', $chainid);
-            $this->db->update('cachehashtags', $update_columns);
+            $this->db->update('ideachainhashtags', $update_columns);
             $affected_rows = $this->db->affected_rows();
 
             if ($must_sync_found) {
@@ -259,7 +259,7 @@ class Hashtags extends CIdea_cache
 
         if ($x_adjusted) {
             //Remove from Table:
-            $this->db->query("DELETE FROM cachehashtags WHERE hashtagid = " . $hashtagid . ";");
+            $this->db->query("DELETE FROM ideachainhashtags WHERE hashtagid = " . $hashtagid . ";");
 
             //Update Search Index?
             update_algolia(12273, $hashtagid);

@@ -187,13 +187,13 @@ class Chains extends CIdea_cache
         $hashtag_join = false;
         if (in_array('chainhashtaginput', $joins_objects)) {
             $hashtag_join = true;
-            $this->db->join('cachehashtags', 'chainhashtaginput=hashtagid', 'left');
+            $this->db->join('ideachainhashtags', 'chainhashtaginput=hashtagid', 'left');
         } elseif (in_array('chainhashtagoutput', $joins_objects)) {
             $hashtag_join = true;
-            $this->db->join('cachehashtags', 'chainhashtagoutput=hashtagid', 'left');
+            $this->db->join('ideachainhashtags', 'chainhashtagoutput=hashtagid', 'left');
         } elseif (in_array('chainhashtagid', $joins_objects)) {
             $hashtag_join = true;
-            $this->db->join('cachehashtags', 'chainid=hashtagid', 'left');
+            $this->db->join('ideachainhashtags', 'chainid=hashtagid', 'left');
         }
 
         //PLAYER JOIN?

@@ -4,7 +4,7 @@
 
 
 //Do a query to detect Hashtags with the exact same title:
-$q = $this->db->query('select in1.* from cachehashtags in1 where (select count(*) from cachehashtags in2 where in2.hashtagvalue = in1.hashtagvalue ORDER BY in1.hashtagvalue ASC');
+$q = $this->db->query('select in1.* from ideachainhashtags in1 where (select count(*) from ideachainhashtags in2 where in2.hashtagvalue = in1.hashtagvalue ORDER BY in1.hashtagvalue ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
