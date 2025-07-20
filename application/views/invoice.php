@@ -119,7 +119,7 @@ foreach($this->Hashtags->read(array(
                 'invoicer_website' => 'https://'.get_domain('m__message', $handle_session['handleid']),
                 'invoicer_email' => website_setting(30882),
 
-                'note' => $i['hashtagvalue'],
+                'note' => $i['hashtagtext'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $min_pay>0 && $_POST['total_price'] >= $min_pay ? $min_pay."" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['chainvalue'])>time() ? strtotime($invoice_due_dates[0]['chainvalue']) : time() )),

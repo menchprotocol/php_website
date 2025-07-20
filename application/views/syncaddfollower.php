@@ -21,7 +21,7 @@ foreach ($this->Chains->read(array(
             'chainhashtagoutput' => $addition_sync['chainhashtagoutput'],
             'chainhandlecreator' => $dicovered['chainhandlecreator'],
         ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-            $set_chainvalue = $response['hashtagvalue'];
+            $set_chainvalue = $response['hashtagtext'];
         }
 
         //lets append this Handle:

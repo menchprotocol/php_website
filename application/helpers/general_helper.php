@@ -274,12 +274,12 @@ function object_to_array($obj)
 function hashtag_redirect_url($i)
 {
     $CI =& get_instance();
-    if (strlen($i['hashtagvalue']) && count($CI->Chains->read(array(
+    if (strlen($i['hashtagtext']) && count($CI->Chains->read(array(
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
             'chainhashtagoutput' => $i['hashtagid'],
             'chainhandleinput' => 43871, //Redirect URL
         )))) {
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['hashtagvalue'], $match);
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['hashtagtext'], $match);
         foreach ($match[0] as $url) {
             if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
@@ -408,7 +408,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
     echo(isset($i['user_hashtag_discovered']['chainkey']) && intval($i['user_hashtag_discovered']['chainkey']) > 1 ? $i['user_hashtag_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['hashtagvalue']) && strlen($i['user_written_response']['hashtagvalue']) ? ' ' . $i['user_written_response']['hashtagvalue'] : '');
+    echo(isset($i['user_written_response']['hashtagtext']) && strlen($i['user_written_response']['hashtagtext']) ? ' ' . $i['user_written_response']['hashtagtext'] : '');
 
 
     echo '<span class="float_right inner_items '.( $open_by_default ? '' : 'hidden' ).' frame_id_' . $i['hashtagid'] . '">';
@@ -717,7 +717,7 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
                 'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
                 'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
                 'chainhashtagoutput !=' => $i['hashtagid'],
-            ), array('chainhashtagoutput'), 0, 0, array('hashtagvalue' => 'ASC')) as $chain_i) {
+            ), array('chainhashtagoutput'), 0, 0, array('hashtagtext' => 'ASC')) as $chain_i) {
                 array_push($hashtag_column, $chain_i);
             }
         }
@@ -2423,7 +2423,7 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__handle'] = $s['hashtagterm'];
                 $export_row['s__url'] = view_memory(42903, 33286) . $s['hashtagterm']; //Default to hashtag, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['hashtagvalue'];
+                $export_row['s__title'] = $s['hashtagtext'];
                 $export_row['s__cache'] = $s['hashtagdiscover'];
                 $export_row['s__weight'] = intval($s['hashtagweight']);
 
@@ -2436,13 +2436,13 @@ function update_algolia($focus__node = null, $s__id = 0)
                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___42345')) . ')' => null, //Active Sequence
                     'chainhashtaginput' => $s['hashtagid'],
                 ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['hashtagvalue'] . ' ';
+                    $export_row['s__keywords'] .= $i['hashtagtext'] . ' ';
                 }
                 foreach ($CI->Chains->read(array(
                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___42345')) . ')' => null, //Active Sequence
                     'chainhashtagoutput' => $s['hashtagid'],
                 ), array('chainhashtaginput'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['hashtagvalue'] . ' ';
+                    $export_row['s__keywords'] .= $i['hashtagtext'] . ' ';
                 }
 
                 //Hashtag Handles Keywords
@@ -3701,12 +3701,12 @@ function view_hash($string)
 function view_hashtag_title($i, $string_only = false)
 {
 
-    if (!isset($i['hashtagvalue'])) {
+    if (!isset($i['hashtagtext'])) {
         return null;
     }
 
     //Break down by lines:
-    foreach (explode("\n", $i['hashtagvalue']) as $line) {
+    foreach (explode("\n", $i['hashtagtext']) as $line) {
         if (strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)) {
             return ($string_only ? $line : '<span class="main__title">' . $line . '</span>');
         }
@@ -3788,9 +3788,9 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
         $i['hashtagdiscover'] . view_hashtag_media($i) . ($focus__node || !substr_count($i['hashtagdiscover'], 'show_more_line') ? view_list_handle($i, !$replace_chains) : '');
 }
 
-function hashtag_text2raw($hashtagterm, $hashtagvalue){
+function hashtag_text2raw($hashtagterm, $hashtagtext){
 
-    foreach (explode("\n", $hashtagvalue) as $line_index => $line) {
+    foreach (explode("\n", $hashtagtext) as $line_index => $line) {
 
         if (strlen($line)) {
             $line_count++;
@@ -4732,8 +4732,8 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Raw Data:
-    $ui .= '<div class="ui_hashtagvalue_' . $i['hashtagid'] . '
-     hidden">' . $i['hashtagvalue'] . '</div>';
+    $ui .= '<div class="ui_hashtagtext_' . $i['hashtagid'] . '
+     hidden">' . $i['hashtagtext'] . '</div>';
 
 
     $ui .= '</div>';
@@ -4928,7 +4928,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC'));
 
             $input_attributes = '';
-            $previous_response = ($chainhandlecreator && isset($handle_private_replies[0]['hashtagvalue']) ? $handle_private_replies[0]['hashtagvalue'] : '');
+            $previous_response = ($chainhandlecreator && isset($handle_private_replies[0]['hashtagtext']) ? $handle_private_replies[0]['hashtagtext'] : '');
 
             if (in_array($i['hashtagtype'], $CI->config->item('handleids___43002'))) {
 

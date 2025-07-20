@@ -60,7 +60,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
                     'chainhashtagoutput' => $hashtag_var['hashtagid'],
                     'chainhandlecreator' => $x['handleid'],
                 ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-                    $set_chainvalue = $response['hashtagvalue'];
+                    $set_chainvalue = $response['hashtagtext'];
                 }
 
                 if ($set_chainvalue) {

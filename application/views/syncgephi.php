@@ -28,7 +28,7 @@ foreach ($is as $in) {
     //Add Hashtag node:
     $this->db->insert('gephinodes', array(
         'id' => $id_prefix[12273] . $in['hashtagid'],
-        'label' => $in['hashtagvalue'],
+        'label' => $in['hashtagtext'],
         'size' => 1,
         'node_type' => 1, //Hashtag
     ));

@@ -11,7 +11,7 @@ class Hashtags extends CIdea_cache
     function create($add_fields, $chainhandlecreator = 14068 /* GUEST */)
     {
 
-        if(!isset($add_fields['hashtagvalue'])){
+        if(!isset($add_fields['hashtagtext'])){
             return false;
         }
 
@@ -21,7 +21,7 @@ class Hashtags extends CIdea_cache
             'chainhandlecreator' => $chainhandlecreator,
             'chainhandleinput' => $chainhandlecreator,
             'chainhashtagoutput' => $nextchainid,
-            'chainvalue' => $add_fields['hashtagvalue'],
+            'chainvalue' => $add_fields['hashtagtext'],
         );
 
         if (isset($add_fields['hashtagid']) && !count($this->Chains->read(array('chainid' => $add_fields['hashtagid'])))) {
@@ -48,8 +48,8 @@ class Hashtags extends CIdea_cache
 
         //Save Hashtag
         $add_fields['hashtagid'] = $new_x['chainid'];
-        //$add_fields['hashtagvalue'] = '#'.$add_fields['hashtagterm']."\n".$add_fields['hashtagvalue'];
-        $add_fields['hashtagdiscover'] = hashtagdiscover($add_fields['hashtagid'], $add_fields['hashtagvalue']);
+        //$add_fields['hashtagtext'] = '#'.$add_fields['hashtagterm']."\n".$add_fields['hashtagtext'];
+        $add_fields['hashtagdiscover'] = hashtagdiscover($add_fields['hashtagid'], $add_fields['hashtagtext']);
         if (!count($this->Hashtags->read(array('hashtagid' => $add_fields['hashtagid'])))) {
             $this->db->insert('ideachainhashtags', $add_fields);
         }
@@ -160,7 +160,7 @@ class Hashtags extends CIdea_cache
             $must_sync_found = false;
             $skip_sync_ledger = array('hashtagdiscover', 'hashtagexternal', 'hashtagweight', 'hashtagtype');
             $must_sync_ledger = array(
-                'hashtagvalue' => 4736, //Hashtag Text
+                'hashtagtext' => 4736, //Hashtag Text
                 'hashtagterm' => 32337,
             );
 
@@ -189,9 +189,9 @@ class Hashtags extends CIdea_cache
                 }
             }
 
-            if (isset($update_columns['hashtagvalue']) && !isset($update_columns['hashtagdiscover'])) {
+            if (isset($update_columns['hashtagtext']) && !isset($update_columns['hashtagdiscover'])) {
                 //Update Hashtag Text:
-                $update_columns['hashtagdiscover'] = hashtagdiscover($chainid, $update_columns['hashtagvalue']);
+                $update_columns['hashtagdiscover'] = hashtagdiscover($chainid, $update_columns['hashtagtext']);
             }
 
             if (!count($update_columns)) {
@@ -556,7 +556,7 @@ class Hashtags extends CIdea_cache
         }
 
         $hashtag_new = $this->Hashtags->create(array(
-            'hashtagvalue' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['hashtagvalue']),
+            'hashtagtext' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['hashtagtext']),
             'hashtagtype' => $this_i[0]['hashtagtype'],
         ), $chainhandlecreator);
 

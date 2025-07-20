@@ -1840,7 +1840,7 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     }
 
     if (insert_message.length) {
-        $("#modal31911 .save_hashtagvalue").val(insert_message);
+        $("#modal31911 .save_hashtagtext").val(insert_message);
     }
 
     //Hashtag Type:
@@ -1850,13 +1850,13 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
 
     setTimeout(function () {
         //Adjust sizes:
-        set_autosize($('#modal31911 .save_hashtagvalue'));
+        set_autosize($('#modal31911 .save_hashtagtext'));
         set_autosize($('#modal31911 .save_chainvalue'));
     }, 233);
 
     setTimeout(function () {
         //Focus on writing a message:
-        $('#modal31911 .save_hashtagvalue').focus();
+        $('#modal31911 .save_hashtagtext').focus();
     }, 611);
 
 }
@@ -1998,7 +1998,7 @@ function hashtag_update() {
         next_hashtagid: $('#modal31911 .next_hashtagid').val(),
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
-        save_hashtagvalue: $('#modal31911 .save_hashtagvalue').val().trim(),
+        save_hashtagtext: $('#modal31911 .save_hashtagtext').val().trim(),
         save_hashtagterm: $('#modal31911 .save_hashtagterm').val().trim(),
         save_hashtagtype: $('.dropd_form_4737').attr('selected_value').trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2062,7 +2062,7 @@ function hashtag_update() {
             $('#modal31911').modal('hide');
 
             //Update Hashtag Message:
-            $('.ui_hashtagvalue_' + modify_data['save_hashtagid']).text(modify_data['save_hashtagvalue']);
+            $('.ui_hashtagtext_' + modify_data['save_hashtagid']).text(modify_data['save_hashtagtext']);
 
             //Insert hashtag into the page if new:
             console.log('START INSERTING');

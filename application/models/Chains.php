@@ -1022,10 +1022,10 @@ class Chains extends CIdea_cache
                 if (count($handle_private_replies)) {
 
                     //Update existing response if different:
-                    if ($handle_submitted_data['hashtag_createtext'] != $handle_private_replies[0]['hashtagvalue']) {
+                    if ($handle_submitted_data['hashtag_createtext'] != $handle_private_replies[0]['hashtagtext']) {
 
                         $this->Hashtags->update($handle_private_replies[0]['hashtagid'], array(
-                            'hashtagvalue' => $handle_submitted_data['hashtag_createtext'],
+                            'hashtagtext' => $handle_submitted_data['hashtag_createtext'],
                         ), $chainhandlecreator);
 
                     }
@@ -1036,7 +1036,7 @@ class Chains extends CIdea_cache
 
                     //Create a new hashtag:
                     $hashtag_new = $this->Hashtags->create(array(
-                        'hashtagvalue' => $handle_submitted_data['hashtag_createtext'],
+                        'hashtagtext' => $handle_submitted_data['hashtag_createtext'],
                         'hashtagtype' => 6677,
                     ), $chainhandlecreator);
 
@@ -1148,7 +1148,7 @@ class Chains extends CIdea_cache
                 if ($clone_i['chainhandletype'] == 32247) {
 
                     //Discovery Clone
-                    $new_title = $es_creator[0]['handlename'] . ' ' . $clone_i['hashtagvalue'];
+                    $new_title = $es_creator[0]['handlename'] . ' ' . $clone_i['hashtagtext'];
                     $result = $this->Hashtags->copy($clone_i['hashtagid'], 0, $x_data['chainhandlecreator'], null, $new_title);
                     if ($result['status']) {
 

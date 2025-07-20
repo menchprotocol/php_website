@@ -140,7 +140,7 @@ if(!$basic_header_footer){
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
         const picker_i = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
             //Insert into hashtag text box:
-            insertText($(".save_hashtagvalue"), res.native);
+            insertText($(".save_hashtagtext"), res.native);
             //We keep it open!
         }});
         const picker_e = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
@@ -157,7 +157,7 @@ if(!$basic_header_footer){
 
         $(".add_hashtag_44169").click(function (e) {
             console.log('added2');
-            insertText($(".save_hashtagvalue"), '#');
+            insertText($(".save_hashtagtext"), '#');
         });
 
     </script>
@@ -764,7 +764,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
 
                         <!-- Hashtag Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_hashtagvalue" placeholder="<?= ( strlen($handles___6201[4736]['m__message']) ? $handles___6201[4736]['m__message'] : $handles___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_hashtagtext" placeholder="<?= ( strlen($handles___6201[4736]['m__message']) ? $handles___6201[4736]['m__message'] : $handles___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="media_outer_frame hideIfEmpty" style="margin-left: 40px;">
                                 <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
                                 <div class="doclear">&nbsp;</div>

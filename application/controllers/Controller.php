@@ -536,7 +536,7 @@ class Controller extends CI_Controller
 
             //Create a new hashtag:
             $hashtag_new = $this->Hashtags->create(array(
-                'hashtagvalue' => null,
+                'hashtagtext' => null,
                 'hashtagtype' => $_POST['current_hashtagtype'],
             ), $handle_session['handleid']);
 
@@ -854,7 +854,7 @@ class Controller extends CI_Controller
                 'message' => blocked_reasoning(),
             ));
 
-        } elseif (!isset($_POST['save_hashtagvalue'])) {
+        } elseif (!isset($_POST['save_hashtagtext'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -901,7 +901,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid hashtag Type',
             ));
-        } elseif (strlen($_POST['save_hashtagvalue']) > view_memory(6404, 4736)) {
+        } elseif (strlen($_POST['save_hashtagtext']) > view_memory(6404, 4736)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Hashtag message must be less than ' . view_memory(6404, 4736) . ' characters.',
@@ -923,14 +923,14 @@ class Controller extends CI_Controller
         $focus__node = ($_POST['focus__node'] == 12273 && $_POST['focus__id'] == $_POST['save_hashtagid']);
 
         //Might be new if pre-drafting:
-        if (!strlen($is[0]['hashtagvalue'])) {
+        if (!strlen($is[0]['hashtagtext'])) {
 
             //See if references only:
-            if (strlen($_POST['save_hashtagvalue']) && !substr_count($_POST['save_hashtagvalue'], "\n") && (intval($_POST['next_hashtagid']))) {
+            if (strlen($_POST['save_hashtagtext']) && !substr_count($_POST['save_hashtagtext'], "\n") && (intval($_POST['next_hashtagid']))) {
 
                 $all_hashtags = true;
                 $hashtag_references = array();
-                foreach (explode(' ', trim($_POST['save_hashtagvalue'])) as $word) {
+                foreach (explode(' ', trim($_POST['save_hashtagtext'])) as $word) {
                     $found_hashtag = false;
                     if (substr($word, 0, 1) == '#') {
                         $valid_hashtag = false;
@@ -994,7 +994,7 @@ class Controller extends CI_Controller
         }
 
         //Validate Hashtag Message:
-        if (!strlen(trim($_POST['save_hashtagvalue']))) {
+        if (!strlen(trim($_POST['save_hashtagtext']))) {
             //Since we do not have media, we must have a message:
             return view_json(array(
                 'status' => 0,
@@ -1109,7 +1109,7 @@ class Controller extends CI_Controller
             ), array('chainhashtagoutput')) as $ref) {
 
                 $this->Hashtags->update($ref['hashtagid'], array(
-                    'hashtagvalue' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagvalue']),
+                    'hashtagtext' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagtext']),
                 ), $handle_session['handleid']);
 
             }
@@ -1151,7 +1151,7 @@ class Controller extends CI_Controller
 
         //Update Text:
         $text_updated = $this->Hashtags->update($is[0]['hashtagid'], array(
-            'hashtagvalue' => trim($_POST['save_hashtagvalue']),
+            'hashtagtext' => trim($_POST['save_hashtagtext']),
         ), $handle_session['handleid']);
 
 
@@ -1166,7 +1166,7 @@ class Controller extends CI_Controller
                 'return_hashtagdiscover_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node, $focus__node),
                 'return_hashtagdiscover_full' => hashtag_view($_POST['focus_group'], $new_i),
                 'save_hashtagid' => $is[0]['hashtagid'],
-                'save_hashtagvalue' => trim($_POST['save_hashtagvalue']),
+                'save_hashtagtext' => trim($_POST['save_hashtagtext']),
                 'text_updated' => $text_updated,
                 'redirect_hashtag' => (isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null),
                 'message' => 'Success',
@@ -1697,7 +1697,7 @@ class Controller extends CI_Controller
         /*
          *
          * Either creates a HASHTAG Chain between focus_id & chain_hashtagid
-         * OR will create a new hashtag with outcome hashtagvalue and then Chain it
+         * OR will create a new hashtag with outcome hashtagtext and then Chain it
          * to focus_id (In this case chain_hashtagid=0)
          *
          * */
@@ -1721,10 +1721,10 @@ class Controller extends CI_Controller
             ));
         }
 
-        $validate_hashtagvalue = validate_hashtagvalue($_POST['hashtag_createtext']);
-        if (!$validate_hashtagvalue['status']) {
+        $validate_hashtagtext = validate_hashtagtext($_POST['hashtag_createtext']);
+        if (!$validate_hashtagtext['status']) {
             //We had an error, return it:
-            return view_json($validate_hashtagvalue);
+            return view_json($validate_hashtagtext);
         }
 
 
@@ -2318,7 +2318,7 @@ class Controller extends CI_Controller
                 'chainhandletype' => 31835, //Handle Mention
             ), array('chainhashtagoutput')) as $ref) {
                 $this->Hashtags->update($ref['hashtagid'], array(
-                    'hashtagvalue' => str_replace('@' . $es[0]['handleterm'], '@' . $new_handle_string, $ref['hashtagvalue']),
+                    'hashtagtext' => str_replace('@' . $es[0]['handleterm'], '@' . $new_handle_string, $ref['hashtagtext']),
                 ), $handle_session['handleid']);
             }
             $es[0]['handleterm'] = $new_handle_string;
@@ -3051,7 +3051,7 @@ class Controller extends CI_Controller
             foreach ($this->Chains->read(array(
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
                 'chainhashtaginput' => $_POST['focus__id'],
-            ), array('chainhashtagoutput'), 0, 0, array('hashtagvalue' => 'ASC')) as $x) {
+            ), array('chainhashtagoutput'), 0, 0, array('hashtagtext' => 'ASC')) as $x) {
                 $order++;
                 $this->Chains->update($x['chainid'], array(
                     'chainkey' => $order,
