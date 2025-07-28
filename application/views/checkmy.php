@@ -9,8 +9,8 @@ echo '<h2>'.$handle_session['handlename'].' '.$focus_e['handlename'].'</h2>';
 $was_found = false;
 foreach($this->Chains->read(array(
     'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    'chainhandleinput' => $focus_e['handleid'],
-), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC')) as $handle_output){
+    'chainhandleoutput' => $focus_e['handleid'],
+), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $handle_output){
 
     echo '<div>$handle_output: '.$handle_output['handlename'].( strlen($handle_output['chainvalue'])>0 ? ': <b class="main__title">'.$handle_output['chainvalue'].'</b>' : '' ).'</div>';
 
