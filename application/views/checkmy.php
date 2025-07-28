@@ -2,14 +2,14 @@
 
 //We must have $handle_session['handleid']
 
-echo '<h1>'.$handle_session['handlename'].' '.$focus_e['handlename'].'</h1>';
+echo '<h2>'.$handle_session['handlename'].' '.$focus_e['handlename'].'</h2>';
 
 
 //Check this users @handle:
 $was_found = false;
 foreach($this->Chains->read(array(
     'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    'chainhandleinput' => $handle_session['handleid'],
+    'chainhandleinput' => $handle_output['handleid'],
 ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC')) as $handle_output){
 
     echo '<div>$handle_output: '.$handle_output['handlename'].( strlen($handle_output['chainvalue'])>0 ? ': <b class="main__title">'.$handle_output['chainvalue'].'</b>' : '' ).'</div>';
