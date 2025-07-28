@@ -11,12 +11,12 @@ foreach($this->Chains->read(array(
     'chainhandleinput' => $focus_e['handleid'],
 ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC')) as $handle_output){
 
-    echo '<div>$handle_output: '.$handle_output['handlename'].( strlen($handle_output['chainvalue'])>0 ? ': <b class="main__title">'.$handle_output['chainvalue'].'</b>' : '' ).'</div>';
+    //echo '<div>$handle_output: '.$handle_output['handlename'].( strlen($handle_output['chainvalue'])>0 ? ': <b class="main__title">'.$handle_output['chainvalue'].'</b>' : '' ).'</div>';
 
     foreach($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-        'chainhandleinput' => $handle_session['handleid'],
-        'chainhandleoutput' => $handle_output['handleid'],
+        'chainhandleoutput' => $handle_session['handleid'],
+        'chainhandleinput' => $handle_output['handleid'],
     )) as $handle_data){
 
         $was_found = true;
