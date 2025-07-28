@@ -10,7 +10,7 @@ $was_found = false;
 foreach($this->Chains->read(array(
     'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
     'chainhandleinput' => $handle_session['handleid'],
-), array('chainhandleoutput')) as $handle_output){
+), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC')) as $handle_output){
     foreach($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
         'chainhandleinput' => $handle_output['handleid'],
