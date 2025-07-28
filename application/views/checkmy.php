@@ -16,8 +16,8 @@ foreach($this->Chains->read(array(
 
     foreach($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-        'chainhandleinput' => $handle_output['handleid'],
-        'chainhandleoutput' => $handle_session['handleid'],
+        'chainhandleinput' => $handle_session['handleid'],
+        'chainhandleoutput' => $handle_output['handleid'],
     )) as $handle_data){
         $was_found = true;
         echo '<div>$handle_data: '.$handle_data['handlename'].( strlen($handle_data['chainvalue'])>0 ? ': <b class="main__title">'.$handle_data['chainvalue'].'</b>' : '' ).'</div>';
