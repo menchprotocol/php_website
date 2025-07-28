@@ -33,7 +33,7 @@ if(!$was_found){
         'chainhandleoutput' => $focus_e['handleid'],
         'LENGTH(chainvalue) > 0' => null,
     )) as $handle_info){
-        echo '<br /><div>'.preg_replace('/(http[s]{0,1}\:\/\/\S{4,})\s{0,}/ims', '<a href="$1" target="_blank">$1</a> ', $handle_info['chainvalue']).'</div>';
+        echo '<br /><div>'.preg_replace('/(http[s]{0,1}\:\/\/\S{4,})\s{0,}/ims', '<a href="$1" target="_blank" style="color:#0000FF">$1</a> ', $handle_info['chainvalue']).'</div>';
     }
 
 
