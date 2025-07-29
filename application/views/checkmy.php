@@ -4,7 +4,7 @@
 echo '<h2>'.$focus_e['handlename'].' for '.$handle_session['handlename'].'</h2>';
 
 
-echo '<table class="table table-sm maxout center" style="width: 100%;">';
+echo '<table class="table table-sm">';
 
 //Check this users @handle:
 $was_found = false;
