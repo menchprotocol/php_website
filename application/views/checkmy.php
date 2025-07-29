@@ -4,7 +4,7 @@
 echo '<h2>'.$focus_e['handlename'].' for '.$handle_session['handlename'].'</h2>';
 
 
-echo '<table class="table table-striped">';
+echo '<table class="table table-striped" style="border: 1px solid #000;">';
 
 //Check this users @handle:
 $was_found = false;
