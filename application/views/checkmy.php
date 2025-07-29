@@ -1,7 +1,7 @@
 <?php
 
 //We must have $handle_session['handleid']
-echo '<h2>'.$focus_e['handlename'].' for '.$handle_session['handlename'].'</h2>';
+echo '<h1>'.$focus_e['handlename'].' for '.$handle_session['handlename'].'</h1>';
 
 //Check this users @handle:
 foreach($this->Chains->read(array(
@@ -10,7 +10,7 @@ foreach($this->Chains->read(array(
     'chainhandleoutput' => $focus_e['handleid'],
     'LENGTH(chainvalue) > 0' => null,
 )) as $handle_info){
-    echo '<br /><div>'.preg_replace('/(http[s]{0,1}\:\/\/\S{4,})\s{0,}/ims', '<a href="$1" target="_blank" style="color:#0000FF">$1</a> ', nl2br($handle_info['chainvalue'])).'</div>';
+    echo '<div>'.preg_replace('/(http[s]{0,1}\:\/\/\S{4,})\s{0,}/ims', '<a href="$1" target="_blank" style="color:#0000FF">$1</a> ', nl2br($handle_info['chainvalue'])).'</div>';
 }
 
 
