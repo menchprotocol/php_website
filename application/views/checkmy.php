@@ -19,7 +19,7 @@ foreach($this->Chains->read(array(
     ), array('chainhandleinput')) as $handle_data){
 
         $was_found = true;
-        echo '<tr><td>'.view_cover($handle_data['handlecover']).'</td><td>'.$handle_data['chainvalue'].'</td><td>'.$handle_data['handlename'].'</td></tr>';
+        echo '<tr><td>'.$handle_data['handlename'].':</td><td>'.$handle_data['chainvalue'].'</td><td>'.view_cover($handle_data['handlecover']).'</td></tr>';
     }
 }
 echo '</table>';
