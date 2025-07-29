@@ -4,6 +4,8 @@
 echo '<h2>'.$focus_e['handlename'].' for '.$handle_session['handlename'].'</h2>';
 
 
+echo '<table class="table table-sm maxout center" style="width: 100%;">';
+
 //Check this users @handle:
 $was_found = false;
 foreach($this->Chains->read(array(
@@ -17,9 +19,10 @@ foreach($this->Chains->read(array(
     ), array('chainhandleinput')) as $handle_data){
 
         $was_found = true;
-        echo '<div>'.$handle_data['handlename'].( strlen($handle_data['chainvalue'])>0 ? ': <b class="main__title">'.$handle_data['chainvalue'].'</b>' : '' ).'</div>';
+        echo '<tr><td>'.view_cover($handle_data['handlecover']).'</td><td>'.$handle_data['chainvalue'].'</td><td>'.$handle_data['handlename'].'</td></tr>';
     }
 }
+echo '</table>';
 
 
 if(!$was_found){
@@ -33,7 +36,7 @@ if(!$was_found){
         'chainhandleoutput' => $focus_e['handleid'],
         'LENGTH(chainvalue) > 0' => null,
     )) as $handle_info){
-        echo '<br /><div>'.preg_replace('/(http[s]{0,1}\:\/\/\S{4,})\s{0,}/ims', '<a href="$1" target="_blank" style="color:#0000FF">$1</a> ', $handle_info['chainvalue']).'</div>';
+        echo '<br /><div>'.preg_replace('/(http[s]{0,1}\:\/\/\S{4,})\s{0,}/ims', '<a href="$1" target="_blank" style="color:#0000FF">$1</a> ', nl2br($handle_info['chainvalue'])).'</div>';
     }
 
 
