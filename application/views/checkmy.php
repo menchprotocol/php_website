@@ -1,7 +1,7 @@
 <?php
 
 //We must have $handle_session['handleid']
-echo '<h2>'.$focus_e['handlename'].' for '.$handle_session['handlename'].'</h2>';
+echo '<h2>My '.$focus_e['handlename'].'</h2>';
 
 echo '<table class="table table-striped" style="border: 1px solid #000;">';
 
