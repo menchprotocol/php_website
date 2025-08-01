@@ -1317,8 +1317,8 @@ class Controller extends CI_Controller
         if (intval($_POST['next_hashtagid']) > 0) {
             $this->Chains->create(array(
                 'chainhandlecreator' => $handle_session['handleid'],
-                'chainhashtagoutput' => $_POST['next_hashtagid'],
-                'chainhashtaginput' => $is[0]['hashtagid'],
+                'chainhashtaginput' => $_POST['next_hashtagid'],
+                'chainhashtagoutput' => $is[0]['hashtagid'],
                 'chainhandletype' => 4228,
             ));
         }

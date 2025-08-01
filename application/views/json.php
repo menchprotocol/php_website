@@ -10,7 +10,27 @@ $count = 0;
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
-if($focus_i['hashtagterm']!='Discotique2025'){
+if($focus_i['hashtagterm']!='Discotique2024') {
+
+    //Update
+    foreach($this->Chains->read(array(
+        'chainvoid >=' => 0, //Any Chain
+        'chainhandletype' => 12273,
+    ), array(''), 0, 0, array('chainid' => 'ASC')) as $x){
+
+    }
+
+    foreach ($this->Hashtags->read(array(
+        'LOWER(hashtagterm)' => strtolower(view_valid_handle_hashtag($action_command1)),
+    )) as $i) {
+
+    }
+    $this->Hashtags->update($ref['hashtagid'], array(
+        'hashtagtext' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagtext']),
+        'hashtagupdated' => 1,
+    ), $handle_session['handleid']);
+
+} elseif($focus_i['hashtagterm']!='Discotique2025'){
 
     //HANDLE
     $chainhandleoutput = array();
