@@ -875,7 +875,7 @@ class Controller extends CI_Controller
                 'message' => 'Missing hashtag',
             ));
 
-        } elseif (!isset($_POST['save_hashtagid']) || !intval($_POST['save_hashtagid'])) {
+        } elseif (!isset($_POST['save_hashtagid'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -909,21 +909,28 @@ class Controller extends CI_Controller
         }
 
 
-        $is = $this->Hashtags->read(array(
-            'hashtagid' => $_POST['save_hashtagid'],
-        ));
-        if (!count($is)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Hashtag Not Valid',
+        if($_POST['save_hashtagid'] > 0){
+
+            $focus__node = ($_POST['focus__node'] == 12273 && $_POST['focus__id'] == $_POST['save_hashtagid']);
+            $is = $this->Hashtags->read(array(
+                'hashtagid' => $_POST['save_hashtagid'],
             ));
-        }
+            if (!count($is)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Hashtag Not Valid',
+                ));
+            }
 
+            //Update new hashtag fields:
+            $this->Hashtags->update($is[0]['hashtagid'], array(
+                'hashtagtype' => $_POST['save_hashtagtype'],
+            ), $handle_session['handleid']);
+            $is[0]['hashtagtype'] = trim($_POST['save_hashtagtype']);
 
-        $focus__node = ($_POST['focus__node'] == 12273 && $_POST['focus__id'] == $_POST['save_hashtagid']);
+        } else {
 
-        //Might be new if pre-drafting:
-        if (!strlen($is[0]['hashtagtext'])) {
+            $focus__node = false;
 
             //See if references only:
             if (strlen($_POST['save_hashtagtext']) && !substr_count($_POST['save_hashtagtext'], "\n") && (intval($_POST['next_hashtagid']))) {
@@ -985,11 +992,24 @@ class Controller extends CI_Controller
                 }
             }
 
-            //Update new hashtag fields:
-            $this->Hashtags->update($is[0]['hashtagid'], array(
+
+            //Create new hashtag
+            $hashtag_new = $this->Hashtags->create(array(
+                'hashtagtext' => $_POST['save_hashtagtext'],
                 'hashtagtype' => $_POST['save_hashtagtype'],
             ), $handle_session['handleid']);
-            $is[0]['hashtagtype'] = trim($_POST['save_hashtagtype']);
+
+            $_POST['save_hashtagid'] = $hashtag_new['hashtag_create']['hashtagid'];
+
+            $is = $this->Hashtags->read(array(
+                'hashtagid' => $_POST['save_hashtagid'],
+            ));
+            if (!count($is)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Hashtag Not Valid',
+                ));
+            }
 
         }
 
