@@ -82,6 +82,8 @@ class Controller extends CI_Controller
         $this->load(14565);
     }
 
+
+
     function passthrough($newhandle) {
         redirect($newhandle, 'location', 301);
     }
@@ -485,6 +487,177 @@ class Controller extends CI_Controller
         //Did not find, had error:
         echo '<div class="alert alert-danger" role="alert">Missing handle_string variable</div>';
         return false;
+
+    }
+
+
+
+    function add_media()
+    {
+
+        $handle_session = handle_session(null, 0, $this->handle_session);
+        if (!$handle_session) {
+            return view_json(array(
+                'status' => 0,
+                'message' => blocked_reasoning(),
+            ));
+        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['chainid']) || !isset($_POST['current_hashtagtype'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Core IDs',
+            ));
+        }
+
+        $dd = add_media($uploaded_media);
+
+        $hashtagid = 0; //New hashtag
+        $hashtagtype = intval($_POST['current_hashtagtype']);
+        $created_hashtagid = 0;
+
+        if ($_POST['hashtagid'] > 0) {
+
+            $is = $this->Hashtags->read(array(
+                'hashtagid' => $_POST['hashtagid'],
+            ));
+            if (!count($is)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Hashtag is no longer active',
+                ));
+            } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'You are missing permission to edit this hashtag',
+                ));
+            }
+
+
+            $hashtagid = intval($is[0]['hashtagid']);
+            if (!$hashtagtype) {
+                $hashtagtype = intval($is[0]['hashtagtype']);
+            }
+
+        } else {
+
+            //Create a new hashtag:
+            $hashtag_new = $this->Hashtags->create(array(
+                'hashtagtext' => null,
+                'hashtagtype' => $_POST['current_hashtagtype'],
+            ), $handle_session['handleid']);
+
+            $hashtagid = $hashtag_new['hashtag_create']['hashtagid'];
+            $created_hashtagid = $hashtagid;
+
+        }
+
+
+        //Fetch dynamic data based on hashtag type:
+        $return_inputs = array();
+        $handles___4737 = $this->config->item('handles___4737'); // Hashtag Status
+        $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
+        $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+
+        foreach (array_intersect($this->config->item('handleids___' . $hashtagtype), $this->config->item('handleids___42179')) as $dynamic_handleid) {
+
+            $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
+            if (count($superpowers_required) && !handle_session(end($superpowers_required), 0, $this->handle_session)) {
+                continue;
+            }
+
+            //Let's first determine the data type:
+            $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
+
+            if (count($data_types) != 1) {
+                //This is strange, we are expecting 1 match only report this:
+                log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
+                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainhandleoutput' => $dynamic_handleid,
+                    'chainhashtagoutput' => $hashtagid,
+                ));
+                continue; //Go to the next dynamic data type
+            }
+
+            //We found 1 match as expected:
+            foreach ($data_types as $data_type_this) {
+                $data_type = $data_type_this;
+                break;
+            }
+
+            if (in_array($data_type, $this->config->item('handleids___42188'))) {
+
+                //Single or Multiple Choice:
+                array_push($return_inputs, array(
+                    'd__id' => $dynamic_handleid,
+                    'd__is_radio' => 1,
+                    'd_chainid' => 0,
+                    'd__html' => view_instant_select($dynamic_handleid, 0, $hashtagid),
+                    'd__value' => ($hashtagid > 0 ? $hashtagid : ''),
+                    'd__type_name' => '',
+                    'd__placeholder' => '',
+                    'd__profile_header' => '',
+                ));
+
+            } else {
+
+                $this_data_type = $this->config->item('handles___' . $data_type);
+                $handles___4592 = $this->config->item('handles___4592'); //Data types
+                $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
+                $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+
+                //Fetch the current value:
+                $counted = 0;
+                $unique_values = array();
+                if ($hashtagid > 0) { //Must have an original ID to possibly have a value...
+                    foreach ($this->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
+                        'chainhashtagoutput' => $hashtagid,
+                        'chainhandleinput' => $dynamic_handleid,
+                    ), array('chainhandleinput')) as $selected_e) {
+                        if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
+                            $counted++;
+                            array_push($unique_values, $selected_e['chainvalue']);
+                            array_push($return_inputs, array(
+                                'd__id' => $dynamic_handleid,
+                                'd__is_radio' => 0,
+                                'd_chainid' => $selected_e['chainid'],
+                                'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                                'd__value' => $selected_e['chainvalue'],
+                                'd__type_name' => html_input_type($data_type),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                'd__profile_header' => '',
+                            ));
+                        }
+                    }
+                }
+
+
+                if (!$counted) {
+                    foreach ($this->Handles->read(array(
+                        'handleid' => $dynamic_handleid,
+                    )) as $selected_e) {
+                        array_push($return_inputs, array(
+                            'd__id' => $dynamic_handleid,
+                            'd__is_radio' => 0,
+                            'd_chainid' => 0,
+                            'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                            'd__value' => '',
+                            'd__type_name' => html_input_type($data_type),
+                            'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                            'd__profile_header' => '',
+                        ));
+                    }
+                }
+            }
+        }
+
+        $return_array = array(
+            'status' => 1,
+            'return_inputs' => $return_inputs,
+            'created_hashtagid' => $created_hashtagid,
+        );
+
+        //Return everything we found:
+        return view_json($return_array);
 
     }
 

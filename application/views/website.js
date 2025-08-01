@@ -1989,7 +1989,6 @@ function hashtag_update() {
     console.log('Hashtag updating begins #' + current_hashtagid);
 
     //TODO Preview Media
-
     var modify_data = {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
@@ -2276,6 +2275,9 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             console.log(result.event);
             console.log(result);
 
+            //Create a new handle for this  media:
+
+
             //Add uploaded media:
             if (uploader_id == 42359) {
 
@@ -2289,7 +2291,12 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 var media_typeid = 0;
                 var media_typename = '';
                 if (result.info.format && result.info.format.length > 0) {
-                    if (js_handles___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
+                    if (js_handles___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.rehandle_type == 'video') {
+                        //Video
+                        media_typeid = 4258;
+                        media_typename = 'Video';
+                        playback_code = result.info.public_id;
+                    } else if (js_handles___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
                         //Audio
                         media_typeid = 4259;
                         media_typename = 'Audio';
@@ -2299,18 +2306,13 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                         media_typeid = 4260;
                         media_typename = 'Image';
                         playback_code = (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'w_1597,h_1597,c_fit') : result.info.secure_url);
-                    } else if (js_handles___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.rehandle_type == 'video') {
-                        //Video
-                        media_typeid = 4258;
-                        media_typename = 'Video';
-                        playback_code = result.info.public_id;
                     }
                 }
 
                 //Append this to the main Handle:
                 if (media_typeid) {
 
-                    cloudinary_prehandle_view(uploader_id, result.info.id, media_typeid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), (result.info.original_filename ? media_typename + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : media_typename + ' File'));
+                    cloudinary_prehandle_view(uploader_id, result.info.id, media_typeid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), ( result.info.original_filename ? media_typename + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : media_typename + ' File'));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log(media_cache);

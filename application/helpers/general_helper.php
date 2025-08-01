@@ -944,202 +944,166 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 }
 
 
-function process_media($hashtagid, $uploaded_media)
+function add_media($uploaded_media)
 {
 
     $CI =& get_instance();
     $handle_session = handle_session();
-
-
-    if (!$handle_session) {
+    if (!$handle_session || !count($uploaded_media)) {
         return false;
     }
 
-    //Fetch submitted media:
-    $upload_media_typeids = array();
-    if (count($uploaded_media) > 0) {
+    //We have media to process:
+    foreach ($uploaded_media as $upload_media) {
 
-        //We have media to process:
-        $sort_count = 0; //Reset sorting to compare to submitted media...
-        foreach ($uploaded_media as $upload_media) {
+        //Adding new media...
+        //Search eTag to see if we already have it:
+        $etag_detected = false;
+        if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
+            //We already have this asset, return handle:
+            foreach ($CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                'chainhandleinput' => 42662, //etag
+                'chainvalue' => $upload_media['media_cache']['etag'],
+            ), array('chainhandleoutput'), 1) as $existing_media) {
+                $upload_media['handleid'] = $existing_media['handleid'];
+                $etag_detected = true;
+            }
+        }
 
-            if (!$upload_media['handleid']) {
-                //Adding new media...
-                //Search eTag to see if we already have it:
-                $etag_detected = false;
-                if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
-                    //We already have this asset, return handle:
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleinput' => 42662, //etag
-                        'chainvalue' => $upload_media['media_cache']['etag'],
-                    ), array('chainhandleoutput'), 1) as $existing_media) {
-                        $upload_media['handleid'] = $existing_media['handleid'];
-                        $etag_detected = true;
-                    }
+        //Create Handle for this new media:
+        $added_e = $CI->Handles->create(array(
+            'handlename' => $upload_media['handlename'],
+            'handlecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['handlecover']),
+        ), $handle_session['handleid']);
+        if (!$added_e['status']) {
+            log_error('Failed to create a new Handle for [' . $upload_media['handlename'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
+                'chainhandleoutput' => $upload_media['handleid'],
+            ));
+            continue;
+        }
+
+        //Create new media and assign ID:
+        $upload_media['handleid'] = $added_e['handle_create']['handleid'];
+
+        //new asset, create new Handle and insert tags...
+        $handles___32088 = $CI->config->item('handles___32088'); //Platform Variables
+        foreach ($CI->config->item('handles___42679') as $chainhandletype => $m) {
+
+            //Ensure variable name exists so we can check the API call:
+            $target_variable = false;
+            if (isset($handles___32088[$chainhandletype]['m__message'])) {
+                //Determine if variable exists...
+                if (in_array($chainhandletype, $CI->config->item('handleids___42763')) && isset($upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']])) {
+                    //Video info:
+                    $target_variable = $upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']];
+                } elseif (in_array($chainhandletype, $CI->config->item('handleids___42675')) && isset($upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']])) {
+                    //Audio info:
+                    $target_variable = $upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']];
+                } elseif (isset($upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']])) {
+                    //Media info:
+                    $target_variable = $upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']];
+                }
+            }
+            if (!strlen($target_variable) || $target_variable == '0') {
+                //This variable does not have a value, move on...
+                continue;
+            }
+
+            //We have a variable, see what it is...
+            if (in_array($chainhandletype, $CI->config->item('handleids___33331'))) {
+
+                //Single select that needs auto creation of Handles if missing:
+                $child_id = 0;
+                foreach ($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                    'chainhandleinput' => $chainhandletype,
+                    'handlename' => $target_variable,
+                ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $child_handle) {
+                    $child_id = $child_handle['handleid'];
                 }
 
-                if (!$upload_media['handleid']) {
-
-                    //Create Handle for this new media:
-                    $added_e = $CI->Handles->create(array(
-                        'handlename' => $upload_media['handlename'],
-                        'handlecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['handlecover']),
-                    ), $handle_session['handleid']);
-                    if (!$added_e['status']) {
-                        log_error('Failed to create a new Handle for [' . $upload_media['handlename'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
-                            'chainhandleoutput' => $upload_media['handleid'],
+                //If not found create the child:
+                if (!$child_id) {
+                    $added_child = $CI->Handles->create(array(
+                        'handlename' => $target_variable,
+                    ));
+                    if (!$added_child['status']) {
+                        log_error('Failed to create a new Handle for [' . $target_variable . ']', array(
+                            'chainhandleoutput' => $chainhandletype,
                         ));
                         continue;
                     }
 
-                    //Create new media and assign ID:
-                    $upload_media['handleid'] = $added_e['handle_create']['handleid'];
+                    //Add chains for this new Handle:
+                    $CI->Chains->create(array(
+                        'chainhandlecreator' => $handle_session['handleid'],
+                        'chainhandleinput' => $chainhandletype,
+                        'chainhandleoutput' => $added_child['handle_create']['handleid'],
+                        'chainhandletype' => 4230,
+                    ));
 
-                    //new asset, create new Handle and insert tags...
-                    $handles___32088 = $CI->config->item('handles___32088'); //Platform Variables
-                    foreach ($CI->config->item('handles___42679') as $chainhandletype => $m) {
+                    //Assign child Handle:
+                    $child_id = $added_child['handle_create']['handleid'];
 
-                        //Ensure variable name exists so we can check the API call:
-                        $target_variable = false;
-                        if (isset($handles___32088[$chainhandletype]['m__message'])) {
-                            //Determine if variable exists...
-                            if (in_array($chainhandletype, $CI->config->item('handleids___42763')) && isset($upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']])) {
-                                //Video info:
-                                $target_variable = $upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']];
-                            } elseif (in_array($chainhandletype, $CI->config->item('handleids___42675')) && isset($upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']])) {
-                                //Audio info:
-                                $target_variable = $upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']];
-                            } elseif (isset($upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']])) {
-                                //Media info:
-                                $target_variable = $upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']];
-                            }
-                        }
-                        if (!strlen($target_variable) || $target_variable == '0') {
-                            //This variable does not have a value, move on...
-                            continue;
-                        }
-
-                        //We have a variable, see what it is...
-                        if (in_array($chainhandletype, $CI->config->item('handleids___33331'))) {
-
-                            //Single select that needs auto creation of Handles if missing:
-                            $child_id = 0;
-                            foreach ($CI->Chains->read(array(
-                                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                                'chainhandleinput' => $chainhandletype,
-                                'handlename' => $target_variable,
-                            ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $child_handle) {
-                                $child_id = $child_handle['handleid'];
-                            }
-
-                            //If not found create the child:
-                            if (!$child_id) {
-                                $added_child = $CI->Handles->create(array(
-                                    'handlename' => $target_variable,
-                                ));
-                                if (!$added_child['status']) {
-                                    log_error('Failed to create a new Handle for [' . $target_variable . ']', array(
-                                        'chainhandleoutput' => $chainhandletype,
-                                    ));
-                                    continue;
-                                }
-
-                                //Add chains for this new Handle:
-                                $CI->Chains->create(array(
-                                    'chainhandlecreator' => $handle_session['handleid'],
-                                    'chainhandleinput' => $chainhandletype,
-                                    'chainhandleoutput' => $added_child['handle_create']['handleid'],
-                                    'chainhandletype' => 4230,
-                                ));
-
-                                //Assign child Handle:
-                                $child_id = $added_child['handle_create']['handleid'];
-
-                            }
-
-                            if ($child_id) {
-                                //Child Handle found, simply chain:
-                                $CI->Chains->create(array(
-                                    'chainhandlecreator' => $handle_session['handleid'],
-                                    'chainhandleinput' => $child_id,
-                                    'chainhandleoutput' => $upload_media['handleid'],
-                                    'chainhandletype' => 4230,
-                                ));
-                            }
-
-                        } else {
-
-                            //Save variable as is:
-                            $CI->Chains->create(array(
-                                'chainhandlecreator' => $handle_session['handleid'],
-                                'chainhandleinput' => $chainhandletype,
-                                'chainhandleoutput' => $upload_media['handleid'],
-                                'chainvalue' => $target_variable,
-                                'chainhandletype' => 4230,
-                            ));
-
-                        }
-                    }
                 }
 
-                //By now have the media Handle, create necessary chains:
-                if ($upload_media['handleid'] && $upload_media['media_typeid']) {
-
-                    //Chain to Hashtag:
-                    if (!count($CI->Chains->read(array(
-                        'chainhashtagoutput' => $hashtagid,
-                        'chainhandleinput' => $upload_media['handleid'],
-                        'chainhandletype' => $upload_media['media_typeid'],
-                    )))) {
-                        $CI->Chains->create(array(
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhashtagoutput' => $hashtagid,
-                            'chainhandleinput' => $upload_media['handleid'],
-                            'chainhandletype' => $upload_media['media_typeid'],
-                            'chainvalue' => $upload_media['playback_code'],
-                            'chainkey' => $sort_count,
-                        ));
-                    }
-
-
-                    //Chain to Handle as Uploader:
-                    if (!count($CI->Chains->read(array(
-                        'chainhandleinput' => $handle_session['handleid'],
-                        'chainhandleoutput' => $upload_media['handleid'],
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42657')) . ')' => null, //Uploads
-                    )))) {
-                        $CI->Chains->create(array(
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhandleinput' => $handle_session['handleid'],
-                            'chainhandleoutput' => $upload_media['handleid'],
-                            'chainhandletype' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
-                            'chainvalue' => $upload_media['playback_code'],
-                        ));
-                    }
-
-
-                    //Chain to Media Type:
-                    if (!count($CI->Chains->read(array(
-                        'chainhandleinput' => $upload_media['media_typeid'],
+                if ($child_id) {
+                    //Child Handle found, simply chain:
+                    $CI->Chains->create(array(
+                        'chainhandlecreator' => $handle_session['handleid'],
+                        'chainhandleinput' => $child_id,
                         'chainhandleoutput' => $upload_media['handleid'],
                         'chainhandletype' => 4230,
-                    )))) {
-                        $CI->Chains->create(array(
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhandleinput' => $upload_media['media_typeid'],
-                            'chainhandleoutput' => $upload_media['handleid'],
-                            'chainhandletype' => 4230,
-                            'chainvalue' => $upload_media,
-                        ));
-                    }
-
+                    ));
                 }
+
+            } else {
+
+                //Save variable as is:
+                $CI->Chains->create(array(
+                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainhandleinput' => $chainhandletype,
+                    'chainhandleoutput' => $upload_media['handleid'],
+                    'chainvalue' => $target_variable,
+                    'chainhandletype' => 4230,
+                ));
+
+            }
+        }
+
+        //By now have the media Handle, create necessary chains:
+        if ($upload_media['handleid'] && $upload_media['media_typeid']) {
+
+            //Chain to Handle as Uploader:
+            if (!count($CI->Chains->read(array(
+                'chainhandleinput' => $handle_session['handleid'],
+                'chainhandleoutput' => $upload_media['handleid'],
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            )))) {
+                $CI->Chains->create(array(
+                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainhandleinput' => $handle_session['handleid'],
+                    'chainhandleoutput' => $upload_media['handleid'],
+                    'chainhandletype' => 4230,
+                    'chainvalue' => $upload_media['playback_code'],
+                ));
             }
 
-            //Add this to the submitted ones:
-            $upload_media_typeids[$sort_count] = $upload_media['handleid'];
-            $sort_count++;
+            //Chain to Media Type:
+            if (!count($CI->Chains->read(array(
+                'chainhandleinput' => $upload_media['media_typeid'],
+                'chainhandleoutput' => $upload_media['handleid'],
+                'chainhandletype' => 4230,
+            )))) {
+                $CI->Chains->create(array(
+                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainhandleinput' => $upload_media['media_typeid'],
+                    'chainhandleoutput' => $upload_media['handleid'],
+                    'chainhandletype' => 4230,
+                    'chainvalue' => $upload_media,
+                ));
+            }
 
         }
     }
@@ -3790,78 +3754,11 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
 
 function hashtag_text2raw($hashtagterm, $hashtagtext){
 
-    foreach (explode("\n", $hashtagtext) as $line_index => $line) {
-
-        if (strlen($line)) {
-            $line_count++;
-        }
-        $hashtagdiscover_line = '';
-
-        foreach (explode(' ', $line) as $word_index => $word) {
-
-            $reference_type = 0;
-            if ($word_count >= $word_limit && !$hidden_started && (!$line_inwards || $word_index >= $line_inwards)) {
-                $hashtagdiscover_line .= '<span class="hidden inner_line">';
-                $hidden_started = true;
-            }
-            $hashtagdiscover_line .= ($word_index > 0 ? ' ' : '');
-
-            if (filter_var($word, FILTER_VALIDATE_URL)) {
-
-                //Generic URL:
-                $reference_type = 4256;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $word, $word);
-                $word_count += $chain_words;
-
-            } elseif (view_valid_handle_handle($word, true)) {
-
-                //Hashtag Synonym
-                $reference_type = 31835;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
-                $word_count++;
-
-            } elseif (view_valid_handle_reverse_hashtag($word, true)) {
-
-                //Hashtag Antonym
-                $reference_type = 42337;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
-                $word_count++;
-
-            } elseif (view_valid_handle_hashtag($word, true)) {
-
-                //Handle Mention
-                $reference_type = 31834;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
-                $word_count++;
-
-            } else {
-
-                //This word is not referencing anything!
-                $hashtagdiscover_line .= htmlentities($word);
-                $word_count++;
-
-            }
-        }
-
-
-        $hashtagdiscover .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
-        $hashtagdiscover .= $hashtagdiscover_line;
-        if ($hidden_started && !$hidden_closed) {
-            $hashtagdiscover .= '</span>';
-            $hidden_closed = true;
-        }
-        $hashtagdiscover .= '</div>';
-
-    }
-
+    //NEW FUNCTION
 
 }
 
-function hashtagdiscover($save_hashtagid, $str)
+function hashtag_cache($save_hashtagid, $str)
 {
 
     /*
@@ -3878,19 +3775,21 @@ function hashtagdiscover($save_hashtagid, $str)
     //Display Images, Audio, Video & PDF Files:
     //Analyze the message to find referencing URLs and Members in the message text:
     $CI =& get_instance();
-
+    $hashtag_cache = array(
+        'hashtagtext' => '',
+        'hashtagdiscover' => '',
+        'hashtagedit' => '',
+    );
 
     //All the possible reference types that can be found:
     $hashtag_references = array(
-        4256 => array(), //Generic URL
-        31834 => array(), //Hashtag Synonym
+        4228 => array(), //Sequence Hashtags
         42337 => array(), //Hashtag Antonym
         31835 => array(), //Handle Mention
     );
 
     $ui_template = array(
-        4256 => '<spanaa href="%s" target="_blank"><span class="url_truncate">%s</span></spanaa>',
-        31834 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
+        4228 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
         42337 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
         31835 => '<spanaa href="' . view_memory(42903, 42902) . '%s" data-toggle="popover" class="ref_handle">%s</spanaa>', //Handles
     );
@@ -3900,9 +3799,8 @@ function hashtagdiscover($save_hashtagid, $str)
     $word_count = 0;
     $word_limit = 89;
     $line_inwards = 3;
-    $chain_words = 13; //The number of words a chain is counted as
 
-    $hashtagdiscover = '<div class="i_cache cache_frame_' . $save_hashtagid . '">';
+    $hashtag_cache['hashtagdiscover'] = '<div class="i_cache cache_frame_' . $save_hashtagid . '">';
     $line_count = 0;
     $hidden_started = false;
     $hidden_closed = false;
@@ -3913,6 +3811,7 @@ function hashtagdiscover($save_hashtagid, $str)
             $line_count++;
         }
         $hashtagdiscover_line = '';
+        $hashtag_cache['hashtagtext'] .= ($line_index > 0 ? "\n" : '');
 
         foreach (explode(' ', $line) as $word_index => $word) {
 
@@ -3922,21 +3821,63 @@ function hashtagdiscover($save_hashtagid, $str)
                 $hidden_started = true;
             }
             $hashtagdiscover_line .= ($word_index > 0 ? ' ' : '');
+            $hashtag_cache['hashtagtext'] .= ($word_index > 0 ? ' ' : '');
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
-                //Generic URL:
-                $reference_type = 4256;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $word, $word);
-                $word_count += $chain_words;
+                //Generic URL, Try to find:
+                $newHandleName = null;
+                foreach($this->Chains->read(array(
+                    'chainvalue' => $word,
+                    'chainhandleinput' => 1326, //URL
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                ), array('chainhandleoutput'), 0) as $x) {
+                    $newHandleName = $x['handleterm'];
+                }
+
+                if(!$newHandleName){
+
+                    //Not found, create it:
+                    $newHandleName = 'URL '.random_string(8);
+                    $added_e = $this->Handles->create(array(
+                        'handlename' => $newHandleName,
+                    ));
+                    if ($added_e['status']) {
+
+                        //Chain:
+                        $this->Chains->create(array(
+                            'chainhandletype' => 4230, //Follow
+                            'chainhandleinput' => 1326, //URL
+                            'chainhashtagoutput' => $added_e['handle_create']['handleid'],
+                            'chainvalue' => $word,
+                        ));
+
+                        //Handle Mention
+                        $reference_type = 31835;
+                        array_push($hashtag_references[$reference_type], '@'.$added_e['handle_create']['handleterm']);
+                        $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $added_e['handle_create']['handleterm'], '@'.$added_e['handle_create']['handleterm']);
+                        $hashtag_cache['hashtagtext'] .= '@'.$added_e['handle_create']['handleterm'];
+                        $word_count++;
+
+                    }
+                }
 
             } elseif (view_valid_handle_handle($word, true)) {
 
-                //Hashtag Synonym
+                //Handle Mention
                 $reference_type = 31835;
                 array_push($hashtag_references[$reference_type], $word);
                 $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $hashtag_cache['hashtagtext'] .= $word;
+                $word_count++;
+
+            } elseif (view_valid_handle_hashtag($word, true)) {
+
+                //Hashtag
+                $reference_type = 4228;
+                array_push($hashtag_references[$reference_type], $word);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $hashtag_cache['hashtagtext'] .= $word;
                 $word_count++;
 
             } elseif (view_valid_handle_reverse_hashtag($word, true)) {
@@ -3945,44 +3886,38 @@ function hashtagdiscover($save_hashtagid, $str)
                 $reference_type = 42337;
                 array_push($hashtag_references[$reference_type], $word);
                 $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
-                $word_count++;
-
-            } elseif (view_valid_handle_hashtag($word, true)) {
-
-                //Handle Mention
-                $reference_type = 31834;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $hashtag_cache['hashtagtext'] .= $word;
                 $word_count++;
 
             } else {
 
                 //This word is not referencing anything!
                 $hashtagdiscover_line .= htmlentities($word);
+                $hashtag_cache['hashtagtext'] .= $word;
                 $word_count++;
 
             }
         }
 
 
-        $hashtagdiscover .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
-        $hashtagdiscover .= $hashtagdiscover_line;
+        $hashtag_cache['hashtagdiscover'] .= '<div class="line ' . (!$line_index ? 'first_line' : '') . (($save_hashtagid && $word_count >= $word_limit && $line_count > 2) ? ' hidden ' : '') . '">';
+        $hashtag_cache['hashtagdiscover'] .= $hashtagdiscover_line;
         if ($hidden_started && !$hidden_closed) {
-            $hashtagdiscover .= '</span>';
+            $hashtag_cache['hashtagdiscover'] .= '</span>';
             $hidden_closed = true;
         }
-        $hashtagdiscover .= '</div>';
+        $hashtag_cache['hashtagdiscover'] .= '</div>';
 
     }
 
 
     if ($save_hashtagid && ($hidden_started || ($word_count >= $word_limit && $line_count > 2))) {
         //Add show more button:
-        $hashtagdiscover .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
+        $hashtag_cache['hashtagdiscover'] .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
     }
 
 
-    $hashtagdiscover .= '</div>';
+    $hashtag_cache['hashtagdiscover'] .= '</div>';
 
     if (intval($save_hashtagid) > 0) {
 
@@ -4021,8 +3956,8 @@ function hashtagdiscover($save_hashtagid, $str)
                 $chainhandleinput = 0;
                 $chainvalue = '';
 
-                if ($db_type == 31834) {
-                    $chainhandletype = 31834;
+                if ($db_type == 4228) {
+                    $chainhandletype = 4228;
                     foreach ($CI->Hashtags->read(array(
                         'LOWER(hashtagterm)' => strtolower(substr($db_val, 1)),
                     )) as $target) {
@@ -4070,7 +4005,9 @@ function hashtagdiscover($save_hashtagid, $str)
         }
     }
 
-    return $hashtagdiscover;
+    $hashtag_cache['hashtagedit'] = $hashtag_cache['hashtagdiscover']; //TODO Remove later
+
+    return $hashtag_cache;
 
 }
 
@@ -4740,317 +4677,308 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $ui .= '</div>';
     $ui .= '</div>';
 
-        //Three main actions: (Excludes reading which is no action)
-        $input_ui = '';
+    //Three main actions: (Excludes reading which is no action)
+    $input_ui = '';
 
-        //Any inputs for this hashtag?
-        if (isset($previous_i['hashtagtype']) && ($previous_i['hashtagtype'] == 43758 || (in_array($i['hashtagtype'], $CI->config->item('handleids___41055')) && $focus__node && $i['hashtagtype'] != 43758))) {
+    //Any inputs for this hashtag?
+    if (isset($previous_i['hashtagtype']) && ($previous_i['hashtagtype'] == 43758 || (in_array($i['hashtagtype'], $CI->config->item('handleids___41055')) && $focus__node && $i['hashtagtype'] != 43758))) {
 
-            //PAYMENT TICKET
-            if (isset($_GET['cancel_pay']) && !count($x_completes)) {
-                $input_ui .= '<div class="alert alert-danger" role="alert">You cancelled your payment.</div>';
-            }
+        //PAYMENT TICKET
+        if (isset($_GET['cancel_pay']) && !count($x_completes)) {
+            $input_ui .= '<div class="alert alert-danger" role="alert">You cancelled your payment.</div>';
+        }
 
-            if (isset($_GET['process_pay']) && !count($x_completes)) {
+        if (isset($_GET['process_pay']) && !count($x_completes)) {
 
-                $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
+            $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
-                //Referesh soon so we can check if completed or not
-                js_php_redirect(view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1', 987);
+            //Referesh soon so we can check if completed or not
+            js_php_redirect(view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1', 987);
 
-            } elseif (isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && count($x_completes)) {
+        } elseif (isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && count($x_completes)) {
 
-                foreach ($x_completes as $x_complete) {
+            foreach ($x_completes as $x_complete) {
 
-                    $chainvalue = unserialize($x_complete['chainvalue']);
-                    $quantity = ($x_complete['chainkey'] >= 2 ? $x_complete['chainkey'] : (isset($chainvalue['quantity']) && $chainvalue['quantity'] >= 2 ? $chainvalue['quantity'] : 1));
+                $chainvalue = unserialize($x_complete['chainvalue']);
+                $quantity = ($x_complete['chainkey'] >= 2 ? $x_complete['chainkey'] : (isset($chainvalue['quantity']) && $chainvalue['quantity'] >= 2 ? $chainvalue['quantity'] : 1));
 
-                    if ($chainvalue['mc_gross'] != 0) {
-                        $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>' . ($chainvalue['mc_gross'] > 0 ? 'You paid ' : 'You got a refund of ') . str_replace('.00', '', $chainvalue['mc_gross']) . ' ' . $chainvalue['mc_currency'] . ($quantity > 1 ? ' for ' . $quantity . ' tickets' : '') . ' & should receive a Paypal Email Receipt shortly.</div>';
-                    }
-
+                if ($chainvalue['mc_gross'] != 0) {
+                    $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>' . ($chainvalue['mc_gross'] > 0 ? 'You paid ' : 'You got a refund of ') . str_replace('.00', '', $chainvalue['mc_gross']) . ' ' . $chainvalue['mc_currency'] . ($quantity > 1 ? ' for ' . $quantity . ' tickets' : '') . ' & should receive a Paypal Email Receipt shortly.</div>';
                 }
 
-                $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $chainvalue['mc_gross'] . '">';
-                $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
+            }
+
+            $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $chainvalue['mc_gross'] . '">';
+            $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
+
+        } else {
+
+            $valid_instant_pay = false; //Until we can find and verify from DB
+
+            $paypal_email = website_setting(30882);
+
+            $currency_types = $CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => ( isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 ? $previous_i['hashtagid'] : $i['hashtagid']),
+                'chainhandleinput IN (' . join(',', $CI->config->item('handleids___26661')) . ')' => null, //Currency
+            ));
+            $total_dues = $CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandleinput' => 26562, //Total Due
+            ));
+            $cart_max = $CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandleinput' => 29651, //Cart Max Quantity
+            ));
+            $cart_min = $CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandleinput' => 31008, //Cart Min Quantity
+            ));
+
+
+            //Payments Must have Unit Price, otherwise they are NOT a payment until added
+            $info_append = '';
+            $unit_currency = '';
+            $unit_price = 0;
+            $unit_fee = 0;
+            $max_allowed = (count($cart_max) && is_numeric($cart_max[0]['chainvalue']) && $cart_max[0]['chainvalue'] > 0 ? intval($cart_max[0]['chainvalue']) : view_memory(6404, 29651));
+            $spots_remaining = hashtag_spots_remaining($i['hashtagid']);
+            $starting_point = ($is_required ? 1 : 0);
+            $max_allowed = ($spots_remaining > -1 && $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed);
+
+            $min_allowed = (count($cart_min) && is_numeric($cart_min[0]['chainvalue']) && intval($cart_min[0]['chainvalue']) > $starting_point ? intval($cart_min[0]['chainvalue']) : $starting_point);
+            $handles___26661 = $CI->config->item('handles___26661'); //Currency
+            if (count($currency_types)) {
+                $unit_currency = $handles___26661[$currency_types[0]['chainhandleinput']]['m__message'];
+            }
+
+
+            if ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && $total_dues[0]['chainvalue'] > 0 && count($currency_types) == 1) {
+
+                $valid_instant_pay = true;
+
+                $digest_fees = count($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 30589, //Digest Fees
+                )));
+
+                //Break down amount & currency
+                $unit_price = doubleval($total_dues[0]['chainvalue']);
+                $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
+
+                //Append information to cart about Paypal:
+                $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
+
+            } elseif ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 && count($total_dues) && $total_dues[0]['chainvalue'] > 0) {
+
+                $digest_fees = count($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => ( isset($previous_i['hashtagtype']) ? $previous_i['hashtagid'] : -1 ) ,
+                    'chainhandleinput' => 30589, //Digest Fees
+                )));
+
+                //Break down amount & currency
+                $unit_price = doubleval($total_dues[0]['chainvalue']);
+                $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
+
+            }
+
+
+            $current_value = $min_allowed;
+            foreach ($CI->Chains->read(array(
+                'chainhandletype' => 7712, //Input Choice
+                'chainhandlecreator' => $handle_session['handleid'],
+                'chainhashtagoutput' => $i['hashtagid'],
+            ), array(), 1) as $x_selection) {
+                $current_value = $x_selection['chainkey'];
+            }
+
+
+            //Is multi selectable, allow show down for quantity:
+            $input_ui .= '<div class="handle-info ticket-notice" title="' . $handles___11035[44242]['m__title'] . '">'
+                . '<span class="icon-block">' . $handles___11035[44242]['m__cover'] . '</span>'
+                . '<div class="handle_info_box">';
+
+            if ($max_allowed > 0 || $min_allowed > 0) {
+                $input_ui .= '<div class="sale_controller sale_controller_' . $i['hashtagid'] . '" unitprice="' . $unit_price . '" unitcurrency="' . $unit_currency . '" hashtagid="' . $i['hashtagid'] . '">';
+                $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_down"><i class="fas fa-minus ' . ($current_value == $min_allowed ? ' hidden ' : '') . '"></i></a>';
+                $input_ui .= '<span class="main__title current_count">' . $current_value . '</span>';
+                $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_up">' . ($max_allowed == $min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>') . '</a>';
+                $input_ui .= '</div>';
+            } else {
+                $input_ui .= '<span class="current_count" style="display: none;">' . $min_allowed . '</span>';
+            }
+
+            $input_ui .= $info_append;
+
+            $input_ui .= '</div>';
+            $input_ui .= '</div>';
+
+
+            if ($valid_instant_pay) {
+
+                $handles___14870 = $CI->config->item('handles___14870'); //DOMAINS
+
+                //Load Paypal Pay button:
+                $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+
+                $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
+                $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_hashtag_title($i, true)) . '">';
+                $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtagterm ? $target_hashtagterm . ' #' : '') . $i['hashtagterm'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handleterm'] . '">';
+
+                $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
+                $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
+                $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
+                $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $handles___14870[2738]['m__message'] . view_app_chain(26595) . '">';
+                $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?cancel_pay=1">';
+                $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1">';
+                $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
+                $input_ui .= '<input type="hidden" name="business" value="' . $paypal_email . '">';
+
+                $input_ui .= '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading\');$(\'#pay_now\').val(\'...\');">';
+
+                $input_ui .= '</form>';
+
+                $input_ui .= '<script> $(document).ready(function () { $(\'.hashtag_discovered_btn\').hide(); }); </script>';
 
             } else {
 
-                $valid_instant_pay = false; //Until we can find and verify from DB
+                //FREE TICKET
+                $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
+                $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
 
-                $paypal_email = website_setting(30882);
-
-                $currency_types = $CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => ( isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 ? $previous_i['hashtagid'] : $i['hashtagid']),
-                    'chainhandleinput IN (' . join(',', $CI->config->item('handleids___26661')) . ')' => null, //Currency
-                ));
-                $total_dues = $CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $i['hashtagid'],
-                    'chainhandleinput' => 26562, //Total Due
-                ));
-                $cart_max = $CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $i['hashtagid'],
-                    'chainhandleinput' => 29651, //Cart Max Quantity
-                ));
-                $cart_min = $CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $i['hashtagid'],
-                    'chainhandleinput' => 31008, //Cart Min Quantity
-                ));
-
-
-                //Payments Must have Unit Price, otherwise they are NOT a payment until added
-                $info_append = '';
-                $unit_currency = '';
-                $unit_price = 0;
-                $unit_fee = 0;
-                $max_allowed = (count($cart_max) && is_numeric($cart_max[0]['chainvalue']) && $cart_max[0]['chainvalue'] > 0 ? intval($cart_max[0]['chainvalue']) : view_memory(6404, 29651));
-                $spots_remaining = hashtag_spots_remaining($i['hashtagid']);
-                $starting_point = ($is_required ? 1 : 0);
-                $max_allowed = ($spots_remaining > -1 && $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed);
-
-                $min_allowed = (count($cart_min) && is_numeric($cart_min[0]['chainvalue']) && intval($cart_min[0]['chainvalue']) > $starting_point ? intval($cart_min[0]['chainvalue']) : $starting_point);
-                $handles___26661 = $CI->config->item('handles___26661'); //Currency
-                if (count($currency_types)) {
-                    $unit_currency = $handles___26661[$currency_types[0]['chainhandleinput']]['m__message'];
-                }
-
-
-                if ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && $total_dues[0]['chainvalue'] > 0 && count($currency_types) == 1) {
-
-                    $valid_instant_pay = true;
-
-                    $digest_fees = count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 30589, //Digest Fees
-                    )));
-
-                    //Break down amount & currency
-                    $unit_price = doubleval($total_dues[0]['chainvalue']);
-                    $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
-
-                    //Append information to cart about Paypal:
-                    $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
-
-                } elseif ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 && count($total_dues) && $total_dues[0]['chainvalue'] > 0) {
-
-                    $digest_fees = count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => ( isset($previous_i['hashtagtype']) ? $previous_i['hashtagid'] : -1 ) ,
-                        'chainhandleinput' => 30589, //Digest Fees
-                    )));
-
-                    //Break down amount & currency
-                    $unit_price = doubleval($total_dues[0]['chainvalue']);
-                    $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
-
-                }
-
-
-                $current_value = $min_allowed;
-                foreach ($CI->Chains->read(array(
-                    'chainhandletype' => 7712, //Input Choice
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhashtagoutput' => $i['hashtagid'],
-                ), array(), 1) as $x_selection) {
-                    $current_value = $x_selection['chainkey'];
-                }
-
-
-                //Is multi selectable, allow show down for quantity:
-                $input_ui .= '<div class="handle-info ticket-notice" title="' . $handles___11035[44242]['m__title'] . '">'
-                    . '<span class="icon-block">' . $handles___11035[44242]['m__cover'] . '</span>'
-                    . '<div class="handle_info_box">';
-
-                if ($max_allowed > 0 || $min_allowed > 0) {
-                    $input_ui .= '<div class="sale_controller sale_controller_' . $i['hashtagid'] . '" unitprice="' . $unit_price . '" unitcurrency="' . $unit_currency . '" hashtagid="' . $i['hashtagid'] . '">';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_down"><i class="fas fa-minus ' . ($current_value == $min_allowed ? ' hidden ' : '') . '"></i></a>';
-                    $input_ui .= '<span class="main__title current_count">' . $current_value . '</span>';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_up">' . ($max_allowed == $min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>') . '</a>';
-                    $input_ui .= '</div>';
-                } else {
-                    $input_ui .= '<span class="current_count" style="display: none;">' . $min_allowed . '</span>';
-                }
-
-                $input_ui .= $info_append;
-
-                $input_ui .= '</div>';
-                $input_ui .= '</div>';
-
-
-                if ($valid_instant_pay) {
-
-                    $handles___14870 = $CI->config->item('handles___14870'); //DOMAINS
-
-                    //Load Paypal Pay button:
-                    $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-
-                    $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
-                    $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_hashtag_title($i, true)) . '">';
-                    $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtagterm ? $target_hashtagterm . ' #' : '') . $i['hashtagterm'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handleterm'] . '">';
-
-                    $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
-                    $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
-                    $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
-                    $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $handles___14870[2738]['m__message'] . view_app_chain(26595) . '">';
-                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?cancel_pay=1">';
-                    $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1">';
-                    $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
-                    $input_ui .= '<input type="hidden" name="business" value="' . $paypal_email . '">';
-
-                    $input_ui .= '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading\');$(\'#pay_now\').val(\'...\');">';
-
-                    $input_ui .= '</form>';
-
-                    $input_ui .= '<script> $(document).ready(function () { $(\'.hashtag_discovered_btn\').hide(); }); </script>';
-
-                } else {
-
-                    //FREE TICKET
-                    $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                    $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
-
-                }
             }
+        }
 
-        } elseif (in_array($i['hashtagtype'], $CI->config->item('handleids___33532'))) {
+    } elseif (in_array($i['hashtagtype'], $CI->config->item('handleids___33532'))) {
 
-            //Find the created hashtag if any:
-            $handle_private_replies = $CI->Chains->read(array(
-                'chainhandletype' => 4228,
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandlecreator' => $chainhandlecreator,
-            ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC'));
+        //Find the created hashtag if any:
+        $handle_private_replies = $CI->Chains->read(array(
+            'chainhandletype' => 4228,
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandlecreator' => $chainhandlecreator,
+        ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC'));
 
-            $input_attributes = '';
-            $previous_response = ($chainhandlecreator && isset($handle_private_replies[0]['hashtagtext']) ? $handle_private_replies[0]['hashtagtext'] : '');
+        $input_attributes = '';
+        $previous_response = ($chainhandlecreator && isset($handle_private_replies[0]['hashtagtext']) ? $handle_private_replies[0]['hashtagtext'] : '');
 
-            if (in_array($i['hashtagtype'], $CI->config->item('handleids___43002'))) {
+        if (in_array($i['hashtagtype'], $CI->config->item('handleids___43002'))) {
 
-                //Textarea
-                $handles___6201 = $CI->config->item('handles___6201'); //HASHTAG Cache
-                $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($handles___6201[4736]['m__message']) ? $handles___6201[4736]['m__message'] : $handles___6201[4736]['m__title'] . '...') . '">' . $previous_response . '</textarea>';
-                $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
+            //Textarea
+            $handles___6201 = $CI->config->item('handles___6201'); //HASHTAG Cache
+            $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($handles___6201[4736]['m__message']) ? $handles___6201[4736]['m__message'] : $handles___6201[4736]['m__title'] . '...') . '">' . $previous_response . '</textarea>';
+            $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
 
-            } elseif (in_array($i['hashtagtype'], $CI->config->item('handleids___43003'))) {
+        } elseif (in_array($i['hashtagtype'], $CI->config->item('handleids___43003'))) {
 
-                //Input
+            //Input
 
-                if ($i['hashtagtype'] == 31794) {
+            if ($i['hashtagtype'] == 31794) {
 
-                    //Number
-                    if (count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 42181, //Phone
-                    )))) {
-                        //It's a phone number:
-                        $input_type = 'text';
-                        $placeholder = 'Enter Phone Number...';
-                    } else {
-                        //A regular number:
-                        $input_type = 'number';
-                        $placeholder = 'Enter Number...';
-                    }
-
-                    //Steps
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 31813, //Steps
-                    )) as $num_steps) {
-                        if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
-                            $input_attributes .= ' step="' . $num_steps['chainvalue'] . '" ';
-                        }
-                    }
-
-                    //Min Value
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 31800, //Min Value
-                    )) as $num_steps) {
-                        if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
-                            $input_attributes .= ' min="' . $num_steps['chainvalue'] . '" ';
-                        }
-                    }
-
-                    //Max Value
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 31801, //Max Value
-                    )) as $num_steps) {
-                        if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
-                            $input_attributes .= ' max="' . $num_steps['chainvalue'] . '" ';
-                        }
-                    }
-
-                } elseif ($i['hashtagtype'] == 30350) {
-
-                    $has_time = count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 32442, //Select Time
-                    )));
-
-                    $input_type = ($has_time ? 'datetime-local' : 'date');
-                    $placeholder = ($has_time ? 'Select Date & Time...' : 'Select Date...');
-
-                } elseif ($i['hashtagtype'] == 42915) {
-
-                    //URL
-                    $input_type = 'url';
-                    $placeholder = 'Paste URL...';
-
-                } elseif ($i['hashtagtype'] == 43005) {
-
-                    //Input Text
+                //Number
+                if (count($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 42181, //Phone
+                )))) {
+                    //It's a phone number:
                     $input_type = 'text';
-                    $placeholder = 'Write...';
-
+                    $placeholder = 'Enter Phone Number...';
+                } else {
+                    //A regular number:
+                    $input_type = 'number';
+                    $placeholder = 'Enter Number...';
                 }
 
-                $input_ui .= '<input type="' . $input_type . '" ' . $input_attributes . ' class="border dotted-borders x_write" placeholder="' . $placeholder . '" value="' . $previous_response . '" />';
-
-            }
-
-            //Uploader
-            if (in_array($i['hashtagtype'], $CI->config->item('handleids___43004'))) {
-
-                if ($i['hashtagterm'] == 'ProfilePicture' && $handle_session && $chainhandlecreator) {
-
-                    //TODO REMOVE HACK: This is a profile picture hack:
-                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="handle_editor(' . $chainhandlecreator . ',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</a></div>';
-
-                } else {
-                    $input_ui .= '<div class="media_outer_frame hideIfEmpty">
-                        <div id="media_outer_' . $i['hashtagid'] . '" class="media_frame media_frame_' . $i['hashtagid'] . ' hideIfEmpty"></div>
-                        <div class="doclear">&nbsp;</div>
-                    </div>';
-                    $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</div></div>';
-                    $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['hashtagid'] . ', [\'#' . $i['hashtagid'] . '\'], \'.inner_uploader_' . $i['hashtagid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['hashtagid'] . '\', 43004, ' . $i['hashtagid'] . '); }, 144); }); </script>';
-
-                    foreach ($handle_private_replies as $x_response) {
-                        $input_ui .= '<div class="hidden">' . hashtag_view(31777, $x_response) . '</div>';
-                        $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_' . $i['hashtagid'] . '\', 43004, ' . $x_response['hashtagid'] . '); }, 144); }); </script>';
+                //Steps
+                foreach ($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 31813, //Steps
+                )) as $num_steps) {
+                    if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
+                        $input_attributes .= ' step="' . $num_steps['chainvalue'] . '" ';
                     }
                 }
 
+                //Min Value
+                foreach ($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 31800, //Min Value
+                )) as $num_steps) {
+                    if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
+                        $input_attributes .= ' min="' . $num_steps['chainvalue'] . '" ';
+                    }
+                }
+
+                //Max Value
+                foreach ($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 31801, //Max Value
+                )) as $num_steps) {
+                    if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
+                        $input_attributes .= ' max="' . $num_steps['chainvalue'] . '" ';
+                    }
+                }
+
+            } elseif ($i['hashtagtype'] == 30350) {
+
+                $has_time = count($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 32442, //Select Time
+                )));
+
+                $input_type = ($has_time ? 'datetime-local' : 'date');
+                $placeholder = ($has_time ? 'Select Date & Time...' : 'Select Date...');
+
+            } elseif ($i['hashtagtype'] == 42915) {
+
+                //URL
+                $input_type = 'url';
+                $placeholder = 'Paste URL...';
+
+            } elseif ($i['hashtagtype'] == 43005) {
+
+                //Input Text
+                $input_type = 'text';
+                $placeholder = 'Write...';
+
             }
 
+            $input_ui .= '<input type="' . $input_type . '" ' . $input_attributes . ' class="border dotted-borders x_write" placeholder="' . $placeholder . '" value="' . $previous_response . '" />';
+
         }
 
-        if (strlen($input_ui)) {
-            $ui .= '<div class="ignore-click input_ui input_ui_' . $i['hashtagid'] . '">' . $input_ui . '</div>';
+        //Uploader
+        if (in_array($i['hashtagtype'], $CI->config->item('handleids___43004'))) {
+            foreach ($handle_private_replies as $x_response) {
+                $input_ui .= '<div class="hidden">' . hashtag_view(31777, $x_response) . '</div>';
+            }
         }
 
+    }
 
+    //Display Hashtag media:
+
+    $ui .= '<div class="media_outer_frame hideIfEmpty">
+                    <div id="media_outer_' . $i['hashtagid'] . '" class="media_frame media_frame_' . $i['hashtagid'] . ' hideIfEmpty"></div>
+                    <div class="doclear">&nbsp;</div>
+                </div>';
+    $ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</div></div>';
+
+    $ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['hashtagid'] . ', [\'#' . $i['hashtagid'] . '\'], \'.inner_uploader_' . $i['hashtagid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['hashtagid'] . '\', 43004, ' . $i['hashtagid'] . '); }, 144); }); </script>';
+
+    if (strlen($input_ui)) {
+        $ui .= '<div class="ignore-click input_ui input_ui_' . $i['hashtagid'] . '">' . $input_ui . '</div>';
+    }
 
     //Bottom Bar
     $bottom_menu_ui = '';
@@ -5134,7 +5062,6 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     $ui .= '</div>';
-
 
     return $ui;
 
@@ -5356,10 +5283,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
         //Determine chain type:
         $social_url = false;
 
-        if (in_array(4256, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
-            //We made sure not the current website:
-            $social_url = 'href="' . $social_chain['chainvalue'] . '" target="_blank"';
-        } elseif (in_array(32097, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
+        if (in_array(32097, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
             $social_url = 'href="mailto:' . $social_chain['chainvalue'] . '"';
         } elseif (in_array(42181, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
             //Phone Number

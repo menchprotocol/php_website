@@ -102,7 +102,7 @@ if($focus_i['hashtagterm']!='Discotique2025'){
     $table .= '<td>&nbsp;</td>';
     $table .= '<td><div style="max-width:233px;">chainvalue</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">hashtagtext</div></td>'; //TEXT
-    $table .= '<td><div style="max-width:233px;">hashtaghtml</div></td>'; //EDITOR
+    $table .= '<td><div style="max-width:233px;">hashtagedit</div></td>'; //EDITOR
     $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
     $table .= '</tr>';
 
@@ -119,6 +119,7 @@ if($focus_i['hashtagterm']!='Discotique2025'){
         'hashtags_valid_cachevoid' => 0,
     );
 
+    $has_media = false;
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
@@ -196,6 +197,7 @@ if($focus_i['hashtagterm']!='Discotique2025'){
             //$hashtagtext = str_replace('@'.$x2['handleterm'].' ', '@'.$x2['handleid'].' ', $hashtagtext);
         }
 
+
         //Append authors:
         foreach($this->Chains->read(array(
             'chainhashtagoutput' => $x['chainhashtagoutput'],
@@ -225,31 +227,8 @@ if($focus_i['hashtagterm']!='Discotique2025'){
             }
         }
 
-        //Transform URLs:
-        /*
-        foreach($this->Chains->read(array(
-            'chainhashtagoutput' => $x['chainhashtagoutput'],
-            'chainhandleinput !=' => $x['chainhandlecreator'],
-            'chainhandletype' => 4256,
-        ), array('chainhandleinput')) as $x2){
-
-            $url_key = random_string(8);
-
-            //Create new URL:
-            /*
-            $added_e = $this->Handles->create(array(
-                'handleterm' => 'URL'.$url_key,
-                'handlename' => 'URL '.$url_key,
-                'handlecover' => 'fas fa-browser',
-            ), $x['chainhandlecreator']);
-            $hashtagtext .= "\n@".$added_e['handle_create']['handleterm'];
-            *//*
-
-        $hashtagtext = str_replace(trim($x2['chainvalue']), '@URL'.$url_key, $hashtagtext);
-    }
-    */
-
         //Append Media:
+        $this_media = false;
         foreach($this->Chains->read(array(
             'chainhashtagoutput' => $x['chainhashtagoutput'],
             'chainhandleinput !=' => $x['chainhandlecreator'],
@@ -257,6 +236,11 @@ if($focus_i['hashtagterm']!='Discotique2025'){
         ), array('chainhandleinput')) as $x2){
             $core_content .= "\n@".$x2['handleterm'];
             $hashtagtext .= "\n@".$x2['handleterm'];
+            $this_media = true;
+        }
+
+        if($this_media){
+            $has_media = true;
         }
 
 
@@ -285,7 +269,9 @@ if($focus_i['hashtagterm']!='Discotique2025'){
         $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
             ( $delete ? '[DELETE]' : '' ).
             ( $x['chainvoid']>0 ? '[VOID]' : '' ).
+            ( $this_media ? '[ISMEDIA]' : '' ).
             ( !strlen(trim($core_content)) ? '[EMPTY]' : '' ).
+            ( $is_duplicate ? '[DUPLICATE]' : '' ).
             ( $is_duplicate ? '[DUPLICATE]' : '' ).
             ( !$x['chainvoid'] && !count($es) ? '[hashtags_voidcreaetor]' : '' ).
             ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
@@ -293,9 +279,16 @@ if($focus_i['hashtagterm']!='Discotique2025'){
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($x['chainvalue']))).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($hashtagtext))).'</div></td>'; //TEXT
-        $table .= '<td><div style="max-width:233px;">hashtaghtml</div></td>'; //EDITOR
+        $table .= '<td><div style="max-width:233px;">hashtagedit</div></td>'; //EDITOR
         $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
         $table .= '</tr>';
+    }
+
+
+    if($has_media){
+        $this->Hashtags->update($x['chainhashtagoutput'], array(
+            'hashtagtype' => $_POST['save_hashtagtype'],
+        ), $handle_session['handleid']);
     }
 
 }

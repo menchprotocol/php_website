@@ -22,7 +22,8 @@ class Chains extends CIdea_cache
 
         //Set some defaults:
         if (!isset($add_fields['chainhandlecreator']) || intval($add_fields['chainhandlecreator']) < 1) {
-            $add_fields['chainhandlecreator'] = 14068; //GUEST MEMBER
+            $handle_session = handle_session();
+            $add_fields['chainhandlecreator'] = ( $handle_session ? $handle_session['handleid'] : 14068 ); //GUEST MEMBER
         }
 
         //Set some defaults:

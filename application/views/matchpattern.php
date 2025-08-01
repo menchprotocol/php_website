@@ -21,7 +21,7 @@ if (isset($_GET['hashtagterm'])) {
             echo '<p>Mismatches against [' . $preg_query[0]['chainvalue'] . '] are:</p>';
 
             foreach ($this->Chains->read(array(
-                'chainhandletype' => 6144, //Written Response
+                'chainhandletype' => 4559,
                 'chainhashtaginput' => $i['hashtagid'],
             ), array(), 0) as $x) {
                 $responses++;
