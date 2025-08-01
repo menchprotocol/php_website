@@ -2333,8 +2333,10 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         $(loading_button).click(function (e) {
             widget.open();
         });
-    }
+    } else {
+        console.log(loading_button+' NOT LOADING / '+( widget ? 'YESWIDGET' : 'NOWIDGET'));
 
+    }
     if (loading_modal && widget) {
         //Attach to widget:
         $(loading_modal).on('hidden.bs.modal', function () {
