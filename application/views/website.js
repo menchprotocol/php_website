@@ -2329,13 +2329,13 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
     });
 
     if (!loading_inline_container && loading_button && widget) {
+        console.log(loading_button+' YES LOADING / '+( widget ? 'YESWIDGET' : 'NOWIDGET'));
         //Attach to widget:
         $(loading_button).click(function (e) {
             widget.open();
         });
     } else {
         console.log(loading_button+' NOT LOADING / '+( widget ? 'YESWIDGET' : 'NOWIDGET'));
-
     }
     if (loading_modal && widget) {
         //Attach to widget:
