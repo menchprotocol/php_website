@@ -1823,7 +1823,7 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     var current_hashtagtype = 6677;
     $('#modal31911 .next_hashtagid').val(next_hashtagid);
     $('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
-
+    load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, true);
 
     //Load Chain addition info, if any:
     if (next_hashtagid && $('.ui_hashtagterm_' + next_hashtagid).length) {
