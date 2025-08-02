@@ -4335,7 +4335,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         }
     }
 
-    $has_sortable = $chainid > 0 && !$focus__node && $hashtag_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___4603')) && ($i['chainhandletype'] == 34513);
+    $has_sortable = $chainid > 0 && !$focus__node && $hashtag_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___4603')) && ($i['chainhandletype'] == 34513 || $i['chainhandletype'] == 4228);
     $has_hashtag_discovered = 0;
     if (!$is_cache && $chainhandlecreator) {
         $discoveries = $CI->Chains->read(array(
