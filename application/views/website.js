@@ -1804,7 +1804,8 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     $('#modal31911 .created_hashtagid').val(0);
     $("#modal31911 .unsaved_warning").val('');
     $("#modal31911 .save_frame").addClass('hidden');
-    $('#modal31911 .save_hashtagid, #modal31911 .save_chainid').val(0);
+    $('#modal31911 .save_hashtagid').val(hashtagid);
+    $('#modal31911 .save_chainid').val(chainid);
 
     //Are we adding an hashtag for a target action tab?
     console.log('i Modal loaded for ' + focus_group);
