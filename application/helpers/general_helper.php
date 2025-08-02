@@ -1621,7 +1621,7 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
 
 
     if ($handleid > 0 && count($es) && (!$template_hashtagid || !count($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42256')) . ')' => null, //Writes
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Writes
                 'chainhandleinput' => 31779, //Mandatory Emails
                 'chainhashtagoutput' => $template_hashtagid,
             ))))) {
@@ -4335,7 +4335,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         }
     }
 
-    $has_sortable = $chainid > 0 && !$focus__node && $hashtag_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___4603')) && ($chainhandletype != 42256 || $i['chainhandletype'] == 34513);
+    $has_sortable = $chainid > 0 && !$focus__node && $hashtag_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___4603')) && ($i['chainhandletype'] == 34513);
     $has_hashtag_discovered = 0;
     if (!$is_cache && $chainhandlecreator) {
         $discoveries = $CI->Chains->read(array(
