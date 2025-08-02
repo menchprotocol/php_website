@@ -1095,20 +1095,16 @@ class Controller extends CI_Controller
                 ));
             }
 
-            $hashtag_cache = hashtag_cache($_POST['save_hashtagid'], $_POST['save_hashtagtext']);
-
-            $update_fields = array(
-                'hashtagtext' => $hashtag_cache['hashtagtext'],
-                'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
-                'hashtagedit' => $hashtag_cache['hashtagedit'],
-                'hashtagtype' => $_POST['save_hashtagtype'],
-            );
-
             //Update new hashtag fields:
-            $this->Hashtags->update($is[0]['hashtagid'], $update_fields, $handle_session['handleid']);
+            $this->Hashtags->update($is[0]['hashtagid'], array(
+                'hashtagtext' => $_POST['save_hashtagtext'],
+                'hashtagtype' => $_POST['save_hashtagtype'],
+            ), $handle_session['handleid']);
 
             //Update variable:
-            $is[0] = array_merge($is[0], $update_fields);
+            $is = $this->Hashtags->read(array(
+                'hashtagid' => $_POST['save_hashtagid'],
+            ));
 
         } else {
 
