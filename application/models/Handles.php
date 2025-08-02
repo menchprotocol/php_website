@@ -151,7 +151,10 @@ class Handles extends CIdea_cache
         if (!count($handles_found)) {
             log_error('Handle @' . $chainid . ' not found in Handles table');
             return false;
-        } elseif (!count($this->Chains->read(array('chainid' => $chainid)))) {
+        } elseif (!count($this->Chains->read(array(
+            'chainid' => $chainid,
+            'chainvoid >=' => 0, //Any void
+        )))) {
             log_error('Handle @' . $chainid . ' not found in Chains table');
             return false;
         }
