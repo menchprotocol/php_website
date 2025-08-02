@@ -31,21 +31,24 @@ function discover_chainhandletype()
     return (isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1) == '/' && substr_count($_POST['js_request_uri'], '/') == 2 ? '/' . strtok(substr($_POST['js_request_uri'], 1), '/') : null);
 }
 
-function handle_pinned($handleid, $return_itself = false, $first_pin_only = true)
+function handle_pinned($handleid, $return_itself = false)
 {
 
     $CI =& get_instance();
+    $return_val = '';
     $pinned_down = $CI->config->item('pinned_down');
     if (isset($pinned_down[$handleid])) {
-        return ($first_pin_only ? reset($pinned_down[$handleid]) : $pinned_down[$handleid]);
+        $return_val = reset($pinned_down[$handleid]);
     }
 
     $pinned_up = $CI->config->item('pinned_up');
     if (isset($pinned_up[$handleid])) {
-        return ($first_pin_only ? reset($pinned_up[$handleid]) : $pinned_up[$handleid]);
+        $return_val = reset($pinned_up[$handleid]);
     }
 
-    return ($first_pin_only ? ($return_itself ? $handleid : 0) : array());
+    $return_val = ($return_itself ? $handleid : 0);
+
+    return ( $return_val > 0 ? $return_val : 4559 );
 
 }
 
