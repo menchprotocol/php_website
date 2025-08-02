@@ -44,6 +44,7 @@ foreach($this->Hashtags->read(array(
 ), 0) as $hashtag_fix){
 
     $this->Hashtags->update($hashtag_fix['hashtagid'], array(
+            //TODO Must redo as hashtag_cache() no longer returns hashtagdiscover
         'hashtagdiscover' => hashtag_cache($hashtag_fix['hashtagid'], $hashtag_fix['hashtagtext']),
     ), $handle_session['handleid']);
 
@@ -104,6 +105,7 @@ if(isset($_GET['action']) && $_GET['action']=='hashtag_messages'){
     ), 0) as $hashtag_fix){
 
         $this->Hashtags->update($hashtag_fix['hashtagid'], array(
+            //TODO Must redo as hashtag_cache() no longer returns hashtagdiscover
             'hashtagdiscover' => hashtag_cache($hashtag_fix['hashtagid'], $hashtag_fix['hashtagtext']),
         ), $handle_session['handleid']);
 
