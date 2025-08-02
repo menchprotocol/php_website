@@ -895,11 +895,6 @@ class Chains extends CIdea_cache
         array_push($loop_breaker_ids, intval($i['hashtagid']));
 
         $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
-        $end_replica = !$input__selection && count($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput' => 42208, //No-Clone Hashtag
-        )));
         $found_trigger = null;
 
         foreach ($this->Chains->read(array(
@@ -931,11 +926,7 @@ class Chains extends CIdea_cache
                     'chainhandlecreator' => $handleid,
                     'chainhashtaginput' => $next_i['hashtagid'],
                 )))) {
-                if($end_replica){
-                    return $i['hashtagterm'];
-                } else {
-                    return $next_i['hashtagterm'];
-                }
+                return $next_i['hashtagterm'];
             }
 
             //Keep looking deeper:
@@ -952,6 +943,9 @@ class Chains extends CIdea_cache
             $current_previous = $i['hashtagid'];
             foreach (array_reverse($this->Chains->previoushashtag($handleid, $target_hashtagterm, $i['hashtagid'])) as $p_i) {
                 //Find the next siblings:
+                if($p_i['hashtagid']==$i['hashtagid']) {
+                    continue;
+                }
                 $next__url = $this->Chains->next_hashtags($handleid, $target_hashtagterm, $p_i, $current_previous, false, $target_completed);
                 if ($next__url) {
                     return $next__url;
