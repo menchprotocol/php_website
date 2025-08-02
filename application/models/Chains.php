@@ -882,13 +882,13 @@ class Chains extends CIdea_cache
     function next_hashtags($handleid, $target_hashtagterm, $i, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
-        /*
+
         foreach ($this->Hashtags->read(array(
             'LOWER(hashtagterm)' => strtolower($target_hashtagterm),
         )) as $i_new) {
             $i = $i_new;
         }
-        */
+
 
         if (count($loop_breaker_ids) > 0 && in_array($i['hashtagid'], $loop_breaker_ids)) {
             return null;
