@@ -3848,7 +3848,7 @@ function hashtag_cache($save_hashtagid, $str)
                         $CI->Chains->create(array(
                             'chainhandletype' => 4230, //Follow
                             'chainhandleinput' => 1326, //URL
-                            'chainhashtagoutput' => $added_e['handle_create']['handleid'],
+                            'chainhandleoutput' => $added_e['handle_create']['handleid'],
                             'chainvalue' => $word,
                         ));
 
