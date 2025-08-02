@@ -10,7 +10,7 @@ if(hashtag_is_startable($focus_i)){
         'chainhashtaginput' => $focus_i['hashtagid'],
         'chainhandlecreator' => $handle_session['handleid'],
     ), array('chainhashtagoutput')) as $discovery) {
-        $next__url = $this->Chains->next_hashtags($handle_session['handleid'], $discovery['hashtagterm'], $focus_i);
+        $next__url = $this->Chains->next_hashtags($handle_session['handleid'], $discovery['hashtagterm'], $discovery);
 
         //Go to URL:
         return get_redirected('/'.$discovery['hashtagterm'].'/'.($next__url ? $next__url : 'start' ));

@@ -3490,7 +3490,7 @@ class Controller extends CI_Controller
                 $hashtag_redirect_url = hashtag_redirect_url($primary_i);
             }
             if (!$hashtag_redirect_url) {
-                $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm'], $focus_i);
+                $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm']);
             }
 
             //All good:

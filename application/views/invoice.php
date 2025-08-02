@@ -211,7 +211,7 @@ foreach($this->Hashtags->read(array(
         //Find Next:
         $hashtag_redirect_url = hashtag_redirect_url($i);
         if(!$hashtag_redirect_url){
-            $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm'], $i);
+            $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm']);
         }
 
 

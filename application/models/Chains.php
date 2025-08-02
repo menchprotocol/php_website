@@ -878,16 +878,16 @@ class Chains extends CIdea_cache
     }
 
 
-    function next_hashtags($handleid, $target_hashtagterm, $i, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
+    function next_hashtags($handleid, $target_hashtagterm, $i=false, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
-        /*
-        foreach ($this->Hashtags->read(array(
-            'LOWER(hashtagterm)' => strtolower($target_hashtagterm),
-        )) as $i_new) {
-            $i = $i_new;
+        if(!$i){
+            foreach ($this->Hashtags->read(array(
+                'LOWER(hashtagterm)' => strtolower($target_hashtagterm),
+            )) as $i_new) {
+                $i = $i_new;
+            }
         }
-        */
 
         if (count($loop_breaker_ids) > 0 && in_array($i['hashtagid'], $loop_breaker_ids)) {
             return null;
@@ -896,6 +896,8 @@ class Chains extends CIdea_cache
 
         $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
         $found_trigger = null;
+
+
 
         foreach ($this->Chains->read(array(
             'chainhashtaginput' => $i['hashtagid'],
@@ -938,7 +940,7 @@ class Chains extends CIdea_cache
         }
 
 
-        if ($search_up && $target_hashtagterm != $i['hashtagterm']) {
+        if (0 && $search_up && $target_hashtagterm != $i['hashtagterm']) {
             //Check Previous/Up
             $current_previous = $i['hashtagid'];
             foreach (array_reverse($this->Chains->previoushashtag($handleid, $target_hashtagterm, $i['hashtagid'])) as $p_i) {
