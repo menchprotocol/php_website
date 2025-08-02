@@ -1097,7 +1097,6 @@ class Controller extends CI_Controller
 
             //Update new hashtag fields:
             $this->Hashtags->update($is[0]['hashtagid'], array(
-                'hashtagtext' => $_POST['save_hashtagtext'],
                 'hashtagtype' => $_POST['save_hashtagtype'],
             ), $handle_session['handleid']);
 
@@ -1348,14 +1347,22 @@ class Controller extends CI_Controller
         }
 
         //Update Text:
-        $text_updated = $this->Hashtags->update($is[0]['hashtagid'], array(
-            'hashtagtext' => trim($_POST['save_hashtagtext']),
-        ), $handle_session['handleid']);
+        if($_POST['save_hashtagid'] > 0){
+            $text_updated = $this->Hashtags->update($is[0]['hashtagid'], array(
+                'hashtagtext' => trim($_POST['save_hashtagtext']),
+            ), $handle_session['handleid']);
+            //Update variable:
+            $is = $this->Hashtags->read(array(
+                'hashtagid' => $_POST['save_hashtagid'],
+            ));
+        }
+
 
 
         foreach ($this->Hashtags->read(array(
             'hashtagid' => $is[0]['hashtagid'],
         )) as $new_i) {
+
             //Update Search Index:
             update_algolia(12273, $new_i['hashtagid']);
 
@@ -1369,6 +1376,7 @@ class Controller extends CI_Controller
                 'redirect_hashtag' => (isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null),
                 'message' => 'Success',
             ));
+
         }
 
     }
