@@ -1373,7 +1373,7 @@ class Controller extends CI_Controller
                 'save_hashtagid' => $is[0]['hashtagid'],
                 'save_hashtagtext' => trim($_POST['save_hashtagtext']),
                 'text_updated' => $text_updated,
-                'redirect_hashtag' => (isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null),
+                'redirect_hashtag' => ( !$focus__node && isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null),
                 'message' => 'Success',
             ));
 
