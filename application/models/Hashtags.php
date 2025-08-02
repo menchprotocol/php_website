@@ -151,7 +151,10 @@ class Hashtags extends CIdea_cache
         if (!count($hashtags_found)) {
             log_error('Hashtag #' . $chainid . ' not found in Hashtags table');
             return false;
-        } elseif (!count($this->Chains->read(array('chainid' => $chainid)))) {
+        } elseif (!count($this->Chains->read(array(
+            'chainid' => $chainid,
+            'chainvoid >=' => 0, //Any chain
+        )))) {
             log_error('Hashtag #' . $chainid . ' not found in Chains table');
             return false;
         }
@@ -191,7 +194,7 @@ class Hashtags extends CIdea_cache
                 }
             }
 
-            if (isset($update_columns['hashtagtext']) && !isset($update_columns['hashtagdiscover'])) {
+            if (isset($update_columns['hashtagtext'])) {
                 //Update Hashtag Text:
                 $hashtag_cache = hashtag_cache($chainid, $update_columns['hashtagtext']);
                 $update_columns['hashtagtext'] = $hashtag_cache['hashtagtext']; //May be updated
