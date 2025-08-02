@@ -1825,19 +1825,24 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     $('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
     load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, true);
 
-    //Load Chain addition info, if any:
-    if (next_hashtagid && $('.ui_hashtagterm_' + next_hashtagid).length) {
-        //Append to textarea:
-        insert_message = '#'+$('.ui_hashtagterm_'+next_hashtagid).val()+' ';
-    } else if (!next_hashtagid) {
-        //See where we are at and append anything needed to the hashtag:
-        var focus__node = parseInt($('#focus__node').val());
-        if (focus__node == 12273) {
-            insert_message = '#'+$('#focus_handle').val()+' ';
-        } else if (focus__node == 12274 && parseInt($('#focus__id').val()) != js_pl_id) {
-            insert_message = '@' + $('#focus_handle').val() + ' ';
+    if(hashtagid>0){
+        insert_message = $('.ui_hashtagtext_' + hashtagid).text();
+    } else {
+        //New idea:
+        if (next_hashtagid && $('.ui_hashtagterm_' + next_hashtagid).length) {
+            //Append to textarea:
+            insert_message = '#'+$('.ui_hashtagterm_'+next_hashtagid).val()+' ';
+        } else if (!next_hashtagid) {
+            //See where we are at and append anything needed to the hashtag:
+            var focus__node = parseInt($('#focus__node').val());
+            if (focus__node == 12273) {
+                insert_message = '#'+$('#focus_handle').val()+' ';
+            } else if (focus__node == 12274 && parseInt($('#focus__id').val()) != js_pl_id) {
+                insert_message = '@' + $('#focus_handle').val() + ' ';
+            }
         }
     }
+
 
     if (insert_message.length) {
         $("#modal31911 .save_hashtagtext").val(insert_message);
