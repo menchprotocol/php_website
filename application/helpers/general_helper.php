@@ -3789,6 +3789,7 @@ function hashtag_cache($save_hashtagid, $str)
     );
 
     $ui_template = array(
+        1326 => '<spanaa href="%s" target="_blank">%s</spanaa>', //Hashtags
         4228 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
         42337 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
         31835 => '<spanaa href="' . view_memory(42903, 42902) . '%s" data-toggle="popover" class="ref_handle">%s</spanaa>', //Handles
@@ -3838,9 +3839,8 @@ function hashtag_cache($save_hashtagid, $str)
                 if(!$newHandleTerm){
 
                     //Not found, create it:
-                    $newHandleTerm = 'URL '.random_string(8);
                     $added_e = $CI->Handles->create(array(
-                        'handlename' => $newHandleTerm,
+                        'handlename' => 'URL '.random_string(8),
                     ));
                     if ($added_e['status']) {
 
@@ -3860,7 +3860,7 @@ function hashtag_cache($save_hashtagid, $str)
                 //Handle Mention
                 $reference_type = 31835;
                 array_push($hashtag_references[$reference_type], '@'.$newHandleTerm);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $newHandleTerm, '@'.$newHandleTerm);
+                $hashtagdiscover_line .= @sprintf($ui_template[1326], $word, $word);
                 $hashtag_cache['hashtagtext'] .= '@'.$newHandleTerm;
                 $word_count++;
 
