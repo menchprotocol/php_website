@@ -4969,7 +4969,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     }
 
     //Display Hashtag media:
-
+    /*
     $ui .= '<div class="media_outer_frame hideIfEmpty">
                     <div id="media_outer_' . $i['hashtagid'] . '" class="media_frame media_frame_' . $i['hashtagid'] . ' hideIfEmpty"></div>
                     <div class="doclear">&nbsp;</div>
@@ -4977,6 +4977,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</div></div>';
 
     $ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['hashtagid'] . ', [\'#' . $i['hashtagid'] . '\'], \'.inner_uploader_' . $i['hashtagid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['hashtagid'] . '\', 43004, ' . $i['hashtagid'] . '); }, 144); }); </script>';
+    */
 
     if (strlen($input_ui)) {
         $ui .= '<div class="ignore-click input_ui input_ui_' . $i['hashtagid'] . '">' . $input_ui . '</div>';
