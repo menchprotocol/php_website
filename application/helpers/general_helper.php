@@ -3827,10 +3827,10 @@ function hashtag_cache($save_hashtagid, $str)
 
                 //Generic URL, Try to find:
                 $newHandleTerm = null;
-                foreach($this->Chains->read(array(
+                foreach($CI->Chains->read(array(
                     'chainvalue' => $word,
                     'chainhandleinput' => 1326, //URL
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 ), array('chainhandleoutput'), 0) as $x) {
                     $newHandleTerm = $x['handleterm'];
                 }
@@ -3839,13 +3839,13 @@ function hashtag_cache($save_hashtagid, $str)
 
                     //Not found, create it:
                     $newHandleTerm = 'URL '.random_string(8);
-                    $added_e = $this->Handles->create(array(
+                    $added_e = $CI->Handles->create(array(
                         'handlename' => $newHandleTerm,
                     ));
                     if ($added_e['status']) {
 
                         //Chain:
-                        $this->Chains->create(array(
+                        $CI->Chains->create(array(
                             'chainhandletype' => 4230, //Follow
                             'chainhandleinput' => 1326, //URL
                             'chainhashtagoutput' => $added_e['handle_create']['handleid'],
