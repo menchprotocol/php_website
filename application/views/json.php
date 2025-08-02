@@ -11,7 +11,7 @@ $count = 0;
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
 
-if($focus_i['hashtagterm']!='Discotique2024') {
+if($focus_i['hashtagterm']=='Discotique2024') {
 
     //Update
     $this->Chains->create(array(
@@ -91,7 +91,7 @@ if($focus_i['hashtagterm']!='Discotique2024') {
     ), $handle_session['handleid']);
     */
 
-} elseif($focus_i['hashtagterm']!='Discotique2025'){
+} elseif($focus_i['hashtagterm']=='Discotique2025'){
 
     //HANDLE
     $chainhandleoutput = array();
