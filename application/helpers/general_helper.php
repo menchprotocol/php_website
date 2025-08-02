@@ -5024,7 +5024,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
             //Next
             $handles___31777 = $CI->config->item('handles___31777');
-            $focus_menu = ($has_hashtag_discovered ? $m_target_bar : $handles___31777[hashtag_type_discovery($i)]);
+            $focus_menu = ( $has_hashtag_discovered || !isset($handles___31777[hashtag_type_discovery($i)]) ? $m_target_bar : $handles___31777[hashtag_type_discovery($i)]);
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="hashtag_discovered(0)" class="btn btn-sm post_button hashtag_discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
         } elseif ($chainhandletype_target_bar == 31022 && $discovery_mode && $focus__node && $handle_session && !count($x_completes) && !in_array($i['hashtagtype'], $CI->config->item('handleids___43009')) && !hashtag_required($i)) {
