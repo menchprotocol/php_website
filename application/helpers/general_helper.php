@@ -3826,21 +3826,21 @@ function hashtag_cache($save_hashtagid, $str)
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
                 //Generic URL, Try to find:
-                $newHandleName = null;
+                $newHandleTerm = null;
                 foreach($this->Chains->read(array(
                     'chainvalue' => $word,
                     'chainhandleinput' => 1326, //URL
                     'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                 ), array('chainhandleoutput'), 0) as $x) {
-                    $newHandleName = $x['handleterm'];
+                    $newHandleTerm = $x['handleterm'];
                 }
 
-                if(!$newHandleName){
+                if(!$newHandleTerm){
 
                     //Not found, create it:
-                    $newHandleName = 'URL '.random_string(8);
+                    $newHandleTerm = 'URL '.random_string(8);
                     $added_e = $this->Handles->create(array(
-                        'handlename' => $newHandleName,
+                        'handlename' => $newHandleTerm,
                     ));
                     if ($added_e['status']) {
 
@@ -3852,15 +3852,17 @@ function hashtag_cache($save_hashtagid, $str)
                             'chainvalue' => $word,
                         ));
 
-                        //Handle Mention
-                        $reference_type = 31835;
-                        array_push($hashtag_references[$reference_type], '@'.$added_e['handle_create']['handleterm']);
-                        $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $added_e['handle_create']['handleterm'], '@'.$added_e['handle_create']['handleterm']);
-                        $hashtag_cache['hashtagtext'] .= '@'.$added_e['handle_create']['handleterm'];
-                        $word_count++;
+                        $newHandleTerm = $added_e['handle_create']['handleterm'];
 
                     }
                 }
+
+                //Handle Mention
+                $reference_type = 31835;
+                array_push($hashtag_references[$reference_type], '@'.$newHandleTerm);
+                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], $newHandleTerm, '@'.$newHandleTerm);
+                $hashtag_cache['hashtagtext'] .= '@'.$newHandleTerm;
+                $word_count++;
 
             } elseif (view_valid_handle_handle($word, true)) {
 
