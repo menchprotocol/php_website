@@ -606,7 +606,7 @@ class Chains extends CIdea_cache
 
         //Bypass notifications?
         if (!count($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42256')) . ')' => null, //Writes
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Writes
             'chainhandleinput' => 31779, //Mandatory Emails
             'chainhashtagoutput' => $template_hashtagid,
         )))) {
