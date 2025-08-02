@@ -10,9 +10,69 @@ $count = 0;
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
+
 if($focus_i['hashtagterm']!='Discotique2024') {
 
     //Update
+    $this->Chains->create(array(
+        'chainhandletype' => 43513,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733119,
+        'chainhandleinput' => 1636421, //Discotique Leaders 25
+    ));
+    $this->Chains->create(array(
+        'chainhandletype' => 43513,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733121,
+        'chainhandleinput' => 27093, //Trusted
+    ));
+
+    foreach(array(1733023,
+                1733065,
+                1733070,
+                1733072,
+                1733074,
+                1733079,
+                1733084,
+                1733091,
+                1733110,
+                1733133,
+                1733135,
+                1733139,
+                1733143,
+                121321,
+                1733233,
+                1733259,
+                1733268,
+                1733349,
+                1733389,
+                1733408) as $required_hashtagid){
+        $this->Chains->create(array(
+            'chainhandletype' => 4983,
+            'chainhandlecreator' => 1,
+            'chainhashtagoutput' => $required_hashtagid,
+            'chainhandleinput' => 28239, //Required
+        ));
+    }
+
+    foreach(array(1733119,
+                1733121,
+                1733123,
+                1733125,
+                1733127,
+                1733129) as $daysofweek){
+        $this->Chains->create(array(
+            'chainhandletype' => 4983,
+            'chainhandlecreator' => 1,
+            'chainhashtagoutput' => $daysofweek,
+            'chainhandleinput' => 26189, //Required
+            'chainvalue' => 5,
+        ));
+    }
+
+    echo 'done done';
+
+    /*
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
@@ -29,6 +89,7 @@ if($focus_i['hashtagterm']!='Discotique2024') {
         'hashtagtext' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagtext']),
         'hashtagupdated' => 1,
     ), $handle_session['handleid']);
+    */
 
 } elseif($focus_i['hashtagterm']!='Discotique2025'){
 
