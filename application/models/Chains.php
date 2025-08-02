@@ -606,7 +606,7 @@ class Chains extends CIdea_cache
 
         //Bypass notifications?
         if (!count($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Writes
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42256')) . ')' => null, //Writes
             'chainhandleinput' => 31779, //Mandatory Emails
             'chainhashtagoutput' => $template_hashtagid,
         )))) {
@@ -882,13 +882,13 @@ class Chains extends CIdea_cache
     function next_hashtags($handleid, $target_hashtagterm, $i, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
-
+        /*
         foreach ($this->Hashtags->read(array(
             'LOWER(hashtagterm)' => strtolower($target_hashtagterm),
         )) as $i_new) {
             $i = $i_new;
         }
-
+        */
 
         if (count($loop_breaker_ids) > 0 && in_array($i['hashtagid'], $loop_breaker_ids)) {
             return null;
