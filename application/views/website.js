@@ -2051,6 +2051,7 @@ function hashtag_update() {
             ui_instant_select(4737, modify_data['save_hashtagtype'], modify_data['save_hashtagid'], modify_data['save_chainid'], false);
 
             //Update Handle & Href chains if needed:
+            /*
             if (old_handle != new_handle) {
                 if (on_focus__hashtag) {
                     //Refresh page since focus item handle changed:
@@ -2061,6 +2062,7 @@ function hashtag_update() {
                     $(".ui_hashtagterm_" + modify_data['save_hashtagid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
                 }
             }
+            */
 
             //Reset errors:
             has_unsaved_changes = false;
