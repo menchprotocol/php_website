@@ -43,7 +43,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     }
     */
 
-    foreach(array(1732986,1734976) as $required_hashtagid){
+    foreach(array(1734987,1733038) as $required_hashtagid){
         $this->Chains->create(array(
             'chainhandletype' => 4983,
             'chainhandlecreator' => 1,
