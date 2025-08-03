@@ -1368,7 +1368,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 1,
-                'return_hashtagdiscover_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node, $focus__node),
+                'return_hashtagdiscover_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node),
                 'return_hashtagdiscover_full' => hashtag_view($_POST['focus_group'], $new_i),
                 'save_hashtagid' => $is[0]['hashtagid'],
                 'save_hashtagtext' => trim($_POST['save_hashtagtext']),

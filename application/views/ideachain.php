@@ -407,8 +407,8 @@ echo '<div class="filter_right grey">'.(handle_session(12701) ? '<span class="ic
 
 
 //Table Header
-$row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 3px solid #999999; border-bottom: 0px solid #FFFFFF !important;">';
-$row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 3px solid #999999;">';
+$row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 3px solid #000000; border-bottom: 0px solid #FFFFFF !important;">';
+$row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 3px solid #000000;">';
 foreach ($this->config->item('handles___4341') as $chainhandletype => $m) {
     if($chainhandletype==4362 || in_array($chainhandletype, $this->config->item('handleids___6160'))){
         //Handle Cover:

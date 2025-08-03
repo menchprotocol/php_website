@@ -385,7 +385,7 @@ if(count($hashtag_query)){
     }
     tr.main__title{
         background-color: #CCCCCC !important;
-        border-top:1px solid #999999 !important;
+        border-top:1px solid #000000 !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;

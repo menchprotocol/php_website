@@ -1,6 +1,7 @@
 <?php
 
 $chainhandlecreator = ( $handle_session ? $handle_session['handleid'] : 14068 /* GUEST */ );
+
 //Log view:
 $this->Chains->create(array(
     'chainhandletype' => 1309378, //Hashtag Viewed
