@@ -3887,12 +3887,6 @@ function hashtag_cache($save_hashtagid, $str)
                             //Valid Handle
                             $reference_type = $chainhandletype;
                             array_push($hashtag_references[$reference_type], $word);
-
-                            //See what type of view to have:
-                            if(1){
-
-                            }
-
                             $hashtagdiscover_line .= @sprintf($ui_template[12274], substr($word, 2), $word);
                             $hashtag_cache['hashtagtext'] .= $word;
                             $word_count++;
