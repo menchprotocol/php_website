@@ -41,7 +41,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainvalue' => 5,
         ));
     }
-    */
+
 
     foreach(array(1734987,1733038) as $required_hashtagid){
         $this->Chains->create(array(
@@ -51,7 +51,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandleinput' => 28239, //Required
         ));
     }
-
+*/
 
 
     echo 'done done';
