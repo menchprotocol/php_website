@@ -458,7 +458,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                 'chainhandleinput' => 26189,
             ), array(), 1);
 
-            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . $i['hashtag_count_discovery'].(count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="'.$handles___11035[26189]['m__title'].'" style="border-bottom: 1px dotted #999;">/'.intval($max_available[0]['chainvalue']).'</span>' : '').'</span>'.$closer;
+            echo $opener.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. ( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'"><span class="icon-block-sm">'.$m['m__cover'].'</span><span>' . $i['hashtag_count_discovery'].(count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="'.$handles___11035[26189]['m__title'].'" style="border-bottom: 1px dotted #000000;">/'.intval($max_available[0]['chainvalue']).'</span>' : '').'</span>'.$closer;
 
         } else {
             //block
@@ -2743,7 +2743,7 @@ function chain_view($x)
 {
 
     $CI =& get_instance();
-    $row1 = '<tr width="100%" style="border-top: 1px solid #999999;">';
+    $row1 = '<tr width="100%" style="border-top: 1px solid #000000;">';
     $row2 = '<tr width="100%">';
     foreach ($CI->config->item('handles___4341') as $handleid => $m) {
 
@@ -3709,7 +3709,7 @@ function view_valid_handle_reverse_hashtag($string, $check_db = false)
 }
 
 
-function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__node = false)
+function view_hashtag_value($i, $handleid = 0, $focus__node = false)
 {
 
     if (!isset($i['hashtagid'])) {
@@ -3718,10 +3718,6 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
 
     //Append Custom Reference Chain contents, if any:
     $CI =& get_instance();
-
-    if ($replace_chains) {
-        $i['hashtagdiscover'] = str_replace('spanaa', 'a', $i['hashtagdiscover']);
-    }
 
     if ($handleid > 0) {
         foreach ($CI->Chains->read(array(
@@ -3752,7 +3748,7 @@ function view_hashtag_value($i, $handleid = 0, $replace_chains = true, $focus__n
     }
 
     return
-        $i['hashtagdiscover'] . view_hashtag_media($i) . ($focus__node || !substr_count($i['hashtagdiscover'], 'show_more_line') ? view_list_handle($i, !$replace_chains) : '');
+        $i['hashtagdiscover'] . view_hashtag_media($i) . ($focus__node || !substr_count($i['hashtagdiscover'], 'show_more_line') ? view_list_handle($i, !$focus__node) : '');
 }
 
 function hashtag_text2raw($hashtagterm, $hashtagtext){
@@ -3785,19 +3781,23 @@ function hashtag_cache($save_hashtagid, $str)
     );
 
     //All the possible reference types that can be found:
-    $hashtag_references = array(
-        4228 => array(), //Sequence Hashtags
-        42337 => array(), //Hashtag Antonym
-        31835 => array(), //Handle Mention
-    );
+    $hashtag_references = array();
+    foreach($CI->config->item('handles___1696899') as $chainhandletype => $m) {
+        $hashtag_references[$chainhandletype] = array();
+    }
 
     $ui_template = array(
-        1326 => '<spanaa href="%s" target="_blank">%s</spanaa>', //Hashtags
-        4228 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
-        42337 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
-        31835 => '<spanaa href="' . view_memory(42903, 42902) . '%s" data-toggle="popover" class="ref_handle">%s</spanaa>', //Handles
+        12273 => '<spanaa href="' . view_memory(42903, 33286) . '%s" data-toggle="popover" class="ref_hashtag">%s</spanaa>', //Hashtags
+        12274 => '<spanaa href="' . view_memory(42903, 42902) . '%s" data-toggle="popover" class="ref_handle">%s</spanaa>', //Handles
     );
 
+    foreach($CI->Chains->read(array(
+        'chainvalue' => $word,
+        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___1735577')) . ')' => null, //HANDLE DISPLAY
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+    ), array('chainhandleoutput'), 0) as $x) {
+        $newHandleTerm = $x['handleterm'];
+    }
 
     //See what we can find:
     $word_count = 0;
@@ -3861,46 +3861,68 @@ function hashtag_cache($save_hashtagid, $str)
                 }
 
                 //Handle Mention
-                $reference_type = 31835;
-                array_push($hashtag_references[$reference_type], '@'.$newHandleTerm);
-                $hashtagdiscover_line .= @sprintf($ui_template[1326], $word, $word);
-                $hashtag_cache['hashtagtext'] .= '@'.$newHandleTerm;
-                $word_count++;
-
-            } elseif (view_valid_handle_handle($word, true)) {
-
-                //Handle Mention
-                $reference_type = 31835;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $word = '@'.$newHandleTerm;
                 $hashtag_cache['hashtagtext'] .= $word;
-                $word_count++;
 
-            } elseif (view_valid_handle_hashtag($word, true)) {
+            }
 
-                //Hashtag
-                $reference_type = 4228;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
-                $hashtag_cache['hashtagtext'] .= $word;
-                $word_count++;
+            //Could be another reference, check:
+            $core_references = array('@','#');
+            if(in_array(substr($word,0, 1), $core_references) || in_array(substr($word,1, 1), $core_references)){
+                foreach($CI->config->item('handles___1696899') as $chainhandletype => $m) {
 
-            } elseif (view_valid_handle_reverse_hashtag($word, true)) {
+                    //Found a reference?
+                    $term = substr($word, strlen($m['m__cover']));
 
-                //Hashtag Antonym
-                $reference_type = 42337;
-                array_push($hashtag_references[$reference_type], $word);
-                $hashtagdiscover_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
-                $hashtag_cache['hashtagtext'] .= $word;
-                $word_count++;
+                    if(substr($word,0, strlen($m['m__cover']))==$m['m__cover'] && ctype_alnum($term)){
 
-            } else {
+                        //Valid reference, does it exist?
+                        $node_type = ( in_array($chainhandletype, $CI->config->item('handleids___4486')) ? 12273 : 12274 );
+                        $core_link = in_array($m['m__cover'], $core_references);
 
+                        if($node_type==12274 && count($CI->Handles->read(array(
+                                'LOWER(handleterm)' => strtolower($term),
+                            )))){
+
+                            //Valid Handle
+                            $reference_type = $chainhandletype;
+                            array_push($hashtag_references[$reference_type], $word);
+
+                            //See what type of view to have:
+                            if(1){
+
+                            }
+
+                            $hashtagdiscover_line .= @sprintf($ui_template[12274], substr($word, 2), $word);
+                            $hashtag_cache['hashtagtext'] .= $word;
+                            $word_count++;
+                            break;
+
+                        } elseif($node_type==12273 && count($CI->Hashtags->read(array(
+                                'LOWER(hashtagterm)' => strtolower($term),
+                            )))){
+
+                            //Valid Hashtag
+                            $reference_type = $chainhandletype;
+                            array_push($hashtag_references[$reference_type], $word);
+                            $hashtagdiscover_line .= @sprintf($ui_template[12273], substr($word, 2), $word);
+                            $hashtag_cache['hashtagtext'] .= $word;
+                            $word_count++;
+                            break;
+
+                        } else {
+
+                        }
+                    }
+
+                }
+            }
+
+            if(!$reference_type){
                 //This word is not referencing anything!
                 $hashtagdiscover_line .= htmlentities($word);
                 $hashtag_cache['hashtagtext'] .= $word;
                 $word_count++;
-
             }
         }
 
@@ -4060,7 +4082,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
 
 
         $coins_count[$chainhandletype] = hashtags_query($chainhandletype, $focus_i['hashtagid'], 0, false);
-        if (!$coins_count[$chainhandletype] && ($discovery_mode || in_array($chainhandletype, $CI->config->item('handleids___12144')))) {
+        if (!$coins_count[$chainhandletype] && $discovery_mode) {
             continue;
         }
 
@@ -4665,7 +4687,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, ($focus__node || 1), $focus__node) . '</div>';
+    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node) . '</div>';
 
     $hashtag_popup_url = hashtag_popup_url($i);
     if ($hashtag_popup_url) {
@@ -5139,7 +5161,7 @@ function view_hashtag_media($i)
         } elseif ($x['chainhandletype'] == 4260) {
 
             //Image
-            $template = '<img src="' . $x['chainvalue'] . '"></video>';
+            $template = '<img src="' . $x['chainvalue'] . '" />';
 
         } else {
             continue; //Should not happen!
