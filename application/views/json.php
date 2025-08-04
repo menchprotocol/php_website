@@ -161,6 +161,173 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 } else {
 
+
+    $table .= '<tr>';
+    $table .= '<td>ID</td>';
+    $table .= '<td>Type</td>';
+    $table .= '<td>NOW</td>';
+    $table .= '<td>FIXED</td>';
+    $table .= '<td>DELETE?</td>';
+    $table .= '</tr>';
+
+    $success = array(
+        1326 => 0,
+        4258 => 0,
+        4259 => 0,
+        4260 => 0,
+    );
+    $fail = array(
+        1326 => 0,
+        4258 => 0,
+        4259 => 0,
+        4260 => 0,
+    );
+    $fixed = array(
+        1326 => 0,
+        4258 => 0,
+        4259 => 0,
+        4260 => 0,
+    );
+    $delete = array(
+        1326 => 0,
+        4258 => 0,
+        4259 => 0,
+        4260 => 0,
+    );
+
+
+    foreach ($this->Chains->read(array(
+        'chainhandleinput IN (' . join(',', $this->config->item('handleids___1735577')) . ')' => null, //HANDLE DISPLAY
+        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+    ), array('chainhandleoutput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x) {
+
+        $must_delete = false;
+        $newchainvalue = '';
+
+        if ($x['chainhandleinput'] == 1326) {
+
+            if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
+                $success[$x['chainhandleinput']]++;
+            } else {
+                $fail[$x['chainhandleinput']]++;
+                //See if we can find it?
+                foreach ($this->Chains->read(array(
+                    'chainhandleoutput' => $x['chainhandleoutput'],
+                    'LENGTH(chainvalue) > 0' => null,
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                ), array('chainhandleinput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
+                    if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
+                        $fixed[$x['chainhandleinput']]++;
+                        $newchainvalue = $x2['chainvalue'];
+                        break;
+                    }
+                }
+            }
+
+        } elseif ($x['chainhandleinput'] == 4258) {
+
+            //Video
+            if(0){
+                $success[$x['chainhandleinput']]++;
+            } else {
+                $fail[$x['chainhandleinput']]++;
+                //See if we can find it?
+                foreach ($this->Chains->read(array(
+                    'chainhandleinput' => 42660, //Media Public ID
+                    'chainhandleoutput' => $x['chainhandleoutput'],
+                    'LENGTH(chainvalue) > 0' => null,
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                ), array('chainhandleoutput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
+                    $fixed[$x['chainhandleinput']]++;
+                    $newchainvalue = $x2['chainvalue'];
+                    break;
+                }
+            }
+
+        } elseif ($x['chainhandleinput'] == 4259) {
+
+            //Audio
+            if(0){
+                $success[$x['chainhandleinput']]++;
+            } else {
+                $fail[$x['chainhandleinput']]++;
+                //See if we can find it?
+                foreach ($this->Chains->read(array(
+                    'chainhandleinput' => 42693, //Secure URL
+                    'chainhandleoutput' => $x['chainhandleoutput'],
+                    'LENGTH(chainvalue) > 0' => null,
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                ), array('chainhandleoutput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
+                    if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
+                        $fixed[$x['chainhandleinput']]++;
+                        $newchainvalue = $x2['chainvalue'];
+                        break;
+                    }
+                }
+                if(!$newchainvalue){
+                    $must_delete = true;
+                }
+            }
+
+        } elseif ($x['chainhandleinput'] == 4260 && strlen($x['chainvalue'])) {
+
+            //Image
+            if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
+                $success[$x['chainhandleinput']]++;
+            } else {
+                $fail[$x['chainhandleinput']]++;
+                //See if we can find it?
+                foreach ($this->Chains->read(array(
+                    'chainhandleoutput' => $x['chainhandleoutput'],
+                    'LENGTH(chainvalue) > 0' => null,
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                ), array('chainhandleinput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
+                    if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
+                        $fixed[$x['chainhandleinput']]++;
+                        $newchainvalue = $x2['chainvalue'];
+                        break;
+                    }
+                }
+                if(!$newchainvalue){
+                    $must_delete = true;
+                }
+            }
+
+        } else {
+
+            //Delete chain:
+            //$this->Chains->delete($x['chainid']);
+
+        }
+
+
+
+        $table .= '<tr>';
+        $table .= '<td>'.$x['chainid'].'</td>';
+        $table .= '<td>'.$x['chainhandleinput'].'</td>';
+        $table .= '<td>'.$x['chainvalue'].'</td>';
+        $table .= '<td>'.$newchainvalue.'</td>';
+        $table .= '<td>'.( $must_delete ? 'DELETE' : '' ).'</td>';
+
+        $table .= '</tr>';
+
+        if($must_delete){
+            $delete[$x['chainhandleinput']]++;
+        }
+
+    }
+
+
+    echo 'Success:';
+    print_r($success);
+    echo '<hr />Fail:';
+    print_r($fail);
+    echo '<hr />Fixed:';
+    print_r($fixed);
+
+
+    exit;
+
     //HASHTAGS
     $table .= '<tr>';
     $table .= '<td>&nbsp;</td>';
