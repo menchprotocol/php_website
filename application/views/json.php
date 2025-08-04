@@ -230,7 +230,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         } elseif ($x['chainhandleinput'] == 4258) {
 
             //Video
-            if(0){
+            if(strlen($x['chainvalue'])){
                 $success[$x['chainhandleinput']]++;
             } else {
                 $fail[$x['chainhandleinput']]++;
