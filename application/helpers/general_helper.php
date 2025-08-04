@@ -3967,8 +3967,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
     }
 
 
-    $hashtag_cache['hashtagdiscover'] .= 'PP</div>';
-    $hashtag_cache['hashtagedit'] .= 'LL</div>';
+    $hashtag_cache['hashtagdiscover'] .= '</div>';
+    $hashtag_cache['hashtagedit'] .= '</div>';
 
 
     if (!intval($save_hashtagid) || 1) {
