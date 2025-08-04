@@ -202,7 +202,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     ), array('chainhandleoutput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x) {
 
         $must_delete = false;
-        $newchainvalue = '';
+        $newchainvalue = false;
 
         if ($x['chainhandleinput'] == 1326) {
 
@@ -221,6 +221,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                         $newchainvalue = $x2['chainvalue'];
                         break;
                     }
+                }
+                if(!$newchainvalue){
+                    $must_delete = true;
                 }
             }
 
@@ -241,6 +244,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                     $fixed[$x['chainhandleinput']]++;
                     $newchainvalue = $x2['chainvalue'];
                     break;
+                }
+                if(!$newchainvalue){
+                    $must_delete = true;
                 }
             }
 
@@ -295,6 +301,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         } else {
 
+            $must_delete = true;
+
             //Delete chain:
             //$this->Chains->delete($x['chainid']);
 
@@ -303,6 +311,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 
         $table .= '<tr>';
+
         $table .= '<td>'.$x['chainid'].'</td>';
         $table .= '<td>'.$x['chainhandleinput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.$x['chainvalue'].'</div></td>';
