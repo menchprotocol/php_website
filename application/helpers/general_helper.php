@@ -3849,7 +3849,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                             'LOWER(handleterm)' => strtolower($term),
                         )) as $handle) {
 
-                            $media_append_end = '';
+                            $media_append_end = false;
 
                             if ($m['m__cover'] == '@') {
 
@@ -3860,22 +3860,22 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                                     'chainhandleoutput' => $handle['handleid'],
                                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                                 ), array(), 0) as $x) {
-                                    if ($x['chainhandleinput'] == 1326 && strlen($x['chainvalue'])) {
+                                    if ($x['chainhandleinput'] == 1326) {
 
                                         //URL
                                         array_push($media_attachments, '<a href="' . $x['chainvalue'] . '" target="_blank">' . $x['chainvalue'] . '</a>');
 
-                                    } elseif ($x['chainhandleinput'] == 4258 && strlen($x['chainvalue'])) {
+                                    } elseif ($x['chainhandleinput'] == 4258) {
 
                                         //Video
                                         array_push($media_attachments, '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $handle['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
 
-                                    } elseif ($x['chainhandleinput'] == 4259 && strlen($x['chainvalue'])) {
+                                    } elseif ($x['chainhandleinput'] == 4259) {
 
                                         //Audio
                                         array_push($media_attachments, '<audio controls src="' . $x['chainvalue'] . '"></audio>');
 
-                                    } elseif ($x['chainhandleinput'] == 4260 && strlen($x['chainvalue'])) {
+                                    } elseif ($x['chainhandleinput'] == 4260) {
 
                                         //Image
                                         array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
@@ -3897,7 +3897,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
                                 if (count($media_attachments)) {
                                     //Replace the Entity:
-                                    $media_append_end = join('', $media_attachments);
+                                    $media_append_end = join(' ', $media_attachments);
                                 }
                             }
 
