@@ -253,7 +253,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         } elseif ($x['chainhandleinput'] == 4259) {
 
             //Audio
-            if(0){
+            if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
                 $success[$x['chainhandleinput']]++;
             } else {
                 $fail[$x['chainhandleinput']]++;
@@ -307,9 +307,16 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
             $must_delete = true;
 
-            //Delete chain:
-            //$this->Chains->delete($x['chainid']);
+        }
 
+
+        if(strlen($newchainvalue)){
+            $this->Chains->update($x['chainid'], array(
+                'chainvalue' => $newchainvalue,
+            ));
+        } elseif($must_delete){
+            //Delete chain:
+            $this->Chains->delete($x['chainid']);
         }
 
 
