@@ -285,9 +285,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 //See if we can find it?
                 foreach ($this->Chains->read(array(
                     'chainhandleoutput' => $x['chainhandleoutput'],
-                    'LENGTH(chainvalue) > 0' => null,
                     'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                ), array('chainhandleinput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
+                ), array('chainhandleinput'), 0) as $x2) {
                     if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
                         $fixed[$x['chainhandleinput']]++;
                         $newchainvalue = $x2['chainvalue'];
