@@ -233,8 +233,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         }
 
-        $chainvalue .= $x['chainvalue'];
-
         //Add Ideas:
         foreach ($this->Chains->read(array(
             'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
