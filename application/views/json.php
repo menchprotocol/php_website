@@ -275,7 +275,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 }
             }
 
-        } elseif ($x['chainhandleinput'] == 4260 && strlen($x['chainvalue'])) {
+        } elseif ($x['chainhandleinput'] == 4260) {
 
             //Image
             if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
