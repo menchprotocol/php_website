@@ -13,6 +13,51 @@ $table = '<table class="table table-sm table-striped stats-table mini-stats-tabl
 
 if($focus_i['hashtagterm']=='Discotique2024') {
 
+    $this->Chains->create(array(
+        'chainhandletype' => 7545,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733119,
+        'chainhandleinput' => 1637131,
+    )); //SUN
+    $this->Chains->create(array(
+        'chainhandletype' => 7545,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733121,
+        'chainhandleinput' => 1637191,
+    )); //MON
+    $this->Chains->create(array(
+        'chainhandletype' => 7545,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733123,
+        'chainhandleinput' => 1637200,
+    )); //TUE
+    $this->Chains->create(array(
+        'chainhandletype' => 7545,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733125,
+        'chainhandleinput' => 1637271,
+    )); //WED
+    $this->Chains->create(array(
+        'chainhandletype' => 7545,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733127,
+        'chainhandleinput' => 1637209,
+    )); //THU
+    $this->Chains->create(array(
+        'chainhandletype' => 7545,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733129,
+        'chainhandleinput' => 1637218,
+    )); //FRI
+    $this->Chains->create(array(
+        'chainhandletype' => 7545,
+        'chainhandlecreator' => 1,
+        'chainhashtagoutput' => 1733131,
+        'chainhandleinput' => 1637227,
+    )); //SAT
+
+
+
     //Update
     /*
     $this->Chains->create(array(
