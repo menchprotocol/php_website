@@ -3793,11 +3793,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
             $hashtagdiscover = null;
             $hashtagedit = null;
 
-            $hashtag_cache['hashtagchain'] .= (!$first_word ? ' ' : '');
-            $hashtag_cache['hashtagtext'] .= (!$first_word ? ' ' : '');
-            $hashtagdiscover = (!$first_word ? ' ' : '');
-            $hashtagedit = (!$first_word ? ' ' : '');
-
             if (filter_var($word_text, FILTER_VALIDATE_URL)) {
 
                 //Generic URL, Try to find:

@@ -247,42 +247,15 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $hashtagtext .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
         }
 
-
-        //Replace mentions?
-        foreach($this->Chains->read(array(
-            'chainhashtagoutput' => $x['chainhashtagoutput'],
-            'chainhandletype' => 31835, //Mentions
-        ), array('chainhandleinput')) as $x2){
-            //$hashtagtext = str_replace('@'.$x2['handleterm'].' ', '@'.$x2['handleid'].' ', $hashtagtext);
-        }
-
-
         //Append authors:
         foreach($this->Chains->read(array(
             'chainhashtagoutput' => $x['chainhashtagoutput'],
             'chainhandleinput NOT IN ('.$x['chainhandlecreator'].',1,2,32337)' => null,
             'chainhandletype' => 4983, //Authors
         ), array('chainhandleinput')) as $x2){
-
             $core_content .= "\n@".$x2['handleterm'];
-
-            if (filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)) {
-                //Create URL:
-                $hashtagtext .= "\n@".$x2['handleterm'];
-
-                //Create new URL:
-                /*
-                $added_e = $this->Handles->create(array(
-                    'handleterm' => 'URL'.$url_key,
-                    'handlename' => 'URL '.$url_key,
-                    'handlecover' => 'fas fa-browser',
-                ), $x['chainhandlecreator']);
-                $hashtagtext .= "\n@".$added_e['handle_create']['handleterm'];
-                */
-
-                $hashtagtext .= "\n@NEWURL".random_string(8);
-            } else {
-                $hashtagtext .= "\n@".$x2['handleterm'].( strlen($x2['chainvalue']) > 0 ? " ".$x2['chainvalue'] : "" );
+            if (strlen($x2['chainvalue'] > 0)) {
+                $core_content .= " ".$x2['chainvalue'];
             }
         }
 
@@ -341,11 +314,11 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
 
-        $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($hashtagtext))).'</div></td>'; //INPUT
+        $table .= '<td><div style="max-width:233px;">'.nl2br($hashtagtext).'</div></td>'; //INPUT
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagchain']).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagtext']).'</div></td>'; //TEXT
-        $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
-        $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
+        $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
+        $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
         $table .= '</tr>';
 
     }
