@@ -310,11 +310,11 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         }
 
 
-        if(strlen($newchainvalue)){
+        if(strlen($newchainvalue) && 0){
             $this->Chains->update($x['chainid'], array(
                 'chainvalue' => $newchainvalue,
             ));
-        } elseif($must_delete){
+        } elseif($must_delete && 0){
             //Delete chain:
             $this->Chains->delete($x['chainid']);
         }
