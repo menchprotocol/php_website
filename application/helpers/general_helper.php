@@ -3972,6 +3972,10 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
     }
 
 
+    $hashtag_cache['hashtagdiscover'] .= '</div>';
+    $hashtag_cache['hashtagedit'] .= '</div>';
+
+
     if (!intval($save_hashtagid) || 1) {
         //Nothing else we need to do:
         //TODO Remove later
