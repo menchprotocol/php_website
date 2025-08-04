@@ -294,7 +294,12 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                     }
                 }
                 if(!$newchainvalue){
-                    $must_delete = true;
+                    if(filter_var($x['handlecover'], FILTER_VALIDATE_URL)){
+                        $fixed[$x['chainhandleinput']]++;
+                        $newchainvalue = $x['handlecover'];
+                    } else {
+                        $must_delete = true;
+                    }
                 }
             }
 
