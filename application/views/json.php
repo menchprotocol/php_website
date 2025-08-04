@@ -317,6 +317,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
     }
 
+    $table .= '</table>';
+
 
     echo 'Success:';
     print_r($success);
@@ -324,7 +326,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     print_r($fail);
     echo '<hr />Fixed:';
     print_r($fixed);
-
+    echo $table;
 
     exit;
 
