@@ -4664,10 +4664,8 @@ main {
 .ref_handle,
 .handle-featured u,
 .handle-featured a,
-.handle-featured spanaa,
 .i_cache u,
-.i_cache a,
-.i_cache spanaa{
+.i_cache a{
     color: #007AFD !important;
     text-decoration: none !important;
 }

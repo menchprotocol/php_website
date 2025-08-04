@@ -20,7 +20,7 @@ foreach($this->Chains->read(array(
     'chainhandleinput' => $website_id,
 ), array('chainhashtagoutput'), 1, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $primary_i){
 
-    echo ' <script> $(document).ready(function () { show_more('.$primary_i['hashtagid'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_hashtag_title($primary_i, true)).'\'); }); </script> ';
+    echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_hashtag_title($primary_i, true)).'\'); }); </script> ';
 
     echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_hashtag_title($primary_i, true) . '</h1>';
 

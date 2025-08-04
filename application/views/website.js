@@ -2090,11 +2090,6 @@ function hashtag_update() {
 
             }
 
-            //Show more if on focus hashtag:
-            if (on_focus__hashtag) {
-                show_more(modify_data['save_hashtagid']);
-            }
-
             if (modify_data['save_chainid'] && modify_data['save_chainvalue'] != 'IGNORE_INPUT') {
                 $('.ui_chainvalue_' + modify_data['save_chainid']).text(modify_data['save_chainvalue']);
             }
@@ -2959,11 +2954,6 @@ function search_enabled() {
 }
 
 
-function show_more(hashtagid) {
-    console.log('SHOW MORE #' + hashtagid);
-    $('.cache_frame_' + hashtagid + ' .line, .cache_frame_' + hashtagid + ' .inner_line').removeClass('hidden');
-    $('.cache_frame_' + hashtagid + ' .show_more_line').addClass('hidden');
-}
 
 function set_autosize(theobject) {
     autosize(theobject);
