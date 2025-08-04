@@ -3860,7 +3860,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                                     'chainhandleoutput' => $handle['handleid'],
                                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                                 ), array(), 0) as $x) {
-                                    if ($x['chainhandleinput'] == 1326 && filter_var($x['chainvalue'], FILTER_VALIDATE_URL)) {
+                                    if ($x['chainhandleinput'] == 1326 && strlen($x['chainvalue'])) {
 
                                         //URL
                                         array_push($media_attachments, '<a href="' . $x['chainvalue'] . '" target="_blank">' . $x['chainvalue'] . '</a>');
@@ -3870,12 +3870,12 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                                         //Video
                                         array_push($media_attachments, '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $handle['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
 
-                                    } elseif ($x['chainhandleinput'] == 4259 && filter_var($x['chainvalue'], FILTER_VALIDATE_URL)) {
+                                    } elseif ($x['chainhandleinput'] == 4259 && strlen($x['chainvalue'])) {
 
                                         //Audio
                                         array_push($media_attachments, '<audio controls src="' . $x['chainvalue'] . '"></audio>');
 
-                                    } elseif ($x['chainhandleinput'] == 4260 && filter_var($x['chainvalue'], FILTER_VALIDATE_URL)) {
+                                    } elseif ($x['chainhandleinput'] == 4260 && strlen($x['chainvalue'])) {
 
                                         //Image
                                         array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
@@ -3883,14 +3883,14 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                                     } else {
 
                                         //Invalid value:
-                                        log_error('ERROR: [' . $x['chainvalue'] . '] is an invalid chainvalue for media type @' . $x['chainhandleinput'] . ' for handle @' . $handle['handleid'], array(
+                                        log_error('ERROR: [' . $x['chainvalue'] . '] is an invalid chainvalue for media type @' . $x['chainhandleinput'] . ' for handle @' . $handle['handleid'].' - Consider deleting?', array(
                                             'chainvalue' => $x['chainvalue'],
                                             'chainhandleinput' => $x['chainhandleinput'],
                                             'chainhandleoutput' => $handle['handleid'],
                                         ));
 
                                         //Delete chain:
-                                        $this->Chains->delete($x['chainid']);
+                                        //$this->Chains->delete($x['chainid']);
 
                                     }
                                 }
@@ -3967,8 +3967,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
     }
 
 
-    $hashtag_cache['hashtagdiscover'] .= '</div>';
-    $hashtag_cache['hashtagedit'] .= '</div>';
+    $hashtag_cache['hashtagdiscover'] .= 'PP</div>';
+    $hashtag_cache['hashtagedit'] .= 'LL</div>';
 
 
     if (!intval($save_hashtagid) || 1) {
