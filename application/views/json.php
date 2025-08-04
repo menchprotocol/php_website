@@ -366,6 +366,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     $table .= '<td><div style="max-width:233px;">hashtagtext</div></td>'; //TEXT
     $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
     $table .= '<td><div style="max-width:233px;">hashtagedit</div></td>'; //EDITOR
+    $table .= '<td><div style="max-width:233px;">ARAY</div></td>'; //EDITOR
     $table .= '</tr>';
 
     $chainhashtagoutput = array();
@@ -516,6 +517,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagtext']).'</div></td>'; //TEXT
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
+        $table .= '<td><div style="max-width:233px;">'.print_r($hashtag_cache, true).'</div></td>'; //EDIT
         $table .= '</tr>';
 
     }
