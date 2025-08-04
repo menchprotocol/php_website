@@ -75,7 +75,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     ), $handle_session['handleid']);
     */
 
-} elseif($focus_i['hashtagterm']=='Discotique2025'){
+} elseif($focus_i['hashtagterm']=='Discotique2025') {
 
     //HANDLE
     $chainhandleoutput = array();
@@ -89,13 +89,13 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         'handles_valid_cachevoid' => 0,
     );
 
-    foreach($this->Chains->read(array(
+    foreach ($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12274,
-    ), array(), 377, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 377, 0, array('chainid' => 'ASC')) as $x) {
 
         $is_duplicate = in_array($x['chainhandleoutput'], $chainhandleoutput);
-        if(!$is_duplicate){
+        if (!$is_duplicate) {
             array_push($chainhandleoutput, $x['chainhandleoutput']);
         } else {
             $stats['handles_duplicate']++;
@@ -110,24 +110,24 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         ));
 
         $stats['handles_all']++;
-        if($x['chainvoid']>0){
+        if ($x['chainvoid'] > 0) {
             $stats['handles_void']++;
-        } elseif(!count($es)){
+        } elseif (!count($es)) {
             $stats['handles_voidcreaetor']++;
         }
-        if($x['chainvoid']>0 && count($es_cache)){
+        if ($x['chainvoid'] > 0 && count($es_cache)) {
             $stats['handles_void_cachevalid']++;
         }
-        if(!$x['chainvoid'] && !count($es_cache)){
+        if (!$x['chainvoid'] && !count($es_cache)) {
             $stats['handles_valid_cachevoid']++;
         }
 
 
         //Fetch from Cache table:
-        if(count($es_cache)){
-            $hashtagtext = '@'.$es_cache[0]['handleterm']."\n".$es_cache[0]['handlename']."\n".$es_cache[0]['handlecover'];
+        if (count($es_cache)) {
+            $hashtagtext = '@' . $es_cache[0]['handleterm'] . "\n" . $es_cache[0]['handlename'] . "\n" . $es_cache[0]['handlecover'];
         } else {
-            $hashtagtext = '@???'.$x['chainvalue']."\n".$x['chainvalue']."\nfar fa-handle";
+            $hashtagtext = '@???' . $x['chainvalue'] . "\n" . $x['chainvalue'] . "\nfar fa-handle";
         }
 
         //Append Description if any
@@ -137,30 +137,31 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandleoutput' => $x['chainhandleoutput'],
             'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
         ), array(), 0, 0) as $social_chain) {
-            $hashtagtext .= "\n".$social_chain['chainvalue'];
+            $hashtagtext .= "\n" . $social_chain['chainvalue'];
         }
 
-        $delete = $x['chainvoid']>0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
-        if($delete){
+        $delete = $x['chainvoid'] > 0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
+        if ($delete) {
             $stats['handles_delete']++;
         }
 
         $table .= '<tr>';
-        $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
-            ( $delete ? '[DELETE]' : '' ).
-            ( $x['chainvoid']>0 ? '[VOID]' : '' ).
-            ( $is_duplicate ? '[DUPLICATE]' : '' ).
-            ( !$x['chainvoid'] && !count($es) ? '[handles_voidcreaetor]' : '' ).
-            ( !$x['chainvoid'] && !count($es_cache) ? '[handles_valid_cachevoid]' : '' ).
+        $table .= '<td>' . $x['chainid'] . '<br />V' . $x['chainvoid'] . '/' . $count . '/' .
+            ($delete ? '[DELETE]' : '') .
+            ($x['chainvoid'] > 0 ? '[VOID]' : '') .
+            ($is_duplicate ? '[DUPLICATE]' : '') .
+            (!$x['chainvoid'] && !count($es) ? '[handles_voidcreaetor]' : '') .
+            (!$x['chainvoid'] && !count($es_cache) ? '[handles_valid_cachevoid]' : '') .
             '</td>';
-        $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />@'.$x['chainhandleoutput'].'</td>';
-        $table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($hashtagtext))).'</div></td>';
+        $table .= '<td>T@' . $x['chainhandletype'] . '<br />C@' . $x['chainhandlecreator'] . '<br />@' . $x['chainhandleoutput'] . '</td>';
+        $table .= '<td><div style="max-width:233px;">' . nl2br(trim(htmlentities($hashtagtext))) . '</div></td>';
         //$table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($hashtagtext))).'</div></td>';
         $table .= '</tr>';
     }
 
-} else {
+} elseif(0){
 
+    //Scan/Fix 3x Media Links
 
     $table .= '<tr>';
     $table .= '<td>ID</td>';
@@ -350,7 +351,11 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     print_r($delete);
     echo $table;
 
-    exit;
+} else {
+
+
+
+
 
     //HASHTAGS
     $table .= '<tr>';
