@@ -315,7 +315,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '<td>'.$x['chainid'].'</td>';
         $table .= '<td>'.$x['chainhandleinput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.$x['chainvalue'].'</div></td>';
-        $table .= '<td><div style="max-width:233px;">'.( strlen($newchainvalue) ?  ).$newchainvalue.'</div></td>';
+        $table .= '<td><div style="max-width:233px;">'.( strlen($newchainvalue) ? 'FIXED: ' : '' ).$newchainvalue.'</div></td>';
         $table .= '<td>'.( $must_delete ? 'DELETE' : '' ).'</td>';
 
         $table .= '</tr>';
