@@ -3752,7 +3752,7 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false)
 }
 
 
-function hashtag_cache($save_hashtagid, $hashtagtext)
+function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $replace_term = 0, $findterm = null, $replaceterm = null)
 {
 
     //Display Images, Audio, Video & PDF Files:
@@ -3767,9 +3767,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
     //All the possible reference types that can be found:
     $hashtag_references = array();
-    foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
-        $hashtag_references[$chainhandletype] = array();
-    }
+    $chainkey = 0;
 
     //See what we can find:
     foreach (explode("\n", $hashtagtext) as $line_count => $line) {
@@ -3777,6 +3775,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
         $first_line = !$line_count;
         $words = explode(' ', trim($line));
         $only_word_in_line = count($words) == 1;
+        $second_word_onwards = null;
 
         $hashtag_cache['hashtagchain'] .= (!$first_line ? "\n" : '');
         $hashtag_cache['hashtagtext'] .= (!$first_line ? "\n" : '');
@@ -3785,9 +3784,12 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
         foreach ($words as $word_count => $word_text) {
 
+
             $reference_type = 0;
             $first_word = !$word_count;
-
+            if(!$first_word){
+                $second_word_onwards .= ( strlen($second_word_onwards) ? ' ' : '' ).$word_text;
+            }
             $hashtagchain = null;
             $hashtagtext = null;
             $hashtagdiscover = null;
@@ -3845,10 +3847,15 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
                     if (!in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
+                        if($replace_term==12274 && strtolower($term)==$findterm && ctype_alnum($replace_term)){
+                            $term = $replace_term;
+                            $word_text = $m['m__cover'].$term;
+                        }
+
+                        //Handle Reference
                         foreach ($CI->Handles->read(array(
                             'LOWER(handleterm)' => strtolower($term),
                         )) as $handle) {
-
 
                             $media_append_end = false;
 
@@ -3904,7 +3911,18 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
                             //Valid Handle
                             $reference_type = $chainhandletype;
-                            array_push($hashtag_references[$reference_type], $handle);
+                            if($save_hashtagid>0 && $chainhandlecreator>0){
+                                $chainkey++;
+                                $hashtag_references[($chainkey-1)] = array(
+                                    'chainhandletype' => $chainhandletype,
+                                    'chainhandleinput' => $handle['handleid'],
+                                    'chainhandleoutput' => 0,
+                                    'chainhashtaginput' => $save_hashtagid,
+                                    'chainhashtagoutput' => $save_hashtagid, //TODO could be removed later must check all references
+                                    'chainvalue' => ( $first_word && strlen($second_word_onwards) ? $second_word_onwards : null ),
+                                    'chainkey' => $chainkey,
+                                );
+                            }
 
                             $hashtagchain = $m['m__cover'] . $handle['handleid'];
                             $hashtagtext = $word_text;
@@ -3919,6 +3937,11 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
                     } else {
 
+                        if($replace_term==12273 && strtolower($term)==$findterm && ctype_alnum($replace_term)){
+                            $term = $replace_term;
+                            $word_text = $m['m__cover'].$term;
+                        }
+
                         //Hashtag reference:
                         foreach ($CI->Hashtags->read(array(
                             'LOWER(hashtagterm)' => strtolower($term),
@@ -3926,7 +3949,19 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
                             //Valid Hashtag
                             $reference_type = $chainhandletype;
-                            array_push($hashtag_references[$reference_type], $hashtag);
+
+                            if($save_hashtagid>0 && $chainhandlecreator>0){
+                                $chainkey++;
+                                $hashtag_references[($chainkey-1)] = array(
+                                    'chainhandletype' => $chainhandletype,
+                                    'chainhandleinput' => 0,
+                                    'chainhandleoutput' => 0,
+                                    'chainhashtaginput' => $save_hashtagid,
+                                    'chainhashtagoutput' => $hashtag['hashtagid'],
+                                    'chainkey' => $chainkey,
+                                    'chainvalue' => null,
+                                );
+                            }
 
                             $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
                             $hashtagtext = $word_text;
@@ -3970,91 +4005,44 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
     $hashtag_cache['hashtagedit'] .= '</div>';
 
 
-    if (!intval($save_hashtagid) || 1) {
+    if (!intval($chainhandlecreator)) {
         //Nothing else we need to do:
-        //TODO Remove later
         return $hashtag_cache;
     }
 
     //Save Found references to remove the ones who exist in DB:
-    $references_add_to_db = $hashtag_references;
-    $handle_session = handle_session();
+    $chainkey = 0;
+
     foreach ($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___4736')) . ')' => null, //Hashtag Message Chains 3x
-        'chainhashtagoutput' => $save_hashtagid,
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___1696899')) . ')' => null, //All possible refereces
+        'chainhashtaginput' => intval($save_hashtagid),
     )) as $x) {
 
-        //Is this still valid?
-        if (!in_array($x['chainvalue'], $hashtag_references[$x['chainhandletype']])) {
+        //What should happen here?
+        $chainkey++;
 
-            //Not valid, must be removed:
-            $CI->Chains->delete($x['chainid'], $handle_session['handleid']);
+        if(!isset($hashtag_references[($chainkey-1)])){
+            //Must be removed:
+            $CI->Chains->delete($x['chainid']);
+            continue;
+        }
 
-        } else {
-
-            //Remove from add new to DB list (Since we dont need to add this):
-            foreach ($references_add_to_db[$x['chainhandletype']] as $key => $val) {
-                if ($val == $x['chainvalue']) {
-                    unset($references_add_to_db[$x['chainhandletype']][$key]);
-                    break;
-                }
+        //We have it, see if it matches or needs updating:
+        foreach($hashtag_references[($chainkey-1)] as $key => $value){
+            if($x[$key]!=$value){
+                //Updating needed:
+                $hashtag_references[($chainkey-1)]['chainhandlecreator'] = $chainhandlecreator;
+                $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey-1)]);
+                break;
             }
         }
     }
 
-    //Add whatever was not found to DB:
-    foreach ($references_add_to_db as $db_type => $db_vals) {
-        foreach ($db_vals as $db_val) {
-
-            //Additional Handle/hashtag reference?
-            $chainhashtaginput = 0;
-            $chainhandleinput = 0;
-            $chainvalue = '';
-
-            if ($db_type == 4228) {
-                $chainhandletype = 4228;
-                foreach ($CI->Hashtags->read(array(
-                    'LOWER(hashtagterm)' => strtolower(substr($db_val, 1)),
-                )) as $target) {
-                    $chainhashtaginput = $target['hashtagid'];
-                }
-            } elseif ($db_type == 42337) {
-                $chainhandletype = 42337;
-                foreach ($CI->Hashtags->read(array(
-                    'LOWER(hashtagterm)' => strtolower(substr($db_val, 2)),
-                )) as $target) {
-                    $chainhashtaginput = $target['hashtagid'];
-                }
-            } elseif ($db_type == 31835) {
-                $chainhandletype = 31835;
-                foreach ($CI->Handles->read(array(
-                    'LOWER(handleterm)' => strtolower(substr($db_val, 1)),
-                )) as $target) {
-                    $chainhandleinput = $target['handleid'];
-                }
-            } else {
-                $chainhandletype = $db_type; //Message URLs
-                $handle_session = handle_session();
-                $chainhandleinput = ($handle_session ? $handle_session['handleid'] : 14068);
-                foreach ($CI->Chains->read(array(
-                    'chainid' => $save_hashtagid,
-                ), array()) as $x) {
-                    $chainhandleinput = $x['chainhandleinput'];
-                    break;
-                }
-                $chainvalue = $db_val;
-            }
-
-            $CI->Chains->create(array(
-                'chaintime' => hashtag_creation_time($save_hashtagid),
-                'chainhandletype' => $chainhandletype,
-                'chainhandlecreator' => $handle_session['handleid'],
-                'chainvalue' => $chainvalue,
-                'chainhashtagoutput' => $save_hashtagid,
-                'chainhashtaginput' => $chainhashtaginput,
-                'chainhandleinput' => $chainhandleinput,
-            ));
-
+    //Any more links left that were not in DB?
+    for($i=$chainkey;$i<=count($hashtag_references);$i++){
+        if(isset($hashtag_references[$i])){
+            $hashtag_references[$i]['chainhandlecreator'] = $chainhandlecreator;
+            $CI->Chains->create($hashtag_references[$i]);
         }
     }
 

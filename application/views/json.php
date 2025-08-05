@@ -491,7 +491,17 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $stats['hashtags_delete']++;
         }
 
-        $hashtag_cache = hashtag_cache(0, $hashtagtext);
+        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
+
+        $this->Hashtags->update($x['chainhashtagoutput'], array(
+            'hashtagupdated' => 1,
+            'hashtagtext' => $hashtag_cache['hashtagtext'],
+            'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
+            'hashtagedit' => $hashtag_cache['hashtagedit'],
+        ));
+        $this->Chains->update($x['chainhashtagoutput'], array(
+            'chainvalue' => $hashtag_cache['hashtagchain'],
+        ));
 
         $table .= '<tr>';
 
@@ -514,16 +524,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
         $table .= '</tr>';
-
-        $this->Hashtags->update($x['chainhashtagoutput'], array(
-            'hashtagupdated' => 1,
-            'hashtagtext' => $hashtag_cache['hashtagtext'],
-            'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
-            'hashtagedit' => $hashtag_cache['hashtagedit'],
-        ));
-        $this->Chains->update($x['chainhashtagoutput'], array(
-            'chainvalue' => $hashtag_cache['hashtagchain'],
-        ));
 
     }
 

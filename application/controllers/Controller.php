@@ -508,48 +508,39 @@ class Controller extends CI_Controller
             ));
         }
 
-        $dd = add_media($uploaded_media);
+        //$dd = add_media($uploaded_media);
 
         $hashtagid = 0; //New hashtag
         $hashtagtype = intval($_POST['current_hashtagtype']);
         $created_hashtagid = 0;
 
-        if ($_POST['hashtagid'] > 0) {
-
-            $is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['hashtagid'],
+        if (!$_POST['hashtagid']) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Hashtag Media ID!',
             ));
-            if (!count($is)) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Hashtag is no longer active',
-                ));
-            } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'You are missing permission to edit this hashtag',
-                ));
-            }
-
-
-            $hashtagid = intval($is[0]['hashtagid']);
-            if (!$hashtagtype) {
-                $hashtagtype = intval($is[0]['hashtagtype']);
-            }
-
-        } else {
-
-            //Create a new hashtag:
-            $hashtag_new = $this->Hashtags->create(array(
-                'hashtagtext' => null,
-                'hashtagtype' => $_POST['current_hashtagtype'],
-            ), $handle_session['handleid']);
-
-            $hashtagid = $hashtag_new['hashtag_create']['hashtagid'];
-            $created_hashtagid = $hashtagid;
-
         }
 
+        $is = $this->Hashtags->read(array(
+            'hashtagid' => $_POST['hashtagid'],
+        ));
+        if (!count($is)) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Hashtag is no longer active',
+            ));
+        } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You are missing permission to edit this hashtag',
+            ));
+        }
+
+
+        $hashtagid = intval($is[0]['hashtagid']);
+        if (!$hashtagtype) {
+            $hashtagtype = intval($is[0]['hashtagtype']);
+        }
 
         //Fetch dynamic data based on hashtag type:
         $return_inputs = array();
@@ -682,41 +673,34 @@ class Controller extends CI_Controller
         $hashtagtype = intval($_POST['current_hashtagtype']);
         $created_hashtagid = 0;
 
-        if ($_POST['hashtagid'] > 0) {
-
-            $is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['hashtagid'],
+        if (!$_POST['hashtagid']) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Hashtag ID!',
             ));
-            if (!count($is)) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Hashtag is no longer active',
-                ));
-            } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'You are missing permission to edit this hashtag',
-                ));
-            }
-
-
-            $hashtagid = intval($is[0]['hashtagid']);
-            if (!$hashtagtype) {
-                $hashtagtype = intval($is[0]['hashtagtype']);
-            }
-
-        } else {
-
-            //Create a new hashtag:
-            $hashtag_new = $this->Hashtags->create(array(
-                'hashtagtext' => null,
-                'hashtagtype' => $_POST['current_hashtagtype'],
-            ), $handle_session['handleid']);
-
-            $hashtagid = $hashtag_new['hashtag_create']['hashtagid'];
-            $created_hashtagid = $hashtagid;
-
         }
+
+        $is = $this->Hashtags->read(array(
+            'hashtagid' => $_POST['hashtagid'],
+        ));
+        if (!count($is)) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Hashtag is no longer active',
+            ));
+        } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You are missing permission to edit this hashtag',
+            ));
+        }
+
+
+        $hashtagid = intval($is[0]['hashtagid']);
+        if (!$hashtagtype) {
+            $hashtagtype = intval($is[0]['hashtagtype']);
+        }
+
 
 
         //Fetch dynamic data based on hashtag type:
@@ -1095,80 +1079,71 @@ class Controller extends CI_Controller
                 ));
             }
 
-            //Update new hashtag fields:
-            $this->Hashtags->update($is[0]['hashtagid'], array(
+            $update_array = array(
                 'hashtagtype' => $_POST['save_hashtagtype'],
-            ), $handle_session['handleid']);
+            );
 
-            //Update variable:
-            $is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['save_hashtagid'],
-            ));
+            if (strtolower($is[0]['hashtagterm']) !== strtolower(trim($_POST['save_hashtagterm']))) {
+                $validate_update_handle = validate_update_handle($_POST['save_hashtagterm'], $is[0]['hashtagid'], null);
+                if (!$validate_update_handle['status']) {
+                    return view_json(array(
+                        'status' => 0,
+                        'message' => $validate_update_handle['message'],
+                    ));
+                }
+                $update_array['hashtagterm'] = $_POST['save_hashtagterm'];
+            }
+
+            if ($is[0]['hashtagtext'] !== trim($_POST['save_hashtagtext'])) {
+                if (!strlen(trim($_POST['save_hashtagtext']))) {
+                    //Since we do not have media, we must have a message:
+                    return view_json(array(
+                        'status' => 0,
+                        'message' => 'Write something to save.',
+                    ));
+                }
+                $update_array['hashtagtext'] = $_POST['save_hashtagtext'];
+            }
+
+            //Update new hashtag fields:
+            $this->Hashtags->update($is[0]['hashtagid'], $update_array, $handle_session['handleid']);
+
+
+            if (isset($update_array['hashtagterm'])) {
+
+                //Now Handles everywhere they are referenced:
+                foreach ($this->Chains->read(array(
+                    'chainhashtagoutput' => $is[0]['hashtagid'],
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
+                ), array('chainhashtaginput')) as $ref) {
+
+                    //Redo their cache:
+                    $hashtag_cache = hashtag_cache($ref['hashtagid'], $ref['hashtagtext'], 0, $is[0]['hashtagterm'], $update_array['hashtagterm']);
+
+                    $update_columns = array();
+
+                    if($update_columns['hashtagtext']!=$hashtag_cache['hashtagtext']){
+                        $update_columns['hashtagtext'] = $hashtag_cache['hashtagtext'];
+                    }
+                    if($update_columns['hashtagdiscover']!=$hashtag_cache['hashtagdiscover']){
+                        $update_columns['hashtagdiscover'] = $hashtag_cache['hashtagdiscover'];
+                    }
+                    if($update_columns['hashtagedit']!=$hashtag_cache['hashtagedit']){
+                        $update_columns['hashtagedit'] = $hashtag_cache['hashtagedit'];
+                    }
+
+                    if(count($update_columns)){
+                        //We should update:
+                        $this->db->where('hashtagid', $ref['hashtagid']);
+                        $this->db->update('ideachainhashtags', $update_columns);
+                    }
+                }
+
+            }
 
         } else {
 
             $focus__node = false;
-
-            //See if references only:
-            if (strlen($_POST['save_hashtagtext']) && !substr_count($_POST['save_hashtagtext'], "\n") && (intval($_POST['next_hashtagid']))) {
-
-                $all_hashtags = true;
-                $hashtag_references = array();
-                foreach (explode(' ', trim($_POST['save_hashtagtext'])) as $word) {
-                    $found_hashtag = false;
-                    if (substr($word, 0, 1) == '#') {
-                        $valid_hashtag = false;
-                        foreach ($this->Hashtags->read(array(
-                            'LOWER(hashtagterm)' => strtolower(substr($word, 1)),
-                        )) as $hashtag_found) {
-                            $found_hashtag = true;
-                            $valid_hashtag = true;
-                            array_push($hashtag_references, $hashtag_found);
-                        }
-                        if (!$valid_hashtag && handle_session(10939, 0, $this->handle_session)) {
-                            return view_json(array(
-                                'status' => 0,
-                                'message' => 'ERROR: ' . $word . ' is not a valid/active Hashtag',
-                            ));
-                        }
-                    }
-                    if (!$found_hashtag) {
-                        $all_hashtags = false;
-                        break; //It must be a hashtag only reference
-                    }
-                }
-
-                if ($all_hashtags && count($hashtag_references)) {
-
-                    //Return success:
-                    foreach ($this->Hashtags->read(array(
-                        'hashtagid' => intval($_POST['next_hashtagid']),
-                    )) as $focus_i) {
-
-                        //Append all of these hashtags:
-                        foreach ($hashtag_references as $reference_i) {
-                            if (intval($_POST['next_hashtagid']) > 0) {
-                                $status = $this->Hashtags->chain($focus_i, 4228, $reference_i, $handle_session['handleid']);
-                            }
-                            if (!$status['status']) {
-                                return view_json($status);
-                            }
-                        }
-
-                        //What to focus on depends on how many total hashtags added:
-                        $return_i = (count($hashtag_references) >= 2 ? $focus_i : $reference_i);
-
-                        return view_json(array(
-                            'status' => 1,
-                            'return_hashtagdiscover_chains' => '',
-                            'return_hashtagdiscover_full' => hashtag_view($_POST['focus_group'], $return_i),
-                            'redirect_hashtag' => view_memory(42903, 33286) . $return_i['hashtagterm'],
-                            'message' => count($hashtag_references) . ' hashtags chained',
-                        ));
-                    }
-                }
-            }
-
 
             //Create new hashtag
             $hashtag_new = $this->Hashtags->create(array(
@@ -1178,189 +1153,20 @@ class Controller extends CI_Controller
 
             $_POST['save_hashtagid'] = $hashtag_new['hashtag_create']['hashtagid'];
 
-            $is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['save_hashtagid'],
-            ));
-            if (!count($is)) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Hashtag Not Valid',
-                ));
-            }
-
         }
-
-        //Validate Hashtag Message:
-        if (!strlen(trim($_POST['save_hashtagtext']))) {
-            //Since we do not have media, we must have a message:
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Write or Upload something to save.',
-            ));
-        }
-
-        //Process dynamic inputs if any:
-        $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
-        if ($_POST['save_hashtagid'] > 0) {
-            for ($p = 1; $p <= view_memory(6404, 42206); $p++) {
-
-                if (!isset($_POST['save_dynamic_' . $p])) {
-                    break; //Nothing more to process
-                }
-
-                $input_parts = explode('____', $_POST['save_dynamic_' . $p], 3);
-                if (!isset($input_parts[0]) || !isset($input_parts[1])) {
-                    continue;
-                }
-                $d_chainid = $input_parts[0];
-                $dynamic_handleid = $input_parts[1];
-                $dynamic_value = trim($input_parts[2]);
-
-                //Required fields must have an input:
-                if (in_array($dynamic_handleid, $this->config->item('handleids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_handleid, $this->config->item('handleids___33331')) && !in_array($dynamic_handleid, $this->config->item('handleids___33332'))) {
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'Missing Required Field: ' . $handles___42179[$dynamic_handleid]['m__title'],
-                    ));
-                }
-
-                //Validate input based on its data type, if provided:
-                if (strlen($dynamic_value)) {
-                    foreach (array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592')) as $data_type_this) {
-                        $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $handles___42179[$dynamic_handleid]['m__title']);
-                        if (!$data_type_validate['status']) {
-                            //We had an error:
-                            return view_json($data_type_validate);
-                        }
-                    }
-                }
-
-                //Fetch the current value:
-                if ($d_chainid > 0) {
-                    $values = $this->Chains->read(array(
-                        'chainid' => $d_chainid,
-                    ));
-                }
-
-                if (!$d_chainid || !count($values)) {
-                    $values = $this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
-                        'chainhashtagoutput' => $is[0]['hashtagid'],
-                        'chainhandleinput' => $dynamic_handleid,
-                    ));
-                }
-
-
-                //Update if needed:
-                if (!strlen($dynamic_value)) {
-
-                    //Remove Chain if we have one:
-                    if (count($values) && $dynamic_handleid != 11035 /* HACK: Summary are key chains that should not be removed */) {
-                        $this->Chains->delete($values[0]['chainid'], $handle_session['handleid']);
-                    }
-
-                } elseif (!count($values)) {
-
-                    //Create New Chain:
-                    $this->Chains->create(array(
-                        'chainhandlecreator' => $handle_session['handleid'],
-                        'chainhandletype' => 4983, //Co-Author
-                        'chainhandleinput' => $dynamic_handleid,
-                        'chainhashtagoutput' => $is[0]['hashtagid'],
-                        'chainvalue' => $dynamic_value,
-                        'chainkey' => number_chainkey($dynamic_value),
-                    ));
-
-                } elseif ($values[0]['chainvalue'] != $dynamic_value) {
-
-                    //Update Chain:
-                    $this->Chains->update($values[0]['chainid'], array(
-                        'chainvalue' => $dynamic_value,
-                        'chainhandlecreator' => $handle_session['handleid'],
-                    ));
-
-                }
-            }
-        }
-
-
-        if (strlen($_POST['save_hashtagterm']) && $is[0]['hashtagterm'] !== trim($_POST['save_hashtagterm'])) {
-
-            $validate_update_handle = validate_update_handle($_POST['save_hashtagterm'], $is[0]['hashtagid'], null);
-            if (!$validate_update_handle['status']) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => $validate_update_handle['message'],
-                ));
-            }
-
-            //Save hashtag since changed:
-            $this->Hashtags->update($is[0]['hashtagid'], array(
-                'hashtagterm' => trim($_POST['save_hashtagterm']),
-            ), $handle_session['handleid']);
-
-            //Now Handles everywhere they are referenced:
-            foreach ($this->Chains->read(array(
-                'chainhashtaginput' => $is[0]['hashtagid'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42341')) . ')' => null, //Hashtag References
-            ), array('chainhashtagoutput')) as $ref) {
-
-                $this->Hashtags->update($ref['hashtagid'], array(
-                    'hashtagtext' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagtext']),
-                ), $handle_session['handleid']);
-
-            }
-
-            //Assign new value:
-            $is[0]['hashtagterm'] = trim($_POST['save_hashtagterm']);
-
-        }
-
 
         //Also have to add as a comment to another hashtag?
         if (intval($_POST['next_hashtagid']) > 0) {
             $this->Chains->create(array(
                 'chainhandlecreator' => $handle_session['handleid'],
-                'chainhashtagoutput' => $_POST['next_hashtagid'],
-                'chainhashtaginput' => $is[0]['hashtagid'],
+                'chainhashtaginput' => $_POST['save_hashtagid'],
                 'chainhandletype' => 4228,
+                'chainhashtagoutput' => $_POST['next_hashtagid'],
             ));
         }
-
-
-        //Do we have a chain reference message that need to be saved?
-        if ($_POST['save_chainid'] > 0 && $_POST['save_chainvalue'] != 'IGNORE_INPUT') {
-            //Fetch Chain:
-            foreach ($this->Chains->read(array(
-                'chainid' => $_POST['save_chainid'],
-            )) as $this_x) {
-
-                $is[0] = array_merge($is[0], $this_x);
-
-                if ($this_x['chainvalue'] != trim($_POST['save_chainvalue'])) {
-                    $this->Chains->update($this_x['chainid'], array(
-                        'chainvalue' => trim($_POST['save_chainvalue']),
-                        'chainhandlecreator' => $handle_session['handleid'],
-                    ));
-                }
-            }
-        }
-
-        //Update Text:
-        if($_POST['save_hashtagid'] > 0){
-            $text_updated = $this->Hashtags->update($is[0]['hashtagid'], array(
-                'hashtagtext' => trim($_POST['save_hashtagtext']),
-            ), $handle_session['handleid']);
-            //Update variable:
-            $is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['save_hashtagid'],
-            ));
-        }
-
-
 
         foreach ($this->Hashtags->read(array(
-            'hashtagid' => $is[0]['hashtagid'],
+            'hashtagid' => $_POST['save_hashtagid'],
         )) as $new_i) {
 
             //Update Search Index:
@@ -1372,7 +1178,6 @@ class Controller extends CI_Controller
                 'return_hashtagdiscover_full' => hashtag_view($_POST['focus_group'], $new_i),
                 'save_hashtagid' => $is[0]['hashtagid'],
                 'save_hashtagtext' => trim($_POST['save_hashtagtext']),
-                'text_updated' => $text_updated,
                 'redirect_hashtag' => ( $focus__node ? : ( isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null) ),
                 'message' => 'Success',
             ));

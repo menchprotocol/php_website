@@ -16,23 +16,16 @@ class Hashtags extends CIdea_cache
         }
 
         $nextchainid = nextchainid();
-        $creation_data = array(
+        $new_x = $this->Chains->create(array(
             'chainhandletype' => 12273,
             'chainhandlecreator' => $chainhandlecreator,
             'chainhandleinput' => $chainhandlecreator,
             'chainhashtagoutput' => $nextchainid,
             'chainvalue' => $add_fields['hashtagtext'],
-        );
-
-        if (isset($add_fields['hashtagid']) && !count($this->Chains->read(array('chainid' => $add_fields['hashtagid'])))) {
-            //Set the chain ID since its not in the ledger:
-            $creation_data['chainid'] = $add_fields['hashtagid'];
-        }
-
-        //Add if not added as the author:
-        $new_x = $this->Chains->create($creation_data);
+        ));
 
         if (!$new_x['chainid']) {
+            log_error('Failed to create in ledger', $add_fields);
             return false;
         } elseif($nextchainid!=$new_x['chainid']) {
             //Something went wrong, update:
@@ -44,48 +37,26 @@ class Hashtags extends CIdea_cache
         //Save hashtag
         if (!isset($add_fields['hashtagterm'])) {
             $add_fields['hashtagterm'] = random_string(8);
+            //Make sure not existant:
+            while (count($this->Hashtags->read(array('hashtagterm' => $add_fields['hashtagterm'])))) {
+                $add_fields['hashtagterm'] = random_string(8);
+            }
         }
 
         //Save Hashtag
         $add_fields['hashtagid'] = $new_x['chainid'];
-        $hashtag_cache = hashtag_cache($add_fields['hashtagid'], $add_fields['hashtagtext']);
+        $hashtag_cache = hashtag_cache($add_fields['hashtagid'], $add_fields['hashtagtext'], $chainhandlecreator);
         $add_fields['hashtagtext'] = $hashtag_cache['hashtagtext'];
         $add_fields['hashtagdiscover'] = $hashtag_cache['hashtagdiscover'];
         $add_fields['hashtagedit'] = $hashtag_cache['hashtagedit'];
         if (!count($this->Hashtags->read(array('hashtagid' => $add_fields['hashtagid'])))) {
             $this->db->insert('ideachainhashtags', $add_fields);
+        } else {
+            $this->Hashtags->update($add_fields['hashtagid'], $add_fields);
         }
-
 
         //Update Search Index:
         update_algolia(12273, $add_fields['hashtagid']);
-
-        //Additional Handles to be added? Start with creator
-        $handle_appended = array($chainhandlecreator);
-        $pinned_followers = $this->Chains->read(array(
-            'chainhandleinput' => $chainhandlecreator,
-            'chainhandletype' => 41011, //PINNED FOLLOWER
-        ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
-
-        //Also append all pinned followers:
-        $chainkey = 0;
-        foreach ($pinned_followers as $x_pinned) {
-            if (!in_array($x_pinned['handleid'], $handle_appended) && !count($this->Chains->read(array(
-                    'chainhandletype' => 4983, //Hashtag Created
-                    'chainhandleinput' => $x_pinned['handleid'],
-                    'chainhashtagoutput' => $add_fields['hashtagid'],
-                )))) {
-                $this->Chains->create(array(
-                    'chainhandletype' => 4983, //Hashtag Created
-                    'chainhandleinput' => $x_pinned['handleid'],
-                    'chainhashtagoutput' => $add_fields['hashtagid'],
-                    'chainhandlecreator' => $chainhandlecreator,
-                    'chainkey' => $chainkey,
-                ));
-                array_push($handle_appended, $x_pinned['handleid']);
-                $chainkey++;
-            }
-        }
 
         //Fetch to return the complete Hashtag
         $is = $this->Hashtags->read(array(
@@ -162,41 +133,9 @@ class Hashtags extends CIdea_cache
         $affected_rows = 0;
         foreach ($hashtags_found as $hashtag_current) {
 
-            $must_sync_found = false;
-            $skip_sync_ledger = array('hashtagdiscover', 'hashtagexternal', 'hashtagweight', 'hashtagtype', 'hashtagdiscover', 'hashtagedit', 'hashtagupdated', 'hashtagtime');
-            $must_sync_ledger = array(
-                'hashtagtext' => 4736, //Hashtag Text
-                'hashtagterm' => 32337,
-            );
-
-            //See what is being updated:
-            foreach ($update_columns as $key => $value) {
-                if (array_key_exists($key, $must_sync_ledger)) {
-                    //Update if anything changed:
-                    if ($value != $hashtag_current[$key]) {
-                        $this->Chains->create(array(
-                            'chainhandletype' => 42275, //Hashtag Trigger
-                            'chainhandleinput' => $must_sync_ledger[$key],
-                            'chainhandlecreator' => $chainhandlecreator,
-                            'chainhashtagoutput' => $chainid,
-                            'chainvalue' => $value,
-                        ));
-                        $must_sync_found = true;
-                    } else {
-                        //Nothing changed:
-                        unset($update_columns[$key]);
-                    }
-                } elseif (in_array($key, $skip_sync_ledger)) {
-                    //Nothing we need to do here
-                } else {
-                    //Unknown not allowed:
-                    unset($update_columns[$key]);
-                }
-            }
-
             if (isset($update_columns['hashtagtext'])) {
                 //Update Hashtag Text:
-                $hashtag_cache = hashtag_cache($chainid, $update_columns['hashtagtext']);
+                $hashtag_cache = hashtag_cache($chainid, $update_columns['hashtagtext'], $chainhandlecreator);
                 $update_columns['hashtagtext'] = $hashtag_cache['hashtagtext']; //May be updated
                 $update_columns['hashtagdiscover'] = $hashtag_cache['hashtagdiscover'];
                 $update_columns['hashtagedit'] = $hashtag_cache['hashtagedit'];
@@ -211,7 +150,21 @@ class Hashtags extends CIdea_cache
             $this->db->update('ideachainhashtags', $update_columns);
             $affected_rows = $this->db->affected_rows();
 
-            if ($must_sync_found) {
+            //Chain data changed?
+            if((isset($update_columns['hashtagtext']) && $hashtag_cache['hashtagtext']!=$hashtag_current['hashtagtext']) || (isset($update_columns['hashtagterm']) && $hashtag_cache['hashtagterm']!=$hashtag_current['hashtagterm'])){
+                //Fetch latest chain:
+                foreach($this->Chains->read(array(
+                    'chainhandletype' => 12273,
+                    '(chainid='.$chainid.' OR chainhashtaginput='.$chainid.')' => null, //Active Writes
+                ), array(), 0) as $chain_i){
+                    $this->Chains->update($chain_i['chainid'], array(
+                        'chainkey' => $handle_createid,
+                        'chainhandlecreator' => $handle_session['handleid'],
+                    ));
+                }
+            }
+
+            if(isset($update_columns['hashtagtext']) && $hashtag_cache['hashtagtext']!=$hashtag_current['hashtagtext']){
                 //Sync algolia:
                 update_algolia(12273, $chainid);
             }
