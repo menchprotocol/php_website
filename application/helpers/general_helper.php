@@ -3924,7 +3924,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                             'LOWER(hashtagterm)' => strtolower($term),
                         )) as $hashtag) {
 
-                            echo '8';
                             //Valid Hashtag
                             $reference_type = $chainhandletype;
                             array_push($hashtag_references[$reference_type], $hashtag);

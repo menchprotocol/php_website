@@ -381,10 +381,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
     $has_media = false;
     foreach($this->Chains->read(array(
-        //'chainvoid >=' => 0, //Any Chain
+        'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
-        //'chainhashtagoutput' => 130806,
-    ), array(), 611, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 0, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -515,6 +514,17 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
         $table .= '</tr>';
+
+        $this->Hashtags->update($x['chainhashtagoutput'], array(
+            'hashtagupdated' => 1,
+            'hashtagtext' => $hashtag_cache['hashtagtext'],
+            'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
+            'hashtagedit' => $hashtag_cache['hashtagedit'],
+        ));
+        $this->Hashtags->update($x['chainhashtagoutput'], array(
+            'chainvalue' => $hashtag_cache['hashtagchain'],
+            'chainvoid' => 0,
+        ));
 
     }
 

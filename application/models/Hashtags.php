@@ -163,7 +163,7 @@ class Hashtags extends CIdea_cache
         foreach ($hashtags_found as $hashtag_current) {
 
             $must_sync_found = false;
-            $skip_sync_ledger = array('hashtagdiscover', 'hashtagexternal', 'hashtagweight', 'hashtagtype', 'hashtagdiscover', 'hashtagedit');
+            $skip_sync_ledger = array('hashtagdiscover', 'hashtagexternal', 'hashtagweight', 'hashtagtype', 'hashtagdiscover', 'hashtagedit', 'hashtagupdated', 'hashtagtime');
             $must_sync_ledger = array(
                 'hashtagtext' => 4736, //Hashtag Text
                 'hashtagterm' => 32337,
