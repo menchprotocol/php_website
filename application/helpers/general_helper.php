@@ -3830,11 +3830,14 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
             }
 
+            echo '1';
+
             //Could be another reference, check:
             $core_references = array('@', '#');
             if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
                 foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
 
+                    echo '2';
                     //Found a reference?
                     $term = substr($word_text, strlen($m['m__cover']));
                     if (!(substr($word_text, 0, strlen($m['m__cover'])) == $m['m__cover'] && ctype_alnum($term))) {
@@ -3842,17 +3845,21 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                         continue;
                     }
 
-                    //Valid reference, does it exist?
+                    echo '3';
                     if (in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
+                        echo '4';
                         foreach ($CI->Handles->read(array(
                             'LOWER(handleterm)' => strtolower($term),
                         )) as $handle) {
+
+                            echo '5';
 
                             $media_append_end = false;
 
                             if ($m['m__cover'] == '@') {
 
+                                echo '6';
                                 $media_attachments = array();
 
                                 foreach ($CI->Chains->read(array(
@@ -3918,11 +3925,13 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
                     } else {
 
+                        echo '7';
                         //Hashtag reference:
                         foreach ($CI->Hashtags->read(array(
                             'LOWER(hashtagterm)' => strtolower($term),
                         )) as $hashtag) {
 
+                            echo '8';
                             //Valid Hashtag
                             $reference_type = $chainhandletype;
                             array_push($hashtag_references[$reference_type], $hashtag);
@@ -3944,7 +3953,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                 }
             }
 
-            if (!$reference_type && 0) {
+            if (!$reference_type) {
+                echo '9';
                 //This word is not referencing anything!
                 $hashtagchain = $word_text;
                 $hashtagtext = $word_text;
