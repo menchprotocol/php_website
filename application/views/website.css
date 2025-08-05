@@ -3774,6 +3774,10 @@ a,
     padding-bottom: 3px;
 }
 
+.i_cache .line img{
+    max-width: 100%;
+}
+
 .focus-cover .i_cache .line{
     min-height: 21px;
 }
