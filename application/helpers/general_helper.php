@@ -3904,16 +3904,13 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                             //Valid Handle
                             $reference_type = $chainhandletype;
                             array_push($hashtag_references[$reference_type], $handle);
-                            $word_text = '@' . $newHandleTerm;
 
                             $hashtagchain = $m['m__cover'] . $handle['handleid'];
                             $hashtagtext = $word_text;
                             if(!($first_word && $only_word_in_line) && !(count($media_attachments)==1 && $x['chainhandleinput'] == 1326)){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
-                                $word_text = $hashtagdiscover;
                             } elseif($media_append_end){
                                 $hashtagdiscover = $media_append_end;
-                                $word_text = $hashtagdiscover;
                             }
                             $hashtagedit = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
 
@@ -3934,7 +3931,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                             $hashtagtext = $word_text;
                             if(!($first_word && $only_word_in_line)){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
-                                $word_text = $hashtagdiscover;
                             }
                             $hashtagedit = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '">' . $word_text . '</a>';
 
@@ -3948,7 +3944,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                 }
             }
 
-            if (!$reference_type) {
+            if (!$reference_type && 0) {
                 //This word is not referencing anything!
                 $hashtagchain = $word_text;
                 $hashtagtext = $word_text;
@@ -3961,7 +3957,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
             $hashtag_cache['hashtagtext'] .= (!$first_word && $hashtagtext ? ' ' : '').$hashtagtext;
             $hashtag_cache['hashtagdiscover'] .= (!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover;
             $hashtag_cache['hashtagedit'] .= (!$first_word && $hashtagedit ? ' ' : '').$hashtagedit;
-
 
         }
 
