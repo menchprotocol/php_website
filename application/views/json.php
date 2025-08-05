@@ -13,6 +13,13 @@ $table = '<table class="table table-sm table-striped stats-table mini-stats-tabl
 
 if($focus_i['hashtagterm']=='Discotique2024') {
 
+
+
+    //Update
+    /*
+     *
+
+
     foreach(array(1733119,
                 1733121,
                 1733123,
@@ -30,8 +37,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     }
     echo 'yayyy';
 
-    //Update
-    /*
+
     $this->Chains->create(array(
         'chainhandletype' => 43513,
         'chainhandlecreator' => 1,
