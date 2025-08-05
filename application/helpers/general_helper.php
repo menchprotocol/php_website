@@ -3830,7 +3830,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
             }
 
-            echo '1';
 
             //Could be another reference, check:
             $core_references = array('@', '#');
@@ -3954,7 +3953,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
             }
 
             if (!$reference_type) {
-                echo '9';
                 //This word is not referencing anything!
                 $hashtagchain = $word_text;
                 $hashtagtext = $word_text;
