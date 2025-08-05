@@ -13,7 +13,22 @@ $table = '<table class="table table-sm table-striped stats-table mini-stats-tabl
 
 if($focus_i['hashtagterm']=='Discotique2024') {
 
-
+    foreach(array(1733119,
+                1733121,
+                1733123,
+                1733125,
+                1733127,
+                1733129,
+                1733131
+            ) as $daysofweek){
+        $this->Chains->create(array(
+            'chainhandletype' => 4983,
+            'chainhandlecreator' => 1,
+            'chainhashtagoutput' => $daysofweek,
+            'chainhandleinput' => 1642022, //Dashboard
+        ));
+    }
+    echo 'yayyy';
 
     //Update
     /*
@@ -29,20 +44,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         'chainhashtagoutput' => 1733121,
         'chainhandleinput' => 27093, //Trusted
     ));
-    foreach(array(1733119,
-                1733121,
-                1733123,
-                1733125,
-                1733127,
-                1733129) as $daysofweek){
-        $this->Chains->create(array(
-            'chainhandletype' => 4983,
-            'chainhandlecreator' => 1,
-            'chainhashtagoutput' => $daysofweek,
-            'chainhandleinput' => 26189, //Required
-            'chainvalue' => 5,
-        ));
-    }
+
 
 
     foreach(array(1734987,1733038) as $required_hashtagid){
