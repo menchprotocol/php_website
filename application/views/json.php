@@ -391,6 +391,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
+        'chainhashtagoutput' => 134164,
     ), array(), 1, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
@@ -439,14 +440,13 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         foreach ($this->Chains->read(array(
             'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
             'chainhashtaginput' => $x['chainhashtagoutput'],
-        ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $x2) {
+        ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
+            if(!$count){
+                $core_content .= "\n";
+                $hashtagtext .= "\n";
+            }
             $hashtagtext .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'];
             $core_content .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'];
-        }
-
-        //Add Idea Type:
-        if(count($is) && $is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle'])){
-            $hashtagtext .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
         }
 
         //Append authors:
@@ -459,6 +459,11 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             if (strlen($x2['chainvalue'] > 0)) {
                 $core_content .= " ".$x2['chainvalue'];
             }
+        }
+
+        //Add Idea Type:
+        if(count($is) && $is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle'])){
+            $hashtagtext .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
         }
 
         //Append Media:
@@ -481,8 +486,12 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         //Fetch Mentions
         foreach($this->Chains->read(array(
             'chainhashtagoutput' => $x['chainhashtagoutput'],
-            'chainhandletype IN (' . join(',', array(7545, 26599, 10573, 41949, 1695880, 27984, 43513, 43514, 26600)) . ')' => null,
-        ), array('chainhandleinput')) as $x2){
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Mentions
+        ), array('chainhandleinput')) as $count => $x2){
+            if(!$count){
+                $core_content .= "\n";
+                $hashtagtext .= "\n";
+            }
             $core_content .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
             $hashtagtext .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
         }
