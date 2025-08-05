@@ -3836,7 +3836,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
             if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
                 foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
 
-                    echo '2';
+                    echo '2['.$word_text.']';
                     //Found a reference?
                     $term = substr($word_text, strlen($m['m__cover']));
                     if (!(substr($word_text, 0, strlen($m['m__cover'])) == $m['m__cover'] && ctype_alnum($term))) {
@@ -3845,7 +3845,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
                     }
 
                     echo '3';
-                    if (in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
+                    if (!in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
                         echo '4';
                         foreach ($CI->Handles->read(array(
@@ -3978,6 +3978,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext)
 
 
     if (!intval($save_hashtagid) || 1) {
+        print_r();
         //Nothing else we need to do:
         //TODO Remove later
         return $hashtag_cache;
