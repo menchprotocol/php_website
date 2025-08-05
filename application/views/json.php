@@ -389,7 +389,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
     $has_media = false;
     foreach($this->Chains->read(array(
-        'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
         'chainhashtagoutput' => 134164,
     ), array(), 1, 0, array('chainid' => 'ASC')) as $x){
