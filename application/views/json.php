@@ -13,49 +13,6 @@ $table = '<table class="table table-sm table-striped stats-table mini-stats-tabl
 
 if($focus_i['hashtagterm']=='Discotique2024') {
 
-    $this->Chains->create(array(
-        'chainhandletype' => 7545,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733119,
-        'chainhandleinput' => 1637131,
-    )); //SUN
-    $this->Chains->create(array(
-        'chainhandletype' => 7545,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733121,
-        'chainhandleinput' => 1637191,
-    )); //MON
-    $this->Chains->create(array(
-        'chainhandletype' => 7545,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733123,
-        'chainhandleinput' => 1637200,
-    )); //TUE
-    $this->Chains->create(array(
-        'chainhandletype' => 7545,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733125,
-        'chainhandleinput' => 1637271,
-    )); //WED
-    $this->Chains->create(array(
-        'chainhandletype' => 7545,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733127,
-        'chainhandleinput' => 1637209,
-    )); //THU
-    $this->Chains->create(array(
-        'chainhandletype' => 7545,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733129,
-        'chainhandleinput' => 1637218,
-    )); //FRI
-    $this->Chains->create(array(
-        'chainhandletype' => 7545,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733131,
-        'chainhandleinput' => 1637227,
-    )); //SAT
-
 
 
     //Update
@@ -398,10 +355,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 } else {
 
-
-
-
-
     //HASHTAGS
     $table .= '<tr>';
     $table .= '<td>&nbsp;</td>';
@@ -411,7 +364,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     $table .= '<td><div style="max-width:233px;">hashtagtext</div></td>'; //TEXT
     $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
     $table .= '<td><div style="max-width:233px;">hashtagedit</div></td>'; //EDITOR
-    $table .= '<td><div style="max-width:233px;">ARAY</div></td>'; //EDITOR
     $table .= '</tr>';
 
     $chainhashtagoutput = array();
@@ -429,10 +381,10 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
     $has_media = false;
     foreach($this->Chains->read(array(
-        'chainvoid >=' => 0, //Any Chain
+        //'chainvoid >=' => 0, //Any Chain
         'chainhandletype' => 12273,
-        'chainhashtagoutput' => 130806,
-    ), array(), 377, 0, array('chainid' => 'ASC')) as $x){
+        //'chainhashtagoutput' => 130806,
+    ), array(), 611, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -562,7 +514,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagtext']).'</div></td>'; //TEXT
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
-        $table .= '<td><div style="max-width:233px;">'.print_r($hashtag_cache, true).'</div></td>'; //EDIT
         $table .= '</tr>';
 
     }
