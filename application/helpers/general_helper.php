@@ -3800,9 +3800,11 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
             //Could be another reference, check:
             $core_references = array('@', '#');
+
+            die('['.substr($word_text, 0, 1).'/'.substr($word_text, 1, 1).']');
+
             if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
 
-                die('['.$word_text.']');
 
                 foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
 
