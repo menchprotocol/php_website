@@ -3,7 +3,7 @@
 boost_power();
 
 foreach ($this->Chains->read(array(
-    'chainhandletype' => 31835, //Mention
+    'chainhandletype' => 10573, //Subscriber Mention
     'chainhandleinput' => 26582,
 ), array('chainhashtagoutput')) as $i) {
 
