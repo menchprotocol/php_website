@@ -3730,6 +3730,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         'hashtagdiscover' => '',
         'hashtagedit' => '',
         'actionstats' => array(
+            'current' => 0,
             'added' => 0,
             'removed' => 0,
             'udated' => 0,
@@ -4011,6 +4012,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         'chainhandletype IN (' . join(',', $CI->config->item('handleids___1696899')) . ')' => null, //All possible refereces
         'chainhashtaginput' => intval($save_hashtagid),
     )) as $x) {
+
+        $hashtag_cache['actionstats']['current']++;
 
         //What should happen here?
         $chainkey++;
