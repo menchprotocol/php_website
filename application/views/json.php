@@ -438,21 +438,24 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         //Remove duplicate:
         //See what we can find:
         $trimmed = false;
-        $new_hashtagtext = '';
-        $current_lines = array();
-        foreach (explode("\n", $hashtagtext) as $line_count => $line) {
-            if(in_array(substr(trim($line), 0, 1), array('#','@'))){
-                if(!in_array(trim($line), $current_lines)){
-                    array_push($current_lines, trim($line));
-                } else {
-                    $hashtagtext = $new_hashtagtext;
-                    $core_content = $new_hashtagtext;
-                    $trimmed = true;
-                    break;
+        if(0){
+            $new_hashtagtext = '';
+            $current_lines = array();
+            foreach (explode("\n", $hashtagtext) as $line_count => $line) {
+                if(in_array(substr(trim($line), 0, 1), array('#','@'))){
+                    if(!in_array(trim($line), $current_lines)){
+                        array_push($current_lines, trim($line));
+                    } else {
+                        $hashtagtext = $new_hashtagtext;
+                        $core_content = $new_hashtagtext;
+                        $trimmed = true;
+                        break;
+                    }
                 }
+                $new_hashtagtext .= ( strlen($new_hashtagtext) ? "\n" : '' ).$line;
             }
-            $new_hashtagtext .= ( strlen($new_hashtagtext) ? "\n" : '' ).$line;
         }
+
 
         $this_media = false;
 
