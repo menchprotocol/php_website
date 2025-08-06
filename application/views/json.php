@@ -597,6 +597,7 @@ $table .= '</table>';
 
 print_r($stats);
 echo $table;
+echo '<style> img { max-width: 100% !important;; }</style>';
 
 //$_GET['skip_config'] = true;
 //view_json($this->Chains->flat_tree($focus_i));
