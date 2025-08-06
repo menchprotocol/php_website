@@ -558,8 +558,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
             'hashtagedit' => $hashtag_cache['hashtagedit'],
         ));
-        $query = "UPDATE ideachain SET chainhashtaginput = " . $x['chainhashtagoutput'] . ", chainvalue='".'#'.$is[0]['hashtagterm']."\n".$hashtag_cache['hashtagchain']."', chainvoid=0  WHERE chainid = " . $x['chainid'] . ";";
-        //$this->db->query($query);
+        $query = "UPDATE ideachain SET chainhashtaginput = " . $x['chainhashtagoutput'] . ", chainvalue='".'#'.$is[0]['hashtagterm']."\n".stripslashes($hashtag_cache['hashtagchain'])."', chainvoid=0  WHERE chainid = " . $x['chainid'] . ";";
+        $this->db->query($query);
 
         $table .= '<tr>';
 
