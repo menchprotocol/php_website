@@ -365,6 +365,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     $table .= '<tr>';
     $table .= '<td>&nbsp;</td>';
     $table .= '<td>&nbsp;</td>';
+    $table .= '<td><div style="max-width:233px;">INITIAL</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">INPUT</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">hashtagchain</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">hashtagtext</div></td>'; //TEXT
@@ -432,6 +433,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $core_content = '';
 
         }
+        $initial_hashtagtext = $hashtagtext;
 
         //Remove duplicate:
         //See what we can find:
@@ -560,7 +562,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             '</td>';
 
         $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
-
+        $table .= '<td><div style="max-width:233px;">'.nl2br($initial_hashtagtext).'</div></td>'; //INPUT
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtagtext).'</div></td>'; //INPUT
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagchain']).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagtext']).'</div></td>'; //TEXT
