@@ -559,8 +559,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         ));
         $this->Chains->update($x['chainhashtagoutput'], array(
             'chainhashtaginput' => $x['chainhashtagoutput'],
-            'chainvalue' => $hashtag_cache['hashtagchain'],
-            'chainvoid' => 0,
+            'chainvalue' => ( count($is) ? '#'.$is[0]['hashtagterm']."\n" : '' ).$hashtag_cache['hashtagchain'],
+            //'chainvoid' => 0,
         ));
 
         $table .= '<tr>';
