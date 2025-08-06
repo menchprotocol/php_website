@@ -388,6 +388,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
     $has_media = false;
     foreach($this->Chains->read(array(
+        'chainvoid >=' => 0,
         'chainhandletype' => 12273,
         'chainhashtagoutput' => ( isset($_GET['id']) ? $_GET['id'] : 134164 ),
     ), array(), 1, 0, array('chainid' => 'ASC')) as $x){
@@ -560,7 +561,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $this->Chains->update($x['chainhashtagoutput'], array(
             'chainhashtaginput' => $x['chainhashtagoutput'],
             'chainvalue' => ( count($is) ? '#'.$is[0]['hashtagterm']."\n" : '' ).$hashtag_cache['hashtagchain'],
-            //'chainvoid' => 0,
+            'chainvoid' => 0,
         ));
 
         $table .= '<tr>';
