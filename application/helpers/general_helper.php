@@ -3733,6 +3733,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     //All the possible reference types that can be found:
     $hashtag_references = array();
     $chainkey = 0;
+    $hashtagtext = str_replace('	',' ', $hashtagtext);
 
     //See what we can find:
     foreach (explode("\n", $hashtagtext) as $line_count => $line) {
@@ -3800,11 +3801,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
             //Could be another reference, check:
             $core_references = array('@', '#');
-
-            echo '['.$word_text.']';
-
             if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
-
 
                 foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
 
