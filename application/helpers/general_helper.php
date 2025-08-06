@@ -3832,6 +3832,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             if(is_numeric($term)){
                                 //Replace Word:
+                                $term = $handle['handleterm'];
                                 $word_text = '@' . $handle['handleterm'];
                             }
 
