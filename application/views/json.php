@@ -424,7 +424,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         if(count($is)){
 
             $core_content = trim($is[0]['hashtagtext']);
-            $hashtagtext = $is[0]['hashtagtext'].' ';
+            $hashtagtext = $is[0]['hashtagtext'];
 
         } else {
 
@@ -442,6 +442,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             } else {
                 //Duplicate line found, stop:
                 $hashtagtext = join("\n", $current_lines);
+                $core_content = $hashtagtext;
                 break;
             }
         }
