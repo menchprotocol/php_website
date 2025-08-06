@@ -450,14 +450,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 if(in_array(substr(trim($line), 0, 1), array('#','@'))){
                     if(!in_array(trim($line), $current_lines)){
                         array_push($current_lines, trim($line));
-                    } else {
-                        $hashtagtext = $new_hashtagtext;
-                        $core_content = $new_hashtagtext;
-                        $trimmed = true;
-                        break;
                     }
                 }
-                $new_hashtagtext .= ( strlen($new_hashtagtext) ? "\n" : '' ).$line;
+                $hashtagtext = ( strlen($new_hashtagtext) ? "\n" : '' ).$line;
             }
         }
 
@@ -465,7 +460,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $this_media = false;
 
 
-        if(1){
+        if(0){
 
             //Add Ideas:
             foreach ($this->Chains->read(array(
