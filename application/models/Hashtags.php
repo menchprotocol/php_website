@@ -140,7 +140,7 @@ class Hashtags extends CIdea_cache
         $affected_rows = 0;
         foreach ($hashtags_found as $hashtag_current) {
 
-            if (isset($update_columns['hashtagtext'])) {
+            if (isset($update_columns['hashtagtext']) || isset($update_columns['hashtagterm'])) {
                 //Update Hashtag Text:
                 $hashtag_cache = hashtag_cache($chainid, $update_columns['hashtagtext'], $chainhandlecreator);
                 $update_columns['hashtagtext'] = $hashtag_cache['hashtagtext']; //May be updated
@@ -165,8 +165,9 @@ class Hashtags extends CIdea_cache
                     '(chainid='.$chainid.' OR chainhashtaginput='.$chainid.')' => null, //Active Writes
                 ), array(), 0) as $chain_i){
                     $this->Chains->update($chain_i['chainid'], array(
-                        'chainkey' => $handle_createid,
+                        'chainhashtaginput' => $chainid,
                         'chainhandlecreator' => $handle_session['handleid'],
+                        'chainvalue' => '#'.( isset($update_columns['hashtagterm']) ? $update_columns['hashtagterm'] : $hashtag_current['hashtagterm'] )."\n".$hashtag_cache['hashtagtext'],
                     ));
                 }
             }
