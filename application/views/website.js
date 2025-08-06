@@ -1824,7 +1824,7 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     var current_hashtagtype = 6677;
     $('#modal31911 .next_hashtagid').val(next_hashtagid);
     $('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
-    load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, true);
+    //load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, true);
 
     if(hashtagid>0){
         insert_message = $('.ui_hashtagtext_' + hashtagid).text();
