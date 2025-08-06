@@ -3965,7 +3965,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             $linehashtagchain .= (!$first_word && $hashtagchain ? ' ' : '').$hashtagchain;
             $linehashtagtext .= (!$first_word && $hashtagtext ? ' ' : '').$hashtagtext;
             $linehashtagdiscover .= (!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover;
-            $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '').$hashtagedit.'1';
+            $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '').$hashtagedit;
 
         }
 
@@ -3981,7 +3981,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         $hashtag_cache['hashtagdiscover'] = '<div class="i_cache i_hashtagdiscover cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagdiscover'].'</div>';
     }
     if(strlen($hashtag_cache['hashtagedit'])){
-        $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'</div>';
+        $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'aaa</div>';
     }
 
 
