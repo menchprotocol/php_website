@@ -1806,6 +1806,7 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     $("#modal31911 .save_frame").addClass('hidden');
     $('#modal31911 .save_hashtagid').val(hashtagid);
     $('#modal31911 .save_chainid').val(chainid);
+    $("#modal31911 .save_hashtagterm").val('');
 
     //Are we adding an hashtag for a target action tab?
     console.log('i Modal loaded for ' + focus_group);
@@ -1823,7 +1824,7 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     var insert_message = '';
     var current_hashtagtype = 6677;
     $('#modal31911 .next_hashtagid').val(next_hashtagid);
-    $('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
+    //$('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
     //load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, true);
 
     if(hashtagid>0){
@@ -1848,6 +1849,11 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     if (insert_message.length) {
         $("#modal31911 .save_hashtagtext").val(insert_message);
     }
+
+    if($('.ui_hashtagterm_'+hashtagid).text().length){
+        $("#modal31911 .save_hashtagterm").val($('.ui_hashtagterm_'+hashtagid).text());
+    }
+
 
     //Hashtag Type:
     update_form_select(4737, current_hashtagtype, 1, false);

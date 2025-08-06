@@ -740,7 +740,7 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <input type="hidden" class="save_chainid" value="0" />
                         <input type="hidden" class="next_hashtagid" value="0" />
 
-                        <!-- Hashtag Hashtag -->
+                        <!-- Hashtag term -->
                         <div class="dynamic_editing_input single_line hash_group" title="<?= $handles___6201[32337]['m__title'] ?>">
                             <h3 class="mini-font"><span class="icon-block"><?= $handles___6201[32337]['m__cover']  ?></span></h3>
                             <input type="text" class="form-control unsaved_warning save_hashtagterm no-border" placeholder="<?= $handles___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
