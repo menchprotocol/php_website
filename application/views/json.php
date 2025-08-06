@@ -13,8 +13,6 @@ $table = '<table class="table table-sm table-striped stats-table mini-stats-tabl
 
 if($focus_i['hashtagterm']=='Discotique2024') {
 
-
-
     //Update
     /*
      *
@@ -435,11 +433,27 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         }
 
+        //Remove duplicate:
+        //See what we can find:
+        $current_lines = array();
+        foreach (explode("\n", $hashtagtext) as $line_count => $line) {
+            if(!in_array($line, $current_lines)){
+                array_push($current_lines, $line);
+            } else {
+                //Duplicate line found, stop:
+                $hashtagtext = join("\n", $current_lines);
+                break;
+            }
+        }
+
         //Add Ideas:
         foreach ($this->Chains->read(array(
             'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
             'chainhashtaginput' => $x['chainhashtagoutput'],
         ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
+            if(substr_count($hashtagtext, $ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'])){
+                break;
+            }
             if(!$count){
                 $core_content .= "\n";
                 $hashtagtext .= "\n";
@@ -454,14 +468,17 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandleinput NOT IN ('.$x['chainhandlecreator'].',1,2,32337)' => null,
             'chainhandletype' => 4983, //Authors
         ), array('chainhandleinput')) as $x2){
-            $core_content .= "\n@".$x2['handleterm'];
+            if(substr_count($hashtagtext, "@".$x2['handleterm'])){
+                break;
+            }
+            $core_content .= "\n"."@".$x2['handleterm'];
             if (strlen($x2['chainvalue'] > 0)) {
                 $core_content .= " ".$x2['chainvalue'];
             }
         }
 
         //Add Idea Type:
-        if(count($is) && $is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle'])){
+        if(count($is) && $is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle']) && !substr_count($hashtagtext, "@".$handles___4737[$is[0]['hashtagtype']]['m__handle'])){
             $hashtagtext .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
         }
 
@@ -472,6 +489,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandleinput !=' => $x['chainhandlecreator'],
             'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
         ), array('chainhandleinput')) as $x2){
+            if(substr_count($hashtagtext, "@".$x2['handleterm'])){
+                break;
+            }
             $core_content .= "\n@".$x2['handleterm'];
             $hashtagtext .= "\n@".$x2['handleterm'];
             $this_media = true;
@@ -487,6 +507,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhashtagoutput' => $x['chainhashtagoutput'],
             'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Mentions
         ), array('chainhandleinput')) as $count => $x2){
+            if(substr_count($hashtagtext, "@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'])){
+                break;
+            }
             if(!$count){
                 $core_content .= "\n";
                 $hashtagtext .= "\n";
