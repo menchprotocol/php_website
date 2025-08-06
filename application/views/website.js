@@ -1996,9 +1996,9 @@ function hashtag_update() {
     $(".hashtag_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
-    var save_hashtagid = (current_hashtagid > 0 ? current_hashtagid : created_hashtagid);
     var current_hashtagid = parseInt($('#modal31911 .save_hashtagid').val());
     var created_hashtagid = parseInt($('#modal31911 .created_hashtagid').val());
+    var save_hashtagid = (current_hashtagid > 0 ? current_hashtagid : created_hashtagid);
     console.log('Hashtag updating begins #' + current_hashtagid);
 
     //TODO Preview Media
