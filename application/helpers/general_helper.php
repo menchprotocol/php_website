@@ -3927,7 +3927,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                             } elseif($media_append_end){
                                 $hashtagdiscover = $media_append_end;
                             }
-                            $hashtagedit = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>';
+                            $hashtagedit = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>'.$media_append_end;
 
                         }
 
