@@ -371,6 +371,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     $table .= '<td><div style="max-width:233px;">hashtagtext</div></td>'; //TEXT
     $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
     $table .= '<td><div style="max-width:233px;">hashtagedit</div></td>'; //EDITOR
+    $table .= '<td><div style="max-width:233px;">stats</div></td>'; //EDITOR
     $table .= '</tr>';
 
     $chainhashtagoutput = array();
@@ -390,8 +391,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0,
         'chainhandletype' => 12273,
-        'chainid' => ( isset($_GET['id']) ? $_GET['id'] : 134164 ),
-    ), array(), 1, 0, array('chainid' => 'ASC')) as $x){
+        'chainhandletype' => 12273,
+        //'chainid' => ( isset($_GET['id']) ? $_GET['id'] : 134164 ),
+    ), array(), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -551,9 +553,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         }
 
         $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
-
-        print_r($hashtag_cache['actionstats']);
-
         $this->Hashtags->update($x['chainid'], array(
             'hashtagupdated' => 1,
             'hashtagtext' => $hashtag_cache['hashtagtext'],
@@ -563,11 +562,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         $this->db->where('chainid', $x['chainid']);
         $this->db->update('ideachain', array(
-            'chainhashtaginput' =>  $x['chainhashtagoutput'],
+            'chainhashtaginput' =>  $x['chainid'],
             'chainvalue' =>  $hashtag_cache['hashtagchain'],
         ));
-        $affected_rows = $this->db->affected_rows();
-
 
         $table .= '<tr>';
 
@@ -589,6 +586,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagtext']).'</div></td>'; //TEXT
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
         $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
+        $table .= '<td><div style="max-width:233px;">'.print_r($hashtag_cache['actionstats'], true).'</div></td>'; //EDIT
         $table .= '</tr>';
 
     }
