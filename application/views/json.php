@@ -552,13 +552,13 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
 
-        $this->Hashtags->update($x['chainhashtagoutput'], array(
+        $this->Hashtags->update($x['chainid'], array(
             'hashtagupdated' => 1,
             'hashtagtext' => $hashtag_cache['hashtagtext'],
             'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
             'hashtagedit' => $hashtag_cache['hashtagedit'],
         ));
-        $this->Chains->update($x['chainhashtagoutput'], array(
+        $this->Chains->update($x['chainid'], array(
             'chainhashtaginput' => $x['chainhashtagoutput'],
             'chainvalue' => ( count($is) ? '#'.$is[0]['hashtagterm']."\n" : '' ).$hashtag_cache['hashtagchain'],
             'chainvoid' => 0,
