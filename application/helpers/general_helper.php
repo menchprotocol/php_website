@@ -3729,6 +3729,11 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         'hashtagtext' => '',
         'hashtagdiscover' => '',
         'hashtagedit' => '',
+        'actionstats' => array(
+            'added' => 0,
+            'removed' => 0,
+            'udated' => 0,
+        ),
     );
 
     //All the possible reference types that can be found:
@@ -4013,6 +4018,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         if(!isset($hashtag_references[($chainkey-1)])){
             //Must be removed:
             $CI->Chains->delete($x['chainid']);
+            $hashtag_cache['actionstats']['removed']++;
             continue;
         }
 
@@ -4022,16 +4028,19 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                 //Updating needed:
                 $hashtag_references[($chainkey-1)]['chainhandlecreator'] = $chainhandlecreator;
                 $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey-1)]);
+                $hashtag_cache['actionstats']['udated']++;
                 break;
             }
         }
     }
+
 
     //Any more links left that were not in DB?
     for($i=$chainkey;$i<=count($hashtag_references);$i++){
         if(isset($hashtag_references[$i])){
             $hashtag_references[$i]['chainhandlecreator'] = $chainhandlecreator;
             $CI->Chains->create($hashtag_references[$i]);
+            $hashtag_cache['actionstats']['added']++;
         }
     }
 
