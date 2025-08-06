@@ -2464,7 +2464,7 @@ function update_algolia($focus__node = null, $s__id = 0)
             }
 
             //Prep Keywords:
-            $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
+            $export_row['s__keywords'] = substr(trim(strip_tags($export_row['s__keywords'])), 0, 2000);
 
             //Add to main array
             array_push($all_export_rows, $export_row);
