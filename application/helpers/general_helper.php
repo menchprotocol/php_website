@@ -3828,7 +3828,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                         }
 
                         //Handle Reference
-                        foreach ($CI->Handles->read() as $handle) {
+                        foreach ($CI->Handles->read($filter) as $handle) {
 
                             $media_append_end = false;
 
