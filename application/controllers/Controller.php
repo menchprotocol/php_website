@@ -1176,7 +1176,7 @@ class Controller extends CI_Controller
                 'status' => 1,
                 'return_hashtagdiscover_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node),
                 'return_hashtagdiscover_full' => hashtag_view($_POST['focus_group'], $new_i),
-                'save_hashtagid' => $is[0]['hashtagid'],
+                'save_hashtagid' => $new_i['hashtagid'],
                 'save_hashtagtext' => trim($_POST['save_hashtagtext']),
                 'redirect_hashtag' => ( $focus__node ? : ( isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null) ),
                 'message' => 'Success',
