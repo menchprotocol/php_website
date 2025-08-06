@@ -3742,10 +3742,10 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         $only_word_in_line = count($words) == 1;
         $second_word_onwards = null;
 
-        $hashtag_cache['hashtagchain'] .= (!$first_line ? "\n" : '');
-        $hashtag_cache['hashtagtext'] .= (!$first_line ? "\n" : '');
-        $hashtag_cache['hashtagdiscover'] .= '';
-        $hashtag_cache['hashtagedit'] .= '';
+        $linehashtagchain = null;
+        $linehashtagtext = null;
+        $linehashtagdiscover = null;
+        $linehashtagedit = null;
 
         foreach ($words as $word_count => $word_text) {
 
@@ -3954,16 +3954,22 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             }
 
             //See what we found to add:
-            $hashtag_cache['hashtagchain'] .= (!$first_word && $hashtagchain ? ' ' : '').$hashtagchain;
-            $hashtag_cache['hashtagtext'] .= (!$first_word && $hashtagtext ? ' ' : '').$hashtagtext;
+            $linehashtagchain = (!$first_word && $hashtagchain ? ' ' : '').$hashtagchain;
+            $linehashtagtext = (!$first_word && $hashtagtext ? ' ' : '').$hashtagtext;
             if(strlen($hashtagdiscover)){
-                $hashtag_cache['hashtagdiscover'] .= '<div class="line' . ($first_line ? ' first_line' : '') . '">'.(!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover.'</div>';
+                $linehashtagdiscover = (!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover;
             }
             if(strlen($hashtagedit)){
-                $hashtag_cache['hashtagedit'] .= '<div class="line' . ($first_line ? ' first_line' : '') . '">'.(!$first_word && $hashtagedit ? ' ' : '').$hashtagedit.'</div>';
+                $linehashtagedit = '<div class="line' . ($first_line ? ' first_line' : '') . '">'.(!$first_word && $hashtagedit ? ' ' : '').$hashtagedit.'</div>';
             }
 
         }
+
+        $hashtag_cache['hashtagchain'] .= (!$first_line && $linehashtagchain ? "\n" : '').$linehashtagchain;
+        $hashtag_cache['hashtagtext'] .= (!$first_line && $linehashtagtext ? "\n" : '').$linehashtagtext;
+        $hashtag_cache['hashtagdiscover'] .=  ( $hashtagdiscover ? '<div class="line' . ($first_line ? ' first_line' : '') . '">'.$hashtagdiscover.'</div>' : '' );
+        $hashtag_cache['hashtagedit'] .=  ( $hashtagedit ? '<div class="line' . ($first_line ? ' first_line' : '') . '">'.$hashtagedit.'</div>' : '' );
+
     }
 
     //Give HTML their frame:
