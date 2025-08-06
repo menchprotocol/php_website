@@ -3971,8 +3971,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
         $hashtag_cache['hashtagchain'] .= (!$first_line && $linehashtagchain ? "\n" : '').$linehashtagchain;
         $hashtag_cache['hashtagtext'] .= (!$first_line && $linehashtagtext ? "\n" : '').$linehashtagtext;
-        $hashtag_cache['hashtagdiscover'] .=  ( $hashtagdiscover ? '<div class="line' . ($first_line ? ' first_line' : '') . '">'.$hashtagdiscover.'</div>' : '' );
-        $hashtag_cache['hashtagedit'] .=  ( $hashtagedit ? '<div class="line' . ($first_line ? ' first_line' : '') . '">'.$hashtagedit.'</div>' : '' );
+        $hashtag_cache['hashtagdiscover'] .=  ( $linehashtagdiscover ? '<div class="line' . ($first_line ? ' first_line' : '') . '">'.$linehashtagdiscover.'</div>' : '' );
+        $hashtag_cache['hashtagedit'] .=  ( $linehashtagedit ? '<div class="line' . ($first_line ? ' first_line' : '') . '">'.$linehashtagedit.'</div>' : '' );
 
     }
 
@@ -3981,7 +3981,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         $hashtag_cache['hashtagdiscover'] = '<div class="i_cache i_hashtagdiscover cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagdiscover'].'</div>';
     }
     if(strlen($hashtag_cache['hashtagedit'])){
-        $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'aaa</div>';
+        $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'</div>';
     }
 
 
