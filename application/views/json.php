@@ -390,7 +390,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     foreach($this->Chains->read(array(
         'chainvoid >=' => 0,
         'chainhandletype' => 12273,
-        'chainhashtagoutput' => ( isset($_GET['id']) ? $_GET['id'] : 134164 ),
+        'chainid' => ( isset($_GET['id']) ? $_GET['id'] : 134164 ),
     ), array(), 1, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
