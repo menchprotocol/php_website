@@ -3799,6 +3799,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
 
             //Could be another reference, check:
+            die('['.$term.']');
             $core_references = array('@', '#');
             if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
                 foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
@@ -3810,7 +3811,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                         continue;
                     }
 
-                    die('['.$term.']');
                     if (!in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
                         if($replace_term==12274 && strtolower($term)==$findterm && ctype_alnum($replace_term)){
