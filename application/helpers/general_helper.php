@@ -3830,6 +3830,11 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                         //Handle Reference
                         foreach ($CI->Handles->read($filter) as $handle) {
 
+                            if(is_numeric($term)){
+                                //Replace Word:
+                                $word_text = '@' . $handle['handleterm'];
+                            }
+
                             $media_append_end = false;
 
                             if ($m['m__cover'] == '@') {
