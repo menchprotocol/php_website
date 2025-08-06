@@ -3734,7 +3734,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     $hashtag_references = array();
     $chainkey = 0;
     $hashtagtext = str_replace('	',' ', $hashtagtext);
-    $hashtagtext = preg_replace('/\s+/', ' ', $hashtagtext);
+    //$hashtagtext = preg_replace('/\s+/', ' ', $hashtagtext);
 
     //See what we can find:
     foreach (explode("\n", $hashtagtext) as $line_count => $line) {
