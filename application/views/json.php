@@ -435,16 +435,19 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         //Remove duplicate:
         //See what we can find:
+        $new_hashtagtext = '';
         $current_lines = array();
         foreach (explode("\n", $hashtagtext) as $line_count => $line) {
-            if(!in_array($line, $current_lines)){
-                array_push($current_lines, $line);
-            } else {
-                //Duplicate line found, stop:
-                $hashtagtext = join("\n", $current_lines);
-                $core_content = $hashtagtext;
-                break;
+            if(in_array(substr($line, 0, 1), array('#','@')) && strlen(substr($line, 1))){
+                if(!in_array($line, $current_lines)){
+                    array_push($current_lines, $line);
+                } else {
+                    $hashtagtext = join("\n", $current_lines);
+                    $core_content = $hashtagtext;
+                    break;
+                }
             }
+            $new_hashtagtext .= ( strlen($new_hashtagtext) ? "\n" : '' ).$line;
         }
 
         //Add Ideas:
