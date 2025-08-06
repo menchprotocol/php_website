@@ -3964,12 +3964,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             //See what we found to add:
             $linehashtagchain .= (!$first_word && $hashtagchain ? ' ' : '').$hashtagchain;
             $linehashtagtext .= (!$first_word && $hashtagtext ? ' ' : '').$hashtagtext;
-            if(strlen($hashtagdiscover)){
-                $linehashtagdiscover .= (!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover;
-            }
-            if(strlen($hashtagedit)){
-                $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '').$hashtagedit;
-            }
+            $linehashtagdiscover .= (!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover;
+            $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '').$hashtagedit.'1';
 
         }
 
@@ -3987,6 +3983,9 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     if(strlen($hashtag_cache['hashtagedit'])){
         $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'</div>';
     }
+
+
+    return $hashtag_cache;
 
 
     if (!intval($chainhandlecreator)) {
