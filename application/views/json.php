@@ -441,7 +441,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         //Remove duplicate:
         //See what we can find:
         $trimmed = false;
-        if(0){
+        if(1){
             $new_hashtagtext = '';
             $current_lines = array();
             foreach (explode("\n", $hashtagtext) as $line_count => $line) {
