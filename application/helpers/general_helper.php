@@ -3810,6 +3810,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                         continue;
                     }
 
+                    die('['.$term.']');
                     if (!in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
                         if($replace_term==12274 && strtolower($term)==$findterm && ctype_alnum($replace_term)){
@@ -3817,7 +3818,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                             $word_text = $m['m__cover'].$term;
                         }
 
-                        die('['.$term.']');
                         if(is_numeric(trim($term))){
                             $filter = array(
                                 'handleid' => intval(trim($term)),
