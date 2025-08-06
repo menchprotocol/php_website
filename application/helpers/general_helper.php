@@ -3674,7 +3674,7 @@ function view_valid_handle_reverse_hashtag($string, $check_db = false)
 }
 
 
-function view_hashtag_value($i, $handleid = 0, $focus__node = false)
+function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_mode = true)
 {
 
     if (!isset($i['hashtagid'])) {
@@ -3683,13 +3683,14 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false)
 
     //Append Custom Reference Chain contents, if any:
     $CI =& get_instance();
+    $field = ( $discovery_mode ? 'hashtagdiscover' : 'hashtagedit' );
 
     if ($handleid > 0) {
         foreach ($CI->Chains->read(array(
             'chainhashtagoutput' => $i['hashtagid'],
             'chainhandletype' => 31835, //References
         ), array('chainhandleinput'), 0) as $message_references) {
-            if (!substr_count(strtolower($i['hashtagdiscover']), '>@' . strtolower($message_references['handleterm']))) {
+            if (!substr_count(strtolower($i[$field]), '>@' . strtolower($message_references['handleterm']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
                 $CI->Chains->delete($message_references['chainid']);
                 continue;
@@ -3702,10 +3703,10 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false)
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['chainvalue'])) {
                     if (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL)) {
-                        $i['hashtagdiscover'] = str_ireplace('@' . $message_references['handleterm'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i['hashtagdiscover']);
+                        $i[$field] = str_ireplace('@' . $message_references['handleterm'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i[$field]);
 
                     } else {
-                        $i['hashtagdiscover'] = str_ireplace('@' . $message_references['handleterm'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handleterm'] . ' ') . $reference_profile['chainvalue'], $i['hashtagdiscover']);
+                        $i[$field] = str_ireplace('@' . $message_references['handleterm'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handleterm'] . ' ') . $reference_profile['chainvalue'], $i[$field]);
                     }
                 }
             }
@@ -3713,7 +3714,7 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false)
     }
 
     return
-        $i['hashtagdiscover']  . view_list_handle($i, !$focus__node); //. view_hashtag_media($i)
+        $i[$field]  . view_list_handle($i, !$focus__node); //. view_hashtag_media($i)
 }
 
 
@@ -4685,7 +4686,8 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node) . '</div>';
+    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode) . '</div>';
+
 
     $hashtag_popup_url = hashtag_popup_url($i);
     if ($hashtag_popup_url) {
