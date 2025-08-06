@@ -3818,6 +3818,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                         }
 
                         if(is_numeric(trim($term))){
+                            die('['.$term.']');
                             $filter = array(
                                 'handleid' => intval(trim($term)),
                             );
