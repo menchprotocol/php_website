@@ -389,8 +389,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     $has_media = false;
     foreach($this->Chains->read(array(
         'chainhandletype' => 12273,
-        'chainhashtagoutput' => 134164,
-    ), array(), 1, 0, array('chainid' => 'ASC')) as $x){
+        //'chainhashtagoutput' => 134164,
+    ), array(), 377, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -441,9 +441,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $new_hashtagtext = '';
         $current_lines = array();
         foreach (explode("\n", $hashtagtext) as $line_count => $line) {
-            if(in_array(substr($line, 0, 1), array('#','@'))){
-                if(!in_array($line, $current_lines)){
-                    array_push($current_lines, $line);
+            if(in_array(substr(trim($line), 0, 1), array('#','@'))){
+                if(!in_array(trim($line), $current_lines)){
+                    array_push($current_lines, trim($line));
                 } else {
                     $hashtagtext = $new_hashtagtext;
                     $core_content = $new_hashtagtext;
@@ -458,6 +458,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 
         if(!$trimmed){
+
             //Add Ideas:
             foreach ($this->Chains->read(array(
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
@@ -545,7 +546,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $stats['hashtags_delete']++;
         }
 
-        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
+        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, 0); //$x['chainhandlecreator']
 
         /*
         $this->Hashtags->update($x['chainhashtagoutput'], array(
