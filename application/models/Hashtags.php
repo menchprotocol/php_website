@@ -15,26 +15,7 @@ class Hashtags extends CIdea_cache
             return false;
         }
 
-        $nextchainid = nextchainid();
-        $new_x = $this->Chains->create(array(
-            'chainhandletype' => 12273,
-            'chainhandlecreator' => $chainhandlecreator,
-            'chainhandleinput' => $chainhandlecreator,
-            'chainhashtagoutput' => $nextchainid,
-            'chainvalue' => $add_fields['hashtagtext'],
-        ));
-
-        if (!$new_x['chainid']) {
-            log_error('Failed to create in ledger', $add_fields);
-            return false;
-        } elseif($nextchainid!=$new_x['chainid']) {
-            //Something went wrong, update:
-            $this->Chains->update($new_x['chainid'], array(
-                'chainhashtagoutput' => $new_x['chainid'],
-            ));
-        }
-
-        //Save hashtag
+        //hashtag term
         if (!isset($add_fields['hashtagterm'])) {
             $add_fields['hashtagterm'] = random_string(8);
             //Make sure not existant:
@@ -42,6 +23,32 @@ class Hashtags extends CIdea_cache
                 $add_fields['hashtagterm'] = random_string(8);
             }
         }
+
+
+        $nextchainid = 0;
+        if(!isset($add_fields['hashtagid'])){
+            //Add to ledger:
+            $nextchainid = nextchainid();
+            $new_x = $this->Chains->create(array(
+                'chainhandletype' => 12273,
+                'chainhandlecreator' => $chainhandlecreator,
+                'chainhandleinput' => $chainhandlecreator,
+                'chainhashtagoutput' => $nextchainid,
+                'chainvalue' => "#".$add_fields['hashtagterm']."\n".$add_fields['hashtagtext'],
+            ));
+        } else {
+            $new_x['chainid'] = $add_fields['hashtagid'];
+        }
+        if (!$new_x['chainid']) {
+            log_error('Failed to create in ledger', $add_fields);
+            return false;
+        } elseif($nextchainid>0 && $nextchainid!=$new_x['chainid']) {
+            //Something went wrong, update:
+            $this->Chains->update($new_x['chainid'], array(
+                'chainhashtagoutput' => $new_x['chainid'],
+            ));
+        }
+
 
         //Save Hashtag
         $add_fields['hashtagid'] = $new_x['chainid'];

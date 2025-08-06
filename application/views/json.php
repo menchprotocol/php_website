@@ -425,6 +425,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         if(!count($is)){
             //Add hashtag:
             $hashtag_new = $this->Hashtags->create(array(
+                'hashtagid' => $x['chainid'],
                 'hashtagtext' => $x['chainvalue'],
                 'hashtagtype' => 6677,
             ), $x['chainhandlecreator']);
@@ -534,8 +535,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             }
 
         }
-
-
 
 
         if(!strlen(trim($core_content))){
