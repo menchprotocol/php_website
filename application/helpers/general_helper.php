@@ -3968,7 +3968,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                 $linehashtagdiscover .= (!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover;
             }
             if(strlen($hashtagedit)){
-                $linehashtagedit .= '<div class="line' . ($first_line ? ' first_line' : '') . '">'.(!$first_word && $hashtagedit ? ' ' : '').$hashtagedit.'</div>';
+                $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '').$hashtagedit;
             }
 
         }
