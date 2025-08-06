@@ -2397,39 +2397,6 @@ function update_algolia($focus__node = null, $s__id = 0)
                     array_push($export_row['_tags'], 'public_index');
                 }
 
-                //Top/Bottom Hashtag Keywords
-                foreach ($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42345')) . ')' => null, //Active Sequence
-                    'chainhashtaginput' => $s['hashtagid'],
-                ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['hashtagtext'] . ' ';
-                }
-                foreach ($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42345')) . ')' => null, //Active Sequence
-                    'chainhashtagoutput' => $s['hashtagid'],
-                ), array('chainhashtaginput'), 0, 0, array('chainkey' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['hashtagtext'] . ' ';
-                }
-
-                //Hashtag Handles Keywords
-                foreach ($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                    'chainhashtagoutput' => $s['hashtagid'],
-                ), array('chainhandleinput'), 0) as $x) {
-
-                    //Authored?
-                    $is_author = in_array($x['chainhandletype'], $CI->config->item('handleids___31919'));
-                    if ($is_author) {
-                        array_push($export_row['_tags'], 'z_' . $x['handleid']);
-                    }
-
-                    //Keywords?
-                    if ($is_author || strlen($x['chainvalue'])) {
-                        $export_row['s__keywords'] .= $x['handlename'] . ' ' . (strlen($x['chainvalue']) ? $x['chainvalue'] . ' ' : '');
-                    }
-
-                }
-
             } elseif ($loop_obj == 12274) {
 
                 //HANDLES
