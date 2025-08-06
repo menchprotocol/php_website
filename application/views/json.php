@@ -560,7 +560,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         ));
         $this->Chains->update($x['chainid'], array(
             'chainhashtaginput' => $x['chainhashtagoutput'],
-            'chainvalue' => ( count($is) ? '#'.$is[0]['hashtagterm']."\n" : '' ).$hashtag_cache['hashtagchain'],
+            'chainvalue' => '#'.$is[0]['hashtagterm']."\n".$hashtag_cache['hashtagchain'],
             'chainvoid' => 0,
         ));
 
@@ -587,16 +587,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '</tr>';
 
     }
-
-
-    if($has_media){
-        /*
-        $this->Hashtags->update($x['chainhashtagoutput'], array(
-            'hashtagtype' => $_POST['save_hashtagtype'],
-        ), $handle_session['handleid']);
-        */
-    }
-
 }
 
 $table .= '</table>';
