@@ -3888,7 +3888,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                                 if (count($media_attachments)) {
                                     //Replace the Entity:
-                                    $media_append_end = join(' ', $media_attachments);
+                                    $media_append_end = '<div class="media_append">'.join(' ', $media_attachments).'</div>';
                                 }
                             }
 
