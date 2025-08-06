@@ -162,11 +162,11 @@ class Hashtags extends CIdea_cache
                 //Fetch latest chain:
                 foreach($this->Chains->read(array(
                     'chainhandletype' => 12273,
-                    '(chainid='.$chainid.' OR chainhashtaginput='.$chainid.')' => null, //Active Writes
+                    '(chainid='.$chainid.' OR chainhashtaginput='.$chainid.')' => null, //Either original or updates
                 ), array(), 0) as $chain_i){
                     $this->Chains->update($chain_i['chainid'], array(
                         'chainhashtaginput' => $chainid,
-                        'chainhandlecreator' => $handle_session['handleid'],
+                        'chainhandlecreator' => $chainhandlecreator,
                         'chainvalue' => '#'.( isset($update_columns['hashtagterm']) ? $update_columns['hashtagterm'] : $hashtag_current['hashtagterm'] )."\n".$hashtag_cache['hashtagtext'],
                     ));
                 }
