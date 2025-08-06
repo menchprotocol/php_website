@@ -158,7 +158,7 @@ class Hashtags extends CIdea_cache
             $affected_rows = $this->db->affected_rows();
 
             //Chain data changed?
-            if((isset($update_columns['hashtagtext']) && $hashtag_cache['hashtagtext']!=$hashtag_current['hashtagtext']) || (isset($update_columns['hashtagterm']) && $hashtag_cache['hashtagterm']!=$hashtag_current['hashtagterm'])){
+            if((isset($update_columns['hashtagtext']) && $hashtag_cache['hashtagtext']!=$hashtag_current['hashtagtext']) || (isset($update_columns['hashtagterm']) && $update_columns['hashtagterm']!=$hashtag_current['hashtagterm'])){
                 //Fetch latest chain:
                 foreach($this->Chains->read(array(
                     'chainhandletype' => 12273,
