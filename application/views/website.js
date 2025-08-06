@@ -1996,6 +1996,7 @@ function hashtag_update() {
     $(".hashtag_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
+    var save_hashtagid = (current_hashtagid > 0 ? current_hashtagid : created_hashtagid);
     var current_hashtagid = parseInt($('#modal31911 .save_hashtagid').val());
     var created_hashtagid = parseInt($('#modal31911 .created_hashtagid').val());
     console.log('Hashtag updating begins #' + current_hashtagid);
@@ -2004,9 +2005,10 @@ function hashtag_update() {
     var modify_data = {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        save_hashtagid: (current_hashtagid > 0 ? current_hashtagid : created_hashtagid),
+        save_hashtagid: save_hashtagid,
         save_chainid: $('#modal31911 .save_chainid').val(),
         next_hashtagid: $('#modal31911 .next_hashtagid').val(),
+        save_discoverymode: $('.s__12273_' + save_hashtagid).attr('discovery_mode'),
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
         save_hashtagtext: $('#modal31911 .save_hashtagtext').val().trim(),

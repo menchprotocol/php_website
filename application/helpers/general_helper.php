@@ -4404,7 +4404,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Top action menu:
-    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtagterm="' . $i['hashtagterm'] . '" hashtagtype="' . $i['hashtagtype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtagterm="' . $i['hashtagterm'] . '" discovery_mode="'.intval($discovery_mode).'" hashtagtype="' . $i['hashtagtype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['hashtagid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_hashtag_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
 
     if ($discovery_mode && $chainhandlecreator && $focus__node) {
