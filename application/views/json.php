@@ -538,6 +538,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
 
+        /*
         $this->Hashtags->update($x['chainhashtagoutput'], array(
             'hashtagupdated' => 1,
             'hashtagtext' => $hashtag_cache['hashtagtext'],
@@ -547,6 +548,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $this->Chains->update($x['chainhashtagoutput'], array(
             'chainvalue' => $hashtag_cache['hashtagchain'],
         ));
+        */
 
         $table .= '<tr>';
 
