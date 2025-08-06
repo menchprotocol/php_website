@@ -390,7 +390,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     foreach($this->Chains->read(array(
         'chainhandletype' => 12273,
         //'chainhashtagoutput' => 134164,
-    ), array(), 377, 0, array('chainid' => 'ASC')) as $x){
+    ), array(), 5, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -457,7 +457,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $this_media = false;
 
 
-        if(!$trimmed){
+        if(!$trimmed && 0){
 
             //Add Ideas:
             foreach ($this->Chains->read(array(
