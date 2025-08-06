@@ -3993,10 +3993,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'</div>';
     }
 
-
-    return $hashtag_cache;
-
-
     if (!intval($chainhandlecreator)) {
         //Nothing else we need to do:
         return $hashtag_cache;

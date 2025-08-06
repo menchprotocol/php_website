@@ -389,8 +389,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     $has_media = false;
     foreach($this->Chains->read(array(
         'chainhandletype' => 12273,
-        //'chainhashtagoutput' => ( isset($_GET['id']) ? $_GET['id'] : 134164 ),
-    ), array(), 2000, 0, array('chainid' => 'ASC')) as $x){
+        'chainhashtagoutput' => ( isset($_GET['id']) ? $_GET['id'] : 134164 ),
+    ), array(), 1, 0, array('chainid' => 'ASC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -549,9 +549,8 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $stats['hashtags_delete']++;
         }
 
-        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, 0); //$x['chainhandlecreator']
+        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
 
-        /*
         $this->Hashtags->update($x['chainhashtagoutput'], array(
             'hashtagupdated' => 1,
             'hashtagtext' => $hashtag_cache['hashtagtext'],
@@ -559,9 +558,10 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'hashtagedit' => $hashtag_cache['hashtagedit'],
         ));
         $this->Chains->update($x['chainhashtagoutput'], array(
+            'chainhashtaginput' => $x['chainhashtagoutput'],
             'chainvalue' => $hashtag_cache['hashtagchain'],
+            'chainvoid' => 0,
         ));
-        */
 
         $table .= '<tr>';
 
