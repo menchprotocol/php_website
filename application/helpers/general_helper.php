@@ -3817,9 +3817,9 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                             $word_text = $m['m__cover'].$term;
                         }
 
-                        if(is_numeric($term)){
+                        if(is_numeric(trim($term))){
                             $filter = array(
-                                'handleid' => $term,
+                                'handleid' => intval(trim($term)),
                             );
                         } else {
                             $filter = array(
@@ -3833,7 +3833,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                             if(is_numeric($term)){
                                 //Replace Word:
                                 $term = $handle['handleterm'];
-                                $word_text = '@' . $handle['handleterm'];
+                                $word_text = $m['m__cover'] . $handle['handleterm'];
                             }
 
                             $media_append_end = false;
