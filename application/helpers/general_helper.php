@@ -2391,7 +2391,6 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__url'] = view_memory(42903, 33286) . $s['hashtagterm']; //Default to hashtag, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['hashtagtext'];
-                $export_row['s__cache'] = $s['hashtagdiscover'];
                 $export_row['s__weight'] = intval($s['hashtagweight']);
 
                 if (hashtag_is_startable($s)) {
@@ -2440,7 +2439,6 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__url'] = view_memory(42903, 42902) . $s['handleterm'];
                 $export_row['s__cover'] = $s['handlecover'];
                 $export_row['s__title'] = $s['handlename'];
-                $export_row['s__cache'] = '';
                 $export_row['s__weight'] = intval($s['handleweight']);
 
                 //Is this an image?

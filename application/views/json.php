@@ -361,7 +361,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     print_r($delete);
     echo $table;
 
-} else {
+} elseif($focus_i['hashtagterm']=='YourBio') {
 
     //HASHTAGS
     $table .= '<tr>';
