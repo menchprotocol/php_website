@@ -454,6 +454,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $new_hashtagtext .= ( strlen($new_hashtagtext) ? "\n" : '' ).$line;
         }
 
+        $this_media = false;
+
+
         if(!$trimmed){
             //Add Ideas:
             foreach ($this->Chains->read(array(
@@ -492,7 +495,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             }
 
             //Append Media:
-            $this_media = false;
             foreach($this->Chains->read(array(
                 'chainhashtagoutput' => $x['chainhashtagoutput'],
                 'chainhandleinput !=' => $x['chainhandlecreator'],
