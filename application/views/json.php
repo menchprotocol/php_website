@@ -422,17 +422,18 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         }
 
 
-        if(count($is)){
-
-            $core_content = trim($is[0]['hashtagtext']);
-            $hashtagtext = $is[0]['hashtagtext'];
-
-        } else {
-
-            $hashtagtext = $x['chainvalue'];
-            $core_content = '';
-
+        if(!count($is)){
+            //Add hashtag:
+            $hashtag_new = $this->Hashtags->create(array(
+                'hashtagtext' => $x['chainvalue'],
+                'hashtagtype' => 6677,
+            ), $x['chainhandlecreator']);
+            $is[0] = $hashtag_new['hashtag_create'];
         }
+
+        $core_content = trim($is[0]['hashtagtext']);
+        $hashtagtext = $is[0]['hashtagtext'];
+
         $initial_hashtagtext = $hashtagtext;
 
         //Remove duplicate:
