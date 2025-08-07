@@ -1643,6 +1643,7 @@ class Controller extends CI_Controller
         }
 
         if($copy_children){
+
             //Followers:
             foreach ($this->Chains->read(array(
                 'chainhandleinput' => $_POST['handleid'],
@@ -1668,31 +1669,6 @@ class Controller extends CI_Controller
             }
         }
 
-        //Hashtags:
-        foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___41302')) . ')' => null, //Clone Hashtag Handle Chains
-            'chainhandleinput' => $_POST['handleid'],
-        ), array(), 0) as $x) {
-            if (!count($this->Chains->read(array(
-                'chainhandletype' => $x['chainhandletype'],
-                'chainhandleinput' => $focus_e['handleid'],
-                'chainhandleoutput' => $x['chainhandleoutput'],
-                'chainhashtaginput' => $x['chainhashtaginput'],
-                'chainhashtagoutput' => $x['chainhashtagoutput'],
-                'chainvalue' => $x['chainvalue'],
-            )))) {
-                $this->Chains->create(array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainkey' => $x['chainkey'],
-                    'chainhandletype' => $x['chainhandletype'],
-                    'chainhandleinput' => $focus_e['handleid'],
-                    'chainhandleoutput' => $x['chainhandleoutput'],
-                    'chainhashtaginput' => $x['chainhashtaginput'],
-                    'chainhashtagoutput' => $x['chainhashtagoutput'],
-                    'chainvalue' => $x['chainvalue'],
-                ));
-            }
-        }
 
         return view_json(array(
             'status' => 1,

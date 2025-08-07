@@ -529,68 +529,6 @@ class Hashtags extends CIdea_cache
             'hashtagtype' => $this_i[0]['hashtagtype'],
         ), $chainhandlecreator);
 
-        //Always Chain Handles:
-        $filters = array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___41302')) . ')' => null, //Clone Hashtag Handle Chains
-            'chainhashtagoutput' => $hashtagid,
-        );
-
-        foreach ($this->Chains->read($filters, array(), 0) as $x) {
-            $this->Chains->create(array(
-                'chainhandlecreator' => $chainhandlecreator,
-                'chainhandletype' => $x['chainhandletype'],
-                'chainhashtagoutput' => $hashtag_new['hashtag_create']['hashtagid'],
-                'chainhandleinput' => $x['chainhandleinput'],
-                'chainhandleoutput' => $x['chainhandleoutput'],
-                'chainhashtaginput' => $x['chainhashtaginput'],
-                'chainvalue' => $x['chainvalue'],
-                'chainkey' => $x['chainkey'],
-            ));
-        }
-
-
-        //Always Chain Followings:
-        foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___41301')) . ')' => null, //Duplicate Chains
-            'chainhashtagoutput' => $hashtagid,
-        ), array(), 0) as $x) {
-            $this->Chains->create(array(
-                'chainhandlecreator' => $chainhandlecreator,
-                'chainhandletype' => $x['chainhandletype'],
-                'chainhashtagoutput' => $hashtag_new['hashtag_create']['hashtagid'],
-                'chainhashtaginput' => $x['chainhashtaginput'],
-                'chainvalue' => $x['chainvalue'],
-                'chainkey' => $x['chainkey'],
-            ));
-        }
-
-
-        //Fetch followers:
-        foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___41301')) . ')' => null, //Duplicate Chains
-            'chainhashtaginput' => $hashtagid,
-        ), array('chainhashtagoutput'), 0) as $x) {
-
-            if ($do_recursive && !count($this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                    'chainhashtagoutput' => $hashtagid,
-                    'chainhandleinput' => 42208, //No-Clone Hashtag
-                )))) {
-                //Clone Followers Recursively:
-                $this->Hashtags->copy($x['hashtagid'], $do_recursive, $chainhandlecreator, $this_i[0]);
-            } else {
-                //Chain Followers:
-                $this->Chains->create(array(
-                    'chainhandlecreator' => $chainhandlecreator,
-                    'chainhandletype' => $x['chainhandletype'],
-                    'chainhashtaginput' => $hashtag_new['hashtag_create']['hashtagid'],
-                    'chainhashtagoutput' => $x['hashtagid'],
-                    'chainvalue' => $x['chainvalue'],
-                    'chainkey' => $x['chainkey'],
-                ));
-            }
-        }
-
         return array(
             'status' => 1,
             'hashtag_createid' => $hashtag_new['hashtag_create']['hashtagid'],
