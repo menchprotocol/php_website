@@ -764,18 +764,24 @@ class Chains extends CIdea_cache
 
             //Personalize Source references:
             if($x['handleid']>0){
+
                 foreach ($this->Chains->read(array(
                     'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Active Sequence
                     'chainhashtagoutput' => $i['hashtagid'],
-                ), array(), 0) as $down_or) {
+                ), array('chainhandleinput'), 0) as $down_or) {
+
                     //See if this user has any of this:
                     foreach ($this->Chains->read(array(
-                        'chainhandleinput' => $down_or['chainhandleinput'],
+                        'chainhandleinput' => $down_or['handleid'],
                         'chainhandleoutput' => $x['handleid'],
                         'LENGTH(chainvalue) > 0' => null,
                         'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                    ), array('chainhandleinput'), 1) as $personalized) {
-                        $content_message = str_replace('>@'.$personalized['handleterm'], '>@'.$personalized['handleterm'].': '.$personalized['chainvalue'], $content_message);
+                    ), array(), 1) as $personalized) {
+                        if(substr_count('>@'.$down_or['handleterm'])){
+                            $content_message = str_replace('>@'.$down_or['handleterm'], '>@'.$down_or['handleterm'].': '.$personalized['chainvalue'], $content_message);
+                        } else {
+                            $content_message = $content_message . $personalized['chainvalue'];
+                        }
                     }
                 }
             }
