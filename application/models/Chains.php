@@ -779,9 +779,9 @@ class Chains extends CIdea_cache
                         'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                     ), array(), 1) as $personalized) {
                         if(substr_count($content_message, '>@'.$down_or['handleterm'])){
-                            $content_message = str_replace('>@'.$down_or['handleterm'], '>'.$personalized['chainvalue'], $content_message);
+                            $content_message = str_replace('>@'.$down_or['handleterm'], '>', $content_message);//.$personalized['chainvalue']
                         } else {
-                            $content_message = $content_message . $personalized['chainvalue'];
+                            //$content_message = $content_message . $personalized['chainvalue'];
                         }
                     }
                 }
