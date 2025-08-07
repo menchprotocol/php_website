@@ -762,6 +762,25 @@ class Chains extends CIdea_cache
                 $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);
             }
 
+            //Personalize Source references:
+            if($x['handleid']>0){
+                foreach ($this->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Active Sequence
+                    'chainhashtagoutput' => $i['hashtagid'],
+                ), array(), 0) as $down_or) {
+                    //See if this user has any of this:
+                    foreach ($this->Chains->read(array(
+                        'chainhandleinput' => $down_or['chainhandleinput'],
+                        'chainhandleoutput' => $x['handleid'],
+                        'LENGTH(chainvalue) > 0' => null,
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                    ), array('chainhandleinput'), 1) as $personalized) {
+                        $content_message = str_replace('@'.$personalized['handleterm'], $personalized['chainvalue'], $content_message);
+                    }
+                }
+            }
+
+
             //Append children as options:
             $html_message = '';
             foreach ($this->Chains->read(array(
