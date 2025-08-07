@@ -449,11 +449,16 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             foreach (explode("\n", $hashtagtext) as $line_count => $line) {
                 if(in_array(substr(trim($line), 0, 1), array('#','@'))){
                     if(!in_array(trim($line), $current_lines)){
+                        $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
                         array_push($current_lines, trim($line));
+                    } else {
+                        //Skip
                     }
+                } else {
+                    $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
                 }
-                $hashtagtext = ( strlen($new_hashtagtext) ? "\n" : '' ).$line;
             }
+            $hashtagtext = $new_hashtagtext;
         }
 
 
