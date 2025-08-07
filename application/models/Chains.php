@@ -737,6 +737,7 @@ class Chains extends CIdea_cache
 
             //Map this handle:
             array_push($wacth_repeat_handles, $x['handleterm']);
+            $user_hash = '?handleterm=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handleterm']);
 
 
             if (!isset($x['handleid'])) {
@@ -795,7 +796,7 @@ class Chains extends CIdea_cache
             ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
                 //Has this user hashtag_discovered this hashtag or no?
                 $html_message .= '<div class="line">' . view_hashtag_title($down_or, true) . ':</div>';
-                $html_message .= '<div class="line">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '?handleterm=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handleterm']) . '</div>';
+                $html_message .= '<div class="line"><a href="'.'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . $user_hash.'">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '</div>';
             }
 
             //Where to place the next step?
@@ -805,6 +806,14 @@ class Chains extends CIdea_cache
             } else {
                 $content_message = $content_message . $html_message;
             }
+
+
+            //Where to place the next step?
+            if (substr_count($content_message, '?user_hash')) {
+                //We have direction to place the next step somewhere specific:
+                $content_message = str_replace('?user_hash', $user_hash, $content_message);
+            }
+
 
             $message = $this->Chains->message($x['handleid'], $subject_line, $content_message, array(
                 'chainhashtaginput' => $i['hashtagid'],
