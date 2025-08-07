@@ -775,7 +775,7 @@ class Chains extends CIdea_cache
                         'LENGTH(chainvalue) > 0' => null,
                         'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                     ), array('chainhandleinput'), 1) as $personalized) {
-                        $content_message = str_replace('@'.$personalized['handleterm'], $personalized['chainvalue'], $content_message);
+                        $content_message = str_replace('>@'.$personalized['handleterm'], '>@'.$personalized['handleterm'].': '.$personalized['chainvalue'], $content_message);
                     }
                 }
             }
