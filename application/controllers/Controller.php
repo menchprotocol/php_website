@@ -3523,6 +3523,7 @@ class Controller extends CI_Controller
 
             if($chainhandletype1==1309754){
 
+                //Voided
                 if ($has_handle) {
                     $void_filter['(chainvoid >0 AND ( chainhandleoutput = ' . $es[0]['handleid'] . ' OR chainhandleinput = ' . $es[0]['handleid'] . ' OR chainhandlecreator = ' . $es[0]['handleid'] . ' ))'] = null;
                 } elseif ($has_hashtag) {
