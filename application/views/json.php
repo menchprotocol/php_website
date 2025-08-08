@@ -443,7 +443,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         //Remove duplicate:
         //See what we can find:
         $trimmed = false;
-        if(1){
+        if(0){
             $new_hashtagtext = '';
             $current_lines = array();
             foreach (explode("\n", $hashtagtext) as $line_count => $line) {
@@ -470,9 +470,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
             'chainhashtaginput' => $x['chainhashtagoutput'],
         ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
-            if(substr_count($hashtagtext, $ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'])){
-                break;
-            }
             if(!$count){
                 $core_content .= "\n";
                 $hashtagtext .= "\n";
