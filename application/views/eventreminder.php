@@ -113,7 +113,7 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
                             "\n" . 'https://' . get_domain('m__message', $x['handleid'], $user_website) . view_memory(42903, 33286) . $i['hashtagterm'] .
                             "\n" .
                             "\n" . 'If you cannot attend this event please inform us by cancelling here:' .
-                            "\n" . 'https://' . get_domain('m__message', $x['handleid'], $user_website) . view_app_chain(42216) . '?chainid=' . $x['chainid'] . '&handlelogin=' . $x['handlelogin'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['handleterm']);
+                            "\n" . 'https://' . get_domain('m__message', $x['handleid'], $user_website) . view_app_chain(42216) . '?chainid=' . $x['chainid'] . '&handlelogin=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handleterm']);
 
                         //Send message:
                         $message = $this->Chains->message($x['handleid'], $subject, $html_message, array(
@@ -227,7 +227,7 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
                 ));
                 //Has this user hashtag_discovered this hashtag or no?
                 $html_message .= view_hashtag_title($down_or, true) . ":\n";
-                $html_message .= 'https://' . get_domain('m__message', $x['handleid'], $i['chainhandledomain']) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (!count($discoveries) ? '?handlelogin=' . $x['handlelogin'] . '&time=' . time() . '&hash=' . view_hash(eventreminder . phptime() . $x['handleterm']) : '') . "\n\n";
+                $html_message .= 'https://' . get_domain('m__message', $x['handleid'], $i['chainhandledomain']) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (!count($discoveries) ? '?handlelogin=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handleterm']) : '') . "\n\n";
 
             }
 

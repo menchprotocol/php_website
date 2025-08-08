@@ -28,7 +28,7 @@ class Controller extends CI_Controller
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
         $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_chain(4269));
         $handle_session = handle_session();
-        $is_login_verified = isset($_GET['handleterm']) && $_GET['handleterm'] != 'SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['handleterm']) && view_hash($_GET['time'] . $_GET['handleterm']) == $_GET['hash'];
+        $is_login_verified = isset($_GET['handlelogin']) && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['handlelogin']) && view_hash($_GET['time'] . $_GET['handlelogin']) == $_GET['hash'];
 
         if (
             $memory_detected &&
@@ -40,7 +40,7 @@ class Controller extends CI_Controller
             if ($is_login_verified) {
 
                 foreach ($this->Handles->read(array(
-                    'LOWER(handleterm)' => strtolower($_GET['handleterm']),
+                    'LOWER(handleterm)' => strtolower($_GET['handlelogin']),
                 )) as $handle_session) {
 
                     //Login:
@@ -105,10 +105,7 @@ class Controller extends CI_Controller
         $target_i = null; //Discovery
 
 
-        if (isset($_GET['handleterm']) && $_GET['handleterm'] == 'SuccessfulWhale') {
-            $_GET['handleterm'] = '';
-            $focus_handle = '';
-        } elseif ($focus_handle && strlen($focus_handle) && !isset($_GET['handleterm'])) {
+        if ($focus_handle && strlen($focus_handle) && !isset($_GET['handleterm'])) {
             $_GET['handleterm'] = $focus_handle;
         }
         if ($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['hashtagterm'])) {

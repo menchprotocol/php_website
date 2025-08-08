@@ -2,7 +2,7 @@
 
 
 
-$handleterm = ( isset($_GET['handleterm']) && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handleterm'])==$_GET['hash'] ? $_GET['handleterm'] : $handle_session['handleterm'] );
+$handleterm = ( isset($_GET['handlelogin']) && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handlelogin'])==$_GET['hash'] ? $_GET['handlelogin'] : $handle_session['handleterm'] );
 
 if(strlen($handleterm)){
 

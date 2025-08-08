@@ -22,10 +22,10 @@ if(handle_session()) {
 
     js_php_redirect($next_url, 13);
 
-} elseif(isset($_GET['handleterm']) && $_GET['handleterm']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handleterm'])==$_GET['hash']){
+} elseif(isset($_GET['handlelogin']) && $_GET['handlelogin']!='SuccessfulWhale' && isset($_GET['hash']) && isset($_GET['time']) && view_hash($_GET['time'].$_GET['handlelogin'])==$_GET['hash']){
 
     $es = $this->Handles->read(array(
-        'LOWER(handleterm)' => strtolower($_GET['handleterm']),
+        'LOWER(handleterm)' => strtolower($_GET['handlelogin']),
     ));
 
     if(count($es)){

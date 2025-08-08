@@ -737,7 +737,7 @@ class Chains extends CIdea_cache
 
             //Map this handle:
             array_push($wacth_repeat_handles, $x['handleterm']);
-            $user_hash = '?handleterm=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handleterm']);
+            $user_hash = '?handlelogin=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handleterm']);
 
 
             if (!isset($x['handleid'])) {
