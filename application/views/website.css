@@ -3781,7 +3781,10 @@ a,
 .focus-cover .i_cache .line{
     min-height: 21px;
 }
-
+.media_append{
+    border-top: 1px dotted #000;
+    padding-top: 1px;
+}
 
 
 .remove_first_line .first_line{
