@@ -4017,7 +4017,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     foreach ($CI->Chains->read(array(
         'chainhandletype IN (' . join(',', $CI->config->item('handleids___1696899')) . ')' => null, //All possible refereces
         'chainhashtaginput' => intval($save_hashtagid),
-    ), array(), 0) as $x) {
+    ), array(), 0, 0, array('chainkey' => 'ASC')) as $x) {
 
         $hashtag_cache['actionstats']['current']++;
 
