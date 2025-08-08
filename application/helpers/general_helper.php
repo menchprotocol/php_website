@@ -1626,7 +1626,7 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
                 'chainhashtagoutput' => $template_hashtagid,
             ))))) {
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?handleterm=' . $es[0]['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['handleterm']) . '" style="font-size:13px;">' . $handles___6287[28904]['m__title'] . '</a></div>';
+        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?handlelogin=' . $es[0]['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['handleterm']) . '" style="font-size:13px;">' . $handles___6287[28904]['m__title'] . '</a></div>';
     }
 
 
@@ -5234,7 +5234,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
     $chainhandlecreator_id = ($handle_session && isset($handle_session['handleid']) ? $handle_session['handleid'] : 14068 /* GUEST */);
 
     //Handle UI
-    $ui = '<div handleid="' . $e['handleid'] . '" handleterm="' . $e['handleterm'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardhandle_cover no-padding card-12274 s__12274_' . $e['handleid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
+    $ui = '<div handleid="' . $e['handleid'] . '" handlelogin="' . $e['handleterm'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardhandle_cover no-padding card-12274 s__12274_' . $e['handleid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
 
     $ui .= '<div class="cover-wrapper">';
 

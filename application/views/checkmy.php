@@ -36,8 +36,30 @@ foreach($this->Chains->read(array(
 
 
 if(!$was_found){
+
     echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$focus_e['handlename'].' Not Found for '.$handle_session['handlename'].'! Contact your admin to inquire further as you are not listed here.</div>';
+
+    echo '<div>👤 USD $3,000/Member Camp Dues Includes $1000 Refundable Deposit
+⛺ USD $2,000/Group of 1-2 Rent ShiftPod [SOLD OUT]
+⛺ USD $2,500/Group of 1-2 Rent ShiftPod [NEW ORDERS]
+🚐 USD $1,000/Group of 1-3 Van/Sprinter Park + Power
+🚌 USD $2,000/Group of 3-6 RV Park + Power
+🚌 USD $3,000/Group of 1-2 RV Park + Power
+🍸 USD 200/Member for 3x 1.75L Hard Liquor Bottle
+💦 USD 150/Pump Clean Water in Your RV
+💩 USD 150/Dump Grey Water in Your RV (2 hose Max)
+💩 USD 200/Dump Grey Water in Your RV (4 hose Max)</div>';
+
 } else {
+
+    foreach($this->Chains->read(array(
+        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        'chainhandleinput' => $handle_output['handleid'],
+        'chainhandleoutput' => $handle_session['handleid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it
+    ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_data){
+        $was_found = true;
+        echo '<tr><td><span class="icon-block-sm">'.view_cover($handle_data['handlecover']).'</span>'.$handle_data['handlename'].':</td><td>'.$handle_data['chainvalue'].'</td></tr>';
+    }
     
     //Load Paypal Pay button:
     echo '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
@@ -46,6 +68,7 @@ if(!$was_found){
     echo '<input type="hidden" class="hashtagweight" name="quantity" value="1">'; //Dynamic Variable that JS will update
     echo '<input type="hidden" name="item_name" value="Discotique 2025 Camp Dues">';
     echo '<input type="hidden" name="item_number" value="' . ($target_hashtagterm ? $target_hashtagterm . ' #' : '') . $i['hashtagterm'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handleterm'] . '">';
+
 
     echo '<input type="hidden" name="amount" value="' . $unit_price . '">';
     echo '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
