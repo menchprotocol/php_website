@@ -95,7 +95,6 @@ function watch_cover_change(new_cover) {
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
         $('#modal31912 .fa_search a').attr('href', 'https://fontawesome.com/search?q=' + encodeURIComponent(split_cover_2arr2[0]) + '&o=r&s=solid&f=classic%2Cbrands');
         $('#modal31912 .save_handlecover,  #modal31912 .fa_search').removeClass('hidden');
-        console.log('updated');
     } else {
         $('#modal31912 .save_handlecover, #modal31912 .fa_search').addClass('hidden');
     }

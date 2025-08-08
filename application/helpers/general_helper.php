@@ -3739,7 +3739,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             'current' => 0,
             'added' => 0,
             'removed' => 0,
-            'udated' => 0,
+            'updated' => 0,
         ),
     );
 
@@ -4033,11 +4033,11 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
         //We have it, see if it matches or needs updating:
         foreach($hashtag_references[($chainkey-1)] as $key => $value){
-            if($x[$key]!=$value){
+            if($x[$key].''!=$value.''){
                 //Updating needed:
                 $hashtag_references[($chainkey-1)]['chainhandlecreator'] = $chainhandlecreator;
                 $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey-1)]);
-                $hashtag_cache['actionstats']['udated']++;
+                $hashtag_cache['actionstats']['updated']++;
                 break;
             }
         }
