@@ -3764,11 +3764,10 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
         foreach ($words as $word_count => $word_text) {
 
-
             $reference_type = 0;
             $first_word = !$word_count;
-            if(!$first_word){
-                $second_word_onwards .= ( strlen($second_word_onwards) ? ' ' : '' ).$word_text;
+            if($first_word){
+                $second_word_onwards .= ltrim($line, $word_text.' ');
             }
             $hashtagchain = null;
             $hashtagtext = null;
@@ -3914,7 +3913,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                                     'chainhandleoutput' => 0,
                                     'chainhashtaginput' => $save_hashtagid,
                                     'chainhashtagoutput' => $save_hashtagid, //TODO could be removed later must check all references
-                                    'chainvalue' => ( strlen($second_word_onwards) ? trim($second_word_onwards) : null ),
+                                    'chainvalue' => ( $first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null ),
                                     'chainkey' => $chainkey,
                                 );
                             }
