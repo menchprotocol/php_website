@@ -37,4 +37,30 @@ foreach($this->Chains->read(array(
 
 if(!$was_found){
     echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$focus_e['handlename'].' Not Found for '.$handle_session['handlename'].'! Contact your admin to inquire further as you are not listed here.</div>';
+} else {
+    
+    //Load Paypal Pay button:
+    echo '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+
+    echo '<input type="hidden" class="paypal_handling" name="handling" value="0">';
+    echo '<input type="hidden" class="hashtagweight" name="quantity" value="1">'; //Dynamic Variable that JS will update
+    echo '<input type="hidden" name="item_name" value="Discotique 2025 Camp Dues">';
+    echo '<input type="hidden" name="item_number" value="' . ($target_hashtagterm ? $target_hashtagterm . ' #' : '') . $i['hashtagterm'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handleterm'] . '">';
+
+    echo '<input type="hidden" name="amount" value="' . $unit_price . '">';
+    echo '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
+    echo '<input type="hidden" name="no_shipping" value="1">';
+    echo '<input type="hidden" name="notify_url" value="https://' . $handles___14870[2738]['m__message'] . view_app_chain(26595) . '">';
+    echo '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?cancel_pay=1">';
+    echo '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1">';
+    echo '<input type="hidden" name="cmd" value="_xclick">';
+    echo '<input type="hidden" name="business" value="' . $paypal_email . '">';
+
+    echo '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading\');$(\'#pay_now\').val(\'...\');">';
+
+    echo '</form>';
+
+    echo '<script> $(document).ready(function () { $(\'.hashtag_discovered_btn\').hide(); }); </script>';
+
+    
 }

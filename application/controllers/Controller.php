@@ -1147,6 +1147,7 @@ class Controller extends CI_Controller
 
             //Create new hashtag
             $hashtag_new = $this->Hashtags->create(array(
+                'hashtagterm' => $_POST['save_hashtagterm'],
                 'hashtagtext' => $_POST['save_hashtagtext'],
                 'hashtagtype' => $_POST['save_hashtagtype'],
             ), $handle_session['handleid']);
