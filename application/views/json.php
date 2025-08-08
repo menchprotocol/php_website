@@ -393,7 +393,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         'chainhandletype' => 12273,
         'chainhashtaginput' => 0,
         //'chainid' => ( isset($_GET['id']) ? $_GET['id'] : 133120 ),
-    ), array(), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+    ), array('chainhashtagoutput'), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
@@ -437,6 +437,43 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         $core_content = trim($is[0]['hashtagtext']);
         $hashtagtext = $is[0]['hashtagtext'];
+
+
+        //Remove duplicate:
+        $new_hashtagtext = '';
+        $current_lines = array();
+        $all_lines = explode("\n", $hashtagtext);
+        foreach ($all_lines as $line_count => $line) {
+            $term = substr(trim($line), 1);
+            if(
+                !$line_count
+                && count($all_lines)>1
+                && substr(trim($line), 0, 1)=='#'
+                && ctype_alpha($term)
+                && ($term==$x['hashtagterm'] || !count($this->Hashtags->read(array(
+                        'LOWER(hashtagterm)' => strtolower($term),
+                    ))))){
+                //Remove this line:
+                continue;
+            }
+            if(in_array(substr(trim($line), 0, 1), array('#','@')) || in_array(substr(trim($line), 1, 1), array('#','@'))){
+                if(!in_array(trim($line), $current_lines)){
+                    $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
+                    array_push($current_lines, trim($line));
+                } else {
+                    //Remove this line:
+                    continue;
+                }
+            } else {
+                $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
+            }
+        }
+
+        //Did we trim?
+        if($new_hashtagtext!=$hashtagtext){
+            //Yes, adjust:
+            $hashtagtext = $new_hashtagtext;
+        }
 
         $initial_hashtagtext = $hashtagtext;
 
@@ -525,27 +562,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         }
 
 
-        //Remove duplicate:
-        $new_hashtagtext = '';
-        $current_lines = array();
-        foreach (explode("\n", $hashtagtext) as $line_count => $line) {
-            if(in_array(substr(trim($line), 0, 1), array('#','@')) || in_array(substr(trim($line), 1, 1), array('#','@'))){
-                if(!in_array(trim($line), $current_lines)){
-                    $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
-                    array_push($current_lines, trim($line));
-                } else {
-                    //Skip
-                }
-            } else {
-                $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
-            }
-        }
-
-        //Did we trim?
-        if($new_hashtagtext!=$hashtagtext){
-            //Yes, adjust:
-            $hashtagtext = $new_hashtagtext;
-        }
 
 
         if(!strlen(trim($core_content))){
