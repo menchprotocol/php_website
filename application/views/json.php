@@ -525,15 +525,15 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 'chainhashtagoutput' => $x['chainhashtagoutput'],
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Mentions
             ), array('chainhandleinput')) as $count => $x2){
-                if(substr_count($hashtagtext, "@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'])){
+                if(substr_count($hashtagtext, $mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'])){
                     break;
                 }
                 if(!$count){
                     $core_content .= "\n";
                     $hashtagtext .= "\n";
                 }
-                $core_content .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
-                $hashtagtext .= "\n@".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
+                $core_content .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
+                $hashtagtext .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
                 if(strlen($x2['chainvalue'])){
                     $hashtagtext .= ' '.$x2['chainvalue'];
                 }
