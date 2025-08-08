@@ -1856,13 +1856,7 @@ class Controller extends CI_Controller
 
         if ($adding_to_i) {
 
-            //Add Author:
-            $ur2 = $this->Chains->create(array(
-                'chainhandlecreator' => $handle_session['handleid'],
-                'chainhandletype' => 4983, //Co-Author
-                'chainhandleinput' => $focus_e['handleid'],
-                'chainhashtagoutput' => $fetch_o[0]['hashtagid'],
-            ));
+            //Add Author
 
         } else {
 
@@ -2468,19 +2462,7 @@ class Controller extends CI_Controller
                 ));
             } elseif ($_POST['right_hashtagid']) {
 
-                if (!count($this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___31919')) . ')' => null, //HASHTAG AUTHOR
-                    'chainhandleinput' => $_POST['selected_handleid'],
-                    'chainhashtagoutput' => $_POST['right_hashtagid'],
-                )))) {
-                    $stats['added']++;
-                    $this->Chains->create(array(
-                        'chainhandlecreator' => $handle_session['handleid'],
-                        'chainhandletype' => 4983, //Co-Author
-                        'chainhandleinput' => $_POST['selected_handleid'],
-                        'chainhashtagoutput' => $_POST['right_hashtagid'],
-                    ));
-                }
+
 
             }
         }

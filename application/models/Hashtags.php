@@ -309,7 +309,6 @@ class Hashtags extends CIdea_cache
                     if (in_array($action_handleid, array(12591, 27080, 27985, 27082, 27084, 27086)) && !count($hashtag_has_e)) {
 
                         $handle_mapper = array(
-                            12591 => 4983,  //Co-Author
                             27985 => 27984, //IF Follows Any
                             27082 => 26600, //IF Not Follows All
                             27084 => 7545,  //Following Add

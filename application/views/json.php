@@ -26,12 +26,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 1733129,
                 1733131
             ) as $daysofweek){
-        $this->Chains->create(array(
-            'chainhandletype' => 4983,
-            'chainhandlecreator' => 1,
-            'chainhashtagoutput' => $daysofweek,
-            'chainhandleinput' => 1642022, //Dashboard
-        ));
+
     }
     echo 'yayyy';
 
@@ -51,14 +46,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 
 
-    foreach(array(1734987,1733038) as $required_hashtagid){
-        $this->Chains->create(array(
-            'chainhandletype' => 4983,
-            'chainhandlecreator' => 1,
-            'chainhashtagoutput' => $required_hashtagid,
-            'chainhandleinput' => 28239, //Required
-        ));
-    }
 */
 
 
@@ -497,23 +484,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
             $hashtagtext .= "\n".$handle.$x2['hashtagterm'];
             $core_content .= "\n".$handle.$x2['hashtagterm'];
-        }
-
-        //Append authors:
-        foreach($this->Chains->read(array(
-            'chainhashtagoutput' => $x['chainhashtagoutput'],
-            'chainhandleinput NOT IN ('.$x['chainhandlecreator'].',1,2,32337)' => null,
-            'chainhandletype' => 4983, //Authors
-        ), array('chainhandleinput')) as $x2){
-            if(substr_count($hashtagtext, "@".$x2['handleterm'])){
-                continue;
-            }
-            $core_content .= "\n"."@".$x2['handleterm'];
-            $hashtagtext .= "\n"."@".$x2['handleterm'];
-            if (strlen($x2['chainvalue'] > 0)) {
-                $core_content .= " ".$x2['chainvalue'];
-                $hashtagtext .= " ".$x2['chainvalue'];
-            }
         }
 
         //Add Idea Type:
