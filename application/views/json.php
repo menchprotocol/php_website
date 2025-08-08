@@ -525,8 +525,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 $core_content .= "\n";
                 $hashtagtext .= "\n";
             }
-            $core_content .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
-            $hashtagtext .= "\n".$mentions[$x2['chainhandletype']]['m__cover'].$x2['handleterm'];
+            $handle = ( strlen($mentions[$x2['chainhandletype']]['m__cover'])>=1 && strlen($mentions[$x2['chainhandletype']]['m__cover'])<=2 ? $mentions[$x2['chainhandletype']]['m__cover'] : '@' );
+            $core_content .= "\n".$handle.$x2['handleterm'];
+            $hashtagtext .= "\n".$handle.$x2['handleterm'];
             if(strlen($x2['chainvalue'])){
                 $hashtagtext .= ' '.$x2['chainvalue'];
             }
