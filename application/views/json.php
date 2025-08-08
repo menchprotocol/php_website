@@ -474,8 +474,10 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 $core_content .= "\n";
                 $hashtagtext .= "\n";
             }
-            $hashtagtext .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'];
-            $core_content .= "\n".$ideas[$x2['chainhandletype']]['m__cover'].$x2['hashtagterm'];
+            $handle = ( strlen($ideas[$x2['chainhandletype']]['m__cover'])>=1 && strlen($ideas[$x2['chainhandletype']]['m__cover'])<=2 ? $ideas[$x2['chainhandletype']]['m__cover'] : '#' );
+
+            $hashtagtext .= "\n".$handle.$x2['hashtagterm'];
+            $core_content .= "\n".$handle.$x2['hashtagterm'];
         }
 
         //Append authors:
