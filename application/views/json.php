@@ -489,11 +489,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 'chainhandleinput NOT IN ('.$x['chainhandlecreator'].',1,2,32337)' => null,
                 'chainhandletype' => 4983, //Authors
             ), array('chainhandleinput')) as $x2){
-                if(!substr_count($hashtagtext, "@".$x2['handleterm'])){
-                    $core_content .= "\n"."@".$x2['handleterm'];
-                    if (strlen($x2['chainvalue'] > 0)) {
-                        $core_content .= " ".$x2['chainvalue'];
-                    }
+                $core_content .= "\n"."@".$x2['handleterm'];
+                if (strlen($x2['chainvalue'] > 0)) {
+                    $core_content .= " ".$x2['chainvalue'];
                 }
             }
 
