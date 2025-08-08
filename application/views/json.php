@@ -440,27 +440,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         $initial_hashtagtext = $hashtagtext;
 
-        //Remove duplicate:
-        //See what we can find:
-        $trimmed = false;
-        if(0){
-            $new_hashtagtext = '';
-            $current_lines = array();
-            foreach (explode("\n", $hashtagtext) as $line_count => $line) {
-                if(in_array(substr(trim($line), 0, 1), array('#','@'))){
-                    if(!in_array(trim($line), $current_lines)){
-                        $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
-                        array_push($current_lines, trim($line));
-                    } else {
-                        //Skip
-                    }
-                } else {
-                    $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
-                }
-            }
-            $hashtagtext = $new_hashtagtext;
-        }
-
 
         $this_media = false;
 
@@ -470,11 +449,14 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
             'chainhashtaginput' => $x['chainhashtagoutput'],
         ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
+            $handle = ( strlen($ideas[$x2['chainhandletype']]['m__cover'])>=1 && strlen($ideas[$x2['chainhandletype']]['m__cover'])<=2 ? $ideas[$x2['chainhandletype']]['m__cover'] : '#' );
+            if(substr_count($hashtagtext, $handle.$x2['hashtagterm'])){
+                continue;
+            }
             if(!$count){
                 $core_content .= "\n";
                 $hashtagtext .= "\n";
             }
-            $handle = ( strlen($ideas[$x2['chainhandletype']]['m__cover'])>=1 && strlen($ideas[$x2['chainhandletype']]['m__cover'])<=2 ? $ideas[$x2['chainhandletype']]['m__cover'] : '#' );
 
             $hashtagtext .= "\n".$handle.$x2['hashtagterm'];
             $core_content .= "\n".$handle.$x2['hashtagterm'];
@@ -486,6 +468,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandleinput NOT IN ('.$x['chainhandlecreator'].',1,2,32337)' => null,
             'chainhandletype' => 4983, //Authors
         ), array('chainhandleinput')) as $x2){
+            if(substr_count($hashtagtext, "@".$x2['handleterm'])){
+                continue;
+            }
             $core_content .= "\n"."@".$x2['handleterm'];
             $hashtagtext .= "\n"."@".$x2['handleterm'];
             if (strlen($x2['chainvalue'] > 0)) {
@@ -507,7 +492,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
         ), array('chainhandleinput')) as $x2){
             if(substr_count($hashtagtext, "@".$x2['handleterm'])){
-                break;
+                continue;
             }
             $core_content .= "\n@".$x2['handleterm'];
             $hashtagtext .= "\n@".$x2['handleterm'];
@@ -523,16 +508,42 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             'chainhashtagoutput' => $x['chainhashtagoutput'],
             'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Mentions
         ), array('chainhandleinput')) as $count => $x2){
+            $handle = ( strlen($mentions[$x2['chainhandletype']]['m__cover'])>=1 && strlen($mentions[$x2['chainhandletype']]['m__cover'])<=2 ? $mentions[$x2['chainhandletype']]['m__cover'] : '@' );
+            if(substr_count($hashtagtext, $handle.$x2['handleterm'])){
+                continue;
+            }
             if(!$count){
                 $core_content .= "\n";
                 $hashtagtext .= "\n";
             }
-            $handle = ( strlen($mentions[$x2['chainhandletype']]['m__cover'])>=1 && strlen($mentions[$x2['chainhandletype']]['m__cover'])<=2 ? $mentions[$x2['chainhandletype']]['m__cover'] : '@' );
             $core_content .= "\n".$handle.$x2['handleterm'];
             $hashtagtext .= "\n".$handle.$x2['handleterm'];
             if(strlen($x2['chainvalue'])){
                 $hashtagtext .= ' '.$x2['chainvalue'];
             }
+        }
+
+
+        //Remove duplicate:
+        $new_hashtagtext = '';
+        $current_lines = array();
+        foreach (explode("\n", $hashtagtext) as $line_count => $line) {
+            if(in_array(substr(trim($line), 0, 1), array('#','@')) || in_array(substr(trim($line), 1, 1), array('#','@'))){
+                if(!in_array(trim($line), $current_lines)){
+                    $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
+                    array_push($current_lines, trim($line));
+                } else {
+                    //Skip
+                }
+            } else {
+                $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
+            }
+        }
+
+        //Did we trim?
+        if($new_hashtagtext!=$hashtagtext){
+            //Yes, adjust:
+            $hashtagtext = $new_hashtagtext;
         }
 
 
