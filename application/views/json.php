@@ -587,7 +587,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $this->db->where('chainid', $x['chainid']);
         $this->db->update('ideachain', array(
             'chainhashtaginput' =>  $x['chainid'],
-            'chainvalue' =>  $hashtag_cache['hashtagchain'],
+            'chainvalue' =>  '#'.$x['hashtagterm']."\n".$hashtag_cache['hashtagchain'],
         ));
 
         $table .= '<tr>';
