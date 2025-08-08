@@ -449,7 +449,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 !$line_count
                 && count($all_lines)>1
                 && substr(trim($line), 0, 1)=='#'
-                && ctype_alpha($term)
+                && ctype_alnum($term)
                 && ($term==$x['hashtagterm'] || !count($this->Hashtags->read(array(
                         'LOWER(hashtagterm)' => strtolower($term),
                     ))))){
