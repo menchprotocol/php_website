@@ -3914,7 +3914,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                                     'chainhandleoutput' => 0,
                                     'chainhashtaginput' => $save_hashtagid,
                                     'chainhashtagoutput' => $save_hashtagid, //TODO could be removed later must check all references
-                                    'chainvalue' => ( $first_word && strlen($second_word_onwards) ? $second_word_onwards : null ),
+                                    'chainvalue' => ( $first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null ),
                                     'chainkey' => $chainkey,
                                 );
                             }
