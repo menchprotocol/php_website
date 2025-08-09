@@ -1115,7 +1115,7 @@ class Controller extends CI_Controller
                 ), array('chainhashtaginput')) as $ref) {
 
                     //Redo their cache:
-                    $hashtag_cache = hashtag_cache($ref['hashtagid'], $ref['hashtagtext'], 0, $is[0]['hashtagterm'], $update_array['hashtagterm']);
+                    $hashtag_cache = hashtag_cache($ref['hashtagid'], $ref['hashtagtext'], $handle_session['handleid'], $is[0]['hashtagterm'], $update_array['hashtagterm']);
 
                     $update_columns = array();
 
