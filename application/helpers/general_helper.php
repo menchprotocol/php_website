@@ -3680,7 +3680,7 @@ function view_valid_handle_reverse_hashtag($string, $check_db = false)
 }
 
 
-function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_mode = true)
+function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_mode = true, $show_hashtagedit = false)
 {
 
     if (!isset($i['hashtagid'])) {
@@ -3689,7 +3689,9 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
 
     //Append Custom Reference Chain contents, if any:
     $CI =& get_instance();
-    $field = ( !$discovery_mode && handle_session(10939) ? 'hashtagedit' : 'hashtagdiscover' );
+
+    //This is still flawed, we need to fix this to exlude cache apps and more:
+    $field = ( $show_hashtagedit ? 'hashtagedit' : 'hashtagdiscover' );
 
     if ($handleid > 0) {
         foreach ($CI->Chains->read(array(
@@ -4709,7 +4711,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode) . '</div>';
+    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, ( $discovery_mode && $superpower_10939 )) . '</div>';
 
 
     $hashtag_popup_url = hashtag_popup_url($i);

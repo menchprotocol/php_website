@@ -1170,9 +1170,11 @@ class Controller extends CI_Controller
             //Update Search Index:
             update_algolia(12273, $new_i['hashtagid']);
 
+            $discovery_mode = ( isset($_POST['save_discoverymode']) && intval($_POST['save_discoverymode']) );
+
             return view_json(array(
                 'status' => 1,
-                'return_hashtagdiscover_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node, ( isset($_POST['save_discoverymode']) && intval($_POST['save_discoverymode']))),
+                'return_hashtagdiscover_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node, $discovery_mode, $discovery_mode),
                 'return_hashtagdiscover_full' => hashtag_view($_POST['focus_group'], $new_i),
                 'save_hashtagid' => $new_i['hashtagid'],
                 'save_hashtagtext' => trim($_POST['save_hashtagtext']),
