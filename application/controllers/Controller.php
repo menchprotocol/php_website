@@ -3498,7 +3498,7 @@ class Controller extends CI_Controller
             foreach ($this->config->item('handles___' . $chainhandletype1) as $chainhandletype2 => $m2) {
 
                 //Nodes/Chains
-
+                $level2_total = 0;
                 if ($chainhandletype2 == 12273) {
 
                     if ($has_handle) {
@@ -3543,6 +3543,9 @@ class Controller extends CI_Controller
                         $sub_counter = $this->Handles->read(array(), 0, 0, array(), 'COUNT(handleid) as totals');
 
                     }
+
+                    $level2_total += $sub_counter[0]['totals'];
+                    $return_array[$chainhandletype2] = intval($sub_counter[0]['totals']);
 
                 } else {
 
