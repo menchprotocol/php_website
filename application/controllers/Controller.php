@@ -3521,6 +3521,9 @@ class Controller extends CI_Controller
 
                     }
 
+                    $level2_total += $sub_counter[0]['totals'];
+                    $return_array[$chainhandletype2] = intval($sub_counter[0]['totals']);
+
                 } elseif ($chainhandletype2 == 12274) {
 
                     if ($has_handle) {
