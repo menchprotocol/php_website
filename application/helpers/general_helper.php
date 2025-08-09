@@ -3910,7 +3910,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             //Valid Handle
                             $reference_type = $chainhandletype;
-                            if($save_hashtagid>0 && $chainhandlecreator>0){
+                            if($chainhandlecreator>0){
                                 $chainkey++;
                                 $hashtag_references[($chainkey-1)] = array(
                                     'chainhandletype' => $chainhandletype,
@@ -3949,7 +3949,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                             //Valid Hashtag
                             $reference_type = $chainhandletype;
 
-                            if($save_hashtagid>0 && $chainhandlecreator>0){
+                            if($chainhandlecreator>0){
                                 $chainkey++;
                                 $hashtag_references[($chainkey-1)] = array(
                                     'chainhandletype' => $chainhandletype,
