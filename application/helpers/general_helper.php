@@ -4010,7 +4010,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'</div>';
     }
 
-    if (!intval($save_hashtagid)) {
+    if (!intval($chainhandlecreator)) {
         //Nothing else we need to do:
         return $hashtag_cache;
     }
@@ -4018,36 +4018,38 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     //Save Found references to remove the ones who exist in DB:
     $chainkey = 0;
 
-    foreach ($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___1696899')) . ')' => null, //All possible refereces
-        'chainhashtaginput' => intval($save_hashtagid),
-    ), array(), 0, 0, array('chainkey' => 'ASC')) as $x) {
+    if (intval($save_hashtagid)) {
+        //Nothing else we need to do:
+        foreach ($CI->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___1696899')) . ')' => null, //All possible refereces
+            'chainhashtaginput' => intval($save_hashtagid),
+        ), array(), 0, 0, array('chainkey' => 'ASC')) as $x) {
 
-        $hashtag_cache['actionstats']['current']++;
+            $hashtag_cache['actionstats']['current']++;
 
-        //What should happen here?
-        $chainkey++;
+            //What should happen here?
+            $chainkey++;
 
-        if(!isset($hashtag_references[($chainkey-1)])){
-            //Must be removed:
-            $CI->Chains->delete($x['chainid']);
-            $hashtag_cache['actionstats']['removed']++;
-            continue;
-        }
+            if(!isset($hashtag_references[($chainkey-1)])){
+                //Must be removed:
+                $CI->Chains->delete($x['chainid']);
+                $hashtag_cache['actionstats']['removed']++;
+                continue;
+            }
 
-        //We have it, see if it matches or needs updating:
-        foreach($hashtag_references[($chainkey-1)] as $key => $value){
-            if($x[$key].''!=$value.''){
-                //Updating needed:
-                echo $key.'['.$x[$key].']!=['.$value.']'."\n";
-                $hashtag_references[($chainkey-1)]['chainhandlecreator'] = $chainhandlecreator;
-                $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey-1)]);
-                $hashtag_cache['actionstats']['updated']++;
-                break;
+            //We have it, see if it matches or needs updating:
+            foreach($hashtag_references[($chainkey-1)] as $key => $value){
+                if($x[$key].''!=$value.''){
+                    //Updating needed:
+                    echo $key.'['.$x[$key].']!=['.$value.']'."\n";
+                    $hashtag_references[($chainkey-1)]['chainhandlecreator'] = $chainhandlecreator;
+                    $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey-1)]);
+                    $hashtag_cache['actionstats']['updated']++;
+                    break;
+                }
             }
         }
     }
-
 
     //Any more links left that were not in DB?
     for($i=$chainkey;$i<=count($hashtag_references);$i++){
