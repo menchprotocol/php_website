@@ -444,7 +444,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 continue;
             }
             if(in_array(substr(trim($line), 0, 1), array('#','@')) || in_array(substr(trim($line), 1, 1), array('#','@'))){
-                if(!in_array(trim($line), $current_lines)){
+                if(!in_array(trim($line), $current_lines) && strtolower(trim($line))!='@shervin'){
                     $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
                     array_push($current_lines, trim($line));
                 } else {
@@ -513,11 +513,15 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         //Fetch Mentions
         foreach($this->Chains->read(array(
             'chainhashtagoutput' => $x['chainhashtagoutput'],
-            'chainhandleinput NOT IN (32337)' => null,
+            'chainhandleinput NOT IN (1,2,32337)' => null,
             'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Mentions
         ), array('chainhandleinput')) as $count => $x2){
+
+            //Define handle:
             $handle = ( strlen($mentions[$x2['chainhandletype']]['m__cover'])>=1 && strlen($mentions[$x2['chainhandletype']]['m__cover'])<=2 ? $mentions[$x2['chainhandletype']]['m__cover'] : '@' );
+
             if(substr_count($hashtagtext, $handle.$x2['handleterm'])){
+                //Reference already there:
                 continue;
             }
             if(!$count){
