@@ -374,13 +374,22 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         'hashtags_valid_cachevoid' => 0,
     );
 
-    $has_media = false;
-    foreach($this->Chains->read(array(
+    if(isset($_GET['reset'])){
+        $q = $this->db->query('Update ideachain SET chainhashtaginput=0 WHERE chainhandletype=12273 AND chainhashtaginput>0;');
+        print_r(array('reset_result' => $q->result_array()));
+    }
+    $filters = array(
         'chainvoid >=' => 0,
         'chainhandletype' => 12273,
-        //'chainhashtaginput' => 0,
-        'chainid' => ( isset($_GET['id']) ? $_GET['id'] : 133131 ),
-    ), array('chainhashtagoutput'), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+    );
+    if(isset($_GET['id'])){
+        $filters['chainid'] = $_GET['id'];
+    } else {
+        //Filter for mass editing;
+        $filters['chainhashtaginput'] = 0;
+    }
+    $has_media = false;
+    foreach($this->Chains->read($filters, array('chainhashtagoutput'), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
         $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
 
