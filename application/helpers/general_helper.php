@@ -4060,6 +4060,9 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         }
     }
 
+    $hashtag_cache['actionstats']['$save_hashtagid'] = $save_hashtagid;
+    $hashtag_cache['actionstats']['$chainhandlecreator'] = $chainhandlecreator;
+    $hashtag_cache['actionstats']['references_count'] = count($hashtag_references);
     $hashtag_cache['actionstats']['references'] = $hashtag_references;
 
     return $hashtag_cache;
