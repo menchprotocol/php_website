@@ -3730,6 +3730,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     //Display Images, Audio, Video & PDF Files:
     //Analyze the message to find referencing URLs and Members in the message text:
     $CI =& get_instance();
+    $core_references = array('@', '#');
     $hashtag_cache = array(
         'hashtagchain' => '',
         'hashtagtext' => '',
@@ -3813,7 +3814,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
 
             //Could be another reference, check:
-            $core_references = array('@', '#');
             if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
 
                 foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
@@ -3853,7 +3853,9 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             $media_append_end = false;
 
-                            if ($m['m__cover'] == '@') {
+                            if ($chainhandletype == 31835) {
+
+                                //This is the main @User reference
 
                                 $media_attachments = array();
 
@@ -3920,7 +3922,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             $hashtagchain = $m['m__cover'] . $handle['handleid'];
                             $hashtagtext = $word_text;
-                            if(!($first_word) && !(count($media_attachments)==1 && $x['chainhandleinput'] == 1326)){
+                            if(!in_array(substr(trim($line), 0, 1), $core_references) && !(count($media_attachments)==1 && $x['chainhandleinput'] == 1326)){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
                             } elseif($media_append_end){
                                 $hashtagdiscover = $media_append_end;
