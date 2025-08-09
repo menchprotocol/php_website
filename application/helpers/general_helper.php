@@ -3961,7 +3961,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
                             $hashtagtext = $word_text;
-                            if(!($first_word && $only_word_in_line)){
+                            if(!in_array(substr(trim($line), 0, 1), $core_references)){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
                             }
                             $hashtagedit = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '">' . $word_text . '</a>';
@@ -3994,8 +3994,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
         $hashtag_cache['hashtagchain'] .= (!$first_line && $linehashtagchain ? "\n" : '').$linehashtagchain;
         $hashtag_cache['hashtagtext'] .= (!$first_line && $linehashtagtext ? "\n" : '').$linehashtagtext;
-        $hashtag_cache['hashtagdiscover'] .=  ( $linehashtagdiscover ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">'.$linehashtagdiscover.'</div>' : '' );
-        $hashtag_cache['hashtagedit'] .=  ( $linehashtagedit ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">'.$linehashtagedit.'</div>' : '' );
+        $hashtag_cache['hashtagdiscover'] .= ( $linehashtagdiscover ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">'.$linehashtagdiscover.'</div>' : '' );
+        $hashtag_cache['hashtagedit'] .= ( $linehashtagedit ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">'.$linehashtagedit.'</div>' : '' );
 
     }
 
@@ -4054,6 +4054,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             $hashtag_cache['actionstats']['added']++;
         }
     }
+
+    $hashtag_cache['references'] = $hashtag_references;
 
     return $hashtag_cache;
 
