@@ -3545,7 +3545,9 @@ class Controller extends CI_Controller
                 } else {
 
                     //Chains:
-                    foreach ($this->config->item('handles___' . $chainhandletype2) as $chainhandletype3 => $m3) { //Handle/Hashtag/Discovery
+                    foreach ($this->config->item('handles___' . $chainhandletype2) as $chainhandletype3 => $m3) {
+
+                        $level2_total = 0;
 
                         if ($has_handle) {
 
@@ -3570,17 +3572,15 @@ class Controller extends CI_Controller
                         }
 
                         $level2_total += $sub_counter[0]['totals'];
+                        $level1_total += $level2_total;
                         $return_array[$chainhandletype3] = intval($sub_counter[0]['totals']);
 
                         if ($chainhandletype2 == 12273 || $chainhandletype2 == 12274) {
                             break;
                         }
-
                     }
-
                 }
 
-                $level1_total += $level2_total;
                 $return_array[$chainhandletype2] = intval($level2_total);
 
             }
