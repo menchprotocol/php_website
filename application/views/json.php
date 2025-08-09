@@ -444,7 +444,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 continue;
             }
             if(in_array(substr(trim($line), 0, 1), array('#','@')) || in_array(substr(trim($line), 1, 1), array('#','@'))){
-                if(!in_array(trim($line), $current_lines) && strtolower(trim($line))!='@shervin'){
+                if(!in_array(trim($line), $current_lines) && strtolower(trim($line))!='@shervin' && strtolower(trim($line))!='@grumo'){
                     $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
                     array_push($current_lines, trim($line));
                 } else {
