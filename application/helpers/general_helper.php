@@ -3887,18 +3887,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                                         //Image
                                         array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
 
-                                    } else {
-
-                                        //Invalid value:
-                                        log_error('ERROR: [' . $x['chainvalue'] . '] is an invalid chainvalue for media type @' . $x['chainhandleinput'] . ' for handle @' . $handle['handleid'].' - Consider deleting?', array(
-                                            'chainvalue' => $x['chainvalue'],
-                                            'chainhandleinput' => $x['chainhandleinput'],
-                                            'chainhandleoutput' => $handle['handleid'],
-                                        ));
-
-                                        //Delete chain:
-                                        //$this->Chains->delete($x['chainid']);
-
                                     }
                                 }
 
@@ -3964,7 +3952,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
                             $hashtagtext = $word_text;
-                            if(!in_array(substr(trim($line), 0, 1), $core_references)){
+                            if(!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
                             }
                             $hashtagedit = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '">' . $word_text . '</a>';
