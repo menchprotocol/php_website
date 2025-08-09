@@ -3753,6 +3753,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     //See what we can find:
     foreach (explode("\n", $hashtagtext) as $line_count => $line) {
 
+        //
         $first_line = !$line_count;
         $words = explode(' ', trim($line));
         $only_word_in_line = count($words) == 1;
