@@ -348,6 +348,12 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 } elseif($focus_i['hashtagterm']=='YourBio') {
 
+    if(isset($_GET['reset'])){
+        $q = $this->db->query('Update ideachain SET chainhashtaginput=0 WHERE chainhandletype=12273 AND chainhashtaginput>0;');
+        print_r(array('reset_result' => $q->result_array()));
+        die('done');
+    }
+
     //HASHTAGS
     $table .= '<tr>';
     $table .= '<td>&nbsp;</td>';
@@ -374,10 +380,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         'hashtags_valid_cachevoid' => 0,
     );
 
-    if(isset($_GET['reset'])){
-        $q = $this->db->query('Update ideachain SET chainhashtaginput=0 WHERE chainhandletype=12273 AND chainhashtaginput>0;');
-        print_r(array('reset_result' => $q->result_array()));
-    }
     $filters = array(
         'chainvoid >=' => 0,
         'chainhandletype' => 12273,
