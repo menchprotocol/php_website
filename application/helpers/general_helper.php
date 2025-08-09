@@ -4019,11 +4019,14 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     $chainkey = 0;
 
     if (intval($save_hashtagid)) {
-        //Nothing else we need to do:
-        foreach ($CI->Chains->read(array(
+
+        $saved_items = $CI->Chains->read(array(
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___1696899')) . ')' => null, //All possible refereces
             'chainhashtaginput' => intval($save_hashtagid),
-        ), array(), 0, 0, array('chainkey' => 'ASC')) as $x) {
+        ), array(), 0, 0, array('chainkey' => 'ASC'));
+
+        //Nothing else we need to do:
+        foreach ($saved_items as $x) {
 
             $hashtag_cache['actionstats']['current']++;
 
@@ -4060,10 +4063,14 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         }
     }
 
+
+
     $hashtag_cache['actionstats']['$save_hashtagid'] = $save_hashtagid;
     $hashtag_cache['actionstats']['$chainhandlecreator'] = $chainhandlecreator;
     $hashtag_cache['actionstats']['references_count'] = count($hashtag_references);
     $hashtag_cache['actionstats']['references'] = $hashtag_references;
+    $hashtag_cache['actionstats']['saved_items_count'] = count($saved_items);
+    $hashtag_cache['actionstats']['saved_items'] = $saved_items;
 
     return $hashtag_cache;
 
