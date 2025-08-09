@@ -3922,7 +3922,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             $hashtagchain = $m['m__cover'] . $handle['handleid'];
                             $hashtagtext = $word_text;
-                            if(!in_array(substr(trim($line), 0, 1), $core_references) && !(count($media_attachments)==1 && $x['chainhandleinput'] == 1326)){
+                            if(!in_array(substr(trim($line), 0, 1), $core_references) && !(isset($media_attachments) && count($media_attachments)==1 && $x['chainhandleinput'] == 1326)){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
                             } elseif($media_append_end){
                                 $hashtagdiscover = $media_append_end;
