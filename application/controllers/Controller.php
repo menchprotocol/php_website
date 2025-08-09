@@ -3574,15 +3574,10 @@ class Controller extends CI_Controller
                         $level2_total += $sub_counter[0]['totals'];
                         $level1_total += $level2_total;
                         $return_array[$chainhandletype3] = intval($sub_counter[0]['totals']);
+                        $return_array[$chainhandletype2] = intval($level2_total);
 
-                        if ($chainhandletype2 == 12273 || $chainhandletype2 == 12274) {
-                            break;
-                        }
                     }
                 }
-
-                $return_array[$chainhandletype2] = intval($level2_total);
-
             }
 
             $return_array[$chainhandletype1] = intval($level1_total);
