@@ -66,7 +66,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     }
     $this->Hashtags->update($ref['hashtagid'], array(
         'hashtagtext' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagtext']),
-        'hashtagupdated' => 1,
     ), $handle_session['handleid']);
     */
 
@@ -385,7 +384,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         'chainhandletype' => 12273,
     );
     if(isset($_GET['id'])){
-        $filters['chainid'] = $_GET['id'];
+        $filters['(chainid='.$_GET['id'].' OR chainhashtagoutput='.$_GET['id'].')'] = null;
     } else {
         //Filter for mass editing;
         $filters['chainhashtaginput'] = 0;
@@ -503,20 +502,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $hashtagtext .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
         }
 
-        //Append Media:
-        foreach($this->Chains->read(array(
-            'chainhashtagoutput' => $x['chainhashtagoutput'],
-            'chainhandleinput !=' => $x['chainhandlecreator'],
-            'chainhandletype IN (' . join(',', array(4258,4260,4259)) . ')' => null,
-        ), array('chainhandleinput')) as $x2){
-            if(substr_count($hashtagtext, "@".$x2['handleterm'])){
-                continue;
-            }
-            $core_content .= "\n@".$x2['handleterm'];
-            $hashtagtext .= "\n@".$x2['handleterm'];
-            $this_media = true;
-        }
-
         if($this_media){
             $has_media = true;
         }
@@ -563,17 +548,19 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
         $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
         $this->Hashtags->update($x['chainid'], array(
-            'hashtagupdated' => 1,
             'hashtagtext' => $hashtag_cache['hashtagtext'],
             'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
             'hashtagedit' => $hashtag_cache['hashtagedit'],
         ));
 
-        $this->db->where('chainid', $x['chainid']);
-        $this->db->update('ideachain', array(
-            'chainhashtaginput' =>  $x['chainid'],
-            'chainvalue' =>  '#'.$x['hashtagterm']."\n".$hashtag_cache['hashtagchain'],
-        ));
+        if(!$x['chainhashtaginput']){
+            $this->db->where('chainid', $x['chainid']);
+            $this->db->update('ideachain', array(
+                'chainhashtaginput' =>  $x['chainid'],
+                'chainvalue' =>  '#'.$x['hashtagterm']."\n".$hashtag_cache['hashtagchain'],
+            ));
+        }
+
 
         $table .= '<tr>';
 
