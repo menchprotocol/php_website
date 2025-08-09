@@ -4055,7 +4055,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
         }
     }
 
-    $hashtag_cache['references'] = $hashtag_references;
+    $hashtag_cache['actionstats']['references'] = $hashtag_references;
 
     return $hashtag_cache;
 
