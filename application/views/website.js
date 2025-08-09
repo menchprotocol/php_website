@@ -2364,7 +2364,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
 function play_video(public_id) {
     var cld = cloudinary.videoPlayer('video_handle_' + public_id, {cloudName: 'menchcloud'});
-    cld.handle(public_id);
+    cld.source(public_id);
 }
 
 function cloudinary_prehandle_view(uploader_id, info_id, media_typeid, playback_code, handlecover, handlename, handleid = 0) {
