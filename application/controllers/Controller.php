@@ -3495,59 +3495,58 @@ class Controller extends CI_Controller
                 continue;
             }
 
-            foreach ($this->config->item('handles___' . $chainhandletype1) as $chainhandletype2 => $m2) { //Nodes/Chains
+            foreach ($this->config->item('handles___' . $chainhandletype1) as $chainhandletype2 => $m2) {
 
-                if ($chainhandletype2 == 12273) {
+                foreach ($this->config->item('handles___' . $chainhandletype2) as $chainhandletype3 => $m3) {
 
-                    if ($has_handle) {
+                    //Nodes/Chains
 
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                            'chainhandleinput' => $es[0]['handleid'],
-                        ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+                    if ($chainhandletype2 == 12273) {
 
-                    } elseif ($has_hashtag && count($copy['recursive_hashtag_ids'])) {
+                        if ($has_handle) {
 
-                        //See stats for this hashtag:
-                        $sub_counter = $this->Hashtags->read(array(
-                            'hashtagid IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
-                        ), 0, 0, array(), 'COUNT(hashtagid) as totals');
+                            $sub_counter = $this->Chains->read(array(
+                                'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
+                                'chainhandleinput' => $es[0]['handleid'],
+                            ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+
+                        } elseif ($has_hashtag && count($copy['recursive_hashtag_ids'])) {
+
+                            //See stats for this hashtag:
+                            $sub_counter = $this->Hashtags->read(array(
+                                'hashtagid IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
+                            ), 0, 0, array(), 'COUNT(hashtagid) as totals');
+
+                        } else {
+
+                            $sub_counter = $this->Hashtags->read(array(), 0, 0, array(), 'COUNT(hashtagid) as totals');
+
+                        }
+
+                    } elseif ($chainhandletype2 == 12274) {
+
+                        if ($has_handle) {
+
+                            $sub_counter = $this->Chains->read(array(
+                                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                                'chainhandleinput' => $es[0]['handleid'],
+                            ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+
+                        } elseif ($has_hashtag && count($copy['recursive_hashtag_ids'])) {
+
+                            //See stats for this hashtag:
+                            $sub_counter = $this->Chains->read(array(
+                                'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
+                                'chainhashtagoutput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
+                            ), array('chainhandleinput'), 0, 0, array(), 'COUNT(chainid) as totals');
+
+                        } else {
+
+                            $sub_counter = $this->Handles->read(array(), 0, 0, array(), 'COUNT(handleid) as totals');
+
+                        }
 
                     } else {
-
-                        $sub_counter = $this->Hashtags->read(array(), 0, 0, array(), 'COUNT(hashtagid) as totals');
-
-                    }
-
-                } elseif ($chainhandletype2 == 12274) {
-
-                    if ($has_handle) {
-
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                            'chainhandleinput' => $es[0]['handleid'],
-                        ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
-
-                    } elseif ($has_hashtag && count($copy['recursive_hashtag_ids'])) {
-
-                        //See stats for this hashtag:
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                            'chainhashtagoutput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
-                        ), array('chainhandleinput'), 0, 0, array(), 'COUNT(chainid) as totals');
-
-                    } else {
-
-                        $sub_counter = $this->Handles->read(array(), 0, 0, array(), 'COUNT(handleid) as totals');
-
-                    }
-
-                } else {
-
-                    //Chains:
-                    foreach ($this->config->item('handles___' . $chainhandletype2) as $chainhandletype3 => $m3) {
-
-                        $level2_total = 0;
 
                         if ($has_handle) {
 
@@ -3571,13 +3570,16 @@ class Controller extends CI_Controller
 
                         }
 
-                        $level2_total += $sub_counter[0]['totals'];
-                        $level1_total += $level2_total;
-                        $return_array[$chainhandletype3] = intval($sub_counter[0]['totals']);
-                        $return_array[$chainhandletype2] = intval($level2_total);
-
                     }
+
+                    $level2_total += $sub_counter[0]['totals'];
+                    $return_array[$chainhandletype3] = intval($sub_counter[0]['totals']);
+
                 }
+
+                $level1_total += $level2_total;
+                $return_array[$chainhandletype2] = intval($level2_total);
+
             }
 
             $return_array[$chainhandletype1] = intval($level1_total);
