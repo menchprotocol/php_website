@@ -4069,9 +4069,10 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     $hashtag_cache['actionstats']['$chainhandlecreator'] = $chainhandlecreator;
     $hashtag_cache['actionstats']['references_count'] = count($hashtag_references);
     $hashtag_cache['actionstats']['references'] = $hashtag_references;
-    $hashtag_cache['actionstats']['saved_items_count'] = count($saved_items);
-    $hashtag_cache['actionstats']['saved_items'] = $saved_items;
-
+    if(isset($saved_items)){
+        $hashtag_cache['actionstats']['saved_items_count'] = count($saved_items);
+        $hashtag_cache['actionstats']['saved_items'] = $saved_items;
+    }
     return $hashtag_cache;
 
 }
