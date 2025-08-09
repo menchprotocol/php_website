@@ -3689,7 +3689,7 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
 
     //Append Custom Reference Chain contents, if any:
     $CI =& get_instance();
-    $field = ( $discovery_mode ? 'hashtagdiscover' : 'hashtagedit' );
+    $field = ( !$discovery_mode && handle_session(10939) ? 'hashtagedit' : 'hashtagdiscover' );
 
     if ($handleid > 0) {
         foreach ($CI->Chains->read(array(
