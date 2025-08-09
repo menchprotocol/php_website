@@ -3767,7 +3767,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
             $reference_type = 0;
             $first_word = !$word_count;
-            if($first_word){
+            if($first_word && strlen($word_text.' ')<strlen($line)) {
                 $second_word_onwards .= ltrim($line, $word_text.' ');
             }
             $hashtagchain = null;
