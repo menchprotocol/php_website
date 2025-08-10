@@ -10,7 +10,7 @@ foreach ($this->Chains->read(array(
     //Make sure not completed before:
     if(count($this->Chains->read(array(
         'chainhandlecreator' => 26582,
-        'chainhandletype IN (' . join(',', array(42275 /* Hashtag Trigerred */ , 31022 /* Hashtag Skipped */)) . ')' => null, //Active Writes
+        'chainhandletype IN (' . join(',', array(1309378 /* Hashtag Trigerred */ , 31022 /* Hashtag Skipped */)) . ')' => null, //Active Writes
         'chainhashtaginput' => $i['hashtagid'],
     )))){
        //Already completed:
@@ -55,7 +55,7 @@ foreach ($this->Chains->read(array(
     if (!$demo_only && (!$end_sending || $end_sending < time())) {
 
         //Ready to be done:
-        $this->Chains->hashtag_discovered(($total_sent > 0 ? 42275 /* Hashtag Trigerred */ : 31022 /* Hashtag Skipped */), 26582, 0, $i);
+        $this->Chains->hashtag_discovered(($total_sent > 0 ? 1309378 /* Hashtag Trigerred */ : 31022 /* Hashtag Skipped */), 26582, 0, $i);
 
     }
 
