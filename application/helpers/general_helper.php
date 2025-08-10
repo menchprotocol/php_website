@@ -3756,6 +3756,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     foreach (explode("\n", $hashtagtext) as $line_count => $line) {
 
         //
+        $first_ref_hidden = false;
         $first_line = !$line_count;
         $words = explode(' ', trim($line));
         $only_word_in_line = count($words) == 1;
@@ -3898,25 +3899,26 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             //Valid Handle
                             $reference_type = $chainhandletype;
-                            if($chainhandlecreator>0){
-                                $chainkey++;
-                                $hashtag_references[($chainkey-1)] = array(
-                                    'chainhandletype' => $chainhandletype,
-                                    'chainhandleinput' => $handle['handleid'],
-                                    'chainhandleoutput' => 0,
-                                    'chainhashtaginput' => $save_hashtagid,
-                                    'chainhashtagoutput' => $save_hashtagid, //TODO could be removed later must check all references
-                                    'chainvalue' => ( $first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null ),
-                                    'chainkey' => $chainkey,
-                                );
-                            }
+                            $chainkey++;
+                            $hashtag_references[($chainkey-1)] = array(
+                                'chainhandletype' => $chainhandletype,
+                                'chainhandleinput' => $handle['handleid'],
+                                'chainhandleoutput' => 0,
+                                'chainhashtaginput' => $save_hashtagid,
+                                'chainhashtagoutput' => $save_hashtagid, //TODO could be removed later must check all references
+                                'chainvalue' => ( $first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null ),
+                                'chainkey' => $chainkey,
+                            );
 
                             $hashtagchain = $m['m__cover'] . $handle['handleid'];
                             $hashtagtext = $word_text;
                             if(!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments)==1 && $x['chainhandleinput'] == 1326)){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
-                            } elseif($media_append_end){
-                                $hashtagdiscover = $media_append_end;
+                            } else {
+                                $first_ref_hidden = true;
+                                if($media_append_end){
+                                    $hashtagdiscover = $media_append_end;
+                                }
                             }
                             $hashtagedit = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>'.$media_append_end;
 
@@ -3937,23 +3939,23 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                             //Valid Hashtag
                             $reference_type = $chainhandletype;
 
-                            if($chainhandlecreator>0){
-                                $chainkey++;
-                                $hashtag_references[($chainkey-1)] = array(
-                                    'chainhandletype' => $chainhandletype,
-                                    'chainhandleinput' => 0,
-                                    'chainhandleoutput' => 0,
-                                    'chainhashtaginput' => $save_hashtagid,
-                                    'chainhashtagoutput' => $hashtag['hashtagid'],
-                                    'chainkey' => $chainkey,
-                                    'chainvalue' => null,
-                                );
-                            }
+                            $chainkey++;
+                            $hashtag_references[($chainkey-1)] = array(
+                                'chainhandletype' => $chainhandletype,
+                                'chainhandleinput' => 0,
+                                'chainhandleoutput' => 0,
+                                'chainhashtaginput' => $save_hashtagid,
+                                'chainhashtagoutput' => $hashtag['hashtagid'],
+                                'chainkey' => $chainkey,
+                                'chainvalue' => null,
+                            );
 
                             $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
                             $hashtagtext = $word_text;
                             if(!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))){
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
+                            } else {
+                                $first_ref_hidden = true;
                             }
                             $hashtagedit = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '">' . $word_text . '</a>';
 
@@ -3971,7 +3973,9 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                 //This word is not referencing anything!
                 $hashtagchain = $word_text;
                 $hashtagtext = $word_text;
-                $hashtagdiscover = $word_text;
+                if(!$first_ref_hidden){
+                    $hashtagdiscover = $word_text;
+                }
                 $hashtagedit = $word_text;
             }
 
@@ -4041,6 +4045,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             }
         }
     }
+
 
     //Any more links left that were not in DB?
     for($i=$chainkey;$i<=count($hashtag_references);$i++){
