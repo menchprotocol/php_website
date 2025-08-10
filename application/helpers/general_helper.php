@@ -3043,7 +3043,7 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
         $order_columns = handle_sort();
         $joins_objects = array('chainhandleoutput');
 
-        if (0 && in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
+        if (in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
 
             //Down/Followers Sub
             $query_filters = array(
@@ -3163,6 +3163,7 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
     if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
+        print_r($query_filters);
         $query = $CI->Chains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
         return $query;
 
