@@ -4474,14 +4474,13 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     //Show Creator if any:
     $headline_authors = array();
     foreach ($CI->Chains->read(array(
+        'chainvoid >=' => 0, //Does not matter if it has been updated, we want the original author here
         'chainhandletype' => 12273, //Hashtag Created
-        'chainid' => $i['hashtagid'],
+        'chainhashtagoutput' => $i['hashtagid'],
     ), array('chainhandlecreator')) as $creator) {
 
         array_push($headline_authors, $creator['handleid']);
-
         $follow_btn = null;
-
         /*
         if ($focus__node && $chainhandlecreator && $chainhandlecreator != $creator['handleid']) {
             $followings = $CI->Chains->read(array(
