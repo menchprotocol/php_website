@@ -334,7 +334,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
     $table .= '</table>';
 
-
     echo 'Success:';
     print_r($success);
     echo '<hr />Fail:';

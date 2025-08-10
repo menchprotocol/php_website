@@ -3267,7 +3267,7 @@ function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append
 
     }
 
-    print_r($query_filters);
+    //print_r($query_filters);
 
     //Return Results:
     if ($current_page > 0) {
