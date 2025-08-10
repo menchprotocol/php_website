@@ -3158,7 +3158,7 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
 
     }
 
-    print_r($query_filters);
+    //print_r($query_filters);
 
     //Return Results:
     if ($current_page > 0) {
