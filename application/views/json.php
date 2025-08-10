@@ -366,7 +366,9 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             echo '<div>OLD '.$i['hashtagtype'].'!='.$linked_type.' NEW <a href="/'.$i['hashtagterm'].'">#'.$i['hashtagterm'].' '.view_hashtag_title($i, true).'</a></div>';
             $update++;
             $this->db->where('hashtagid', $i['hashtagid']);
-            $this->db->update('hashtagtype', $linked_type);
+            $this->db->update('ideachainhashtags', array(
+                'hashtagtype' => $linked_type,
+            ));
         }
     }
     echo '<hr />'.$update.'/'.$total.' Need updating';
