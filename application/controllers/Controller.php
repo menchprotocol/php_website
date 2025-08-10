@@ -304,7 +304,7 @@ class Controller extends CI_Controller
                     //Fetch Most Recent Cache:
                     foreach ($this->Chains->read(array(
                         'chainhandledomain' => website_setting(0),
-                        'chainhandletype' => 44179, //Triggered
+                        'chainhandletype' => 44176, //Handle View
                         'chainhandleinput' => 14599, //Cache App
                         'chainhandleoutput' => $app_handleid,
                     ), array(), 1, 0, array('chaintime' => 'DESC')) as $latest_cache) {
@@ -374,7 +374,7 @@ class Controller extends CI_Controller
         if ($new_cache) {
             $cache_x = $this->Chains->create(array(
                 'chainhandledomain' => website_setting(0),
-                'chainhandletype' => 44179, //Triggered
+                'chainhandletype' => 44176, //Handle View
                 'chainhandleinput' => 14599, //Cache App
                 'chainhandleoutput' => $app_handleid,
 
@@ -2548,7 +2548,7 @@ class Controller extends CI_Controller
         //Auth Code:
         $is_authenticated = false;
         foreach ($this->Chains->read(array(
-            'chainhandletype' => 44179, //Triggered
+            'chainhandletype' => 44176, //Handle View
             'chainhandleinput' => 32078, //Sign In Key
             'LOWER(chainvalue) LIKE \'' . strtolower($_POST['account_email_phone']) . '%\'' => null,
         ), array(), 1, 0, array('chaintime' => 'DESC')) as $sent_key) {
@@ -2791,7 +2791,7 @@ class Controller extends CI_Controller
 
         //Log new key:
         $this->Chains->create(array(
-            'chainhandletype' => 44179, //Triggered
+            'chainhandletype' => 44176, //Handle View
             'chainhandleinput' => 32078, //Sign In Key
             'chainhandleoutput' => $chainhandlecreator, //Member making request
             'chainhandlecreator' => $chainhandlecreator, //Member making request

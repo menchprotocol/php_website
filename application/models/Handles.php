@@ -54,7 +54,7 @@ class Handles extends CIdea_cache
         }
         $this->Chains->create(array(
             'chainhandlecreator' => $chainhandlecreator,
-            'chainhandletype' => 44179, //Trigerred
+            'chainhandletype' => 44176, //Trigerred
             'chainhandleinput' => 32338, //Handle Handle
             'chainvalue' => $add_fields['handleterm'],
             'chainhandleoutput' => $new_x['chainid'],
@@ -70,7 +70,7 @@ class Handles extends CIdea_cache
         if (isset($add_fields['handlecover'])) {
             $this->Chains->create(array(
                 'chainhandlecreator' => $chainhandlecreator,
-                'chainhandletype' => 44179, //Trigerred
+                'chainhandletype' => 44176, //Trigerred
                 'chainhandleinput' => 6198, //Handle Cover
                 'chainvalue' => $add_fields['handlecover'],
                 'chainhandleoutput' => $new_x['chainid'],
@@ -177,7 +177,7 @@ class Handles extends CIdea_cache
                     if ($value != $handle_current[$key]) {
                         $this->Chains->create(array(
                             'chainhandlecreator' => $chainhandlecreator,
-                            'chainhandletype' => 44179, //Trigerred
+                            'chainhandletype' => 44176, //Trigerred
                             'chainhandleinput' => $must_sync_ledger[$key], //Hashtag Hashtag
                             'chainvalue' => $value,
                             'chainhandleoutput' => $chainid,

@@ -210,7 +210,7 @@ function reset_cache($chainhandlecreator)
     $CI =& get_instance();
     $count = 0;
     foreach ($CI->Chains->read(array(
-        'chainhandletype' => 44179, //Triggered
+        'chainhandletype' => 44176, //Handle View
         'chainhandleinput' => 14599, //Cache App
         'chainhandleoutput >' => 0,
     )) as $delete_cahce) {
@@ -1554,7 +1554,7 @@ function dispatch_sms($to_phone, $single_message, $handleid = 0, $x_data = array
         } elseif ($handleid > 0) {
 
             $CI->Chains->create(array_merge($x_data, array(
-                'chainhandletype' => 44179, //Triggered
+                'chainhandletype' => 44176, //Handle View
                 'chainhandleinput' => $target_handle,
                 'chainhandleoutput' => $handleid,
                 'chainhandlecreator' => $handleid,
@@ -1708,7 +1708,7 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
         } elseif ($handleid > 0) {
 
             $CI->Chains->create(array_merge($x_data, array(
-                'chainhandletype' => 44179, //Triggered
+                'chainhandletype' => 44176, //Handle View
                 'chainhandleinput' => 29399,
                 'chainhandleoutput' => $handleid,
                 'chainhandlecreator' => $handleid,
@@ -2972,7 +2972,7 @@ function log_error($error_message, $error_data = array(), $log_error = true)
 
         $CI->Chains->create(array_merge($error_data, array(
             'chainhandleinput' => 4246, //Platform Bug Reports
-            'chainhandletype' => 44179, //Triggered
+            'chainhandletype' => 44176, //Handle View
             'chainvalue' => $error_message,
             'chainhandlecreator' => (isset($error_data['chainhandlecreator']) && $error_data['chainhandlecreator'] > 0 ? $error_data['chainhandlecreator'] : ($handle_session ? $handle_session['handleid'] : 0)),
         )));
@@ -5352,10 +5352,10 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
             $social_url = 'href="' . phone_href($social_chain['chainhandleinput'], $social_chain['chainvalue']) . '"';
         }
 
-        $info = (strlen($social_chain['chainvalue']) && !$social_url ? $handles___14036[$social_chain['chainhandleinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $handles___14036[$social_chain['chainhandleinput']]['m__title']));
+        $info = ( strlen($social_chain['chainvalue']) && !$social_url ? $handles___14036[$social_chain['chainhandleinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $handles___14036[$social_chain['chainhandleinput']]['m__title']));
 
         //Append to chains:
-        $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $handles___14036[$social_chain['chainhandleinput']]['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</span>')) . '</span>';
+        $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . view_memory(42903, 42902) . $handles___14036[$social_chain['chainhandleinput']]['m__handle'] . '?222" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</span>')) . '</span>';
 
     }
 

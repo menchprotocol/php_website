@@ -396,7 +396,7 @@ class Hashtags extends CIdea_cache
 
         //Log mass Handle edit transaction:
         $this->Chains->create(array(
-            'chainhandletype' => 44179, //Triggered
+            'chainhandletype' => 44176, //Handle View
             'chainhandleinput' => $action_handleid,
             'chainhandleoutput' => $chainhandlecreator,
             'chainhandlecreator' => $chainhandlecreator,

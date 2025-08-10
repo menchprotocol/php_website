@@ -13,7 +13,7 @@ foreach($this->config->item('handles___14599') as $app_handleid => $cache_apps){
     //Fetch Last Cache
     $latest_cache = $this->Chains->read(array(
         'chainhandledomain' => website_setting(0),
-        'chainhandletype' => 44179, //Triggered
+        'chainhandletype' => 44176, //Handle View
         'chainhandleinput' => 14599, //Cache App
         'chainhandleoutput' => $app_handleid,
         ), array(), 1, 0, array('chaintime' => 'DESC'));
