@@ -344,7 +344,33 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     print_r($delete);
     echo $table;
 
+} elseif($focus_i['hashtagterm']=='YourLastName') {
+
+    //Sync Idea type:
+    $total = 0;
+    $update = 0;
+    foreach ($this->Hashtags->read(array(
+        'hashtagid >' => 0,
+    )) as $i) {
+        $total++;
+        $linked_type = 0;
+        foreach($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null,
+            'chainhashtagoutput' => $i['hashtagid'],
+        ), array(), 1) as $ideatype){
+            $linked_type = intval($ideatype['chainhandleinput']);
+        }
+        if($linked_type>0 && $linked_type!=$i['hashtagtype']){
+            //needs updating:
+            echo '<div>OLD '.$ideatype['chainhandleinput'].'!='.$linked_type.' NEW <a href="/'.$i['hashtagterm'].'">#'.$i['hashtagterm'].' '.view_hashtag_title($i, true).'</a></div>';
+            $update++;
+        }
+    }
+
 } elseif($focus_i['hashtagterm']=='YourBio') {
+
+
 
     if(isset($_GET['reset'])){
         $q = $this->db->query('Update ideachain SET chainhashtaginput=0 WHERE chainhandletype=12273 AND chainhashtaginput>0;');
