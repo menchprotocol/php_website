@@ -3667,19 +3667,13 @@ function view_valid_handle_handle($string, $check_db = false)
 
 function view_valid_handle_hashtag($string, $check_db = false)
 {
+    //TODO MUst remove
     $CI =& get_instance();
     return (substr($string, 0, 1) == '#' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Hashtags->read(array(
             'LOWER(hashtagterm)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false);
 }
 
-function view_valid_handle_reverse_hashtag($string, $check_db = false)
-{
-    $CI =& get_instance();
-    return (substr($string, 0, 2) == '!#' && ctype_alnum(substr($string, 2)) && (!$check_db || count($CI->Hashtags->read(array(
-            'LOWER(hashtagterm)' => strtolower(substr($string, 2)),
-        )))) ? substr($string, 2) : false);
-}
 
 
 function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_mode = true, $show_hashtagedit = false)
