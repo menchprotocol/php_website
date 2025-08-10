@@ -2225,9 +2225,12 @@ class Controller extends CI_Controller
             if (!strlen($dynamic_value)) {
 
                 //Remove Chain if we have one:
-                if (count($values) && $dynamic_handleid != 11035 /* HACK: Summary are key chains that should not be removed */) {
+                //HACK: Summary are key chains that should not be removed
+                /*
+                if (count($values) && $dynamic_handleid != 11035) {
                     $this->Chains->delete($values[0]['chainid'], $handle_session['handleid']);
                 }
+                */
 
             } elseif (!count($values)) {
 

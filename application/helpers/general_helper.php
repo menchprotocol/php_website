@@ -3702,7 +3702,7 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
         ), array('chainhandleinput'), 0) as $message_references) {
             if (!substr_count(strtolower($i[$field]), '>@' . strtolower($message_references['handleterm']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
-                $CI->Chains->delete($message_references['chainid']);
+                //$CI->Chains->delete($message_references['chainid']);
                 continue;
             }
             foreach ($CI->Chains->read(array(
