@@ -3043,7 +3043,7 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
         $order_columns = handle_sort();
         $joins_objects = array('chainhandleoutput');
 
-        if (in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
+        if (0 && in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
 
             //Down/Followers Sub
             $query_filters = array(
