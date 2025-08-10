@@ -4720,7 +4720,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, ( $discovery_mode && $superpower_10939 )) . '</div>';
+    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, false ) . '</div>';
 
 
     $hashtag_popup_url = hashtag_popup_url($i);
