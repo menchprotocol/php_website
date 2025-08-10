@@ -361,12 +361,13 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         ), array(), 1) as $ideatype){
             $linked_type = intval($ideatype['chainhandleinput']);
         }
-        if($linked_type>0 && $linked_type!=$i['hashtagtype']){
+        if($linked_type>0 && $linked_type!=intval($i['hashtagtype'])){
             //needs updating:
-            echo '<div>OLD '.$ideatype['chainhandleinput'].'!='.$linked_type.' NEW <a href="/'.$i['hashtagterm'].'">#'.$i['hashtagterm'].' '.view_hashtag_title($i, true).'</a></div>';
+            echo '<div>OLD '.$ideatype['hashtagtype'].'!='.$linked_type.' NEW <a href="/'.$i['hashtagterm'].'">#'.$i['hashtagterm'].' '.view_hashtag_title($i, true).'</a></div>';
             $update++;
         }
     }
+    echo '<hr />'.$update.'/'.$total.' Need updating';
 
 } elseif($focus_i['hashtagterm']=='YourBio') {
 
