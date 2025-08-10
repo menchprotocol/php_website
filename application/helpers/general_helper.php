@@ -4475,11 +4475,13 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $headline_authors = array();
     foreach ($CI->Chains->read(array(
         'chainhandletype' => 12273, //Hashtag Created
-        'chainhashtagoutput' => $i['hashtagid'],
-    ), array('chainhandleinput')) as $creator) {
+        'chainid' => $i['hashtagid'],
+    ), array('chainhandlecreator')) as $creator) {
 
         array_push($headline_authors, $creator['handleid']);
+
         $follow_btn = null;
+
         /*
         if ($focus__node && $chainhandlecreator && $chainhandlecreator != $creator['handleid']) {
             $followings = $CI->Chains->read(array(
