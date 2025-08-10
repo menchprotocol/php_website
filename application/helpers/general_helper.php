@@ -3158,12 +3158,12 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
 
     }
 
+    print_r($query_filters);
 
     //Return Results:
     if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        print_r($query_filters);
         $query = $CI->Chains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
         return $query;
 
