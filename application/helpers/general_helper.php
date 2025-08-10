@@ -4476,8 +4476,8 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     foreach ($CI->Chains->read(array(
         'chainvoid >=' => 0, //Does not matter if it has been updated, we want the original author here
         'chainhandletype' => 12273, //Hashtag Created
-        'chainhashtagoutput' => $i['hashtagid'],
-    ), array('chainhandlecreator')) as $creator) {
+        'chainid' => $i['hashtagid'],
+    ), array('chainhandlecreator'), 1, 0, array('chainid' => 'ASC')) as $creator) {
 
         array_push($headline_authors, $creator['handleid']);
         $follow_btn = null;
