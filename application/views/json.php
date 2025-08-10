@@ -363,7 +363,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         }
         if($linked_type>0 && $linked_type!=intval($i['hashtagtype'])){
             //needs updating:
-            echo '<div>OLD '.$ideatype['hashtagtype'].'!='.$linked_type.' NEW <a href="/'.$i['hashtagterm'].'">#'.$i['hashtagterm'].' '.view_hashtag_title($i, true).'</a></div>';
+            echo '<div>OLD '.$i['hashtagtype'].'!='.$linked_type.' NEW <a href="/'.$i['hashtagterm'].'">#'.$i['hashtagterm'].' '.view_hashtag_title($i, true).'</a></div>';
             $update++;
         }
     }
