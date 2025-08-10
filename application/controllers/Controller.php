@@ -1423,7 +1423,7 @@ class Controller extends CI_Controller
             $listed_items = 0;
             $is_cache = in_array($_POST['chainhandletype'], $this->config->item('handleids___14599'));
 
-            if (in_array($_POST['chainhandletype'], $this->config->item('handleids___11028')) || $_POST['chainhandletype']==12274) {
+            if (in_array($_POST['chainhandletype'], $this->config->item('handleids___11028'))) {
 
                 //HANDLES
                 $current_handleterm = view_valid_handle_handle($_POST['first_segment']);
