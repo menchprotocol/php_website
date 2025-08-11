@@ -4350,7 +4350,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $focus_hashtag_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_hashtag_seg = ($discovery_term ? $CI->uri->segment(2) : false);
     $focus_hashtagterm = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
-    $show_hashtagedit = ( $superpower_10939 && $CI->uri->segment(1)==$i['hashtagterm'] && !strlen($CI->uri->segment(2)) );
+    $show_hashtagedit = ( $superpower_10939 && !$is_cache && $CI->uri->segment(1)==$i['hashtagterm'] && !strlen($CI->uri->segment(2)) );
     if ($discovery_mode && !$target_hashtagterm && ($discovery_uri || $discovery_term)) {
         $target_hashtagterm = ($discovery_uri ? $discovery_uri : $discovery_term);
     }
