@@ -4350,7 +4350,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $focus_hashtag_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_hashtag_seg = ($discovery_term ? $CI->uri->segment(2) : false);
     $focus_hashtagterm = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
-    $show_hashtagedit = ( $superpower_10939 && $discovery_term==$i['hashtagterm'] );
+    $show_hashtagedit = ( $superpower_10939 && $CI->uri->segment(1)==$i['hashtagterm'] && !strlen($CI->uri->segment(2)) );
     if ($discovery_mode && !$target_hashtagterm && ($discovery_uri || $discovery_term)) {
         $target_hashtagterm = ($discovery_uri ? $discovery_uri : $discovery_term);
     }
@@ -4816,10 +4816,9 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             $unit_fee = 0;
             $max_allowed = (count($cart_max) && is_numeric($cart_max[0]['chainvalue']) && $cart_max[0]['chainvalue'] > 0 ? intval($cart_max[0]['chainvalue']) : view_memory(6404, 29651));
             $spots_remaining = hashtag_spots_remaining($i['hashtagid']);
-            $starting_point = ($is_required ? 1 : 0);
             $max_allowed = ($spots_remaining > -1 && $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed);
 
-            $min_allowed = (count($cart_min) && is_numeric($cart_min[0]['chainvalue']) && intval($cart_min[0]['chainvalue']) > $starting_point ? intval($cart_min[0]['chainvalue']) : $starting_point);
+            $min_allowed = (count($cart_min) && is_numeric($cart_min[0]['chainvalue']) && intval($cart_min[0]['chainvalue']) > $is_required ? intval($cart_min[0]['chainvalue']) : $is_required);
             $handles___26661 = $CI->config->item('handles___26661'); //Currency
             if (count($currency_types)) {
                 $unit_currency = $handles___26661[$currency_types[0]['chainhandleinput']]['m__message'];
