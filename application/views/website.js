@@ -936,7 +936,7 @@ function invoice_update() {
 
 
     //Update UI:
-    $('.hashtag_discovered_btn').html('Create Invoice: <span title="" class="small_font inline-block">' + total_currency + ' ' + total_price.toLocaleString('en-US', {
+    $('.hashtag_discovered_btn').html('Create Invoice: <span title="" class="small_font inline-block">' + total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
     }) + ' [' + total_count + ']</span>');
