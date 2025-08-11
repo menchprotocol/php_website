@@ -749,14 +749,6 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                         <!-- Hashtag Creator(s) -->
                         <div class="creator_box">
                             <?php
-                            foreach($this->Chains->read(array(
-                                'chainhandleinput' => $handle_session['handleid'],
-                                'chainhandletype' => 41011, //PINNED FOLLOWER
-                                            ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $x_pinned) {
-                                echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['handlecover']).'</span><b>'.$x_pinned['handlename'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['handleterm'].'</span></div>';
-                                //TODO maybe give the option to remove?
-                            }
-
                             //Always append current user:
                             echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($handle_session['handlecover']).'</span></div>';
                             ?>

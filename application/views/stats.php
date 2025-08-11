@@ -72,13 +72,8 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
         echo '</div>';
 
         if ($is_chain) {
-            echo '<table class="table card_subcat card_subcat_' . $handleid2 . ' hidden" style="width:100%; margin-top:13px;">'; //table-striped
-            $focus_chain_group = 0;
-            $handle_pinned = handle_pinned($handleid2, true);
-            if (!$handle_pinned || !is_array($this->config->item('handles___' . $handle_pinned)) || !count($this->config->item('handles___' . $handle_pinned))) {
-                continue;
-            }
-            foreach ($this->config->item('handles___' . $handle_pinned) as $handleid3 => $m3) {
+            echo '<table class="table card_subcat card_subcat_' . $handleid2 . ' hidden" style="width:100%; margin-top:13px;">';
+            foreach ($this->config->item('handles___' . $handleid2) as $handleid3 => $m3) {
                 echo '<tr class="main__title mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
                 echo '<td style="text-align: left;" title="@' . $handleid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a target="_blank" href="'.view_app_chain(4341).'?chainhandletype='.  $handleid3 . '&chainvoid=0" class="card_count_' . $handleid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
                 echo '</tr>';
