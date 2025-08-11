@@ -16,7 +16,7 @@ class Hashtags extends CIdea_cache
         }
 
         //hashtag term
-        if (!isset($add_fields['hashtagterm'])) {
+        if (!isset($add_fields['hashtagterm']) || strlen($add_fields['hashtagterm'])<3) {
             $add_fields['hashtagterm'] = random_string(8);
             //Make sure not existant:
             while (count($this->Hashtags->read(array('hashtagterm' => $add_fields['hashtagterm'])))) {

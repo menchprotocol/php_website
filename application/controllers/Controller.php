@@ -1081,6 +1081,7 @@ class Controller extends CI_Controller
             );
 
             if (strtolower($is[0]['hashtagterm']) !== strtolower(trim($_POST['save_hashtagterm']))) {
+
                 $validate_update_handle = validate_update_handle($_POST['save_hashtagterm'], $is[0]['hashtagid'], null);
                 if (!$validate_update_handle['status']) {
                     return view_json(array(
