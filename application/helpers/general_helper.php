@@ -66,12 +66,7 @@ function hashtag_type_discovery($i, $trying_to_skip = false)
             'chainhashtagoutput' => $i['hashtagid'],
             'chainhandleinput IN (' . join(',', $CI->config->item('handleids___26661')) . ')' => null, //Currency
         ));
-        $total_dues = $CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput' => 26562, //Total Due
-        ));
-        return (count($total_dues) && doubleval($total_dues[0]['chainvalue']) && count($currency_types) ? 26595 : 42332);
+        return (count($currency_types) ? 26595 : 42332);
     } else {
         return handle_pinned($i['hashtagtype']);
     }
@@ -1082,7 +1077,7 @@ function add_media($uploaded_media)
             if (!count($CI->Chains->read(array(
                 'chainhandleinput' => $handle_session['handleid'],
                 'chainhandleoutput' => $upload_media['handleid'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             )))) {
                 $CI->Chains->create(array(
                     'chainhandlecreator' => $handle_session['handleid'],
@@ -4349,15 +4344,15 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $chain_creator = isset($i['chainhandlecreator']) && $i['chainhandlecreator'] == $chainhandlecreator;
     $focus__node = in_array($chainhandletype, $CI->config->item('handleids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
-    $discovery_seg = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
-    $discovery_mode = $chainhandlecreator && ($discovery_uri || $discovery_seg);
+    $discovery_term = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
+    $discovery_mode = $chainhandlecreator && ($discovery_uri || $discovery_term);
     $hashtag_access = hashtag_access($i['hashtagterm'], 0, $i, false, array(), $is_cache);
     $focus_hashtag_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
-    $focus_hashtag_seg = ($discovery_seg ? $CI->uri->segment(2) : false);
+    $focus_hashtag_seg = ($discovery_term ? $CI->uri->segment(2) : false);
     $focus_hashtagterm = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
-
-    if ($discovery_mode && !$target_hashtagterm && ($discovery_uri || $discovery_seg)) {
-        $target_hashtagterm = ($discovery_uri ? $discovery_uri : $discovery_seg);
+    $show_hashtagedit = ( $superpower_10939 && $discovery_term==$i['hashtagterm'] );
+    if ($discovery_mode && !$target_hashtagterm && ($discovery_uri || $discovery_term)) {
+        $target_hashtagterm = ($discovery_uri ? $discovery_uri : $discovery_term);
     }
     if ($target_hashtagterm && $focus_hashtagterm && $focus_hashtagterm == $i['hashtagterm']) {
         $focus_hashtagterm = false;
@@ -4713,7 +4708,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, false ) . '</div>';
+    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, $show_hashtagedit ) . '</div>';
 
 
     $hashtag_popup_url = hashtag_popup_url($i);
@@ -4793,10 +4788,31 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             ));
 
 
+            $unit_price = 0;
+            if(count($total_dues) && doubleval($total_dues[0]['chainvalue'])){
+                $unit_price = doubleval($total_dues[0]['chainvalue']);
+            } else {
+                //Try to find the first handle reference and see if this user has a personalized value there to replace a fixed value:
+                foreach ($CI->Chains->read(array(
+                    'chainhandletype' => 31835, //Mention
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainkey' => 1,
+                ), array('chainhandleinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_output) {
+                    foreach($CI->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                        'chainhandleinput' => $handle_output['handleid'],
+                        'chainhandleoutput' => $handle_session['handleid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it
+                    ), array('chainhandleinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_data){
+                        if(doubleval($handle_data['chainvalue'])){
+                            $unit_price = doubleval($handle_data['chainvalue']);
+                        }
+                    }
+                }
+            }
+
             //Payments Must have Unit Price, otherwise they are NOT a payment until added
             $info_append = '';
             $unit_currency = '';
-            $unit_price = 0;
             $unit_fee = 0;
             $max_allowed = (count($cart_max) && is_numeric($cart_max[0]['chainvalue']) && $cart_max[0]['chainvalue'] > 0 ? intval($cart_max[0]['chainvalue']) : view_memory(6404, 29651));
             $spots_remaining = hashtag_spots_remaining($i['hashtagid']);
@@ -4810,7 +4826,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             }
 
 
-            if ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && $total_dues[0]['chainvalue'] > 0 && count($currency_types) == 1) {
+            if ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] != 43758 && $unit_price && count($currency_types) == 1) {
 
                 $valid_instant_pay = true;
 
@@ -4821,13 +4837,12 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
                 )));
 
                 //Break down amount & currency
-                $unit_price = doubleval($total_dues[0]['chainvalue']);
-                $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
+                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
 
                 //Append information to cart about Paypal:
                 $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
 
-            } elseif ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 && count($total_dues) && $total_dues[0]['chainvalue'] > 0) {
+            } elseif ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && isset($previous_i['hashtagtype']) && $previous_i['hashtagtype'] == 43758 && $unit_price) {
 
                 $digest_fees = count($CI->Chains->read(array(
                     'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
@@ -4836,8 +4851,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
                 )));
 
                 //Break down amount & currency
-                $unit_price = doubleval($total_dues[0]['chainvalue']);
-                $unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
+                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
 
             }
 
