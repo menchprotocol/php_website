@@ -39,17 +39,6 @@ if(!$was_found){
 
     echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$focus_e['handlename'].' Not Found for '.$handle_session['handlename'].'! Contact your admin to inquire further as you are not listed here.</div>';
 
-    echo '<div>👤 USD $3,000/Member Camp Dues Includes $1000 Refundable Deposit
-⛺ USD $2,000/Group of 1-2 Rent ShiftPod [SOLD OUT]
-⛺ USD $2,500/Group of 1-2 Rent ShiftPod [NEW ORDERS]
-🚐 USD $1,000/Group of 1-3 Van/Sprinter Park + Power
-🚌 USD $2,000/Group of 3-6 RV Park + Power
-🚌 USD $3,000/Group of 1-2 RV Park + Power
-🍸 USD 200/Member for 3x 1.75L Hard Liquor Bottle
-💦 USD 150/Pump Clean Water in Your RV
-💩 USD 150/Dump Grey Water in Your RV (2 hose Max)
-💩 USD 200/Dump Grey Water in Your RV (4 hose Max)</div>';
-
 } else {
 
     foreach($this->Chains->read(array(
