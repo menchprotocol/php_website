@@ -212,7 +212,7 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
             $content_message = view_hashtag_value($i, $x['handleid']);
             if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
                 //Let's remove the first line since it's used in the title:
-                $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);
+                $content_message = delete_all_between('<div class="line first_line">', '</div>', str_replace('  ',' ',$content_message));
             }
 
 

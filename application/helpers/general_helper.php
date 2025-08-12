@@ -3979,8 +3979,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
         $hashtag_cache['hashtagchain'] .= (!$first_line && $linehashtagchain ? "\n" : '') . $linehashtagchain;
         $hashtag_cache['hashtagtext'] .= (!$first_line && $linehashtagtext ? "\n" : '') . $linehashtagtext;
-        $hashtag_cache['hashtagdiscover'] .= ($linehashtagdiscover ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">' . $linehashtagdiscover . '</div>' : '');
-        $hashtag_cache['hashtagedit'] .= ($linehashtagedit ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">' . $linehashtagedit . '</div>' : '');
+        $hashtag_cache['hashtagdiscover'] .= ($linehashtagdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linehashtagdiscover . '</div>' : '');
+        $hashtag_cache['hashtagedit'] .= ($linehashtagedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linehashtagedit . '</div>' : '');
 
     }
 
