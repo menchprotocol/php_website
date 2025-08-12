@@ -760,7 +760,7 @@ class Chains extends CIdea_cache
             $content_message = view_hashtag_value($i, $x['handleid'], true); //Hide the show more content if any
             if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
                 //Let's remove the first line since it's used in the title:
-                $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);
+                $content_message = delete_all_between('<div class="line first_line">', '</div>', str_replace('  ',' ',$content_message));
             }
 
             //Personalize Source references:
