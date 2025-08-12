@@ -3670,7 +3670,6 @@ function view_valid_handle_hashtag($string, $check_db = false)
 }
 
 
-
 function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_mode = true, $show_hashtagedit = false)
 {
 
@@ -3682,7 +3681,7 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
     $CI =& get_instance();
 
     //This is still flawed, we need to fix this to exlude cache apps and more:
-    $field = ( $show_hashtagedit ? 'hashtagedit' : 'hashtagdiscover' );
+    $field = ($show_hashtagedit ? 'hashtagedit' : 'hashtagdiscover');
 
     if ($handleid > 0) {
         foreach ($CI->Chains->read(array(
@@ -3713,7 +3712,7 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
     }
 
     return
-        $i[$field]  . view_list_handle($i, !$focus__node); //. view_hashtag_media($i)
+        $i[$field] . view_list_handle($i, !$focus__node); //. view_hashtag_media($i)
 }
 
 
@@ -3740,7 +3739,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     //All the possible reference types that can be found:
     $hashtag_references = array();
     $chainkey = 0;
-    $hashtagtext = str_replace('	',' ', $hashtagtext);
+    $hashtagtext = str_replace('	', ' ', $hashtagtext);
     //$hashtagtext = preg_replace('/\s+/', ' ', $hashtagtext);
 
     //See what we can find:
@@ -3762,8 +3761,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
             $reference_type = 0;
             $first_word = !$word_count;
-            if($first_word && strlen($word_text.' ')<strlen($line)) {
-                $second_word_onwards .= ltrim($line, $word_text.' ');
+            if ($first_word && strlen($word_text . ' ') < strlen($line)) {
+                $second_word_onwards .= ltrim($line, $word_text . ' ');
             }
             $hashtagchain = null;
             $hashtagtext = null;
@@ -3822,12 +3821,12 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                     if (!in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
-                        if($replace_term==12274 && strtolower($term)==$findterm && ctype_alnum($replace_term)){
+                        if ($replace_term == 12274 && strtolower($term) == $findterm && ctype_alnum($replace_term)) {
                             $term = $replace_term;
-                            $word_text = $m['m__cover'].$term;
+                            $word_text = $m['m__cover'] . $term;
                         }
 
-                        if(is_numeric(trim($term))){
+                        if (is_numeric(trim($term))) {
                             $filter = array(
                                 'handleid' => intval(trim($term)),
                             );
@@ -3840,7 +3839,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                         //Handle Reference
                         foreach ($CI->Handles->read($filter) as $handle) {
 
-                            if(is_numeric($term)){
+                            if (is_numeric($term)) {
                                 //Replace Word:
                                 $term = $handle['handleterm'];
                                 $word_text = $m['m__cover'] . $handle['handleterm'];
@@ -3884,42 +3883,42 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                                 if (count($media_attachments)) {
                                     //Replace the Entity:
-                                    $media_append_end = '<div class="media_append">'.join(' ', $media_attachments).'</div>';
+                                    $media_append_end = '<div class="media_append">' . join(' ', $media_attachments) . '</div>';
                                 }
                             }
 
                             //Valid Handle
                             $reference_type = $chainhandletype;
                             $chainkey++;
-                            $hashtag_references[($chainkey-1)] = array(
+                            $hashtag_references[($chainkey - 1)] = array(
                                 'chainhandletype' => $chainhandletype,
                                 'chainhandleinput' => $handle['handleid'],
                                 'chainhandleoutput' => 0,
                                 'chainhashtaginput' => $save_hashtagid,
                                 'chainhashtagoutput' => $save_hashtagid, //TODO could be removed later must check all references
-                                'chainvalue' => ( $first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null ),
+                                'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
                                 'chainkey' => $chainkey,
                             );
 
                             $hashtagchain = $m['m__cover'] . $handle['handleid'];
                             $hashtagtext = $word_text;
-                            if(!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments)==1 && $x['chainhandleinput'] == 1326)){
+                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainhandleinput'] == 1326)) {
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
                             } else {
                                 $first_ref_hidden = true;
-                                if($media_append_end){
+                                if ($media_append_end) {
                                     $hashtagdiscover = $media_append_end;
                                 }
                             }
-                            $hashtagedit = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>'.$media_append_end;
+                            $hashtagedit = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
 
                         }
 
                     } else {
 
-                        if($replace_term==12273 && strtolower($term)==$findterm && ctype_alnum($replace_term)){
+                        if ($replace_term == 12273 && strtolower($term) == $findterm && ctype_alnum($replace_term)) {
                             $term = $replace_term;
-                            $word_text = $m['m__cover'].$term;
+                            $word_text = $m['m__cover'] . $term;
                         }
 
                         //Hashtag reference:
@@ -3931,7 +3930,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                             $reference_type = $chainhandletype;
 
                             $chainkey++;
-                            $hashtag_references[($chainkey-1)] = array(
+                            $hashtag_references[($chainkey - 1)] = array(
                                 'chainhandletype' => $chainhandletype,
                                 'chainhandleinput' => 0,
                                 'chainhandleoutput' => 0,
@@ -3943,7 +3942,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                             $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
                             $hashtagtext = $word_text;
-                            if(!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))){
+                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
                                 $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
                             } else {
                                 $first_ref_hidden = true;
@@ -3964,33 +3963,33 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                 //This word is not referencing anything!
                 $hashtagchain = $word_text;
                 $hashtagtext = $word_text;
-                if(!$first_ref_hidden){
+                if (!$first_ref_hidden) {
                     $hashtagdiscover = $word_text;
                 }
                 $hashtagedit = $word_text;
             }
 
             //See what we found to add:
-            $linehashtagchain .= (!$first_word && $hashtagchain ? ' ' : '').$hashtagchain;
-            $linehashtagtext .= (!$first_word && $hashtagtext ? ' ' : '').$hashtagtext;
-            $linehashtagdiscover .= (!$first_word && $hashtagdiscover ? ' ' : '').$hashtagdiscover;
-            $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '').$hashtagedit;
+            $linehashtagchain .= (!$first_word && $hashtagchain ? ' ' : '') . $hashtagchain;
+            $linehashtagtext .= (!$first_word && $hashtagtext ? ' ' : '') . $hashtagtext;
+            $linehashtagdiscover .= (!$first_word && $hashtagdiscover ? ' ' : '') . $hashtagdiscover;
+            $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '') . $hashtagedit;
 
         }
 
-        $hashtag_cache['hashtagchain'] .= (!$first_line && $linehashtagchain ? "\n" : '').$linehashtagchain;
-        $hashtag_cache['hashtagtext'] .= (!$first_line && $linehashtagtext ? "\n" : '').$linehashtagtext;
-        $hashtag_cache['hashtagdiscover'] .= ( $linehashtagdiscover ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">'.$linehashtagdiscover.'</div>' : '' );
-        $hashtag_cache['hashtagedit'] .= ( $linehashtagedit ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">'.$linehashtagedit.'</div>' : '' );
+        $hashtag_cache['hashtagchain'] .= (!$first_line && $linehashtagchain ? "\n" : '') . $linehashtagchain;
+        $hashtag_cache['hashtagtext'] .= (!$first_line && $linehashtagtext ? "\n" : '') . $linehashtagtext;
+        $hashtag_cache['hashtagdiscover'] .= ($linehashtagdiscover ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">' . $linehashtagdiscover . '</div>' : '');
+        $hashtag_cache['hashtagedit'] .= ($linehashtagedit ? '<div class="line ' . ($first_line ? ' first_line' : '') . '">' . $linehashtagedit . '</div>' : '');
 
     }
 
     //Give HTML their frame:
-    if(strlen($hashtag_cache['hashtagdiscover'])){
-        $hashtag_cache['hashtagdiscover'] = '<div class="i_cache i_hashtagdiscover cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagdiscover'].'</div>';
+    if (strlen($hashtag_cache['hashtagdiscover'])) {
+        $hashtag_cache['hashtagdiscover'] = '<div class="i_cache i_hashtagdiscover cache_frame_' . $save_hashtagid . '">' . $hashtag_cache['hashtagdiscover'] . '</div>';
     }
-    if(strlen($hashtag_cache['hashtagedit'])){
-        $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">'.$hashtag_cache['hashtagedit'].'</div>';
+    if (strlen($hashtag_cache['hashtagedit'])) {
+        $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">' . $hashtag_cache['hashtagedit'] . '</div>';
     }
 
     if (!intval($chainhandlecreator)) {
@@ -4016,7 +4015,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             //What should happen here?
             $chainkey++;
 
-            if(!isset($hashtag_references[($chainkey-1)])){
+            if (!isset($hashtag_references[($chainkey - 1)])) {
                 //Must be removed:
                 $CI->Chains->delete($x['chainid']);
                 $hashtag_cache['actionstats']['removed']++;
@@ -4024,11 +4023,11 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
             }
 
             //We have it, see if it matches or needs updating:
-            foreach($hashtag_references[($chainkey-1)] as $key => $value){
-                if($x[$key].''!=$value.''){
+            foreach ($hashtag_references[($chainkey - 1)] as $key => $value) {
+                if ($x[$key] . '' != $value . '') {
                     //Updating needed:
-                    $hashtag_references[($chainkey-1)]['chainhandlecreator'] = $chainhandlecreator;
-                    $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey-1)]);
+                    $hashtag_references[($chainkey - 1)]['chainhandlecreator'] = $chainhandlecreator;
+                    $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey - 1)]);
                     $hashtag_cache['actionstats']['updated']++;
                     break;
                 }
@@ -4038,8 +4037,8 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
 
     //Any more links left that were not in DB?
-    for($i=$chainkey;$i<=count($hashtag_references);$i++){
-        if(isset($hashtag_references[$i])){
+    for ($i = $chainkey; $i <= count($hashtag_references); $i++) {
+        if (isset($hashtag_references[$i])) {
             $hashtag_references[$i]['chainhandlecreator'] = $chainhandlecreator;
             $CI->Chains->create($hashtag_references[$i]);
             $hashtag_cache['actionstats']['added']++;
@@ -4047,12 +4046,11 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     }
 
 
-
     $hashtag_cache['actionstats']['$save_hashtagid'] = $save_hashtagid;
     $hashtag_cache['actionstats']['$chainhandlecreator'] = $chainhandlecreator;
     $hashtag_cache['actionstats']['references_count'] = count($hashtag_references);
     $hashtag_cache['actionstats']['references'] = $hashtag_references;
-    if(isset($saved_items)){
+    if (isset($saved_items)) {
         $hashtag_cache['actionstats']['saved_items_count'] = count($saved_items);
         $hashtag_cache['actionstats']['saved_items'] = $saved_items;
     }
@@ -4330,11 +4328,12 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagterm = null, $focus_handleid = 0, $x_completes = false)
 {
 
-    //Search to see if an hashtag has a thumbnail:
+    //Search to see if an  hashtaghas a thumbnail:
     $CI =& get_instance();
 
     $chainid = (isset($i['chainid']) && $i['chainid'] > 0 ? $i['chainid'] : 0);
     $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $is_ajax = strtolower($CI->uri->segment(1)) == 'ajax' || strtolower($CI->uri->segment(1)) == 'controller';
     $is_cache = in_array($chainhandletype, $CI->config->item('handleids___14599'));
     $goto_start = in_array($chainhandletype, $CI->config->item('handleids___42988'));
     $handle_session = handle_session();
@@ -4344,13 +4343,13 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $chain_creator = isset($i['chainhandlecreator']) && $i['chainhandlecreator'] == $chainhandlecreator;
     $focus__node = in_array($chainhandletype, $CI->config->item('handleids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
-    $discovery_term = (strtolower($CI->uri->segment(1)) != 'ajax' && strtolower($CI->uri->segment(1)) != 'controller' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
+    $discovery_term = ( !$is_ajax && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
     $discovery_mode = $chainhandlecreator && ($discovery_uri || $discovery_term);
     $hashtag_access = hashtag_access($i['hashtagterm'], 0, $i, false, array(), $is_cache);
     $focus_hashtag_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_hashtag_seg = ($discovery_term ? $CI->uri->segment(2) : false);
     $focus_hashtagterm = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
-    $show_hashtagedit = ( $superpower_10939 && !$is_cache && $CI->uri->segment(1)==$i['hashtagterm'] && !strlen($CI->uri->segment(2)) );
+    $show_hashtagedit = ($superpower_10939 && !$is_cache && !$is_ajax && !strlen($CI->uri->segment(2)));
     if ($discovery_mode && !$target_hashtagterm && ($discovery_uri || $discovery_term)) {
         $target_hashtagterm = ($discovery_uri ? $discovery_uri : $discovery_term);
     }
@@ -4425,7 +4424,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Top action menu:
-    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtagterm="' . $i['hashtagterm'] . '" discovery_mode="'.intval($discovery_mode).'" hashtagtype="' . $i['hashtagtype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtagterm="' . $i['hashtagterm'] . '" discovery_mode="' . intval($discovery_mode) . '" hashtagtype="' . $i['hashtagtype'] . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['hashtagid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_hashtag_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
 
     if ($discovery_mode && $chainhandlecreator && $focus__node) {
@@ -4708,7 +4707,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
     //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, $show_hashtagedit ) . '</div>';
+    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, $show_hashtagedit) . '</div>';
 
 
     $hashtag_popup_url = hashtag_popup_url($i);
@@ -4789,7 +4788,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 
             $unit_price = 0;
-            if(count($total_dues) && doubleval($total_dues[0]['chainvalue'])){
+            if (count($total_dues) && doubleval($total_dues[0]['chainvalue'])) {
                 $unit_price = doubleval($total_dues[0]['chainvalue']);
             } else {
                 //Try to find the first handle reference and see if this user has a personalized value there to replace a fixed value:
@@ -4798,12 +4797,12 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
                     'chainhashtagoutput' => $i['hashtagid'],
                     'chainkey' => 1,
                 ), array('chainhandleinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_output) {
-                    foreach($CI->Chains->read(array(
+                    foreach ($CI->Chains->read(array(
                         'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                         'chainhandleinput' => $handle_output['handleid'],
                         'chainhandleoutput' => $handle_session['handleid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it
-                    ), array('chainhandleinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_data){
-                        if(doubleval($handle_data['chainvalue'])){
+                    ), array('chainhandleinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_data) {
+                        if (doubleval($handle_data['chainvalue'])) {
                             $unit_price = doubleval($handle_data['chainvalue']);
                         }
                     }
@@ -5358,10 +5357,10 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
             $social_url = 'href="' . phone_href($social_chain['chainhandleinput'], $social_chain['chainvalue']) . '"';
         }
 
-        $info = ( strlen($social_chain['chainvalue']) && !$social_url ? $handles___14036[$social_chain['chainhandleinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $handles___14036[$social_chain['chainhandleinput']]['m__title']));
+        $info = (strlen($social_chain['chainvalue']) && !$social_url ? $handles___14036[$social_chain['chainhandleinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $handles___14036[$social_chain['chainhandleinput']]['m__title']));
 
         //Append to chains:
-        $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . ( filter_var($social_chain['chainvalue'], FILTER_VALIDATE_URL) ? $social_chain['chainvalue'] : view_memory(42903, 42902) . $handles___14036[$social_chain['chainhandleinput']]['m__handle'] ) . '" target="_blank" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</span>')) . '</span>';
+        $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . (filter_var($social_chain['chainvalue'], FILTER_VALIDATE_URL) ? $social_chain['chainvalue'] : view_memory(42903, 42902) . $handles___14036[$social_chain['chainhandleinput']]['m__handle']) . '" target="_blank" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</span>')) . '</span>';
 
     }
 
