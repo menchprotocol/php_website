@@ -17,7 +17,7 @@ foreach($this->Chains->read(array(
         'chainhandleoutput' => $handle_session['handleid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it
     ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_data){
         $was_found = true;
-        echo '<tr><td><span class="icon-block-sm">'.view_cover($handle_data['handlecover']).'</span>'.$handle_data['handlename'].':</td><td>'.$handle_data['chainvalue'].'</td></tr>';
+        echo '<tr><td><span class="icon-block-sm">'.view_cover($handle_data['handlecover']).'</span>'.$handle_data['handlename'].( strlen($handle_data['chainvalue']) ? ':' : '' ).'</td><td>'.$handle_data['chainvalue'].'</td></tr>';
     }
 }
 echo '</table>';
