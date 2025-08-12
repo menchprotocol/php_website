@@ -1154,16 +1154,6 @@ class Controller extends CI_Controller
 
         }
 
-        //Also have to add as a comment to another hashtag?
-        if (intval($_POST['next_hashtagid']) > 0) {
-            $this->Chains->create(array(
-                'chainhandlecreator' => $handle_session['handleid'],
-                'chainhashtaginput' => $_POST['save_hashtagid'],
-                'chainhandletype' => 4228,
-                'chainhashtagoutput' => $_POST['next_hashtagid'],
-            ));
-        }
-
         foreach ($this->Hashtags->read(array(
             'hashtagid' => $_POST['save_hashtagid'],
         )) as $new_i) {
