@@ -794,9 +794,10 @@ class Chains extends CIdea_cache
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
                 'chainhashtaginput' => $i['hashtagid'],
             ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
+                $append_link = 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . $user_hash;
                 //Has this user hashtag_discovered this hashtag or no?
                 $html_message .= '<div class="line">' . view_hashtag_title($down_or, true) . ':</div>';
-                $html_message .= '<div class="line"><a href="'.'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . $user_hash.'">' . 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . '</div>';
+                $html_message .= '<div class="line"><a href="'.$append_link.'">' . $append_link . '</div>';
             }
 
             //Where to place the next step?
