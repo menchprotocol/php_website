@@ -196,6 +196,27 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
         echo '<th id="th_hashtag_' . $hashtag_var['hashtagid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 33286) . $hashtag_var['hashtagterm'] . '" target="_blank" title="Open in New Window" ' . ($max_limit ? ($current_x >= $max_limit ? '' : (($current_x / $max_limit) >= 0.5 ? 'isgold' : 'isred')) : '') . '">' . $current_x . ($max_limit ? '/' . $max_limit : '') . '</a><span class="vertical_col">' . (strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true)) . '</span></th>';
 
     }
+
+    /*
+    foreach ($hashtag_settings['mixed_column'] as $this_var) {
+        if(isset($this_var['handleid'])){
+            array_push($table_sortable, '#thhandle_' . $this_var['handleid']);
+            echo '<th id="thhandle_' . $this_var['handleid'] . '" title="'.(isset($count_totals['e'][$this_var['handleid']]) ? number_format($count_totals['e'][$this_var['handleid']], 2) : '').'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $this_var['handleterm'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$this_var['handleid']]) ? view_number($count_totals['e'][$this_var['handleid']]) : '0') . '</a><span class="vertical_col">' . view_cover($this_var['handlecover'], '✔️', ' ') . $this_var['handlename'] . '</span></th>';
+        } elseif(isset($this_var['hashtagid'])){
+            $max_available = $this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $this_var['hashtagid'],
+                'chainhandleinput' => 26189,
+            ), array(), 1);
+            $current_x = (isset($count_totals['i'][$this_var['hashtagid']]) ? $count_totals['i'][$this_var['hashtagid']] : 0);
+            $max_limit = (count($max_available) && is_numeric($max_available[0]['chainvalue']) && intval($max_available[0]['chainvalue']) > 0 ? intval($max_available[0]['chainvalue']) : 0);
+
+            array_push($table_sortable, '#th_hashtag_' . $this_var['hashtagid']);
+
+            echo '<th id="th_hashtag_' . $this_var['hashtagid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 33286) . $this_var['hashtagterm'] . '" target="_blank" title="Open in New Window" ' . ($max_limit ? ($current_x >= $max_limit ? '' : (($current_x / $max_limit) >= 0.5 ? 'isgold' : 'isred')) : '') . '">' . $current_x . ($max_limit ? '/' . $max_limit : '') . '</a><span class="vertical_col">' . (strlen($this_var['chainvalue']) ? $this_var['chainvalue'] : view_hashtag_title($this_var, true)) . '</span></th>';
+        }
+    }
+    */
     echo '</tr>';
     echo $body_content;
     echo '</table>';

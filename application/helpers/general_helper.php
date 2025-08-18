@@ -616,6 +616,7 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
 {
 
     $CI =& get_instance();
+    $mixed_column = array();
     $handle_column = array();
     $hashtag_column = array();
     $contact_details = array(
@@ -702,7 +703,6 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
             array_push($pinned_columns, intval($setting_chain['handleid']));
         }
         if (count($pinned_columns)) {
-
             //Add to results:
             $hashtag_list_config[34513] = $pinned_columns;
 
@@ -710,6 +710,7 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
                 'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
                 'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             ), array('chainhandleoutput'), 0, 0, handle_sort());
+            $mixed_column = $handle_column;
 
             foreach ($CI->Chains->read(array(
                 'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
@@ -717,8 +718,29 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
                 'chainhashtagoutput !=' => $i['hashtagid'],
             ), array('chainhashtagoutput'), 0, 0, array('hashtagtext' => 'ASC')) as $chain_i) {
                 array_push($hashtag_column, $chain_i);
+                array_push($mixed_column, $chain_i);
             }
         }
+
+
+
+
+        //Append regular references to plot in the sheet:
+        foreach ($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___2108854')) . ')' => null, //Sheet Ideas
+            'chainhashtaginput' => $i['hashtagid'],
+        ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i) {
+            array_push($hashtag_column, $chain_i);
+            $mixed_column[intval($chain_i['chainkey'])] = $chain_i;
+        }
+        foreach ($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___2108865')) . ')' => null, //Sheet Players
+            'chainhashtagoutput' => $i['hashtagid'],
+        ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $chain_e) {
+            array_push($handle_column, $chain_e);
+            $mixed_column[intval($chain_e['chainkey'])] = $chain_i;
+        }
+
 
 
         if ($fetch_contact) {
@@ -763,6 +785,7 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
             'list_config' => $hashtag_list_config,
             'handle_column' => $handle_column,
             'hashtag_column' => $hashtag_column,
+            'mixed_column' => $mixed_column,
             'query_string_filtered' => $query_string_filtered,
             'contact_details' => $contact_details, //Optional addon
         );
