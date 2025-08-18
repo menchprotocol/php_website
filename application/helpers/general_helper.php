@@ -2228,13 +2228,6 @@ function search_enabled()
 function update_algolia($focus__node = null, $s__id = 0)
 {
 
-
-    //TODO remove later
-    return array(
-        'status' => 0,
-        'message' => 'Search engine disabled',
-    );
-
     if (!search_enabled() || isset($_GET['disable_algolia'])) {
         return array(
             'status' => 0,
