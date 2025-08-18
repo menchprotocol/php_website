@@ -730,14 +730,14 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___2108854')) . ')' => null, //Sheet Ideas
             'chainhashtaginput' => $i['hashtagid'],
         ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i) {
-            array_push($hashtag_column, $chain_i);
+            //array_push($hashtag_column, $chain_i);
             $mixed_column[intval($chain_i['chainkey'])] = $chain_i;
         }
         foreach ($CI->Chains->read(array(
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___2108865')) . ')' => null, //Sheet Players
             'chainhashtagoutput' => $i['hashtagid'],
         ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $chain_e) {
-            array_push($handle_column, $chain_e);
+            //array_push($handle_column, $chain_e);
             $mixed_column[intval($chain_e['chainkey'])] = $chain_i;
         }
 
