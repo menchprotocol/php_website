@@ -738,7 +738,7 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
             'chainhashtagoutput' => $i['hashtagid'],
         ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $chain_e) {
             //array_push($handle_column, $chain_e);
-            $mixed_column[intval($chain_e['chainkey'])] = $chain_i;
+            $mixed_column[intval($chain_e['chainkey'])] = $chain_e;
         }
 
 

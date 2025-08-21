@@ -1351,7 +1351,7 @@ class Chains extends CIdea_cache
     {
 
         unset($i['hashtagexternal']);
-        unset($i['hashtagdiscover']);
+        unset($i['hashtagedit']);
         unset($i['chainhandletype']);
         unset($i['chainhandleinput']);
         unset($i['chainhandleoutput']);
@@ -1484,7 +1484,7 @@ class Chains extends CIdea_cache
         if(isset($_GET['skip_config'])) {
             unset($i['hashtagexternal']);
             unset($i['hashtagweight']);
-            unset($i['hashtagdiscover']);
+            unset($i['hashtagedit']);
             unset($i['hashtagtype']);
             if(isset($i['chainid'])){
                 unset($i['chainhandledomain']);
@@ -1501,6 +1501,7 @@ class Chains extends CIdea_cache
                 unset($i['chainhash']);
             }
         } else {
+
             $i['current_level'] = $current_level;
             $is_required = count($this->Chains->read(array(
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
