@@ -214,16 +214,16 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
                         }
                     }
 
-                    $body_content .= '<td title="' . $x['handlename'] . ' x ' . $e['handlename'] . '" class="' . (handle_session(10939) && !in_array($e['handleid'], $this->config->item('handleids___37695')) ? 'editable chainhandlecreator_' . $e['handleid'] . '_' . $x['handleid'] : '') . '" hashtagid="0" handleid="' . $e['handleid'] . '" chainhandlecreator="' . $x['handleid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div></td>'; //<div class="showonhover">'.( !$message_clean ? $view_cover : '' ).'</div>
+                    $body_content .= '<td title="' . $x['handlename'] . ' x ' . $this_var['handlename'] . '" class="' . (handle_session(10939) && !in_array($this_var['handleid'], $this->config->item('handleids___37695')) ? 'editable chainhandlecreator_' . $this_var['handleid'] . '_' . $x['handleid'] : '') . '" hashtagid="0" handleid="' . $this_var['handleid'] . '" chainhandlecreator="' . $x['handleid'] . '" require_writing="' . ($require_writing ? 1 : 0) . '" chainid="' . $x['chainid'] . '"><div class="limit_height">' . $message_clean . '</div></td>'; //<div class="showonhover">'.( !$message_clean ? $view_cover : '' ).'</div>
 
                     if (strlen($message_clean) > 0) {
 
-                        if (!isset($count_totals['e'][$e['handleid']])) {
-                            $count_totals['e'][$e['handleid']] = 0;
+                        if (!isset($count_totals['e'][$this_var['handleid']])) {
+                            $count_totals['e'][$this_var['handleid']] = 0;
                         }
 
-                        $count_totals['e'][$e['handleid']] = $count_totals['e'][$e['handleid']] + (count($this->Chains->read(array(
-                                'chainhandleoutput' => $e['handleid'],
+                        $count_totals['e'][$this_var['handleid']] = $count_totals['e'][$this_var['handleid']] + (count($this->Chains->read(array(
+                                'chainhandleoutput' => $this_var['handleid'],
                                 'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
                                 'chainhandleinput IN (' . join(',', $this->config->item('handleids___39609')) . ')' => null, //ADDUP NUMBER
                             ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['chainvalue'])) : 1);
