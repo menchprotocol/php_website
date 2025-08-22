@@ -158,12 +158,14 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
             }
         }
 
+        $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">' . view_cover($x['handlecover'], true) . '</span><a href="' . view_memory(42903, 42902) . $x['handleterm'] . '" style="font-weight:bold;">' . $x['handlename'] . '</a>' . ($this_quantity > 0 ? ' +' . $this_quantity : '') . '</td>';
+
 
         //Also show mixed column:
         if(!count($hashtag_settings['hashtag_column']) && !count($hashtag_settings['handle_column'])) {
-            foreach ($hashtag_settings['mixed_column'] as $this_var) {
 
-                //$body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">' . view_cover($x['handlecover'], true) . '</span><a href="' . view_memory(42903, 42902) . $x['handleterm'] . '" style="font-weight:bold;">' . $x['handlename'] . '</a>' . ($this_quantity > 0 ? ' +' . $this_quantity : '') . '</td>';
+
+            foreach ($hashtag_settings['mixed_column'] as $this_var) {
 
                 if (isset($this_var['handleid'])) {
 
