@@ -197,7 +197,6 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
 
     }
 
-    /*
     foreach ($hashtag_settings['mixed_column'] as $this_var) {
         if(isset($this_var['handleid'])){
             array_push($table_sortable, '#thhandle_' . $this_var['handleid']);
@@ -216,7 +215,6 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
             echo '<th id="th_hashtag_' . $this_var['hashtagid'] . '"><a class="icon-block-xs" href="' . view_memory(42903, 33286) . $this_var['hashtagterm'] . '" target="_blank" title="Open in New Window" ' . ($max_limit ? ($current_x >= $max_limit ? '' : (($current_x / $max_limit) >= 0.5 ? 'isgold' : 'isred')) : '') . '">' . $current_x . ($max_limit ? '/' . $max_limit : '') . '</a><span class="vertical_col">' . (strlen($this_var['chainvalue']) ? $this_var['chainvalue'] : view_hashtag_title($this_var, true)) . '</span></th>';
         }
     }
-    */
     echo '</tr>';
     echo $body_content;
     echo '</table>';
