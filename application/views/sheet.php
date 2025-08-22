@@ -295,7 +295,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-    echo '<th id="th_primary" style="width:200px;">' . $count . ' Handles</th>';
+    echo '<th id="th_primary" style="width:200px;">' . $count . ' Members</th>';
 
     foreach ($hashtag_settings['handle_column'] as $e) {
         array_push($table_sortable, '#thhandle_' . $e['handleid']);
