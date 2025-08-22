@@ -72,7 +72,7 @@ foreach ($this->Chains->read(array(
             'chainhandleoutput' => $us['handleid'],
             'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
             'LENGTH(chainvalue) > 0' => null,
-        ), array(), 0, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
+        ), array(), 0, 0, handle_sort()) as $group) {
             $extra_value .= '<div class="grey extra_descs hidden extra_desc_'.$group['chainhandleinput'].'">'.$group['chainvalue'].'</div>';
         }
 
@@ -89,7 +89,7 @@ echo '<ul class="nav nav-tabs nav12274" style="display: flex !important; justify
 foreach ($this->Chains->read(array(
     'chainhandleinput' => $focus_e['handleid'],
     'chainhandletype' => 4230, //HANDLE FOLLOW
-), array('chainhandleoutput'), 0, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
+), array('chainhandleoutput'), 0, 0, handle_sort()) as $group) {
     if(!isset($group_counts[$group['handleid']]) || !count($group_counts[$group['handleid']])){
         continue;
     }
