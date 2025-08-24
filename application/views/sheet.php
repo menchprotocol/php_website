@@ -4,6 +4,7 @@ if (!isset($_GET['hashtagterm'])) {
     die('Missing Hashtag ID hashtagterm');
 }
 
+
 //Sheet
 $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
@@ -29,6 +30,9 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
 } else {
 
     echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
+
+    echo '<img src="https://res.cloudinary.com/menchcloud/image/upload/v1755829760/gx8bun1gwibjmfh3kvqz.jpg" style="max-width: 100%;" alt="Discotique 25 Camp Map" />';
+
     echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_hashtag_value($hashtag_settings['i'], (isset($handle_session['handleid']) ? $handle_session['handleid'] : 0)) . '</div>';
 
     foreach ($hashtag_settings['query_string_filtered'] as $x) {
