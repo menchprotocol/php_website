@@ -29,7 +29,7 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
 } else {
 
     echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
-    echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_hashtag_value($hashtag_settings['i'], (isset($handle_session['handleid']) ? $handle_session['handleid'] : 0)) . '</div>';
+    echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_hashtag_value($hashtag_settings['i'], (isset($handle_session['handleid']) ? $handle_session['handleid'] : 0)) . '</div>';
 
     foreach ($hashtag_settings['query_string_filtered'] as $x) {
 
