@@ -353,6 +353,9 @@ if ((count($hashtag_settings['handle_column']) + count($hashtag_settings['hashta
 
         <?php if(isset($hashtag_settings['list_config'][34513]) && count($hashtag_settings['list_config'][34513])){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
 
+
+        <?php if(count($hashtag_settings['mixed_column'])){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
+
         .mini-header,
         #sortable_table td > p {
             display: block;
