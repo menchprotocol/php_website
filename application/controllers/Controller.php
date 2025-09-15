@@ -238,11 +238,10 @@ class Controller extends CI_Controller
                         if (hashtag_is_startable($focus_i)) {
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this hashtag. Scroll to the bottom & go next to continue.</div>';
                         } else {
-                            $this->Chains->hashtag_discovered(hashtag_type_discovery($focus_i), $focus_e['handleid'], ($target_i ? $target_i['hashtagid'] : 0), $focus_i);
-                            $this->Chains->hashtag_discovered(29393, $focus_e['handleid'], ($target_i ? $target_i['hashtagid'] : 0), $focus_i);
+                            $this->Chains->hashtag_discovered(4559, $focus_e['handleid'], ($target_i ? $target_i['hashtagid'] : 0), $focus_i);
 
                             //Inform user of changes:
-                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Hashtags has been hashtag_discovered</div>';
+                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Hashtags has been discovered</div>';
                         }
                     }
 
@@ -498,7 +497,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['chainid']) || !isset($_POST['current_hashtagtype'])) {
+        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -508,7 +507,6 @@ class Controller extends CI_Controller
         //$dd = add_media($uploaded_media);
 
         $hashtagid = 0; //New hashtag
-        $hashtagtype = intval($_POST['current_hashtagtype']);
         $created_hashtagid = 0;
 
         if (!$_POST['hashtagid']) {
@@ -535,104 +533,107 @@ class Controller extends CI_Controller
 
 
         $hashtagid = intval($is[0]['hashtagid']);
-        if (!$hashtagtype) {
-            $hashtagtype = intval($is[0]['hashtagtype']);
-        }
 
         //Fetch dynamic data based on hashtag type:
         $return_inputs = array();
-        $handles___4737 = $this->config->item('handles___4737'); // Hashtag Status
         $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
         $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
-        foreach (array_intersect($this->config->item('handleids___' . $hashtagtype), $this->config->item('handleids___42179')) as $dynamic_handleid) {
+        foreach ($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $is[0]['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null, //Hashtag Types
+        )) as $hashtag_type) {
 
-            $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
-            if (count($superpowers_required) && !handle_session(end($superpowers_required), 0, $this->handle_session)) {
-                continue;
-            }
+            foreach (array_intersect($this->config->item('handleids___' . $hashtag_type['chainhandleinput']), $this->config->item('handleids___42179')) as $dynamic_handleid) {
 
-            //Let's first determine the data type:
-            $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
+                $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
+                if (count($superpowers_required) && !handle_session(end($superpowers_required), 0, $this->handle_session)) {
+                    continue;
+                }
 
-            if (count($data_types) != 1) {
-                //This is strange, we are expecting 1 match only report this:
-                log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhandleoutput' => $dynamic_handleid,
-                    'chainhashtagoutput' => $hashtagid,
-                ));
-                continue; //Go to the next dynamic data type
-            }
+                //Let's first determine the data type:
+                $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
 
-            //We found 1 match as expected:
-            foreach ($data_types as $data_type_this) {
-                $data_type = $data_type_this;
-                break;
-            }
-
-            if (in_array($data_type, $this->config->item('handleids___42188'))) {
-
-                //Single or Multiple Choice:
-                array_push($return_inputs, array(
-                    'd__id' => $dynamic_handleid,
-                    'd__is_radio' => 1,
-                    'd_chainid' => 0,
-                    'd__html' => view_instant_select($dynamic_handleid, 0, $hashtagid),
-                    'd__value' => ($hashtagid > 0 ? $hashtagid : ''),
-                    'd__type_name' => '',
-                    'd__placeholder' => '',
-                    'd__profile_header' => '',
-                ));
-
-            } else {
-
-                $this_data_type = $this->config->item('handles___' . $data_type);
-                $handles___4592 = $this->config->item('handles___4592'); //Data types
-                $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
-                $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
-
-                //Fetch the current value:
-                $counted = 0;
-                $unique_values = array();
-                if ($hashtagid > 0) { //Must have an original ID to possibly have a value...
-                    foreach ($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
+                if (count($data_types) != 1) {
+                    //This is strange, we are expecting 1 match only report this:
+                    log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
+                        'chainhandlecreator' => $handle_session['handleid'],
+                        'chainhandleoutput' => $dynamic_handleid,
                         'chainhashtagoutput' => $hashtagid,
-                        'chainhandleinput' => $dynamic_handleid,
-                    ), array('chainhandleinput')) as $selected_e) {
-                        if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
-                            $counted++;
-                            array_push($unique_values, $selected_e['chainvalue']);
+                    ));
+                    continue; //Go to the next dynamic data type
+                }
+
+                //We found 1 match as expected:
+                foreach ($data_types as $data_type_this) {
+                    $data_type = $data_type_this;
+                    break;
+                }
+
+                if (in_array($data_type, $this->config->item('handleids___42188'))) {
+
+                    //Single or Multiple Choice:
+                    array_push($return_inputs, array(
+                        'd__id' => $dynamic_handleid,
+                        'd__is_radio' => 1,
+                        'd_chainid' => 0,
+                        'd__html' => view_instant_select($dynamic_handleid, 0, $hashtagid),
+                        'd__value' => ($hashtagid > 0 ? $hashtagid : ''),
+                        'd__type_name' => '',
+                        'd__placeholder' => '',
+                        'd__profile_header' => '',
+                    ));
+
+                } else {
+
+                    $this_data_type = $this->config->item('handles___' . $data_type);
+                    $handles___4592 = $this->config->item('handles___4592'); //Data types
+                    $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
+                    $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+
+                    //Fetch the current value:
+                    $counted = 0;
+                    $unique_values = array();
+                    if ($hashtagid > 0) { //Must have an original ID to possibly have a value...
+                        foreach ($this->Chains->read(array(
+                            'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
+                            'chainhashtagoutput' => $hashtagid,
+                            'chainhandleinput' => $dynamic_handleid,
+                        ), array('chainhandleinput')) as $selected_e) {
+                            if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
+                                $counted++;
+                                array_push($unique_values, $selected_e['chainvalue']);
+                                array_push($return_inputs, array(
+                                    'd__id' => $dynamic_handleid,
+                                    'd__is_radio' => 0,
+                                    'd_chainid' => $selected_e['chainid'],
+                                    'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                                    'd__value' => $selected_e['chainvalue'],
+                                    'd__type_name' => html_input_type($data_type),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                    'd__profile_header' => '',
+                                ));
+                            }
+                        }
+                    }
+
+
+                    if (!$counted) {
+                        foreach ($this->Handles->read(array(
+                            'handleid' => $dynamic_handleid,
+                        )) as $selected_e) {
                             array_push($return_inputs, array(
                                 'd__id' => $dynamic_handleid,
                                 'd__is_radio' => 0,
-                                'd_chainid' => $selected_e['chainid'],
+                                'd_chainid' => 0,
                                 'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
-                                'd__value' => $selected_e['chainvalue'],
+                                'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
                                 'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
                                 'd__profile_header' => '',
                             ));
                         }
-                    }
-                }
-
-
-                if (!$counted) {
-                    foreach ($this->Handles->read(array(
-                        'handleid' => $dynamic_handleid,
-                    )) as $selected_e) {
-                        array_push($return_inputs, array(
-                            'd__id' => $dynamic_handleid,
-                            'd__is_radio' => 0,
-                            'd_chainid' => 0,
-                            'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
-                            'd__value' => '',
-                            'd__type_name' => html_input_type($data_type),
-                            'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
-                            'd__profile_header' => '',
-                        ));
                     }
                 }
             }
@@ -658,7 +659,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['chainid']) || !isset($_POST['current_hashtagtype'])) {
+        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -667,7 +668,6 @@ class Controller extends CI_Controller
 
 
         $hashtagid = 0; //New hashtag
-        $hashtagtype = intval($_POST['current_hashtagtype']);
         $created_hashtagid = 0;
 
         if (!$_POST['hashtagid']) {
@@ -692,108 +692,108 @@ class Controller extends CI_Controller
             ));
         }
 
-
         $hashtagid = intval($is[0]['hashtagid']);
-        if (!$hashtagtype) {
-            $hashtagtype = intval($is[0]['hashtagtype']);
-        }
-
-
 
         //Fetch dynamic data based on hashtag type:
         $return_inputs = array();
-        $handles___4737 = $this->config->item('handles___4737'); // Hashtag Status
         $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
         $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
-        foreach (array_intersect($this->config->item('handleids___' . $hashtagtype), $this->config->item('handleids___42179')) as $dynamic_handleid) {
 
-            $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
-            if (count($superpowers_required) && !handle_session(end($superpowers_required), 0, $this->handle_session)) {
-                continue;
-            }
+        foreach ($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $is[0]['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null, //Hashtag Types
+        )) as $hashtag_type) {
+            foreach (array_intersect($this->config->item('handleids___' . $hashtag_type['chainhandleinput']), $this->config->item('handleids___42179')) as $dynamic_handleid) {
 
-            //Let's first determine the data type:
-            $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
+                $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
+                if (count($superpowers_required) && !handle_session(end($superpowers_required), 0, $this->handle_session)) {
+                    continue;
+                }
 
-            if (count($data_types) != 1) {
-                //This is strange, we are expecting 1 match only report this:
-                log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhandleoutput' => $dynamic_handleid,
-                    'chainhashtagoutput' => $hashtagid,
-                ));
-                continue; //Go to the next dynamic data type
-            }
+                //Let's first determine the data type:
+                $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
 
-            //We found 1 match as expected:
-            foreach ($data_types as $data_type_this) {
-                $data_type = $data_type_this;
-                break;
-            }
-
-            if (in_array($data_type, $this->config->item('handleids___42188'))) {
-
-                //Single or Multiple Choice:
-                array_push($return_inputs, array(
-                    'd__id' => $dynamic_handleid,
-                    'd__is_radio' => 1,
-                    'd_chainid' => 0,
-                    'd__html' => view_instant_select($dynamic_handleid, 0, $hashtagid),
-                    'd__value' => ($hashtagid > 0 ? $hashtagid : ''),
-                    'd__type_name' => '',
-                    'd__placeholder' => '',
-                    'd__profile_header' => '',
-                ));
-
-            } else {
-
-                $this_data_type = $this->config->item('handles___' . $data_type);
-                $handles___4592 = $this->config->item('handles___4592'); //Data types
-                $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
-                $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
-
-                //Fetch the current value:
-                $counted = 0;
-                $unique_values = array();
-                if ($hashtagid > 0) { //Must have an original ID to possibly have a value...
-                    foreach ($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
+                if (count($data_types) != 1) {
+                    //This is strange, we are expecting 1 match only report this:
+                    log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
+                        'chainhandlecreator' => $handle_session['handleid'],
+                        'chainhandleoutput' => $dynamic_handleid,
                         'chainhashtagoutput' => $hashtagid,
-                        'chainhandleinput' => $dynamic_handleid,
-                    ), array('chainhandleinput')) as $selected_e) {
-                        if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
-                            $counted++;
-                            array_push($unique_values, $selected_e['chainvalue']);
+                    ));
+                    continue; //Go to the next dynamic data type
+                }
+
+                //We found 1 match as expected:
+                foreach ($data_types as $data_type_this) {
+                    $data_type = $data_type_this;
+                    break;
+                }
+
+                if (in_array($data_type, $this->config->item('handleids___42188'))) {
+
+                    //Single or Multiple Choice:
+                    array_push($return_inputs, array(
+                        'd__id' => $dynamic_handleid,
+                        'd__is_radio' => 1,
+                        'd_chainid' => 0,
+                        'd__html' => view_instant_select($dynamic_handleid, 0, $hashtagid),
+                        'd__value' => ($hashtagid > 0 ? $hashtagid : ''),
+                        'd__type_name' => '',
+                        'd__placeholder' => '',
+                        'd__profile_header' => '',
+                    ));
+
+                } else {
+
+                    $this_data_type = $this->config->item('handles___' . $data_type);
+                    $handles___4592 = $this->config->item('handles___4592'); //Data types
+                    $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
+                    $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+
+                    //Fetch the current value:
+                    $counted = 0;
+                    $unique_values = array();
+                    if ($hashtagid > 0) { //Must have an original ID to possibly have a value...
+                        foreach ($this->Chains->read(array(
+                            'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
+                            'chainhashtagoutput' => $hashtagid,
+                            'chainhandleinput' => $dynamic_handleid,
+                        ), array('chainhandleinput')) as $selected_e) {
+                            if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
+                                $counted++;
+                                array_push($unique_values, $selected_e['chainvalue']);
+                                array_push($return_inputs, array(
+                                    'd__id' => $dynamic_handleid,
+                                    'd__is_radio' => 0,
+                                    'd_chainid' => $selected_e['chainid'],
+                                    'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                                    'd__value' => $selected_e['chainvalue'],
+                                    'd__type_name' => html_input_type($data_type),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                    'd__profile_header' => '',
+                                ));
+                            }
+                        }
+                    }
+
+
+                    if (!$counted) {
+                        foreach ($this->Handles->read(array(
+                            'handleid' => $dynamic_handleid,
+                        )) as $selected_e) {
                             array_push($return_inputs, array(
                                 'd__id' => $dynamic_handleid,
                                 'd__is_radio' => 0,
-                                'd_chainid' => $selected_e['chainid'],
+                                'd_chainid' => 0,
                                 'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
-                                'd__value' => $selected_e['chainvalue'],
+                                'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
                                 'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
                                 'd__profile_header' => '',
                             ));
                         }
-                    }
-                }
-
-
-                if (!$counted) {
-                    foreach ($this->Handles->read(array(
-                        'handleid' => $dynamic_handleid,
-                    )) as $selected_e) {
-                        array_push($return_inputs, array(
-                            'd__id' => $dynamic_handleid,
-                            'd__is_radio' => 0,
-                            'd_chainid' => 0,
-                            'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
-                            'd__value' => '',
-                            'd__type_name' => html_input_type($data_type),
-                            'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
-                            'd__profile_header' => '',
-                        ));
                     }
                 }
             }
@@ -1050,11 +1050,6 @@ class Controller extends CI_Controller
                 'message' => 'Missing Chain Data',
             ));
 
-        } elseif (!isset($_POST['save_hashtagtype']) || !in_array($_POST['save_hashtagtype'], $this->config->item('handleids___4737'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid hashtag Type',
-            ));
         } elseif (strlen($_POST['save_hashtagtext']) > view_memory(6404, 4736)) {
             return view_json(array(
                 'status' => 0,
@@ -1076,9 +1071,7 @@ class Controller extends CI_Controller
                 ));
             }
 
-            $update_array = array(
-                'hashtagtype' => $_POST['save_hashtagtype'],
-            );
+            $update_array = array();
 
             if (strtolower($is[0]['hashtagterm']) !== strtolower(trim($_POST['save_hashtagterm']))) {
 
@@ -1104,7 +1097,9 @@ class Controller extends CI_Controller
             }
 
             //Update new hashtag fields:
-            $this->Hashtags->update($is[0]['hashtagid'], $update_array, $handle_session['handleid']);
+            if(count($update_array)){
+                $this->Hashtags->update($is[0]['hashtagid'], $update_array, $handle_session['handleid']);
+            }
 
 
             if (isset($update_array['hashtagterm'])) {
@@ -1147,7 +1142,6 @@ class Controller extends CI_Controller
             $hashtag_new = $this->Hashtags->create(array(
                 'hashtagterm' => $_POST['save_hashtagterm'],
                 'hashtagtext' => $_POST['save_hashtagtext'],
-                'hashtagtype' => $_POST['save_hashtagtype'],
             ), $handle_session['handleid']);
 
             $_POST['save_hashtagid'] = $hashtag_new['hashtag_create']['hashtagid'];
@@ -1205,13 +1199,12 @@ class Controller extends CI_Controller
             } elseif (in_array($_POST['chainhandletype'], $this->config->item('handleids___11020'))) {
 
                 //HASHTAGS
-                $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
                 $current_hashtagterm = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
                 foreach (hashtags_query($_POST['chainhandletype'], $_POST['hashtagid'], 1, false) as $next_i) {
                     if (isset($next_i['hashtagid'])) {
-                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], (in_array($next_i['hashtagtype'], $this->config->item('handleids___32172')) ? $handles___4737[$next_i['hashtagtype']]['m__cover'] : ''), view_hashtag_title($next_i, true), $next_i['chainvalue']);
+                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], '', view_hashtag_title($next_i, true), $next_i['chainvalue']);
                         $listed_items++;
                     }
                 }
@@ -1431,13 +1424,12 @@ class Controller extends CI_Controller
 
                 //HASHTAGS
                 $current_hashtagterm = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
-                $handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
                 $handles___4593 = $this->config->item('handles___4593'); //Chain Types
                 $discover_chainhandletype = discover_chainhandletype();
 
                 foreach (handles_query($_POST['chainhandletype'], $_POST['handleid'], 1, false) as $next_i) {
                     if (isset($next_i['hashtagid'])) {
-                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], (in_array($next_i['hashtagtype'], $this->config->item('handleids___32172')) ? $handles___4737[$next_i['hashtagtype']]['m__cover'] : ''), view_hashtag_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
+                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], '', view_hashtag_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
                         $listed_items++;
                     }
                 }
@@ -3071,10 +3063,26 @@ class Controller extends CI_Controller
             'hashtagid' => $_POST['handle_submitted_data']['hashtagid'],
         )) as $focus_i) {
 
-            $input__selection = in_array($focus_i['hashtagtype'], $this->config->item('handleids___7712'));
-            $input__upload = in_array($focus_i['hashtagtype'], $this->config->item('handleids___43004'));
-            $skipping_not_allowed = in_array($focus_i['hashtagtype'], $this->config->item('handleids___43009'));
-            $input__text = in_array($focus_i['hashtagtype'], $this->config->item('handleids___43002')) || in_array($focus_i['hashtagtype'], $this->config->item('handleids___43003'));
+            $input__selection = count($this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $focus_i['hashtagid'],
+                'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+            )));
+            $input__upload = count($this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $focus_i['hashtagid'],
+                'chainhandleinput IN (' . join(',', $this->config->item('handleids___43004')) . ')' => null,
+            )));
+            $skipping_not_allowed = count($this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $focus_i['hashtagid'],
+                'chainhandleinput IN (' . join(',', $this->config->item('handleids___43009')) . ')' => null,
+            )));
+            $input__text = count($this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $focus_i['hashtagid'],
+                'chainhandleinput IN (' . join(',', array_merge($this->config->item('handleids___43002'), $this->config->item('handleids___43003'))) . ')' => null,
+            )));
             $total_selected = count($_POST['selection_hashtagid']);
             $trying_to_skip = !$skipping_not_allowed &&
                 (
@@ -3100,7 +3108,11 @@ class Controller extends CI_Controller
             //Now complete relevant next hashtags, if any:
             if ($input__selection) {
 
-                $is_single_selection = in_array($focus_i['hashtagtype'], $this->config->item('handleids___33331'));
+                $is_single_selection = count($this->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $focus_i['hashtagid'],
+                    'chainhandleinput IN (' . join(',', $this->config->item('handleids___33331')) . ')' => null,
+                )));
 
 
                 if (!$is_single_selection) {
@@ -3155,7 +3167,11 @@ class Controller extends CI_Controller
                     $this->Chains->delete($x_selection['chainid'], $handle_session['handleid']);
 
                     //Remove discovery if we can:
-                    if (!in_array($x_selection['hashtagtype'], $this->config->item('handleids___42905'))) {
+                    if (!count($this->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $x_selection['hashtagid'],
+                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___42905')) . ')' => null,
+                    )))) {
                         foreach ($this->Chains->read(array(
                             'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                             'chainhashtaginput' => $x_selection['hashtagid'],
@@ -3181,13 +3197,15 @@ class Controller extends CI_Controller
 
             }
 
-            //Issue DISCOVERY/HASHTAG COIN:
-            $completion_status = $this->Chains->hashtag_discovered(hashtag_type_discovery($focus_i, $trying_to_skip), $handle_session['handleid'], $_POST['target_hashtagid'], $focus_i, $_POST['handle_submitted_data'], array(
-                'chainkey' => $_POST['handle_submitted_data']['hashtagweight'],
-            ));
-            if (!$completion_status['status']) {
-                //We had an error with data within target_hashtagid:
-                return view_json($completion_status);
+            //Save Skip if no answer was selected:
+            if($trying_to_skip){
+                $completion_status = $this->Chains->hashtag_discovered(31022, $handle_session['handleid'], $_POST['target_hashtagid'], $focus_i, $_POST['handle_submitted_data'], array(
+                    'chainkey' => $_POST['handle_submitted_data']['hashtagweight'],
+                ));
+                if (!$completion_status['status']) {
+                    //We had an error with data within target_hashtagid:
+                    return view_json($completion_status);
+                }
             }
 
 
@@ -3204,13 +3222,29 @@ class Controller extends CI_Controller
                 )) as $hashtag_next) {
 
                     //Analyze input:
-                    $input__required = in_array($hashtag_next['hashtagtype'], $this->config->item('handleids___43039'));
+                    $input__required = count($this->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
+                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___43039')) . ')' => null,
+                    )));
                     if ($input__required) {
                         continue;
                     }
-                    $input__text = in_array($hashtag_next['hashtagtype'], $this->config->item('handleids___43002')) || in_array($hashtag_next['hashtagtype'], $this->config->item('handleids___43003'));
-                    $input__upload = in_array($hashtag_next['hashtagtype'], $this->config->item('handleids___43004'));
-                    $skipping_not_allowed = in_array($hashtag_next['hashtagtype'], $this->config->item('handleids___43009'));
+                    $input__text = count($this->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
+                        'chainhandleinput IN (' . join(',', array_merge($this->config->item('handleids___43002'), $this->config->item('handleids___43003'))) . ')' => null,
+                    )));
+                    $input__upload = count($this->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
+                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___43004')) . ')' => null,
+                    )));
+                    $skipping_not_allowed = count($this->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
+                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___43009')) . ')' => null,
+                    )));
 
 
                     //Cleanup phone number:
@@ -3242,7 +3276,7 @@ class Controller extends CI_Controller
                     }
 
                     //Try to complete:
-                    $completion_status = $this->Chains->hashtag_discovered(hashtag_type_discovery($hashtag_next, $trying_to_skip), $handle_session['handleid'], $_POST['target_hashtagid'], $hashtag_next, $next_hashtag_data, array(
+                    $completion_status = $this->Chains->hashtag_discovered(( $trying_to_skip ? 31022 : 4559 ), $handle_session['handleid'], $_POST['target_hashtagid'], $hashtag_next, $next_hashtag_data, array(
                         'chainkey' => $next_hashtag_data['hashtagweight'],
                     ));
                     if ($hashtag_required && !$completion_status['status']) {

@@ -3,7 +3,6 @@
 boost_power();
 $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
-$handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
 $count = 0;
 
 
@@ -343,35 +342,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     print_r($delete);
     echo $table;
 
-} elseif($focus_i['hashtagterm']=='YourLastName') {
-
-    //Sync Idea type:
-    $total = 0;
-    $update = 0;
-    foreach ($this->Hashtags->read(array(
-        'hashtagid >' => 0,
-    )) as $i) {
-        $total++;
-        $linked_type = 0;
-        foreach($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null,
-            'chainhashtagoutput' => $i['hashtagid'],
-        ), array(), 1) as $ideatype){
-            $linked_type = intval($ideatype['chainhandleinput']);
-        }
-        if($linked_type>0 && $linked_type!=intval($i['hashtagtype'])){
-            //needs updating:
-            echo '<div>OLD '.$i['hashtagtype'].'!='.$linked_type.' NEW <a href="/'.$i['hashtagterm'].'">#'.$i['hashtagterm'].' '.view_hashtag_title($i, true).'</a></div>';
-            $update++;
-            $this->db->where('hashtagid', $i['hashtagid']);
-            $this->db->update('ideachainhashtags', array(
-                'hashtagtype' => $linked_type,
-            ));
-        }
-    }
-    echo '<hr />'.$update.'/'.$total.' Need updating';
-
 } elseif($focus_i['hashtagterm']=='YourBio') {
 
 
@@ -456,7 +426,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $hashtag_new = $this->Hashtags->create(array(
                 'hashtagid' => $x['chainid'],
                 'hashtagtext' => $x['chainvalue'],
-                'hashtagtype' => 6677,
             ), $x['chainhandlecreator']);
             $is[0] = $hashtag_new['hashtag_create'];
         }
@@ -523,12 +492,6 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
             $hashtagtext .= "\n".$handle.$x2['hashtagterm'];
             $core_content .= "\n".$handle.$x2['hashtagterm'];
-        }
-
-        //Add Idea Type:
-        if(count($is) && $is[0]['hashtagtype']>0 && $is[0]['hashtagtype']!=6677 && isset($handles___4737[$is[0]['hashtagtype']]['m__handle']) && !substr_count($hashtagtext, "@".$handles___4737[$is[0]['hashtagtype']]['m__handle'])){
-            $core_content .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
-            $hashtagtext .= "\n@".$handles___4737[$is[0]['hashtagtype']]['m__handle'];
         }
 
         if($this_media){

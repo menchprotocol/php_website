@@ -8,7 +8,7 @@ foreach ($this->Chains->read(array(
 ), array('chainhandleinput'), 0) as $addition_sync) {
 
     $is_found = false;
-    //Fetch everyone who has hashtag_discovered this hashtag:
+    //Fetch everyone who has hashtag discovered this hashtag:
     foreach ($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
         'chainhashtaginput' => $addition_sync['chainhashtagoutput'],

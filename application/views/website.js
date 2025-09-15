@@ -811,18 +811,10 @@ function load_card_clickers() {
         }
     });
 
-    /*
-    $( ".is_locked" ).click(function(e) {
-        if($(e.target).closest(ignore_clicks).length < 1){
-            alert('Note: Scroll down & click the black next button to continue...');
-        }
-    });
-    */
-
     //For Discovery only:
-    if (typeof focus_hashtagtype !== 'undefined' && focus_hashtagtype > 0) {
+    if (focus_hashtag_types.length) {
 
-        var is_single_choice = (focus_hashtagtype == 6684);
+        var is_single_choice = ( focus_hashtag_types.includes(6684) );
 
         if ($(".this_selector").length == 1) {
             //Auto select if only 1 choice is available:
@@ -936,7 +928,7 @@ function invoice_update() {
 
 
     //Update UI:
-    $('.hashtag_discovered_btn').html('Create Invoice: <span title="" class="small_font inline-block">' + total_price.toLocaleString('en-US', {
+    $('.discovered_btn').html('Create Invoice: <span title="" class="small_font inline-block">' + total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
     }) + ' [' + total_count + ']</span>');
@@ -1821,10 +1813,9 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
 
     //Assign updates:
     var insert_message = '';
-    var current_hashtagtype = 6677;
     $('#modal31911 .next_hashtagid').val(next_hashtagid);
     //$('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
-    //load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, true);
+    //load_hashtag_dynamic(hashtagid, chainid, true);
 
     if(hashtagid>0){
         insert_message = $('.ui_hashtagtext_' + hashtagid).text();
@@ -1853,10 +1844,6 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
         $("#modal31911 .save_hashtagterm").val($('.ui_hashtagterm_'+hashtagid).text());
     }
 
-
-    //Hashtag Type:
-    update_form_select(4737, current_hashtagtype, 1, false);
-
     $('#modal31911').modal('show');
 
     setTimeout(function () {
@@ -1872,7 +1859,7 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
 
 }
 
-function load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, initial_loading) {
+function load_hashtag_dynamic(hashtagid, chainid, initial_loading) {
 
     $(".dynamic_item").addClass('hidden'); //Hide all current items...
     $(".dynamic_editing_loading").removeClass('hidden');
@@ -1881,7 +1868,6 @@ function load_hashtag_dynamic(hashtagid, chainid, current_hashtagtype, initial_l
     $.post("/controller/hashtag_editor", {
         hashtagid: hashtagid,
         chainid: chainid,
-        current_hashtagtype: current_hashtagtype,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
@@ -2012,7 +1998,6 @@ function hashtag_update() {
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
         save_hashtagtext: $('#modal31911 .save_hashtagtext').val().trim(),
         save_hashtagterm: $('#modal31911 .save_hashtagterm').val().trim(),
-        save_hashtagtype: $('.dropd_form_4737').attr('selected_value').trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
@@ -2052,10 +2037,6 @@ function hashtag_update() {
             var old_handle = $(".ui_hashtagterm_" + modify_data['save_hashtagid'] + ':first').text();
             var new_handle = modify_data['save_hashtagterm'];
             var on_focus__hashtag = parseInt($('#focus__node').val()) == 12273 && modify_data['save_hashtagid'] == parseInt($('#focus__id').val());
-
-            //Update Hashtag Type:
-            $('.s__12273_' + modify_data['save_hashtagid']).attr('hashtagtype', modify_data['save_hashtagtype']);
-            ui_instant_select(4737, modify_data['save_hashtagtype'], modify_data['save_hashtagid'], modify_data['save_chainid'], false);
 
             //Update Handle & Href chains if needed:
             /*
@@ -3155,13 +3136,6 @@ function ui_instant_select(element_id, handle_createid, o__id, chainid, show_ful
     var main_object_type = 0;
     var main_object_update = false;
 
-    if (element_id == 4737) {
-        //Hashtag Type:
-        $('.s__12273_' + o__id).attr('hashtagtype', handle_createid);
-        main_object_type = 12273;
-        main_object_update = 'hashtagtype';
-    }
-
     if (main_object_type > 0 && main_object_update) {
         $('.s__' + main_object_type + '_' + o__id).attr(main_object_update, handle_createid);
     }
@@ -3437,14 +3411,19 @@ function hashtag_discovered(do_skip) {
         return false;
     }
 
-    if (js_handleids___7712.includes(focus_hashtagtype)) {
-        //Choose
-        $(".this_selector").each(function () {
-            var selection_hashtagid_this = parseInt($(this).attr('selection_hashtagid'));
-            if ($('.this_selector_' + selection_hashtagid_this + ' i').hasClass('fa-square-check') || $(".this_selector").length == 1) {
-                selection_hashtagid.push(selection_hashtagid_this);
-            }
-        });
+    const filteredArray = array1.filter(value => array2.includes(value));
+
+    for (var i = 0; i < js_handleids___7712.length; i++) {
+        if(focus_hashtag_types.includes(js_handleids___7712[i])){
+            //Choose
+            $(".this_selector").each(function () {
+                var selection_hashtagid_this = parseInt($(this).attr('selection_hashtagid'));
+                if ($('.this_selector_' + selection_hashtagid_this + ' i').hasClass('fa-square-check') || $(".this_selector").length == 1) {
+                    selection_hashtagid.push(selection_hashtagid_this);
+                }
+            });
+            break;
+        }
     }
 
     //Compile all next hashtags, if any:
@@ -3458,12 +3437,12 @@ function hashtag_discovered(do_skip) {
     });
 
     //Payment Error?
-    if (focus_hashtagtype == 26560 && !$(".tickets_issued")[0]) {
+    if (focus_hashtag_types.includes(26560) && !$(".tickets_issued")[0]) {
         //Ticket not yet issued!
         alert('Pay Now via Paypal before going next.');
         next_processing = false;
         return false;
-    } else if (focus_hashtagtype == 43758) {
+    } else if ( focus_hashtag_types.includes(43758) ) {
 
         //Invoice Process, make sure something is in the cart:
         var invoice_items = {};
@@ -3497,8 +3476,8 @@ function hashtag_discovered(do_skip) {
         if (total_count > 0) {
 
             //Load:
-            var original_html = $('.hashtag_discovered_btn').html();
-            $('.hashtag_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+            var original_html = $('.discovered_btn').html();
+            $('.discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
             //Submit to go next:
             $.post("/invoice", {
@@ -3517,7 +3496,7 @@ function hashtag_discovered(do_skip) {
                     js_redirect(data.next__url);
                 } else {
                     //Show error:
-                    $('.hashtag_discovered_btn').html(original_html);
+                    $('.discovered_btn').html(original_html);
                     alert(data.message);
                     next_processing = false;
                 }
@@ -3533,8 +3512,8 @@ function hashtag_discovered(do_skip) {
 
 
     //Load:
-    var original_html = $('.hashtag_discovered_btn').html();
-    $('.hashtag_discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    var original_html = $('.discovered_btn').html();
+    $('.discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
     $.post("/controller/hashtag_discovered", {
@@ -3556,7 +3535,7 @@ function hashtag_discovered(do_skip) {
         } else {
             next_processing = false;
             //Show error:
-            $('.hashtag_discovered_btn').html(original_html);
+            $('.discovered_btn').html(original_html);
             alert(data.message);
         }
     });

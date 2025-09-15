@@ -7,5 +7,5 @@ echo '</div>';
 
 //Hashtag Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Chains->historyhashtag_discovered($focus_i, $focus_e['handleid']));
+view_tree($this->Chains->history_discovered($focus_i, $focus_e['handleid']));
 echo '</div>';

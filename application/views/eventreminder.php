@@ -61,7 +61,6 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
     foreach ($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
         'chainhandleinput IN (' . join(',', $this->config->item('handleids___42216')) . ')' => null, //Event Reminder
-        'hashtagtype' => 30874, //Events
     ), array('chainhashtagoutput'), 0) as $i) {
 
         //Make sure not handled this hashtag with a different reminder:
@@ -97,7 +96,7 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
                     $title = view_hashtag_title($i, true);
                     $total_sent = 0;
 
-                    //The time is here! Send event reminders to those who successfully hashtag_discovered this:
+                    //The time is here! Send event reminders to those who successfully hashtag discovered this:
                     foreach ($this->Chains->read(array(
                         'chainhandletype IN (' . join(',', $this->config->item('handleids___40986')) . ')' => null, //DISCOVERIES
                         'chainhashtaginput' => $i['hashtagid'],
@@ -156,7 +155,6 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
         'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
         'chainkey >' => time(), //Future event
         'chainhandleinput' => 26556, //Time Starts
-        'hashtagtype' => 30874, //Events
     ), array('chainhashtagoutput'), 0) as $i) {
 
         //Determine if it's time to send this message:
@@ -205,7 +203,7 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
                 'chainhandlecreator' => $x['handleid'],
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
             )))) {
-                //Skip since they already hashtag_discovered this hashtag:
+                //Skip since they already hashtag discovered this hashtag:
                 continue;
             }
 
@@ -225,7 +223,7 @@ if (isset($_GET['chainid']) && isset($_GET['handlelogin']) && isset($_GET['hash'
                     'chainhandlecreator' => $x['handleid'],
                     'chainhashtaginput' => $down_or['hashtagid'],
                 ));
-                //Has this user hashtag_discovered this hashtag or no?
+                //Has this user hashtag discovered this hashtag or no?
                 $html_message .= view_hashtag_title($down_or, true) . ":\n";
                 $html_message .= 'https://' . get_domain('m__message', $x['handleid'], $i['chainhandledomain']) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (!count($discoveries) ? '?handlelogin=' . $x['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['handleterm']) : '') . "\n\n";
 

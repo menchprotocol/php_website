@@ -6,7 +6,6 @@ if(!isset($_GET['hashtagterm'])){
 
 //Sheet
 $handles___6287 = $this->config->item('handles___6287'); //APP
-$handles___4737 = $this->config->item('handles___4737'); //Hashtag Types
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 $recursive_hashtag_ids = array();
@@ -151,12 +150,13 @@ foreach($hashtag_settings['hashtag_column'] as $hashtag_var){
         'chainhashtagoutput' => $hashtag_var['hashtagid'],
         'chainhandleinput' => 26189,
     ), array(), 1);
+
     $current_x = ( isset($count_totals['i'][$hashtag_var['hashtagid']]) ? $count_totals['i'][$hashtag_var['hashtagid']] : 0 );
     $max_limit = (count($max_available) && is_numeric($max_available[0]['chainvalue']) && intval($max_available[0]['chainvalue'])>0 ? intval($max_available[0]['chainvalue']) : 0 );
 
     array_push($table_sortable, '#th_hashtag_'.$hashtag_var['hashtagid']);
 
-    echo '<th id="th_hashtag_'.$hashtag_var['hashtagid'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$hashtag_var['hashtagterm'].'" target="_blank" title="Open in New Window">'.$handles___4737[$hashtag_var['hashtagtype']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true) ).'</span></th>';
+    echo '<th id="th_hashtag_'.$hashtag_var['hashtagid'].'"><div></div><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($hashtag_var['chainvalue']) ? $hashtag_var['chainvalue'] : view_hashtag_title($hashtag_var, true) ).'</span></th>';
 
 }
 echo '</tr>';

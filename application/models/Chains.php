@@ -33,13 +33,6 @@ class Chains extends CIdea_cache
             $add_fields['chainvalue'] = serialize($add_fields['chainvalue']);
         }
 
-        //Set some zero defaults if not set:
-        foreach (array('chainhashtagoutput', 'chainhashtaginput', 'chainhandleoutput', 'chainhandleinput', 'chainkey') as $dz) {
-            if (!isset($add_fields[$dz])) {
-                $add_fields[$dz] = 0;
-            }
-        }
-
         //Is this an observation chain that should replace an older observation, if any:
         if($update_observed && in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
             $read_fields = $add_fields;
@@ -49,6 +42,13 @@ class Chains extends CIdea_cache
             foreach ($this->Chains->read($read_fields, array(), 1) as $last_observation) {
                 //Update the previous observed chain:
                 return $this->Chains->update($last_observation['chainid'], $add_fields);
+            }
+        }
+
+        //Set some zero defaults if not set:
+        foreach (array('chainhashtagoutput', 'chainhashtaginput', 'chainhandleoutput', 'chainhandleinput', 'chainkey') as $dz) {
+            if (!isset($add_fields[$dz])) {
+                $add_fields[$dz] = 0;
             }
         }
 
@@ -528,65 +528,6 @@ class Chains extends CIdea_cache
                 )));
             }
 
-        } elseif ($element_id == 4737) {
-
-            //Hashtag Type
-            $status = $this->Hashtags->update($o__id, array(
-                'hashtagtype' => $handle_createid,
-            ), $handle_session['handleid']);
-
-            //See if we need to popup the hashtag edit modal here:
-
-            $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
-            foreach (array_intersect($this->config->item('handleids___' . $handle_createid), $this->config->item('handleids___42179')) as $dynamic_handleid) {
-
-                $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
-                if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
-                    continue;
-                }
-
-                //Let's determine the data type:
-                $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
-
-                //ASSUME that we found 1 match as expected:
-                foreach ($data_types as $data_type_this) {
-                    $data_type = $data_type_this;
-                    break;
-                }
-                $is_required = in_array($dynamic_handleid, $this->config->item('handleids___28239')); //Required Settings
-
-                if (!$is_required) {
-                    //We are only interested in what is required
-                    continue;
-                }
-
-                //See if we are missing value:
-                if (in_array($data_type, $this->config->item('handleids___42188'))) {
-
-                    //Single or Multiple Choice:
-                    $already_responded = count($this->Chains->read(array(
-                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___' . $dynamic_handleid)) . ')' => null, //All possible answers
-                        'chainhashtagoutput' => $o__id,
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                    )));
-
-                } else {
-
-                    $already_responded = count($this->Chains->read(array(
-                        'chainhandleinput' => $dynamic_handleid,
-                        'chainhashtagoutput' => $o__id,
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                    )));
-
-                }
-
-                if (!$already_responded) {
-                    //We are missing a required response, auto open modal:
-                    $auto_open_hashtag_modal = 1;
-                }
-
-            }
-
         }
 
         return array(
@@ -717,7 +658,7 @@ class Chains extends CIdea_cache
     }
 
 
-    function broadcast($list_of_handleid, $i, $chainhandledomain = 0, $ensure_unhashtag_discovered = true, $demo_only = false)
+    function broadcast($list_of_handleid, $i, $chainhandledomain = 0, $ensure_discovered = true, $demo_only = false)
     {
 
         $total_sent = 0;
@@ -747,12 +688,12 @@ class Chains extends CIdea_cache
                     'chainhandleoutput' => 26582, //Messener
                 ));
                 continue;
-                } elseif ($ensure_unhashtag_discovered && count($this->Chains->read(array(
+                } elseif ($ensure_discovered && count($this->Chains->read(array(
                     'chainhashtaginput' => $i['hashtagid'],
                     'chainhandlecreator' => $x['handleid'],
                     'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
                 )))) {
-                //Already hashtag_discovered:
+                //Already hashtag discovered:
                 continue;
             }
 
@@ -795,7 +736,7 @@ class Chains extends CIdea_cache
                 'chainhashtaginput' => $i['hashtagid'],
             ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
                 $append_link = 'https://' . get_domain('m__message', $x['handleid'], $chainhandledomain) . view_memory(42903, 33286) . $down_or['hashtagterm'] . (hashtag_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . $user_hash;
-                //Has this user hashtag_discovered this hashtag or no?
+                //Has this user hashtag discovered this hashtag or no?
                 $html_message .= '<div class="line">' . view_hashtag_title($down_or, true) . ':</div>';
                 $html_message .= '<div class="line"><a href="'.$append_link.'">' . $append_link . '</div>';
             }
@@ -847,7 +788,11 @@ class Chains extends CIdea_cache
         ), array('chainhashtaginput')) as $hashtag_previous) {
 
             //Validate Selection:
-            $input__selection = in_array($hashtag_previous['hashtagtype'], $this->config->item('handleids___7712'));
+            $input__selection = $this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $hashtag_previous['hashtagid'],
+                'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+            ));
 
             if ($handleid > 0 && !count($this->Chains->read(array(
                     'chainhandletype IN (' . join(',', $this->config->item('handleids___7704')) . ')' => null, //Discovery Expansion
@@ -875,42 +820,7 @@ class Chains extends CIdea_cache
         return array();
 
     }
-
-
-    function previoushashtag_discovered($focus_hashtagid, $chainhandlecreator, $loop_breaker_ids = array())
-    {
-
-        /*
-         *
-         * Returns hashtag if hashtag_discovered upwards
-         *
-         * */
-
-        if (count($loop_breaker_ids) > 0 && in_array($focus_hashtagid, $loop_breaker_ids)) {
-            return false;
-        }
-        array_push($loop_breaker_ids, intval($focus_hashtagid));
-
-        foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
-            'chainhashtagoutput' => $focus_hashtagid,
-        ), array('chainhashtaginput')) as $prev_i) {
-
-            foreach ($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-                'chainhandlecreator' => $chainhandlecreator,
-                'chainhashtaginput' => $prev_i['hashtagid'],
-            ), array('chainhashtagoutput')) as $x) {
-                return $x['hashtagterm'];
-            }
-
-            return $this->Chains->previoushashtagterm_discovered($prev_i['hashtagid'], $chainhandlecreator, $loop_breaker_ids);
-        }
-
-        //Did not find!
-        return false;
-
-    }
+    
 
 
     function next_hashtags($handleid, $target_hashtagterm, $i=false, $find_after_hashtagid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
@@ -929,7 +839,11 @@ class Chains extends CIdea_cache
         }
         array_push($loop_breaker_ids, intval($i['hashtagid']));
 
-        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
+        $input__selection = $this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+        ));
         $found_trigger = null;
 
 
@@ -1001,7 +915,7 @@ class Chains extends CIdea_cache
     {
 
         if (!$chainhandlecreator || !in_array($chainhandletype, $this->config->item('handleids___31777' /* DISCOVERIES */))) {
-            return log_error('hashtag_discovered() Invalid chainhandletype @' . $chainhandletype . ' missing in @31777 OR Missing $chainhandlecreator', array(
+            return log_error('Invalid chainhandletype @' . $chainhandletype . ' missing in @31777 OR Missing $chainhandlecreator', array(
                 'chainhandleoutput' => $chainhandlecreator,
                 'chainhandlecreator' => $chainhandlecreator,
             ));
@@ -1009,9 +923,21 @@ class Chains extends CIdea_cache
 
         //Do we need to save text/upload ?
         $handle_session = handle_session();
-        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
-        $input__upload = in_array($i['hashtagtype'], $this->config->item('handleids___43004'));
-        $input__text = in_array($i['hashtagtype'], $this->config->item('handleids___43002')) || in_array($i['hashtagtype'], $this->config->item('handleids___43003'));
+        $input__selection = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+        )));
+        $input__upload = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43004')) . ')' => null,
+        )));
+        $input__text = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', array_merge($this->config->item('handleids___43002'), $this->config->item('handleids___43003'))) . ')' => null,
+        )));
         $is_required = count($this->Chains->read(array(
             'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
             'chainhashtagoutput' => $i['hashtagid'],
@@ -1026,19 +952,31 @@ class Chains extends CIdea_cache
             }
 
             //Must add a new hashtag, but first let's validate the input:
-            if ($i['hashtagtype'] == 31794 && strlen($handle_submitted_data['hashtag_createtext']) && !is_numeric($handle_submitted_data['hashtag_createtext'])) {
+            if (count($this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandleinput' => 31794,
+            ))) && strlen($handle_submitted_data['hashtag_createtext']) && !is_numeric($handle_submitted_data['hashtag_createtext'])) {
                 //Number Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Number',
                 );
-            } elseif ($i['hashtagtype'] == 42915 && strlen($handle_submitted_data['hashtag_createtext']) && !filter_var($handle_submitted_data['hashtag_createtext'], FILTER_VALIDATE_URL)) {
+            } elseif (count($this->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $i['hashtagid'],
+                    'chainhandleinput' => 42915,
+                ))) && strlen($handle_submitted_data['hashtag_createtext']) && !filter_var($handle_submitted_data['hashtag_createtext'], FILTER_VALIDATE_URL)) {
                 //Chain Input
                 return array(
                     'status' => 0,
                     'message' => 'Invalid URL',
                 );
-            } elseif ($i['hashtagtype'] == 30350 && strlen($handle_submitted_data['hashtag_createtext']) && !strtotime($handle_submitted_data['hashtag_createtext'])) {
+            } elseif (count($this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => $i['hashtagid'],
+                'chainhandleinput' => 30350,
+            ))) && strlen($handle_submitted_data['hashtag_createtext']) && !strtotime($handle_submitted_data['hashtag_createtext'])) {
                 //Date Input
                 return array(
                     'status' => 0,
@@ -1075,7 +1013,6 @@ class Chains extends CIdea_cache
                     //Create a new hashtag:
                     $hashtag_new = $this->Hashtags->create(array(
                         'hashtagtext' => $handle_submitted_data['hashtag_createtext'],
-                        'hashtagtype' => 6677,
                     ), $chainhandlecreator);
 
                     $this_hashtagid = $hashtag_new['hashtag_create']['hashtagid'];
@@ -1131,16 +1068,16 @@ class Chains extends CIdea_cache
             'chainhashtagoutput' => (isset($x_data['chainhashtagoutput']) ? $x_data['chainhashtagoutput'] : 0),
             'chainhandlecreator' => $chainhandlecreator,
             'chainvalue' => $x_data['chainvalue'],
-        )) as $already_hashtag_discovered) {
+        )) as $already_discovered) {
 
             //Update:
-            $this->Chains->update($already_hashtag_discovered['chainid'], $x_data);
+            $this->Chains->update($already_discovered['chainid'], $x_data);
 
-            //Already hashtag_discovered!
+            //Already hashtag discovered!
             return array(
                 'status' => 1,
-                'message' => 'Already hashtag_discovered',
-                'new_x' => $already_hashtag_discovered,
+                'message' => 'Already discovered',
+                'new_x' => $already_discovered,
             );
         }
 
@@ -1158,7 +1095,11 @@ class Chains extends CIdea_cache
                 'chainhashtaginput' => $i['hashtagid'],
             ), array('chainhashtagoutput'), 0) as $next_i) {
 
-                if (in_array($next_i['hashtagtype'], $this->config->item('handleids___43039'))) {
+                if (count($this->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                    'chainhashtagoutput' => $next_i['hashtagid'],
+                    'chainhandleinput IN (' . join(',', $this->config->item('handleids___43039')) . ')' => null,
+                )))) {
                     continue;
                 }
 
@@ -1169,7 +1110,7 @@ class Chains extends CIdea_cache
 
                 if (!$has_children) {
                     //Mark as complete:
-                    $this->Chains->hashtag_discovered(hashtag_type_discovery($next_i), $x_data['chainhandlecreator'], $target_hashtagid, $next_i, $x_data);
+                    $this->Chains->hashtag_discovered(4559, $x_data['chainhandlecreator'], $target_hashtagid, $next_i, $x_data);
                 }
             }
         }
@@ -1364,9 +1305,17 @@ class Chains extends CIdea_cache
         unset($i['chainid']);
         unset($i['chainvalue']);
 
-        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
-        $input__text = in_array($i['hashtagtype'], $this->config->item('handleids___43002'));
-        $i['user_hashtag_discovered'] = array();
+        $input__selection = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+        )));
+        $input__text = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43002')) . ')' => null,
+        )));
+        $i['user_discovered'] = array();
         $i['user_written_response'] = array();
         $i['current_level'] = $current_level;
         $i['next_hashtags'] = array();
@@ -1393,10 +1342,10 @@ class Chains extends CIdea_cache
             unset($x['chainvalue']);
             unset($x['chainid']);
 
-            $i['user_hashtag_discovered'] = $x;
+            $i['user_discovered'] = $x;
 
             if ($input__text) {
-                //Since it has been hashtag_discovered and its a text input, lots fetch the written response:
+                //Since it has been hashtag discovered and its a text input, lots fetch the written response:
                 foreach ($this->Chains->read(array(
                     'chainhandletype' => 4228,
                     'chainhashtagoutput' => $i['hashtagid'],
@@ -1408,7 +1357,7 @@ class Chains extends CIdea_cache
         }
 
 
-        if ($i['user_hashtag_discovered']) {
+        if ($i['user_discovered']) {
             foreach ($this->Chains->read(array(
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
                 'chainhashtaginput' => $i['hashtagid'],
@@ -1422,14 +1371,22 @@ class Chains extends CIdea_cache
 
     }
 
-    function historyhashtag_discovered($i, $handleid, $current_level = 0)
+    function history_discovered($i, $handleid, $current_level = 0)
     {
 
-        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
-        $input__text = in_array($i['hashtagtype'], $this->config->item('handleids___43002'));
+        $input__selection = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+        )));
+        $input__text = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43002')) . ')' => null,
+        )));
         $i['current_level'] = $current_level;
         $i['next_hashtags'] = array();
-        $i['user_hashtag_discovered'] = array();
+        $i['user_discovered'] = array();
         $i['user_written_response'] = array();
         $current_level++;
 
@@ -1439,7 +1396,7 @@ class Chains extends CIdea_cache
             'chainhandlecreator' => $handleid,
             'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
         ), array(), 1) as $x) {
-            $i['user_hashtag_discovered'] = $x;
+            $i['user_discovered'] = $x;
         }
 
         if ($input__text) {
@@ -1453,7 +1410,7 @@ class Chains extends CIdea_cache
         }
 
 
-        if ($i['user_hashtag_discovered']) {
+        if ($i['user_discovered']) {
             foreach (($input__selection ? $this->Chains->read(array(
                 'chainhandletype' => 7712, //Input Choice
                 'chainhandlecreator' => $handleid,
@@ -1462,7 +1419,7 @@ class Chains extends CIdea_cache
                 'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
                 'chainhashtaginput' => $i['hashtagid'],
             ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'))) as $next_i) {
-                array_push($i['next_hashtags'], $this->Chains->historyhashtag_discovered($next_i, $handleid, $current_level));
+                array_push($i['next_hashtags'], $this->Chains->history_discovered($next_i, $handleid, $current_level));
             }
         }
 
@@ -1478,14 +1435,21 @@ class Chains extends CIdea_cache
             'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
             'chainhashtaginput' => $i['hashtagid'],
         ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
-        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
-        $single_choice = in_array($i['hashtagtype'], $this->config->item('handleids___33331'));
+        $input__selection = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+        )));
+        $single_choice = count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___33331')) . ')' => null,
+        )));
 
         if(isset($_GET['skip_config'])) {
             unset($i['hashtagexternal']);
             unset($i['hashtagweight']);
             unset($i['hashtagedit']);
-            unset($i['hashtagtype']);
             if(isset($i['chainid'])){
                 unset($i['chainhandledomain']);
                 unset($i['chainhandlecreator']);
@@ -1538,6 +1502,7 @@ class Chains extends CIdea_cache
         foreach ($total_next as $next_i) {
 
             $result_i = $this->Chains->flat_tree($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
+
             array_push($i['next_hashtags'], $result_i);
 
             if(!isset($_GET['skip_config'])) {
@@ -1553,8 +1518,6 @@ class Chains extends CIdea_cache
                     $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
                 }
             }
-
-
 
         }
 
@@ -1579,14 +1542,14 @@ class Chains extends CIdea_cache
         array_push($loop_breaker_ids, intval($i['hashtagid']));
 
         //Count completed:
-        $list_hashtag_discovered = array();
+        $list_discovered = array();
         foreach ($this->Chains->read(array(
             'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
             'chainhandlecreator' => $handleid, //Belongs to this Member
             'chainhashtaginput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
         ), array('chainhashtaginput'), 0) as $completed) {
-            if (!in_array($completed['hashtagterm'], $list_hashtag_discovered)) {
-                array_push($list_hashtag_discovered, $completed['hashtagterm']);
+            if (!in_array($completed['hashtagterm'], $list_discovered)) {
+                array_push($list_discovered, $completed['hashtagterm']);
             }
         }
 
@@ -1595,8 +1558,8 @@ class Chains extends CIdea_cache
         $metadata_this = array(
             'fixed_total' => count($copy['recursive_hashtag_ids']),
             'list_total' => $copy['recursive_hashtag_ids'],
-            'fixed_hashtag_discovered' => count($list_hashtag_discovered),
-            'list_hashtag_discovered' => $list_hashtag_discovered,
+            'fixed_discovered' => count($list_discovered),
+            'list_discovered' => $list_discovered,
         );
 
         //Now let's check possible expansions:
@@ -1618,14 +1581,14 @@ class Chains extends CIdea_cache
                     $progress = array(
                         'fixed_total' => 1,
                         'list_total' => array($expansion_in['hashtagid']),
-                        'fixed_hashtag_discovered' => 0,
-                        'list_hashtag_discovered' => array(),
+                        'fixed_discovered' => 0,
+                        'list_discovered' => array(),
                     );
                 }
 
                 //Addup completion stats for this:
                 $metadata_this['fixed_total'] += $progress['fixed_total'];
-                $metadata_this['fixed_hashtag_discovered'] += $progress['fixed_hashtag_discovered'];
+                $metadata_this['fixed_discovered'] += $progress['fixed_discovered'];
 
                 if ($progress['list_total'] && count($progress['list_total'])) {
                     foreach ($progress['list_total'] as $tree_id) {
@@ -1635,10 +1598,10 @@ class Chains extends CIdea_cache
                     }
                 }
 
-                if ($progress['list_hashtag_discovered'] && count($progress['list_hashtag_discovered'])) {
-                    foreach ($progress['list_hashtag_discovered'] as $tree_id) {
-                        if (!in_array($tree_id, $metadata_this['list_hashtag_discovered'])) {
-                            array_push($metadata_this['list_hashtag_discovered'], $tree_id);
+                if ($progress['list_discovered'] && count($progress['list_discovered'])) {
+                    foreach ($progress['list_discovered'] as $tree_id) {
+                        if (!in_array($tree_id, $metadata_this['list_discovered'])) {
+                            array_push($metadata_this['list_discovered'], $tree_id);
                         }
                     }
                 }
@@ -1666,7 +1629,7 @@ class Chains extends CIdea_cache
 
             //Calculate completion rate based on estimated time cost:
             if ($metadata_this['fixed_total'] > 0) {
-                $metadata_this['fixed_completed_percentage'] = intval(floor($metadata_this['fixed_hashtag_discovered'] / $metadata_this['fixed_total'] * 100));
+                $metadata_this['fixed_completed_percentage'] = intval(floor($metadata_this['fixed_discovered'] / $metadata_this['fixed_total'] * 100));
             }
 
 

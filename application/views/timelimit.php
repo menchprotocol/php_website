@@ -23,7 +23,7 @@ $counter = 0;
 //Go through all expire seconds hashtags:
 foreach ($this->Chains->read($filters, array('chainhashtagoutput'), 0) as $expires) {
 
-    //Now go through everyone who hashtag_discovered this selection:
+    //Now go through everyone who hashtag discovered this selection:
     foreach ($this->Chains->read(array(
         'chainhandletype IN (' . join(',', $this->config->item('handleids___7704')) . ')' => null, //Discovery Expansions
         'chainhashtaginput' => $expires['hashtagid'],

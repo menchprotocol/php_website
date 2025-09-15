@@ -9,5 +9,5 @@ $_GET['view_all'] = true;
 
 //Hashtag Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Chains->historyhashtag_discovered($focus_i, $focus_e['handleid']), true, $focus_e);
+view_tree($this->Chains->history_discovered($focus_i, $focus_e['handleid']), true, $focus_e);
 echo '</div>';

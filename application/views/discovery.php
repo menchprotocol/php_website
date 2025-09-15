@@ -78,16 +78,20 @@ if ($handle_session) {
     $progress = $this->Chains->progress($chainhandlecreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
-    if($target_completed && !in_array($focus_i['hashtagtype'], $this->config->item('handleids___43050'))){
+    if($target_completed && !count($this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $focus_i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43050')) . ')' => null, //Direct Input Ideas
+        )))){
         //Hide next navigation and allow them to browse the tree:
         echo '<script> $(document).ready(function () { setTimeout(function () { $(\'.fixed-bottom .card_cards\').addClass(\'hidden\'); }, 233); }); </script>';
     }
 
     if ($target_completed && $at_starting_point) {
-        echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_hashtag_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_hashtag_discovered'] . ': ' . join(',', $progress['list_hashtag_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
+        echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_discovered'] . ': ' . join(',', $progress['list_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
     } else {
         echo '<div class="progress">
-<div class="progress-bar bg31777" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_hashtag_discovered'] . '/' . $progress['fixed_total'] . ' Hashtags hashtag_discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress-bar bg31777" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_discovered'] . '/' . $progress['fixed_total'] . ' Hashtags discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
 </div>';
     }
 }
@@ -113,13 +117,22 @@ if ($handle_session || isset($_GET['open'])) {
     echo view_hashtag_nav(true, $focus_i, $x_completes);
 }
 
+//Fetch Hashtag Types:
+$focus_hashtag_types = array();
+foreach($this->Chains->read(array(
+    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+    'chainhashtagoutput' => $focus_i['hashtagid'],
+    'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null, //Hashtag Types
+)) as $mention) {
+    array_push($focus_hashtag_types, intval($mention['chainhandleinput']));
+}
 
 ?>
 
 <script>
 
     var total_discoveries = <?= count($x_completes) ?>;
-    var focus_hashtagtype = <?= $focus_i['hashtagtype'] ?>;
+    var focus_hashtag_types = [<?= join(',',$focus_hashtag_types) ?>];
 
     $(document).ready(function () {
 
@@ -128,16 +141,9 @@ if ($handle_session || isset($_GET['open'])) {
 
         set_autosize($('.x_write'));
 
-        if (js_handleids___7712.includes(focus_hashtagtype)) {
-            //Choose
-            $('.xtypecounter12840').text('');
-            $('.xtypetitle_12840').text(js_handles___7712[focus_hashtagtype]['m__title'] + ': ');
-        }
-
-
         //Show percentage progress on next button:
         if (parseInt($('.progress-bar').attr('aria-valuenow')) > 0 && parseInt($('.progress-bar').attr('aria-valuenow')) < 100) {
-            $('.hashtag_discovered_btn').append(' <span title="' + $('.progress-bar').attr('aria-valuenow') + '% Completed" class="small_font inline-block">[' + $('.progress-bar').attr('aria-valuenow') + '% Done]</span>');
+            $('.discovered_btn').append(' <span title="' + $('.progress-bar').attr('aria-valuenow') + '% Completed" class="small_font inline-block">[' + $('.progress-bar').attr('aria-valuenow') + '% Done]</span>');
         }
 
         //Detect if no scroll bar, load instantly:
@@ -148,7 +154,7 @@ if ($handle_session || isset($_GET['open'])) {
                 $(".fixed-bottom").removeClass('hidden');
             }
 
-            if (focus_hashtagtype == 43758) {
+            if ( focus_hashtag_types.includes(43758) ) {
                 invoice_update();
                 $(".fixed-bottom").removeClass('hidden');
             } else {

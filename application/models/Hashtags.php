@@ -466,7 +466,12 @@ class Hashtags extends CIdea_cache
             return array();
         }
 
-        $input__selection = in_array($i['hashtagtype'], $this->config->item('handleids___7712'));
+        $input__selection = $this->Chains->read(array(
+            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            'chainhashtagoutput' => $i['hashtagid'],
+            'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+        ));
+
         if ($scope == 'AND' && $input__selection) {
             //OR HASHTAG:
             return array();
@@ -525,7 +530,6 @@ class Hashtags extends CIdea_cache
 
         $hashtag_new = $this->Hashtags->create(array(
             'hashtagtext' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['hashtagtext']),
-            'hashtagtype' => $this_i[0]['hashtagtype'],
         ), $chainhandlecreator);
 
         return array(

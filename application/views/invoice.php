@@ -168,21 +168,19 @@ foreach($this->Hashtags->read(array(
             //Remove Selection:
             $this->Chains->delete($x_selection['chainid'], $handle_session['handleid']);
 
-            //Remove discovery if we can:
-            if(!in_array($x_selection['hashtagtype'], $this->config->item('handleids___42905'))){
-                foreach($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-                    'chainhashtaginput' => $x_selection['hashtagid'],
-                    'chainhandlecreator' => $handle_session['handleid'],
-                ), array(), 0) as $x_discovery){
-                    $this->Chains->delete($x_discovery['chainid'], $handle_session['handleid']);
-                }
+            //Remove discovery:
+            foreach($this->Chains->read(array(
+                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+                'chainhashtaginput' => $x_selection['hashtagid'],
+                'chainhandlecreator' => $handle_session['handleid'],
+            ), array(), 0) as $x_discovery){
+                $this->Chains->delete($x_discovery['chainid'], $handle_session['handleid']);
             }
         }
 
 
         //Save New Invoice:
-        $this->Chains->hashtag_discovered(44245, $handle_session['handleid'], $hashtag_target['hashtagid'], $i);
+        $this->Chains->hashtag_discovered(4559, $handle_session['handleid'], $hashtag_target['hashtagid'], $i);
 
 
         //Save New Child Answers:
@@ -192,7 +190,7 @@ foreach($this->Hashtags->read(array(
             )) as $this_i){
 
                 //Complete this item:
-                $this->Chains->hashtag_discovered(hashtag_type_discovery($this_i), $handle_session['handleid'], $hashtag_target['hashtagid'], $this_i, array(), array(
+                $this->Chains->hashtag_discovered(4559, $handle_session['handleid'], $hashtag_target['hashtagid'], $this_i, array(), array(
                     'chainkey' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 

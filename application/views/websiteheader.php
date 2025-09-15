@@ -773,12 +773,6 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                                         <a class="add_hashtag_44169 icon-block" href="javascript:void(0)" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>
                                     </div>';
 
-                                } elseif($handleid==4737){ //Hashtag Type
-
-                                    echo '<div class="dynamic_editing_input no_padded">
-                                        <div class="dynamic_selector">'.searchingle_select_form(4737, 6677).'</div>
-                                    </div>';
-
                                 } elseif($handleid==13572){ //Upload File
 
                                     echo '<div class="dynamic_editing_input no_padded">

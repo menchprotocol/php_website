@@ -4,10 +4,8 @@ if (!isset($_GET['hashtagterm'])) {
     die('Missing Hashtag ID hashtagterm');
 }
 
-
 //Sheet
 $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
-
 $recursive_hashtag_ids = array();
 $is_with_action_es = array();
 $es_added = array();
