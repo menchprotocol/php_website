@@ -4046,10 +4046,10 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     }
 
 
-    if (count($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+    if (count($CI->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
             'chainhashtagoutput' => $focus_i['hashtagid'],
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___34826')) . ')' => null,
+            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___34826')) . ')' => null,
         ))) && $handle_session && $discovery_mode && !count($x_completes)) {
         foreach ($CI->Chains->read(array(
             'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
@@ -4651,14 +4651,14 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $input_ui = '';
 
     //Any inputs for this hashtag?
-    if (isset($previous_i['hashtagid']) && (count($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+    if (isset($previous_i['hashtagid']) && (count($CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
                 'chainhashtagoutput' => $previous_i['hashtagid'],
                 'chainhandleinput' => 43758,
-            ))) || ($focus__node && count($this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            ))) || ($focus__node && count($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
                     'chainhashtagoutput' => $i['hashtagid'],
-                    'chainhandleinput IN (' . join(',', $this->config->item('handleids___41055')) . ')' => null,
+                    'chainhandleinput IN (' . join(',', $CI->config->item('handleids___41055')) . ')' => null,
                     'chainhandleinput !=' => 43758,
                 )))))) {
 
@@ -4674,8 +4674,8 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             //Referesh soon so we can check if completed or not
             js_php_redirect(view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1', 987);
 
-        } elseif (isset($previous_i['hashtagid']) && !count($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+        } elseif (isset($previous_i['hashtagid']) && !count($CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
                 'chainhashtagoutput' => $previous_i['hashtagid'],
                 'chainhandleinput' => 43758,
             ))) && count($x_completes)) {
@@ -4702,8 +4702,8 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
             $currency_types = $CI->Chains->read(array(
                 'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => (isset($previous_i['hashtagid']) && count($this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+                'chainhashtagoutput' => (isset($previous_i['hashtagid']) && count($CI->Chains->read(array(
+                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
                     'chainhashtagoutput' => $previous_i['hashtagid'],
                     'chainhandleinput' => 43758,
                 ))) ? $previous_i['hashtagid'] : $i['hashtagid']),
@@ -4865,10 +4865,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             }
         }
 
-    } elseif (count($this->Chains->read(array(
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+    } elseif (count($CI->Chains->read(array(
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
         'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput IN (' . join(',', $this->config->item('handleids___33532')) . ')' => null,
+        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___33532')) . ')' => null,
     )))) {
 
         //Find the created hashtag if any:
@@ -4881,10 +4881,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         $input_attributes = '';
         $previous_response = ($chainhandlecreator && isset($handle_private_replies[0]['hashtagtext']) ? $handle_private_replies[0]['hashtagtext'] : '');
 
-        if (count($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+        if (count($CI->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
             'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43002')) . ')' => null,
+            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43002')) . ')' => null,
         )))) {
 
             //Textarea
@@ -4894,10 +4894,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
         } else {
 
-            foreach ($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+            foreach ($CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
                 'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $this->config->item('handleids___43003')) . ')' => null,
+                'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43003')) . ')' => null,
             )) as $input_field) {
 
                 if ($input_field['chainhandleinput'] == 31794) {
@@ -4975,10 +4975,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         }
 
         //Uploader
-        if (count($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+        if (count($CI->Chains->read(array(
+            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
             'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43004')) . ')' => null,
+            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43004')) . ')' => null,
         )))) {
             foreach ($handle_private_replies as $x_response) {
                 $input_ui .= '<div class="hidden">' . hashtag_view(31777, $x_response) . '</div>';
@@ -5046,10 +5046,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             $focus_menu = ($was_discovered || !isset($handles___31777[4559]) ? $m_target_bar : $handles___31777[4559]);
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="hashtag_discovered(0)" class="btn btn-sm post_button discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
-        } elseif ($chainhandletype_target_bar == 31022 && $discovery_mode && $focus__node && $handle_session && !count($x_completes) && count($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
+        } elseif ($chainhandletype_target_bar == 31022 && $discovery_mode && $focus__node && $handle_session && !count($x_completes) && count($CI->Chains->read(array(
+                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
                 'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $this->config->item('handleids___43009')) . ')' => null,
+                'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43009')) . ')' => null,
             ))) && !hashtag_required($i)) {
 
             //Skip
