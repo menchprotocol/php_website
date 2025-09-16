@@ -812,7 +812,7 @@ function load_card_clickers() {
     });
 
     //For Discovery only:
-    if (focus_hashtag_types && focus_hashtag_types.length) {
+    if (typeof focus_hashtag_types !== 'undefined' && focus_hashtag_types.length>0) {
 
         var is_single_choice = ( focus_hashtag_types.includes(6684) );
 
