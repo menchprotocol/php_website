@@ -920,6 +920,211 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 }
 
 
+
+function process_media($hashtagid, $uploaded_media)
+{
+
+    $CI =& get_instance();
+    $handle_session = handle_session();
+
+
+    if (!$handle_session) {
+        return false;
+    }
+
+    //Fetch submitted media:
+    $upload_media_typeids = array();
+    if (count($uploaded_media) > 0) {
+
+        //We have media to process:
+        $sort_count = 0; //Reset sorting to compare to submitted media...
+        foreach ($uploaded_media as $upload_media) {
+
+            if (!$upload_media['handleid']) {
+                //Adding new media...
+                //Search eTag to see if we already have it:
+                $etag_detected = false;
+                if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
+                    //We already have this asset, return handle:
+                    foreach ($CI->Chains->read(array(
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                        'chainhandleinput' => 42662, //etag
+                        'chainvalue' => $upload_media['media_cache']['etag'],
+                    ), array('chainhandleoutput'), 1) as $existing_media) {
+                        $upload_media['handleid'] = $existing_media['handleid'];
+                        $etag_detected = true;
+                    }
+                }
+
+                if (!$upload_media['handleid']) {
+
+                    //Create Handle for this new media:
+                    $added_e = $CI->Handles->create(array(
+                        'handlevalue' => $upload_media['handlevalue'],
+                        'handlecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['handlecover']),
+                    ), $handle_session['handleid']);
+                    if (!$added_e['status']) {
+                        log_error('Failed to create a new Handle for [' . $upload_media['handlevalue'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
+                            'chainhandleoutput' => $upload_media['handleid'],
+                        ));
+                        continue;
+                    }
+
+                    //Create new media and assign ID:
+                    $upload_media['handleid'] = $added_e['handle_create']['handleid'];
+
+                    //new asset, create new Handle and insert tags...
+                    $handles___32088 = $CI->config->item('handles___32088'); //Platform Variables
+                    foreach ($CI->config->item('handles___42679') as $chainhandletype => $m) {
+
+                        //Ensure variable name exists so we can check the API call:
+                        $target_variable = false;
+                        if (isset($handles___32088[$chainhandletype]['m__message'])) {
+                            //Determine if variable exists...
+                            if (in_array($chainhandletype, $CI->config->item('handleids___42763')) && isset($upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']])) {
+                                //Video info:
+                                $target_variable = $upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']];
+                            } elseif (in_array($chainhandletype, $CI->config->item('handleids___42675')) && isset($upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']])) {
+                                //Audio info:
+                                $target_variable = $upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']];
+                            } elseif (isset($upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']])) {
+                                //Media info:
+                                $target_variable = $upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']];
+                            }
+                        }
+                        if (!strlen($target_variable) || $target_variable == '0') {
+                            //This variable does not have a value, move on...
+                            continue;
+                        }
+
+                        //We have a variable, see what it is...
+                        if (in_array($chainhandletype, $CI->config->item('handleids___33331'))) {
+
+                            //Single select that needs auto creation of Handles if missing:
+                            $child_id = 0;
+                            foreach ($CI->Chains->read(array(
+                                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                                'chainhandleinput' => $chainhandletype,
+                                'handlevalue' => $target_variable,
+                            ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $child_handle) {
+                                $child_id = $child_handle['handleid'];
+                            }
+
+                            //If not found create the child:
+                            if (!$child_id) {
+                                $added_child = $CI->Handles->create(array(
+                                    'handlevalue' => $target_variable,
+                                ));
+                                if (!$added_child['status']) {
+                                    log_error('Failed to create a new Handle for [' . $target_variable . ']', array(
+                                        'chainhandleoutput' => $chainhandletype,
+                                    ));
+                                    continue;
+                                }
+
+                                //Add chains for this new Handle:
+                                $CI->Chains->create(array(
+                                    'chainhandlecreator' => $handle_session['handleid'],
+                                    'chainhandleinput' => $chainhandletype,
+                                    'chainhandleoutput' => $added_child['handle_create']['handleid'],
+                                    'chainhandletype' => 4230,
+                                ));
+
+                                //Assign child Handle:
+                                $child_id = $added_child['handle_create']['handleid'];
+
+                            }
+
+                            if ($child_id) {
+                                //Child Handle found, simply chain:
+                                $CI->Chains->create(array(
+                                    'chainhandlecreator' => $handle_session['handleid'],
+                                    'chainhandleinput' => $child_id,
+                                    'chainhandleoutput' => $upload_media['handleid'],
+                                    'chainhandletype' => 4230,
+                                ));
+                            }
+
+                        } else {
+
+                            //Save variable as is:
+                            $CI->Chains->create(array(
+                                'chainhandlecreator' => $handle_session['handleid'],
+                                'chainhandleinput' => $chainhandletype,
+                                'chainhandleoutput' => $upload_media['handleid'],
+                                'chainvalue' => $target_variable,
+                                'chainhandletype' => 4230,
+                            ));
+
+                        }
+                    }
+                }
+
+                //By now have the media Handle, create necessary chains:
+                if ($upload_media['handleid'] && $upload_media['media_typeid']) {
+
+                    //Chain to Hashtag:
+                    if (!count($CI->Chains->read(array(
+                        'chainhashtagoutput' => $hashtagid,
+                        'chainhandleinput' => $upload_media['handleid'],
+                        'chainhandletype' => $upload_media['media_typeid'],
+                    )))) {
+                        $CI->Chains->create(array(
+                            'chainhandlecreator' => $handle_session['handleid'],
+                            'chainhashtagoutput' => $hashtagid,
+                            'chainhandleinput' => $upload_media['handleid'],
+                            'chainhandletype' => $upload_media['media_typeid'],
+                            'chainvalue' => $upload_media['playback_code'],
+                            'chainkey' => $sort_count,
+                        ));
+                    }
+
+
+                    //Chain to Handle as Uploader:
+                    if (!count($CI->Chains->read(array(
+                        'chainhandleinput' => $handle_session['handleid'],
+                        'chainhandleoutput' => $upload_media['handleid'],
+                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42657')) . ')' => null, //Uploads
+                    )))) {
+                        $CI->Chains->create(array(
+                            'chainhandlecreator' => $handle_session['handleid'],
+                            'chainhandleinput' => $handle_session['handleid'],
+                            'chainhandleoutput' => $upload_media['handleid'],
+                            'chainhandletype' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
+                            'chainvalue' => $upload_media['playback_code'],
+                        ));
+                    }
+
+
+                    //Chain to Media Type:
+                    if (!count($CI->Chains->read(array(
+                        'chainhandleinput' => $upload_media['media_typeid'],
+                        'chainhandleoutput' => $upload_media['handleid'],
+                        'chainhandletype' => 4230,
+                    )))) {
+                        $CI->Chains->create(array(
+                            'chainhandlecreator' => $handle_session['handleid'],
+                            'chainhandleinput' => $upload_media['media_typeid'],
+                            'chainhandleoutput' => $upload_media['handleid'],
+                            'chainhandletype' => 4230,
+                            'chainvalue' => $upload_media,
+                        ));
+                    }
+
+                }
+            }
+
+            //Add this to the submitted ones:
+            $upload_media_typeids[$sort_count] = $upload_media['handleid'];
+            $sort_count++;
+
+        }
+    }
+
+    return true;
+
+}
+
 function add_media($uploaded_media)
 {
 
@@ -1087,6 +1292,48 @@ function add_media($uploaded_media)
     return true;
 
 }
+
+
+function view_hashtag_media($i)
+{
+
+    $CI =& get_instance();
+    $message_append = '';
+
+    //Query Relevant Handles:
+    foreach ($CI->Chains->read(array(
+        'chainhandletype IN (4258,4259,4260)' => null, //Media TODO
+        'chainhashtagoutput' => $i['hashtagid'],
+    ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $x) {
+
+        if ($x['chainhandletype'] == 4258) {
+
+            //Video
+            $template = '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $x['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
+
+        } elseif ($x['chainhandletype'] == 4259) {
+
+            //Audio
+            $template = '<audio controls src="' . $x['chainvalue'] . '"></audio>';
+
+        } elseif ($x['chainhandletype'] == 4260) {
+
+            //Image
+            $template = '<img src="' . $x['chainvalue'] . '" />';
+
+        } else {
+            continue; //Should not happen!
+        }
+
+        //Format data if needed:
+        $message_append .= '<div class="media_display media_display_' . $x['chainhandletype'] . ($x['chainhandletype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainhandletype'] . '" handleid="' . $x['handleid'] . '"  handlecover="' . $x['handlecover'] . '" playback_code="' . $x['chainvalue'] . '" handlename="' . $x['handlename'] . '">' . $template . '</div>';
+
+    }
+
+    return $message_append;
+
+}
+
 
 
 function append_handle($chainhandleinput, $chainhandlecreator, $chainvalue, $hashtagid, $update_if_existing = true)
@@ -3439,82 +3686,6 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
 }
 
 
-function searchingle_select_instant($cache_handleid, $selected_handleid, $hashtag_access = 0, $show_title = true, $o__id = 0, $chainid = 0)
-{
-
-    $CI =& get_instance();
-    $handles___this = $CI->config->item('handles___' . $cache_handleid);
-    $handle_session = handle_session();
-    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-    $unselected_radio = in_array($cache_handleid, $CI->config->item('handleids___33331')) && !$selected_handleid;
-    $handles___4527 = $CI->config->item('handles___4527'); //Memory
-
-    if ($selected_handleid && !isset($handles___this[$selected_handleid])) {
-
-        return false;
-
-        /*
-    } elseif(!$selected_handleid && $hashtag_access && $handle_session){
-
-        //See if this user has any of these options:
-        foreach($CI->Chains->read(array(
-            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___'.$cache_handleid)) . ')' => null, //HANDLE CHAINS
-            'chainhandleoutput' => $handle_session['handleid'],
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-        )) as $x) {
-            //Supports one for now
-            $selected_handleid = $x['chainhandleinput'];
-            break;
-        }
-    */
-    }
-
-    //Make sure it's not locked:
-    $hashtag_access = (!in_array($cache_handleid, $CI->config->item('handleids___32145')) && !in_array($selected_handleid, $CI->config->item('handleids___32145')) ? $hashtag_access : 0);
-
-    $ui = '<div class="dropdown ' . ($show_title ? 'dropdown_type_' . $cache_handleid : '') . ' inline-block dropd_instant_' . $cache_handleid . '_' . $o__id . '_' . $chainid . '" selected_value="' . $selected_handleid . '">';
-
-    $ui .= '<button type="button" ' . ($hashtag_access >= 3 ? 'class="btn no-left-padding ' . ($show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock') . '" id="dropdown_instant_' . $cache_handleid . '_' . $o__id . '_' . $chainid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn ' . (!$show_title ? 'no-padding' : '') . ' edit-locked" ') . '>';
-
-    $ui .= '<span class="current_content">' . (isset($handles___this[$selected_handleid]['m__cover']) ? '<span class="icon-block-sm">' . $handles___this[$selected_handleid]['m__cover'] . '</span>' . ($show_title ? $handles___this[$selected_handleid]['m__title'] : '') : '<span class="icon-block-sm">' . $handles___11035[$cache_handleid]['m__cover'] . '</span>' . ($show_title ? $handles___11035[$cache_handleid]['m__title'] : '')) . '</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
-
-    $ui .= '</button>';
-
-    if ($hashtag_access >= 3) {
-
-        $ui .= '<div class="dropdown-menu dropmenu_instant_' . $cache_handleid . '" o__id="' . $o__id . '" chainid="' . $chainid . '" aria-labelledby="dropdown_instant_' . $cache_handleid . '_' . $o__id . '_' . $chainid . '">';
-
-        if (!$show_title) {
-            $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">' . $handles___4527[$cache_handleid]['m__cover'] . '</span>' . $handles___4527[$cache_handleid]['m__title'] . ':' . (isset($handles___11035[$cache_handleid]) && strlen($handles___11035[$cache_handleid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($handles___11035[$cache_handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$cache_handleid]['m__message'] . '</span></span>' : '') . '</div>';
-        }
-
-        foreach ($handles___this as $handleid => $m) {
-
-            if (in_array($handleid, $CI->config->item('handleids___32145'))) {
-                continue; //Locked Dropdown
-            }
-            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m['m__following']);
-            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
-                continue;
-            }
-
-            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m['m__following']);
-            $removal_option = in_array($handleid, $CI->config->item('handleids___42850'));
-
-            $ui .= '<a class="dropdown-item drop_item_instant_' . $handleid . '_' . $o__id . '_' . $chainid . ' main__title optiond_' . $handleid . '_' . $o__id . '_' . $chainid . ' ' . ($handleid == $selected_handleid ? ' active ' : '') . ($removal_option ? ' removal_option ' . ($unselected_radio ? ' hidden ' : '') : '') . '" href="javascript:void();" this_id="' . $handleid . '" onclick="selector(' . $cache_handleid . ', ' . $handleid . ', ' . $o__id . ', ' . $chainid . ', ' . intval($show_title) . ')"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . (isset($handles___11035[$handleid]) && strlen($handles___11035[$handleid]['m__message']) ? '<span class="doregular info_blob ' . (strlen($handles___11035[$handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$handleid]['m__message'] . '</span></span>' : '') . '</a>';
-
-
-        }
-
-        $ui .= '</div>';
-    }
-
-
-    $ui .= '</div>';
-
-    return $ui;
-}
-
 
 function randomize_text($handleid)
 {
@@ -4401,17 +4572,6 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
         array_push($headline_authors, $creator['handleid']);
         $follow_btn = null;
-        /*
-        if ($focus__node && $chainhandlecreator && $chainhandlecreator != $creator['handleid']) {
-            $followings = $CI->Chains->read(array(
-                'chainhandleinput' => $creator['handleid'],
-                'chainhandleoutput' => $chainhandlecreator,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42795')) . ')' => null, //Follow
-            ), array(), 1, 0, array('chainkey' => 'ASC'));
-            $follow_btn = searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainhandletype'] : 0), $hashtag_access, false, $creator['handleid'], (count($followings) ? $followings[0]['chainid'] : 0));
-        }
-        */
-
         $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handleterm'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlename'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handleterm'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
     }
@@ -4429,21 +4589,9 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     if (!$focus__node && $chainid && !$is_cache) {
         foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
             if (in_array($i['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
-                foreach ($CI->Chains->read(array(
-                    'chainid' => $chainid,
-                ), array('chainhandlecreator')) as $chainer) {
-                    $chainhandletype_ui .= '<span class="icon-block-sm">';
-                    $chainhandletype_ui .= searchingle_select_instant($chainhandletype1, $i['chainhandletype'], $hashtag_access, false, $i['hashtagid'], $chainid);
-                    $chainhandletype_ui .= '</span>';
-                }
                 $chainhandletype_id = $chainhandletype1;
                 break;
             }
-        }
-        if (!$chainhandletype_ui) {
-            $chainhandletype_ui .= '<span class="icon-block-sm">';
-            $chainhandletype_ui .= searchingle_select_instant(4593, $i['chainhandletype'], false, false, $i['hashtagid'], $chainid);
-            $chainhandletype_ui .= '</span>';
         }
     }
 
@@ -5022,18 +5170,6 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="hashtag_editor(0,0,' . $i['hashtagid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
-        } elseif ($chainhandletype_target_bar == 42260 && $handle_session && !$is_locked && !$is_cache && 0) {
-
-            //Reactions... Check to see if they have any?
-            $reactions = $CI->Chains->read(array(
-                'chainhandleinput' => $chainhandlecreator,
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42260')) . ')' => null, //Reactions
-            ), array(), 1);
-            $bottom_menu_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
-            $bottom_menu_ui .= searchingle_select_instant(42260, (count($reactions) ? $reactions[0]['chainhandletype'] : 0), $handle_session, 0 && $focus__node, $i['hashtagid'], (count($reactions) ? $reactions[0]['chainid'] : 0));
-            $bottom_menu_ui .= '</div></span>';
-
         } elseif ($chainhandletype_target_bar == 4235 && (!$discovery_mode && $hashtag_startable && $hashtag_access >= 1)) {
 
             //Start
@@ -5133,46 +5269,6 @@ function view_list_handle($i, $plain_no_html = false)
 
 }
 
-
-function view_hashtag_media($i)
-{
-
-    $CI =& get_instance();
-    $message_append = '';
-
-    //Query Relevant Handles:
-    foreach ($CI->Chains->read(array(
-        'chainhandletype IN (4258,4259,4260)' => null, //Media TODO
-        'chainhashtagoutput' => $i['hashtagid'],
-    ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $x) {
-
-        if ($x['chainhandletype'] == 4258) {
-
-            //Video
-            $template = '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $x['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
-
-        } elseif ($x['chainhandletype'] == 4259) {
-
-            //Audio
-            $template = '<audio controls src="' . $x['chainvalue'] . '"></audio>';
-
-        } elseif ($x['chainhandletype'] == 4260) {
-
-            //Image
-            $template = '<img src="' . $x['chainvalue'] . '" />';
-
-        } else {
-            continue; //Should not happen!
-        }
-
-        //Format data if needed:
-        $message_append .= '<div class="media_display media_display_' . $x['chainhandletype'] . ($x['chainhandletype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainhandletype'] . '" handleid="' . $x['handleid'] . '"  handlecover="' . $x['handlecover'] . '" playback_code="' . $x['chainvalue'] . '" handlename="' . $x['handlename'] . '">' . $template . '</div>';
-
-    }
-
-    return $message_append;
-
-}
 
 
 function view_pill($focus__node, $chainhandletype, $counter, $m, $ui = null, $is_open = true)
@@ -5333,13 +5429,6 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
         if ($chainid) {
             foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
                 if (in_array($e['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
-                    foreach ($CI->Chains->read(array(
-                        'chainid' => $chainid,
-                    ), array('chainhandlecreator')) as $chainer) {
-                        $chainhandletype_ui .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
-                        $chainhandletype_ui .= searchingle_select_instant($chainhandletype1, $e['chainhandletype'], $handle_access, false, $e['handleid'], $chainid);
-                        $chainhandletype_ui .= '</span>';
-                    }
                     $chainhandletype_id = $chainhandletype1;
                     break;
                 }
@@ -5358,23 +5447,6 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
             if ($chainhandletype_target_bar == 31770 && $chainid && $superpower_10939) {
 
                 $featured_handles .= $chainhandletype_ui;
-
-            } elseif (0 && $chainhandletype_target_bar == 42795 && $handle_session && $handle_session['handleid'] != $e['handleid'] && count($CI->Chains->read(array(
-                    'chainhandleoutput' => $e['handleid'],
-                    'chainhandleinput' => 4430, //Active Member
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                )))) {
-
-                //Allow to follow fellow handles:
-                $followings = $CI->Chains->read(array(
-                    'chainhandleinput' => $e['handleid'],
-                    'chainhandleoutput' => $handle_session['handleid'],
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42795')) . ')' => null, //Follow
-                ), array(), 1, 0, array('chainkey' => 'ASC'));
-
-                if (count($followings) || $handle_access >= 3) {
-                    $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainhandletype'] : 0), $handle_session && $handle_access >= 3, false, $e['handleid'], (count($followings) ? $followings[0]['chainid'] : 0)) . '</span>';
-                }
 
             } elseif ($chainhandletype_target_bar == 41037 && $handle_access >= 3 && !$focus__node) {
 
