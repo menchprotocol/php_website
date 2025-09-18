@@ -54,17 +54,20 @@ class Chains extends CIdea_cache
             $add_fields['chaintime'] = $d->format("Y-m-d H:i:s");
         }
 
+        //Let's log, Always auto generated:
+        $insert_chain_id = ( isset($add_fields['chainid']) ? $add_fields['chainid'] : 0 );
+        $add_fields['chainprevious'] = chainprevious();
+        $add_fields['chainhash'] = chainhash($add_fields);
+
         //Is this an observation chain that should replace an older observation, if any:
         if(in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
             $read_fields = $add_fields;
-            if(isset($read_fields['chainvalue'])){
-                unset($read_fields['chainvalue']);
+
+            if(isset($read_fields['chainid'])){
+                unset($read_fields['chainid']);
             }
             if(isset($read_fields['chaintime'])){
                 unset($read_fields['chaintime']);
-            }
-            if(isset($read_fields['chainid'])){
-                unset($read_fields['chainid']);
             }
             if(isset($read_fields['chaindomain'])){
                 unset($read_fields['chaindomain']);
@@ -75,16 +78,15 @@ class Chains extends CIdea_cache
             if(isset($read_fields['chainhash'])){
                 unset($read_fields['chainhash']);
             }
+            if(isset($read_fields['chainvoid'])){
+                unset($read_fields['chainvoid']);
+            }
             foreach ($this->Chains->read($read_fields, array(), 1) as $last_observation) {
                 //Update the previous observed chain:
                 return $this->Chains->update($last_observation['chainid'], $add_fields);
             }
         }
 
-        //Let's log, Always auto generated:
-        $insert_chain_id = ( isset($add_fields['chainid']) ? $add_fields['chainid'] : 0 );
-        $add_fields['chainprevious'] = chainprevious();
-        $add_fields['chainhash'] = chainhash($add_fields);
         $this->db->insert('ideachain', $add_fields);
 
         //Fetch inserted id:
