@@ -430,3 +430,5 @@ echo '<table id="table_ideachain" class="table table-sm image-mini" style="font-
 
 //Table Data
 echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';
+
+echo '<style> th.main__title { border:1px solid #000000; }</style>';
