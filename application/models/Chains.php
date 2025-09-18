@@ -74,6 +74,10 @@ class Chains extends CIdea_cache
             if(isset($read_fields['chainvoid'])){
                 unset($read_fields['chainvoid']);
             }
+            if(isset($read_fields['chainhandledomain'])){
+                unset($read_fields['chainhandledomain']);
+            }
+
             foreach ($this->Chains->read($read_fields, array(), 1) as $last_observation) {
                 //Update the previous observed chain:
                 return $this->Chains->update($last_observation['chainid'], $add_fields);
