@@ -5330,6 +5330,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
     $href = ($is_app ? view_app_chain($e['handleid']) : view_memory(42903, 42902) . $e['handleterm']);
     $cover_is_image = filter_var($e['handlecover'], FILTER_VALIDATE_URL);
     $has_sortable = $chainid > 0 && $handle_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___13911'));
+    $handles___4593 = $CI->config->item('handles___4593');
 
 
     //Log preview view:
@@ -5369,7 +5370,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
     //Handle Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_handleterm_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handleterm'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey">'.$handles___4593[$e['chainhandletype']]['m__cover'].'<span class="ignore-click ui_handleterm_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handleterm'] . '</span></div>';
 
     //Handle Location:
     $handles___42777 = $CI->config->item('handles___42777');
