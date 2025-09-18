@@ -26,7 +26,7 @@ echo '<div class="center hideIfEmpty"></div>';
 foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
     if($handleid1==1309754){
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a target="_blank" href="'.view_app_chain(4341).'?chainvoid=1" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . '</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <a href="'.view_app_chain(4341).'?chainvoid=1" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . '</span></div>';
         //Void Chains
         continue;
     } elseif($handleid1==28956){
@@ -69,7 +69,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
         echo '<div class="card_header" title="' . $m2['m__message'] . '" handleid="' . $handleid2 . '">';
         echo '<div class="'.( $is_chain ? 'medium_cover' : 'large_cover' ).'">' . $m2['m__cover'] . '</div>';
-        echo '<div class="main__title large_title"><a target="_blank" href="'.view_app_chain(4341).'?chainhandletype='.join(',',( $is_chain ? $this->config->item('handleids___' . $handleid2) : array(( $handleid2==12273 ? 12273 : 12274 )) )).'&chainvoid=0" class="card_count_' . $handleid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
+        echo '<div class="main__title large_title"><a href="'.view_app_chain(4341).'?chainhandletype='.join(',',( $is_chain ? $this->config->item('handleids___' . $handleid2) : array(( $handleid2==12273 ? 12273 : 12274 )) )).'&chainvoid=0" class="card_count_' . $handleid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
         echo '<div class="main__title large_title" title="@' . $handleid2 . ' @' . $m2['m__handle'] . '"><a href="'.view_memory(42903,42902).$m2['m__handle'].'">' . $m2['m__title'] . '</a></div>';
         echo '</div>';
 
@@ -77,7 +77,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
             echo '<table class="table card_subcat card_subcat_' . $handleid2 . ' hidden" style="width:100%; margin-top:13px;">';
             foreach ($this->config->item('handles___' . $handleid2) as $handleid3 => $m3) {
                 echo '<tr class="main__title mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
-                echo '<td style="text-align: left;" title="@' . $handleid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a target="_blank" href="'.view_app_chain(4341).'?chainhandletype='.  $handleid3 . '&chainvoid=0" class="card_count_' . $handleid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
+                echo '<td style="text-align: left;" title="@' . $handleid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a href="'.view_app_chain(4341).'?chainhandletype='.  $handleid3 . '&chainvoid=0" class="card_count_' . $handleid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
                 echo '</tr>';
 
             }
