@@ -3522,7 +3522,7 @@ class Controller extends CI_Controller
                 } else {
                     //Void Chains
                     $void_filter = array(
-                        '(chainvoid > 0 OR chainhandletype=44395)' => null, //Chains that have been voided
+                        'chainvoid > 0' => null, //Chains that have been voided
                     );
                 }
                 $sub_counter = $this->Chains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');

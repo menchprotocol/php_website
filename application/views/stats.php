@@ -34,7 +34,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
         echo '<div class="mid-text-line compact-midline"><span><a href="'.view_app_chain(4341).'?chainhandletype=12273,12274&chainvoid=0" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
     } elseif($handleid1==31770){
         //Chains
-        echo '<div class="mid-text-line compact-midline"><span><a target="_blank" href="'.view_app_chain(4341).'?chainvoid=0" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span><a target="_blank" href="'.view_app_chain(4341).'?chainhandletype='.join(',',$this->config->item('handleids___2123863')).'&chainvoid=0" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
     }
 
     echo '<div class="row justify-content list-covers">';
