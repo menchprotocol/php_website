@@ -3467,7 +3467,7 @@ class Controller extends CI_Controller
 
     }
 
-    function chain_graph()
+    function chain_stats()
     {
 
         //See if we have any hashtag or Handle targets to limit our stats:
@@ -3624,6 +3624,7 @@ class Controller extends CI_Controller
             $return_array[$chainhandletype1] = intval($level1_total);
 
         }
+        $return_array[4341] = intval($level1_total+$level2_total);
         return view_json(array(
             'status' => 1,
             'return_array' => $return_array,

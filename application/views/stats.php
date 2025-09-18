@@ -4,6 +4,8 @@ $handleterm = (isset($_GET['handleterm']) ? $_GET['handleterm'] : null);
 $hashtagterm = (!$handleterm && isset($_GET['hashtagterm']) ? $_GET['hashtagterm'] : null);
 $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
+echo '<h1><span class="card_count_4341"></span> Chains</h1>';
+
 if ($handleterm) {
     foreach ($this->Handles->read(array(
         'LOWER(handleterm)' => strtolower($handleterm),
@@ -95,8 +97,8 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
 <script>
 
-    function chain_graph() {
-        $.post("/controller/chain_graph", {
+    function chain_stats() {
+        $.post("/controller/chain_stats", {
             handleterm: '<?= $handleterm ?>',
             hashtagterm: '<?= $hashtagterm ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -115,7 +117,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
     $(document).ready(function () {
 
         //Load initial stats:
-        chain_graph();
+        chain_stats();
 
         //Watch for click to expand:
         $(".card_header").click(function (e) {
@@ -124,7 +126,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
         //Update stats live:
         $(function () {
-            setInterval(chain_graph, js_handles___6404[33292]['m__message']);
+            setInterval(chain_stats, js_handles___6404[33292]['m__message']);
         });
 
     });
