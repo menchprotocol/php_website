@@ -4,7 +4,7 @@ $handleterm = (isset($_GET['handleterm']) ? $_GET['handleterm'] : null);
 $hashtagterm = (!$handleterm && isset($_GET['hashtagterm']) ? $_GET['hashtagterm'] : null);
 $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
-echo '<h1><a href="/ideachain"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"></span></a> Chains</h1>';
+echo '<h1><a href="/ideachain"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> Chains</h1>';
 
 if ($handleterm) {
     foreach ($this->Handles->read(array(
