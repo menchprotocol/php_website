@@ -61,6 +61,7 @@ class Chains extends CIdea_cache
 
         //Is this an observation chain that should replace an older observation, if any:
         if(in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
+
             $read_fields = $add_fields;
 
             if(isset($read_fields['chainid'])){
@@ -313,7 +314,7 @@ class Chains extends CIdea_cache
 
             //Make sure something changed:
             $something_changed = false;
-            foreach(array('chainhandletype','chainhandleinput','chainhandleoutput','chainhashtaginput','chainhashtagoutput','chainkey','chainvalue','chainvoid') as $must_change){
+            foreach(array('chainhandletype','chainhandleinput','chainhandleoutput','chainhashtaginput','chainhashtagoutput','chainkey','chainvalue','chainvoid','chaintime') as $must_change){
                 $this_changed = isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change];
                 if(!isset($update_columns[$must_change])){
                     $update_columns[$must_change] = $old_x[$must_change];
