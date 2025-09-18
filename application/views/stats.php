@@ -107,7 +107,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
             $.each(data.return_array, function (key, val) {
                 var formatted = String(val).replace(/(.)(?=(\d{3})+$)/g, '$1,');
                 if (formatted != $(".card_count_" + key + ":first").text()) {
-                    $(".card_count_" + key).removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
+                    $(".card_count_" + key).removeClass('hidden').text(formatted);
                 }
             });
 
