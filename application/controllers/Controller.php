@@ -3628,7 +3628,7 @@ class Controller extends CI_Controller
 
             }
 
-            $return_array[$chainhandletype1] = number_format($level1_total);
+            $return_array[$chainhandletype1] = number_format(intval($level1_total));
             $return_array[4341] += intval($level1_total);
 
         }
