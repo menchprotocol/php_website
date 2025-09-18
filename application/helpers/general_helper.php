@@ -4428,6 +4428,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
     $chainid = (isset($i['chainid']) && $i['chainid'] > 0 ? $i['chainid'] : 0);
     $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $handles___4593 = $CI->config->item('handles___4593');
     $is_ajax = strtolower($CI->uri->segment(1)) == 'ajax' || strtolower($CI->uri->segment(1)) == 'controller';
     $is_cache = in_array($chainhandletype, $CI->config->item('handleids___14599'));
     $goto_start = in_array($chainhandletype, $CI->config->item('handleids___42988'));
@@ -4588,7 +4589,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['hashtagid'] . '" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainhandlecreator) ? ' hidden ' : '') . '">#<span class="ui_hashtagterm_' . $i['hashtagid'] . '">' . $i['hashtagterm'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['hashtagid'] . '" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainhandlecreator) ? ' hidden ' : '') . '">'.( isset($i['chainhandletype']) ? ( substr_count($handles___4593[$i['chainhandletype']]['m__cover'], '#') ? $handles___4593[$i['chainhandletype']]['m__cover'] : $handles___4593[$i['chainhandletype']]['m__cover'].'#' ) : '#' ).'<span class="ui_hashtagterm_' . $i['hashtagid'] . '">' . $i['hashtagterm'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
@@ -5370,7 +5371,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
     //Handle Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">'.( isset($e['chainhandletype']) ? $handles___4593[$e['chainhandletype']]['m__cover'] : '@' ).'<span class="ignore-click ui_handleterm_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handleterm'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey">'.( isset($e['chainhandletype']) ? ( substr_count($handles___4593[$e['chainhandletype']]['m__cover'], '@') ? $handles___4593[$e['chainhandletype']]['m__cover'] : $handles___4593[$e['chainhandletype']]['m__cover'].'@' ) : '@' ).'<span class="ignore-click ui_handleterm_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handleterm'] . '</span></div>';
 
     //Handle Location:
     $handles___42777 = $CI->config->item('handles___42777');
