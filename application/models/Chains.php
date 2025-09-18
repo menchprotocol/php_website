@@ -8,7 +8,7 @@ class Chains extends CIdea_cache
         parent::__construct();
     }
 
-    function create($add_fields, $external_sync = false)
+    function create($add_fields, $external_sync = false, $update_observed = true)
     {
 
         //Required field:
@@ -54,13 +54,8 @@ class Chains extends CIdea_cache
             $add_fields['chaintime'] = $d->format("Y-m-d H:i:s");
         }
 
-        //Let's log, Always auto generated:
-        $insert_chain_id = ( isset($add_fields['chainid']) ? $add_fields['chainid'] : 0 );
-        $add_fields['chainprevious'] = chainprevious();
-        $add_fields['chainhash'] = chainhash($add_fields);
-
         //Is this an observation chain that should replace an older observation, if any:
-        if(in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
+        if($update_observed && in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
 
             $read_fields = $add_fields;
 
@@ -69,9 +64,6 @@ class Chains extends CIdea_cache
             }
             if(isset($read_fields['chaintime'])){
                 unset($read_fields['chaintime']);
-            }
-            if(isset($read_fields['chaindomain'])){
-                unset($read_fields['chaindomain']);
             }
             if(isset($read_fields['chainprevious'])){
                 unset($read_fields['chainprevious']);
@@ -88,6 +80,10 @@ class Chains extends CIdea_cache
             }
         }
 
+        //Let's log, Always auto generated:
+        $insert_chain_id = ( isset($add_fields['chainid']) ? $add_fields['chainid'] : 0 );
+        $add_fields['chainprevious'] = chainprevious();
+        $add_fields['chainhash'] = chainhash($add_fields);
         $this->db->insert('ideachain', $add_fields);
 
         //Fetch inserted id:
@@ -326,7 +322,6 @@ class Chains extends CIdea_cache
             if(!$something_changed){
                 return 0; //Nothing changed
             }
-
 
             //Create New Chain
             $new_x = $this->Chains->create($update_columns, true, false);
