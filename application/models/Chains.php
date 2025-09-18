@@ -8,11 +8,11 @@ class Chains extends CIdea_cache
         parent::__construct();
     }
 
-    function create($add_fields, $external_sync = false, $update_observed = true)
+    function create($add_fields, $external_sync = false)
     {
 
         //Required field:
-        if (!isset($add_fields['chainhandletype']) || ($add_fields['chainhandletype']!=44395 && !in_array($add_fields['chainhandletype'], $this->config->item('handleids___4593')))) {
+        if (!isset($add_fields['chainhandletype']) || !in_array($add_fields['chainhandletype'], $this->config->item('handleids___4593'))) {
             log_error('Chains->create() failed to create because of invalid Chain type @' . $add_fields['chainhandletype'], array(
                 'chainhandlecreator' => $add_fields['chainhandlecreator'],
                 'chainhandleoutput' => $add_fields['chainhandletype'],
@@ -31,18 +31,6 @@ class Chains extends CIdea_cache
             $add_fields['chainvalue'] = null;
         } elseif (is_array($add_fields['chainvalue'])) {
             $add_fields['chainvalue'] = serialize($add_fields['chainvalue']);
-        }
-
-        //Is this an observation chain that should replace an older observation, if any:
-        if($update_observed && in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
-            $read_fields = $add_fields;
-            if(isset($read_fields['chainvalue'])){
-                unset($read_fields['chainvalue']);
-            }
-            foreach ($this->Chains->read($read_fields, array(), 1) as $last_observation) {
-                //Update the previous observed chain:
-                return $this->Chains->update($last_observation['chainid'], $add_fields);
-            }
         }
 
         //Set some zero defaults if not set:
@@ -64,6 +52,33 @@ class Chains extends CIdea_cache
             $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
             $d = new DateTime(date('Y-m-d H:i:s.' . $micro, $t));
             $add_fields['chaintime'] = $d->format("Y-m-d H:i:s");
+        }
+
+        //Is this an observation chain that should replace an older observation, if any:
+        if(in_array($add_fields['chainhandletype'], $this->config->item('handleids___1308453'))){
+            $read_fields = $add_fields;
+            if(isset($read_fields['chainvalue'])){
+                unset($read_fields['chainvalue']);
+            }
+            if(isset($read_fields['chaintime'])){
+                unset($read_fields['chaintime']);
+            }
+            if(isset($read_fields['chainid'])){
+                unset($read_fields['chainid']);
+            }
+            if(isset($read_fields['chaindomain'])){
+                unset($read_fields['chaindomain']);
+            }
+            if(isset($read_fields['chainprevious'])){
+                unset($read_fields['chainprevious']);
+            }
+            if(isset($read_fields['chainhash'])){
+                unset($read_fields['chainhash']);
+            }
+            foreach ($this->Chains->read($read_fields, array(), 1) as $last_observation) {
+                //Update the previous observed chain:
+                return $this->Chains->update($last_observation['chainid'], $add_fields);
+            }
         }
 
         //Let's log, Always auto generated:
