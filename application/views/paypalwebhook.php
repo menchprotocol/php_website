@@ -5,7 +5,6 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
 
     $item_numbers = array();
     $completion_status = array();
-    $is_good = false;
 
     //Log New Payment:
     $item_parts = explode(' ', $_POST['item_number']);
@@ -30,43 +29,32 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     )) : false);
 
 
-    if(count($handle_sessions) && count($next_is)) {
-
-        $is_pending = ($_POST['payment_status']=='Pending');
-        $is_good = true;
+    if(count($handle_sessions) && count($next_is) && $_POST['payment_status']!='Pending') {
 
         //Is the payment amount greater than zero?
         if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
-            //Paid:
-            $chainhandletype = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
-
             //Log Payment:
-            $completion_status = $this->Chains->hashtag_discovered($chainhandletype, $handle_sessions[0]['handleid'], ( isset($target_is[0]['hashtagid']) ? $target_is[0]['hashtagid'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Chains->hashtag_discovered(26595, $handle_sessions[0]['handleid'], ( isset($target_is[0]['hashtagid']) ? $target_is[0]['hashtagid'] : 0 ), $next_is[0], array(), array(
                 'chainkey' => intval($_POST['quantity']),
                 'chainvalue' => $_POST,
             ));
 
         } else {
 
-            $chainhandletype = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
-
-            //Find issued tickets:
-            $original_payment = $this->Chains->read(array(
+            //Find Payment:
+            foreach($this->Chains->read(array(
                 'chainhandletype' => 26595,
                 'chainhandlecreator' => $handle_sessions[0]['handleid'],
                 'chainhashtaginput' => $next_is[0]['hashtagid'],
-            ));
-
-            //Log Refund:
-            $completion_status = $this->Chains->hashtag_discovered($chainhandletype, $handle_sessions[0]['handleid'], ( isset($target_is[0]['hashtagid']) ? $target_is[0]['hashtagid'] : 0 ), $next_is[0], array(), array(
-                'chainkey' => (-1 * ( isset($original_payment[0]['chainkey']) ? $original_payment[0]['chainkey'] : 1 )),
-                'chainvalue' => $_POST,
-                'chainhandledomain' => ( isset($original_payment[0]['chainhandledomain']) && $original_payment[0]['chainhandledomain']>0 ? $original_payment[0]['chainhandledomain'] : 0 ),
-            ));
+            )) as $paid){
+                //Delete payment since its been refunded:
+                $this->Chains->delete($paid['chainid'], $handle_sessions[0]['handleid']);
+            }
 
         }
     }
+
 } else {
     echo 'No data from Paypal detected';
 }
