@@ -3619,7 +3619,6 @@ class Controller extends CI_Controller
 
                 }
 
-                $return_array[4341] += $level2_total;
                 $level1_total += $level2_total;
                 $return_array[$chainhandletype2] = intval($level2_total);
 
