@@ -426,7 +426,7 @@ foreach ($this->config->item('handles___4341') as $chainhandletype => $m) {
 }
 $row1 .= '</tr>';
 $row2 .= '</tr>';
-echo '<table id="table_ideachain" class="table table-sm image-mini" style="font-size: 0.8em; padding-bottom: 21px;">'.$row1.$row2.'</table>';
+echo '<table id="table_ideachain" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'<tr><th colspan="99"><div style="height: 20px;">&nbsp;</div></th></tr>'.'</table>';
 
 //Table Data
 echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';
