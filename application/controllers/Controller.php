@@ -3527,6 +3527,7 @@ class Controller extends CI_Controller
                 }
                 $sub_counter = $this->Chains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');
                 $return_array[$chainhandletype1] = intval($sub_counter[0]['totals']);
+                $return_array[4341] += intval($sub_counter[0]['totals']);
                 continue;
             }
 
@@ -3625,6 +3626,7 @@ class Controller extends CI_Controller
             }
 
             $return_array[$chainhandletype1] = intval($level1_total);
+            $return_array[4341] += $level1_total;
 
         }
         return view_json(array(
