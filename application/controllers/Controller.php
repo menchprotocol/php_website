@@ -3630,7 +3630,6 @@ class Controller extends CI_Controller
 
             $return_array[$chainhandletype1] = intval($level1_total);
             $return_array[4341] += intval($level1_total);
-            $return_array[4341] += intval($level1_total);
 
         }
         return view_json(array(
