@@ -408,7 +408,7 @@ echo '<div class="filter_right grey">'.(handle_session(12701) ? '<span class="ic
 
 //Table Header
 $row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 1px solid #000000; border-bottom: 0px solid #FFFFFF !important;">';
-$row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 1px solid #000000; margin-bottom:34px;">';
+$row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 1px solid #000000;">';
 foreach ($this->config->item('handles___4341') as $chainhandletype => $m) {
     if($chainhandletype==4362 || in_array($chainhandletype, $this->config->item('handleids___6160'))){
         //Handle Cover:
@@ -426,7 +426,7 @@ foreach ($this->config->item('handles___4341') as $chainhandletype => $m) {
 }
 $row1 .= '</tr>';
 $row2 .= '</tr>';
-echo '<table id="table_ideachain" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
+echo '<table id="table_ideachain" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.'<tr><th colspan="*"></th></tr>'.$row2.'</table>';
 
 //Table Data
 echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';
