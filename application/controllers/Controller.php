@@ -3553,7 +3553,9 @@ class Controller extends CI_Controller
 
                     } else {
 
-                        $sub_counter = $this->Hashtags->read(array(), 0, 0, array(), 'COUNT(hashtagid) as totals');
+                        $sub_counter = $this->Chains->read(array(
+                            'chainhandletype' => $chainhandletype2,
+                        ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                     }
 
@@ -3579,7 +3581,9 @@ class Controller extends CI_Controller
 
                     } else {
 
-                        $sub_counter = $this->Handles->read(array(), 0, 0, array(), 'COUNT(handleid) as totals');
+                        $sub_counter = $this->Chains->read(array(
+                            'chainhandletype' => $chainhandletype2,
+                        ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                     }
 
