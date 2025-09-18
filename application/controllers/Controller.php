@@ -3505,7 +3505,9 @@ class Controller extends CI_Controller
 
 
         //Count Chains:
-        $return_array = array();
+        $return_array = array(
+            4341 => 0,
+        );
         foreach ($this->config->item('handles___33292') as $chainhandletype1 => $m1) { //Stats
 
             $level1_total = 0;
