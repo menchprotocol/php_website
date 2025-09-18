@@ -31,11 +31,11 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
         continue;
     } elseif($handleid1==28956){
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span><a target="_blank" href="'.view_app_chain(4341).'?chainhandletype=12273,12274&chainvoid=0" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' ' . $m1['m__title'] . ':</span></div>';
     } elseif($handleid1==31770){
 
         //Chains
-        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' <span><a target="_blank" href="'.view_app_chain(4341).'?chainvoid=0" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span>' . $m1['m__cover'] . ' ' . $m1['m__title'] . ':</span></div>';
     }
 
     echo '<div class="row justify-content list-covers">';
