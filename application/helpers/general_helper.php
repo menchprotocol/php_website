@@ -4568,7 +4568,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         'chainvoid >=' => 0, //Does not matter if it has been updated, we want the original author here
         'chainhandletype' => 12273, //Hashtag Created
         '(chainid='.$i['hashtagid'].' OR chainhashtaginput='.$i['hashtagid'].' OR chainhashtagoutput='.$i['hashtagid'].')' => null,
-    ), array('chainhandlecreator'), 0, 0, array('chainid' => 'ASC')) as $creator) {
+    ), array('chainhandlecreator'), 1, 0, array('chainid' => 'ASC')) as $creator) {
 
         array_push($headline_authors, $creator['handleid']);
         $follow_btn = null;
