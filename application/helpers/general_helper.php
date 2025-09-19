@@ -3812,6 +3812,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
 
     //Generates a title from a hashtag:
 
+    //Remove Common prefix with parent hashtagif any:
     $common_start = '';
     if(strlen($parent_hashtag)){
         //See if hashtag has anything in common with its parent, if any:
@@ -3824,13 +3825,12 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
             }
         }
     }
-
     if(strlen($common_start) && strlen(ltrim($hashtag, $common_start))){
         //Remove this from the string:
         $hashtag = ltrim($hashtag, $common_start);
     }
 
-    //Now detect the title:
+    //Now detect the title based on remaining hashtag:
     $new_title = '';
     $hashtag_array = str_split($hashtag);
     foreach($hashtag_array as $key=>$value){

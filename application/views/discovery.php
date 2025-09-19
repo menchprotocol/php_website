@@ -136,7 +136,6 @@ foreach($this->Chains->read(array(
 
     $(document).ready(function () {
 
-
         load_hashtag_menu('Next');
 
         set_autosize($('.x_write'));
