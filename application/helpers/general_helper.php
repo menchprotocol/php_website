@@ -4209,7 +4209,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
 
 
 
-    $handles___focus = $this->config->item('handles___26005');
+    $handles___focus = $CI->config->item('handles___26005');
     $focus_tab = 0;
     foreach($handles___focus as $chainhandletype => $m) {
         if(isset($coins_count[$chainhandletype]) && $coins_count[$chainhandletype] > 0){
