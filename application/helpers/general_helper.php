@@ -4512,6 +4512,11 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     }
 
     $is_locked = ($discovery_mode && !$was_discovered && !$focus__node);
+    $is_required = count($CI->Chains->read(array(
+        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
+        'chainhashtagoutput' => $i['hashtagid'],
+        'chainhandleinput' => 28239, //Required
+    )));
 
     if (($goto_start || !$superpower_10939) && $hashtag_startable) {
         $href = view_memory(42903, 30795) . $i['hashtagterm'] . '/' . view_memory(6404, 4235);
@@ -4535,12 +4540,6 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     if ($discovery_mode && $chainhandlecreator && $focus__node) {
         $ui .= '<style> .add_hashtag{ display:none; } </style>';
     }
-
-    $is_required = count($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput' => 28239, //Required
-    )));
 
     if ($is_required) {
         //Add required icon:
@@ -4568,21 +4567,11 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     foreach ($CI->Chains->read(array(
         'chainvoid >=' => 0, //Does not matter if it has been updated, we want the original author here
         'chainhandletype' => 12273, //Hashtag Created
-        'chainid' => $i['hashtagid'],
+        '(chainid='.$i['hashtagid'].' OR chainhashtaginput='.$i['hashtagid'].' OR chainhashtagoutput='.$i['hashtagid'].')' => null,
     ), array('chainhandlecreator'), 0, 0, array('chainid' => 'ASC')) as $creator) {
 
         array_push($headline_authors, $creator['handleid']);
         $follow_btn = null;
-        /*
-        if ($focus__node && $chainhandlecreator && $chainhandlecreator != $creator['handleid']) {
-            $followings = $CI->Chains->read(array(
-                'chainhandleinput' => $creator['handleid'],
-                'chainhandleoutput' => $chainhandlecreator,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42795')) . ')' => null, //Follow
-            ), array(), 1, 0, array('chainkey' => 'ASC'));
-            $follow_btn = searchingle_select_instant(42795, (count($followings) ? $followings[0]['chainhandletype'] : 0), $hashtag_access, false, $creator['handleid'], (count($followings) ? $followings[0]['chainid'] : 0));
-        }
-        */
 
         $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handleterm'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlename'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handleterm'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
@@ -4601,26 +4590,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     if (!$focus__node && $chainid && !$is_cache) {
         foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
             if (in_array($i['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
-                /*
-                foreach ($CI->Chains->read(array(
-                    'chainid' => $chainid,
-                ), array('chainhandlecreator')) as $chainer) {
-                    $chainhandletype_ui .= '<span class="icon-block-sm">';
-                    $chainhandletype_ui .= searchingle_select_instant($chainhandletype1, $i['chainhandletype'], $hashtag_access, false, $i['hashtagid'], $chainid);
-                    $chainhandletype_ui .= '</span>';
-                }
-                */
                 $chainhandletype_id = $chainhandletype1;
                 break;
             }
         }
-        /*
-        if (!$chainhandletype_ui) {
-            $chainhandletype_ui .= '<span class="icon-block-sm">';
-            $chainhandletype_ui .= searchingle_select_instant(4593, $i['chainhandletype'], false, false, $i['hashtagid'], $chainid);
-            $chainhandletype_ui .= '</span>';
-        }
-        */
     }
 
     foreach ($CI->config->item('handles___31904') as $chainhandletype_target_bar => $m_target_bar) {
@@ -5458,15 +5431,6 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
         if ($chainid) {
             foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
                 if (in_array($e['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
-                    /*
-                    foreach ($CI->Chains->read(array(
-                        'chainid' => $chainid,
-                    ), array('chainhandlecreator')) as $chainer) {
-                        $chainhandletype_ui .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
-                        $chainhandletype_ui .= searchingle_select_instant($chainhandletype1, $e['chainhandletype'], $handle_access, false, $e['handleid'], $chainid);
-                        $chainhandletype_ui .= '</span>';
-                    }
-                    */
                     $chainhandletype_id = $chainhandletype1;
                     break;
                 }
