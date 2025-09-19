@@ -155,8 +155,7 @@ if(!$basic_header_footer){
             event.stopPropagation();
         });
 
-        $(".add_hashtag_44169").click(function (e) {
-            console.log('added2');
+        $(".add_hashtag_4486").click(function (e) {
             insertText($(".save_hashtagtext"), '#');
         });
 
@@ -767,10 +766,10 @@ if($handle_session && ( !isset($basic_header_footer) || !$basic_header_footer ))
                             <?php
                             foreach($this->config->item('handles___44168') as $handleid => $m){
 
-                                if($handleid==44169){ //Hashtag Reference
+                                if($handleid==4486){ //Ideas
 
                                     echo '<div class="dynamic_editing_input hidden no_padded">
-                                        <a class="add_hashtag_44169 icon-block" href="javascript:void(0)" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>
+                                        <a class="add_hashtag_4486 icon-block" href="javascript:void(0)" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>
                                     </div>';
 
                                 } elseif($handleid==13572){ //Upload File

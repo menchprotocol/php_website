@@ -65,11 +65,17 @@ class Chains extends CIdea_cache
             if(isset($read_fields['chaintime'])){
                 unset($read_fields['chaintime']);
             }
+            if(isset($read_fields['chainkey'])){
+                unset($read_fields['chainkey']);
+            }
             if(isset($read_fields['chainprevious'])){
                 unset($read_fields['chainprevious']);
             }
             if(isset($read_fields['chainhash'])){
                 unset($read_fields['chainhash']);
+            }
+            if(isset($read_fields['chainvoid'])){
+                unset($read_fields['chainvoid']);
             }
             if(isset($read_fields['chainhandledomain'])){
                 unset($read_fields['chainhandledomain']);
