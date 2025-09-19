@@ -5449,7 +5449,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
                 $featured_handles .= '<input class="form-check-input" type="checkbox" value="" handleid="' . $e['handleid'] . '" id="selectorhandle_' . $e['handleid'] . '" aria-label="...">';
                 $featured_handles .= '</span>';
 
-            } elseif ($chainhandletype_target_bar == 13006 && $has_sortable && $handle_access >= 3) {
+            } elseif ($chainhandletype_target_bar == 13911 && $has_sortable && $handle_access >= 3) {
 
                 //Sort Handle
                 $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' sorthandle_frame hidden">';
