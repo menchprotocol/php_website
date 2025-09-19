@@ -3834,7 +3834,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
     $new_title = '';
     $hashtag_array = str_split($hashtag);
     foreach($hashtag_array as $key=>$value){
-        $new_title .= (ctype_upper($value) && isset($hashtag_array[($key-1)]) && !ctype_upper($hashtag_array[($key-1)]) ? ' ' : '').$value;
+        $new_title .= (ctype_upper($value) && ((isset($hashtag_array[($key-1)]) && !ctype_upper($hashtag_array[($key-1)])) || (isset($hashtag_array[($key+1)]) && !ctype_upper($hashtag_array[($key+1)]))) ? ' ' : '').$value;
     }
 
     return ( strlen($new_title)>=2 ? trim($new_title) : 'New Post' );
