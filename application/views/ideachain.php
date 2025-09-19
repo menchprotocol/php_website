@@ -126,7 +126,7 @@ if (isset($_GET['any_chainid']) && strlen($_GET['any_chainid']) > 0) {
 }
 
 if (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0) {
-    $query_filters['LOWER(chainvalue) LIKE'] = '%' . $_GET['chainvalue_find'] . '%';
+    $query_filters['LOWER(chainvalue) LIKE'] = '%' . strtolower($_GET['chainvalue_find']) . '%';
 }
 
 if (isset($_GET['chainvoid']) && is_numeric($_GET['chainvoid'])) {

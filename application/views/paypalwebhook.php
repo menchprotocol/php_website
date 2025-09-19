@@ -16,16 +16,16 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
 
     //Fetch Objects based on handles:
     $handle_sessions = $this->Handles->read(array(
-        'LOWER(handleterm)' => $item_numbers['handle_handle'],
+        'LOWER(handleterm)' => strtolower($item_numbers['handle_handle']),
     ));
     $website_es = $this->Handles->read(array(
-        'LOWER(handleterm)' => $item_numbers['handle_wesbite'],
+        'LOWER(handleterm)' => strtolower($item_numbers['handle_wesbite']),
     ));
     $next_is = $this->Hashtags->read(array(
-        'LOWER(hashtagterm)' => $item_numbers['hashtag_destination'],
+        'LOWER(hashtagterm)' => strtolower($item_numbers['hashtag_destination']),
     ));
     $target_is = ($item_numbers['hashtag_target'] ? $this->Hashtags->read(array(
-        'LOWER(hashtagterm)' => $item_numbers['hashtag_target'],
+        'LOWER(hashtagterm)' => strtolower($item_numbers['hashtag_target']),
     )) : false);
 
 

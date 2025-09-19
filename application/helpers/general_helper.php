@@ -3834,10 +3834,10 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
     $new_title = '';
     $hashtag_array = str_split($hashtag);
     foreach($hashtag_array as $key=>$value){
-        $new_title .= (ctype_upper($value) && !ctype_upper($hashtag_array[($key+1)]) ? ' ' : '').$value;
+        $new_title .= (ctype_upper($value) && (!isset($hashtag_array[($key+1)]) || !ctype_upper($hashtag_array[($key+1)])) ? ' ' : '').$value;
     }
 
-    return trim($new_title);
+    return ( strlen($new_title)>=2 ? trim($new_title) : 'New Post' );
 
 }
 
@@ -3946,7 +3946,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
                     if (in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
-                        if (strtolower($term) == strtolower($current_term) && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                        if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
                             $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
                         }
@@ -3958,6 +3958,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
                         if(!count($found_hashtags)){
 
+                            //New hashtag not found, try to create:
                             $parent_term = ( strlen($new_term) ? $new_term : $current_term );
                             if(!$parent_term){
                                 //Fetch the term using the ID:
@@ -4012,7 +4013,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
                     } else {
 
-                        if (strtolower($term) == strtolower($current_term) && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                        if ($term==$current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
                             $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
                         }
