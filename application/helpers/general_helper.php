@@ -4484,7 +4484,6 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         }
     }
 
-    $has_sortable = $chainid > 0 && !$focus__node && $hashtag_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___4603')) && ($i['chainhandletype'] == 34513 || $i['chainhandletype'] == 4228);
     $was_discovered = 0;
     if (!$is_cache && $chainhandlecreator) {
         $discoveries = $CI->Chains->read(array(
@@ -4535,7 +4534,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
     //Top action menu:
     $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtagterm="' . $i['hashtagterm'] . '" discovery_mode="' . intval($discovery_mode) . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['hashtagid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_hashtag_or && $is_locked ? ' is_locked' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
+     ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['hashtagid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_hashtag_or && $is_locked ? ' is_locked' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
 
     if ($discovery_mode && $chainhandlecreator && $focus__node) {
         $ui .= '<style> .add_hashtag{ display:none; } </style>';
