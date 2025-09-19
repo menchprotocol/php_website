@@ -41,7 +41,7 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
     if($handleid1==28956){
         //Legend of how nodes connect:
-        echo '<table class="table table-sm maxout center" style="width: 100%; table-layout: fixed; margin-bottom: -144px; margin-top:44px; font-size:1.4em;"><tr>';
+        echo '<table class="table table-sm maxout center hidden" style="width: 100%; table-layout: fixed; margin-bottom: -144px; margin-top:44px; font-size:1.4em;"><tr>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
         echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
         echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-rotate-left appender_32292"></i></td>';
