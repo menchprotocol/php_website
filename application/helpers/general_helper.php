@@ -4166,7 +4166,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     $body_content = '';
     $handle_session = handle_session();
     $hashtagtion_pen = handle_session(10939);
-    $handles___loading_order = $CI->config->item('handles___26005');
+
 
     if ($handle_session && !is_array($x_completes)) {
         $x_completes = $CI->Chains->read(array(
@@ -4176,11 +4176,6 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
         ), array('chainhashtagoutput'));
     }
 
-    $discovery_next_hide = $handle_session && $discovery_mode && !count($x_completes) && count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $focus_i['hashtagid'],
-            'chainhandleinput' => 44250, //Hide Next Hashtags
-        )));
 
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['hashtagid'] . ' hideIfEmpty">';
@@ -4202,7 +4197,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainhandletype . ' hidden" read-counter="' . $coins_count[$chainhandletype] . '"><div class="tab_content"></div></div>';
 
 
-            if ($chainhandletype != 12840 || !$discovery_next_hide) {
+            if ($chainhandletype != 12840) {
                 $ui .= '<li class="nav-item thepill' . $chainhandletype . '"><a class="nav-chain handle_nav_' . $m['m__handle'] . '" chainhandletype="' . $chainhandletype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainhandletype . '">' . view_number($coins_count[$chainhandletype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainhandletype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
             }
 
@@ -4212,8 +4207,23 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     $ui .= '</ul>';
     $ui .= $body_content;
 
-    if (!$discovery_next_hide) {
-        $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\'Previous\'); }); </script>';
+
+
+    $handles___focus = $this->config->item('handles___26005');
+    $focus_tab = 0;
+    foreach($handles___focus as $chainhandletype => $m) {
+        if(isset($coins_count[$chainhandletype]) && $coins_count[$chainhandletype] > 0){
+            $focus_tab = $chainhandletype;
+            echo '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
+            break;
+        }
+    }
+    if(!$focus_tab){
+        foreach($handles___focus as $chainhandletype => $m) {
+            $focus_tab = $chainhandletype;
+            echo '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
+            break;
+        }
     }
 
 
