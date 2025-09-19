@@ -4166,7 +4166,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     $body_content = '';
     $handle_session = handle_session();
     $hashtagtion_pen = handle_session(10939);
-    $handles___loading_order = $CI->config->item('handles___' . ($discovery_mode ? 26005 : 26005));
+    $handles___loading_order = $CI->config->item('handles___26005');
 
     if ($handle_session && !is_array($x_completes)) {
         $x_completes = $CI->Chains->read(array(
@@ -4213,7 +4213,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     $ui .= $body_content;
 
     if (!$discovery_next_hide) {
-        $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\'Next\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\'Previous\'); }); </script>';
     }
 
 
