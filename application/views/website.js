@@ -524,6 +524,7 @@ function toggle_menu(chainhandletype_hash, is_first_load) {
                 load_editor();
                 x_set_start_text();
                 set_autosize($('.x_set_class_text'));
+                load_cards();
 
                 $(function () {
                     var $win = $(window);
