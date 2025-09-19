@@ -4197,9 +4197,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainhandletype . ' hidden" read-counter="' . $coins_count[$chainhandletype] . '"><div class="tab_content"></div></div>';
 
 
-            if ($chainhandletype != 12840) {
-                $ui .= '<li class="nav-item thepill' . $chainhandletype . '"><a class="nav-chain handle_nav_' . $m['m__handle'] . '" chainhandletype="' . $chainhandletype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainhandletype . '">' . view_number($coins_count[$chainhandletype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainhandletype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
-            }
+            $ui .= '<li class="nav-item thepill' . $chainhandletype . '"><a class="nav-chain handle_nav_' . $m['m__handle'] . '" chainhandletype="' . $chainhandletype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainhandletype . '">' . view_number($coins_count[$chainhandletype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainhandletype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
 
         }
 
