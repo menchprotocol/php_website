@@ -4208,7 +4208,6 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     $ui .= $body_content;
 
 
-
     $handles___focus = $CI->config->item('handles___26005');
     $focus_tab = 0;
     foreach($handles___focus as $chainhandletype => $m) {
@@ -4220,29 +4219,10 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     }
     if(!$focus_tab){
         foreach($handles___focus as $chainhandletype => $m) {
-            $focus_tab = $chainhandletype;
             $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
             break;
         }
     }
-
-
-    if (count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $focus_i['hashtagid'],
-            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___34826')) . ')' => null,
-        ))) && $handle_session && $discovery_mode && !count($x_completes)) {
-        foreach ($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $focus_i['hashtagid'],
-            'chainhandleinput' => 44262, //Skip Next If no hashtag_discovered
-        )) as $skip) {
-            //Not yet hashtag discovered, lets go next automatically:
-            $ui .= '<script> $(document).ready(function () { setTimeout(function () { hashtag_discovered(0); }, ' . (is_numeric($skip['chainvalue']) && intval($skip['chainvalue']) > 0 ? intval($skip['chainvalue']) : '2584') . '); }); </script>';
-            break;
-        }
-    }
-
 
     return $ui;
 

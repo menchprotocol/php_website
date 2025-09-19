@@ -30,9 +30,3 @@ if(handle_session(10939) || isset($_GET['open'])){
 }
 
 ?>
-
-<script>
-    $(document).ready(function () {
-        load_hashtag_menu();
-    });
-</script>
