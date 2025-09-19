@@ -4627,13 +4627,6 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
             $bottom_bar_ui .= '<span class="icon-block-sm"><div class="grey created_time" title="' . $creator_name . date("Y-m-d H:i:s", strtotime($i['chaintime'])) . ' which is ' . $time_diff . ' ago | ID ' . $i['chainid'] . '">' . ($creator_details ? $creator_details : $time_diff) . '</div></span>';
 
-        } elseif ($chainhandletype_target_bar == 13909 && $hashtag_access >= 3 && $has_sortable && !$discovery_mode) {
-
-            //Sort Hashtag
-            $bottom_bar_ui .= '<span class="sort_hashtag_frame hidden icon-block-sm">';
-            $bottom_bar_ui .= '<span title="' . $m_target_bar['m__title'] . '" class="sort_hashtag_grab">' . $m_target_bar['m__cover'] . '</span>';
-            $bottom_bar_ui .= '</span>';
-
         } elseif ($chainhandletype_target_bar == 14980 && !$is_cache && $hashtag_access >= 1 && !$discovery_mode) {
 
             //Drop Down

@@ -538,9 +538,7 @@ function toggle_menu(chainhandletype_hash, is_first_load) {
                 setTimeout(function () {
 
                     //TODO Fix Sorting
-                    if (js_handleids___11020.includes(chainhandletype) || (focus__node == 12274 && ( chainhandletype==13550 || chainhandletype==31777 ))) {
-                        hashtag_sort_load(chainhandletype);
-                    } else if (js_handleids___11028.includes(chainhandletype) || (focus__node == 12273 && ( chainhandletype==13550 || chainhandletype==31777 ))) {
+                    if (js_handleids___11028.includes(chainhandletype) || (focus__node == 12273 && ( chainhandletype==13550 || chainhandletype==31777 ))) {
                         handle_sort_load(chainhandletype);
                     }
 
@@ -2067,10 +2065,6 @@ function hashtag_update() {
 
                 chain_counter(focus_group, 1);
 
-                setTimeout(function () {
-                    hashtag_sort_load(focus_group);
-                }, 987);
-
             } else {
 
                 //Update Cache otherwise:
@@ -2756,81 +2750,6 @@ function handle_create(chainhandletype, handle_current_id) {
 }
 
 
-var i_is_adding = false;
-
-function hashtag_create(chainhandletype, chain_hashtagid) {
-
-    alert('not up yet');
-    return false;
-
-    /*
-     *
-     * Either creates an HASHTAG chain between focus_id & chain_hashtagid
-     * OR will create a new hashtag based on input text and then chain it
-     * to #focus_id (In this case chain_hashtagid=0)
-     *
-     * */
-
-    if (i_is_adding) {
-        return false;
-    }
-
-    //Remove results:
-    i_is_adding = true;
-    var sort_hashtag_grabr = ".card_cover";
-    var input_field = $('.new-list-' + chainhandletype + ' .add-input');
-    var hashtag_createtext = input_field.val();
-
-
-    //We either need the hashtag name (to create a new hashtag) or the chain_hashtagid>0 to create an HASHTAG chain:
-    if (!chain_hashtagid && hashtag_createtext.length < 1) {
-        alert('Missing Hashtag');
-        input_field.focus();
-        return false;
-    }
-
-    //Set processing status:
-    input_field.addClass('dynamic_saving');
-    add_to_list(chainhandletype, sort_hashtag_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-chain"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
-
-    //Update backend:
-    $.post("/controller/hashtag_create", {
-        chainhandletype: chainhandletype,
-        focus__node: parseInt($('#focus__node').val()),
-        focus__id: parseInt($('#focus__id').val()),
-        hashtag_createtext: hashtag_createtext,
-        chain_hashtagid: chain_hashtagid
-    }, function (data) {
-
-        //Delete loader:
-        $("#tempLoader").remove();
-        input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
-        i_is_adding = false;
-
-        if (data.status) {
-
-            //Add new
-            add_to_list(chainhandletype, sort_hashtag_grabr, data.hashtag_create_html, 1);
-
-            //Lookout for textinput updates
-            x_set_start_text();
-            load_cards();
-            set_autosize($('.texttype_lg'));
-
-            //Hide Coin:
-            $('.mini-cover.card-12273.card-id-' + chain_hashtagid).fadeOut();
-
-        } else {
-            //Show errors:
-            alert(data.message);
-        }
-
-    });
-
-    //Return false to prevent <form> submission:
-    return false;
-
-}
 
 
 function validURL(str) {
@@ -2950,75 +2869,6 @@ function set_autosize(theobject) {
     }, 13);
 }
 
-
-function hashtag_sort_load(chainhandletype) {
-
-    load_cards();
-
-    console.log('Tring to load Hashtag Sort for @' + chainhandletype);
-    if (!js_handleids___4603.includes(chainhandletype)) {
-        console.log(chainhandletype + ' is not sortable');
-        return false;
-    }
-
-    setTimeout(function () {
-
-        var theobject = document.getElementById("list-in-" + chainhandletype);
-        if (!theobject) {
-            //due to duplicate hashtags belonging in this hashtag:
-            console.log(chainhandletype + ' failed to find sortable object');
-            return false;
-        }
-
-        //Make sure beow minimum sorting requirement:
-        if ($("#list-in-" + chainhandletype + " .sort_draggable").length >= parseInt(js_handles___6404[11064]['m__message'])) {
-            console.log(chainhandletype + ' has ' + $("#list-in-" + chainhandletype + " .sort_draggable").length + ' items which is more than the page limit of ' + js_handles___6404[11064]['m__message']);
-            return false;
-        } else if ($("#list-in-" + chainhandletype + " .sort_draggable").length < 2) {
-            console.log('Less than 2 items to sort ' + chainhandletype);
-            return false;
-        } else {
-
-            console.log(chainhandletype + ' sorting load success');
-            $('.sort_hashtag_frame').removeClass('hidden');
-
-            //Load sorter:
-            var sort = Sortable.create(theobject, {
-                animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: "#list-in-" + chainhandletype + " .sort_draggable", // Specifies which items inside the element should be sortable
-                source: "#list-in-" + chainhandletype + " .sort_hashtag_grab", // Restricts sort start click/touch to the specified element
-                onUpdate: function (evt/**Event*/) {
-
-                    var sort_rank = 0;
-                    var new_x_order = [];
-                    $("#list-in-" + chainhandletype + " .sort_draggable").each(function () {
-                        var chainid = parseInt($(this).attr('chainid'));
-                        if (chainid > 0) {
-                            sort_rank++;
-                            new_x_order[sort_rank] = chainid;
-                        }
-                    });
-
-                    //Update order:
-                    if (sort_rank > 0) {
-                        $.post("/controller/hashtag_sort_load", {
-                            new_x_order: new_x_order,
-                            chainhandletype: chainhandletype,
-                            js_request_uri: js_request_uri, //Always append to AJAX Calls
-                        }, function (data) {
-                            //Update UI to confirm with member:
-                            if (!data.status) {
-                                //There was some sort of an error returned!
-                                alert(data.message);
-                            }
-                        });
-                    }
-                }
-            });
-        }
-    }, 1500);
-
-}
 
 
 var current_focus = 0;

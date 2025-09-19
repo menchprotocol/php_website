@@ -1157,7 +1157,7 @@ a.headline {
     border-radius: 0px;
     margin: 0;
 }
-.sort_hashtag_grab, .sorthandle_grab, .fa-sort, .fa-arrows{
+.sorthandle_grab, .fa-sort, .fa-arrows{
     cursor: grab;
 }
 .focus-cover .space-content,

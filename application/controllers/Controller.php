@@ -1228,56 +1228,6 @@ class Controller extends CI_Controller
         }
     }
 
-    function hashtag_sort_load()
-    {
-
-        /*
-         *
-         * Saves the order of read hashtags based on
-         * member preferences.
-         *
-         * */
-
-        $handle_session = handle_session(null, 0, $this->handle_session);
-
-        if (!$handle_session) {
-            return view_json(array(
-                'status' => 0,
-                'message' => blocked_reasoning(),
-            ));
-        } elseif (!isset($_POST['new_x_order']) || !is_array($_POST['new_x_order']) || count($_POST['new_x_order']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing sorting hashtags',
-            ));
-        } elseif (!isset($_POST['chainhandletype']) || !in_array($_POST['chainhandletype'], $this->config->item('handleids___4603'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Chain Type',
-            ));
-        }
-
-        //Update the order of their discoveries:
-        $updated = 0;
-        foreach ($_POST['new_x_order'] as $chainkey => $chainid) {
-            if (intval($chainid) > 0 && intval($chainkey) > 0) {
-                //Update order of this Chain:
-                if ($this->Chains->update(intval($chainid), array(
-                    'chainkey' => $chainkey,
-                    'chainhandlecreator' => $handle_session['handleid'],
-                ))) {
-                    $updated++;
-                }
-            }
-        }
-
-        //All good:
-        return view_json(array(
-            'status' => 1,
-            'message' => $updated . ' Sorted',
-        ));
-    }
-
     function hashtag_list()
     {
         //Authenticate Member:
@@ -1663,73 +1613,6 @@ class Controller extends CI_Controller
 
 
     }
-
-    function hashtag_create()
-    {
-
-        /*
-         *
-         * Either creates a HASHTAG Chain between focus_id & chain_hashtagid
-         * OR will create a new hashtag with outcome hashtagtext and then Chain it
-         * to focus_id (In this case chain_hashtagid=0)
-         *
-         * */
-
-        //Authenticate Member:
-        $member_e = handle_session(10939, 0, $this->handle_session);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => blocked_reasoning(10939),
-            ));
-        } elseif (!isset($_POST['chainhandletype']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Core Variables',
-            ));
-        } elseif (!isset($_POST['hashtag_createtext']) || !isset($_POST['chain_hashtagid'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing either Hashtag Outcome OR Follower Hashtag ID',
-            ));
-        }
-
-        $validate_hashtagtext = validate_hashtagtext($_POST['hashtag_createtext']);
-        if (!$validate_hashtagtext['status']) {
-            //We had an error, return it:
-            return view_json($validate_hashtagtext);
-        }
-
-
-        if (!$_POST['chain_hashtagid'] && view_valid_handle_hashtag($_POST['hashtag_createtext'])) {
-            foreach ($this->Hashtags->read(array(
-                'LOWER(hashtagterm)' => strtolower(view_valid_handle_hashtag($_POST['hashtag_createtext'])),
-            )) as $i) {
-                $_POST['chain_hashtagid'] = $i['hashtagid'];
-            }
-        }
-
-        $x_i = array();
-
-        if ($_POST['chain_hashtagid'] > 0) {
-            //Fetch Chain hashtag to determine hashtag type:
-            $x_i = $this->Hashtags->read(array(
-                'hashtagid' => intval($_POST['chain_hashtagid']),
-            ));
-            if (count($x_i) == 0) {
-                //validate Hashtag:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Hashtag #' . $_POST['chain_hashtagid'] . ' is not active.',
-                ));
-            }
-        }
-
-        //All seems good, go ahead and try to create/chain the Hashtag:
-        return view_json($this->Hashtags->create_or_chain($_POST['focus_card'], $_POST['chainhandletype'], trim($_POST['hashtag_createtext']), $member_e['handleid'], $_POST['focus_id'], $_POST['chain_hashtagid']));
-
-    }
-
 
     function handle_create()
     {
