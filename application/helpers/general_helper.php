@@ -4214,14 +4214,14 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     foreach($handles___focus as $chainhandletype => $m) {
         if(isset($coins_count[$chainhandletype]) && $coins_count[$chainhandletype] > 0){
             $focus_tab = $chainhandletype;
-            echo '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
+            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
             break;
         }
     }
     if(!$focus_tab){
         foreach($handles___focus as $chainhandletype => $m) {
             $focus_tab = $chainhandletype;
-            echo '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
+            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
             break;
         }
     }
