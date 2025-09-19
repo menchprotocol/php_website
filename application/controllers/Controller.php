@@ -1147,7 +1147,7 @@ class Controller extends CI_Controller
                 'hashtagtext' => $_POST['save_hashtagtext'],
             ), $handle_session['handleid']);
 
-            $_POST['save_hashtagid'] = $hashtag_new['hashtag_create']['hashtagid'];
+            $_POST['save_hashtagid'] = intval($hashtag_new['hashtag_create']['hashtagid']);
 
         }
 
