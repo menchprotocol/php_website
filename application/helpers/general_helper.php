@@ -3807,7 +3807,42 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
 }
 
 
-function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $replace_term = 0, $findterm = null, $replaceterm = null)
+
+function hashtag_to_title($hashtag, $parent_hashtag = null){
+
+    //Generates a title from a hashtag:
+
+    $common_start = '';
+    if(strlen($parent_hashtag)){
+        //See if hashtag has anything in common with its parent, if any:
+        $parent_hashtag_array = str_split($parent_hashtag);
+        foreach(str_split($hashtag) as $key=>$value){
+            if($parent_hashtag_array[$key]===$value){
+                $common_start .= $value;
+            } else {
+                break;
+            }
+        }
+    }
+
+    if(strlen($common_start) && strlen(ltrim($hashtag, $common_start))){
+        //Remove this from the string:
+        $hashtag = ltrim($hashtag, $common_start);
+    }
+
+    //Now detect the title:
+    $new_title = '';
+    $hashtag_array = str_split($hashtag);
+    foreach($hashtag_array as $key=>$value){
+        $new_title .= (ctype_upper($value) && !ctype_upper($hashtag_array[($key+1)]) ? ' ' : '').$value;
+    }
+
+    return trim($new_title);
+
+}
+
+
+function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $current_term = null, $new_term = null)
 {
 
     //Display Images, Audio, Video & PDF Files:
@@ -3836,7 +3871,6 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
     //See what we can find:
     foreach (explode("\n", $hashtagtext) as $line_count => $line) {
 
-        //
         $first_ref_hidden = false;
         $first_line = !$line_count;
         $words = explode(' ', trim($line));
@@ -3910,10 +3944,76 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
                         continue;
                     }
 
-                    if (!in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
+                    if (in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
-                        if ($replace_term == 12274 && strtolower($term) == $findterm && ctype_alnum($replace_term)) {
-                            $term = $replace_term;
+                        if (strtolower($term) == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                            $term = $new_term;
+                            $word_text = $m['m__cover'] . $term;
+                        }
+
+                        //Hashtag reference:
+                        $found_hashtags = $CI->Hashtags->read(array(
+                            'LOWER(hashtagterm)' => strtolower($term),
+                        ));
+
+                        if(!count($found_hashtags)){
+
+                            $parent_term = ( strlen($new_term) ? $new_term : $current_term );
+                            if(!$parent_term){
+                                //Fetch the term using the ID:
+                                foreach($CI->Hashtags->read(array(
+                                    'hashtagid' => $save_hashtagid,
+                                )) as $i){
+                                    $parent_term = $i['hashtagterm'];
+                                }
+                            }
+
+                            //Craete this hashtag since we could not find it:
+                            $hashtag_new = $CI->Hashtags->create(array(
+                                'hashtagterm' => $term,
+                                'hashtagtext' => hashtag_to_title($term, $parent_term),
+                            ), $chainhandlecreator);
+
+                            if(isset($hashtag_new['hashtag_create']['hashtagid'])){
+                                //Re-fetch newly created:
+                                $found_hashtags = $CI->Hashtags->read(array(
+                                    'hashtagid' => $hashtag_new['hashtag_create']['hashtagid'],
+                                ));
+                            }
+
+                        }
+
+                        foreach ($found_hashtags as $hashtag) {
+
+                            //Valid Hashtag
+                            $reference_type = $chainhandletype;
+
+                            $chainkey++;
+                            $hashtag_references[($chainkey - 1)] = array(
+                                'chainhandletype' => $chainhandletype,
+                                'chainhandleinput' => 0,
+                                'chainhandleoutput' => 0,
+                                'chainhashtaginput' => $save_hashtagid,
+                                'chainhashtagoutput' => $hashtag['hashtagid'],
+                                'chainkey' => $chainkey,
+                                'chainvalue' => null,
+                            );
+
+                            $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
+                            $hashtagtext = $word_text;
+                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
+                                $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
+                            } else {
+                                $first_ref_hidden = true;
+                            }
+                            $hashtagedit = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '">' . $word_text . '</a>';
+
+                        }
+
+                    } else {
+
+                        if (strtolower($term) == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                            $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
                         }
 
@@ -4005,42 +4105,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $repl
 
                         }
 
-                    } else {
 
-                        if ($replace_term == 12273 && strtolower($term) == $findterm && ctype_alnum($replace_term)) {
-                            $term = $replace_term;
-                            $word_text = $m['m__cover'] . $term;
-                        }
-
-                        //Hashtag reference:
-                        foreach ($CI->Hashtags->read(array(
-                            'LOWER(hashtagterm)' => strtolower($term),
-                        )) as $hashtag) {
-
-                            //Valid Hashtag
-                            $reference_type = $chainhandletype;
-
-                            $chainkey++;
-                            $hashtag_references[($chainkey - 1)] = array(
-                                'chainhandletype' => $chainhandletype,
-                                'chainhandleinput' => 0,
-                                'chainhandleoutput' => 0,
-                                'chainhashtaginput' => $save_hashtagid,
-                                'chainhashtagoutput' => $hashtag['hashtagid'],
-                                'chainkey' => $chainkey,
-                                'chainvalue' => null,
-                            );
-
-                            $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
-                            $hashtagtext = $word_text;
-                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
-                                $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
-                            } else {
-                                $first_ref_hidden = true;
-                            }
-                            $hashtagedit = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '">' . $word_text . '</a>';
-
-                        }
 
                     }
 

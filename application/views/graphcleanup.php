@@ -538,7 +538,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             $stats['hashtags_delete']++;
         }
 
-        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator']);
+        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator'], $x['hashtagterm']);
         $this->Hashtags->update($x['chainid'], array(
             'hashtagtext' => $hashtag_cache['hashtagtext'],
             'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],

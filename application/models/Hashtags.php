@@ -52,7 +52,7 @@ class Hashtags extends CIdea_cache
 
         //Save Hashtag
         $add_fields['hashtagid'] = $new_x['chainid'];
-        $hashtag_cache = hashtag_cache($add_fields['hashtagid'], $add_fields['hashtagtext'], $chainhandlecreator);
+        $hashtag_cache = hashtag_cache($add_fields['hashtagid'], $add_fields['hashtagtext'], $chainhandlecreator, $add_fields['hashtagterm']);
         $add_fields['hashtagtext'] = $hashtag_cache['hashtagtext'];
         $add_fields['hashtagdiscover'] = $hashtag_cache['hashtagdiscover'];
         $add_fields['hashtagedit'] = $hashtag_cache['hashtagedit'];
@@ -142,7 +142,7 @@ class Hashtags extends CIdea_cache
 
             if (isset($update_columns['hashtagtext']) || isset($update_columns['hashtagterm'])) {
                 //Update Hashtag Text:
-                $hashtag_cache = hashtag_cache($chainid, $update_columns['hashtagtext'], $chainhandlecreator);
+                $hashtag_cache = hashtag_cache($chainid, $update_columns['hashtagtext'], $chainhandlecreator, ( isset($update_columns['hashtagterm']) ? $update_columns['hashtagterm'] : null ));
                 $update_columns['hashtagtext'] = $hashtag_cache['hashtagtext']; //May be updated
                 $update_columns['hashtagdiscover'] = $hashtag_cache['hashtagdiscover'];
                 $update_columns['hashtagedit'] = $hashtag_cache['hashtagedit'];
