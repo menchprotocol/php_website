@@ -3946,7 +3946,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
                     if (in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
 
-                        if (strtolower($term) == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                        if (strtolower($term) == strtolower($current_term) && ctype_alnum($new_term) && ctype_alnum($current_term)) {
                             $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
                         }
@@ -4012,7 +4012,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
                     } else {
 
-                        if (strtolower($term) == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                        if (strtolower($term) == strtolower($current_term) && ctype_alnum($new_term) && ctype_alnum($current_term)) {
                             $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
                         }
