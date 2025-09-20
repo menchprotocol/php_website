@@ -354,6 +354,7 @@ function toggle_headline(chainhandletype) {
 function handle_sort_load(chainhandletype) {
 
     load_cards();
+    load_card_clickers();
 
     console.log('Tring to load Handle Sort for @' + chainhandletype);
 
@@ -1036,6 +1037,8 @@ $(document).ready(function () {
 
 
     load_card_clickers();
+    load_cards();
+
 
     setTimeout(function () {
         load_cards();
@@ -1390,7 +1393,7 @@ $(document).ready(function () {
 
         $('.algolia__e').textcomplete([
             {
-                match: /(^|\s)~#(\w*(?:\s*\w*))$/,
+                match: /(^|\s)!#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
                         hitsPerPage: js_handles___6404[31112]['m__message'],
@@ -1406,10 +1409,10 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return search_js_line(suggestion, '~#');
+                    return search_js_line(suggestion, '!#');
                 },
                 replace: function (suggestion) {
-                    return ' ~#' + suggestion.s__handle + ' ';
+                    return ' !#' + suggestion.s__handle + ' ';
                 }
             },
         ]);
@@ -2648,6 +2651,7 @@ function chain_page_load() {
             $('#list-in-' + focus_group).append(data);
             x_set_start_text();
             load_card_clickers();
+            load_cards();
             setup_popover();
         }
         busy_loading = false;
