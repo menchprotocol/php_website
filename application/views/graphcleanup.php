@@ -11,6 +11,7 @@ $strings = array(
     'wowniceasdasdasd',
     'NEWNEWNowOrNeverOK',
     'NEWNEWNice',
+    'NEWNEWnice',
     'NEWNEWNNN',
     'NEWNEWTryThisOK',
     'NEWNEWAgainAnotherTRY',
