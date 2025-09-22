@@ -3827,7 +3827,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
     }
     if(strlen($common_start) && strlen(ltrim($hashtag, $common_start))){
         //Remove this from the string:
-        echo '<'.$common_start.'><br />';
+        echo '|'.$common_start.'|<br />';
         $hashtag = ltrim($hashtag, $common_start);
     }
 
