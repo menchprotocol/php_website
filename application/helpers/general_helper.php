@@ -3834,6 +3834,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
     //Now detect the title based on remaining hashtag:
     $new_title = '';
     $hashtag_array = str_split($hashtag);
+    print_r($hashtag_array);
     foreach($hashtag_array as $key=>$value){
         $new_title .= (ctype_upper($value) && ((isset($hashtag_array[($key-1)]) && !ctype_upper($hashtag_array[($key-1)])) || (isset($hashtag_array[($key+1)]) && !ctype_upper($hashtag_array[($key+1)]))) ? ' ' : '').$value;
     }
