@@ -3818,7 +3818,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
         //See if hashtag has anything in common with its parent, if any:
         $parent_hashtag_array = str_split($parent_hashtag);
         foreach(str_split($hashtag) as $key=>$value){
-            if($parent_hashtag_array[$key]===$value){
+            if(isset($parent_hashtag_array[$key]) && $parent_hashtag_array[$key]===$value){
                 $common_start .= $value;
             } else {
                 break;
