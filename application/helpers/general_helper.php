@@ -3813,7 +3813,6 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
     //Generates a title from a hashtag:
 
     //Remove Common prefix with parent hashtagif any:
-    $hashtag_org = $hashtag;
     $common_start = '';
     $new_hashtag = '';
     if(strlen($parent_hashtag)){
@@ -3839,11 +3838,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
         $new_title .= (ctype_upper($value) && ((isset($hashtag_array[($key-1)]) && !ctype_upper($hashtag_array[($key-1)])) || (isset($hashtag_array[($key+1)]) && !ctype_upper($hashtag_array[($key+1)]))) ? ' ' : '').$value;
     }
 
-
-    $return_title = ( strlen($new_title)>=2 ? trim($new_title) : 'New Post' );
-    echo '<hr />'.$hashtag_org.' >'.$hashtag.' - '.$common_start.' = '.$new_hashtag.' = '.$return_title;
-
-    return $return_title;
+    return ( strlen($new_title)>=2 ? trim($new_title) : 'New Post' );
 
 }
 

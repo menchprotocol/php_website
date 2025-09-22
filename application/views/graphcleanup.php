@@ -20,7 +20,7 @@ $strings = array(
 
 echo $parent_term.': <br /><br />';
 foreach ($strings as $string) {
-    hashtag_to_title($string, $parent_term);
+    echo $string.' => '.hashtag_to_title($string, $parent_term).'<hr />';
 }
 die();
 
