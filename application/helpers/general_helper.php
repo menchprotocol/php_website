@@ -3825,13 +3825,11 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
                 $new_hashtag .= $value;
             }
         }
-    }
-    if(strlen($common_start) && strlen(ltrim($hashtag, $common_start))){
-        //Remove this from the string:
-        echo $hashtag.'|'.$common_start;
-        //$hashtag = ltrim($hashtag, $common_start);
-        echo ' > '.$new_hashtag.'<br />';
-        $hashtag = $new_hashtag;
+        if(strlen($common_start) && strlen($new_hashtag)){
+            //Remove this from the string:
+            echo $hashtag.' - '.$common_start.' = '.$new_hashtag.'<br />';
+            $hashtag = $new_hashtag;
+        }
     }
 
     //Now detect the title based on remaining hashtag:
