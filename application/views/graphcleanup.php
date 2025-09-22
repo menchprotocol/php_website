@@ -5,25 +5,6 @@ $mentions = $this->config->item('handles___13550');
 $ideas = $this->config->item('handles___4486');
 $count = 0;
 
-
-$parent_term = ( isset($_GET['parent']) ? $_GET['parent'] : '' );
-$strings = array(
-    'wowniceasdasdasd',
-    'NEWNEWNowOrNeverOK',
-    'NEWNEWNice',
-    'NEWNEWnice',
-    'NEWNEWNNN',
-    'NEWNEWTryThisOK',
-    'NEWNEWAgainAnotherTRY',
-    'NEWLetsDOAgainAnotherTRY',
-);
-
-echo $parent_term.': <br /><br />';
-foreach ($strings as $string) {
-    echo $string.' => '.hashtag_to_title($string, $parent_term).'<hr />';
-}
-die();
-
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
