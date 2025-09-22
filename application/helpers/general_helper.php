@@ -3814,6 +3814,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
 
     //Remove Common prefix with parent hashtagif any:
     $common_start = '';
+    $new_hashtag = '';
     if(strlen($parent_hashtag)){
         //See if hashtag has anything in common with its parent, if any:
         $parent_hashtag_array = str_split($parent_hashtag);
@@ -3821,15 +3822,16 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
             if(isset($parent_hashtag_array[$key]) && $parent_hashtag_array[$key]===$value){
                 $common_start .= $value;
             } else {
-                break;
+                $new_hashtag .= $value;
             }
         }
     }
     if(strlen($common_start) && strlen(ltrim($hashtag, $common_start))){
         //Remove this from the string:
         echo $hashtag.'|'.$common_start;
-        $hashtag = ltrim($hashtag, $common_start);
-        echo ' > '.$hashtag.'<br />';
+        //$hashtag = ltrim($hashtag, $common_start);
+        echo ' > '.$new_hashtag.'<br />';
+        $hashtag = $new_hashtag;
     }
 
     //Now detect the title based on remaining hashtag:
