@@ -3827,8 +3827,9 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
     }
     if(strlen($common_start) && strlen(ltrim($hashtag, $common_start))){
         //Remove this from the string:
+        echo $hashtag.'|'.$common_start;
         $hashtag = ltrim($hashtag, $common_start);
-        echo '|'.$common_start.' > '.$hashtag.'<br />';
+        echo ' > '.$hashtag.'<br />';
     }
 
     //Now detect the title based on remaining hashtag:
