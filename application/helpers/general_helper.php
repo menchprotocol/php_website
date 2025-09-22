@@ -3827,7 +3827,7 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
         }
         if(strlen($common_start) && strlen($new_hashtag)){
             //Remove this from the string:
-            echo $hashtag.' - '.$common_start.' = '.$new_hashtag.'<br />';
+            echo '<hr />'.$hashtag.' - '.$common_start.' = '.$new_hashtag;
             $hashtag = $new_hashtag;
         }
     }
