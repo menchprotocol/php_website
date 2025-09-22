@@ -10,6 +10,8 @@ $parent_term = ( isset($_GET['parent']) ? $_GET['parent'] : '' );
 $strings = array(
     'wowniceasdasdasd',
     'NEWNEWNowOrNeverOK',
+    'NEWNEWNice',
+    'NEWNEWNNN',
     'NEWNEWTryThisOK',
     'NEWNEWAgainAnotherTRY',
     'NEWLetsDOAgainAnotherTRY',
