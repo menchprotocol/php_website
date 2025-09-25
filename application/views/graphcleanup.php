@@ -135,12 +135,11 @@ if($_GET['posthashtag']=='user') {
     $filters = array(
         'chainusertype' => 12273,
     );
+
     if(isset($_GET['id'])){
-        $filters['chainpostinput='.$_GET['id'].')'] = null;
-    } else {
-        //Filter for mass editing;
-        $filters['chainpostinput'] = 0;
+        $filters['chainpostinput'] = $_GET['id'];
     }
+
     $has_media = false;
     foreach($this->Chains->read($filters, array('chainpostinput'), ( isset($_GET['limit']) ? $_GET['limit'] : $max_load ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
