@@ -208,7 +208,7 @@ if($_GET['posthashtag']=='user') {
         }
 
 
-        $delete = !$total_links || $x['chainvoid']>0 || $is_duplicate || !count($is);
+        $delete = !$total_links || $is_duplicate;
         if($delete){
             $stats['posts_delete']++;
         }
