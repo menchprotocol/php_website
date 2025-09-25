@@ -3851,7 +3851,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
     $CI =& get_instance();
     $core_references = array('@', '#');
     $post_index = array(
-        'postchain' => '',
+        'chainvalue' => '',
         'posttext' => '',
         'postdiscover' => '',
         'postedit' => '',
@@ -3878,7 +3878,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
         $only_word_in_line = count($words) == 1;
         $second_word_onwards = null;
 
-        $linepostchain = null;
+        $linechainvalue = null;
         $lineposttext = null;
         $linepostdiscover = null;
         $linepostedit = null;
@@ -3890,7 +3890,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
             if ($first_word && strlen($word_text . ' ') < strlen($line)) {
                 $second_word_onwards .= ltrim($line, $word_text . ' ');
             }
-            $postchain = null;
+            $chainvalue = null;
             $posttext = null;
             $postdiscover = null;
             $postedit = null;
@@ -4001,7 +4001,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                                 'chainvalue' => null,
                             );
 
-                            $postchain = $m['m__cover'] . $post['postid'];
+                            $chainvalue = $m['m__cover'] . $post['postid'];
                             $posttext = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
                                 $postdiscover = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
@@ -4093,7 +4093,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                                 'chainkey' => $chainkey,
                             );
 
-                            $postchain = $m['m__cover'] . $user['userid'];
+                            $chainvalue = $m['m__cover'] . $user['userid'];
                             $posttext = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
                                 $postdiscover = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
@@ -4119,7 +4119,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
 
             if (!$reference_type) {
                 //This word is not referencing anything!
-                $postchain = $word_text;
+                $chainvalue = $word_text;
                 $posttext = $word_text;
                 if (!$first_ref_hidden) {
                     $postdiscover = $word_text;
@@ -4128,14 +4128,14 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
             }
 
             //See what we found to add:
-            $linepostchain .= (!$first_word && $postchain ? ' ' : '') . $postchain;
+            $linechainvalue .= (!$first_word && $chainvalue ? ' ' : '') . $chainvalue;
             $lineposttext .= (!$first_word && $posttext ? ' ' : '') . $posttext;
             $linepostdiscover .= (!$first_word && $postdiscover ? ' ' : '') . $postdiscover;
             $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
 
         }
 
-        $post_index['postchain'] .= (!$first_line && $linepostchain ? "\n" : '') . $linepostchain;
+        $post_index['chainvalue'] .= (!$first_line && $linechainvalue ? "\n" : '') . $linechainvalue;
         $post_index['posttext'] .= (!$first_line && $lineposttext ? "\n" : '') . $lineposttext;
         $post_index['postdiscover'] .= ($linepostdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdiscover . '</div>' : '');
         $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');

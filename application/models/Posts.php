@@ -43,7 +43,7 @@ class Posts extends CIdea_cache
         $this->Chains->update($new_x['chainid'], array(
             'chainpostinput' => $new_x['chainid'],
             'chainvalue' => "#" . $add_fields['posthashtag']
-                . "\n" . $post_index['postchain']
+                . "\n" . $post_index['chainvalue']
         ));
 
         //Add to cache:

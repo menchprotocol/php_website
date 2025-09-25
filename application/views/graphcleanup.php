@@ -48,11 +48,22 @@ if($_GET['posthashtag']=='user') {
             $stats['users_void']++;
         } elseif (!count($es)) {
             $stats['users_creaetor_not_found']++;
+            //Update to Shervin:
+            $x['chainusercreator'] = 1;
+            $this->Chains->update($x['chainid'], array(
+                'chainusercreator' => $x['chainusercreator'],
+            ));
+            $this->Users->update($x['chainid'], array(
+                'usercreator' => $x['chainusercreator'],
+            ));
+            $es = $this->Users->read(array(
+                'userid' => $x['chainusercreator'],
+            ));
         }
         if ($x['chainvoid'] > 0 && count($es_cache)) {
             $stats['users_void_cachevalid']++;
         }
-        if (!$x['chainvoid'] && !count($es_cache)) {
+        if (!count($es_cache)) {
             $stats['users_valid_cachevoid']++;
         }
 
@@ -78,7 +89,7 @@ if($_GET['posthashtag']=='user') {
             $posttext .= "\n" . $social_chain['chainvalue'];
         }
 
-        $delete = !$total_links || $x['chainvoid'] > 0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
+        $delete = !$total_links || $x['chainvoid'] > 0 || $is_duplicate;
         if ($delete) {
             $stats['users_delete']++;
         }
@@ -93,8 +104,8 @@ if($_GET['posthashtag']=='user') {
             ( !$total_links ? '[ORPHAN]' : '') .
             ($x['chainvoid'] > 0 ? '[VOID]' : '') .
             ($is_duplicate ? '[DUPLICATE]' : '') .
-            (!$x['chainvoid'] && !count($es) ? '[users_creaetor_not_found]' : '') .
-            (!$x['chainvoid'] && !count($es_cache) ? '[users_valid_cachevoid]' : '') .
+            (!count($es) ? '[users_creaetor_not_found]' : '') .
+            (!count($es_cache) ? '[users_valid_cachevoid]' : '') .
             '</td>';
         $table .= '<td>T@' . $x['chainusertype'] . '<br />C@' . $x['chainusercreator'] . '<br />@' . $x['chainuserinput'] . '</td>';
         $table .= '<td><div style="max-width:233px;">' . nl2br(trim(htmlentities($posttext))) . '</div></td>';
@@ -111,7 +122,7 @@ if($_GET['posthashtag']=='user') {
     $table .= '<td>&nbsp;</td>';
     $table .= '<td><div style="max-width:233px;">INITIAL</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">INPUT</div></td>'; //RAW
-    $table .= '<td><div style="max-width:233px;">postchain</div></td>'; //RAW
+    $table .= '<td><div style="max-width:233px;">chainvalue</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">posttext</div></td>'; //TEXT
     $table .= '<td><div style="max-width:233px;">postdiscover</div></td>'; //DISCOVERY
     $table .= '<td><div style="max-width:233px;">postedit</div></td>'; //EDITOR
@@ -172,16 +183,20 @@ if($_GET['posthashtag']=='user') {
             $stats['posts_void']++;
         } elseif(!count($es)){
             $stats['posts_voidcreaetor']++;
+            //Update to Shervin:
+            $this->Chains->update($x['chainid'], array(
+                'chainusercreator' => 1,
+            ));
         }
         if($x['chainvoid']>0 && count($is)){
             $stats['posts_void_cachevalid']++;
         }
-        if(!$x['chainvoid'] && !count($is)){
+        if(!count($is)){
             $stats['posts_valid_cachevoid']++;
         }
 
 
-        if(!count($is)){
+        if(!count($is) && 0){
             //Add post:
             $post_new = $this->Posts->create(array(
                 //'postid' => $x['chainid'],
@@ -284,19 +299,9 @@ if($_GET['posthashtag']=='user') {
         }
 
 
-        if(!$x['chainvoid'] && !count($es)){
-            //Update to Shervin:
-            $this->Chains->update($x['chainid'], array(
-                'chainusercreator' => 1,
-            ));
-        }
-
-
         if(!strlen(trim($core_content))){
             $stats['posts_empty']++;
-            if(!$x['chainvoid']){
-                $stats['posts_empty_notvoid']++;
-            }
+            $stats['posts_empty_notvoid']++;
         }
 
         $delete = !$total_links || $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate;
@@ -304,16 +309,10 @@ if($_GET['posthashtag']=='user') {
             $stats['posts_delete']++;
         }
 
-        if(!$x['chainvoid'] && !count($es)){
-            //Update to Shervin:
-            $this->Chains->update($x['chainid'], array(
-                'chainusercreator' => 1,
-            ));
-        }
-
-        $post_index = post_index($posttext, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
+        $post_index = $x;
 
         /*
+        $post_index = post_index($posttext, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
         $this->Posts->update($x['chainid'], array(
             'posttext' => $post_index['posttext'],
             'postdiscover' => $post_index['postdiscover'],
@@ -323,7 +322,7 @@ if($_GET['posthashtag']=='user') {
         $this->db->where('chainid', $x['chainid']);
         $this->db->update('ideachains', array(
             'chainpostinput' =>  $x['chainid'],
-            'chainvalue' =>  '#'.$x['posthashtag']."\n".$post_index['postchain'],
+            'chainvalue' =>  '#'.$x['posthashtag']."\n".$post_index['chainvalue'],
         ));
 
         */
@@ -338,14 +337,14 @@ if($_GET['posthashtag']=='user') {
             ( $this_media ? '[ISMEDIA]' : '' ).
             ( !strlen(trim($core_content)) ? '[EMPTY]' : '' ).
             ( $is_duplicate ? '[DUPLICATE]' : '' ).
-            ( !$x['chainvoid'] && !count($es) ? '[posts_voidcreaetor]' : '' ).
-            ( !$x['chainvoid'] && !count($is) ? '[posts_valid_cachevoid]' : '' ).
+            ( !count($es) ? '[posts_voidcreaetor]' : '' ).
+            ( !count($is) ? '[posts_valid_cachevoid]' : '' ).
             '</td>';
 
         $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'<br />##'.$x['chainpostinput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.nl2br($initial_posttext).'</div></td>'; //INPUT
         $table .= '<td><div style="max-width:233px;">'.nl2br($posttext).'</div></td>'; //INPUT
-        $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['postchain']).'</div></td>'; //RAW
+        $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['chainvalue']).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['posttext']).'</div></td>'; //TEXT
         $table .= '<td><div style="max-width:233px;">'.($post_index['postdiscover']).'</div></td>'; //DISCOVER
         $table .= '<td><div style="max-width:233px;">'.($post_index['postedit']).'</div></td>'; //EDIT
