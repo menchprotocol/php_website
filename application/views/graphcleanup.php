@@ -8,7 +8,7 @@ $count = 0;
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
-if($focus_i['posthashtag']=='user') {
+if($_GET['posthashtag']=='user') {
 
     //USER
     $chainuserinput = array();
@@ -92,7 +92,7 @@ if($focus_i['posthashtag']=='user') {
     }
 
 
-} elseif($focus_i['posthashtag']=='post') {
+} elseif($_GET['posthashtag']=='post') {
 
     if(isset($_GET['reset'])){
         $q = $this->db->query('Update ideachains SET chainpostinput=0 WHERE chainusertype=12273 AND chainpostinput>0;');
