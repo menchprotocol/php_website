@@ -133,7 +133,6 @@ if($_GET['posthashtag']=='user') {
         'posts_empty' => 0,
         'posts_delete' => 0,
         'posts_duplicate' => 0,
-        'posts_empty_notvoid' => 0,
         'posts_void' => 0,
         'posts_voidcreaetor' => 0,
         'posts_void_cachevalid' => 0,
@@ -176,6 +175,11 @@ if($_GET['posthashtag']=='user') {
             $stats['posts_orphan']++;
         }
 
+        $posts_empty = count($is) && !strlen($is[0]['posttext']);
+        if($posts_empty){
+            $stats['posts_empty']++;
+        }
+
         $stats['posts_all']++;
         if($x['chainvoid']>0){
             $stats['posts_void']++;
@@ -203,15 +207,8 @@ if($_GET['posthashtag']=='user') {
             $is[0] = $post_new['post_create'];
         }
 
-        $core_content = trim($is[0]['posttext']);
 
-
-        if(!strlen(trim($core_content))){
-            $stats['posts_empty']++;
-            $stats['posts_empty_notvoid']++;
-        }
-
-        $delete = !$total_links || $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate || !count($is);
+        $delete = !$total_links || $x['chainvoid']>0 || $is_duplicate || !count($is);
         if($delete){
             $stats['posts_delete']++;
         }
@@ -224,6 +221,7 @@ if($_GET['posthashtag']=='user') {
                 'posttext' => '',
                 'postdiscover' => '',
                 'postedit' => '',
+                'posthashtag' => '',
             );
         }
 
@@ -238,7 +236,7 @@ if($_GET['posthashtag']=='user') {
         $this->db->where('chainid', $x['chainid']);
         $this->db->update('ideachains', array(
             'chainpostinput' =>  $x['chainid'],
-            'chainvalue' =>  '#'.$x['posthashtag']."\n".$post_index['chainvalue'],
+            'chainvalue' =>  '#'.$post_index['posthashtag']."\n".$post_index['chainvalue'],
         ));
         */
 
@@ -249,11 +247,11 @@ if($_GET['posthashtag']=='user') {
             ( $delete ? '[DELETED POST]' : '' ).
             ( !$total_links ? '[ORPHAN]' : '') .
             ( $x['chainvoid']>0 ? '[VOID]' : '' ).
-            ( !strlen(trim($core_content)) ? '[EMPTY]' : '' ).
             ( $is_duplicate ? '[DUPLICATE]' : '' ).
+            ( $posts_empty ? '[EMPTY]' : '' ).
             ( !count($es) ? '[posts_voidcreaetor]' : '' ).
             ( !count($is) ? '[posts_valid_cachevoid]' : '' ).
-            '<br />#'.$x['posthashtag'].'</td>';
+            '<br />#'.$post_index['posthashtag'].'</td>';
 
         $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['chainvalue']).'</div></td>'; //RAW
