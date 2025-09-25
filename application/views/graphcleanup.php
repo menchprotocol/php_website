@@ -1,6 +1,6 @@
 <?php
 
-$max_load = 999999999;
+$max_load = 1111;
 boost_power();
 $mentions = $this->config->item('users___13550');
 $ideas = $this->config->item('users___4486');
