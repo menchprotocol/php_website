@@ -3867,7 +3867,6 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
     $post_references = array();
     $chainkey = 0;
     $posttext = str_replace('	', ' ', $posttext);
-    //$posttext = preg_replace('/\s+/', ' ', $posttext);
 
     //See what we can find:
     foreach (explode("\n", $posttext) as $line_count => $line) {

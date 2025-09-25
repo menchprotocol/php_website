@@ -1,6 +1,6 @@
 <?php
 
-$max_load = 1597;
+$max_load = 99999999;
 boost_power();
 $mentions = $this->config->item('users___13550');
 $ideas = $this->config->item('users___4486');
@@ -247,7 +247,7 @@ if($_GET['posthashtag']=='user') {
             ( !count($is) ? '[posts_valid_cachevoid]' : '' ).
             '<br />#'.$x['posthashtag'].'</td>';
 
-        $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'<br />#'.$x['chainpostinput'].'</td>';
+        $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['chainvalue']).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['posttext']).'</div></td>'; //TEXT
         $table .= '<td><div style="max-width:233px;">'.($post_index['postdiscover']).'</div></td>'; //DISCOVER
