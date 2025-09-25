@@ -1,6 +1,6 @@
 <?php
 
-$max_load = 99999999;
+$max_load = 999999999;
 boost_power();
 $mentions = $this->config->item('users___13550');
 $ideas = $this->config->item('users___4486');
@@ -50,12 +50,12 @@ if($_GET['posthashtag']=='user') {
             $stats['users_creaetor_not_found']++;
             //Update to Shervin:
             $x['chainusercreator'] = 1;
+            /*
+             * //TODO ACTIVATE LATER
             $this->Chains->update($x['chainid'], array(
                 'chainusercreator' => $x['chainusercreator'],
             ));
-            $this->Users->update($x['chainid'], array(
-                'usercreator' => $x['chainusercreator'],
-            ));
+            */
             $es = $this->Users->read(array(
                 'userid' => $x['chainusercreator'],
             ));
@@ -149,7 +149,7 @@ if($_GET['posthashtag']=='user') {
     }
 
     $has_media = false;
-    foreach($this->Chains->read($filters, array('chainpostinput'), ( isset($_GET['limit']) ? $_GET['limit'] : $max_load ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+    foreach($this->Chains->read($filters, array(), ( isset($_GET['limit']) ? $_GET['limit'] : $max_load ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
         $is_duplicate = in_array($x['chainpostinput'], $chainpostinput);
 
@@ -211,12 +211,21 @@ if($_GET['posthashtag']=='user') {
             $stats['posts_empty_notvoid']++;
         }
 
-        $delete = !$total_links || $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate;
+        $delete = !$total_links || $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate || !count($is);
         if($delete){
             $stats['posts_delete']++;
         }
 
-        $post_index = $x;
+        if(count($is)){
+            $post_index = $is[0];
+        } else {
+            $post_index = array(
+                'chainvalue' => $x['chainvalue'],
+                'posttext' => '',
+                'postdiscover' => '',
+                'postedit' => '',
+            );
+        }
 
         /*
         $post_index = post_index($posttext, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
@@ -231,7 +240,6 @@ if($_GET['posthashtag']=='user') {
             'chainpostinput' =>  $x['chainid'],
             'chainvalue' =>  '#'.$x['posthashtag']."\n".$post_index['chainvalue'],
         ));
-
         */
 
 
