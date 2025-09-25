@@ -11,7 +11,7 @@ $table = '<table class="table table-sm table-striped stats-table mini-stats-tabl
 if($focus_i['posthashtag']=='user') {
 
     //USER
-    $chainuseroutput = array();
+    $chainuserinput = array();
     $stats = array(
         'users_all' => 0,
         'users_delete' => 0,
@@ -26,16 +26,16 @@ if($focus_i['posthashtag']=='user') {
         'chainusertype' => 12274,
     ), array(), 0, 0, array('chainid' => 'ASC')) as $x) {
 
-        $is_duplicate = in_array($x['chainuseroutput'], $chainuseroutput);
+        $is_duplicate = in_array($x['chainuserinput'], $chainuserinput);
         if (!$is_duplicate) {
-            array_push($chainuseroutput, $x['chainuseroutput']);
+            array_push($chainuserinput, $x['chainuserinput']);
         } else {
             $stats['users_duplicate']++;
         }
 
         $count++;
         $es_cache = $this->Users->read(array(
-            'userid' => $x['chainuseroutput'],
+            'userid' => $x['chainuserinput'],
         ));
         $es = $this->Users->read(array(
             'userid' => $x['chainusercreator'],
@@ -66,7 +66,7 @@ if($focus_i['posthashtag']=='user') {
         foreach ($this->Ideachains->read(array(
             'LENGTH(chainvalue) > 0' => null,
             'chainuserinput IN (11035,42628)' => null,
-            'chainuseroutput' => $x['chainuseroutput'],
+            'chainuseroutput' => $x['chainuserinput'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0, 0) as $social_chain) {
             $posttext .= "\n" . $social_chain['chainvalue'];
@@ -85,7 +85,7 @@ if($focus_i['posthashtag']=='user') {
             (!$x['chainvoid'] && !count($es) ? '[users_creaetor_not_found]' : '') .
             (!$x['chainvoid'] && !count($es_cache) ? '[users_valid_cachevoid]' : '') .
             '</td>';
-        $table .= '<td>T@' . $x['chainusertype'] . '<br />C@' . $x['chainusercreator'] . '<br />@' . $x['chainuseroutput'] . '</td>';
+        $table .= '<td>T@' . $x['chainusertype'] . '<br />C@' . $x['chainusercreator'] . '<br />@' . $x['chainuserinput'] . '</td>';
         $table .= '<td><div style="max-width:233px;">' . nl2br(trim(htmlentities($posttext))) . '</div></td>';
         //$table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($posttext))).'</div></td>';
         $table .= '</tr>';
