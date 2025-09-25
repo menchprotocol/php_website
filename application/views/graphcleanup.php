@@ -69,24 +69,25 @@ if($_GET['posthashtag']=='user') {
 
         //Orphan?
         $total_links = count($this->Chains->read(array(
+            'chainid !=' => $x['chainid'],
             '(chainuserdomain='.$x['chainuserinput'].' OR chainusertype='.$x['chainuserinput'].' OR chainusercreator='.$x['chainuserinput'].' OR chainuserinput='.$x['chainuserinput'].' OR chainuseroutput='.$x['chainuserinput'].')' => null,
         )));
 
         //Fetch from Cache table:
         if (count($es_cache)) {
-            $posttext = '@' . $es_cache[0]['userhandle'] . "\n" . $es_cache[0]['username'] . "\n" . $es_cache[0]['usercover'];
+            $userbio = '@' . $es_cache[0]['userhandle'] . "\n" . $es_cache[0]['username'] . "\n" . $es_cache[0]['usercover'];
         } else {
-            $posttext = '@???' . $x['chainvalue'] . "\n" . $x['chainvalue'] . "\nfar fa-user";
+            $userbio = '@???' . $x['chainvalue'] . "\n" . $x['chainvalue'] . "\nfar fa-user";
         }
 
-        //Append Description if any
+        //Append Bio if any
         foreach ($this->Chains->read(array(
             'LENGTH(chainvalue) > 0' => null,
             'chainuserinput IN (11035,42628)' => null,
             'chainuseroutput' => $x['chainuserinput'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0, 0) as $social_chain) {
-            $posttext .= "\n" . $social_chain['chainvalue'];
+            $userbio .= "\n" . $social_chain['chainvalue'];
         }
 
         $delete = !$total_links || $x['chainvoid'] > 0 || $is_duplicate;
@@ -108,8 +109,7 @@ if($_GET['posthashtag']=='user') {
             (!count($es_cache) ? '[users_valid_cachevoid]' : '') .
             '</td>';
         $table .= '<td>T@' . $x['chainusertype'] . '<br />C@' . $x['chainusercreator'] . '<br />@' . $x['chainuserinput'] . '</td>';
-        $table .= '<td><div style="max-width:233px;">' . nl2br(trim(htmlentities($posttext))) . '</div></td>';
-        //$table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($posttext))).'</div></td>';
+        $table .= '<td><div style="max-width:233px;">' . nl2br(trim(htmlentities($userbio))) . '</div></td>';
         $table .= '</tr>';
     }
 
@@ -120,13 +120,10 @@ if($_GET['posthashtag']=='user') {
     $table .= '<tr>';
     $table .= '<td>&nbsp;</td>';
     $table .= '<td>&nbsp;</td>';
-    $table .= '<td><div style="max-width:233px;">INITIAL</div></td>'; //RAW
-    $table .= '<td><div style="max-width:233px;">INPUT</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">chainvalue</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">posttext</div></td>'; //TEXT
     $table .= '<td><div style="max-width:233px;">postdiscover</div></td>'; //DISCOVERY
     $table .= '<td><div style="max-width:233px;">postedit</div></td>'; //EDITOR
-    $table .= '<td><div style="max-width:233px;">stats</div></td>'; //EDITOR
     $table .= '</tr>';
 
     $chainpostinput = array();
@@ -172,6 +169,7 @@ if($_GET['posthashtag']=='user') {
 
         //Orphan?
         $total_links = count($this->Chains->read(array(
+            'chainid !=' => $x['chainid'],
             '(chainpostinput='.$x['chainpostinput'].' OR chainpostoutput='.$x['chainpostinput'].')' => null,
         )));
         if(!$total_links){
@@ -206,97 +204,6 @@ if($_GET['posthashtag']=='user') {
         }
 
         $core_content = trim($is[0]['posttext']);
-        $posttext = $is[0]['posttext'];
-
-
-        //Remove duplicate:
-        $new_posttext = '';
-        $current_lines = array();
-        $all_lines = explode("\n", $posttext);
-        foreach ($all_lines as $line_count => $line) {
-            $term = substr(trim($line), 1);
-            if(
-                !$line_count
-                && count($all_lines)>1
-                && substr(trim($line), 0, 1)=='#'
-                && ctype_alnum($term)
-                && ($term==$x['posthashtag'] || !count($this->Posts->read(array(
-                        'LOWER(posthashtag)' => strtolower($term),
-                    ))))){
-                //Remove this line:
-                continue;
-            }
-            if(in_array(substr(trim($line), 0, 1), array('#','@')) || in_array(substr(trim($line), 1, 1), array('#','@'))){
-                if(!in_array(trim($line), $current_lines) && strtolower(trim($line))!='@shervin' && strtolower(trim($line))!='@grumo'){
-                    $new_posttext .= (strlen($new_posttext) ? "\n" : '').$line;
-                    array_push($current_lines, trim($line));
-                } else {
-                    //Remove this line:
-                    continue;
-                }
-            } else {
-                $new_posttext .= (strlen($new_posttext) ? "\n" : '').$line;
-            }
-        }
-
-        //Did we trim?
-        if($new_posttext!=$posttext){
-            //Yes, adjust:
-            $posttext = $new_posttext;
-        }
-
-        $initial_posttext = $posttext;
-
-
-        $this_media = false;
-
-        //Add Ideas:
-        foreach ($this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___4486')) . ')' => null, //Ideas
-            'chainpostinput' => $x['chainpostinput'],
-        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
-            $user = ( strlen($ideas[$x2['chainusertype']]['m__cover'])>=1 && strlen($ideas[$x2['chainusertype']]['m__cover'])<=2 ? $ideas[$x2['chainusertype']]['m__cover'] : '#' );
-            if(substr_count($posttext, $user.$x2['posthashtag'])){
-                continue;
-            }
-            if(!$count){
-                $core_content .= "\n";
-                $posttext .= "\n";
-            }
-
-            $posttext .= "\n".$user.$x2['posthashtag'];
-            $core_content .= "\n".$user.$x2['posthashtag'];
-        }
-
-        if($this_media){
-            $has_media = true;
-        }
-
-        //Fetch Mentions
-        foreach($this->Chains->read(array(
-            'chainpostoutput' => $x['chainpostinput'],
-            'chainuserinput NOT IN (1,2,32337)' => null,
-            'chainusertype IN (' . join(',', $this->config->item('userids___13550')) . ')' => null, //Mentions
-        ), array('chainuserinput')) as $count => $x2){
-
-            //Define user:
-            $user = ( strlen($mentions[$x2['chainusertype']]['m__cover'])>=1 && strlen($mentions[$x2['chainusertype']]['m__cover'])<=2 ? $mentions[$x2['chainusertype']]['m__cover'] : '@' );
-
-            if(substr_count($posttext, $user.$x2['userhandle'])){
-                //Reference already there:
-                continue;
-            }
-            if(!$count){
-                $core_content .= "\n";
-                $posttext .= "\n";
-            }
-            $core_content .= "\n".$user.$x2['userhandle'];
-            $posttext .= "\n".$user.$x2['userhandle'];
-            if(strlen($x2['chainvalue'])){
-                $posttext .= ' '.$x2['chainvalue'];
-            }
-
-        }
 
 
         if(!strlen(trim($core_content))){
@@ -334,21 +241,17 @@ if($_GET['posthashtag']=='user') {
             ( $delete ? '[DELETED POST]' : '' ).
             ( !$total_links ? '[ORPHAN]' : '') .
             ( $x['chainvoid']>0 ? '[VOID]' : '' ).
-            ( $this_media ? '[ISMEDIA]' : '' ).
             ( !strlen(trim($core_content)) ? '[EMPTY]' : '' ).
             ( $is_duplicate ? '[DUPLICATE]' : '' ).
             ( !count($es) ? '[posts_voidcreaetor]' : '' ).
             ( !count($is) ? '[posts_valid_cachevoid]' : '' ).
-            '</td>';
+            '<br />#'.$x['posthashtag'].'</td>';
 
-        $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'<br />##'.$x['chainpostinput'].'</td>';
-        $table .= '<td><div style="max-width:233px;">'.nl2br($initial_posttext).'</div></td>'; //INPUT
-        $table .= '<td><div style="max-width:233px;">'.nl2br($posttext).'</div></td>'; //INPUT
+        $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'<br />#'.$x['chainpostinput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['chainvalue']).'</div></td>'; //RAW
         $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['posttext']).'</div></td>'; //TEXT
         $table .= '<td><div style="max-width:233px;">'.($post_index['postdiscover']).'</div></td>'; //DISCOVER
         $table .= '<td><div style="max-width:233px;">'.($post_index['postedit']).'</div></td>'; //EDIT
-        //$table .= '<td><div style="max-width:233px;">'.print_r($post_index['actionstats'], true).'</div></td>'; //EDIT
         $table .= '</tr>';
 
     }
