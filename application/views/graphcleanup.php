@@ -582,4 +582,12 @@ $table .= '</table>';
 
 print_r($stats);
 echo $table;
-echo '<style> img { max-width: 100% !important;; }</style>';
+echo '<style> 
+
+    img { max-width: 100% !important; } 
+    
+    .maxwidth {
+        max-width: 1200px !important;
+    }
+        
+        </style>';
