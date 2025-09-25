@@ -860,7 +860,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <tr>
                                     <td>
                                         <!-- Upload Cover -->
-                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $users___12274[42359]['m__title'] ?>"><?= $users___12274[42359]['m__cover'] ?></a>
+                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $users___11035[42359]['m__title'] ?>"><?= $users___11035[42359]['m__cover'] ?></a>
                                     </td>
                                     <td class="hidden_superpower__13758">
                                         <!-- EMOJI -->
