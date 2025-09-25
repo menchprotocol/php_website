@@ -581,24 +581,24 @@ function post_copy(postid, do_recursive) {
 
 function user_title(userid) {
     //Load Instant Fields:
-    var return_title = '';
+    var return_string = '';
     if ($('.usertitle_' + userid + ':first').text().length) {
-        return_title = $('.usertitle_' + userid + ':first').text();
+        return_string = $('.usertitle_' + userid + ':first').text();
     } else if ($('.usertitle_' + userid + ':first').val().length) {
-        return_title = $('.usertitle_' + userid + ':first').val();
+        return_string = $('.usertitle_' + userid + ':first').val();
     }
-    return return_title;
+    return return_string;
 }
 
-function user_summary(userid) {
+function user_bio(userid) {
     //Load Instant Fields:
-    var return_title = '';
-    if ($('.usertitle_' + userid + ':first').text().length) {
-        return_title = $('.usertitle_' + userid + ':first').text();
-    } else if ($('.usertitle_' + userid + ':first').val().length) {
-        return_title = $('.usertitle_' + userid + ':first').val();
+    var return_string = '';
+    if ($('.userbio_' + userid + ':first').text().length) {
+        return_string = $('.userbio_' + userid + ':first').text();
+    } else if ($('.userbio_' + userid + ':first').val().length) {
+        return_string = $('.userbio_' + userid + ':first').val();
     }
-    return return_title;
+    return return_string;
 }
 
 function user_copy(userid) {
@@ -2437,14 +2437,14 @@ function user_editor(userid = 0, chainid = 0, bar_title = null, chainvalue = nul
 
     //Load Instant Fields:
     var current_title = user_title(userid);
-    var current_summary = user_summary(userid);
+    var current_bio = user_bio(userid);
     var current_cover = $('.ui_usercover_' + userid + ':first').attr('raw_cover');
 
     $('#modal31912 .save_userid').val(userid);
     $('#modal31912 .save_chainid').val(chainid);
     $('#modal31912 .save_userhandle').val($('.ui_userhandle_' + userid + ':first').text());
     $('#modal31912 .save_username').val(current_title);
-    $('#modal31912 .save_userbio').val(current_summary);
+    $('#modal31912 .save_userbio').val(current_bio);
     
 
     $('#modal31912 .random_animal').html('<i class="' + random_animal(true) + '"></i>');
