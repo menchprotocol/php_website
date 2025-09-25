@@ -3115,9 +3115,9 @@ h4.main__title{
     margin-top: -24%;
 }
 .list-covers {
-    border-bottom: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000;
+    border-bottom: 1px solid #999999;
+    border-left: 1px solid #999999;
+    border-right: 1px solid #999999;
 }
 .list-covers .card_cover {
     text-align: center;

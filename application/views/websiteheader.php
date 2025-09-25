@@ -839,7 +839,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="hidden" class="save_chainid" value="0" />
 
 
-                        <!-- User Name -->
+                        <!-- User Handle -->
                         <div class="dynamic_editing_input">
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_userhandle" style="margin-top: -20px;" placeholder="'.( strlen($users___12274[32338]['m__message']) ? $users___12274[32338]['m__message'] : $users___12274[32338]['m__title'] ).'...'.'">';  ?></h3>
                         </div>
