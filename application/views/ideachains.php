@@ -13,18 +13,18 @@
 $query_filters = array();
 $joined_by = array();
 
-//We have a special OR filter when combined with handleterm & hashtagterm
-$input_e = (isset($_GET['handleterm']) && strlen($_GET['handleterm']) > 0);
+//We have a special OR filter when combined with userhandle & posthashtag
+$input_e = (isset($_GET['userhandle']) && strlen($_GET['userhandle']) > 0);
 $focus_e = false;
-$input_i = (isset($_GET['hashtagterm']) && strlen($_GET['hashtagterm']) > 0);
+$input_i = (isset($_GET['posthashtag']) && strlen($_GET['posthashtag']) > 0);
 $focus_i = false;
 
 if ($input_e) {
-    foreach ($this->Handles->read(array(
-        'LOWER(handleterm)' => strtolower($_GET['handleterm']),
-    )) as $handle_found) {
-        $focus_e = $handle_found;
-        $_GET['handleterm'] = $handle_found['handleterm'];
+    foreach ($this->Users->read(array(
+        'LOWER(userhandle)' => strtolower($_GET['userhandle']),
+    )) as $user_found) {
+        $focus_e = $user_found;
+        $_GET['userhandle'] = $user_found['userhandle'];
     }
     if (!$focus_e) {
         //Invalid input!
@@ -33,11 +33,11 @@ if ($input_e) {
 }
 
 if ($input_i) {
-    foreach ($this->Hashtags->read(array(
-        'LOWER(hashtagterm)' => strtolower($_GET['hashtagterm']),
-    )) as $hashtag_found) {
-        $focus_i = $hashtag_found;
-        $_GET['hashtagterm'] = $hashtag_found['hashtagterm'];
+    foreach ($this->Posts->read(array(
+        'LOWER(posthashtag)' => strtolower($_GET['posthashtag']),
+    )) as $post_found) {
+        $focus_i = $post_found;
+        $_GET['posthashtag'] = $post_found['posthashtag'];
     }
     if (!$focus_i) {
         //Invalid input!
@@ -45,52 +45,52 @@ if ($input_i) {
     }
 }
 
-$any_hashtaghandle_set = $input_i || $input_e;
+$any_postuser_set = $input_i || $input_e;
 
 
-if (isset($_GET['chainhandlecreator']) && strlen($_GET['chainhandlecreator']) > 0) {
-    if (substr_count($_GET['chainhandlecreator'], ',') > 0) {
+if (isset($_GET['chainusercreator']) && strlen($_GET['chainusercreator']) > 0) {
+    if (substr_count($_GET['chainusercreator'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainhandlecreator IN (' . $_GET['chainhandlecreator'] . '))'] = null;
-    } elseif (intval($_GET['chainhandlecreator']) > 0) {
-        $query_filters['chainhandlecreator'] = $_GET['chainhandlecreator'];
+        $query_filters['( chainusercreator IN (' . $_GET['chainusercreator'] . '))'] = null;
+    } elseif (intval($_GET['chainusercreator']) > 0) {
+        $query_filters['chainusercreator'] = $_GET['chainusercreator'];
     }
 }
 
 
-if (isset($_GET['chainhandleinput']) && strlen($_GET['chainhandleinput']) > 0) {
-    if (substr_count($_GET['chainhandleinput'], ',') > 0) {
+if (isset($_GET['chainuserinput']) && strlen($_GET['chainuserinput']) > 0) {
+    if (substr_count($_GET['chainuserinput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainhandleinput IN (' . $_GET['chainhandleinput'] . '))'] = null;
-    } elseif (intval($_GET['chainhandleinput']) > 0) {
-        $query_filters['chainhandleinput'] = $_GET['chainhandleinput'];
+        $query_filters['( chainuserinput IN (' . $_GET['chainuserinput'] . '))'] = null;
+    } elseif (intval($_GET['chainuserinput']) > 0) {
+        $query_filters['chainuserinput'] = $_GET['chainuserinput'];
     }
 }
 
-if (isset($_GET['chainhandleoutput']) && strlen($_GET['chainhandleoutput']) > 0) {
-    if (substr_count($_GET['chainhandleoutput'], ',') > 0) {
+if (isset($_GET['chainuseroutput']) && strlen($_GET['chainuseroutput']) > 0) {
+    if (substr_count($_GET['chainuseroutput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainhandleoutput IN (' . $_GET['chainhandleoutput'] . '))'] = null;
-    } elseif (intval($_GET['chainhandleoutput']) > 0) {
-        $query_filters['chainhandleoutput'] = $_GET['chainhandleoutput'];
+        $query_filters['( chainuseroutput IN (' . $_GET['chainuseroutput'] . '))'] = null;
+    } elseif (intval($_GET['chainuseroutput']) > 0) {
+        $query_filters['chainuseroutput'] = $_GET['chainuseroutput'];
     }
 }
 
-if (isset($_GET['chainhashtaginput']) && strlen($_GET['chainhashtaginput']) > 0) {
-    if (substr_count($_GET['chainhashtaginput'], ',') > 0) {
+if (isset($_GET['chainpostinput']) && strlen($_GET['chainpostinput']) > 0) {
+    if (substr_count($_GET['chainpostinput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainhashtaginput IN (' . $_GET['chainhashtaginput'] . '))'] = null;
-    } elseif (intval($_GET['chainhashtaginput']) > 0) {
-        $query_filters['chainhashtaginput'] = $_GET['chainhashtaginput'];
+        $query_filters['( chainpostinput IN (' . $_GET['chainpostinput'] . '))'] = null;
+    } elseif (intval($_GET['chainpostinput']) > 0) {
+        $query_filters['chainpostinput'] = $_GET['chainpostinput'];
     }
 }
 
-if (isset($_GET['chainhashtagoutput']) && strlen($_GET['chainhashtagoutput']) > 0) {
-    if (substr_count($_GET['chainhashtagoutput'], ',') > 0) {
+if (isset($_GET['chainpostoutput']) && strlen($_GET['chainpostoutput']) > 0) {
+    if (substr_count($_GET['chainpostoutput'], ',') > 0) {
         //This is multiple:
-        $query_filters['( chainhashtagoutput IN (' . $_GET['chainhashtagoutput'] . '))'] = null;
-    } elseif (intval($_GET['chainhashtagoutput']) > 0) {
-        $query_filters['chainhashtagoutput'] = $_GET['chainhashtagoutput'];
+        $query_filters['( chainpostoutput IN (' . $_GET['chainpostoutput'] . '))'] = null;
+    } elseif (intval($_GET['chainpostoutput']) > 0) {
+        $query_filters['chainpostoutput'] = $_GET['chainpostoutput'];
     }
 }
 
@@ -105,13 +105,13 @@ if (isset($_GET['chainid']) && strlen($_GET['chainid']) > 0) {
 
 if ($input_e) {
     //We need to look for both following/follower
-    $query_filters['( chainhandleoutput = ' . $focus_e['handleid'] . ' OR chainhandleinput = ' . $focus_e['handleid'] . ' OR chainhandlecreator = ' . $focus_e['handleid'] . ' )'] = null;
+    $query_filters['( chainuseroutput = ' . $focus_e['userid'] . ' OR chainuserinput = ' . $focus_e['userid'] . ' OR chainusercreator = ' . $focus_e['userid'] . ' )'] = null;
 }
 
 
 if ($input_i) {
     //We need to look for both following/follower
-    $query_filters['( chainhashtagoutput = ' . $focus_i['hashtagid'] . ' OR chainhashtaginput = ' . $focus_i['hashtagid'] . ')'] = null;
+    $query_filters['( chainpostoutput = ' . $focus_i['postid'] . ' OR chainpostinput = ' . $focus_i['postid'] . ')'] = null;
 
 }
 
@@ -156,20 +156,20 @@ $query_filters['chainvoid >='] = 0; //Any Chain
 
 
 //Make sure its a valid type considering other filters:
-if (isset($_GET['chainhandletype'])) {
+if (isset($_GET['chainusertype'])) {
 
-    if (substr_count($_GET['chainhandletype'], ',') > 0) {
+    if (substr_count($_GET['chainusertype'], ',') > 0) {
         //This is multiple:
-        $query_filters['chainhandletype IN (' . $_GET['chainhandletype'] . ')'] = null;
-    } elseif (intval($_GET['chainhandletype']) > 0) {
-        $query_filters['chainhandletype'] = intval($_GET['chainhandletype']);
+        $query_filters['chainusertype IN (' . $_GET['chainusertype'] . ')'] = null;
+    } elseif (intval($_GET['chainusertype']) > 0) {
+        $query_filters['chainusertype'] = intval($_GET['chainusertype']);
     }
 
 }
 
 $has_filters = (count($_GET) > 0);
 
-$handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+$users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
 ?>
 
@@ -214,7 +214,7 @@ $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
                 alert(data.message);
             } else {
                 //Load Report:
-                $('#table_ideachain tr:last').after(data.message);
+                $('#table_ideachains tr:last').after(data.message);
                 if (data.overall_stats.length) {
                     $('.overall_stats').html(data.overall_stats);
                 }
@@ -234,7 +234,7 @@ $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
 
     $(document).ready(function () {
 
-        //Load first page of Chains:
+        //Load first page of Ideachains:
         chain_load();
 
         $(function () {
@@ -258,32 +258,32 @@ echo '<form action="" method="GET">';
 
 echo '<table class="table table-sm maxout" style="vertical-align: top;"><tr>';
 
-//ANY HASHTAG
+//ANY POST
 echo '<td><div>';
-echo '<span class="mini-header">ANY HASHTAG:</span>';
-echo '<input type="text" name="hashtagterm" value="' . ($input_i ? $_GET['hashtagterm'] : '') . '" class="form-control border">';
+echo '<span class="mini-header">ANY POST:</span>';
+echo '<input type="text" name="posthashtag" value="' . ($input_i ? $_GET['posthashtag'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">HASHTAG PREVIOUS:</span><input type="text" name="chainhashtaginput" value="' . ((isset($_GET['chainhashtaginput'])) ? $_GET['chainhashtaginput'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">POST PREVIOUS:</span><input type="text" name="chainpostinput" value="' . ((isset($_GET['chainpostinput'])) ? $_GET['chainpostinput'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">HASHTAG NEXT:</span><input type="text" name="chainhashtagoutput" value="' . ((isset($_GET['chainhashtagoutput'])) ? $_GET['chainhashtagoutput'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">POST NEXT:</span><input type="text" name="chainpostoutput" value="' . ((isset($_GET['chainpostoutput'])) ? $_GET['chainpostoutput'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
 
 echo '<table class="table table-sm maxout"><tr>';
 
-//ANY HANDLE
+//ANY USER
 echo '<td><div>';
-echo '<span class="mini-header">ANY HANDLE:</span>';
-echo '<input type="text" name="handleterm" value="' . ($input_e ? $_GET['handleterm'] : '') . '" class="form-control border">';
+echo '<span class="mini-header">ANY USER:</span>';
+echo '<input type="text" name="userhandle" value="' . ($input_e ? $_GET['userhandle'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">HANDLE CREATOR:</span><input type="text" name="chainhandlecreator" value="' . ((isset($_GET['chainhandlecreator'])) ? $_GET['chainhandlecreator'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">USER CREATOR:</span><input type="text" name="chainusercreator" value="' . ((isset($_GET['chainusercreator'])) ? $_GET['chainusercreator'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">HANDLE PROFILE:</span><input type="text" name="chainhandleinput" value="' . ((isset($_GET['chainhandleinput'])) ? $_GET['chainhandleinput'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">USER PROFILE:</span><input type="text" name="chainuserinput" value="' . ((isset($_GET['chainuserinput'])) ? $_GET['chainuserinput'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">HANDLE followers:</span><input type="text" name="chainhandleoutput" value="' . ((isset($_GET['chainhandleoutput'])) ? $_GET['chainhandleoutput'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">USER followers:</span><input type="text" name="chainuseroutput" value="' . ((isset($_GET['chainuseroutput'])) ? $_GET['chainuseroutput'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -310,7 +310,7 @@ echo '<span class="mini-header">Chain MESSAGE SEARCH:</span>';
 echo '<input type="text" name="chainvalue_find" value="' . ((isset($_GET['chainvalue_find'])) ? $_GET['chainvalue_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0 && handle_session(12701)) {
+if (isset($_GET['chainvalue_find']) && strlen($_GET['chainvalue_find']) > 0 && user_session(12701)) {
     //Give Option to Replace:
     echo '<td><div>';
     echo '<span class="mini-header">Chain MESSAGE REPLACE:</span>';
@@ -341,23 +341,23 @@ echo '<td>';
 echo '<div>';
 echo '<span class="mini-header">Chain TYPE:</span>';
 
-if (isset($_GET['chainhandletype']) && substr_count($_GET['chainhandletype'], ',') > 0) {
+if (isset($_GET['chainusertype']) && substr_count($_GET['chainusertype'], ',') > 0) {
 
     //We have multiple predefined Chain types, so we must use a text input:
-    echo '<input type="text" name="chainhandletype" value="' . $_GET['chainhandletype'] . '" class="form-control border">';
+    echo '<input type="text" name="chainusertype" value="' . $_GET['chainusertype'] . '" class="form-control border">';
 
 } else {
 
-    echo '<select class="form-control border" name="chainhandletype" id="chainhandletype" class="border" style="width: 100% !important;">';
+    echo '<select class="form-control border" name="chainusertype" id="chainusertype" class="border" style="width: 100% !important;">';
 
-    if (isset($_GET['chainhandlecreator'])) {
+    if (isset($_GET['chainusercreator'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach ($this->Chains->read($ini_filter, array('chainhandletype'), 0, 0, handle_sort(), 'COUNT(chainhandletype) as total_count, handlename, chainhandletype', 'chainhandletype, handlename') as $x) {
+        foreach ($this->Ideachains->read($ini_filter, array('chainusertype'), 0, 0, user_sort(), 'COUNT(chainusertype) as total_count, username, chainusertype', 'chainusertype, username') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['chainhandletype'] . '" ' . ((isset($_GET['chainhandletype']) && $_GET['chainhandletype'] == $x['chainhandletype']) ? 'selected="selected"' : '') . '>' . $x['handlename'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['chainusertype'] . '" ' . ((isset($_GET['chainusertype']) && $_GET['chainusertype'] == $x['chainusertype']) ? 'selected="selected"' : '') . '>' . $x['username'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 
@@ -369,9 +369,9 @@ if (isset($_GET['chainhandletype']) && substr_count($_GET['chainhandletype'], ',
 
         //Load all fast:
         echo '<option value="0">ALL Chain TYPES</option>';
-        foreach ($this->config->item('handles___4593') /* DISCOVERY Types */ as $handleid => $m) {
+        foreach ($this->config->item('users___4593') /* DISCOVERY Types */ as $userid => $m) {
             //Echo drop down:
-            echo '<option value="' . $handleid . '" ' . ((isset($_GET['chainhandletype']) && $_GET['chainhandletype'] == $handleid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+            echo '<option value="' . $userid . '" ' . ((isset($_GET['chainusertype']) && $_GET['chainusertype'] == $userid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
 
     }
@@ -403,21 +403,21 @@ echo '</div>';
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
 
-echo '<div class="filter_right grey">'.(handle_session(12701) ? '<span class="icon-block-xs">' . $handles___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $handles___11035[12707]['m__title'] . '</a>' : '').'</div>';
+echo '<div class="filter_right grey">'.(user_session(12701) ? '<span class="icon-block-xs">' . $users___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $users___11035[12707]['m__title'] . '</a>' : '').'</div>';
 
 
 //Table Header
 $row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 1px solid #000000; border-bottom: 0px solid #FFFFFF !important;">';
 $row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 1px solid #000000;">';
-foreach ($this->config->item('handles___4341') as $chainhandletype => $m) {
-    if($chainhandletype==4362 || in_array($chainhandletype, $this->config->item('handleids___6160'))){
-        //Handle Cover:
-        $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
+foreach ($this->config->item('users___4341') as $chainusertype => $m) {
+    if($chainusertype==4362 || in_array($chainusertype, $this->config->item('userids___6160'))){
+        //User Cover:
+        $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__user'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
-        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__user'].'">' . $m['m__title'] . '</a></th>';
     }
-    if(in_array($chainhandletype, $this->config->item('handleids___1579727'))) {
+    if(in_array($chainusertype, $this->config->item('userids___1579727'))) {
         //Second row:
         $row2 .= $column_value;
     } else {
@@ -426,7 +426,7 @@ foreach ($this->config->item('handles___4341') as $chainhandletype => $m) {
 }
 $row1 .= '</tr>';
 $row2 .= '</tr>';
-echo '<table id="table_ideachain" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
+echo '<table id="table_ideachains" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
 
 //Table Data
 echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';

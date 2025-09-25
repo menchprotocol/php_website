@@ -1,17 +1,17 @@
 <?php
 
-$hashtagterm = (isset($_GET['hashtagterm']) && strlen($_GET['hashtagterm']) ? $_GET['hashtagterm'] : false );
+$posthashtag = (isset($_GET['posthashtag']) && strlen($_GET['posthashtag']) ? $_GET['posthashtag'] : false );
 
 //Make sure not logged in:
-if($handle_session['handleid']){
+if($user_session['userid']){
 
-    js_php_redirect(( $hashtagterm ? guestlogin . view_memory(42903, 33286) . $hashtagterm : view_memory(42903,42902).$handle_session['handleterm'] ), 13);
+    js_php_redirect(( $posthashtag ? guestlogin . view_memory(42903, 33286) . $posthashtag : view_memory(42903,42902).$user_session['userhandle'] ), 13);
 
 } else {
 
-    $handlecover_generator = handlecover_generator(12279);
-    $handle_result = $this->Handles->join(view_random_title(), null, null, $handlecover_generator);
-    js_php_redirect(( $hashtagterm ? guestlogin . view_memory(42903, 33286) . $hashtagterm : view_memory(42903,42902).$handle_result['e']['handleterm'] ), 13);
+    $usercover_generator = usercover_generator(12279);
+    $user_result = $this->Users->join(view_random_title(), null, null, $usercover_generator);
+    js_php_redirect(( $posthashtag ? guestlogin . view_memory(42903, 33286) . $posthashtag : view_memory(42903,42902).$user_result['e']['userhandle'] ), 13);
 
 }
 

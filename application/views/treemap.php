@@ -1,11 +1,11 @@
 <?php
 
-//Focus Handle:
+//Focus User:
 echo '<div class="view_12274 row justify-content">';
-echo handle_view(42287, $focus_e, null);
+echo user_view(42287, $focus_e, null);
 echo '</div>';
 
-//Hashtag Tree:
+//Post Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Chains->history_discovered($focus_i, $focus_e['handleid']));
+view_tree($this->Ideachains->history_discovered($focus_i, $focus_e['userid']));
 echo '</div>';

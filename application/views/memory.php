@@ -11,84 +11,84 @@ $routes_text = $memory_text;
 $pinned_down = array();
 $pinned_up = array();
 $total_nodes = 0;
-$biggest_handle_count = 0;
-$biggest_handle_handle = '';
+$biggest_user_count = 0;
+$biggest_user_user = '';
 
 
 //CONFIG VARS
-foreach ($this->Chains->read(array(
-    'chainhandleinput' => 4527,
-    'chainhandletype' => 4230,
-), array('chainhandleoutput'), 0, 0, array('handleid' => 'ASC')) as $en) {
+foreach ($this->Ideachains->read(array(
+    'chainuserinput' => 4527,
+    'chainusertype' => 4230,
+), array('chainuseroutput'), 0, 0, array('userid' => 'ASC')) as $en) {
 
     //Now fetch all its followers:
-    $down__e = $this->Chains->read(array(
-        'chainhandleinput' => $en['chainhandleoutput'],
-        'chainhandletype' => 4230,
-    ), array('chainhandleoutput'), 0, 0, handle_sort());
+    $down__e = $this->Ideachains->read(array(
+        'chainuserinput' => $en['chainuseroutput'],
+        'chainusertype' => 4230,
+    ), array('chainuseroutput'), 0, 0, user_sort());
 
 
     $total_nodes += (1 + count($down__e));
-    if (count($down__e) > $biggest_handle_count) {
-        $biggest_handle_count = count($down__e);
-        $biggest_handle_handle = '@' . $en['handleterm'];
+    if (count($down__e) > $biggest_user_count) {
+        $biggest_user_count = count($down__e);
+        $biggest_user_user = '@' . $en['userhandle'];
     }
 
     //Generate raw IDs:
     $down_ids = array();
     $down_titles = array();
     foreach ($down__e as $follower) {
-        if ($follower['handleid'] > 0) {
-            array_push($down_ids, $follower['handleid']);
-            array_push($down_titles, $follower['handlename']);
+        if ($follower['userid'] > 0) {
+            array_push($down_ids, $follower['userid']);
+            array_push($down_titles, $follower['username']);
         }
     }
 
 
     $prefix_common_words = prefix_common_words($down_titles); //Clean Titles
-    $memory_text .= "\n" . '//' . $en['handlename'] . ':' . "\n";
-    $memory_text .= '$config[\'handleids___' . $en['chainhandleoutput'] . '\'] = array(' . join(',', $down_ids) . ');' . "\n";
-    $memory_text .= '$config[\'handles___' . $en['chainhandleoutput'] . '\'] = array(' . (strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "' . trim($prefix_common_words) . '"' : '') . "\n";
+    $memory_text .= "\n" . '//' . $en['username'] . ':' . "\n";
+    $memory_text .= '$config[\'userids___' . $en['chainuseroutput'] . '\'] = array(' . join(',', $down_ids) . ');' . "\n";
+    $memory_text .= '$config[\'users___' . $en['chainuseroutput'] . '\'] = array(' . (strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "' . trim($prefix_common_words) . '"' : '') . "\n";
     foreach ($down__e as $follower) {
 
-        if ($follower['handleid'] < 1) {
+        if ($follower['userid'] < 1) {
             continue;
         }
 
         //Does this have any Pins?
-        foreach ($this->Chains->read(array(
-            'chainhandleinput' => $follower['handleid'],
-            'chainhandletype' => 41011, //PINNED FOLLOWER
+        foreach ($this->Ideachains->read(array(
+            'chainuserinput' => $follower['userid'],
+            'chainusertype' => 41011, //PINNED FOLLOWER
         ), array(), 0) as $x_pinned) {
-            if (!isset($pinned_down[$follower['handleid']])) {
-                $pinned_down[$follower['handleid']] = array($x_pinned['chainhandleoutput']);
-            } elseif (!in_array($x_pinned['chainhandleoutput'], $pinned_down[$follower['handleid']])) {
-                array_push($pinned_down[$follower['handleid']], $x_pinned['chainhandleoutput']);
+            if (!isset($pinned_down[$follower['userid']])) {
+                $pinned_down[$follower['userid']] = array($x_pinned['chainuseroutput']);
+            } elseif (!in_array($x_pinned['chainuseroutput'], $pinned_down[$follower['userid']])) {
+                array_push($pinned_down[$follower['userid']], $x_pinned['chainuseroutput']);
             }
         }
 
-        if ($follower['chainhandletype'] == 41011) {
-            if (!isset($pinned_up[$follower['handleid']])) {
-                $pinned_up[$follower['handleid']] = array($en['handleid']);
-            } elseif (!in_array($en['handleid'], $pinned_up[$follower['handleid']])) {
-                array_push($pinned_up[$follower['handleid']], $en['handleid']);
+        if ($follower['chainusertype'] == 41011) {
+            if (!isset($pinned_up[$follower['userid']])) {
+                $pinned_up[$follower['userid']] = array($en['userid']);
+            } elseif (!in_array($en['userid'], $pinned_up[$follower['userid']])) {
+                array_push($pinned_up[$follower['userid']], $en['userid']);
             }
         }
 
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
-        foreach ($this->Chains->read(array(
-            'chainhandleoutput' => $follower['handleid'],
-            'chainhandletype' => 4230,
-        ), array('chainhandleinput'), 0) as $cp_en) {
-            array_push($down_up_ids, intval($cp_en['handleid']));
+        foreach ($this->Ideachains->read(array(
+            'chainuseroutput' => $follower['userid'],
+            'chainusertype' => 4230,
+        ), array('chainuserinput'), 0) as $cp_en) {
+            array_push($down_up_ids, intval($cp_en['userid']));
         }
 
-        $memory_text .= '     ' . $follower['handleid'] . ' => array(' . "\n";
-        $memory_text .= '        \'m__handle\' => \'' . $follower['handleterm'] . '\',' . "\n";
-        $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['handlename']))) . '\',' . "\n";
+        $memory_text .= '     ' . $follower['userid'] . ' => array(' . "\n";
+        $memory_text .= '        \'m__user\' => \'' . $follower['userhandle'] . '\',' . "\n";
+        $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['username']))) . '\',' . "\n";
         $memory_text .= '        \'m__message\' => \'' . (str_replace('\'', '\\\'', $follower['chainvalue'])) . '\',' . "\n";
-        $memory_text .= '        \'m__cover\' => \'' . str_replace('\'', '\\\'', view_cover($follower['handlecover'])) . '\',' . "\n";
+        $memory_text .= '        \'m__cover\' => \'' . str_replace('\'', '\\\'', view_cover($follower['usercover'])) . '\',' . "\n";
         $memory_text .= '        \'m__following\' => array(' . join(',', $down_up_ids) . '),' . "\n";
         $memory_text .= '     ),' . "\n";
 
@@ -98,25 +98,25 @@ foreach ($this->Chains->read(array(
 }
 
 
-//Append all App Handlers for quick checking:
+//Append all App Userrs for quick checking:
 $memory_text .= "\n" . "\n";
-foreach ($this->Chains->read(array(
-    'chainhandleinput' => 42043, //Handle Cache
-    'chainhandletype' => 4230,
-), array('chainhandleoutput'), 0) as $handle) {
+foreach ($this->Ideachains->read(array(
+    'chainuserinput' => 42043, //User Cache
+    'chainusertype' => 4230,
+), array('chainuseroutput'), 0) as $user) {
 
-    $memory_text .= '$config[\'handlhandles___' . $handle['handleid'] . '\'] = array(' . "\n";
-    foreach ($this->Chains->read(array(
-        'chainhandleinput' => $handle['handleid'],
-        'chainhandletype' => 4230,
-    ), array('chainhandleoutput'), 0) as $app) {
-        $memory_text .= '     \'' . strtolower($app['handleterm']) . '\' => ' . $app['handleid'] . ',' . "\n";
+    $memory_text .= '$config[\'handlusers___' . $user['userid'] . '\'] = array(' . "\n";
+    foreach ($this->Ideachains->read(array(
+        'chainuserinput' => $user['userid'],
+        'chainusertype' => 4230,
+    ), array('chainuseroutput'), 0) as $app) {
+        $memory_text .= '     \'' . strtolower($app['userhandle']) . '\' => ' . $app['userid'] . ',' . "\n";
     }
     $memory_text .= ');' . "\n";
 }
 
 
-//Append Pinned Chains:
+//Append Pinned Ideachains:
 $memory_text .= "\n" . "\n";
 $memory_text .= '$config[\'pinned_down\'] = array(' . "\n";
 foreach ($pinned_down as $key => $value) {
@@ -151,75 +151,75 @@ $routes_text .= "\n";
 $special_route_text = '';
 $routes_text .= '//APPS:' . "\n\n";
 
-foreach ($this->Chains->read(array(
-    'chainhandleinput' => 6287, //Apps
-    'chainhandletype' => 4230,
-), array('chainhandleoutput'), 0, 0, array('handlename' => 'ASC')) as $app) {
+foreach ($this->Ideachains->read(array(
+    'chainuserinput' => 6287, //Apps
+    'chainusertype' => 4230,
+), array('chainuseroutput'), 0, 0, array('username' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;
-        foreach ($this->Chains->read(array(
-            'chainhandletype' => 4230,
-            'chainhandleinput' => 42921,
-            'chainhandleoutput' => $app['handleid'], //Required
+        foreach ($this->Ideachains->read(array(
+            'chainusertype' => 4230,
+            'chainuserinput' => 42921,
+            'chainuseroutput' => $app['userid'], //Required
         )) as $route) {
             if (strlen($route['chainvalue']) > 0) {
                 $special_routes = $route['chainvalue'];
             }
         }
     } else {
-        $handles___42921 = $this->config->item('handles___42921');
-        $special_routes = (in_array($app['handleid'], $this->config->item('handleids___42921')) && isset($handles___42921[$app['handleid']]['m__message']) && strlen($handles___42921[$app['handleid']]['m__message']) ? $handles___42921[$app['handleid']]['m__message'] : false);
+        $users___42921 = $this->config->item('users___42921');
+        $special_routes = (in_array($app['userid'], $this->config->item('userids___42921')) && isset($users___42921[$app['userid']]['m__message']) && strlen($users___42921[$app['userid']]['m__message']) ? $users___42921[$app['userid']]['m__message'] : false);
     }
 
 
-    if (count($this->Chains->read(array(
-        'chainhandletype' => 4230,
-        'chainhandleinput' => 44330,
-        'chainhandleoutput' => $app['handleid'], //Required
+    if (count($this->Ideachains->read(array(
+        'chainusertype' => 4230,
+        'chainuserinput' => 44330,
+        'chainuseroutput' => $app['userid'], //Required
     )))) {
-        //Handle AND Hashtag Input
-        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$2/$1' . '";' . "\n";
-        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n"; //Should give error
-        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$1/0' . '";' . "\n"; //Should give error
-    } elseif (count($this->Chains->read(array(
-        'chainhandletype' => 4230,
-        'chainhandleinput' => 42905,
-        'chainhandleoutput' => $app['handleid'], //Required
+        //User AND Post Input
+        $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$2/$1' . '";' . "\n";
+        $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/0/$1' . '";' . "\n"; //Should give error
+        $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$1/0' . '";' . "\n"; //Should give error
+    } elseif (count($this->Ideachains->read(array(
+        'chainusertype' => 4230,
+        'chainuserinput' => 42905,
+        'chainuseroutput' => $app['userid'], //Required
     )))) {
-        //Handle Input
+        //User Input
         if ($special_routes) {
-            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['handleid'] . '/$1' . '";' . "\n";
+            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['userid'] . '/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$1' . '";' . "\n";
         }
-    } elseif (count($this->Chains->read(array(
-        'chainhandletype' => 4230,
-        'chainhandleinput' => 42911,
-        'chainhandleoutput' => $app['handleid'], //Required
+    } elseif (count($this->Ideachains->read(array(
+        'chainusertype' => 4230,
+        'chainuserinput' => 42911,
+        'chainuseroutput' => $app['userid'], //Required
     )))) {
-        //Hashtag Input
+        //Post Input
         if ($special_routes) {
-            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n";
+            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['userid'] . '/0/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/0/$1' . '";' . "\n";
         }
-    } elseif (count($this->Chains->read(array(
-        'chainhandletype' => 4230,
-        'chainhandleinput' => 44329,
-        'chainhandleoutput' => $app['handleid'], //Required
+    } elseif (count($this->Ideachains->read(array(
+        'chainusertype' => 4230,
+        'chainuserinput' => 44329,
+        'chainuseroutput' => $app['userid'], //Required
     )))) {
         //Discoveries Input
         if ($special_routes) {
-            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['handleid'] . '/0/$2/$1' . '";' . "\n";
+            $special_route_text .= '$route[\'' . $special_routes . '\'] = "controller/load/' . $app['userid'] . '/0/$2/$1' . '";' . "\n";
         } else {
-            $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['handleid'] . '/0/$2/$1' . '";' . "\n";
+            $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/0/$2/$1' . '";' . "\n";
         }
     }
 
     //Always Have no Input option:
     if (!$special_routes) {
-        $routes_text .= '$route[\'(?i)' . $app['handleterm'] . '\'] = "controller/load/' . $app['handleid'] . '";' . "\n";
+        $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '\'] = "controller/load/' . $app['userid'] . '";' . "\n";
     }
 
 }
@@ -234,7 +234,7 @@ $routes_file = fopen($routes_location, "w+") or die("Unable to open file: " . $r
 fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached ' . $total_nodes . ' Handles (' . $biggest_handle_handle . ' had ' . $biggest_handle_count . ') & removed ' . ($memory_detected ? reset_cache($chainhandlecreator) : 'NONE') . '.</div><div></div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached ' . $total_nodes . ' Users (' . $biggest_user_user . ' had ' . $biggest_user_count . ') & removed ' . ($memory_detected ? reset_cache($chainusercreator) : 'NONE') . '.</div><div></div></div>';
 
 //Show:
 echo '<div>' . $memory_location . ':</div>';

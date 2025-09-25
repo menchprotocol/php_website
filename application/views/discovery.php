@@ -1,22 +1,22 @@
 <?php
 
-$handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
-$chainhandlecreator = ($handle_session ? $handle_session['handleid'] : 0);
-$target_hashtagterm = (count($target_i) && $chainhandlecreator ? $target_i['hashtagterm'] : null);
-$at_starting_point = $target_hashtagterm==$focus_i['hashtagterm'];
+$users___11035 = $this->config->item('users___11035'); //Encyclopedia
+$chainusercreator = ($user_session ? $user_session['userid'] : 0);
+$target_posthashtag = (count($target_i) && $chainusercreator ? $target_i['posthashtag'] : null);
+$at_starting_point = $target_posthashtag==$focus_i['posthashtag'];
 
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-if ($chainhandlecreator && !$at_starting_point) {
+if ($chainusercreator && !$at_starting_point) {
 
-    $previous = $this->Chains->previoushashtag($chainhandlecreator, $target_hashtagterm, $focus_i['hashtagid']);
+    $previous = $this->Ideachains->previouspost($chainusercreator, $target_posthashtag, $focus_i['postid']);
     if (count($previous)) {
 
         $nav_list = array();
-        $main_branch = array(intval($focus_i['hashtagid']));
+        $main_branch = array(intval($focus_i['postid']));
         foreach ($previous as $followings_i) {
             //First add-up the main branch:
-            array_push($main_branch, intval($followings_i['hashtagid']));
+            array_push($main_branch, intval($followings_i['postid']));
         }
 
         $level = 0;
@@ -25,33 +25,33 @@ if ($chainhandlecreator && !$at_starting_point) {
             $level++;
 
             //Does this have a follower list?
-            $query_subset = $this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
-                'chainhashtaginput' => $followings_i['hashtagid'],
-            ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, true);
+            $query_subset = $this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+                'chainpostinput' => $followings_i['postid'],
+            ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_hashtagterm . '/' . ($followings_i['hashtagterm'] == $target_hashtagterm ? 'start' : $followings_i['hashtagterm']) . '">' . view_hashtag_title($followings_i, true) . '</a>';
+            $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_posthashtag . '/' . ($followings_i['posthashtag'] == $target_posthashtag ? 'start' : $followings_i['posthashtag']) . '">' . view_post_title($followings_i, true) . '</a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if (count($query_subset) >= 2) {
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
-                $breadcrum_content .= '<button type="button" class="btn no-side-padding" style="margin-top:-3px;" id="dropdown_instant_' . $followings_i['hashtagid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $breadcrum_content .= '<button type="button" class="btn no-side-padding" style="margin-top:-3px;" id="dropdown_instant_' . $followings_i['postid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 $breadcrum_content .= '<span style="padding-left:5px;"><i class="far fa-sharp fa-chevron-square-up rotate180"></i></span>';
                 $breadcrum_content .= '</button>';
-                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_' . $followings_i['hashtagid'] . '">';
-                foreach ($query_subset as $hashtag_subset) {
+                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_' . $followings_i['postid'] . '">';
+                foreach ($query_subset as $post_subset) {
 
-                    if (count($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-                        'chainhandlecreator' => $chainhandlecreator,
-                        'chainhashtaginput' => $hashtag_subset['hashtagid'],
+                    if (count($this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+                        'chainusercreator' => $chainusercreator,
+                        'chainpostinput' => $post_subset['postid'],
                     )))) {
-                        $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_hashtagterm . '/' . $hashtag_subset['hashtagterm'] . '" class="dropdown-item ' . (in_array($hashtag_subset['hashtagid'], $main_branch) ? ' active ' : '') . '">' . view_hashtag_title($hashtag_subset, true) . '</a>';
+                        $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_posthashtag . '/' . $post_subset['posthashtag'] . '" class="dropdown-item ' . (in_array($post_subset['postid'], $main_branch) ? ' active ' : '') . '">' . view_post_title($post_subset, true) . '</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_locked ' . (in_array($hashtag_subset['hashtagid'], $main_branch) ? ' active ' : '') . '" title="' . $handles___11035[43010]['m__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">' . $handles___11035[43010]['m__cover'] . '</span>' . view_hashtag_title($hashtag_subset, true) . '</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked ' . (in_array($post_subset['postid'], $main_branch) ? ' active ' : '') . '" title="' . $users___11035[43010]['m__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">' . $users___11035[43010]['m__cover'] . '</span>' . view_post_title($post_subset, true) . '</div>';
                     }
 
                 }
@@ -74,14 +74,14 @@ if ($breadcrum_content) {
 
 
 //Progress?
-if ($handle_session) {
-    $progress = $this->Chains->progress($chainhandlecreator, $target_i);
+if ($user_session) {
+    $progress = $this->Ideachains->progress($chainusercreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
-    if($target_completed && !count($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $focus_i['hashtagid'],
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___43050')) . ')' => null, //Direct Input Ideas
+    if($target_completed && !count($this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $focus_i['postid'],
+            'chainuserinput IN (' . join(',', $this->config->item('userids___43050')) . ')' => null, //Direct Input Ideas
         )))){
         //Hide next navigation and allow them to browse the tree:
         echo '<script> $(document).ready(function () { setTimeout(function () { $(\'.fixed-bottom .card_cards\').addClass(\'hidden\'); }, 233); }); </script>';
@@ -91,40 +91,40 @@ if ($handle_session) {
         echo '<div class="alert alert-success" role="alert" title="' . $progress['fixed_total'] . '/' . $progress['fixed_discovered'] . ' ' . $progress['fixed_completed_percentage'] . '% ' . $progress['fixed_discovered'] . ': ' . join(',', $progress['list_discovered']) . '"><span class="icon-block"><i class="far fa-check-circle"></i></span>100% Complete</div>';
     } else {
         echo '<div class="progress">
-<div class="progress-bar bg31777" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_discovered'] . '/' . $progress['fixed_total'] . ' Hashtags discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress-bar bg31777" role="progressbar" data-toggle="tooltip" data-placement="top" title="' . $progress['fixed_discovered'] . '/' . $progress['fixed_total'] . ' Posts discovered ' . $progress['fixed_completed_percentage'] . '%" style="width: ' . $progress['fixed_completed_percentage'] . '%" aria-valuenow="' . $progress['fixed_completed_percentage'] . '" aria-valuemin="0" aria-valuemax="100"></div>
 </div>';
     }
 }
 
 $x_completes = array();
-if ($handle_session) {
-    $x_completes = $this->Chains->read(array(
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-        'chainhandlecreator' => $chainhandlecreator,
-        'chainhashtaginput' => $focus_i['hashtagid'],
-    ), array('chainhashtagoutput'));
+if ($user_session) {
+    $x_completes = $this->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+        'chainusercreator' => $chainusercreator,
+        'chainpostinput' => $focus_i['postid'],
+    ), array('chainpostoutput'));
 }
 
 
 //Focus Discovery:
 echo '<div class="row justify-content">';
-echo hashtag_view(43007, $focus_i, null, null, 0, $x_completes);
+echo post_view(43007, $focus_i, null, null, 0, $x_completes);
 echo '</div>';
 
 
 //Main Navigation
-if ($handle_session || isset($_GET['open'])) {
-    echo view_hashtag_nav(true, $focus_i, $x_completes);
+if ($user_session || isset($_GET['open'])) {
+    echo view_post_nav(true, $focus_i, $x_completes);
 }
 
-//Fetch Hashtag Types:
-$focus_hashtag_types = array();
-foreach($this->Chains->read(array(
-    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-    'chainhashtagoutput' => $focus_i['hashtagid'],
-    'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null, //Hashtag Types
+//Fetch Post Types:
+$focus_post_types = array();
+foreach($this->Ideachains->read(array(
+    'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+    'chainpostoutput' => $focus_i['postid'],
+    'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
 )) as $mention) {
-    array_push($focus_hashtag_types, intval($mention['chainhandleinput']));
+    array_push($focus_post_types, intval($mention['chainuserinput']));
 }
 
 ?>
@@ -132,11 +132,11 @@ foreach($this->Chains->read(array(
 <script>
 
     var total_discoveries = <?= count($x_completes) ?>;
-    var focus_hashtag_types = [<?= join(',',$focus_hashtag_types) ?>];
+    var focus_post_types = [<?= join(',',$focus_post_types) ?>];
 
     $(document).ready(function () {
 
-        load_hashtag_menu('Next');
+        load_post_menu('Next');
 
         set_autosize($('.x_write'));
 
@@ -153,7 +153,7 @@ foreach($this->Chains->read(array(
                 $(".fixed-bottom").removeClass('hidden');
             }
 
-            if ( focus_hashtag_types.includes(43758) ) {
+            if ( focus_post_types.includes(43758) ) {
                 invoice_update();
                 $(".fixed-bottom").removeClass('hidden');
             } else {

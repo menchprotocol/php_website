@@ -1,19 +1,19 @@
 <?php
 
-if(hashtag_is_startable($focus_i)){
-    $next__url = $this->Chains->next_hashtags($handle_session['handleid'], $focus_i['hashtagterm'], $focus_i);
+if(post_is_startable($focus_i)){
+    $next__url = $this->Ideachains->next_posts($user_session['userid'], $focus_i['posthashtag'], $focus_i);
     //Go to URL:
-    return get_redirected('/'.$focus_i['hashtagterm'].'/'.($next__url ? $next__url : 'start' ));
+    return get_redirected('/'.$focus_i['posthashtag'].'/'.($next__url ? $next__url : 'start' ));
 } else {
-    foreach ($this->Chains->read(array(
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-        'chainhashtaginput' => $focus_i['hashtagid'],
-        'chainhandlecreator' => $handle_session['handleid'],
-    ), array('chainhashtagoutput')) as $discovery) {
-        $next__url = $this->Chains->next_hashtags($handle_session['handleid'], $discovery['hashtagterm'], $discovery);
+    foreach ($this->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+        'chainpostinput' => $focus_i['postid'],
+        'chainusercreator' => $user_session['userid'],
+    ), array('chainpostoutput')) as $discovery) {
+        $next__url = $this->Ideachains->next_posts($user_session['userid'], $discovery['posthashtag'], $discovery);
 
         //Go to URL:
-        return get_redirected('/'.$discovery['hashtagterm'].'/'.($next__url ? $next__url : 'start' ));
+        return get_redirected('/'.$discovery['posthashtag'].'/'.($next__url ? $next__url : 'start' ));
     }
 }
 

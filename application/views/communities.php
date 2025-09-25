@@ -2,28 +2,28 @@
 
 $community_pills = '';
 
-foreach ((isset($_GET['handleterm']) && strlen($_GET['handleterm']) ? $this->Handles->read(array('LOWER(handleterm)' => strtolower($_GET['handleterm']))) : $this->Handles->scissor(website_setting(0), 13207)) as $handle_item) {
+foreach ((isset($_GET['userhandle']) && strlen($_GET['userhandle']) ? $this->Users->read(array('LOWER(userhandle)' => strtolower($_GET['userhandle']))) : $this->Users->scissor(website_setting(0), 13207)) as $user_item) {
 
-    foreach ($this->Chains->read(array(
-        'chainhandleinput' => $handle_item['handleid'],
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $x) {
+    foreach ($this->Ideachains->read(array(
+        'chainuserinput' => $user_item['userid'],
+        'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+    ), array('chainuseroutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $x) {
 
-        $total_count = handles_query(42373, $x['handleid'], 0, false);
+        $total_count = users_query(42373, $x['userid'], 0, false);
 
         if ($total_count) {
 
             $ui = '<div class="row justify-content">';
-            foreach (handles_query(42373, $x['handleid'], 1, false) as $count => $e) {
-                $ui .= handle_view(13207, $e, null);
+            foreach (users_query(42373, $x['userid'], 1, false) as $count => $e) {
+                $ui .= user_view(13207, $e, null);
             }
             $ui .= '</div>';
 
-            $community_pills .= view_pill(12274, $x['handleid'], $total_count, array(
-                'm__cover' => view_cover($x['handlecover'], true),
-                'm__title' => $x['handlename'],
+            $community_pills .= view_pill(12274, $x['userid'], $total_count, array(
+                'm__cover' => view_cover($x['usercover'], true),
+                'm__title' => $x['username'],
                 'm__message' => $x['chainvalue'],
-                'm__handle' => $x['handleterm'],
+                'm__user' => $x['userhandle'],
             ), $ui);
 
         }
@@ -34,7 +34,7 @@ foreach ((isset($_GET['handleterm']) && strlen($_GET['handleterm']) ? $this->Han
 if (strlen($community_pills)) {
 
     //Community
-    echo '<h2 class="center">' . $handle_item['handlename'] . '</h2>';
+    echo '<h2 class="center">' . $user_item['username'] . '</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 

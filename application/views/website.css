@@ -133,7 +133,7 @@ table td { border: none !important; }
 h1 {
     padding:0 8px 34px !important;
     margin:0;
-    font-size:4.55em;
+    font-size:3.77em;
     text-align: center;
 }
 
@@ -241,7 +241,7 @@ h3{
 .modal-header .dynamic_selector{
     margin-left: 0px !important;
 }
-.dynamic_editing_input input.form-control.save_hashtagterm,
+.dynamic_editing_input input.form-control.save_posthashtag,
 .left_padded .dynamic_editing_input input.form-control,
 .left_padded .dynamic_editing_input textarea.form-control{
     margin-left: 40px !important;
@@ -1157,7 +1157,7 @@ a.headline {
     border-radius: 0px;
     margin: 0;
 }
-.sorthandle_grab, .fa-sort, .fa-arrows{
+.sortuser_grab, .fa-sort, .fa-arrows{
     cursor: grab;
 }
 .focus-cover .space-content,
@@ -1180,7 +1180,7 @@ a.headline {
 }
 
 
-.hashtag_response{
+.post_response{
     display: block;
     line-height: 150%;
     border-left: 2px solid #000000 !important;
@@ -1193,10 +1193,10 @@ a.headline {
     margin-top: -3px;
 }
 
-.hashtag_response .btn{
+.post_response .btn{
     margin:-10px 0 0 0;
 }
-.hashtag_response .btn.edit-locked{
+.post_response .btn.edit-locked{
     margin:-3px 0 0 0;
 }
 .title-no-right {
@@ -1750,7 +1750,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
     overflow: hidden;
 }
 
-.dropdown_type_26105 .type_handle {
+.dropdown_type_26105 .type_user {
     position: absolute;
     top: 21px;
     left: 40px;
@@ -1790,7 +1790,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
 }
 
 
-.dynamic_editing_input textarea.form-control.save_hashtagtext{
+.dynamic_editing_input textarea.form-control.save_posttext{
     padding-top: px !important;
     margin-left: 40px !important;
 }
@@ -1914,7 +1914,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
 .texttype_sm {
     width:34px;
 }
-.texthandle_6197 {
+.textuser_6197 {
     margin-bottom: 0;
     padding: 0 3px;
 }
@@ -1924,8 +1924,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
 }
 
 
-.card-12274 .inner-content .texthandle_6197,
-.card-6287 .inner-content .texthandle_6197{
+.card-12274 .inner-content .textuser_6197,
+.card-6287 .inner-content .textuser_6197{
     text-align: center;
     padding-left: 0;
 }
@@ -2384,12 +2384,12 @@ input.form-control {
     padding: 0 0 0 0 !important;
 
 }
-.demo_cover,
-.demo_cover .cover-chain {
+.preview_cover,
+.preview_cover .cover-chain {
     border-radius: 50% !important;
 }
 
-.demo_cover{
+.preview_cover{
     width:233px !important;
     margin:0 auto !important;
     padding:13px 0 !important;
@@ -2488,29 +2488,29 @@ input.form-control {
     font-size: 1em;
     display: block;
 }
-.handle-social{
+.user-social{
     display: block;
     text-align: center;
 }
-.handle-social ul {
+.user-social ul {
     padding: 5px 0 0;
     margin: 0;
 }
-.focus-cover.card-12274 .handle-social ul {
+.focus-cover.card-12274 .user-social ul {
     padding: 13px 0 0;
 }
-.handle-social ul li {
+.user-social ul li {
     list-style: auto;
     display: inline-block;
 }
-.handle-social ul li a {
+.user-social ul li a {
     padding: 8px 5px;
 }
 
-.edge-cover .handle-social ul {
+.edge-cover .user-social ul {
     padding: 5px 0;
 }
-.edge-cover .handle-social ul li a {
+.edge-cover .user-social ul li a {
     padding: 5px 3px;
 }
 .modal-body .form-control {
@@ -2591,7 +2591,7 @@ input.form-control {
 .mini-cover .cover-content .inner-content .main__title {
     min-height: 13px;
 }
-.handle-info span .main__title {
+.user-info span .main__title {
     padding:3px 0 0;
     display: inline !important;
     min-height: unset !important;
@@ -2647,7 +2647,7 @@ input.form-control {
     border:0;
     border-radius: 0px;
 }
-.mass_action_toggle, .handle_text_finder, .mass_action_item{
+.mass_action_toggle, .user_text_finder, .mass_action_item{
     width: 100% !important;
 }
 .modal-header{
@@ -2874,7 +2874,7 @@ textarea {
     padding:5px 0 !important;
 }
 
-.card-12273.focus-cover .handle-info .handle_info_box{
+.card-12273.focus-cover .user-info .user_info_box{
     padding:5px 0 5px 40px !important;
     display: block !important;
 }
@@ -3086,14 +3086,14 @@ h4.main__title{
     padding: 0 1px 0 0;
 }
 
-.handle_bio{
+.user_bio{
     padding: 3px 0 8px 0;
     max-height: 144px;
     overflow-y: hidden;
     overflow-x: auto;
     line-height: 113%;
 }
-.edge-cover.card-12274 .handle_bio{
+.edge-cover.card-12274 .user_bio{
     padding: 0 0 5px;
     font-size: 0.79em;
     max-height: 55px;
@@ -3113,8 +3113,8 @@ h4.main__title{
     overflow-y: hidden;
 }
 
-.focus-cover .sub__handle,
-.sub__handle {
+.focus-cover .sub__user,
+.sub__user {
     display: inline-block;
     padding: 0 0 0 5px !important;
 }
@@ -3138,7 +3138,7 @@ h4.main__title{
     margin:8px -13px 13px -5px !important;
 }
 
-.media_outer_frame {
+.post_preview_frame {
     clear: both;
     display: block;
 }
@@ -3484,7 +3484,7 @@ h4.main__title{
 
 
 
-/* Hashtag Add Button Hack to make the plus more clear: */
+/* Post Add Button Hack to make the plus more clear: */
 .platform-navigation .block-x a {
     display: block;
     text-align: center;
@@ -4215,7 +4215,7 @@ div.img {
 }
 
 
-.demo_cover .cover-content {
+.preview_cover .cover-content {
     top:-34px !important;
 }
 
@@ -4266,7 +4266,7 @@ main {
     background-color: #d2f4ea;
 }
 
-.handle_info_box{
+.user_info_box{
     line-height: 121%;
     overflow-x: hidden;
     overflow-y: visible;
@@ -4274,12 +4274,12 @@ main {
     width: 100%;
     padding: 3px 0 3px 40px !important;
 }
-.cover-content .handle_info_box{
+.cover-content .user_info_box{
     padding-left: 3px;
     display: inline !important;
 }
 
-.ticket-notice .handle_info_box{
+.ticket-notice .user_info_box{
     display: inline-block !important;
     padding: 0 !important;
     width: 105px;
@@ -4297,18 +4297,18 @@ main {
     overflow-y: auto;
 }
 
-.handle-featured{
+.user-featured{
     padding: 3px 0 0 !important;
     margin: 0 !important;
 }
 
-.handle-info{
+.user-info{
     padding: 2px 0;
 }
 
 
-.flip-content .handle-info,
-.flip-content .handle-info .sub_note{
+.flip-content .user-info,
+.flip-content .user-info .sub_note{
     color:#FFFFFF !important;
 }
 
@@ -4665,16 +4665,16 @@ main {
     font-size: 3.4em;
 }
 
-.ref_handle,
-.handle-featured u,
-.handle-featured a,
+.ref_user,
+.user-featured u,
+.user-featured a,
 .i_cache u,
 .i_cache a{
     color: #007AFD !important;
     text-decoration: none !important;
 }
 
-.ref_handle {
+.ref_user {
     cursor: zoom-in;
 }
 

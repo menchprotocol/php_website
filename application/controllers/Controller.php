@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Controller extends CI_Controller
 {
 
-    public $handle_session;
+    public $user_session;
 
     function __construct()
     {
@@ -13,38 +13,38 @@ class Controller extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        $this->handle_session = handle_session();
+        $this->user_session = user_session();
 
 
         date_default_timezone_set('America/Los_Angeles');
 
         @session_start();
 
-        //AUTO Login handle if has cookie?
+        //AUTO Login user if has cookie?
         $is_ajax = false;
-        $handle_user = false;
-        $memory_detected = is_array($this->config->item('handleids___6287')) && count($this->config->item('handleids___6287'));
+        $user_user = false;
+        $memory_detected = is_array($this->config->item('userids___6287')) && count($this->config->item('userids___6287'));
         $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $this->uri->segment(1));
         $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
         $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_chain(4269));
-        $handle_session = handle_session();
-        $is_login_verified = isset($_GET['handlelogin']) && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['handlelogin']) && view_hash($_GET['time'] . $_GET['handlelogin']) == $_GET['hash'];
+        $user_session = user_session();
+        $is_login_verified = isset($_GET['userlogin']) && isset($_GET['hash']) && isset($_GET['time']) && ($_GET['time'] + 604800) > time() && strlen($_GET['userlogin']) && view_hash($_GET['time'] . $_GET['userlogin']) == $_GET['hash'];
 
         if (
             $memory_detected &&
-            !$handle_session
-            && !array_key_exists(strtolower($first_segment), $this->config->item('handlhandles___14582'))
+            !$user_session
+            && !array_key_exists(strtolower($first_segment), $this->config->item('handlusers___14582'))
             && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
         ) {
 
             if ($is_login_verified) {
 
-                foreach ($this->Handles->read(array(
-                    'LOWER(handleterm)' => strtolower($_GET['handlelogin']),
-                )) as $handle_session) {
+                foreach ($this->Users->read(array(
+                    'LOWER(userhandle)' => strtolower($_GET['userlogin']),
+                )) as $user_session) {
 
                     //Login:
-                    $this->Handles->activate($handle_session, true);
+                    $this->Users->activate($user_session, true);
 
                     //Log them in:
                     if (!$is_ajax) {
@@ -56,8 +56,8 @@ class Controller extends CI_Controller
 
             } elseif (isset($_COOKIE['auth_cookie'])) {
 
-                $handle_session = verify_cookie();
-                if ($handle_session) {
+                $user_session = verify_cookie();
+                if ($user_session) {
                     //Log them in:
                     if (!$is_ajax) {
                         header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
@@ -84,146 +84,146 @@ class Controller extends CI_Controller
 
 
 
-    function passthrough($newhandle) {
-        redirect($newhandle, 'location', 301);
+    function passthrough($newuser) {
+        redirect($newuser, 'location', 301);
     }
 
-    function load($app_handleid = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0)
+    function load($app_userid = 14563 /* Error if none provided */, $focus_user = 0, $focus_post = 0, $target_post = 0)
     {
 
-        $memory_detected = is_array($this->config->item('handleids___6287')) && count($this->config->item('handleids___6287'));
+        $memory_detected = is_array($this->config->item('userids___6287')) && count($this->config->item('userids___6287'));
         if (!$memory_detected) {
             //Since we don't have the memory created we must load the app that does so:
-            $app_handleid = 4527;
+            $app_userid = 4527;
         }
 
-        //Any hashtags passed?
-        $handles___6287 = $this->config->item('handles___6287'); //APP
+        //Any posts passed?
+        $users___6287 = $this->config->item('users___6287'); //APP
         $flash_message = false;
-        $focus_e = null; //Handles
-        $focus_i = null; //Hashtags
+        $focus_e = null; //Users
+        $focus_i = null; //Posts
         $target_i = null; //Discovery
 
 
-        if ($focus_handle && strlen($focus_handle) && !isset($_GET['handleterm'])) {
-            $_GET['handleterm'] = $focus_handle;
+        if ($focus_user && strlen($focus_user) && !isset($_GET['userhandle'])) {
+            $_GET['userhandle'] = $focus_user;
         }
-        if ($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['hashtagterm'])) {
-            $_GET['hashtagterm'] = $focus_hashtag;
+        if ($focus_post && strlen($focus_post) && !isset($_GET['posthashtag'])) {
+            $_GET['posthashtag'] = $focus_post;
         }
-        if (!isset($_GET['handleterm'])) {
-            $_GET['handleterm'] = 0;
+        if (!isset($_GET['userhandle'])) {
+            $_GET['userhandle'] = 0;
         }
-        if (!isset($_GET['hashtagterm'])) {
-            $_GET['hashtagterm'] = 0;
+        if (!isset($_GET['posthashtag'])) {
+            $_GET['posthashtag'] = 0;
         }
 
 
-        if ($target_hashtag && strlen($target_hashtag)) {
+        if ($target_post && strlen($target_post)) {
             //Verify:
-            foreach ($this->Hashtags->read(array(
-                'LOWER(hashtagterm)' => strtolower($target_hashtag),
-            )) as $hashtag_found) {
-                $target_i = $hashtag_found;
+            foreach ($this->Posts->read(array(
+                'LOWER(posthashtag)' => strtolower($target_post),
+            )) as $post_found) {
+                $target_i = $post_found;
             }
         }
 
 
-        if (strlen($_GET['hashtagterm'])) {
+        if (strlen($_GET['posthashtag'])) {
 
-            //Validate Focus Hashtag:
-            if ($target_i && $_GET['hashtagterm'] == view_memory(6404, 4235)) {
+            //Validate Focus Post:
+            if ($target_i && $_GET['posthashtag'] == view_memory(6404, 4235)) {
 
                 //This is the starting point:
-                $_GET['hashtagterm'] = $target_hashtag;
+                $_GET['posthashtag'] = $target_post;
                 $focus_i = $target_i;
 
             } else {
 
-                foreach ($this->Hashtags->read(array(
-                    'LOWER(hashtagterm)' => strtolower($_GET['hashtagterm']),
-                )) as $hashtag_found) {
-                    $focus_i = $hashtag_found;
+                foreach ($this->Posts->read(array(
+                    'LOWER(posthashtag)' => strtolower($_GET['posthashtag']),
+                )) as $post_found) {
+                    $focus_i = $post_found;
                 }
 
             }
 
             if (!$focus_i) {
                 //See if we can find via ID?
-                if (is_numeric($_GET['hashtagterm'])) {
-                    foreach ($this->Hashtags->read(array(
-                        'hashtagid' => $_GET['hashtagterm'],
-                    )) as $hashtag_found) {
-                        $focus_i = $hashtag_found;
+                if (is_numeric($_GET['posthashtag'])) {
+                    foreach ($this->Posts->read(array(
+                        'postid' => $_GET['posthashtag'],
+                    )) as $post_found) {
+                        $focus_i = $post_found;
                     }
                 }
             }
 
-            if ($app_handleid == 33286 && $focus_i && $focus_i['hashtagterm'] !== $_GET['hashtagterm']) {
+            if ($app_userid == 33286 && $focus_i && $focus_i['posthashtag'] !== $_GET['posthashtag']) {
                 //Adjust URL Case Sensitive:
-                return get_redirected(view_memory(42903, 33286) . $focus_i['hashtagterm']);
+                return get_redirected(view_memory(42903, 33286) . $focus_i['posthashtag']);
             }
         }
 
 
-        if (isset($_GET['handleterm']) && strlen($_GET['handleterm'])) {
-            foreach ($this->Handles->read(array(
-                'LOWER(handleterm)' => strtolower($_GET['handleterm']),
-            )) as $handle_found) {
-                $focus_e = $handle_found;
+        if (isset($_GET['userhandle']) && strlen($_GET['userhandle'])) {
+            foreach ($this->Users->read(array(
+                'LOWER(userhandle)' => strtolower($_GET['userhandle']),
+            )) as $user_found) {
+                $focus_e = $user_found;
             }
             if (!$focus_e) {
                 //See if we need to lookup the ID:
-                if (is_numeric($_GET['handleterm'])) {
+                if (is_numeric($_GET['userhandle'])) {
                     //Maybe its an ID?
-                    foreach ($this->Handles->read(array(
-                        'handleid' => $_GET['handleterm'],
-                    )) as $handle_found) {
-                        $focus_e = $handle_found;
+                    foreach ($this->Users->read(array(
+                        'userid' => $_GET['userhandle'],
+                    )) as $user_found) {
+                        $focus_e = $user_found;
                     }
                 }
             }
-            if ($app_handleid == 42902 && $focus_e && $focus_e['handleterm'] !== $_GET['handleterm']) {
+            if ($app_userid == 42902 && $focus_e && $focus_e['userhandle'] !== $_GET['userhandle']) {
                 //Adjust URL Case Sensitive:
-                return get_redirected(view_memory(42903, 42902) . $focus_e['handleterm']);
+                return get_redirected(view_memory(42903, 42902) . $focus_e['userhandle']);
             }
         }
 
 
-        if ($memory_detected && !in_array($app_handleid, $this->config->item('handleids___6287'))) {
+        if ($memory_detected && !in_array($app_userid, $this->config->item('userids___6287'))) {
             //Invalid App:
-            return get_redirected(view_memory(42903, 42902) . $handles___6287[$app_handleid]['m__handle'], '<div class="alert alert-danger" role="alert">@' . $handles___6287[$app_handleid]['m__handle'] . ' Is not an APP, yet 🤔</div>');
-        } elseif ($memory_detected && !in_array($app_handleid, $this->config->item('handleids___42922'))) {
+            return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__user'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__user'] . ' Is not an APP, yet 🤔</div>');
+        } elseif ($memory_detected && !in_array($app_userid, $this->config->item('userids___42922'))) {
             //Validate Required App input:
-            if (in_array($app_handleid, $this->config->item('handleids___42905')) && !$focus_e) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['handleterm'] . ' is not a valid Handle handle.</div>');
-            } elseif (in_array($app_handleid, $this->config->item('handleids___44329')) && (!$focus_i || !$target_i)) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['hashtagterm'] . ' & #' . $target_hashtag . ' must be valid hashtags.</div>');
-            } elseif (in_array($app_handleid, $this->config->item('handleids___42911')) && !$focus_i) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['hashtagterm'] . ' is not a valid hashtag hashtag.</div>');
+            if (in_array($app_userid, $this->config->item('userids___42905')) && !$focus_e) {
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['userhandle'] . ' is not a valid User user.</div>');
+            } elseif (in_array($app_userid, $this->config->item('userids___44329')) && (!$focus_i || !$target_i)) {
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>');
+            } elseif (in_array($app_userid, $this->config->item('userids___42911')) && !$focus_i) {
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post post.</div>');
             }
         }
 
 
-        $chainhandleoutput = ($focus_e ? $focus_e['handleid'] : 0);
-        $chainhashtagoutput = ($focus_i ? $focus_i['hashtagid'] : 0);
-        $chainhashtaginput = ($target_i ? $target_i['hashtagid'] : 0);
+        $chainuseroutput = ($focus_e ? $focus_e['userid'] : 0);
+        $chainpostoutput = ($focus_i ? $focus_i['postid'] : 0);
+        $chainpostinput = ($target_i ? $target_i['postid'] : 0);
 
         //Run App
-        $handle_session = false;
-        $handle_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
+        $user_session = false;
+        $user_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
 
-        if ($memory_detected && in_array($app_handleid, $this->config->item('handleids___42920'))) {
+        if ($memory_detected && in_array($app_userid, $this->config->item('userids___42920'))) {
             boost_power();
         }
 
-        if ($memory_detected && $handle_http_request) {
+        if ($memory_detected && $user_http_request) {
 
             //Needs superpowers?
-            $handle_session = handle_session();
+            $user_session = user_session();
 
-            if ($handle_session && !isset($handle_session['handleid']) && $app_handleid!=7291) {
-                //Old handle, must log out:
+            if ($user_session && !isset($user_session['userid']) && $app_userid!=7291) {
+                //Old user, must log out:
                 header("Location: /logout", true, 301);
                 return false;
             }
@@ -232,22 +232,22 @@ class Controller extends CI_Controller
             if (isset($_GET['hash']) && isset($_GET['time']) && $focus_e) {
 
                 //Validate Hash:
-                if ($_GET['hash'] == view_hash($_GET['time'] . $focus_e['handleterm'])) {
+                if ($_GET['hash'] == view_hash($_GET['time'] . $focus_e['userhandle'])) {
 
                     if ($focus_i) {
-                        if (hashtag_is_startable($focus_i)) {
-                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this hashtag. Scroll to the bottom & go next to continue.</div>';
+                        if (post_is_startable($focus_i)) {
+                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this post. Scroll to the bottom & go next to continue.</div>';
                         } else {
-                            $this->Chains->hashtag_discovered(4559, $focus_e['handleid'], ($target_i ? $target_i['hashtagid'] : 0), $focus_i);
+                            $this->Ideachains->post_discovered(4559, $focus_e['userid'], ($target_i ? $target_i['postid'] : 0), $focus_i);
 
                             //Inform user of changes:
-                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Hashtags has been discovered</div>';
+                            $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Posts has been discovered</div>';
                         }
                     }
 
                     //If not logged in, log them in:
-                    if (!$handle_session) {
-                        $session_data = $this->Handles->activate($handle_session, true);
+                    if (!$user_session) {
+                        $session_data = $this->Users->activate($user_session, true);
                     }
 
                 }
@@ -259,57 +259,57 @@ class Controller extends CI_Controller
         $ui = null;
         $new_cache = false;
         $cache_chaintime = null;
-        $chainhandlecreator = ($handle_http_request ? ($handle_session ? $handle_session['handleid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
-        $skip_hashtag_privacy_check = !$memory_detected || in_array($app_handleid, $this->config->item('handleids___43388'));
-        $handle_access = handle_access(null, $focus_e['handleid'], $focus_e);
-        $hashtag_access = hashtag_access(null, $focus_i['hashtagid'], $focus_i);
-        $target_hashtag_access = hashtag_access(null, $target_i['hashtagid'], $target_i);
+        $chainusercreator = ($user_http_request ? ($user_session ? $user_session['userid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
+        $skip_post_privacy_check = !$memory_detected || in_array($app_userid, $this->config->item('userids___43388'));
+        $user_access = user_access(null, $focus_e['userid'], $focus_e);
+        $post_access = post_access(null, $focus_i['postid'], $focus_i);
+        $target_post_access = post_access(null, $target_i['postid'], $target_i);
 
         //MEMBER REDIRECT?
-        if ($handle_http_request && $memory_detected) {
+        if ($user_http_request && $memory_detected) {
 
-            //Missing App, Handle or Hashtag Access?
+            //Missing App, User or Post Access?
             $missing_access = false; //Assume they have access
-            $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___6287[$app_handleid]['m__following']);
-            if ($handle_session && in_array($app_handleid, $this->config->item('handleids___14639'))) {
+            $superpowers_required = array_intersect($this->config->item('userids___10957'), $users___6287[$app_userid]['m__following']);
+            if ($user_session && in_array($app_userid, $this->config->item('userids___14639'))) {
                 //Should redirect them:
-                return get_redirected(view_memory(42903, 42902) . $handle_session['handleterm']);
-            } elseif (!$handle_session && in_array($app_handleid, $this->config->item('handleids___14740'))) {
+                return get_redirected(view_memory(42903, 42902) . $user_session['userhandle']);
+            } elseif (!$user_session && in_array($app_userid, $this->config->item('userids___14740'))) {
                 //Should redirect them:
                 $missing_access = 'Login or register a free account to continue.';
-            } elseif (count($superpowers_required) && !handle_session(end($superpowers_required))) {
-                $handles___10957 = $this->config->item('handles___10957');
-                $missing_access = 'Error: You Cannot Access ' . $handles___6287[$app_handleid]['m__title'] . ' as it requires the superpower of ' . $handles___10957[end($superpowers_required)]['m__title'] . '.';
-            } elseif ($focus_e && !$handle_access) {
-                $missing_access = 'Error: You Cannot Access @' . $focus_e['handleterm'] . ' due to Privacy Settings.';
-            } elseif (!$skip_hashtag_privacy_check && $focus_i && !$hashtag_access) {
-                $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['hashtagterm'] . ' due to Privacy Settings.';
-            } elseif (!$skip_hashtag_privacy_check && $target_i && !$target_hashtag_access) {
-                $missing_access = 'Error: You Cannot Access Target #' . $target_i['hashtagterm'] . ' due to Privacy Settings.';
+            } elseif (count($superpowers_required) && !user_session(end($superpowers_required))) {
+                $users___10957 = $this->config->item('users___10957');
+                $missing_access = 'Error: You Cannot Access ' . $users___6287[$app_userid]['m__title'] . ' as it requires the superpower of ' . $users___10957[end($superpowers_required)]['m__title'] . '.';
+            } elseif ($focus_e && !$user_access) {
+                $missing_access = 'Error: You Cannot Access @' . $focus_e['userhandle'] . ' due to Privacy Settings.';
+            } elseif (!$skip_post_privacy_check && $focus_i && !$post_access) {
+                $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['posthashtag'] . ' due to Privacy Settings.';
+            } elseif (!$skip_post_privacy_check && $target_i && !$target_post_access) {
+                $missing_access = 'Error: You Cannot Access Target #' . $target_i['posthashtag'] . ' due to Privacy Settings.';
             }
 
             if ($missing_access) {
                 //Redirect:
-                return get_redirected((!$handle_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
+                return get_redirected((!$user_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
             }
         }
 
 
         if ($memory_detected) {
 
-            if (in_array($app_handleid, $this->config->item('handleids___14599')) && !in_array($app_handleid, $this->config->item('handleids___12741'))) {
+            if (in_array($app_userid, $this->config->item('userids___14599')) && !in_array($app_userid, $this->config->item('userids___12741'))) {
 
                 if (!isset($_GET['reset_cache'])) {
                     //Fetch Most Recent Cache:
-                    foreach ($this->Chains->read(array(
-                        'chainhandledomain' => website_setting(0),
-                        'chainhandletype' => 44176, //Handle View
-                        'chainhandleinput' => 14599, //Cache App
-                        'chainhandleoutput' => $app_handleid,
+                    foreach ($this->Ideachains->read(array(
+                        'chainuserdomain' => website_setting(0),
+                        'chainusertype' => 44176, //User View
+                        'chainuserinput' => 14599, //Cache App
+                        'chainuseroutput' => $app_userid,
                     ), array(), 1, 0, array('chaintime' => 'DESC')) as $latest_cache) {
                         if (strtotime($latest_cache['chaintime']) <= (time() - view_memory(6404, 14599))) {
                             //Its expired, void it:
-                            $this->Chains->delete($latest_cache['chainid']);
+                            $this->Ideachains->delete($latest_cache['chainid']);
                         } else {
                             $ui = $latest_cache['chainvalue'];
                             $cache_chaintime = '<div class="texttransparent center main__title">Updated ' . view_time_difference($latest_cache['chaintime']) . ' Ago</div>';
@@ -327,36 +327,36 @@ class Controller extends CI_Controller
 
         $title = null;
         if ($focus_i) {
-            $title .= view_hashtag_title($focus_i, true) . ' | ';
+            $title .= view_post_title($focus_i, true) . ' | ';
         }
         if ($target_i) {
-            $title .= view_hashtag_title($target_i, true) . ' | ';
+            $title .= view_post_title($target_i, true) . ' | ';
         }
         if ($focus_e) {
-            $title .= $focus_e['handlename'] . ' @' . $focus_e['handleterm'] . ' | ';
+            $title .= $focus_e['username'] . ' @' . $focus_e['userhandle'] . ' | ';
         }
         if (!$title) {
             //Append app name since no title:
-            $title .= $handles___6287[$app_handleid]['m__title'] . ' | ';
+            $title .= $users___6287[$app_userid]['m__title'] . ' | ';
         }
         //Always Append Website at the end:
         $title .= ($memory_detected ? get_domain('m__title') : 'Loading Memory');
 
 
         $view_input = array(
-            'app_handleid' => $app_handleid,
-            'chainhandlecreator' => $chainhandlecreator,
-            'handle_session' => $handle_session,
-            'handle_http_request' => $handle_http_request,
+            'app_userid' => $app_userid,
+            'chainusercreator' => $chainusercreator,
+            'user_session' => $user_session,
+            'user_http_request' => $user_http_request,
             'memory_detected' => $memory_detected,
 
             'focus_e' => $focus_e,
             'focus_i' => $focus_i,
             'target_i' => $target_i,
 
-            '$handle_access' => $handle_access,
-            '$hashtag_access' => $hashtag_access,
-            '$target_hashtag_access' => $target_hashtag_access,
+            '$user_access' => $user_access,
+            '$post_access' => $post_access,
+            '$target_post_access' => $target_post_access,
 
             'title' => $title,
             'flash_message' => $flash_message,
@@ -364,57 +364,57 @@ class Controller extends CI_Controller
 
         if (!$ui) {
             //Prep view:
-            $app_handler = ($memory_detected ? strtolower($handles___6287[$app_handleid]['m__handle']) : 'memory');
-            $raw_app = $this->load->view($app_handler, $view_input, true);
+            $app_userr = ($memory_detected ? strtolower($users___6287[$app_userid]['m__user']) : 'memory');
+            $raw_app = $this->load->view($app_userr, $view_input, true);
             $ui .= $raw_app;
         }
 
 
         if ($new_cache) {
-            $cache_x = $this->Chains->create(array(
-                'chainhandledomain' => website_setting(0),
-                'chainhandletype' => 44176, //Handle View
-                'chainhandleinput' => 14599, //Cache App
-                'chainhandleoutput' => $app_handleid,
+            $cache_x = $this->Ideachains->create(array(
+                'chainuserdomain' => website_setting(0),
+                'chainusertype' => 44176, //User View
+                'chainuserinput' => 14599, //Cache App
+                'chainuseroutput' => $app_userid,
 
-                'chainhandlecreator' => $chainhandlecreator,
+                'chainusercreator' => $chainusercreator,
                 'chainvalue' => $ui,
-                'chainhashtaginput' => $chainhashtaginput,
-                'chainhashtagoutput' => $chainhashtagoutput,
+                'chainpostinput' => $chainpostinput,
+                'chainpostoutput' => $chainpostoutput,
             ));
         }
 
 
         //App title?
-        if ($memory_detected && in_array($app_handleid, $this->config->item('handleids___42928'))) {
-            $ui = '<h1><span style="font-size:2em !important;">' . $handles___6287[$app_handleid]['m__cover'] . '</span> ' . $handles___6287[$app_handleid]['m__title'] . '</h1>' . $ui;
+        if ($memory_detected && in_array($app_userid, $this->config->item('userids___42928'))) {
+            $ui = '<h1><span style="font-size:2em !important;">' . $users___6287[$app_userid]['m__cover'] . '</span> ' . $users___6287[$app_userid]['m__title'] . '</h1>' . $ui;
         }
 
 
         //Check to ensure they have started:
-        if ($app_handleid == 30795 && $target_i && $focus_i && $handle_session && $target_i['hashtagterm'] == $focus_i['hashtagterm']) {
+        if ($app_userid == 30795 && $target_i && $focus_i && $user_session && $target_i['posthashtag'] == $focus_i['posthashtag']) {
 
             //Starting point, make sure all good:
-            if (!hashtag_is_startable($target_i)) {
+            if (!post_is_startable($target_i)) {
 
                 //Not a valid starting point:
-                return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['hashtagterm'] . ' is not an active starting point.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['posthashtag'] . ' is not an active starting point.</div>');
 
-            } elseif (!count($this->Chains->read(array(
-                'LOWER(hashtagterm)' => strtolower($target_i['hashtagterm']),
-                'chainhandlecreator' => $handle_session['handleid'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            ), array('chainhashtaginput')))) {
+            } elseif (!count($this->Ideachains->read(array(
+                'LOWER(posthashtag)' => strtolower($target_i['posthashtag']),
+                'chainusercreator' => $user_session['userid'],
+                'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            ), array('chainpostinput')))) {
 
                 //Not yet started, add to their starting point:
-                $completion_status = $this->Chains->hashtag_discovered(4235, $handle_session['handleid'], 0, $target_i);
+                $completion_status = $this->Ideachains->post_discovered(4235, $user_session['userid'], 0, $target_i);
 
-                //Now return next hashtag:
-                $next__url = $this->Chains->next_hashtags($handle_session['handleid'], $target_i['hashtagterm'], $target_i);
+                //Now return next post:
+                $next__url = $this->Ideachains->next_posts($user_session['userid'], $target_i['posthashtag'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
-                    return get_redirected(view_memory(42903, 30795) . $target_i['hashtagterm'] . '/' . $next__url);
+                    return get_redirected(view_memory(42903, 30795) . $target_i['posthashtag'] . '/' . $next__url);
                 }
 
             }
@@ -429,7 +429,7 @@ class Controller extends CI_Controller
 
         } else {
 
-            if (in_array($app_handleid, $this->config->item('handleids___12741'))) {
+            if (in_array($app_userid, $this->config->item('userids___12741'))) {
 
                 //Raw UI:
                 echo $raw_app;
@@ -458,30 +458,30 @@ class Controller extends CI_Controller
     function chain_popover()
     {
 
-        if (isset($_POST['handle_string']) && strlen($_POST['handle_string']) > 1 && in_array(substr($_POST['handle_string'], 0, 1), array('#', '@'))) {
-            if (substr($_POST['handle_string'], 0, 1) == '#') {
-                foreach ($this->Hashtags->read(array(
-                    'LOWER(hashtagterm)' => strtolower(substr($_POST['handle_string'], 1)),
+        if (isset($_POST['user_string']) && strlen($_POST['user_string']) > 1 && in_array(substr($_POST['user_string'], 0, 1), array('#', '@'))) {
+            if (substr($_POST['user_string'], 0, 1) == '#') {
+                foreach ($this->Posts->read(array(
+                    'LOWER(posthashtag)' => strtolower(substr($_POST['user_string'], 1)),
                 )) as $i) {
-                    echo hashtag_view(31777, $i);
+                    echo post_view(31777, $i);
                     return true;
                 }
-            } elseif (substr($_POST['handle_string'], 0, 1) == '@') {
-                foreach ($this->Handles->read(array(
-                    'LOWER(handleterm)' => strtolower(substr($_POST['handle_string'], 1)),
+            } elseif (substr($_POST['user_string'], 0, 1) == '@') {
+                foreach ($this->Users->read(array(
+                    'LOWER(userhandle)' => strtolower(substr($_POST['user_string'], 1)),
                 )) as $e) {
-                    echo handle_view(42287, $e);
+                    echo user_view(42287, $e);
                     return true;
                 }
             }
 
             //Did not find, had error:
-            echo '<div class="alert alert-danger" role="alert">Could not find ' . $_POST['handle_string'] . '</div>';
+            echo '<div class="alert alert-danger" role="alert">Could not find ' . $_POST['user_string'] . '</div>';
             return false;
         }
 
         //Did not find, had error:
-        echo '<div class="alert alert-danger" role="alert">Missing handle_string variable</div>';
+        echo '<div class="alert alert-danger" role="alert">Missing user_string variable</div>';
         return false;
 
     }
@@ -494,13 +494,13 @@ class Controller extends CI_Controller
     function add_media()
     {
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(null, 0, $this->user_session);
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['chainid'])) {
+        } elseif (!isset($_POST['postid']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -509,61 +509,61 @@ class Controller extends CI_Controller
 
         //$dd = add_media($uploaded_media);
 
-        $hashtagid = 0; //New hashtag
-        $created_hashtagid = 0;
+        $postid = 0; //New post
+        $created_postid = 0;
 
-        if (!$_POST['hashtagid']) {
+        if (!$_POST['postid']) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Hashtag Media ID!',
+                'message' => 'Missing Post Media ID!',
             ));
         }
 
-        $is = $this->Hashtags->read(array(
-            'hashtagid' => $_POST['hashtagid'],
+        $is = $this->Posts->read(array(
+            'postid' => $_POST['postid'],
         ));
         if (!count($is)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Hashtag is no longer active',
+                'message' => 'Post is no longer active',
             ));
-        } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
+        } elseif (!post_access($is[0]['posthashtag'], 0, $is[0])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'You are missing permission to edit this hashtag',
+                'message' => 'You are missing permission to edit this post',
             ));
         }
 
 
-        $hashtagid = intval($is[0]['hashtagid']);
+        $postid = intval($is[0]['postid']);
 
-        //Fetch dynamic data based on hashtag type:
+        //Fetch dynamic data based on post type:
         $return_inputs = array();
-        $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
-        $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+        $users___42179 = $this->config->item('users___42179'); //Dynamic Input Fields
+        $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
-        foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $is[0]['hashtagid'],
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null, //Hashtag Types
-        )) as $hashtag_type) {
+        foreach ($this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $is[0]['postid'],
+            'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
+        )) as $post_type) {
 
-            foreach (array_intersect($this->config->item('handleids___' . $hashtag_type['chainhandleinput']), $this->config->item('handleids___42179')) as $dynamic_handleid) {
+            foreach (array_intersect($this->config->item('userids___' . $post_type['chainuserinput']), $this->config->item('userids___42179')) as $dynamic_userid) {
 
-                $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
-                if (count($superpowers_required) && !handle_session(end($superpowers_required), 0, $this->handle_session)) {
+                $superpowers_required = array_intersect($this->config->item('userids___10957'), $users___42179[$dynamic_userid]['m__following']);
+                if (count($superpowers_required) && !user_session(end($superpowers_required), 0, $this->user_session)) {
                     continue;
                 }
 
                 //Let's first determine the data type:
-                $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
+                $data_types = array_intersect($users___42179[$dynamic_userid]['m__following'], $this->config->item('userids___4592'));
 
                 if (count($data_types) != 1) {
                     //This is strange, we are expecting 1 match only report this:
-                    log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
-                        'chainhandlecreator' => $handle_session['handleid'],
-                        'chainhandleoutput' => $dynamic_handleid,
-                        'chainhashtagoutput' => $hashtagid,
+                    log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_userid . ': Check @4592 to see what is wrong', array(
+                        'chainusercreator' => $user_session['userid'],
+                        'chainuseroutput' => $dynamic_userid,
+                        'chainpostoutput' => $postid,
                     ));
                     continue; //Go to the next dynamic data type
                 }
@@ -574,15 +574,15 @@ class Controller extends CI_Controller
                     break;
                 }
 
-                if (in_array($data_type, $this->config->item('handleids___42188'))) {
+                if (in_array($data_type, $this->config->item('userids___42188'))) {
 
                     //Single or Multiple Choice:
                     array_push($return_inputs, array(
-                        'd__id' => $dynamic_handleid,
+                        'd__id' => $dynamic_userid,
                         'd__is_radio' => 1,
                         'd_chainid' => 0,
-                        'd__html' => view_instant_select($dynamic_handleid, 0, $hashtagid),
-                        'd__value' => ($hashtagid > 0 ? $hashtagid : ''),
+                        'd__html' => view_instant_select($dynamic_userid, 0, $postid),
+                        'd__value' => ($postid > 0 ? $postid : ''),
                         'd__type_name' => '',
                         'd__placeholder' => '',
                         'd__profile_header' => '',
@@ -590,31 +590,31 @@ class Controller extends CI_Controller
 
                 } else {
 
-                    $this_data_type = $this->config->item('handles___' . $data_type);
-                    $handles___4592 = $this->config->item('handles___4592'); //Data types
-                    $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
-                    $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+                    $this_data_type = $this->config->item('users___' . $data_type);
+                    $users___4592 = $this->config->item('users___4592'); //Data types
+                    $users___42179 = $this->config->item('users___42179'); //Dynamic Input Field
+                    $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
                     //Fetch the current value:
                     $counted = 0;
                     $unique_values = array();
-                    if ($hashtagid > 0) { //Must have an original ID to possibly have a value...
-                        foreach ($this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
-                            'chainhashtagoutput' => $hashtagid,
-                            'chainhandleinput' => $dynamic_handleid,
-                        ), array('chainhandleinput')) as $selected_e) {
+                    if ($postid > 0) { //Must have an original ID to possibly have a value...
+                        foreach ($this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
+                            'chainpostoutput' => $postid,
+                            'chainuserinput' => $dynamic_userid,
+                        ), array('chainuserinput')) as $selected_e) {
                             if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
                                 $counted++;
                                 array_push($unique_values, $selected_e['chainvalue']);
                                 array_push($return_inputs, array(
-                                    'd__id' => $dynamic_handleid,
+                                    'd__id' => $dynamic_userid,
                                     'd__is_radio' => 0,
                                     'd_chainid' => $selected_e['chainid'],
-                                    'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                                    'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
                                     'd__profile_header' => '',
                                 ));
                             }
@@ -623,17 +623,17 @@ class Controller extends CI_Controller
 
 
                     if (!$counted) {
-                        foreach ($this->Handles->read(array(
-                            'handleid' => $dynamic_handleid,
+                        foreach ($this->Users->read(array(
+                            'userid' => $dynamic_userid,
                         )) as $selected_e) {
                             array_push($return_inputs, array(
-                                'd__id' => $dynamic_handleid,
+                                'd__id' => $dynamic_userid,
                                 'd__is_radio' => 0,
                                 'd_chainid' => 0,
-                                'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                                'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                 'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
-                                'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
                                 'd__profile_header' => '',
                             ));
                         }
@@ -645,7 +645,7 @@ class Controller extends CI_Controller
         $return_array = array(
             'status' => 1,
             'return_inputs' => $return_inputs,
-            'created_hashtagid' => $created_hashtagid,
+            'created_postid' => $created_postid,
         );
 
         //Return everything we found:
@@ -653,16 +653,16 @@ class Controller extends CI_Controller
 
     }
 
-    function hashtag_editor()
+    function post_editor()
     {
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(null, 0, $this->user_session);
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['chainid'])) {
+        } elseif (!isset($_POST['postid']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -670,60 +670,60 @@ class Controller extends CI_Controller
         }
 
 
-        $hashtagid = 0; //New hashtag
-        $created_hashtagid = 0;
+        $postid = 0; //New post
+        $created_postid = 0;
 
-        if (!$_POST['hashtagid']) {
+        if (!$_POST['postid']) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Hashtag ID!',
+                'message' => 'Missing Post ID!',
             ));
         }
 
-        $is = $this->Hashtags->read(array(
-            'hashtagid' => $_POST['hashtagid'],
+        $is = $this->Posts->read(array(
+            'postid' => $_POST['postid'],
         ));
         if (!count($is)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Hashtag is no longer active',
+                'message' => 'Post is no longer active',
             ));
-        } elseif (!hashtag_access($is[0]['hashtagterm'], 0, $is[0])) {
+        } elseif (!post_access($is[0]['posthashtag'], 0, $is[0])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'You are missing permission to edit this hashtag',
+                'message' => 'You are missing permission to edit this post',
             ));
         }
 
-        $hashtagid = intval($is[0]['hashtagid']);
+        $postid = intval($is[0]['postid']);
 
-        //Fetch dynamic data based on hashtag type:
+        //Fetch dynamic data based on post type:
         $return_inputs = array();
-        $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
-        $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+        $users___42179 = $this->config->item('users___42179'); //Dynamic Input Fields
+        $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
 
-        foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $is[0]['hashtagid'],
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___4737')) . ')' => null, //Hashtag Types
-        )) as $hashtag_type) {
-            foreach (array_intersect($this->config->item('handleids___' . $hashtag_type['chainhandleinput']), $this->config->item('handleids___42179')) as $dynamic_handleid) {
+        foreach ($this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $is[0]['postid'],
+            'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
+        )) as $post_type) {
+            foreach (array_intersect($this->config->item('userids___' . $post_type['chainuserinput']), $this->config->item('userids___42179')) as $dynamic_userid) {
 
-                $superpowers_required = array_intersect($this->config->item('handleids___10957'), $handles___42179[$dynamic_handleid]['m__following']);
-                if (count($superpowers_required) && !handle_session(end($superpowers_required), 0, $this->handle_session)) {
+                $superpowers_required = array_intersect($this->config->item('userids___10957'), $users___42179[$dynamic_userid]['m__following']);
+                if (count($superpowers_required) && !user_session(end($superpowers_required), 0, $this->user_session)) {
                     continue;
                 }
 
                 //Let's first determine the data type:
-                $data_types = array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592'));
+                $data_types = array_intersect($users___42179[$dynamic_userid]['m__following'], $this->config->item('userids___4592'));
 
                 if (count($data_types) != 1) {
                     //This is strange, we are expecting 1 match only report this:
-                    log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
-                        'chainhandlecreator' => $handle_session['handleid'],
-                        'chainhandleoutput' => $dynamic_handleid,
-                        'chainhashtagoutput' => $hashtagid,
+                    log_error('Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_userid . ': Check @4592 to see what is wrong', array(
+                        'chainusercreator' => $user_session['userid'],
+                        'chainuseroutput' => $dynamic_userid,
+                        'chainpostoutput' => $postid,
                     ));
                     continue; //Go to the next dynamic data type
                 }
@@ -734,15 +734,15 @@ class Controller extends CI_Controller
                     break;
                 }
 
-                if (in_array($data_type, $this->config->item('handleids___42188'))) {
+                if (in_array($data_type, $this->config->item('userids___42188'))) {
 
                     //Single or Multiple Choice:
                     array_push($return_inputs, array(
-                        'd__id' => $dynamic_handleid,
+                        'd__id' => $dynamic_userid,
                         'd__is_radio' => 1,
                         'd_chainid' => 0,
-                        'd__html' => view_instant_select($dynamic_handleid, 0, $hashtagid),
-                        'd__value' => ($hashtagid > 0 ? $hashtagid : ''),
+                        'd__html' => view_instant_select($dynamic_userid, 0, $postid),
+                        'd__value' => ($postid > 0 ? $postid : ''),
                         'd__type_name' => '',
                         'd__placeholder' => '',
                         'd__profile_header' => '',
@@ -750,31 +750,31 @@ class Controller extends CI_Controller
 
                 } else {
 
-                    $this_data_type = $this->config->item('handles___' . $data_type);
-                    $handles___4592 = $this->config->item('handles___4592'); //Data types
-                    $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
-                    $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+                    $this_data_type = $this->config->item('users___' . $data_type);
+                    $users___4592 = $this->config->item('users___4592'); //Data types
+                    $users___42179 = $this->config->item('users___42179'); //Dynamic Input Field
+                    $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
                     //Fetch the current value:
                     $counted = 0;
                     $unique_values = array();
-                    if ($hashtagid > 0) { //Must have an original ID to possibly have a value...
-                        foreach ($this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___42252')) . ')' => null, //Plain Chain
-                            'chainhashtagoutput' => $hashtagid,
-                            'chainhandleinput' => $dynamic_handleid,
-                        ), array('chainhandleinput')) as $selected_e) {
+                    if ($postid > 0) { //Must have an original ID to possibly have a value...
+                        foreach ($this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
+                            'chainpostoutput' => $postid,
+                            'chainuserinput' => $dynamic_userid,
+                        ), array('chainuserinput')) as $selected_e) {
                             if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
                                 $counted++;
                                 array_push($unique_values, $selected_e['chainvalue']);
                                 array_push($return_inputs, array(
-                                    'd__id' => $dynamic_handleid,
+                                    'd__id' => $dynamic_userid,
                                     'd__is_radio' => 0,
                                     'd_chainid' => $selected_e['chainid'],
-                                    'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                                    'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
                                     'd__profile_header' => '',
                                 ));
                             }
@@ -783,17 +783,17 @@ class Controller extends CI_Controller
 
 
                     if (!$counted) {
-                        foreach ($this->Handles->read(array(
-                            'handleid' => $dynamic_handleid,
+                        foreach ($this->Users->read(array(
+                            'userid' => $dynamic_userid,
                         )) as $selected_e) {
                             array_push($return_inputs, array(
-                                'd__id' => $dynamic_handleid,
+                                'd__id' => $dynamic_userid,
                                 'd__is_radio' => 0,
                                 'd_chainid' => 0,
-                                'd__html' => view_dynamic_headline($dynamic_handleid, $handles___42179[$dynamic_handleid], $selected_e),
+                                'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                 'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
-                                'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
                                 'd__profile_header' => '',
                             ));
                         }
@@ -805,7 +805,7 @@ class Controller extends CI_Controller
         $return_array = array(
             'status' => 1,
             'return_inputs' => $return_inputs,
-            'created_hashtagid' => $created_hashtagid,
+            'created_postid' => $created_postid,
         );
 
         //Return everything we found:
@@ -814,140 +814,140 @@ class Controller extends CI_Controller
     }
 
 
-    function hashtag_delete()
+    function post_delete()
     {
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
+        $user_session = user_session(null, 0, $this->user_session);
         $migrateid = 0;
 
-        if (!$handle_session) {
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['hashtagid']) || !isset($_POST['focus__id']) || !isset($_POST['migratehandle'])) {
+        } elseif (!isset($_POST['postid']) || !isset($_POST['focus__id']) || !isset($_POST['migrateuser'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (hashtag_access(null, $_POST['hashtagid']) < 3) {
+        } elseif (post_access(null, $_POST['postid']) < 3) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Access to delete this hashtag',
+                'message' => 'Missing Access to delete this post',
             ));
-        } elseif (strlen($_POST['migratehandle']) > 1) {
-            $valid_handle = $this->Hashtags->read(array(
-                'hashtagid !=' => $_POST['hashtagid'],
-                'LOWER(hashtagterm)' => strtolower(str_replace('#', '', $_POST['migratehandle'])),
+        } elseif (strlen($_POST['migrateuser']) > 1) {
+            $valid_user = $this->Posts->read(array(
+                'postid !=' => $_POST['postid'],
+                'LOWER(posthashtag)' => strtolower(str_replace('#', '', $_POST['migrateuser'])),
             ));
-            if (!count($valid_handle)) {
+            if (!count($valid_user)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migratehandle'] . ' is not an active hashtag',
+                    'message' => $_POST['migrateuser'] . ' is not an active post',
                 ));
             }
-            $migrateid = $valid_handle[0]['hashtagid'];
+            $migrateid = $valid_user[0]['postid'];
         }
 
         $delete_redirect = '';
         $delete_element = '';
         //Determine what to do after deleted:
-        if ($_POST['hashtagid'] == $_POST['focus__id']) {
+        if ($_POST['postid'] == $_POST['focus__id']) {
 
             //Find Published Followings:
-            foreach ($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
-                'chainhashtagoutput' => $_POST['hashtagid'],
-            ), array('chainhashtaginput'), 1) as $previous_i) {
-                $delete_redirect = view_memory(42903, 33286) . $previous_i['hashtagterm'];
+            foreach ($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+                'chainpostoutput' => $_POST['postid'],
+            ), array('chainpostinput'), 1) as $previous_i) {
+                $delete_redirect = view_memory(42903, 33286) . $previous_i['posthashtag'];
             }
 
             //If not found, find active followings:
             if (!$delete_redirect) {
-                foreach ($this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
-                    'chainhashtagoutput' => $_POST['hashtagid'],
-                ), array('chainhashtaginput'), 1) as $previous_i) {
-                    $delete_redirect = view_memory(42903, 33286) . $previous_i['hashtagterm'];
+                foreach ($this->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+                    'chainpostoutput' => $_POST['postid'],
+                ), array('chainpostinput'), 1) as $previous_i) {
+                    $delete_redirect = view_memory(42903, 33286) . $previous_i['posthashtag'];
                 }
             }
 
             //If still not found, go to main page if no followings found:
             if (!$delete_redirect) {
-                foreach ($this->Hashtags->read(array(
-                    'hashtagid' => $_POST['hashtagid'],
+                foreach ($this->Posts->read(array(
+                    'postid' => $_POST['postid'],
                 )) as $i) {
-                    $delete_redirect = view_memory(42903, 33286) . $i['hashtagterm'];
+                    $delete_redirect = view_memory(42903, 33286) . $i['posthashtag'];
                 }
             }
 
         } else {
 
             //Just delete from UI using JS:
-            $delete_element = '.s__12273_' . $_POST['hashtagid'];
+            $delete_element = '.s__12273_' . $_POST['postid'];
 
         }
 
-        //Delete all Chains:
-        $chains_removed = $this->Hashtags->delete($_POST['hashtagid'], $handle_session['handleid'], $migrateid);
+        //Delete all Ideachains:
+        $chains_removed = $this->Posts->delete($_POST['postid'], $user_session['userid'], $migrateid);
 
         return view_json(array(
             'status' => ($chains_removed > 0 ? 1 : 0),
-            'message' => 'Hashtag successfully removed',
+            'message' => 'Post successfully removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
         ));
 
     }
 
-    function handle_delete()
+    function user_delete()
     {
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
+        $user_session = user_session(null, 0, $this->user_session);
         $migrateid = 0;
 
-        if (!$handle_session) {
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['handleid']) || !isset($_POST['focus__id']) || !isset($_POST['migratehandle'])) {
+        } elseif (!isset($_POST['userid']) || !isset($_POST['focus__id']) || !isset($_POST['migrateuser'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (handle_access(null, $_POST['handleid']) < 3) {
+        } elseif (user_access(null, $_POST['userid']) < 3) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Access to delete this hashtag',
+                'message' => 'Missing Access to delete this post',
             ));
-        } elseif (strlen($_POST['migratehandle']) > 1) {
-            $valid_handle = $this->Handles->read(array(
-                'handleid !=' => $_POST['handleid'],
-                'LOWER(handleterm)' => strtolower(str_replace('@', '', $_POST['migratehandle'])),
+        } elseif (strlen($_POST['migrateuser']) > 1) {
+            $valid_user = $this->Users->read(array(
+                'userid !=' => $_POST['userid'],
+                'LOWER(userhandle)' => strtolower(str_replace('@', '', $_POST['migrateuser'])),
             ));
-            if (!count($valid_handle)) {
+            if (!count($valid_user)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migratehandle'] . ' is not an active handle',
+                    'message' => $_POST['migrateuser'] . ' is not an active user',
                 ));
             }
-            $migrateid = $valid_handle[0]['handleid'];
-            if (!count($this->Handles->read(array('handleid' => $migrateid)))) {
+            $migrateid = $valid_user[0]['userid'];
+            if (!count($this->Users->read(array('userid' => $migrateid)))) {
                 return array(
                     'status' => 0,
-                    'message' => $_POST['migratehandle'] . ' is not a valid Handle',
+                    'message' => $_POST['migrateuser'] . ' is not a valid User',
                 );
             }
-        } elseif (in_array($_POST['handleid'], $this->config->item('handleids___14870'))) {
+        } elseif (in_array($_POST['userid'], $this->config->item('userids___14870'))) {
             return array(
                 'status' => 0,
-                'message' => 'Cannot Delete an active @chainhandledomain - Unchain, update @memory and try again',
+                'message' => 'Cannot Delete an active @chainuserdomain - Unchain, update @memory and try again',
             );
-        } elseif (!count($this->Handles->read(array('handleid' => $_POST['handleid'])))) {
+        } elseif (!count($this->Users->read(array('userid' => $_POST['userid'])))) {
             return array(
                 'status' => 0,
-                'message' => $_POST['handleid'] . ' is not a valid ID',
+                'message' => $_POST['userid'] . ' is not a valid ID',
             );
         }
 
@@ -956,36 +956,36 @@ class Controller extends CI_Controller
         $delete_redirect = '';
         $delete_element = '';
 
-        if ($_POST['handleid'] == $_POST['focus__id']) {
+        if ($_POST['userid'] == $_POST['focus__id']) {
 
             //Find Published Followings:
-            foreach ($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                'chainhandleoutput' => $_POST['handleid'],
-            ), array('chainhandleinput'), 1, 0, array('handlename' => 'DESC')) as $up_e) {
-                $delete_redirect = view_memory(42903, 42902) . $up_e['handleterm'];
+            foreach ($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                'chainuseroutput' => $_POST['userid'],
+            ), array('chainuserinput'), 1, 0, array('username' => 'DESC')) as $up_e) {
+                $delete_redirect = view_memory(42903, 42902) . $up_e['userhandle'];
             }
 
             //If still not found, go to main page if no followings found:
             if (!$delete_redirect) {
-                foreach ($this->Handles->read(array('handleid' => $_POST['handleid'])) as $e2) {
-                    $delete_redirect = view_memory(42903, 42902) . e2['handleterm'];
+                foreach ($this->Users->read(array('userid' => $_POST['userid'])) as $e2) {
+                    $delete_redirect = view_memory(42903, 42902) . e2['userhandle'];
                 }
             }
         } else {
 
             //Just delete from UI using JS:
-            $delete_element = '.s__12274_' . $_POST['handleid'];
+            $delete_element = '.s__12274_' . $_POST['userid'];
 
         }
 
-        //Delete all Chains:
-        $chains_removed = $this->Handles->delete($_POST['handleid'], $handle_session['handleid'], $migrateid);
+        //Delete all Ideachains:
+        $chains_removed = $this->Users->delete($_POST['userid'], $user_session['userid'], $migrateid);
 
         if(!$chains_removed['status']){
             return view_json(array(
                 'status' => 1,
-                'message' => 'Handle successfully removed',
+                'message' => 'User successfully removed',
                 'delete_redirect' => $delete_redirect,
                 'delete_element' => $delete_element,
             ));
@@ -993,29 +993,29 @@ class Controller extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'message' => 'Handle successfully removed',
+            'message' => 'User successfully removed',
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
         ));
 
     }
 
-    function hashtag_update()
+    function post_update()
     {
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(null, 0, $this->user_session);
+        if (!$user_session) {
 
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
 
-        } elseif (!isset($_POST['save_hashtagtext'])) {
+        } elseif (!isset($_POST['save_posttext'])) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Hashtag',
+                'message' => 'Missing Post',
             ));
 
         } elseif (!isset($_POST['focus__node']) || !isset($_POST['focus__id'])) {
@@ -1025,21 +1025,21 @@ class Controller extends CI_Controller
                 'message' => 'Missing focus Card/ID',
             ));
 
-        } elseif (!isset($_POST['save_hashtagterm'])) {
+        } elseif (!isset($_POST['save_posthashtag'])) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing hashtag',
+                'message' => 'Missing post',
             ));
 
-        } elseif (!isset($_POST['save_hashtagid'])) {
+        } elseif (!isset($_POST['save_postid'])) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Hashtag ID',
+                'message' => 'Missing Post ID',
             ));
 
-        } elseif (!isset($_POST['next_hashtagid'])) {
+        } elseif (!isset($_POST['next_postid'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -1053,85 +1053,85 @@ class Controller extends CI_Controller
                 'message' => 'Missing Chain Data',
             ));
 
-        } elseif (strlen($_POST['save_hashtagtext']) > view_memory(6404, 4736)) {
+        } elseif (strlen($_POST['save_posttext']) > view_memory(6404, 4736)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Hashtag message must be less than ' . view_memory(6404, 4736) . ' characters.',
+                'message' => 'Post message must be less than ' . view_memory(6404, 4736) . ' characters.',
             ));
         }
 
 
-        if($_POST['save_hashtagid'] > 0){
+        if($_POST['save_postid'] > 0){
 
-            $focus__node = ($_POST['focus__node'] == 12273 && $_POST['focus__id'] == $_POST['save_hashtagid']);
-            $is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['save_hashtagid'],
+            $focus__node = ($_POST['focus__node'] == 12273 && $_POST['focus__id'] == $_POST['save_postid']);
+            $is = $this->Posts->read(array(
+                'postid' => $_POST['save_postid'],
             ));
             if (!count($is)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Hashtag Not Valid',
+                    'message' => 'Post Not Valid',
                 ));
             }
 
             $update_array = array();
 
-            if (strtolower($is[0]['hashtagterm']) !== strtolower(trim($_POST['save_hashtagterm']))) {
+            if (strtolower($is[0]['posthashtag']) !== strtolower(trim($_POST['save_posthashtag']))) {
 
-                $validate_update_handle = validate_update_handle($_POST['save_hashtagterm'], $is[0]['hashtagid'], null);
-                if (!$validate_update_handle['status']) {
+                $validate_update_user = validate_update_user($_POST['save_posthashtag'], $is[0]['postid'], null);
+                if (!$validate_update_user['status']) {
                     return view_json(array(
                         'status' => 0,
-                        'message' => $validate_update_handle['message'],
+                        'message' => $validate_update_user['message'],
                     ));
                 }
-                $update_array['hashtagterm'] = $_POST['save_hashtagterm'];
+                $update_array['posthashtag'] = $_POST['save_posthashtag'];
             }
 
-            if ($is[0]['hashtagtext'] !== trim($_POST['save_hashtagtext'])) {
-                if (!strlen(trim($_POST['save_hashtagtext']))) {
+            if ($is[0]['posttext'] !== trim($_POST['save_posttext'])) {
+                if (!strlen(trim($_POST['save_posttext']))) {
                     //Since we do not have media, we must have a message:
                     return view_json(array(
                         'status' => 0,
                         'message' => 'Write something to save.',
                     ));
                 }
-                $update_array['hashtagtext'] = $_POST['save_hashtagtext'];
+                $update_array['posttext'] = $_POST['save_posttext'];
             }
 
-            //Update new hashtag fields:
+            //Update new post fields:
             if(count($update_array)){
-                $this->Hashtags->update($is[0]['hashtagid'], $update_array, $handle_session['handleid']);
+                $this->Posts->update($is[0]['postid'], $update_array, $user_session['userid']);
             }
 
 
-            if (isset($update_array['hashtagterm'])) {
+            if (isset($update_array['posthashtag'])) {
 
-                //Now Handles everywhere they are referenced:
-                foreach ($this->Chains->read(array(
-                    'chainhashtagoutput' => $is[0]['hashtagid'],
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
-                ), array('chainhashtaginput')) as $ref) {
+                //Now Users everywhere they are referenced:
+                foreach ($this->Ideachains->read(array(
+                    'chainpostoutput' => $is[0]['postid'],
+                    'chainusertype IN (' . join(',', $this->config->item('userids___4486')) . ')' => null, //Ideas
+                ), array('chainpostinput')) as $ref) {
 
                     //Redo their cache:
-                    $hashtag_cache = hashtag_cache($ref['hashtagid'], $ref['hashtagtext'], $handle_session['handleid'], $is[0]['hashtagterm'], $update_array['hashtagterm']);
+                    $post_index = post_index($ref['posttext'], $ref['postid'], $user_session['userid'], $is[0]['posthashtag'], $update_array['posthashtag']);
 
                     $update_columns = array();
 
-                    if($update_columns['hashtagtext']!=$hashtag_cache['hashtagtext']){
-                        $update_columns['hashtagtext'] = $hashtag_cache['hashtagtext'];
+                    if($update_columns['posttext']!=$post_index['posttext']){
+                        $update_columns['posttext'] = $post_index['posttext'];
                     }
-                    if($update_columns['hashtagdiscover']!=$hashtag_cache['hashtagdiscover']){
-                        $update_columns['hashtagdiscover'] = $hashtag_cache['hashtagdiscover'];
+                    if($update_columns['postdiscover']!=$post_index['postdiscover']){
+                        $update_columns['postdiscover'] = $post_index['postdiscover'];
                     }
-                    if($update_columns['hashtagedit']!=$hashtag_cache['hashtagedit']){
-                        $update_columns['hashtagedit'] = $hashtag_cache['hashtagedit'];
+                    if($update_columns['postedit']!=$post_index['postedit']){
+                        $update_columns['postedit'] = $post_index['postedit'];
                     }
 
                     if(count($update_columns)){
                         //We should update:
-                        $this->db->where('hashtagid', $ref['hashtagid']);
-                        $this->db->update('ideachainhashtags', $update_columns);
+                        $this->db->where('postid', $ref['postid']);
+                        $this->db->update('posts', $update_columns);
                     }
                 }
 
@@ -1141,32 +1141,32 @@ class Controller extends CI_Controller
 
             $focus__node = false;
 
-            //Create new hashtag
-            $hashtag_new = $this->Hashtags->create(array(
-                'hashtagterm' => $_POST['save_hashtagterm'],
-                'hashtagtext' => $_POST['save_hashtagtext'],
-            ), $handle_session['handleid']);
+            //Create new post
+            $post_new = $this->Posts->create(array(
+                'posthashtag' => $_POST['save_posthashtag'],
+                'posttext' => $_POST['save_posttext'],
+            ), $user_session['userid']);
 
-            $_POST['save_hashtagid'] = intval($hashtag_new['hashtag_create']['hashtagid']);
+            $_POST['save_postid'] = intval($post_new['post_create']['postid']);
 
         }
 
-        foreach ($this->Hashtags->read(array(
-            'hashtagid' => $_POST['save_hashtagid'],
+        foreach ($this->Posts->read(array(
+            'postid' => $_POST['save_postid'],
         )) as $new_i) {
 
             //Update Search Index:
-            update_algolia(12273, $new_i['hashtagid']);
+            update_algolia(12273, $new_i['postid']);
 
             $discovery_mode = ( isset($_POST['save_discoverymode']) && intval($_POST['save_discoverymode']) );
 
             return view_json(array(
                 'status' => 1,
-                'return_hashtagdiscover_chains' => view_hashtag_value($new_i, $handle_session['handleid'], $focus__node, $discovery_mode, $discovery_mode),
-                'return_hashtagdiscover_full' => hashtag_view($_POST['focus_group'], $new_i),
-                'save_hashtagid' => $new_i['hashtagid'],
-                'save_hashtagtext' => trim($_POST['save_hashtagtext']),
-                'redirect_hashtag' => ( $focus__node ? : ( isset($new_i['hashtagterm']) ? view_memory(42903, 33286) . $new_i['hashtagterm'] : null) ),
+                'return_postdiscover_chains' => view_post_value($new_i, $user_session['userid'], $focus__node, $discovery_mode, $discovery_mode),
+                'return_postdiscover_full' => post_view($_POST['focus_group'], $new_i),
+                'save_postid' => $new_i['postid'],
+                'save_posttext' => trim($_POST['save_posttext']),
+                'redirect_post' => ( $focus__node ? : ( isset($new_i['posthashtag']) ? view_memory(42903, 33286) . $new_i['posthashtag'] : null) ),
                 'message' => 'Success',
             ));
 
@@ -1176,38 +1176,38 @@ class Controller extends CI_Controller
 
 
 
-    function hashtag_cover()
+    function post_cover()
     {
 
-        if (!isset($_POST['hashtagid']) || !isset($_POST['chainhandletype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
+        if (!isset($_POST['postid']) || !isset($_POST['chainusertype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            $discover_chainhandletype = discover_chainhandletype();
+            $discover_chainusertype = discover_chainusertype();
 
             $ui = '';
             $listed_items = 0;
-            if ($_POST['chainhandletype']==13550 || $_POST['chainhandletype']==31777) {
+            if ($_POST['chainusertype']==13550 || $_POST['chainusertype']==31777) {
 
-                //HANDLES
-                $handles___4593 = $this->config->item('handles___4593'); //Chain Types
-                $current_handleterm = view_valid_handle_handle($_POST['first_segment']);
-                foreach (hashtags_query($_POST['chainhandletype'], $_POST['hashtagid'], 1, false) as $handle_session) {
-                    if (isset($handle_session['handleid'])) {
-                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handleterm'], $current_handleterm && $handle_session['handleterm'] == $current_handleterm, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlename'], $handle_session['chainvalue']);
+                //USERS
+                $users___4593 = $this->config->item('users___4593'); //Chain Types
+                $current_userhandle = view_valid_user_user($_POST['first_segment']);
+                foreach (posts_query($_POST['chainusertype'], $_POST['postid'], 1, false) as $user_session) {
+                    if (isset($user_session['userid'])) {
+                        $ui .= view_card(view_memory(42903, 42902) . $user_session['userhandle'], $current_userhandle && $user_session['userhandle'] == $current_userhandle, $user_session['chainusertype'], view_cover($user_session['usercover'], true), $user_session['username'], $user_session['chainvalue']);
                         $listed_items++;
                     }
                 }
 
-            } elseif (in_array($_POST['chainhandletype'], $this->config->item('handleids___11020'))) {
+            } elseif (in_array($_POST['chainusertype'], $this->config->item('userids___11020'))) {
 
-                //HASHTAGS
-                $handles___4593 = $this->config->item('handles___4593'); //Chain Types
-                $current_hashtagterm = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
+                //POSTS
+                $users___4593 = $this->config->item('users___4593'); //Chain Types
+                $current_posthashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
-                foreach (hashtags_query($_POST['chainhandletype'], $_POST['hashtagid'], 1, false) as $next_i) {
-                    if (isset($next_i['hashtagid'])) {
-                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], '', view_hashtag_title($next_i, true), $next_i['chainvalue']);
+                foreach (posts_query($_POST['chainusertype'], $_POST['postid'], 1, false) as $next_i) {
+                    if (isset($next_i['postid'])) {
+                        $ui .= view_card($discover_chainusertype . view_memory(42903, 33286) . $next_i['posthashtag'], $next_i['posthashtag'] == $current_posthashtag, $next_i['chainusertype'], '', view_post_title($next_i, true), $next_i['chainvalue']);
                         $listed_items++;
                     }
                 }
@@ -1216,10 +1216,10 @@ class Controller extends CI_Controller
 
             if ($listed_items < $_POST['counter']) {
                 //We have more to show:
-                foreach ($this->Hashtags->read(array(
-                    'hashtagid' => $_POST['hashtagid'],
+                foreach ($this->Posts->read(array(
+                    'postid' => $_POST['postid'],
                 )) as $i) {
-                    $ui .= view_more($discover_chainhandletype . view_memory(42903, 33286) . $i['hashtagterm'], false, '&nbsp;', '&nbsp;', 'View All');
+                    $ui .= view_more($discover_chainusertype . view_memory(42903, 33286) . $i['posthashtag'], false, '&nbsp;', '&nbsp;', 'View All');
                 }
             }
 
@@ -1228,54 +1228,54 @@ class Controller extends CI_Controller
         }
     }
 
-    function hashtag_list()
+    function post_list()
     {
         //Authenticate Member:
-        if (!isset($_POST['hashtagid']) || intval($_POST['hashtagid']) < 1 || !isset($_POST['counter']) || !isset($_POST['chainhandletype']) || intval($_POST['chainhandletype']) < 1) {
+        if (!isset($_POST['postid']) || intval($_POST['postid']) < 1 || !isset($_POST['counter']) || !isset($_POST['chainusertype']) || intval($_POST['chainusertype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            $hashtags_query = hashtags_query($_POST['chainhandletype'], $_POST['hashtagid'], 1);
+            $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
             $ui = '';
-            $is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['hashtagid'],
+            $is = $this->Posts->read(array(
+                'postid' => $_POST['postid'],
             ));
-            if (!count($is) || !$hashtags_query) {
+            if (!count($is) || !$posts_query) {
                 return false;
             }
 
-            if ($_POST['chainhandletype']==11019) {
+            if ($_POST['chainusertype']==11019) {
 
-                //HASHTAG Chain Groups Previous
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
-                foreach ($hashtags_query as $previous_i) {
-                    $ui .= hashtag_view(11019, $previous_i);
+                //POST Chain Groups Previous
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+                foreach ($posts_query as $previous_i) {
+                    $ui .= post_view(11019, $previous_i);
                 }
                 $ui .= '</div>';
 
-            } elseif ($_POST['chainhandletype']==12840) {
+            } elseif ($_POST['chainusertype']==12840) {
 
-                //HASHTAG Chain Groups Next
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
-                foreach ($hashtags_query as $next_i) {
-                    $ui .= hashtag_view($_POST['chainhandletype'], $next_i, $is[0]);
+                //POST Chain Groups Next
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+                foreach ($posts_query as $next_i) {
+                    $ui .= post_view($_POST['chainusertype'], $next_i, $is[0]);
                 }
                 $ui .= '</div>';
 
-            } elseif ($_POST['chainhandletype']==31777) {
+            } elseif ($_POST['chainusertype']==31777) {
 
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
-                foreach ($hashtags_query as $item) {
-                    $ui .= handle_view(31777, $item);
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+                foreach ($posts_query as $item) {
+                    $ui .= user_view(31777, $item);
                 }
                 $ui .= '</div>';
 
-            } elseif ($_POST['chainhandletype']==13550) {
+            } elseif ($_POST['chainusertype']==13550) {
 
-                //Handles
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
-                foreach ($hashtags_query as $handle_ref) {
-                    $ui .= handle_view($_POST['chainhandletype'], $handle_ref, null);
+                //Users
+                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+                foreach ($posts_query as $user_ref) {
+                    $ui .= user_view($_POST['chainusertype'], $user_ref, null);
                 }
                 $ui .= '</div>';
 
@@ -1287,57 +1287,57 @@ class Controller extends CI_Controller
     }
 
 
-    function handle_list()
+    function user_list()
     {
 
         //Authenticate Member:
-        if (!isset($_POST['handleid']) || intval($_POST['handleid']) < 1 || !isset($_POST['chainhandletype']) || intval($_POST['chainhandletype']) < 1) {
+        if (!isset($_POST['userid']) || intval($_POST['userid']) < 1 || !isset($_POST['chainusertype']) || intval($_POST['chainusertype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
             return false;
         }
 
         $limit = view_memory(6404, 11064);
-        $handle_session = handle_session();
-        $handles_query = handles_query($_POST['chainhandletype'], $_POST['handleid'], 1);
-        $es = $this->Handles->read(array(
-            'handleid' => $_POST['handleid'],
+        $user_session = user_session();
+        $users_query = users_query($_POST['chainusertype'], $_POST['userid'], 1);
+        $es = $this->Users->read(array(
+            'userid' => $_POST['userid'],
         ));
         if (!count($es)) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Invalid Handle ID</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Invalid User ID</div>';
             return false;
         }
-        if (!$handles_query) {
+        if (!$users_query) {
             return false;
         }
 
-        $focus_handleid = ($_POST['handleid'] > 0 ? $_POST['handleid'] : ($handle_session ? $handle_session['handleid'] : 0));
+        $focus_userid = ($_POST['userid'] > 0 ? $_POST['userid'] : ($user_session ? $user_session['userid'] : 0));
         $ui = '';
 
-        if ($_POST['chainhandletype']==13550 || $_POST['chainhandletype']==12273) {
+        if ($_POST['chainusertype']==13550 || $_POST['chainusertype']==12273) {
 
-            //Hashtag/Handle Link Groups
-            //Hashtags:
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
-            foreach ($handles_query as $i) {
-                $ui .= hashtag_view($_POST['chainhandletype'], $i, null, null, $focus_handleid);
+            //Post/User Link Groups
+            //Posts:
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($users_query as $i) {
+                $ui .= post_view($_POST['chainusertype'], $i, null, null, $focus_userid);
             }
             $ui .= '</div>';
 
-        } elseif ($_POST['chainhandletype']==32292 || in_array($_POST['chainhandletype'], $this->config->item('handleids___11028'))) {
+        } elseif ($_POST['chainusertype']==32292 || in_array($_POST['chainusertype'], $this->config->item('userids___11028'))) {
 
-            //Handles:
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
-            foreach ($handles_query as $e) {
-                $ui .= handle_view($_POST['chainhandletype'], $e, null);
+            //Users:
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($users_query as $e) {
+                $ui .= user_view($_POST['chainusertype'], $e, null);
             }
             $ui .= '</div>';
 
-        } elseif (in_array($_POST['chainhandletype'], $this->config->item('handleids___12144'))) {
+        } elseif (in_array($_POST['chainusertype'], $this->config->item('userids___12144'))) {
 
             //Discoveries:
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainhandletype'] . '">';
-            foreach ($handles_query as $i) {
-                $ui .= hashtag_view($_POST['chainhandletype'], $i, null, null, $focus_handleid);
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($users_query as $i) {
+                $ui .= post_view($_POST['chainusertype'], $i, null, null, $focus_userid);
             }
             $ui .= '</div>';
 
@@ -1347,10 +1347,10 @@ class Controller extends CI_Controller
 
     }
 
-    function handle_cover()
+    function user_cover()
     {
 
-        if (!isset($_POST['handleid']) || !isset($_POST['chainhandletype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
+        if (!isset($_POST['userid']) || !isset($_POST['chainusertype']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
 
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
 
@@ -1358,31 +1358,31 @@ class Controller extends CI_Controller
 
             $ui = '';
             $listed_items = 0;
-            $is_cache = in_array($_POST['chainhandletype'], $this->config->item('handleids___14599'));
+            $is_cache = in_array($_POST['chainusertype'], $this->config->item('userids___14599'));
 
-            if (in_array($_POST['chainhandletype'], $this->config->item('handleids___11028'))) {
+            if (in_array($_POST['chainusertype'], $this->config->item('userids___11028'))) {
 
-                //HANDLES
-                $current_handleterm = view_valid_handle_handle($_POST['first_segment']);
-                $handles___4593 = $this->config->item('handles___4593'); //Chain Types
+                //USERS
+                $current_userhandle = view_valid_user_user($_POST['first_segment']);
+                $users___4593 = $this->config->item('users___4593'); //Chain Types
 
-                foreach (handles_query($_POST['chainhandletype'], $_POST['handleid'], 1, false) as $handle_session) {
-                    if (isset($handle_session['handleid'])) {
-                        $ui .= view_card(view_memory(42903, 42902) . $handle_session['handleterm'], $handle_session['handleterm'] == $current_handleterm, $handle_session['chainhandletype'], view_cover($handle_session['handlecover'], true), $handle_session['handlename'], (!$is_cache ? $handle_session['chainvalue'] : null));
+                foreach (users_query($_POST['chainusertype'], $_POST['userid'], 1, false) as $user_session) {
+                    if (isset($user_session['userid'])) {
+                        $ui .= view_card(view_memory(42903, 42902) . $user_session['userhandle'], $user_session['userhandle'] == $current_userhandle, $user_session['chainusertype'], view_cover($user_session['usercover'], true), $user_session['username'], (!$is_cache ? $user_session['chainvalue'] : null));
                         $listed_items++;
                     }
                 }
 
-            } elseif ($_POST['chainhandletype']==13550 || $_POST['chainhandletype']==31777 || $_POST['chainhandletype']==12273) {
+            } elseif ($_POST['chainusertype']==13550 || $_POST['chainusertype']==31777 || $_POST['chainusertype']==12273) {
 
-                //HASHTAGS
-                $current_hashtagterm = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
-                $handles___4593 = $this->config->item('handles___4593'); //Chain Types
-                $discover_chainhandletype = discover_chainhandletype();
+                //POSTS
+                $current_posthashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
+                $users___4593 = $this->config->item('users___4593'); //Chain Types
+                $discover_chainusertype = discover_chainusertype();
 
-                foreach (handles_query($_POST['chainhandletype'], $_POST['handleid'], 1, false) as $next_i) {
-                    if (isset($next_i['hashtagid'])) {
-                        $ui .= view_card($discover_chainhandletype . view_memory(42903, 33286) . $next_i['hashtagterm'], $next_i['hashtagterm'] == $current_hashtagterm, $next_i['chainhandletype'], '', view_hashtag_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
+                foreach (users_query($_POST['chainusertype'], $_POST['userid'], 1, false) as $next_i) {
+                    if (isset($next_i['postid'])) {
+                        $ui .= view_card($discover_chainusertype . view_memory(42903, 33286) . $next_i['posthashtag'], $next_i['posthashtag'] == $current_posthashtag, $next_i['chainusertype'], '', view_post_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
                         $listed_items++;
                     }
                 }
@@ -1391,10 +1391,10 @@ class Controller extends CI_Controller
 
             if ($listed_items < $_POST['counter']) {
                 //We have more to show:
-                foreach ($this->Handles->read(array(
-                    'handleid' => $_POST['handleid'],
-                )) as $handle_this) {
-                    $ui .= view_more(view_memory(42903, 42902) . $handle_this['handleterm'], false, '&nbsp;', '&nbsp;', 'View All');
+                foreach ($this->Users->read(array(
+                    'userid' => $_POST['userid'],
+                )) as $user_this) {
+                    $ui .= view_more(view_memory(42903, 42902) . $user_this['userhandle'], false, '&nbsp;', '&nbsp;', 'View All');
                 }
             }
 
@@ -1403,20 +1403,20 @@ class Controller extends CI_Controller
         }
     }
 
-    function handle_sort_save()
+    function user_sort_save()
     {
 
         //Authenticate Member:
-        $handle_session = handle_session(10939, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(10939, 0, $this->user_session);
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
-        } elseif (!isset($_POST['handleid']) || intval($_POST['handleid']) < 1) {
+        } elseif (!isset($_POST['userid']) || intval($_POST['userid']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid handleid',
+                'message' => 'Invalid userid',
             ));
         } elseif (!isset($_POST['new_chainkey']) || !is_array($_POST['new_chainkey']) || count($_POST['new_chainkey']) < 1) {
             return view_json(array(
@@ -1425,29 +1425,29 @@ class Controller extends CI_Controller
             ));
         } else {
 
-            //Validate Handle:
-            $es = $this->Handles->read(array(
-                'handleid' => $_POST['handleid'],
+            //Validate User:
+            $es = $this->Users->read(array(
+                'userid' => $_POST['userid'],
             ));
 
             //Count followers:
-            $listhandle_count = $this->Chains->read(array(
-                'chainhandleinput' => $_POST['handleid'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(handleid) as totals');
+            $listuser_count = $this->Ideachains->read(array(
+                'chainuserinput' => $_POST['userid'],
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array('chainuseroutput'), 0, 0, array(), 'COUNT(userid) as totals');
 
             if (count($es) < 1) {
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid handleid',
+                    'message' => 'Invalid userid',
                 ));
 
-            } elseif ($listhandle_count[0]['totals'] > view_memory(6404, 11064)) {
+            } elseif ($listuser_count[0]['totals'] > view_memory(6404, 11064)) {
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Cannot sort Handles if greater than ' . view_memory(6404, 11064),
+                    'message' => 'Cannot sort Users if greater than ' . view_memory(6404, 11064),
                 ));
 
             } else {
@@ -1456,7 +1456,7 @@ class Controller extends CI_Controller
                 $updated = 0;
                 foreach ($_POST['new_chainkey'] as $rank => $chainid) {
                     if ($chainid > 0) {
-                        $updated += $this->Chains->update($chainid, array(
+                        $updated += $this->Ideachains->update($chainid, array(
                             'chainkey' => intval($rank),
                         ));
                     }
@@ -1465,7 +1465,7 @@ class Controller extends CI_Controller
                 //Display message:
                 return view_json(array(
                     'status' => 1,
-                    'message' => $updated . ' Chains updated',
+                    'message' => $updated . ' Ideachains updated',
                 ));
 
             }
@@ -1473,21 +1473,21 @@ class Controller extends CI_Controller
     }
 
 
-    function hashtag_copy()
+    function post_copy()
     {
 
         //Auth member and check required variables:
-        $handle_session = handle_session(10939, 0, $this->handle_session);
+        $user_session = user_session(10939, 0, $this->user_session);
 
-        if (!$handle_session) {
+        if (!$user_session) {
             return view__json(array(
                 'status' => 0,
                 'messagCloe' => view__unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['hashtagid']) || intval($_POST['hashtagid']) < 1) {
+        } elseif (!isset($_POST['postid']) || intval($_POST['postid']) < 1) {
             return view__json(array(
                 'status' => 0,
-                'message' => 'Invalid Following Handle',
+                'message' => 'Invalid Following User',
             ));
         } elseif (!isset($_POST['do_recursive'])) {
             return view__json(array(
@@ -1496,83 +1496,83 @@ class Controller extends CI_Controller
             ));
         }
 
-        return view_json($this->Hashtags->copy(intval($_POST['hashtagid']), intval($_POST['do_recursive']), $handle_session['handleid']));
+        return view_json($this->Posts->copy(intval($_POST['postid']), intval($_POST['do_recursive']), $user_session['userid']));
 
     }
 
 
-    function handle_copy()
+    function user_copy()
     {
 
         //Auth member and check required variables:
-        $handle_session = handle_session(10939, 0, $this->handle_session);
+        $user_session = user_session(10939, 0, $this->user_session);
 
-        if (!$handle_session) {
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
-        } elseif (intval($_POST['handleid']) < 1) {
+        } elseif (intval($_POST['userid']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Handle',
+                'message' => 'Invalid User',
             ));
-        } elseif (!strlen($_POST['copy_handle_title'])) {
+        } elseif (!strlen($_POST['copy_user_title'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Handle Title',
+                'message' => 'Invalid User Title',
             ));
         }
 
         $copy_children = true;
-        if(substr($_POST['copy_handle_title'], 0, 1)=='-'){
+        if(substr($_POST['copy_user_title'], 0, 1)=='-'){
             $copy_children = false;
-            $_POST['copy_handle_title'] = substr($_POST['copy_handle_title'], 1);
+            $_POST['copy_user_title'] = substr($_POST['copy_user_title'], 1);
         }
 
-        //Validate Handle:
-        $fetch_o = $this->Handles->read(array(
-            'handleid' => $_POST['handleid'],
+        //Validate User:
+        $fetch_o = $this->Users->read(array(
+            'userid' => $_POST['userid'],
         ));
         if (count($fetch_o) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid followings Handle ID',
+                'message' => 'Invalid followings User ID',
             ));
         }
 
 
         //Create:
-        $added_e = $this->Handles->create(array(
-            'handlename' => $_POST['copy_handle_title'],
-            'handlecover' => $fetch_o[0]['handlecover'],
-        ), $handle_session['handleid']);
+        $added_e = $this->Users->create(array(
+            'username' => $_POST['copy_user_title'],
+            'usercover' => $fetch_o[0]['usercover'],
+        ), $user_session['userid']);
         if (!$added_e['status']) {
             //We had an error, return it:
             return view_json($added_e);
         } else {
-            //Assign new Handle:
-            $focus_e = $added_e['handle_create'];
+            //Assign new User:
+            $focus_e = $added_e['user_create'];
         }
 
 
         //Followings:
-        foreach ($this->Chains->read(array(
-            'chainhandleoutput' => $_POST['handleid'],
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___41303')) . ')' => null, //Clone Handle Chains
+        foreach ($this->Ideachains->read(array(
+            'chainuseroutput' => $_POST['userid'],
+            'chainusertype IN (' . join(',', $this->config->item('userids___41303')) . ')' => null, //Clone User Ideachains
         ), array(), 0) as $x) {
-            if (!count($this->Chains->read(array(
-                'chainhandletype' => $x['chainhandletype'],
-                'chainhandleinput' => $x['chainhandleinput'],
-                'chainhandleoutput' => $focus_e['handleid'],
+            if (!count($this->Ideachains->read(array(
+                'chainusertype' => $x['chainusertype'],
+                'chainuserinput' => $x['chainuserinput'],
+                'chainuseroutput' => $focus_e['userid'],
                 'chainvalue' => $x['chainvalue'],
             )))) {
-                $this->Chains->create(array(
-                    'chainhandlecreator' => $handle_session['handleid'],
+                $this->Ideachains->create(array(
+                    'chainusercreator' => $user_session['userid'],
                     'chainkey' => $x['chainkey'],
-                    'chainhandletype' => $x['chainhandletype'],
-                    'chainhandleinput' => $x['chainhandleinput'],
-                    'chainhandleoutput' => $focus_e['handleid'],
+                    'chainusertype' => $x['chainusertype'],
+                    'chainuserinput' => $x['chainuserinput'],
+                    'chainuseroutput' => $focus_e['userid'],
                     'chainvalue' => $x['chainvalue'],
                 ));
             }
@@ -1581,24 +1581,24 @@ class Controller extends CI_Controller
         if($copy_children){
 
             //Followers:
-            foreach ($this->Chains->read(array(
-                'chainhandleinput' => $_POST['handleid'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___41303')) . ')' => null, //Clone Handle Chains
+            foreach ($this->Ideachains->read(array(
+                'chainuserinput' => $_POST['userid'],
+                'chainusertype IN (' . join(',', $this->config->item('userids___41303')) . ')' => null, //Clone User Ideachains
             ), array(), 0) as $x) {
 
-                //Make sure none existent in new Handle:
-                if (!count($this->Chains->read(array(
-                    'chainhandletype' => $x['chainhandletype'],
-                    'chainhandleinput' => $focus_e['handleid'],
-                    'chainhandleoutput' => $x['chainhandleoutput'],
+                //Make sure none existent in new User:
+                if (!count($this->Ideachains->read(array(
+                    'chainusertype' => $x['chainusertype'],
+                    'chainuserinput' => $focus_e['userid'],
+                    'chainuseroutput' => $x['chainuseroutput'],
                     'chainvalue' => $x['chainvalue'],
                 )))) {
-                    $this->Chains->create(array(
-                        'chainhandlecreator' => $handle_session['handleid'],
+                    $this->Ideachains->create(array(
+                        'chainusercreator' => $user_session['userid'],
                         'chainkey' => $x['chainkey'],
-                        'chainhandletype' => $x['chainhandletype'],
-                        'chainhandleinput' => $focus_e['handleid'],
-                        'chainhandleoutput' => $x['chainhandleoutput'],
+                        'chainusertype' => $x['chainusertype'],
+                        'chainuserinput' => $focus_e['userid'],
+                        'chainuseroutput' => $x['chainuseroutput'],
                         'chainvalue' => $x['chainvalue'],
                     ));
                 }
@@ -1608,19 +1608,19 @@ class Controller extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'handle_createhandle' => $focus_e['handleterm'],
+            'user_createuser' => $focus_e['userhandle'],
         ));
 
 
     }
 
-    function handle_create()
+    function user_create()
     {
 
         //Auth member and check required variables:
-        $handle_session = handle_session(10939, 0, $this->handle_session);
+        $user_session = user_session(10939, 0, $this->user_session);
 
-        if (!$handle_session) {
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
@@ -1628,17 +1628,17 @@ class Controller extends CI_Controller
         } elseif (intval($_POST['focus__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Following Handle',
+                'message' => 'Invalid Following User',
             ));
-        } elseif (!isset($_POST['chainhandletype'])) {
+        } elseif (!isset($_POST['chainusertype'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Handle Creation Type',
+                'message' => 'Invalid User Creation Type',
             ));
-        } elseif (!isset($_POST['handle_current_id']) || !isset($_POST['handle_new_string']) || (intval($_POST['handle_current_id']) < 1 && strlen($_POST['handle_new_string']) < 1)) {
+        } elseif (!isset($_POST['user_current_id']) || !isset($_POST['user_new_string']) || (intval($_POST['user_current_id']) < 1 && strlen($_POST['user_new_string']) < 1)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Either New Handle ID or Handle Name',
+                'message' => 'Either New User ID or User Name',
             ));
         }
 
@@ -1647,27 +1647,27 @@ class Controller extends CI_Controller
 
         if ($adding_to_i) {
 
-            //Validate Hashtag:
-            $fetch_o = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['focus__id'],
+            //Validate Post:
+            $fetch_o = $this->Posts->read(array(
+                'postid' => $_POST['focus__id'],
             ));
             if (count($fetch_o) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid followings Handle ID',
+                    'message' => 'Invalid followings User ID',
                 ));
             }
 
         } else {
 
-            //Validate Handle:
-            $fetch_o = $this->Handles->read(array(
-                'handleid' => $_POST['focus__id'],
+            //Validate User:
+            $fetch_o = $this->Users->read(array(
+                'userid' => $_POST['focus__id'],
             ));
             if (count($fetch_o) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid followings Handle ID',
+                    'message' => 'Invalid followings User ID',
                 ));
             }
 
@@ -1675,31 +1675,31 @@ class Controller extends CI_Controller
 
 
         //Set some variables:
-        $_POST['handle_new_string'] = trim($_POST['handle_new_string']);
-        $_POST['chainhandletype'] = intval($_POST['chainhandletype']);
-        $is_upwards = in_array($_POST['chainhandletype'], $this->config->item('handleids___14686'));
+        $_POST['user_new_string'] = trim($_POST['user_new_string']);
+        $_POST['chainusertype'] = intval($_POST['chainusertype']);
+        $is_upwards = in_array($_POST['chainusertype'], $this->config->item('userids___14686'));
 
-        if (!intval($_POST['handle_current_id']) && view_valid_handle_handle($_POST['handle_new_string'])) {
-            foreach ($this->Handles->read(array(
-                'LOWER(handleterm)' => strtolower(substr($_POST['handle_new_string'], 1)),
+        if (!intval($_POST['user_current_id']) && view_valid_user_user($_POST['user_new_string'])) {
+            foreach ($this->Users->read(array(
+                'LOWER(userhandle)' => strtolower(substr($_POST['user_new_string'], 1)),
             )) as $e) {
-                $_POST['handle_current_id'] = $e['handleid'];
+                $_POST['user_current_id'] = $e['userid'];
             }
         }
-        $adding_to_existing = (intval($_POST['handle_current_id']) > 0);
+        $adding_to_existing = (intval($_POST['user_current_id']) > 0);
 
-        //Are we adding an existing Handle?
+        //Are we adding an existing User?
         if ($adding_to_existing) {
 
-            //Validate this existing Handle:
-            $es = $this->Handles->read(array(
-                'handleid' => $_POST['handle_current_id'],
+            //Validate this existing User:
+            $es = $this->Users->read(array(
+                'userid' => $_POST['user_current_id'],
             ));
 
             if (count($es) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Handle @' . $_POST['handle_current_id'] . ' is not active',
+                    'message' => 'User @' . $_POST['user_current_id'] . ' is not active',
                 ));
             }
 
@@ -1708,21 +1708,21 @@ class Controller extends CI_Controller
 
         } else {
 
-            //We are creating a new Handle:
-            $added_e = $this->Handles->create(array(
-                'handlename' => $_POST['handle_new_string'],
-            ), $handle_session['handleid']);
+            //We are creating a new User:
+            $added_e = $this->Users->create(array(
+                'username' => $_POST['user_new_string'],
+            ), $user_session['userid']);
             if (!$added_e['status']) {
                 //We had an error, return it:
                 return view_json($added_e);
             } else {
-                //Assign new Handle:
-                $focus_e = $added_e['handle_create'];
+                //Assign new User:
+                $focus_e = $added_e['user_create'];
             }
 
         }
 
-        //We need to check to ensure this is not a duplicate Chain if adding an existing Handle:
+        //We need to check to ensure this is not a duplicate Chain if adding an existing User:
         $ur2 = array();
 
         if ($adding_to_i) {
@@ -1731,21 +1731,21 @@ class Controller extends CI_Controller
 
         } else {
 
-            //Add Up/Down Handle:
+            //Add Up/Down User:
 
-            //Add Chains only if not previously added by the URL function:
+            //Add Ideachains only if not previously added by the URL function:
             if ($is_upwards) {
 
                 //Following
-                $chainhandleoutput = $fetch_o[0]['handleid'];
-                $chainhandleinput = $focus_e['handleid'];
+                $chainuseroutput = $fetch_o[0]['userid'];
+                $chainuserinput = $focus_e['userid'];
                 $chainkey = 0; //Never sort following, only sort followers
 
             } else {
 
                 //Followers
-                $chainhandleinput = $fetch_o[0]['handleid'];
-                $chainhandleoutput = $focus_e['handleid'];
+                $chainuserinput = $fetch_o[0]['userid'];
+                $chainuseroutput = $focus_e['userid'];
                 $chainkey = 0;
 
             }
@@ -1754,128 +1754,128 @@ class Controller extends CI_Controller
             $chainvalue = null;
 
             //Create Chain:
-            $ur2 = $this->Chains->create(array(
-                'chainhandlecreator' => $handle_session['handleid'],
-                'chainhandletype' => 4230,
+            $ur2 = $this->Ideachains->create(array(
+                'chainusercreator' => $user_session['userid'],
+                'chainusertype' => 4230,
                 'chainvalue' => $chainvalue,
-                'chainhandleoutput' => $chainhandleoutput,
-                'chainhandleinput' => $chainhandleinput,
+                'chainuseroutput' => $chainuseroutput,
+                'chainuserinput' => $chainuserinput,
                 'chainkey' => $chainkey,
             ));
         }
 
-        //Return Handle:
+        //Return User:
         return view_json(array(
             'status' => 1,
-            'handle_new_echo' => handle_view($_POST['chainhandletype'], array_merge($focus_e, $ur2), null),
+            'user_new_echo' => user_view($_POST['chainusertype'], array_merge($focus_e, $ur2), null),
         ));
 
     }
 
-    function handle_editor()
+    function user_editor()
     {
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        $handles___11035 = $this->config->item('handles___11035');
-        $handles___42776 = $this->config->item('handles___42776');
-        $handles___4592 = $this->config->item('handles___4592'); //Data types
-        if (!$handle_session) {
+        $user_session = user_session(null, 0, $this->user_session);
+        $users___11035 = $this->config->item('users___11035');
+        $users___42776 = $this->config->item('users___42776');
+        $users___4592 = $this->config->item('users___4592'); //Data types
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['handleid']) || !isset($_POST['chainid'])) {
+        } elseif (!isset($_POST['userid']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
         }
 
-        $es = $this->Handles->read(array(
-            'handleid' => $_POST['handleid'],
+        $es = $this->Users->read(array(
+            'userid' => $_POST['userid'],
         ));
         if (!count($es)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Handle is no longer active',
+                'message' => 'User is no longer active',
             ));
-        } elseif (!handle_access($es[0]['handleterm'], 0, $es[0])) {
+        } elseif (!user_access($es[0]['userhandle'], 0, $es[0])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'You are missing permission to edit this Handle',
+                'message' => 'You are missing permission to edit this User',
             ));
         }
 
 
-        //Fetch dynamic data based on hashtag type:
+        //Fetch dynamic data based on post type:
         $order_42145 = sort_by(42145);
-        $scanned_handles = array();
+        $scanned_users = array();
         $return_inputs = array();
         $input_pointer = 0;
         $profile_header = '';
 
-        //Fetch Handle Templates, if any:
-        foreach ($this->Chains->read(array(
-            'chainhandleinput IN (' . join(',', $this->config->item('handleids___42178')) . ')' => null, //Dynamic Handles
-            'chainhandleoutput' => $es[0]['handleid'],
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-        ), array('chainhandleinput'), 0, 0, sort_by(42178)) as $handle_group) {
+        //Fetch User Templates, if any:
+        foreach ($this->Ideachains->read(array(
+            'chainuserinput IN (' . join(',', $this->config->item('userids___42178')) . ')' => null, //Dynamic Users
+            'chainuseroutput' => $es[0]['userid'],
+            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+        ), array('chainuserinput'), 0, 0, sort_by(42178)) as $user_group) {
 
-            if (in_array($handle_group['handleid'], $scanned_handles)) {
+            if (in_array($user_group['userid'], $scanned_users)) {
                 continue;
             }
-            array_push($scanned_handles, $handle_group['handleid']);
+            array_push($scanned_users, $user_group['userid']);
 
-            foreach ($this->Chains->read(array(
-                'chainhandleoutput' => $handle_group['handleid'],
-                'chainhandleinput IN (' . join(',', $this->config->item('handleids___42145')) . ')' => null, //Dynamic Input Templates
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            ), array('chainhandleinput'), 0, 0, $order_42145) as $handle_template) {
+            foreach ($this->Ideachains->read(array(
+                'chainuseroutput' => $user_group['userid'],
+                'chainuserinput IN (' . join(',', $this->config->item('userids___42145')) . ')' => null, //Dynamic Input Templates
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array('chainuserinput'), 0, 0, $order_42145) as $user_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($handle_template['handlecover']) . '</span>' . $handle_template['handlename'] . '<a href="' . view_memory(42903, 42902) . $handle_group['handleterm'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $handle_group['handlename'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($handle_group['handlecover']) . '</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($user_template['usercover']) . '</span>' . $user_template['username'] . '<a href="' . view_memory(42903, 42902) . $user_group['userhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $user_group['username'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($user_group['usercover']) . '</span></a></div>';
 
 
                 //Load template:
-                if (!is_array($this->config->item('handles___' . $handle_template['handleid']))) {
+                if (!is_array($this->config->item('users___' . $user_template['userid']))) {
                     //Report Error:
-                    log_error('handle_sessionditor_load() ERROR: @' . $handle_template['handleid'] . ' is NOT in memory cache', array(
-                        'chainhandleoutput' => $handle_template['handleid'],
+                    log_error('user_sessionditor_load() ERROR: @' . $user_template['userid'] . ' is NOT in memory cache', array(
+                        'chainuseroutput' => $user_template['userid'],
                     ));
                     continue;
-                } elseif (in_array($handle_template['handleid'], $scanned_handles)) {
+                } elseif (in_array($user_template['userid'], $scanned_users)) {
                     continue;
                 }
-                array_push($scanned_handles, $handle_template['handleid']);
+                array_push($scanned_users, $user_template['userid']);
 
 
-                foreach ($this->config->item('handles___' . $handle_template['handleid']) as $dynamic_handleid => $m) {
+                foreach ($this->config->item('users___' . $user_template['userid']) as $dynamic_userid => $m) {
 
                     //Make sure it's a dynamic input field:
-                    if (!in_array($dynamic_handleid, $this->config->item('handleids___42179'))) {
+                    if (!in_array($dynamic_userid, $this->config->item('userids___42179'))) {
                         continue;
-                    } elseif (in_array($dynamic_handleid, $scanned_handles)) {
+                    } elseif (in_array($dynamic_userid, $scanned_users)) {
                         continue;
                     }
-                    array_push($scanned_handles, $dynamic_handleid);
+                    array_push($scanned_users, $dynamic_userid);
 
                     //Let's first determine the data type:
-                    $data_types = array_intersect($m['m__following'], $this->config->item('handleids___4592'));
+                    $data_types = array_intersect($m['m__following'], $this->config->item('userids___4592'));
 
                     if (count($data_types) != 1) {
 
                         //This is strange, we are expecting 1 match only report this:
-                        log_error('Found ' . count($data_types) . ' Data Types (@' . $es[0]['handleid'] . ') (Expecting exactly 1) for @' . $dynamic_handleid . ': Check @4592 to see what is wrong', array(
-                            'chainhandleoutput' => $dynamic_handleid,
-                            'chainhandlecreator' => $handle_session['handleid'],
+                        log_error('Found ' . count($data_types) . ' Data Types (@' . $es[0]['userid'] . ') (Expecting exactly 1) for @' . $dynamic_userid . ': Check @4592 to see what is wrong', array(
+                            'chainuseroutput' => $dynamic_userid,
+                            'chainusercreator' => $user_session['userid'],
                         ));
                         continue; //Go to the next dynamic data type
 
                     } elseif ($input_pointer >= view_memory(6404, 42206)) {
                         //Monitor if we ever reach the maximum:
                         log_error('Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion', array(
-                            'chainhandleoutput' => $dynamic_handleid,
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhashtagoutput' => $_POST['handleid'],
+                            'chainuseroutput' => $dynamic_userid,
+                            'chainusercreator' => $user_session['userid'],
+                            'chainpostoutput' => $_POST['userid'],
                         ));
                     }
 
@@ -1886,15 +1886,15 @@ class Controller extends CI_Controller
                         break;
                     }
 
-                    if (in_array($data_type, $this->config->item('handleids___42188'))) {
+                    if (in_array($data_type, $this->config->item('userids___42188'))) {
 
                         //Single or Multiple Choice:
                         array_push($return_inputs, array(
-                            'd__id' => $dynamic_handleid,
+                            'd__id' => $dynamic_userid,
                             'd__is_radio' => 1,
                             'd_chainid' => 0,
-                            'd__html' => view_instant_select($dynamic_handleid, $es[0]['handleid'], 0),
-                            'd__value' => ($es[0]['handleid'] > 0 ? $es[0]['handleid'] : ''),
+                            'd__html' => view_instant_select($dynamic_userid, $es[0]['userid'], 0),
+                            'd__value' => ($es[0]['userid'] > 0 ? $es[0]['userid'] : ''),
                             'd__type_name' => '',
                             'd__placeholder' => '',
                             'd__profile_header' => $profile_header,
@@ -1902,46 +1902,46 @@ class Controller extends CI_Controller
 
                     } else {
 
-                        $this_data_type = $this->config->item('handles___' . $data_type);
-                        $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Field
-                        $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+                        $this_data_type = $this->config->item('users___' . $data_type);
+                        $users___42179 = $this->config->item('users___42179'); //Dynamic Input Field
+                        $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
                         //Fetch the current value(s):
                         $counted = 0;
                         $unique_values = array();
-                        foreach ($this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                            'chainhandleoutput' => $es[0]['handleid'],
-                            'chainhandleinput' => $dynamic_handleid,
-                        ), array('chainhandleinput')) as $selected_e) {
+                        foreach ($this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                            'chainuseroutput' => $es[0]['userid'],
+                            'chainuserinput' => $dynamic_userid,
+                        ), array('chainuserinput')) as $selected_e) {
                             if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
                                 array_push($unique_values, $selected_e['chainvalue']);
                                 $counted++;
                                 array_push($return_inputs, array(
-                                    'd__id' => $dynamic_handleid,
+                                    'd__id' => $dynamic_userid,
                                     'd__is_radio' => 0,
                                     'd_chainid' => $selected_e['chainid'],
-                                    'd__html' => view_dynamic_headline($dynamic_handleid, $m, $selected_e),
+                                    'd__html' => view_dynamic_headline($dynamic_userid, $m, $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
                         }
 
                         if (!$counted) {
-                            foreach ($this->Handles->read(array(
-                                'handleid' => $dynamic_handleid,
+                            foreach ($this->Users->read(array(
+                                'userid' => $dynamic_userid,
                             )) as $selected_e) {
                                 array_push($return_inputs, array(
-                                    'd__id' => $dynamic_handleid,
+                                    'd__id' => $dynamic_userid,
                                     'd__is_radio' => 0,
                                     'd_chainid' => 0,
-                                    'd__html' => view_dynamic_headline($dynamic_handleid, $m, $selected_e),
+                                    'd__html' => view_dynamic_headline($dynamic_userid, $m, $selected_e),
                                     'd__value' => '',
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_handleid]['m__message']) ? $this_data_type[$dynamic_handleid]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
@@ -1953,25 +1953,25 @@ class Controller extends CI_Controller
 
 
         //Add universal inputs only if missing bio profiles:
-        if (!array_intersect($scanned_handles, $this->config->item('handleids___42885'))) {
-            foreach ($this->Handles->read(array(
-                'handleid IN (' . join(',', $this->config->item('handleids___42776')) . ')' => null, //Universal Dynamic Inputs
+        if (!array_intersect($scanned_users, $this->config->item('userids___42885'))) {
+            foreach ($this->Users->read(array(
+                'userid IN (' . join(',', $this->config->item('userids___42776')) . ')' => null, //Universal Dynamic Inputs
             )) as $selected_e) {
-                foreach (array_intersect($handles___42776[$selected_e['handleid']]['m__following'], $this->config->item('handleids___4592')) as $data_type) {
+                foreach (array_intersect($users___42776[$selected_e['userid']]['m__following'], $this->config->item('userids___4592')) as $data_type) {
                     //Any value?
-                    $values = $this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleoutput' => $es[0]['handleid'],
-                        'chainhandleinput' => $selected_e['handleid'],
+                    $values = $this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                        'chainuseroutput' => $es[0]['userid'],
+                        'chainuserinput' => $selected_e['userid'],
                     ));
                     array_push($return_inputs, array(
-                        'd__id' => $selected_e['handleid'],
+                        'd__id' => $selected_e['userid'],
                         'd__is_radio' => 0,
                         'd_chainid' => 0,
-                        'd__html' => view_dynamic_headline($selected_e['handleid'], $handles___42776[$selected_e['handleid']], $selected_e),
+                        'd__html' => view_dynamic_headline($selected_e['userid'], $users___42776[$selected_e['userid']], $selected_e),
                         'd__value' => (isset($values[0]['chainvalue']) && strlen($values[0]['chainvalue']) > 0 ? $values[0]['chainvalue'] : ''),
                         'd__type_name' => html_input_type($data_type),
-                        'd__placeholder' => (strlen($handles___42776[$selected_e['handleid']]['m__message']) ? $handles___42776[$selected_e['handleid']]['m__message'] : $handles___4592[$data_type]['m__title'] . '...'),
+                        'd__placeholder' => (strlen($users___42776[$selected_e['userid']]['m__message']) ? $users___42776[$selected_e['userid']]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
                         'd__profile_header' => '', //No header for universals
                     ));
                     break;
@@ -1987,34 +1987,39 @@ class Controller extends CI_Controller
 
     }
 
-    function handle_save_edit()
+    function user_save_edit()
     {
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(null, 0, $this->user_session);
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['save_handleid'])) {
+        } elseif (!isset($_POST['save_userid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
             ));
-        } elseif (!isset($_POST['save_handlename'])) {
+        } elseif (!isset($_POST['save_username'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Handle Title',
+                'message' => 'Invalid User Title',
             ));
-        } elseif (!isset($_POST['save_handleterm'])) {
+        } elseif (!isset($_POST['save_userbio'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Handle Handle',
+                'message' => 'Invalid User Bio',
             ));
-        } elseif (!isset($_POST['save_handlecover'])) {
+        } elseif (!isset($_POST['save_userhandle'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Handle Cover',
+                'message' => 'Invalid User User',
+            ));
+        } elseif (!isset($_POST['save_usercover'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid User Cover',
             ));
         } elseif (!isset($_POST['save_chainid']) || !isset($_POST['save_chainvalue'])) {
             return view_json(array(
@@ -2024,19 +2029,19 @@ class Controller extends CI_Controller
         }
 
 
-        $es = $this->Handles->read(array(
-            'handleid' => $_POST['save_handleid'],
+        $es = $this->Users->read(array(
+            'userid' => $_POST['save_userid'],
         ));
         if (!count($es)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Handle Not Active',
+                'message' => 'User Not Active',
             ));
         }
 
 
         //Validate Dynamic Inputs:
-        $handles___42179 = $this->config->item('handles___42179'); //Dynamic Input Fields
+        $users___42179 = $this->config->item('users___42179'); //Dynamic Input Fields
 
         //Process dynamic inputs if any:
         for ($p = 1; $p <= view_memory(6404, 42206); $p++) {
@@ -2050,22 +2055,22 @@ class Controller extends CI_Controller
                 continue;
             }
             $d_chainid = $input_parts[0];
-            $dynamic_handleid = $input_parts[1];
+            $dynamic_userid = $input_parts[1];
             $dynamic_value = trim($input_parts[2]);
 
 
             //Required fields must have an input:
-            if (in_array($dynamic_handleid, $this->config->item('handleids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_handleid, $this->config->item('handleids___33331')) && !in_array($dynamic_handleid, $this->config->item('handleids___33332'))) {
+            if (in_array($dynamic_userid, $this->config->item('userids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_userid, $this->config->item('userids___33331')) && !in_array($dynamic_userid, $this->config->item('userids___33332'))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Missing Required Field: ' . $handles___42179[$dynamic_handleid]['m__title'],
+                    'message' => 'Missing Required Field: ' . $users___42179[$dynamic_userid]['m__title'],
                 ));
             }
 
             //Validate input based on its data type, if provided:
             if (strlen($dynamic_value)) {
-                foreach (array_intersect($handles___42179[$dynamic_handleid]['m__following'], $this->config->item('handleids___4592')) as $data_type_this) {
-                    $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $handles___42179[$dynamic_handleid]['m__title']);
+                foreach (array_intersect($users___42179[$dynamic_userid]['m__following'], $this->config->item('userids___4592')) as $data_type_this) {
+                    $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $users___42179[$dynamic_userid]['m__title']);
                     if (!$data_type_validate['status']) {
                         //We had an error:
                         return view_json($data_type_validate);
@@ -2076,16 +2081,16 @@ class Controller extends CI_Controller
 
             //Fetch the current value:
             if ($d_chainid > 0) {
-                $values = $this->Chains->read(array(
+                $values = $this->Ideachains->read(array(
                     'chainid' => $d_chainid,
                 ));
             }
 
             if (!$d_chainid || !count($values)) {
-                $values = $this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                    'chainhandleinput' => $dynamic_handleid,
-                    'chainhandleoutput' => $es[0]['handleid'],
+                $values = $this->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                    'chainuserinput' => $dynamic_userid,
+                    'chainuseroutput' => $es[0]['userid'],
                 ));
             }
 
@@ -2096,19 +2101,19 @@ class Controller extends CI_Controller
                 //Remove Chain if we have one:
                 //HACK: Summary are key chains that should not be removed
                 /*
-                if (count($values) && $dynamic_handleid != 11035) {
-                    $this->Chains->delete($values[0]['chainid'], $handle_session['handleid']);
+                if (count($values) && $dynamic_userid != 11035) {
+                    $this->Ideachains->delete($values[0]['chainid'], $user_session['userid']);
                 }
                 */
 
             } elseif (!count($values)) {
 
                 //Create Chain:
-                $this->Chains->create(array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhandletype' => 4230,
-                    'chainhandleinput' => $dynamic_handleid,
-                    'chainhandleoutput' => $es[0]['handleid'],
+                $this->Ideachains->create(array(
+                    'chainusercreator' => $user_session['userid'],
+                    'chainusertype' => 4230,
+                    'chainuserinput' => $dynamic_userid,
+                    'chainuseroutput' => $es[0]['userid'],
                     'chainvalue' => $dynamic_value,
                     'chainkey' => number_chainkey($dynamic_value),
                 ));
@@ -2116,65 +2121,67 @@ class Controller extends CI_Controller
             } elseif ($values[0]['chainvalue'] != $dynamic_value) {
 
                 //Update Chain:
-                $this->Chains->update($values[0]['chainid'], array(
+                $this->Ideachains->update($values[0]['chainid'], array(
                     'chainvalue' => $dynamic_value,
-                    'chainhandlecreator' => $handle_session['handleid'],
+                    'chainusercreator' => $user_session['userid'],
                 ));
 
             }
         }
 
 
-        //Validate Handle Handle & save if needed:
-        if ($es[0]['handleterm'] !== trim($_POST['save_handleterm'])) {
-            $validate_update_handle = validate_update_handle(trim($_POST['save_handleterm']), null, $es[0]['handleid']);
-            if (!$validate_update_handle['status']) {
+        //Validate User User & save if needed:
+        if ($es[0]['userhandle'] !== trim($_POST['save_userhandle'])) {
+            $validate_update_user = validate_update_user(trim($_POST['save_userhandle']), null, $es[0]['userid']);
+            if (!$validate_update_user['status']) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $validate_update_handle['message'],
+                    'message' => $validate_update_user['message'],
                 ));
             }
         }
 
-        //Validate Handle Title & save if needed:
-        $validate_handlename = validate_handlename($_POST['save_handlename']);
-        if ($es[0]['handlename'] != trim($_POST['save_handlename'])) {
-            if (!$validate_handlename['status']) {
+        //Validate User Title & save if needed:
+        $validate_username = validate_username($_POST['save_username']);
+        if ($es[0]['username'] != trim($_POST['save_username'])) {
+            if (!$validate_username['status']) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $validate_handlename['message'],
+                    'message' => $validate_username['message'],
                 ));
+            } else {
+                $es[0]['username'] = $validate_username['username_clean'];
             }
-            $es[0]['handlename'] = $validate_handlename['handlename_clean'];
         }
 
-        //Save Handle Cover if needed:
-        if ($es[0]['handlecover'] != trim($_POST['save_handlecover'])) {
-            //TODO validate handlecover?
-            $es[0]['handlecover'] = trim($_POST['save_handlecover']);
+        //Save User Cover if needed:
+        if ($es[0]['usercover'] != trim($_POST['save_usercover'])) {
+            //TODO validate usercover?
+            $es[0]['usercover'] = trim($_POST['save_usercover']);
         }
 
-        //Update:
-        $this->Handles->update($es[0]['handleid'], array(
-            'handlename' => $validate_handlename['handlename_clean'],
-            'handlecover' => trim($_POST['save_handlecover']),
-            'handleterm' => trim($_POST['save_handleterm']),
-        ), $handle_session['handleid']);
+        //Update Cache:
+        $this->Users->update($es[0]['userid'], array(
+            'username' => $validate_username['username_clean'],
+            'usercover' => trim($_POST['save_usercover']),
+            'userhandle' => trim($_POST['save_userhandle']),
+            'userbio' => trim($_POST['save_userbio']),
+        ), $user_session['userid']);
 
 
-        //Sync handle reference:
-        $new_handle_string = trim($_POST['save_handleterm']);
-        if ($es[0]['handleterm'] != $new_handle_string) {
-            //Update Handles everywhere they are referenced:
-            foreach ($this->Chains->read(array(
-                'chainhandleinput' => $es[0]['handleid'],
-                'chainhandletype' => 31835, //Handle Mention
-            ), array('chainhashtagoutput')) as $ref) {
-                $this->Hashtags->update($ref['hashtagid'], array(
-                    'hashtagtext' => str_replace('@' . $es[0]['handleterm'], '@' . $new_handle_string, $ref['hashtagtext']),
-                ), $handle_session['handleid']);
+        //Sync user reference:
+        $new_user_string = trim($_POST['save_userhandle']);
+        if ($es[0]['userhandle'] != $new_user_string) {
+            //Update Users everywhere they are referenced:
+            foreach ($this->Ideachains->read(array(
+                'chainuserinput' => $es[0]['userid'],
+                'chainusertype' => 31835, //User Mention
+            ), array('chainpostoutput')) as $ref) {
+                $this->Posts->update($ref['postid'], array(
+                    'posttext' => str_replace('@' . $es[0]['userhandle'], '@' . $new_user_string, $ref['posttext']),
+                ), $user_session['userid']);
             }
-            $es[0]['handleterm'] = $new_handle_string;
+            $es[0]['userhandle'] = $new_user_string;
         }
 
 
@@ -2182,16 +2189,16 @@ class Controller extends CI_Controller
         if ($_POST['save_chainid'] > 0 && $_POST['save_chainvalue'] != 'IGNORE_INPUT') {
 
             //Fetch Chain:
-            foreach ($this->Chains->read(array(
+            foreach ($this->Ideachains->read(array(
                 'chainid' => $_POST['save_chainid'],
             )) as $this_x) {
 
                 $es[0] = array_merge($es[0], $this_x);
 
                 if ($this_x['chainvalue'] != trim($_POST['save_chainvalue'])) {
-                    $this->Chains->update($this_x['chainid'], array(
+                    $this->Ideachains->update($this_x['chainid'], array(
                         'chainvalue' => trim($_POST['save_chainvalue']),
-                        'chainhandlecreator' => $handle_session['handleid'],
+                        'chainusercreator' => $user_session['userid'],
                     ));
                 }
             }
@@ -2199,20 +2206,20 @@ class Controller extends CI_Controller
 
 
         //Reset member session data if this data belongs to the logged-in member:
-        if ($_POST['save_handleid'] == $handle_session['handleid']) {
-            $this->Handles->activate($es[0], true);
+        if ($_POST['save_userid'] == $user_session['userid']) {
+            $this->Users->activate($es[0], true);
         }
 
 
         return view_json(array(
             'status' => 1,
-            'message' => 'Updated ',
+            'message' => 'Updated',
         ));
 
 
     }
 
-    function handle_select_apply()
+    function user_select_apply()
     {
         /*
          *
@@ -2220,8 +2227,8 @@ class Controller extends CI_Controller
          *
          * */
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(null, 0, $this->user_session);
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -2229,14 +2236,14 @@ class Controller extends CI_Controller
         } elseif (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing followings Handle',
+                'message' => 'Missing followings User',
             ));
-        } elseif (!isset($_POST['selected_handleid']) || intval($_POST['selected_handleid']) < 1) {
+        } elseif (!isset($_POST['selected_userid']) || intval($_POST['selected_userid']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing selected Handle',
+                'message' => 'Missing selected User',
             ));
-        } elseif (!isset($_POST['down_handleid']) || !isset($_POST['right_hashtagid'])) {
+        } elseif (!isset($_POST['down_userid']) || !isset($_POST['right_postid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Down/Right Element',
@@ -2256,85 +2263,85 @@ class Controller extends CI_Controller
         );
 
 
-        if ($_POST['down_handleid'] > 0) {
+        if ($_POST['down_userid'] > 0) {
 
             //Dispatch Any Emails Necessary:
-            if (isset($_POST['selected_handleid']) && intval($_POST['selected_handleid']) > 0) {
-                foreach ($this->Chains->read(array(
-                    'chainhandletype' => 31835, //Mention
-                    'chainhandleinput' => $_POST['selected_handleid'],
-                ), array('chainhashtagoutput'), 0) as $i) {
-                    if (count($this->Chains->read(array(
-                        'chainhandletype' => 31835, //Mention
-                        'chainhandleinput' => 31065, //Choice Update Email Templates
-                        'chainhashtagoutput' => $i['hashtagid'], //Is this the template?
+            if (isset($_POST['selected_userid']) && intval($_POST['selected_userid']) > 0) {
+                foreach ($this->Ideachains->read(array(
+                    'chainusertype' => 31835, //Mention
+                    'chainuserinput' => $_POST['selected_userid'],
+                ), array('chainpostoutput'), 0) as $i) {
+                    if (count($this->Ideachains->read(array(
+                        'chainusertype' => 31835, //Mention
+                        'chainuserinput' => 31065, //Choice Update Email Templates
+                        'chainpostoutput' => $i['postid'], //Is this the template?
                     )))) {
                         //Found the email template to send:
-                        $total_sent = $this->Chains->broadcast(array($handle_session), $i, website_setting(0), false);
+                        $total_sent = $this->Ideachains->broadcast(array($user_session), $i, website_setting(0), false);
                         break; //Just the first template match
                     }
                 }
             }
         }
 
-        $is_required = in_array($_POST['focus__id'], $this->config->item('handleids___28239')); //Required Settings
+        $is_required = in_array($_POST['focus__id'], $this->config->item('userids___28239')); //Required Settings
 
         if (!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']) {
 
             //Since this is not a multi-select we want to delete all existing options
 
-            //Fetch all possible answers based on followings Handle:
+            //Fetch all possible answers based on followings User:
             $query_filters = array(
-                'chainhandleinput' => $_POST['focus__id'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                'chainuserinput' => $_POST['focus__id'],
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             );
 
             if ((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']) {
                 //Just delete this single item, not the other ones:
-                $query_filters['chainhandleoutput'] = $_POST['selected_handleid'];
+                $query_filters['chainuseroutput'] = $_POST['selected_userid'];
             }
 
             //List all possible answers:
             $possible_answers = array();
-            foreach ($this->Chains->read($query_filters, array('chainhandleoutput'), 0, 0) as $answer_e) {
+            foreach ($this->Ideachains->read($query_filters, array('chainuseroutput'), 0, 0) as $answer_e) {
                 $stats['total']++;
-                array_push($possible_answers, $answer_e['handleid']);
+                array_push($possible_answers, $answer_e['userid']);
             }
 
             //Delete previously selected options:
-            if ($_POST['down_handleid']) {
-                $delete_query = $this->Chains->read(array(
-                    'chainhandleinput IN (' . join(',', $possible_answers) . ')' => null,
-                    'chainhandleoutput' => $_POST['down_handleid'],
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            if ($_POST['down_userid']) {
+                $delete_query = $this->Ideachains->read(array(
+                    'chainuserinput IN (' . join(',', $possible_answers) . ')' => null,
+                    'chainuseroutput' => $_POST['down_userid'],
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 ));
-            } elseif ($_POST['right_hashtagid']) {
-                $delete_query = $this->Chains->read(array(
-                    'chainhandleinput IN (' . join(',', $possible_answers) . ')' => null,
-                    'chainhashtagoutput' => $_POST['right_hashtagid'],
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
+            } elseif ($_POST['right_postid']) {
+                $delete_query = $this->Ideachains->read(array(
+                    'chainuserinput IN (' . join(',', $possible_answers) . ')' => null,
+                    'chainpostoutput' => $_POST['right_postid'],
+                    'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
                 ));
             }
 
             foreach ($delete_query as $delete) {
                 $stats['deleted']++;
                 //Should usually delete a single option:
-                $this->Chains->delete($delete['chainid'], $handle_session['handleid']);
+                $this->Ideachains->delete($delete['chainid'], $user_session['userid']);
             }
 
         }
 
         //Add new option if not previously there:
         if ((!$_POST['enable_mulitiselect'] && $is_required) || !$_POST['was_previously_selected']) {
-            if ($_POST['down_handleid']) {
+            if ($_POST['down_userid']) {
                 $stats['added']++;
-                $this->Chains->create(array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhandleinput' => $_POST['selected_handleid'],
-                    'chainhandletype' => 4230,
-                    'chainhandleoutput' => $_POST['down_handleid'],
+                $this->Ideachains->create(array(
+                    'chainusercreator' => $user_session['userid'],
+                    'chainuserinput' => $_POST['selected_userid'],
+                    'chainusertype' => 4230,
+                    'chainuseroutput' => $_POST['down_userid'],
                 ));
-            } elseif ($_POST['right_hashtagid']) {
+            } elseif ($_POST['right_postid']) {
 
 
 
@@ -2343,8 +2350,8 @@ class Controller extends CI_Controller
 
 
         //Update Session:
-        if ($_POST['down_handleid'] && $handle_session) {
-            $this->Handles->activate($handle_session, true);
+        if ($_POST['down_userid'] && $user_session) {
+            $this->Users->activate($user_session, true);
         }
 
 
@@ -2355,7 +2362,7 @@ class Controller extends CI_Controller
         ));
     }
 
-    function handle_authenticate()
+    function user_authenticate()
     {
 
 
@@ -2379,10 +2386,10 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing referrer URL',
             ));
-        } elseif (!isset($_POST['sign_hashtagid'])) {
+        } elseif (!isset($_POST['sign_postid'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing hashtag referrer',
+                'message' => 'Missing post referrer',
             ));
         }
 
@@ -2391,8 +2398,8 @@ class Controller extends CI_Controller
         //Validate member ID
         if ($_POST['account_id'] > 0) {
 
-            $es = $this->Handles->read(array(
-                'handleid' => $_POST['account_id'],
+            $es = $this->Users->read(array(
+                'userid' => $_POST['account_id'],
             ));
             if (!count($es)) {
                 return view_json(array(
@@ -2416,21 +2423,21 @@ class Controller extends CI_Controller
 
         //Auth Code:
         $is_authenticated = false;
-        foreach ($this->Chains->read(array(
-            'chainhandletype' => 44176, //Handle View
-            'chainhandleinput' => 32078, //Sign In Key
+        foreach ($this->Ideachains->read(array(
+            'chainusertype' => 44176, //User View
+            'chainuserinput' => 32078, //Sign In Key
             'LOWER(chainvalue) LIKE \'' . strtolower($_POST['account_email_phone']) . '%\'' => null,
         ), array(), 1, 0, array('chaintime' => 'DESC')) as $sent_key) {
             if (strtotime($sent_key['chaintime']) <= (time() - 86400)) {
                 //Expired
-                $this->Chains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
+                $this->Ideachains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
                 break;
             }
             $session_key = $this->session->userdata('session_key');
             $key_parts = explode('/', $sent_key['chainvalue'], 2);
             if (strlen($session_key) && $key_parts[1] == md5($session_key . $_POST['input_code'])) {
                 //Void access code:
-                $is_authenticated = $this->Chains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
+                $is_authenticated = $this->Ideachains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
             }
         }
         if (!$is_authenticated) {
@@ -2445,7 +2452,7 @@ class Controller extends CI_Controller
         if ($_POST['account_id'] > 0) {
 
             //Assign session & log Chain:
-            $this->Handles->activate($es[0]);
+            $this->Users->activate($es[0]);
 
         } else {
 
@@ -2455,25 +2462,25 @@ class Controller extends CI_Controller
 
             //Prep inputs & validate further:
             $acc_email = ($is_email ? $_POST['account_email_phone'] : $_POST['new_account_email']);
-            $handle_result = $this->Handles->join(strstr($acc_email, '@', true), $acc_email, (!$is_email ? $_POST['account_email_phone'] : ''));
-            if (!$handle_result['status']) {
-                return view_json($handle_result);
+            $user_result = $this->Users->join(strstr($acc_email, '@', true), $acc_email, (!$is_email ? $_POST['account_email_phone'] : ''));
+            if (!$user_result['status']) {
+                return view_json($user_result);
             }
 
-            $es[0] = $handle_result['e'];
+            $es[0] = $user_result['e'];
 
         }
 
 
         //Set default sign in URL:
-        $sign_url = view_memory(42903, 42902) . $es[0]['handleterm'];
+        $sign_url = view_memory(42903, 42902) . $es[0]['userhandle'];
 
         //See if we can find a better one:
-        if (intval($_POST['sign_hashtagid']) > 0) {
-            foreach ($this->Hashtags->read(array(
-                'hashtagid' => $_POST['sign_hashtagid'],
+        if (intval($_POST['sign_postid']) > 0) {
+            foreach ($this->Posts->read(array(
+                'postid' => $_POST['sign_postid'],
             )) as $i) {
-                $sign_url = $i['hashtagterm'] . '/' . view_memory(6404, 4235);
+                $sign_url = $i['posthashtag'] . '/' . view_memory(6404, 4235);
             }
         } elseif (isset($_POST['referrer_url']) && strlen(urldecode($_POST['referrer_url'])) > 1) {
             $sign_url = urldecode($_POST['referrer_url']);
@@ -2486,18 +2493,18 @@ class Controller extends CI_Controller
 
     }
 
-    function handle_toggle_follow()
+    function user_toggle_follow()
     {
 
-        $handle_session = handle_session(10939, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(10939, 0, $this->user_session);
+        if (!$user_session) {
 
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
 
-        } elseif (!isset($_POST['chainhandlecreator']) || !isset($_POST['handleid']) || !isset($_POST['hashtagid']) || !isset($_POST['chainid'])) {
+        } elseif (!isset($_POST['chainusercreator']) || !isset($_POST['userid']) || !isset($_POST['postid']) || !isset($_POST['chainid'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -2508,11 +2515,11 @@ class Controller extends CI_Controller
 
             $_POST['require_writing'] = intval($_POST['require_writing']);
 
-            $already_added = $this->Chains->read(array(
-                'chainhandleinput' => $_POST['handleid'],
-                'chainhandleoutput' => $_POST['chainhandlecreator'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            ), array('chainhandleinput'));
+            $already_added = $this->Ideachains->read(array(
+                'chainuserinput' => $_POST['userid'],
+                'chainuseroutput' => $_POST['chainusercreator'],
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array('chainuserinput'));
 
             if (count($already_added)) {
 
@@ -2520,12 +2527,12 @@ class Controller extends CI_Controller
 
                     //Updating current value if changed:
                     if (strlen($_POST['written_answer']) && trim($_POST['written_answer']) != $already_added[0]['chainvalue']) {
-                        $this->Chains->update($already_added[0]['chainid'], array(
+                        $this->Ideachains->update($already_added[0]['chainid'], array(
                             'chainvalue' => $_POST['written_answer'],
-                            'chainhandlecreator' => $handle_session['handleid'],
+                            'chainusercreator' => $user_session['userid'],
                         ));
                     } elseif (!strlen($_POST['written_answer'])) {
-                        $this->Chains->delete($already_added[0]['chainid'], $handle_session['handleid']);
+                        $this->Ideachains->delete($already_added[0]['chainid'], $user_session['userid']);
                     }
 
                     return view_json(array(
@@ -2536,7 +2543,7 @@ class Controller extends CI_Controller
                 } else {
 
                     //Already exists, let's remove:
-                    $this->Chains->delete($already_added[0]['chainid'], $handle_session['handleid']);
+                    $this->Ideachains->delete($already_added[0]['chainid'], $user_session['userid']);
 
                     return view_json(array(
                         'status' => 1,
@@ -2557,22 +2564,22 @@ class Controller extends CI_Controller
 
                 } else {
 
-                    foreach ($this->Handles->read(array(
-                        'handleid' => $_POST['handleid'],
+                    foreach ($this->Users->read(array(
+                        'userid' => $_POST['userid'],
                     )) as $e) {
 
                         //Does not exist, Add:
-                        $this->Chains->create(array(
-                            'chainhandleinput' => $_POST['handleid'],
-                            'chainhandleoutput' => $_POST['chainhandlecreator'],
-                            'chainhandlecreator' => $handle_session['handleid'],
+                        $this->Ideachains->create(array(
+                            'chainuserinput' => $_POST['userid'],
+                            'chainuseroutput' => $_POST['chainusercreator'],
+                            'chainusercreator' => $user_session['userid'],
                             'chainvalue' => $_POST['written_answer'],
-                            'chainhandletype' => 4230,
+                            'chainusertype' => 4230,
                         ));
 
                         return view_json(array(
                             'status' => 1,
-                            'message' => (intval($_POST['require_writing']) ? $_POST['written_answer'] : view_cover($e['handlecover'], true)),
+                            'message' => (intval($_POST['require_writing']) ? $_POST['written_answer'] : view_cover($e['usercover'], true)),
                         ));
 
                     }
@@ -2581,7 +2588,7 @@ class Controller extends CI_Controller
         }
     }
 
-    function handle_verify()
+    function user_verify()
     {
 
         if (!isset($_POST['account_email_phone'])) {
@@ -2592,7 +2599,7 @@ class Controller extends CI_Controller
         }
 
         //Cleanup input email:
-        $handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+        $users___11035 = $this->config->item('users___11035'); //Encyclopedia
         $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
         $valid_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
         if (!$valid_email && strlen($_POST['account_email_phone']) >= 10) {
@@ -2605,7 +2612,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => (strlen($_POST['account_email_phone']) ? '[' . $_POST['account_email_phone'] . '] is Invalid!' : 'Enter your email to continue...'),
             ));
-        } elseif (!isset($_POST['sign_hashtagid'])) {
+        } elseif (!isset($_POST['sign_postid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing data ID',
@@ -2613,10 +2620,10 @@ class Controller extends CI_Controller
         }
 
 
-        if (intval($_POST['sign_hashtagid']) > 0) {
-            //Fetch the hashtag:
-            $referrer_i = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['sign_hashtagid'],
+        if (intval($_POST['sign_postid']) > 0) {
+            //Fetch the post:
+            $referrer_i = $this->Posts->read(array(
+                'postid' => $_POST['sign_postid'],
             ));
         } else {
             $referrer_i = array();
@@ -2624,14 +2631,14 @@ class Controller extends CI_Controller
 
 
         //Search for email/phone to see if it exists
-        $chainhandlecreator = 0;
-        foreach ($this->Chains->read(array(
+        $chainusercreator = 0;
+        foreach ($this->Ideachains->read(array(
             'LOWER(chainvalue)' => strtolower($_POST['account_email_phone']),
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            'chainhandleinput' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
-        ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $map_e) {
+            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            'chainuserinput' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
+        ), array('chainuseroutput'), 1, 0, array('chainid' => 'ASC')) as $map_e) {
             $u = $map_e;
-            $chainhandlecreator = $map_e['handleid'];
+            $chainusercreator = $map_e['userid'];
         }
 
         //Send Sign In Key
@@ -2643,12 +2650,12 @@ class Controller extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $html_message = $passcode . ' is your ' . $handles___11035[32078]['m__title'] . ' for your ' . get_domain('m__title') . ' account.';
+        $html_message = $passcode . ' is your ' . $users___11035[32078]['m__title'] . ' for your ' . get_domain('m__title') . ' account.';
 
         if ($valid_email) {
 
             //Email:
-            dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">' . $html_message . '</div>', $chainhandlecreator, array(), 0, 0, false);
+            dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">' . $html_message . '</div>', $chainusercreator, array(), 0, 0, false);
 
 
         } elseif ($possible_phone) {
@@ -2659,33 +2666,33 @@ class Controller extends CI_Controller
         }
 
         //Log new key:
-        $this->Chains->create(array(
-            'chainhandletype' => 44176, //Handle View
-            'chainhandleinput' => 32078, //Sign In Key
-            'chainhandleoutput' => $chainhandlecreator, //Member making request
-            'chainhandlecreator' => $chainhandlecreator, //Member making request
-            'chainhashtaginput' => intval($_POST['sign_hashtagid']),
+        $this->Ideachains->create(array(
+            'chainusertype' => 44176, //User View
+            'chainuserinput' => 32078, //Sign In Key
+            'chainuseroutput' => $chainusercreator, //Member making request
+            'chainusercreator' => $chainusercreator, //Member making request
+            'chainpostinput' => intval($_POST['sign_postid']),
             'chainvalue' => $_POST['account_email_phone'] . '/' . md5($session_key . $passcode),
         ));
 
         return view_json(array(
             'status' => 1,
-            'account_id' => $chainhandlecreator,
+            'account_id' => $chainusercreator,
             'valid_email' => ($valid_email ? 1 : 0),
-            'account_preview' => ($chainhandlecreator ? '<span class="icon-block">' . view_cover($u['handlecover'], true) . '</span>' . $u['handlename'] : ''),
+            'account_preview' => ($chainusercreator ? '<span class="icon-block">' . view_cover($u['usercover'], true) . '</span>' . $u['username'] : ''),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
     }
 
-    function handle_text_update()
+    function user_text_update()
     {
 
         //Authenticate Member:
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        $handles___12112 = $this->config->item('handles___12112');
+        $user_session = user_session(null, 0, $this->user_session);
+        $users___12112 = $this->config->item('users___12112');
 
-        if (!$handle_session) {
+        if (!$user_session) {
 
             return view_json(array(
                 'status' => 0,
@@ -2693,7 +2700,7 @@ class Controller extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif (!isset($_POST['handleid']) || !isset($_POST['cache_handleid']) || !isset($_POST['hashtag_createtext'])) {
+        } elseif (!isset($_POST['userid']) || !isset($_POST['cache_userid']) || !isset($_POST['post_createtext'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -2701,37 +2708,37 @@ class Controller extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif ($_POST['cache_handleid'] == 6197 /* HANDLE FULL NAME */) {
+        } elseif ($_POST['cache_userid'] == 6197 /* USER FULL NAME */) {
 
-            $es = $this->Handles->read(array(
-                'handleid' => $_POST['handleid'],
+            $es = $this->Users->read(array(
+                'userid' => $_POST['userid'],
             ));
             if (!count($es)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Handle ID #3',
+                    'message' => 'Invalid User ID #3',
                     'original_val' => '',
                 ));
             }
 
 
-            $validate_handlename = validate_handlename($_POST['hashtag_createtext']);
-            if (!$validate_handlename['status']) {
-                return view_json(array_merge($validate_handlename, array(
-                    'original_val' => $es[0]['handlename'],
+            $validate_username = validate_username($_POST['post_createtext']);
+            if (!$validate_username['status']) {
+                return view_json(array_merge($validate_username, array(
+                    'original_val' => $es[0]['username'],
                 )));
             }
 
             //All good, go ahead and update:
-            $this->Handles->update($es[0]['handleid'], array(
-                'handlename' => $validate_handlename['handlename_clean'],
-            ), $handle_session['handleid']);
+            $this->Users->update($es[0]['userid'], array(
+                'username' => $validate_username['username_clean'],
+            ), $user_session['userid']);
 
             //Reset member session data if this data belongs to the logged-in member:
-            if ($es[0]['handleid'] == $handle_session['handleid']) {
+            if ($es[0]['userid'] == $user_session['userid']) {
                 //set Session with new data:
-                $es[0]['handlename'] = $validate_handlename['handlename_clean'];
-                $this->Handles->activate($es[0], true);
+                $es[0]['username'] = $validate_username['username_clean'];
+                $this->Users->activate($es[0], true);
             }
 
             return view_json(array(
@@ -2742,7 +2749,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Unknown Update Type [' . $_POST['cache_handleid'] . ']',
+                'message' => 'Unknown Update Type [' . $_POST['cache_userid'] . ']',
                 'original_val' => '',
             ));
 
@@ -2757,24 +2764,24 @@ class Controller extends CI_Controller
         }
 
         //Log Modal View
-        $handle_session = handle_session(null, 0, $this->handle_session);
+        $user_session = user_session(null, 0, $this->user_session);
 
         if (!isset($_POST['apply_id']) || !isset($_POST['s__id'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing Core Data</div>';
         } else {
             if ($_POST['apply_id'] == 4997) {
 
-                //Handle list:
-                $counter = handles_query(42373, $_POST['s__id'], 0, false);
+                //User list:
+                $counter = users_query(42373, $_POST['s__id'], 0, false);
                 if (!$counter) {
-                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Handles yet</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Users yet</div>';
                 } else {
-                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' Handle' . search($counter) . ':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' User' . search($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach (handles_query(42373, $_POST['s__id'], 1, true) as $e) {
-                        array_push($ids, $e['handleid']);
-                        echo handle_view(42287, $e);
+                    foreach (users_query(42373, $_POST['s__id'], 1, true) as $e) {
+                        array_push($ids, $e['userid']);
+                        echo user_view(42287, $e);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent" title="Total of ' . count($ids) . '">' . join(', ', $ids) . '</div>';
@@ -2782,22 +2789,22 @@ class Controller extends CI_Controller
 
             } elseif ($_POST['apply_id'] == 12589) {
 
-                //hashtag list:
-                $is_next = $this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
-                    'chainhashtaginput' => $_POST['s__id'],
-                ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC'));
+                //post list:
+                $is_next = $this->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+                    'chainpostinput' => $_POST['s__id'],
+                ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'));
                 $counter = count($is_next);
 
                 if (!$counter) {
-                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Hashtags yet</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Posts yet</div>';
                 } else {
-                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' hashtag' . search($counter) . ':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to ' . $counter . ' post' . search($counter) . ':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
                     foreach ($is_next as $i) {
-                        array_push($ids, $i['hashtagid']);
-                        echo hashtag_view(42288, $i);
+                        array_push($ids, $i['postid']);
+                        echo post_view(42288, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">' . join(',', $ids) . '</div>';
@@ -2822,36 +2829,36 @@ class Controller extends CI_Controller
 
         if ($_POST['focus__node'] == 12274) {
 
-            //HANDLE
-            $focus_es = $this->Handles->read(array(
-                'handleid' => $_POST['focus__id'],
+            //USER
+            $focus_es = $this->Users->read(array(
+                'userid' => $_POST['focus__id'],
             ));
             $focus_e = $focus_es[0];
 
-            foreach (handles_query($_POST['chainhandletype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
-                if (in_array($_POST['chainhandletype'], $this->config->item('handleids___11028'))) {
-                    echo handle_view($_POST['chainhandletype'], $s);
+            foreach (users_query($_POST['chainusertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+                if (in_array($_POST['chainusertype'], $this->config->item('userids___11028'))) {
+                    echo user_view($_POST['chainusertype'], $s);
                     $success = true;
-                } else if ($_POST['chainhandletype']==31777 || $_POST['chainhandletype']==13550 || in_array($_POST['chainhandletype'], $this->config->item('handleids___11020'))) {
-                    echo hashtag_view($_POST['chainhandletype'], $s, $previous_i, null, $focus_e['handleid']);
+                } else if ($_POST['chainusertype']==31777 || $_POST['chainusertype']==13550 || in_array($_POST['chainusertype'], $this->config->item('userids___11020'))) {
+                    echo post_view($_POST['chainusertype'], $s, $previous_i, null, $focus_e['userid']);
                     $success = true;
                 }
             }
 
         } elseif ($_POST['focus__node'] == 12273) {
 
-            //HASHTAG
-            $previous_is = $this->Hashtags->read(array(
-                'hashtagid' => $_POST['focus__id'],
+            //POST
+            $previous_is = $this->Posts->read(array(
+                'postid' => $_POST['focus__id'],
             ));
             $previous_i = $previous_is[0];
 
-            foreach (hashtags_query($_POST['chainhandletype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
-                if (in_array($_POST['chainhandletype'], $this->config->item('handleids___11020'))) {
-                    echo hashtag_view($_POST['chainhandletype'], $s, $previous_i);
+            foreach (posts_query($_POST['chainusertype'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+                if (in_array($_POST['chainusertype'], $this->config->item('userids___11020'))) {
+                    echo post_view($_POST['chainusertype'], $s, $previous_i);
                     $success = true;
-                } else if ($_POST['chainhandletype']==31777 || $_POST['chainhandletype']==13550 || in_array($_POST['chainhandletype'], $this->config->item('handleids___11028'))) {
-                    echo handle_view($_POST['chainhandletype'], $s);
+                } else if ($_POST['chainusertype']==31777 || $_POST['chainusertype']==13550 || in_array($_POST['chainusertype'], $this->config->item('userids___11028'))) {
+                    echo user_view($_POST['chainusertype'], $s);
                     $success = true;
                 }
             }
@@ -2867,14 +2874,14 @@ class Controller extends CI_Controller
     {
 
         //Authenticate Member:
-        $handle_session = handle_session(10939, 0, $this->handle_session);
+        $user_session = user_session(10939, 0, $this->user_session);
 
-        if (!$handle_session) {
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(10939),
             ));
-        } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('handleids___28956'))) {
+        } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('userids___28956'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid focus__node',
@@ -2887,24 +2894,24 @@ class Controller extends CI_Controller
         }
 
         if ($_POST['focus__node'] == 12273) {
-            //Hashtags order based on alphabetical order
+            //Posts order based on alphabetical order
             $order = 0;
-            foreach ($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
-                'chainhashtaginput' => $_POST['focus__id'],
-            ), array('chainhashtagoutput'), 0, 0, array('hashtagtext' => 'ASC')) as $x) {
+            foreach ($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+                'chainpostinput' => $_POST['focus__id'],
+            ), array('chainpostoutput'), 0, 0, array('posttext' => 'ASC')) as $x) {
                 $order++;
-                $this->Chains->update($x['chainid'], array(
+                $this->Ideachains->update($x['chainid'], array(
                     'chainkey' => $order,
                 ));
             }
         } elseif ($_POST['focus__node'] == 12274) {
-            //Handles reset order
-            foreach ($this->Chains->read(array(
-                'chainhandleinput' => $_POST['focus__id'],
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            ), array('chainhandleoutput'), 0, 0) as $x) {
-                $this->Chains->update($x['chainid'], array(
+            //Users reset order
+            foreach ($this->Ideachains->read(array(
+                'chainuserinput' => $_POST['focus__id'],
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array('chainuseroutput'), 0, 0) as $x) {
+                $this->Ideachains->update($x['chainid'], array(
                     'chainkey' => 0,
                 ));
             }
@@ -2916,114 +2923,114 @@ class Controller extends CI_Controller
         ));
     }
 
-    function hashtag_discovered()
+    function post_discovered()
     {
 
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
-        if (!$handle_session) {
+        $user_session = user_session(null, 0, $this->user_session);
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
             ));
-        } elseif (!isset($_POST['target_hashtagterm']) || !isset($_POST['target_hashtagid']) || !isset($_POST['handle_submitted_data']) || !isset($_POST['do_skip'])) {
+        } elseif (!isset($_POST['target_posthashtag']) || !isset($_POST['target_postid']) || !isset($_POST['user_submitted_data']) || !isset($_POST['do_skip'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Data',
             ));
         }
 
-        if (!isset($_POST['selection_hashtagid'])) {
-            $_POST['selection_hashtagid'] = array();
+        if (!isset($_POST['selection_postid'])) {
+            $_POST['selection_postid'] = array();
         }
-        if (!isset($_POST['handle_submitted_data']['hashtag_createtext'])) {
-            $_POST['handle_submitted_data']['hashtag_createtext'] = null;
+        if (!isset($_POST['user_submitted_data']['post_createtext'])) {
+            $_POST['user_submitted_data']['post_createtext'] = null;
         }
-        if (!isset($_POST['next_hashtag_data'])) {
-            $_POST['next_hashtag_data'] = array();
+        if (!isset($_POST['next_post_data'])) {
+            $_POST['next_post_data'] = array();
         }
 
-        //Discover Focus Hashtag:
-        $primary_hashtagid = null;
-        foreach ($this->Hashtags->read(array(
-            'hashtagid' => $_POST['handle_submitted_data']['hashtagid'],
+        //Discover Focus Post:
+        $primary_postid = null;
+        foreach ($this->Posts->read(array(
+            'postid' => $_POST['user_submitted_data']['postid'],
         )) as $focus_i) {
 
-            $input__selection = count($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $focus_i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $this->config->item('handleids___7712')) . ')' => null,
+            $input__selection = count($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $focus_i['postid'],
+                'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
             )));
-            $input__upload = count($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $focus_i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $this->config->item('handleids___43004')) . ')' => null,
+            $input__upload = count($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $focus_i['postid'],
+                'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
             )));
-            $skipping_not_allowed = count($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $focus_i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $this->config->item('handleids___43009')) . ')' => null,
+            $skipping_not_allowed = count($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $focus_i['postid'],
+                'chainuserinput IN (' . join(',', $this->config->item('userids___43009')) . ')' => null,
             )));
-            $input__text = count($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $focus_i['hashtagid'],
-                'chainhandleinput IN (' . join(',', array_merge($this->config->item('handleids___43002'), $this->config->item('handleids___43003'))) . ')' => null,
+            $input__text = count($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $focus_i['postid'],
+                'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
             )));
-            $total_selected = count($_POST['selection_hashtagid']);
+            $total_selected = count($_POST['selection_postid']);
             $trying_to_skip = !$skipping_not_allowed &&
                 (
                     intval($_POST['do_skip'])
                     || ($input__selection && !$total_selected)
-                    || ($input__upload && !strlen($_POST['handle_submitted_data']['hashtag_createtext'])) //TODO Check Media
-                    || (!$input__selection && !$input__upload && !strlen($_POST['handle_submitted_data']['hashtag_createtext']))
+                    || ($input__upload && !strlen($_POST['user_submitted_data']['post_createtext'])) //TODO Check Media
+                    || (!$input__selection && !$input__upload && !strlen($_POST['user_submitted_data']['post_createtext']))
                 );
-            $hashtag_required = hashtag_required($focus_i);
+            $post_required = post_required($focus_i);
 
-            if (!$primary_hashtagid) {
-                $primary_hashtagid = ($total_selected ? end($_POST['selection_hashtagid']) : $focus_i['hashtagid']);
+            if (!$primary_postid) {
+                $primary_postid = ($total_selected ? end($_POST['selection_postid']) : $focus_i['postid']);
             }
 
             //If skipping, make sure they can:
-            if ($hashtag_required && $trying_to_skip) {
+            if ($post_required && $trying_to_skip) {
                 return view_json(array(
                     'status' => 0,
                     'message' => ($input__selection ? 'Make a selection to continue...' : 'Respond to continue...'),
                 ));
             }
 
-            //Now complete relevant next hashtags, if any:
+            //Now complete relevant next posts, if any:
             if ($input__selection) {
 
-                $is_single_selection = count($this->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $focus_i['hashtagid'],
-                    'chainhandleinput IN (' . join(',', $this->config->item('handleids___33331')) . ')' => null,
+                $is_single_selection = count($this->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                    'chainpostoutput' => $focus_i['postid'],
+                    'chainuserinput IN (' . join(',', $this->config->item('userids___33331')) . ')' => null,
                 )));
 
 
                 if (!$is_single_selection) {
 
                     //How about the min selection?
-                    if ($hashtag_required) {
-                        foreach ($this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                            'chainhashtagoutput' => $focus_i['hashtagid'],
-                            'chainhandleinput' => 40834, //Min Selection
+                    if ($post_required) {
+                        foreach ($this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                            'chainpostoutput' => $focus_i['postid'],
+                            'chainuserinput' => 40834, //Min Selection
                         ), array(), 1) as $limit) {
                             if (intval($limit['chainvalue']) > 0 && $total_selected < intval($limit['chainvalue'])) {
                                 return view_json(array(
                                     'status' => 0,
-                                    'message' => 'Select ' . $limit['chainvalue'] . ' or more hashtags to go next.',
+                                    'message' => 'Select ' . $limit['chainvalue'] . ' or more posts to go next.',
                                 ));
                             }
                         }
                     }
 
                     //How about max selection?
-                    foreach ($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $focus_i['hashtagid'],
-                        'chainhandleinput' => 40833, //Max Selection
+                    foreach ($this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $focus_i['postid'],
+                        'chainuserinput' => 40833, //Max Selection
                     ), array(), 1) as $limit) {
                         if (intval($limit['chainvalue']) > 0 && $total_selected > intval($limit['chainvalue'])) {
                             return view_json(array(
@@ -3038,45 +3045,45 @@ class Controller extends CI_Controller
 
                 //Delete ALL previous answers that are not currently selected, if any:
                 $already_answered = array();
-                foreach ($this->Chains->read(array(
-                    'chainhandletype' => 7712, //Input Choice
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhashtaginput' => $focus_i['hashtagid'],
-                ), array('chainhashtagoutput')) as $x_selection) {
+                foreach ($this->Ideachains->read(array(
+                    'chainusertype' => 7712, //Input Choice
+                    'chainusercreator' => $user_session['userid'],
+                    'chainpostinput' => $focus_i['postid'],
+                ), array('chainpostoutput')) as $x_selection) {
 
-                    if (in_array($x_selection['hashtagid'], $_POST['selection_hashtagid'])) {
+                    if (in_array($x_selection['postid'], $_POST['selection_postid'])) {
                         //Current selection is already in the database from before:
-                        array_push($already_answered, $x_selection['hashtagid']);
+                        array_push($already_answered, $x_selection['postid']);
                         continue; //Nothing we need to do here...
                     }
 
-                    $this->Chains->delete($x_selection['chainid'], $handle_session['handleid']);
+                    $this->Ideachains->delete($x_selection['chainid'], $user_session['userid']);
 
                     //Remove discovery if we can:
-                    if (!count($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $x_selection['hashtagid'],
-                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___42905')) . ')' => null,
+                    if (!count($this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $x_selection['postid'],
+                        'chainuserinput IN (' . join(',', $this->config->item('userids___42905')) . ')' => null,
                     )))) {
-                        foreach ($this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-                            'chainhashtaginput' => $x_selection['hashtagid'],
-                            'chainhandlecreator' => $handle_session['handleid'],
+                        foreach ($this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+                            'chainpostinput' => $x_selection['postid'],
+                            'chainusercreator' => $user_session['userid'],
                         ), array(), 0) as $x_discovery) {
-                            $this->Chains->delete($x_discovery['chainid'], $handle_session['handleid']);
+                            $this->Ideachains->delete($x_discovery['chainid'], $user_session['userid']);
                         }
                     }
                 }
 
                 //Save New Answers if not already:
-                foreach ($_POST['selection_hashtagid'] as $answer_hashtagid) {
-                    if (!in_array($answer_hashtagid, $already_answered)) {
-                        $this->Chains->create(array(
-                            'chainhandletype' => 7712, //Input Choice
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhandleinput' => $handle_session['handleid'],
-                            'chainhashtaginput' => $focus_i['hashtagid'],
-                            'chainhashtagoutput' => $answer_hashtagid,
+                foreach ($_POST['selection_postid'] as $answer_postid) {
+                    if (!in_array($answer_postid, $already_answered)) {
+                        $this->Ideachains->create(array(
+                            'chainusertype' => 7712, //Input Choice
+                            'chainusercreator' => $user_session['userid'],
+                            'chainuserinput' => $user_session['userid'],
+                            'chainpostinput' => $focus_i['postid'],
+                            'chainpostoutput' => $answer_postid,
                         ));
                     }
                 }
@@ -3085,62 +3092,62 @@ class Controller extends CI_Controller
 
             //Save Skip if no answer was selected:
             if($trying_to_skip){
-                $completion_status = $this->Chains->hashtag_discovered(31022, $handle_session['handleid'], $_POST['target_hashtagid'], $focus_i, $_POST['handle_submitted_data'], array(
-                    'chainkey' => $_POST['handle_submitted_data']['hashtagweight'],
+                $completion_status = $this->Ideachains->post_discovered(31022, $user_session['userid'], $_POST['target_postid'], $focus_i, $_POST['user_submitted_data'], array(
+                    'chainkey' => $_POST['user_submitted_data']['postweight'],
                 ));
                 if (!$completion_status['status']) {
-                    //We had an error with data within target_hashtagid:
+                    //We had an error with data within target_postid:
                     return view_json($completion_status);
                 }
             }
 
 
-            //Look through ALL next hashtags and see which ones we can complete, if any:
-            foreach ($_POST['next_hashtag_data'] as $index => $next_hashtag_data) {
+            //Look through ALL next posts and see which ones we can complete, if any:
+            foreach ($_POST['next_post_data'] as $index => $next_post_data) {
 
-                if ($input__selection && !in_array($next_hashtag_data['hashtagid'], $_POST['selection_hashtagid'])) {
+                if ($input__selection && !in_array($next_post_data['postid'], $_POST['selection_postid'])) {
                     //Not selected, move on:
                     continue;
                 }
 
-                foreach ($this->Hashtags->read(array(
-                    'hashtagid' => $next_hashtag_data['hashtagid'],
-                )) as $hashtag_next) {
+                foreach ($this->Posts->read(array(
+                    'postid' => $next_post_data['postid'],
+                )) as $post_next) {
 
                     //Analyze input:
-                    $input__required = count($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
-                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___43039')) . ')' => null,
+                    $input__required = count($this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $post_next['postid'],
+                        'chainuserinput IN (' . join(',', $this->config->item('userids___43039')) . ')' => null,
                     )));
                     if ($input__required) {
                         continue;
                     }
-                    $input__text = count($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
-                        'chainhandleinput IN (' . join(',', array_merge($this->config->item('handleids___43002'), $this->config->item('handleids___43003'))) . ')' => null,
+                    $input__text = count($this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $post_next['postid'],
+                        'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
                     )));
-                    $input__upload = count($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
-                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___43004')) . ')' => null,
+                    $input__upload = count($this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $post_next['postid'],
+                        'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
                     )));
-                    $skipping_not_allowed = count($this->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $hashtag_next['hashtagid'],
-                        'chainhandleinput IN (' . join(',', $this->config->item('handleids___43009')) . ')' => null,
+                    $skipping_not_allowed = count($this->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $post_next['postid'],
+                        'chainuserinput IN (' . join(',', $this->config->item('userids___43009')) . ')' => null,
                     )));
 
 
                     //Cleanup phone number:
-                    if($input__text && strlen($next_hashtag_data['hashtag_createtext']) && !is_numeric($next_hashtag_data['hashtag_createtext']) && count($this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-                            'chainhashtagoutput' => $hashtag_next['hashtagid'],
-                            'chainhandleinput' => 42181, //Phone
+                    if($input__text && strlen($next_post_data['post_createtext']) && !is_numeric($next_post_data['post_createtext']) && count($this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                            'chainpostoutput' => $post_next['postid'],
+                            'chainuserinput' => 42181, //Phone
                         )))){
-                        $next_hashtag_data['hashtag_createtext'] = preg_replace("/[^0-9]+/", "", $next_hashtag_data['hashtag_createtext']);
-                        if(strlen($next_hashtag_data['hashtag_createtext'])<10){
+                        $next_post_data['post_createtext'] = preg_replace("/[^0-9]+/", "", $next_post_data['post_createtext']);
+                        if(strlen($next_post_data['post_createtext'])<10){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'Phone numbers cannot be less than 10 digits',
@@ -3149,45 +3156,45 @@ class Controller extends CI_Controller
                     }
 
                     $trying_to_skip = (
-                        !strlen($next_hashtag_data['hashtag_createtext']) ||
-                        ($input__upload && !strlen($next_hashtag_data['hashtag_createtext'])) //TODO Check Media
+                        !strlen($next_post_data['post_createtext']) ||
+                        ($input__upload && !strlen($next_post_data['post_createtext'])) //TODO Check Media
                     );
-                    $hashtag_required = !$skipping_not_allowed && hashtag_required($hashtag_next);
+                    $post_required = !$skipping_not_allowed && post_required($post_next);
 
-                    if ($hashtag_required && $trying_to_skip) {
+                    if ($post_required && $trying_to_skip) {
                         return view_json(array(
                             'status' => 0,
-                            'message' => 'Enter a valid response to '.view_hashtag_title($hashtag_next, true).' instead of "'.$next_hashtag_data['hashtag_createtext'].'"',
+                            'message' => 'Enter a valid response to '.view_post_title($post_next, true).' instead of "'.$next_post_data['post_createtext'].'"',
                         ));
                     }
 
                     //Try to complete:
-                    $completion_status = $this->Chains->hashtag_discovered(( $trying_to_skip ? 31022 : 4559 ), $handle_session['handleid'], $_POST['target_hashtagid'], $hashtag_next, $next_hashtag_data, array(
-                        'chainkey' => $next_hashtag_data['hashtagweight'],
+                    $completion_status = $this->Ideachains->post_discovered(( $trying_to_skip ? 31022 : 4559 ), $user_session['userid'], $_POST['target_postid'], $post_next, $next_post_data, array(
+                        'chainkey' => $next_post_data['postweight'],
                     ));
-                    if ($hashtag_required && !$completion_status['status']) {
-                        //We had an error with data within target_hashtagid:
+                    if ($post_required && !$completion_status['status']) {
+                        //We had an error with data within target_postid:
                         //return view_json($completion_status);
                     }
                 }
             }
 
             //Find Next:
-            $hashtag_redirect_url = false;
-            foreach ($this->Hashtags->read(array(
-                'hashtagid' => $primary_hashtagid,
+            $post_redirect_url = false;
+            foreach ($this->Posts->read(array(
+                'postid' => $primary_postid,
             )) as $primary_i) {
-                $hashtag_redirect_url = hashtag_redirect_url($primary_i);
+                $post_redirect_url = post_redirect_url($primary_i);
             }
-            if (!$hashtag_redirect_url) {
-                $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm']);
+            if (!$post_redirect_url) {
+                $post_next = $this->Ideachains->next_posts($user_session['userid'], $_POST['target_posthashtag']);
             }
 
             //All good:
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next__url' => ($hashtag_redirect_url ? $hashtag_redirect_url : ($hashtag_next ? $hashtag_next : 'start')),
+                'next__url' => ($post_redirect_url ? $post_redirect_url : ($post_next ? $post_next : 'start')),
             ));
 
         }
@@ -3195,54 +3202,54 @@ class Controller extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 0,
-            'message' => 'Invalid Hashtag',
+            'message' => 'Invalid Post',
         ));
 
     }
 
-    function handle_select()
+    function user_select()
     {
 
-        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['handle_createid']) || !isset($_POST['migratehandle']) || !isset($_POST['chainid'])) {
+        if (!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['user_createid']) || !isset($_POST['migrateuser']) || !isset($_POST['chainid'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
             ));
         }
 
-        //Validate migration handles if any:
-        $_POST['migratehandle'] = trim($_POST['migratehandle']);
-        $first_letter = substr($_POST['migratehandle'], 0, 1);
-        if ($first_letter == '@' && strlen($_POST['migratehandle']) > 1) {
-            if (!count($this->Handles->read(array(
-                'LOWER(handleterm)' => strtolower(substr($_POST['migratehandle'], 1)),
+        //Validate migration users if any:
+        $_POST['migrateuser'] = trim($_POST['migrateuser']);
+        $first_letter = substr($_POST['migrateuser'], 0, 1);
+        if ($first_letter == '@' && strlen($_POST['migrateuser']) > 1) {
+            if (!count($this->Users->read(array(
+                'LOWER(userhandle)' => strtolower(substr($_POST['migrateuser'], 1)),
             )))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migratehandle'] . ' is an invalid Handle Handle. Try again if you want to migrate this Handle chains or leave the field blank.',
+                    'message' => $_POST['migrateuser'] . ' is an invalid User User. Try again if you want to migrate this User chains or leave the field blank.',
                 ));
             }
-        } elseif ($first_letter == '#' && strlen($_POST['migratehandle']) > 1) {
-            if (!count($this->Hashtags->read(array(
-                'LOWER(hashtagterm)' => strtolower(substr($_POST['migratehandle'], 1)),
+        } elseif ($first_letter == '#' && strlen($_POST['migrateuser']) > 1) {
+            if (!count($this->Posts->read(array(
+                'LOWER(posthashtag)' => strtolower(substr($_POST['migrateuser'], 1)),
             )))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migratehandle'] . ' is an invalid Hashtag Hashtag. Try again if you want to migrate this hashtag chains or leave the field blank.',
+                    'message' => $_POST['migrateuser'] . ' is an invalid Post Post. Try again if you want to migrate this post chains or leave the field blank.',
                 ));
             }
         } else {
-            $_POST['migratehandle'] = '';
+            $_POST['migrateuser'] = '';
         }
 
         if (is_array($_POST['o__id'])) {
             $mass_result = array();
             foreach ($_POST['o__id'] as $o__id) {
-                array_push($mass_result, $this->Chains->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['handle_createid'], $_POST['migratehandle'], $_POST['chainid']));
+                array_push($mass_result, $this->Ideachains->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['user_createid'], $_POST['migrateuser'], $_POST['chainid']));
             }
             return view_json($mass_result);
         } else {
-            return view_json($this->Chains->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['handle_createid'], $_POST['migratehandle'], $_POST['chainid']));
+            return view_json($this->Ideachains->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['user_createid'], $_POST['migrateuser'], $_POST['chainid']));
         }
 
     }
@@ -3254,15 +3261,15 @@ class Controller extends CI_Controller
         /*
          *
          * When members indicate they want to stop
-         * a HASHTAG this function saves the changes
-         * necessary and delete the hashtag from their
+         * a POST this function saves the changes
+         * necessary and delete the post from their
          * discoveries.
          *
          * */
 
-        $handle_session = handle_session(null, 0, $this->handle_session);
+        $user_session = user_session(null, 0, $this->user_session);
 
-        if (!$handle_session) {
+        if (!$user_session) {
             return view_json(array(
                 'status' => 0,
                 'message' => blocked_reasoning(),
@@ -3274,8 +3281,8 @@ class Controller extends CI_Controller
             ));
         }
 
-        //Remove Hashtag
-        $this->Chains->delete($_POST['chainid'], $handle_session['handleid']);
+        //Remove Post
+        $this->Ideachains->delete($_POST['chainid'], $user_session['userid']);
 
         return view_json(array(
             'status' => 1,
@@ -3286,7 +3293,7 @@ class Controller extends CI_Controller
     {
 
         /*
-         * Loads the list of Chains based on the
+         * Loads the list of Ideachains based on the
          * filters passed on.
          *
          * */
@@ -3300,14 +3307,14 @@ class Controller extends CI_Controller
         $current_page = (isset($_POST['current_page']) && intval($_POST['current_page']) >= 2 ? intval($_POST['current_page']) : 1);
         $next_page = ($current_page + 1);
         $query_offset = (($current_page - 1) * view_memory(6404, 11064));
-        $handle_session = handle_session(null, 0, $this->handle_session);
+        $user_session = user_session(null, 0, $this->user_session);
 
         $message = '';
         $overall_stats = '';
 
-        //Fetch Chains and total Chain counts:
-        $x = $this->Chains->read($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
-        $x_count = $this->Chains->read($query_filters, $joined_by, 0, 0, array(), 'COUNT(chainid) as total_count');
+        //Fetch Ideachains and total Chain counts:
+        $x = $this->Ideachains->read($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
+        $x_count = $this->Ideachains->read($query_filters, $joined_by, 0, 0, array(), 'COUNT(chainid) as total_count');
         $total_items_loaded = ($query_offset + count($x));
         $has_more_chains = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 
@@ -3327,7 +3334,7 @@ class Controller extends CI_Controller
 
             //Do we have more to show?
             if (!$has_more_chains) {
-                $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Chains have been loaded</div></td></tr>';
+                $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Ideachains have been loaded</div></td></tr>';
 
 
             }
@@ -3335,7 +3342,7 @@ class Controller extends CI_Controller
         } else {
 
             //Show no Chain warning:
-            $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Chains found with the selected filters. Modify filters and try again.</div></td></tr>';
+            $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Ideachains found with the selected filters. Modify filters and try again.</div></td></tr>';
 
         }
 
@@ -3353,165 +3360,165 @@ class Controller extends CI_Controller
     function chain_stats()
     {
 
-        //See if we have any hashtag or Handle targets to limit our stats:
-        $has_handle = isset($_POST['handleterm']) && strlen($_POST['handleterm']) && $_POST['handleterm'];
-        $has_hashtag = isset($_POST['hashtagterm']) && strlen($_POST['hashtagterm']) && $_POST['hashtagterm'];
+        //See if we have any post or User targets to limit our stats:
+        $has_user = isset($_POST['userhandle']) && strlen($_POST['userhandle']) && $_POST['userhandle'];
+        $has_post = isset($_POST['posthashtag']) && strlen($_POST['posthashtag']) && $_POST['posthashtag'];
 
-        if ($has_handle) {
+        if ($has_user) {
 
-            //See stats for this Handle:
-            $es = $this->Handles->read(array(
-                'LOWER(handleterm)' => strtolower($_POST['handleterm']),
+            //See stats for this User:
+            $es = $this->Users->read(array(
+                'LOWER(userhandle)' => strtolower($_POST['userhandle']),
             ));
             if (!count($es)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Handle',
+                    'message' => 'Invalid User',
                 ));
             }
 
-        } elseif ($has_hashtag) {
+        } elseif ($has_post) {
 
-            //See stats for this hashtag:
-            $is = $this->Hashtags->read(array(
-                'LOWER(hashtagterm)' => strtolower($_POST['hashtagterm']),
+            //See stats for this post:
+            $is = $this->Posts->read(array(
+                'LOWER(posthashtag)' => strtolower($_POST['posthashtag']),
             ));
             if (!count($is)) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Hashtag',
+                    'message' => 'Invalid Post',
                 ));
             }
 
-            $copy = $this->Hashtags->ids($is[0], 'ALL');
+            $copy = $this->Posts->ids($is[0], 'ALL');
         }
 
 
-        //Count Chains:
+        //Count Ideachains:
         $return_array = array(
             4341 => 0,
         );
-        foreach ($this->config->item('handles___33292') as $chainhandletype1 => $m1) { //Stats
+        foreach ($this->config->item('users___33292') as $chainusertype1 => $m1) { //Stats
 
             $level1_total = 0;
 
-            if($chainhandletype1==1309754){
+            if($chainusertype1==1309754){
 
                 //Voided
-                if ($has_handle) {
-                    $void_filter['(chainvoid >0 AND ( chainhandleoutput = ' . $es[0]['handleid'] . ' OR chainhandleinput = ' . $es[0]['handleid'] . ' OR chainhandlecreator = ' . $es[0]['handleid'] . ' ))'] = null;
-                } elseif ($has_hashtag) {
-                    $void_filter['(chainvoid >0 AND ( chainhashtaginput = ' . $is[0]['hashtagid'] . ' OR chainhashtagoutput = ' . $is[0]['hashtagid'] . ' ))'] = null;
+                if ($has_user) {
+                    $void_filter['(chainvoid >0 AND ( chainuseroutput = ' . $es[0]['userid'] . ' OR chainuserinput = ' . $es[0]['userid'] . ' OR chainusercreator = ' . $es[0]['userid'] . ' ))'] = null;
+                } elseif ($has_post) {
+                    $void_filter['(chainvoid >0 AND ( chainpostinput = ' . $is[0]['postid'] . ' OR chainpostoutput = ' . $is[0]['postid'] . ' ))'] = null;
                 } else {
-                    //Void Chains
+                    //Void Ideachains
                     $void_filter = array(
-                        'chainvoid > 0' => null, //Chains that have been voided
+                        'chainvoid > 0' => null, //Ideachains that have been voided
                     );
                 }
-                $sub_counter = $this->Chains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');
-                $return_array[$chainhandletype1] = intval($sub_counter[0]['totals']);
+                $sub_counter = $this->Ideachains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');
+                $return_array[$chainusertype1] = intval($sub_counter[0]['totals']);
                 $return_array[4341] += intval($sub_counter[0]['totals']);
                 continue;
             }
 
-            foreach ($this->config->item('handles___' . $chainhandletype1) as $chainhandletype2 => $m2) {
+            foreach ($this->config->item('users___' . $chainusertype1) as $chainusertype2 => $m2) {
 
-                //Nodes/Chains
+                //Nodes/Ideachains
                 $level2_total = 0;
-                if ($chainhandletype2 == 12273) {
+                if ($chainusertype2 == 12273) {
 
-                    if ($has_handle) {
+                    if ($has_user) {
 
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                            'chainhandleinput' => $es[0]['handleid'],
-                        ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+                        $sub_counter = $this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
+                            'chainuserinput' => $es[0]['userid'],
+                        ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-                    } elseif ($has_hashtag && count($copy['recursive_hashtag_ids'])) {
+                    } elseif ($has_post && count($copy['recursive_post_ids'])) {
 
-                        //See stats for this hashtag:
-                        $sub_counter = $this->Hashtags->read(array(
-                            'hashtagid IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
-                        ), 0, 0, array(), 'COUNT(hashtagid) as totals');
+                        //See stats for this post:
+                        $sub_counter = $this->Posts->read(array(
+                            'postid IN (' . join(',', $copy['recursive_post_ids']) . ')' => null,
+                        ), 0, 0, array(), 'COUNT(postid) as totals');
 
                     } else {
 
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype' => $chainhandletype2,
+                        $sub_counter = $this->Ideachains->read(array(
+                            'chainusertype' => $chainusertype2,
                         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                     }
 
                     $level2_total += $sub_counter[0]['totals'];
-                    $return_array[$chainhandletype2] = intval($sub_counter[0]['totals']);
+                    $return_array[$chainusertype2] = intval($sub_counter[0]['totals']);
 
-                } elseif ($chainhandletype2 == 12274) {
+                } elseif ($chainusertype2 == 12274) {
 
-                    if ($has_handle) {
+                    if ($has_user) {
 
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                            'chainhandleinput' => $es[0]['handleid'],
-                        ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+                        $sub_counter = $this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                            'chainuserinput' => $es[0]['userid'],
+                        ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-                    } elseif ($has_hashtag && count($copy['recursive_hashtag_ids'])) {
+                    } elseif ($has_post && count($copy['recursive_post_ids'])) {
 
-                        //See stats for this hashtag:
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $this->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                            'chainhashtagoutput IN (' . join(',', $copy['recursive_hashtag_ids']) . ')' => null,
-                        ), array('chainhandleinput'), 0, 0, array(), 'COUNT(chainid) as totals');
+                        //See stats for this post:
+                        $sub_counter = $this->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
+                            'chainpostoutput IN (' . join(',', $copy['recursive_post_ids']) . ')' => null,
+                        ), array('chainuserinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                     } else {
 
-                        $sub_counter = $this->Chains->read(array(
-                            'chainhandletype' => $chainhandletype2,
+                        $sub_counter = $this->Ideachains->read(array(
+                            'chainusertype' => $chainusertype2,
                         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                     }
 
                     $level2_total += $sub_counter[0]['totals'];
-                    $return_array[$chainhandletype2] = intval($sub_counter[0]['totals']);
+                    $return_array[$chainusertype2] = intval($sub_counter[0]['totals']);
 
                 } else {
 
-                    foreach ($this->config->item('handles___' . $chainhandletype2) as $chainhandletype3 => $m3) {
+                    foreach ($this->config->item('users___' . $chainusertype2) as $chainusertype3 => $m3) {
 
-                        if ($has_handle) {
+                        if ($has_user) {
 
-                            $sub_counter = $this->Chains->read(array(
-                                'chainhandletype' => $chainhandletype3,
-                                '( chainhandleoutput = ' . $es[0]['handleid'] . ' OR chainhandleinput = ' . $es[0]['handleid'] . ' OR chainhandlecreator = ' . $es[0]['handleid'] . ' )' => null,
+                            $sub_counter = $this->Ideachains->read(array(
+                                'chainusertype' => $chainusertype3,
+                                '( chainuseroutput = ' . $es[0]['userid'] . ' OR chainuserinput = ' . $es[0]['userid'] . ' OR chainusercreator = ' . $es[0]['userid'] . ' )' => null,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
-                        } elseif ($has_hashtag && count($copy['recursive_hashtag_ids'])) {
+                        } elseif ($has_post && count($copy['recursive_post_ids'])) {
 
-                            $sub_counter = $this->Chains->read(array(
-                                'chainhandletype' => $chainhandletype3,
-                                '( chainhashtaginput IN (' . join(',', $copy['recursive_hashtag_ids']) . ') OR chainhashtagoutput IN (' . join(',', $copy['recursive_hashtag_ids']) . '))' => null,
+                            $sub_counter = $this->Ideachains->read(array(
+                                'chainusertype' => $chainusertype3,
+                                '( chainpostinput IN (' . join(',', $copy['recursive_post_ids']) . ') OR chainpostoutput IN (' . join(',', $copy['recursive_post_ids']) . '))' => null,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } else {
 
-                            $sub_counter = $this->Chains->read(array(
-                                'chainhandletype' => $chainhandletype3,
+                            $sub_counter = $this->Ideachains->read(array(
+                                'chainusertype' => $chainusertype3,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         }
 
                         $level2_total += $sub_counter[0]['totals'];
-                        $return_array[$chainhandletype3] = intval($sub_counter[0]['totals']);
+                        $return_array[$chainusertype3] = intval($sub_counter[0]['totals']);
 
                     }
 
                 }
 
                 $level1_total += $level2_total;
-                $return_array[$chainhandletype2] = intval($level2_total);
+                $return_array[$chainusertype2] = intval($level2_total);
 
             }
 
-            $return_array[$chainhandletype1] = intval($level1_total);
+            $return_array[$chainusertype1] = intval($level1_total);
             $return_array[4341] += intval($level1_total);
 
         }

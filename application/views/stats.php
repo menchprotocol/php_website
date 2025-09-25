@@ -1,82 +1,69 @@
 <?php
 
-$handleterm = (isset($_GET['handleterm']) ? $_GET['handleterm'] : null);
-$hashtagterm = (!$handleterm && isset($_GET['hashtagterm']) ? $_GET['hashtagterm'] : null);
-$handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+$userhandle = (isset($_GET['userhandle']) ? $_GET['userhandle'] : null);
+$posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag'] : null);
+$users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
-echo '<h1><a href="/ideachain"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> Chains</h1>';
+echo '<h1><a href="'.view_app_chain(4341).'"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> <a href="/@'.$users___11035[4341]['m__user'].'">'.$users___11035[4341]['m__title'].'</a></h1>';
 
-if ($handleterm) {
-    foreach ($this->Handles->read(array(
-        'LOWER(handleterm)' => strtolower($handleterm),
+if ($userhandle) {
+    foreach ($this->Users->read(array(
+        'LOWER(userhandle)' => strtolower($userhandle),
     )) as $e) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $handleterm . '"><span class="icon-block">' . view_cover($e['handlecover']) . '</span> ' . $e['handlename'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="' . view_memory(42903, 42902) . $userhandle . '"><span class="icon-block">' . view_cover($e['usercover']) . '</span> ' . $e['username'] . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
     }
-} elseif ($hashtagterm) {
-    foreach ($this->Hashtags->read(array(
-        'LOWER(hashtagterm)' => strtolower($hashtagterm),
+} elseif ($posthashtag) {
+    foreach ($this->Posts->read(array(
+        'LOWER(posthashtag)' => strtolower($posthashtag),
     )) as $i) {
-        echo '<h2 class="center"><a href="' . view_memory(42903, 33286) . $hashtagterm . '">' . view_hashtag_title($i, true) . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="' . view_memory(42903, 33286) . $posthashtag . '">' . view_post_title($i, true) . '</a> <a href="' . view_memory(42903, 33286) . $this->uri->segment(1) . '"><i class="far fa-filter-slash"></i></a></h2>';
     }
 }
 
 //Misc Stats, if any:
 echo '<div class="center hideIfEmpty"></div>';
 
-foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
+foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
-    if($handleid1==1309754){
-        echo '<div class="mid-text-line compact-midline"><span><a href="'.view_app_chain(4341).'?chainvoid=1" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . '</span></div>';
-        //Void Chains
+    if($userid1==1309754){
+        echo '<div class="mid-text-line compact-midline"><span><a href="'.view_app_chain(4341).'?chainvoid=1" class="grey card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__title'] . '</a></span></div>';
+        //Void Ideachains
         continue;
-    } elseif($handleid1==28956){
+    } elseif($userid1==28956){
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span><a href="'.view_app_chain(4341).'?chainhandletype=12273,12274&chainvoid=0" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
-    } elseif($handleid1==31770){
-        //Chains
-        echo '<div class="mid-text-line compact-midline"><span><a target="_blank" href="'.view_app_chain(4341).'?chainhandletype='.join(',',$this->config->item('handleids___2123863')).'&chainvoid=0" class="grey card_count_' . $handleid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> ' . $m1['m__title'] . ':</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span><a href="'.view_app_chain(4341).'?chainusertype=12273,12274&chainvoid=0" class="grey card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__title'] . '</a>:</span></div>';
+    } elseif($userid1==31770){
+        //Ideachains
+        echo '<div class="mid-text-line compact-midline"><span><a target="_blank" href="'.view_app_chain(4341).'?chainusertype='.join(',',$this->config->item('userids___2123863')).'&chainvoid=0" class="grey card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__title'] . '</a>:</span></div>';
     }
 
     echo '<div class="row justify-content list-covers">';
 
-    if($handleid1==28956){
-        //Legend of how nodes connect:
-        echo '<table class="table table-sm maxout center hidden" style="width: 100%; table-layout: fixed; margin-bottom: -144px; margin-top:44px; font-size:1.4em;"><tr>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-rotate-left appender_32292"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-rotate-right appender_4486"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '</tr><tr>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-arrow-right appender_13550"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;"><i class="fas fa-arrow-left appender_31777"></i></td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '<td style="width: 16.66%; text-align: center;">&nbsp;</td>';
-        echo '</tr></table>';
-    }
+    foreach ($this->config->item('users___' . $userid1) as $userid2 => $m2) {
 
-
-    foreach ($this->config->item('handles___' . $handleid1) as $handleid2 => $m2) {
-
-        $is_chain = $handleid2 != 12273 && $handleid2 != 12274;
+        $is_chain = $userid2 != 12273 && $userid2 != 12274;
+        $chain_link = view_app_chain(4341).'?chainusertype='.join(',',( $is_chain ? $this->config->item('userids___' . $userid2) : array(( $userid2==12273 ? 12273 : 12274 )) )).'&chainvoid=0';
 
         echo '<div class="card_cover no-padding col-6">';
-        echo '<div class="card_frame dropdown_d' . $handleid1 . ' dropdown_' . $handleid2 . '">';
+        echo '<div class="card_frame dropdown_d' . $userid1 . ' dropdown_' . $userid2 . '">';
 
-        echo '<div class="card_header" title="' . $m2['m__message'] . '" handleid="' . $handleid2 . '">';
-        echo '<div class="'.( $is_chain ? 'medium_cover' : 'large_cover' ).'">' . $m2['m__cover'] . '</div>';
-        echo '<div class="main__title large_title"><a href="'.view_app_chain(4341).'?chainhandletype='.join(',',( $is_chain ? $this->config->item('handleids___' . $handleid2) : array(( $handleid2==12273 ? 12273 : 12274 )) )).'&chainvoid=0" class="card_count_' . $handleid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title" title="@' . $handleid2 . ' @' . $m2['m__handle'] . '"><a href="'.view_memory(42903,42902).$m2['m__handle'].'">' . $m2['m__title'] . '</a></div>';
+        echo '<div class="card_header" title="' . $m2['m__message'] . '" userid="' . $userid2 . '">';
+
+        if ($is_chain) {
+            echo '<div class="medium_cover">' . $m2['m__cover'] . '</div>';
+        } else {
+            echo '<a href="'.$chain_link.'" class="large_cover">' . $m2['m__cover'] . '</a>';
+        }
+
+        echo '<div class="main__title large_title"><a href="'.$chain_link.'" class="card_count_' . $userid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
+        echo '<div class="main__title large_title" title="@' . $userid2 . ' @' . $m2['m__user'] . '"><a href="'.view_memory(42903,42902).$m2['m__user'].'">' . $m2['m__title'] . '</a></div>';
         echo '</div>';
 
         if ($is_chain) {
-            echo '<table class="table card_subcat card_subcat_' . $handleid2 . ' hidden" style="width:100%; margin-top:13px;">';
-            foreach ($this->config->item('handles___' . $handleid2) as $handleid3 => $m3) {
+            echo '<table class="table card_subcat card_subcat_' . $userid2 . ' hidden" style="width:100%; margin-top:13px;">';
+            foreach ($this->config->item('users___' . $userid2) as $userid3 => $m3) {
                 echo '<tr class="main__title mobile-shrink" title="' . $m3['m__message'] . '" data-toggle="tooltip" data-placement="top">';
-                echo '<td style="text-align: left;" title="@' . $handleid3 . ' @' . $m3['m__handle'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a href="'.view_app_chain(4341).'?chainhandletype='.  $handleid3 . '&chainvoid=0" class="card_count_' . $handleid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
+                echo '<td style="text-align: left;" title="@' . $userid3 . ' @' . $m3['m__user'] . '"><a href="' . view_memory(42903, 42902) . $m3['m__user'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__title'] . '</a><span class="last-right-col"><a href="'.view_app_chain(4341).'?chainusertype='.  $userid3 . '&chainvoid=0" class="card_count_' . $userid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
                 echo '</tr>';
 
             }
@@ -98,8 +85,8 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
     function chain_stats() {
         $.post("/controller/chain_stats", {
-            handleterm: '<?= $handleterm ?>',
-            hashtagterm: '<?= $hashtagterm ?>',
+            userhandle: '<?= $userhandle ?>',
+            posthashtag: '<?= $posthashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
 
@@ -120,12 +107,12 @@ foreach ($this->config->item('handles___33292') as $handleid1 => $m1) {
 
         //Watch for click to expand:
         $(".card_header").click(function (e) {
-            $('.card_subcat_' + $(this).attr('handleid')).toggleClass('hidden');
+            $('.card_subcat_' + $(this).attr('userid')).toggleClass('hidden');
         });
 
         //Update stats live:
         $(function () {
-            setInterval(chain_stats, js_handles___6404[33292]['m__message']);
+            setInterval(chain_stats, js_users___6404[33292]['m__message']);
         });
 
     });

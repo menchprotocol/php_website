@@ -1,28 +1,28 @@
 <?php
 
-if(!isset($_GET['hashtagterm'])){
-    die('Missing Hashtag ID hashtagterm');
+if(!isset($_GET['posthashtag'])){
+    die('Missing Post ID posthashtag');
 }
 
 
 //Generate list & settings:
-$hashtag_settings = hashtag_settings($_GET['hashtagterm']);
-echo '<h1>' . view_hashtag_title($hashtag_settings['i']) . '</h1>';
+$post_settings = post_settings($_GET['posthashtag']);
+echo '<h1>' . view_post_title($post_settings['i']) . '</h1>';
 
 
-//Display hashtag info:
-$copy = $this->Hashtags->ids($hashtag_settings['i'], 'ALL');
+//Display post info:
+$copy = $this->Posts->ids($post_settings['i'], 'ALL');
 
 
-//Main Hashtag:
-echo '<h2><a href="'.view_memory(42903,33286).$hashtag_settings['i']['hashtagterm'].'">'.view_hashtag_title($hashtag_settings['i'], true).'</a> '.count($copy['recursive_hashtag_ids']).' HASHTAGS</h2>';
+//Main Post:
+echo '<h2><a href="'.view_memory(42903,33286).$post_settings['i']['posthashtag'].'">'.view_post_title($post_settings['i'], true).'</a> '.count($copy['recursive_post_ids']).' POSTS</h2>';
 
 echo '<div class="row justify-content">';
-foreach($copy['recursive_hashtag_ids'] as $recursive_down_id){
-    foreach($this->Hashtags->read(array(
-        'hashtagid' => $recursive_down_id,
+foreach($copy['recursive_post_ids'] as $recursive_down_id){
+    foreach($this->Posts->read(array(
+        'postid' => $recursive_down_id,
     ), 0) as $this_i){
-        echo hashtag_view(42288, $this_i);
+        echo post_view(42288, $this_i);
     }
 }
 echo '</div>';

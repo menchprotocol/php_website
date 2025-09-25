@@ -1,8 +1,8 @@
 <?php
 
-$handle_session = handle_session();
+$user_session = user_session();
 
-//Hashtag Tree:
+//Post Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Chains->flat_tree($focus_i), true, $handle_session);
+view_tree($this->Ideachains->flat_tree($focus_i), true, $user_session);
 echo '</div>';

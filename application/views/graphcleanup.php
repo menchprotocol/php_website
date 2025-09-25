@@ -1,14 +1,14 @@
 <?php
 
 boost_power();
-$mentions = $this->config->item('handles___13550');
-$ideas = $this->config->item('handles___4486');
+$mentions = $this->config->item('users___13550');
+$ideas = $this->config->item('users___4486');
 $count = 0;
 
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
-if($focus_i['hashtagterm']=='Discotique2024') {
+if($focus_i['posthashtag']=='Discotique2024') {
 
     //Update
     /*
@@ -28,17 +28,17 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     echo 'yayyy';
 
 
-    $this->Chains->create(array(
-        'chainhandletype' => 43513,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733119,
-        'chainhandleinput' => 1636421, //Discotique Leaders 25
+    $this->Ideachains->create(array(
+        'chainusertype' => 43513,
+        'chainusercreator' => 1,
+        'chainpostoutput' => 1733119,
+        'chainuserinput' => 1636421, //Discotique Leaders 25
     ));
-    $this->Chains->create(array(
-        'chainhandletype' => 43513,
-        'chainhandlecreator' => 1,
-        'chainhashtagoutput' => 1733121,
-        'chainhandleinput' => 27093, //Trusted
+    $this->Ideachains->create(array(
+        'chainusertype' => 43513,
+        'chainusercreator' => 1,
+        'chainpostoutput' => 1733121,
+        'chainuserinput' => 27093, //Trusted
     ));
 
 
@@ -48,92 +48,91 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
     echo 'done done';
 
-    /*
-    foreach($this->Chains->read(array(
+    foreach($this->Ideachains->read(array(
         'chainvoid >=' => 0, //Any Chain
-        'chainhandletype' => 12273,
+        'chainusertype' => 12273,
     ), array(''), 0, 0, array('chainid' => 'ASC')) as $x){
 
     }
 
-    foreach ($this->Hashtags->read(array(
-        'LOWER(hashtagterm)' => strtolower(view_valid_handle_hashtag($action_command1)),
+    foreach ($this->Posts->read(array(
+        'LOWER(posthashtag)' => strtolower(view_valid_user_post($action_command1)),
     )) as $i) {
 
     }
-    $this->Hashtags->update($ref['hashtagid'], array(
-        'hashtagtext' => str_replace('#' . $is[0]['hashtagterm'], '#' . trim($_POST['save_hashtagterm']), $ref['hashtagtext']),
-    ), $handle_session['handleid']);
-    */
+    $this->Posts->update($ref['postid'], array(
+        'posttext' => str_replace('#' . $is[0]['posthashtag'], '#' . trim($_POST['save_posthashtag']), $ref['posttext']),
+    ), $user_session['userid']);
 
-} elseif($focus_i['hashtagterm']=='Discotique2025') {
 
-    //HANDLE
-    $chainhandleoutput = array();
+} elseif($focus_i['posthashtag']=='Discotique2025') {
+
+    //USER
+    $chainuseroutput = array();
     $stats = array(
-        'handles_all' => 0,
-        'handles_delete' => 0,
-        'handles_duplicate' => 0,
-        'handles_void' => 0,
-        'handles_voidcreaetor' => 0,
-        'handles_void_cachevalid' => 0,
-        'handles_valid_cachevoid' => 0,
+        'users_all' => 0,
+        'users_delete' => 0,
+        'users_duplicate' => 0,
+        'users_void' => 0,
+        'users_voidcreaetor' => 0,
+        'users_void_cachevalid' => 0,
+        'users_valid_cachevoid' => 0,
     );
 
-    foreach ($this->Chains->read(array(
+    foreach ($this->Ideachains->read(array(
         'chainvoid >=' => 0, //Any Chain
-        'chainhandletype' => 12274,
+        'chainusertype' => 12274,
     ), array(), 377, 0, array('chainid' => 'ASC')) as $x) {
 
-        $is_duplicate = in_array($x['chainhandleoutput'], $chainhandleoutput);
+        $is_duplicate = in_array($x['chainuseroutput'], $chainuseroutput);
         if (!$is_duplicate) {
-            array_push($chainhandleoutput, $x['chainhandleoutput']);
+            array_push($chainuseroutput, $x['chainuseroutput']);
         } else {
-            $stats['handles_duplicate']++;
+            $stats['users_duplicate']++;
         }
 
         $count++;
-        $es_cache = $this->Handles->read(array(
-            'handleid' => $x['chainhandleoutput'],
+        $es_cache = $this->Users->read(array(
+            'userid' => $x['chainuseroutput'],
         ));
-        $es = $this->Handles->read(array(
-            'handleid' => $x['chainhandlecreator'],
+        $es = $this->Users->read(array(
+            'userid' => $x['chainusercreator'],
         ));
 
-        $stats['handles_all']++;
+        $stats['users_all']++;
         if ($x['chainvoid'] > 0) {
-            $stats['handles_void']++;
+            $stats['users_void']++;
         } elseif (!count($es)) {
-            $stats['handles_voidcreaetor']++;
+            $stats['users_voidcreaetor']++;
         }
         if ($x['chainvoid'] > 0 && count($es_cache)) {
-            $stats['handles_void_cachevalid']++;
+            $stats['users_void_cachevalid']++;
         }
         if (!$x['chainvoid'] && !count($es_cache)) {
-            $stats['handles_valid_cachevoid']++;
+            $stats['users_valid_cachevoid']++;
         }
 
 
         //Fetch from Cache table:
         if (count($es_cache)) {
-            $hashtagtext = '@' . $es_cache[0]['handleterm'] . "\n" . $es_cache[0]['handlename'] . "\n" . $es_cache[0]['handlecover'];
+            $posttext = '@' . $es_cache[0]['userhandle'] . "\n" . $es_cache[0]['username'] . "\n" . $es_cache[0]['usercover'];
         } else {
-            $hashtagtext = '@???' . $x['chainvalue'] . "\n" . $x['chainvalue'] . "\nfar fa-handle";
+            $posttext = '@???' . $x['chainvalue'] . "\n" . $x['chainvalue'] . "\nfar fa-user";
         }
 
         //Append Description if any
-        foreach ($this->Chains->read(array(
+        foreach ($this->Ideachains->read(array(
             'LENGTH(chainvalue) > 0' => null,
-            'chainhandleinput IN (11035,42628)' => null,
-            'chainhandleoutput' => $x['chainhandleoutput'],
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            'chainuserinput IN (11035,42628)' => null,
+            'chainuseroutput' => $x['chainuseroutput'],
+            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0, 0) as $social_chain) {
-            $hashtagtext .= "\n" . $social_chain['chainvalue'];
+            $posttext .= "\n" . $social_chain['chainvalue'];
         }
 
         $delete = $x['chainvoid'] > 0 || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($es_cache));
         if ($delete) {
-            $stats['handles_delete']++;
+            $stats['users_delete']++;
         }
 
         $table .= '<tr>';
@@ -141,12 +140,12 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             ($delete ? '[DELETE]' : '') .
             ($x['chainvoid'] > 0 ? '[VOID]' : '') .
             ($is_duplicate ? '[DUPLICATE]' : '') .
-            (!$x['chainvoid'] && !count($es) ? '[handles_voidcreaetor]' : '') .
-            (!$x['chainvoid'] && !count($es_cache) ? '[handles_valid_cachevoid]' : '') .
+            (!$x['chainvoid'] && !count($es) ? '[users_voidcreaetor]' : '') .
+            (!$x['chainvoid'] && !count($es_cache) ? '[users_valid_cachevoid]' : '') .
             '</td>';
-        $table .= '<td>T@' . $x['chainhandletype'] . '<br />C@' . $x['chainhandlecreator'] . '<br />@' . $x['chainhandleoutput'] . '</td>';
-        $table .= '<td><div style="max-width:233px;">' . nl2br(trim(htmlentities($hashtagtext))) . '</div></td>';
-        //$table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($hashtagtext))).'</div></td>';
+        $table .= '<td>T@' . $x['chainusertype'] . '<br />C@' . $x['chainusercreator'] . '<br />@' . $x['chainuseroutput'] . '</td>';
+        $table .= '<td><div style="max-width:233px;">' . nl2br(trim(htmlentities($posttext))) . '</div></td>';
+        //$table .= '<td><div style="max-width:233px;">'.nl2br(trim(htmlentities($posttext))).'</div></td>';
         $table .= '</tr>';
     }
 
@@ -188,28 +187,28 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     );
 
 
-    foreach ($this->Chains->read(array(
-        'chainhandleinput IN (' . join(',', $this->config->item('handleids___1735577')) . ')' => null, //HANDLE DISPLAY
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    ), array('chainhandleoutput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x) {
+    foreach ($this->Ideachains->read(array(
+        'chainuserinput IN (' . join(',', $this->config->item('userids___1735577')) . ')' => null, //USER DISPLAY
+        'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+    ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC')) as $x) {
 
         $must_delete = false;
         $newchainvalue = false;
 
-        if ($x['chainhandleinput'] == 1326) {
+        if ($x['chainuserinput'] == 1326) {
 
             if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
-                $success[$x['chainhandleinput']]++;
+                $success[$x['chainuserinput']]++;
             } else {
-                $fail[$x['chainhandleinput']]++;
+                $fail[$x['chainuserinput']]++;
                 //See if we can find it?
-                foreach ($this->Chains->read(array(
-                    'chainhandleoutput' => $x['chainhandleoutput'],
+                foreach ($this->Ideachains->read(array(
+                    'chainuseroutput' => $x['chainuseroutput'],
                     'LENGTH(chainvalue) > 0' => null,
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                ), array('chainhandleinput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ), array('chainuserinput'), 0, 0, array('chainuserinput' => 'ASC')) as $x2) {
                     if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainhandleinput']]++;
+                        $fixed[$x['chainuserinput']]++;
                         $newchainvalue = $x2['chainvalue'];
                         break;
                     }
@@ -219,21 +218,21 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 }
             }
 
-        } elseif ($x['chainhandleinput'] == 4258) {
+        } elseif ($x['chainuserinput'] == 4258) {
 
             //Video
             if(strlen($x['chainvalue'])){
-                $success[$x['chainhandleinput']]++;
+                $success[$x['chainuserinput']]++;
             } else {
-                $fail[$x['chainhandleinput']]++;
+                $fail[$x['chainuserinput']]++;
                 //See if we can find it?
-                foreach ($this->Chains->read(array(
-                    'chainhandleinput' => 42660, //Media Public ID
-                    'chainhandleoutput' => $x['chainhandleoutput'],
+                foreach ($this->Ideachains->read(array(
+                    'chainuserinput' => 42660, //Media Public ID
+                    'chainuseroutput' => $x['chainuseroutput'],
                     'LENGTH(chainvalue) > 0' => null,
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                ), array('chainhandleoutput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
-                    $fixed[$x['chainhandleinput']]++;
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC')) as $x2) {
+                    $fixed[$x['chainuserinput']]++;
                     $newchainvalue = $x2['chainvalue'];
                     break;
                 }
@@ -242,22 +241,22 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 }
             }
 
-        } elseif ($x['chainhandleinput'] == 4259) {
+        } elseif ($x['chainuserinput'] == 4259) {
 
             //Audio
             if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
-                $success[$x['chainhandleinput']]++;
+                $success[$x['chainuserinput']]++;
             } else {
-                $fail[$x['chainhandleinput']]++;
+                $fail[$x['chainuserinput']]++;
                 //See if we can find it?
-                foreach ($this->Chains->read(array(
-                    'chainhandleinput' => 42693, //Secure URL
-                    'chainhandleoutput' => $x['chainhandleoutput'],
+                foreach ($this->Ideachains->read(array(
+                    'chainuserinput' => 42693, //Secure URL
+                    'chainuseroutput' => $x['chainuseroutput'],
                     'LENGTH(chainvalue) > 0' => null,
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                ), array('chainhandleoutput'), 0, 0, array('chainhandleinput' => 'ASC')) as $x2) {
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC')) as $x2) {
                     if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainhandleinput']]++;
+                        $fixed[$x['chainuserinput']]++;
                         $newchainvalue = $x2['chainvalue'];
                         break;
                     }
@@ -267,28 +266,28 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 }
             }
 
-        } elseif ($x['chainhandleinput'] == 4260) {
+        } elseif ($x['chainuserinput'] == 4260) {
 
             //Image
             if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
-                $success[$x['chainhandleinput']]++;
+                $success[$x['chainuserinput']]++;
             } else {
-                $fail[$x['chainhandleinput']]++;
+                $fail[$x['chainuserinput']]++;
                 //See if we can find it?
-                foreach ($this->Chains->read(array(
-                    'chainhandleoutput' => $x['chainhandleoutput'],
-                    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                ), array('chainhandleinput'), 0) as $x2) {
+                foreach ($this->Ideachains->read(array(
+                    'chainuseroutput' => $x['chainuseroutput'],
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ), array('chainuserinput'), 0) as $x2) {
                     if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainhandleinput']]++;
+                        $fixed[$x['chainuserinput']]++;
                         $newchainvalue = $x2['chainvalue'];
                         break;
                     }
                 }
                 if(!$newchainvalue){
-                    if(filter_var($x['handlecover'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainhandleinput']]++;
-                        $newchainvalue = $x['handlecover'];
+                    if(filter_var($x['usercover'], FILTER_VALIDATE_URL)){
+                        $fixed[$x['chainuserinput']]++;
+                        $newchainvalue = $x['usercover'];
                     } else {
                         $must_delete = true;
                     }
@@ -303,12 +302,12 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 
         if(strlen($newchainvalue) && 0){
-            $this->Chains->update($x['chainid'], array(
+            $this->Ideachains->update($x['chainid'], array(
                 'chainvalue' => $newchainvalue,
             ));
         } elseif($must_delete && 0){
             //Delete chain:
-            $this->Chains->delete($x['chainid']);
+            $this->Ideachains->delete($x['chainid']);
         }
 
 
@@ -316,7 +315,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '<tr>';
 
         $table .= '<td>'.$x['chainid'].'</td>';
-        $table .= '<td>'.$x['chainhandleinput'].'</td>';
+        $table .= '<td>'.$x['chainuserinput'].'</td>';
         $table .= '<td><div style="max-width:233px;">'.$x['chainvalue'].'</div></td>';
         $table .= '<td><div style="max-width:233px;">'.( strlen($newchainvalue) ? 'FIXED: ' : '' ).$newchainvalue.'</div></td>';
         $table .= '<td>'.( $must_delete ? 'DELETE' : '' ).'</td>';
@@ -324,7 +323,7 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         $table .= '</tr>';
 
         if($must_delete){
-            $delete[$x['chainhandleinput']]++;
+            $delete[$x['chainuserinput']]++;
         }
 
     }
@@ -341,102 +340,102 @@ if($focus_i['hashtagterm']=='Discotique2024') {
     print_r($delete);
     echo $table;
 
-} elseif($focus_i['hashtagterm']=='YourBio') {
+} elseif($focus_i['posthashtag']=='YourBio') {
 
 
 
     if(isset($_GET['reset'])){
-        $q = $this->db->query('Update ideachain SET chainhashtaginput=0 WHERE chainhandletype=12273 AND chainhashtaginput>0;');
+        $q = $this->db->query('Update ideachains SET chainpostinput=0 WHERE chainusertype=12273 AND chainpostinput>0;');
         print_r(array('reset_result' => $q->result_array()));
         die('done');
     }
 
-    //HASHTAGS
+    //POSTS
     $table .= '<tr>';
     $table .= '<td>&nbsp;</td>';
     $table .= '<td>&nbsp;</td>';
     $table .= '<td><div style="max-width:233px;">INITIAL</div></td>'; //RAW
     $table .= '<td><div style="max-width:233px;">INPUT</div></td>'; //RAW
-    $table .= '<td><div style="max-width:233px;">hashtagchain</div></td>'; //RAW
-    $table .= '<td><div style="max-width:233px;">hashtagtext</div></td>'; //TEXT
-    $table .= '<td><div style="max-width:233px;">hashtagdiscover</div></td>'; //DISCOVERY
-    $table .= '<td><div style="max-width:233px;">hashtagedit</div></td>'; //EDITOR
+    $table .= '<td><div style="max-width:233px;">postchain</div></td>'; //RAW
+    $table .= '<td><div style="max-width:233px;">posttext</div></td>'; //TEXT
+    $table .= '<td><div style="max-width:233px;">postdiscover</div></td>'; //DISCOVERY
+    $table .= '<td><div style="max-width:233px;">postedit</div></td>'; //EDITOR
     $table .= '<td><div style="max-width:233px;">stats</div></td>'; //EDITOR
     $table .= '</tr>';
 
-    $chainhashtagoutput = array();
+    $chainpostoutput = array();
     $stats = array(
-        'hashtags_all' => 0,
-        'hashtags_empty' => 0,
-        'hashtags_delete' => 0,
-        'hashtags_duplicate' => 0,
-        'hashtags_empty_notvoid' => 0,
-        'hashtags_void' => 0,
-        'hashtags_voidcreaetor' => 0,
-        'hashtags_void_cachevalid' => 0,
-        'hashtags_valid_cachevoid' => 0,
+        'posts_all' => 0,
+        'posts_empty' => 0,
+        'posts_delete' => 0,
+        'posts_duplicate' => 0,
+        'posts_empty_notvoid' => 0,
+        'posts_void' => 0,
+        'posts_voidcreaetor' => 0,
+        'posts_void_cachevalid' => 0,
+        'posts_valid_cachevoid' => 0,
     );
 
     $filters = array(
         'chainvoid >=' => 0,
-        'chainhandletype' => 12273,
+        'chainusertype' => 12273,
     );
     if(isset($_GET['id'])){
-        $filters['(chainid='.$_GET['id'].' OR chainhashtagoutput='.$_GET['id'].')'] = null;
+        $filters['(chainid='.$_GET['id'].' OR chainpostinput='.$_GET['id'].')'] = null;
     } else {
         //Filter for mass editing;
-        $filters['chainhashtaginput'] = 0;
+        $filters['chainpostinput'] = 0;
     }
     $has_media = false;
-    foreach($this->Chains->read($filters, array('chainhashtagoutput'), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+    foreach($this->Ideachains->read($filters, array('chainpostoutput'), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
-        $is_duplicate = in_array($x['chainhashtagoutput'], $chainhashtagoutput);
+        $is_duplicate = in_array($x['chainpostoutput'], $chainpostoutput);
 
         if(!$is_duplicate){
-            array_push($chainhashtagoutput, $x['chainhashtagoutput']);
+            array_push($chainpostoutput, $x['chainpostoutput']);
         } else {
-            $stats['hashtags_duplicate']++;
+            $stats['posts_duplicate']++;
         }
 
         $count++;
-        $is = $this->Hashtags->read(array(
-            'hashtagid' => $x['chainhashtagoutput'],
+        $is = $this->Posts->read(array(
+            'postid' => $x['chainpostoutput'],
         ));
-        $es = $this->Handles->read(array(
-            'handleid' => $x['chainhandlecreator'],
+        $es = $this->Users->read(array(
+            'userid' => $x['chainusercreator'],
         ));
 
-        $stats['hashtags_all']++;
+        $stats['posts_all']++;
         if($x['chainvoid']>0){
-            $stats['hashtags_void']++;
+            $stats['posts_void']++;
         } elseif(!count($es)){
-            $stats['hashtags_voidcreaetor']++;
+            $stats['posts_voidcreaetor']++;
         }
         if($x['chainvoid']>0 && count($is)){
-            $stats['hashtags_void_cachevalid']++;
+            $stats['posts_void_cachevalid']++;
         }
         if(!$x['chainvoid'] && !count($is)){
-            $stats['hashtags_valid_cachevoid']++;
+            $stats['posts_valid_cachevoid']++;
         }
 
 
         if(!count($is)){
-            //Add hashtag:
-            $hashtag_new = $this->Hashtags->create(array(
-                'hashtagid' => $x['chainid'],
-                'hashtagtext' => $x['chainvalue'],
-            ), $x['chainhandlecreator']);
-            $is[0] = $hashtag_new['hashtag_create'];
+            //Add post:
+            $post_new = $this->Posts->create(array(
+                //'postid' => $x['chainid'],
+                'posttext' => $x['chainvalue'],
+            ), $x['chainusercreator']);
+            $is[0] = $post_new['post_create'];
         }
 
-        $core_content = trim($is[0]['hashtagtext']);
-        $hashtagtext = $is[0]['hashtagtext'];
+        $core_content = trim($is[0]['posttext']);
+        $posttext = $is[0]['posttext'];
 
 
         //Remove duplicate:
-        $new_hashtagtext = '';
+        $new_posttext = '';
         $current_lines = array();
-        $all_lines = explode("\n", $hashtagtext);
+        $all_lines = explode("\n", $posttext);
         foreach ($all_lines as $line_count => $line) {
             $term = substr(trim($line), 1);
             if(
@@ -444,53 +443,53 @@ if($focus_i['hashtagterm']=='Discotique2024') {
                 && count($all_lines)>1
                 && substr(trim($line), 0, 1)=='#'
                 && ctype_alnum($term)
-                && ($term==$x['hashtagterm'] || !count($this->Hashtags->read(array(
-                        'LOWER(hashtagterm)' => strtolower($term),
+                && ($term==$x['posthashtag'] || !count($this->Posts->read(array(
+                        'LOWER(posthashtag)' => strtolower($term),
                     ))))){
                 //Remove this line:
                 continue;
             }
             if(in_array(substr(trim($line), 0, 1), array('#','@')) || in_array(substr(trim($line), 1, 1), array('#','@'))){
                 if(!in_array(trim($line), $current_lines) && strtolower(trim($line))!='@shervin' && strtolower(trim($line))!='@grumo'){
-                    $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
+                    $new_posttext .= (strlen($new_posttext) ? "\n" : '').$line;
                     array_push($current_lines, trim($line));
                 } else {
                     //Remove this line:
                     continue;
                 }
             } else {
-                $new_hashtagtext .= (strlen($new_hashtagtext) ? "\n" : '').$line;
+                $new_posttext .= (strlen($new_posttext) ? "\n" : '').$line;
             }
         }
 
         //Did we trim?
-        if($new_hashtagtext!=$hashtagtext){
+        if($new_posttext!=$posttext){
             //Yes, adjust:
-            $hashtagtext = $new_hashtagtext;
+            $posttext = $new_posttext;
         }
 
-        $initial_hashtagtext = $hashtagtext;
+        $initial_posttext = $posttext;
 
 
         $this_media = false;
 
 
         //Add Ideas:
-        foreach ($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___4486')) . ')' => null, //Ideas
-            'chainhashtaginput' => $x['chainhashtagoutput'],
-        ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
-            $handle = ( strlen($ideas[$x2['chainhandletype']]['m__cover'])>=1 && strlen($ideas[$x2['chainhandletype']]['m__cover'])<=2 ? $ideas[$x2['chainhandletype']]['m__cover'] : '#' );
-            if(substr_count($hashtagtext, $handle.$x2['hashtagterm'])){
+        foreach ($this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___4486')) . ')' => null, //Ideas
+            'chainpostinput' => $x['chainpostoutput'],
+        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
+            $user = ( strlen($ideas[$x2['chainusertype']]['m__cover'])>=1 && strlen($ideas[$x2['chainusertype']]['m__cover'])<=2 ? $ideas[$x2['chainusertype']]['m__cover'] : '#' );
+            if(substr_count($posttext, $user.$x2['posthashtag'])){
                 continue;
             }
             if(!$count){
                 $core_content .= "\n";
-                $hashtagtext .= "\n";
+                $posttext .= "\n";
             }
 
-            $hashtagtext .= "\n".$handle.$x2['hashtagterm'];
-            $core_content .= "\n".$handle.$x2['hashtagterm'];
+            $posttext .= "\n".$user.$x2['posthashtag'];
+            $core_content .= "\n".$user.$x2['posthashtag'];
         }
 
         if($this_media){
@@ -498,27 +497,27 @@ if($focus_i['hashtagterm']=='Discotique2024') {
         }
 
         //Fetch Mentions
-        foreach($this->Chains->read(array(
-            'chainhashtagoutput' => $x['chainhashtagoutput'],
-            'chainhandleinput NOT IN (1,2,32337)' => null,
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13550')) . ')' => null, //Mentions
-        ), array('chainhandleinput')) as $count => $x2){
+        foreach($this->Ideachains->read(array(
+            'chainpostoutput' => $x['chainpostoutput'],
+            'chainuserinput NOT IN (1,2,32337)' => null,
+            'chainusertype IN (' . join(',', $this->config->item('userids___13550')) . ')' => null, //Mentions
+        ), array('chainuserinput')) as $count => $x2){
 
-            //Define handle:
-            $handle = ( strlen($mentions[$x2['chainhandletype']]['m__cover'])>=1 && strlen($mentions[$x2['chainhandletype']]['m__cover'])<=2 ? $mentions[$x2['chainhandletype']]['m__cover'] : '@' );
+            //Define user:
+            $user = ( strlen($mentions[$x2['chainusertype']]['m__cover'])>=1 && strlen($mentions[$x2['chainusertype']]['m__cover'])<=2 ? $mentions[$x2['chainusertype']]['m__cover'] : '@' );
 
-            if(substr_count($hashtagtext, $handle.$x2['handleterm'])){
+            if(substr_count($posttext, $user.$x2['userhandle'])){
                 //Reference already there:
                 continue;
             }
             if(!$count){
                 $core_content .= "\n";
-                $hashtagtext .= "\n";
+                $posttext .= "\n";
             }
-            $core_content .= "\n".$handle.$x2['handleterm'];
-            $hashtagtext .= "\n".$handle.$x2['handleterm'];
+            $core_content .= "\n".$user.$x2['userhandle'];
+            $posttext .= "\n".$user.$x2['userhandle'];
             if(strlen($x2['chainvalue'])){
-                $hashtagtext .= ' '.$x2['chainvalue'];
+                $posttext .= ' '.$x2['chainvalue'];
             }
         }
 
@@ -526,29 +525,29 @@ if($focus_i['hashtagterm']=='Discotique2024') {
 
 
         if(!strlen(trim($core_content))){
-            $stats['hashtags_empty']++;
+            $stats['posts_empty']++;
             if(!$x['chainvoid']){
-                $stats['hashtags_empty_notvoid']++;
+                $stats['posts_empty_notvoid']++;
             }
         }
 
         $delete = $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($is));
         if($delete){
-            $stats['hashtags_delete']++;
+            $stats['posts_delete']++;
         }
 
-        $hashtag_cache = hashtag_cache($x['chainhashtagoutput'], $hashtagtext, $x['chainhandlecreator'], $x['hashtagterm']);
-        $this->Hashtags->update($x['chainid'], array(
-            'hashtagtext' => $hashtag_cache['hashtagtext'],
-            'hashtagdiscover' => $hashtag_cache['hashtagdiscover'],
-            'hashtagedit' => $hashtag_cache['hashtagedit'],
+        $post_index = post_index($posttext, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
+        $this->Posts->update($x['chainid'], array(
+            'posttext' => $post_index['posttext'],
+            'postdiscover' => $post_index['postdiscover'],
+            'postedit' => $post_index['postedit'],
         ));
 
-        if(!$x['chainhashtaginput']){
+        if(!$x['chainpostinput']){
             $this->db->where('chainid', $x['chainid']);
-            $this->db->update('ideachain', array(
-                'chainhashtaginput' =>  $x['chainid'],
-                'chainvalue' =>  '#'.$x['hashtagterm']."\n".$hashtag_cache['hashtagchain'],
+            $this->db->update('ideachains', array(
+                'chainpostinput' =>  $x['chainid'],
+                'chainvalue' =>  '#'.$x['posthashtag']."\n".$post_index['postchain'],
             ));
         }
 
@@ -561,19 +560,18 @@ if($focus_i['hashtagterm']=='Discotique2024') {
             ( $this_media ? '[ISMEDIA]' : '' ).
             ( !strlen(trim($core_content)) ? '[EMPTY]' : '' ).
             ( $is_duplicate ? '[DUPLICATE]' : '' ).
-            ( $is_duplicate ? '[DUPLICATE]' : '' ).
-            ( !$x['chainvoid'] && !count($es) ? '[hashtags_voidcreaetor]' : '' ).
-            ( !$x['chainvoid'] && !count($is) ? '[hashtags_valid_cachevoid]' : '' ).
+            ( !$x['chainvoid'] && !count($es) ? '[posts_voidcreaetor]' : '' ).
+            ( !$x['chainvoid'] && !count($is) ? '[posts_valid_cachevoid]' : '' ).
             '</td>';
 
-        $table .= '<td>T@'.$x['chainhandletype'].'<br />C@'.$x['chainhandlecreator'].'<br />##'.$x['chainhashtagoutput'].'</td>';
-        $table .= '<td><div style="max-width:233px;">'.nl2br($initial_hashtagtext).'</div></td>'; //INPUT
-        $table .= '<td><div style="max-width:233px;">'.nl2br($hashtagtext).'</div></td>'; //INPUT
-        $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagchain']).'</div></td>'; //RAW
-        $table .= '<td><div style="max-width:233px;">'.nl2br($hashtag_cache['hashtagtext']).'</div></td>'; //TEXT
-        $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagdiscover']).'</div></td>'; //DISCOVER
-        $table .= '<td><div style="max-width:233px;">'.($hashtag_cache['hashtagedit']).'</div></td>'; //EDIT
-        $table .= '<td><div style="max-width:233px;">'.print_r($hashtag_cache['actionstats'], true).'</div></td>'; //EDIT
+        $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'<br />##'.$x['chainpostoutput'].'</td>';
+        $table .= '<td><div style="max-width:233px;">'.nl2br($initial_posttext).'</div></td>'; //INPUT
+        $table .= '<td><div style="max-width:233px;">'.nl2br($posttext).'</div></td>'; //INPUT
+        $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['postchain']).'</div></td>'; //RAW
+        $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['posttext']).'</div></td>'; //TEXT
+        $table .= '<td><div style="max-width:233px;">'.($post_index['postdiscover']).'</div></td>'; //DISCOVER
+        $table .= '<td><div style="max-width:233px;">'.($post_index['postedit']).'</div></td>'; //EDIT
+        $table .= '<td><div style="max-width:233px;">'.print_r($post_index['actionstats'], true).'</div></td>'; //EDIT
         $table .= '</tr>';
 
     }

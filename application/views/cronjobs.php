@@ -3,16 +3,16 @@
 //List CronJobs command:
 $longest_time = 0;
 $longest_id = 0;
-$cron_jobs = $this->Chains->read(array(
-    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    'chainhandleinput' => 7274,
-), array('chainhandleoutput'), view_memory(6404,11064), 0, array('chainkey' => 'ASC'));
+$cron_jobs = $this->Ideachains->read(array(
+    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+    'chainuserinput' => 7274,
+), array('chainuseroutput'), view_memory(6404,11064), 0, array('chainkey' => 'ASC'));
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['chainvalue']) > $longest_time){
         $longest_time = strlen($cron_job['chainvalue']);
     }
-    if(strlen($cron_job['handleid']) > $longest_id){
-        $longest_id = strlen($cron_job['handleid']);
+    if(strlen($cron_job['userid']) > $longest_id){
+        $longest_id = strlen($cron_job['userid']);
     }
 }
 
@@ -21,7 +21,7 @@ echo '<textarea class="mono-space" readonly style="background-color: #FFFFFF; co
 echo '# APPS WITH CRON JOBS:'."\n"."\n";
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['chainvalue'])){
-        echo str_pad($cron_job['chainvalue'], $longest_time, " ", STR_PAD_RIGHT) . ' /usr/bin/php /var/www/platform/index.php controller load '.str_pad($cron_job['handleid'], $longest_id, " ", STR_PAD_RIGHT).' #'.$cron_job['handlename']."\n";
+        echo str_pad($cron_job['chainvalue'], $longest_time, " ", STR_PAD_RIGHT) . ' /usr/bin/php /var/www/platform/index.php controller load '.str_pad($cron_job['userid'], $longest_id, " ", STR_PAD_RIGHT).' #'.$cron_job['username']."\n";
     }
 }
 echo '</textarea>';

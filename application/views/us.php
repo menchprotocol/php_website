@@ -1,82 +1,82 @@
 <?php
 
 $community_pills = '';
-$main_handle_id = 0;
+$main_user_id = 0;
 
-echo '<h1>'.$focus_e['handlename'].'</h1>';
+echo '<h1>'.$focus_e['username'].'</h1>';
 echo '<img src="https://res.cloudinary.com/menchcloud/image/upload/v1755829760/gx8bun1gwibjmfh3kvqz.jpg" style="max-width: 100%;" alt="Discotique 25 Camp Map" />';
 
 //Load Filters:
 $groups_ids = array();
 $groups_all = array();
 
-foreach ($this->Chains->read(array(
-    'chainhandleinput' => $focus_e['handleid'],
-    'chainhandletype' => 4230, //HANDLE FOLLOW
-), array('chainhandleoutput'), 0, 1, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
-    array_push($groups_ids, intval($group['handleid']));
-    $groups_all[intval($group['handleid'])] = $group;
+foreach ($this->Ideachains->read(array(
+    'chainuserinput' => $focus_e['userid'],
+    'chainusertype' => 4230, //USER FOLLOW
+), array('chainuseroutput'), 0, 1, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
+    array_push($groups_ids, intval($group['userid']));
+    $groups_all[intval($group['userid'])] = $group;
 }
 
 $full_group_ids = array();
-foreach ($this->Chains->read(array(
-    'chainhandleinput' => $focus_e['handleid'],
-    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+foreach ($this->Ideachains->read(array(
+    'chainuserinput' => $focus_e['userid'],
+    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ), array(), 0, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
-    array_push($full_group_ids, intval($group['chainhandleoutput']));
+    array_push($full_group_ids, intval($group['chainuseroutput']));
 }
 
 //Load Main:
 $content_ui = '';
 $group_counts = array();
 $content_ui .= '<div class="row justify-content group_content">';
-foreach ($this->Chains->read(array(
-    'chainhandleinput' => $focus_e['handleid'],
-    'chainhandletype' => 4230, //HANDLE FOLLOW
-), array('chainhandleoutput'), 1, 0, handle_sort()) as $group_main) {
+foreach ($this->Ideachains->read(array(
+    'chainuserinput' => $focus_e['userid'],
+    'chainusertype' => 4230, //USER FOLLOW
+), array('chainuseroutput'), 1, 0, user_sort()) as $group_main) {
 
-    $main_handle_id = intval($group_main['handleid']);
+    $main_user_id = intval($group_main['userid']);
 
-    foreach ($this->Chains->read(array(
-        'chainhandleinput' => $group_main['handleid'],
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    ), array('chainhandleoutput'), 0, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $us) {
+    foreach ($this->Ideachains->read(array(
+        'chainuserinput' => $group_main['userid'],
+        'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+    ), array('chainuseroutput'), 0, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $us) {
 
-        if(!isset($group_counts[$group_main['handleid']])){
-            $group_counts[$group_main['handleid']] = array();
+        if(!isset($group_counts[$group_main['userid']])){
+            $group_counts[$group_main['userid']] = array();
         }
-        if(!in_array($us['handleid'], $group_counts[$group_main['handleid']])){
-            array_push($group_counts[$group_main['handleid']], $us['handleid']);
+        if(!in_array($us['userid'], $group_counts[$group_main['userid']])){
+            array_push($group_counts[$group_main['userid']], $us['userid']);
         }
 
         //See which filters belong to this member:
         $group_class = 'main_group';
-        foreach ($this->Chains->read(array(
-            'chainhandleinput IN (' . join(',', $groups_ids) . ')' => null,
-            'chainhandleoutput' => $us['handleid'],
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        foreach ($this->Ideachains->read(array(
+            'chainuserinput IN (' . join(',', $groups_ids) . ')' => null,
+            'chainuseroutput' => $us['userid'],
+            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0) as $filter) {
-            if(!isset($group_counts[$filter['chainhandleinput']])){
-                $group_counts[$filter['chainhandleinput']] = array();
+            if(!isset($group_counts[$filter['chainuserinput']])){
+                $group_counts[$filter['chainuserinput']] = array();
             }
-            if(!in_array($us['handleid'], $group_counts[$filter['chainhandleinput']])){
-                array_push($group_counts[$filter['chainhandleinput']], $us['handleid']);
+            if(!in_array($us['userid'], $group_counts[$filter['chainuserinput']])){
+                array_push($group_counts[$filter['chainuserinput']], $us['userid']);
 
             }
-            $group_class .= ' group_'.$filter['chainhandleinput'];
+            $group_class .= ' group_'.$filter['chainuserinput'];
         }
 
         $extra_value = '';
-        foreach ($this->Chains->read(array(
-            'chainhandleinput IN (' . join(',', $full_group_ids) . ')' => null,
-            'chainhandleoutput' => $us['handleid'],
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        foreach ($this->Ideachains->read(array(
+            'chainuserinput IN (' . join(',', $full_group_ids) . ')' => null,
+            'chainuseroutput' => $us['userid'],
+            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             'LENGTH(chainvalue) > 0' => null,
-        ), array(), 0, 0, handle_sort()) as $group) {
-            $extra_value .= '<div class="grey extra_descs hidden extra_desc_'.$group['chainhandleinput'].'">'.$group['chainvalue'].'</div>';
+        ), array(), 0, 0, user_sort()) as $group) {
+            $extra_value .= '<div class="grey extra_descs hidden extra_desc_'.$group['chainuserinput'].'">'.$group['chainvalue'].'</div>';
         }
 
-        $content_ui .= handle_view(1637076, $us, $group_class, $extra_value);
+        $content_ui .= user_view(1637076, $us, $group_class, $extra_value);
 
     }
 }
@@ -86,14 +86,14 @@ $content_ui .= '</div>';
 
 
 echo '<ul class="nav nav-tabs nav12274" style="display: flex !important; justify-content: space-evenly;">';
-foreach ($this->Chains->read(array(
-    'chainhandleinput' => $focus_e['handleid'],
-    'chainhandletype' => 4230, //HANDLE FOLLOW
-), array('chainhandleoutput'), 0, 0, handle_sort()) as $group) {
-    if(!isset($group_counts[$group['handleid']]) || !count($group_counts[$group['handleid']])){
+foreach ($this->Ideachains->read(array(
+    'chainuserinput' => $focus_e['userid'],
+    'chainusertype' => 4230, //USER FOLLOW
+), array('chainuseroutput'), 0, 0, user_sort()) as $group) {
+    if(!isset($group_counts[$group['userid']]) || !count($group_counts[$group['userid']])){
         continue;
     }
-    echo '<li class="nav-item nav-chain '.( $group['handleid']==$main_handle_id ? ' active ' : '' ).' navgroup_'.$group['handleid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['handleid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['handlecover']).'</span><span class="main__title">'.( isset($group_counts[$group['handleid']]) && count($group_counts[$group['handleid']])>0 ? count($group_counts[$group['handleid']]) : '' ).'</span><span class="main__title '.( $group['handleid']==$main_handle_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['handleid'].'">&nbsp;'.trim(str_replace($focus_e['handlename'], '', $group['handlename'])).'&nbsp;</span></a></li>';
+    echo '<li class="nav-item nav-chain '.( $group['userid']==$main_user_id ? ' active ' : '' ).' navgroup_'.$group['userid'].'"><a class="nav-chain" href="javascript:void(0);" href="javascript:void(0);" onclick="load_group(' . $group['userid'] . ')">&nbsp;<span class="icon-block">'.view_cover($group['usercover']).'</span><span class="main__title">'.( isset($group_counts[$group['userid']]) && count($group_counts[$group['userid']])>0 ? count($group_counts[$group['userid']]) : '' ).'</span><span class="main__title '.( $group['userid']==$main_user_id ? '' : ' hidden ' ).' grouptitle grouptitle_'.$group['userid'].'">&nbsp;'.trim(str_replace($focus_e['username'], '', $group['username'])).'&nbsp;</span></a></li>';
 }
 echo '</ul>';
 
@@ -107,7 +107,7 @@ echo $content_ui;
         load_group(2102137);
     });
 
-    var main_handle_id = <?= $main_handle_id ?>;
+    var main_user_id = <?= $main_user_id ?>;
     function load_group(group_id){
 
         //Remove all filters:
@@ -119,7 +119,7 @@ echo $content_ui;
         $('.navgroup_'+group_id).addClass('active');
 
 
-        if(main_handle_id!=group_id){
+        if(main_user_id!=group_id){
             $('.main_group').addClass('hidden');
             $('.group_'+group_id).removeClass('hidden');
         } else {

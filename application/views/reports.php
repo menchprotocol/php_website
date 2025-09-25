@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+$users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $last_x_days = 7;
 
 $chaintime_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
@@ -14,10 +14,10 @@ $chaintime_end = date("Y-m-d H:i:s", $chaintime_end_timestamp);
 $html_message = '<div class="line">Here is what happened in the past '.$last_x_days.' day'.search($last_x_days).':</div><br />';
 $subject = 'Report for the Week of '.date("M jS", $chaintime_start_timestamp);
 
-foreach($this->config->item('handles___31770') as $chainhandletype => $m) {
+foreach($this->config->item('users___31770') as $chainusertype => $m) {
 
-    $unique = count_chain_groups($chainhandletype, null, $chaintime_end);
-    $this_week = count_chain_groups($chainhandletype, $chaintime_start, $chaintime_end);
+    $unique = count_chain_groups($chainusertype, null, $chaintime_end);
+    $this_week = count_chain_groups($chainusertype, $chaintime_start, $chaintime_end);
     if(!$unique){
         continue;
     }
@@ -32,7 +32,7 @@ foreach($this->config->item('handles___31770') as $chainhandletype => $m) {
 
 
 //Decide what to do with this?
-if($handle_http_request && !isset($_GET['email_trigger'])){
+if($user_http_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
     echo $html_message;
@@ -42,21 +42,21 @@ if($handle_http_request && !isset($_GET['email_trigger'])){
 
 
     $subscriber_filters = array(
-        'chainhandleinput' => 12114,
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+        'chainuserinput' => 12114,
+        'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             );
 
     //Should we limit the scope?
-    if($handle_http_request){
-        $subscriber_filters['chainhandleoutput'] = $handle_session['handleid'];
+    if($user_http_request){
+        $subscriber_filters['chainuseroutput'] = $user_session['userid'];
     }
 
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Chains->read($subscriber_filters, array('chainhandleoutput')) as $subscribed_u){
+    foreach($this->Ideachains->read($subscriber_filters, array('chainuseroutput')) as $subscribed_u){
 
-        $this->Chains->message($subscribed_u['handleid'], $subject, $html_message);
+        $this->Ideachains->message($subscribed_u['userid'], $subject, $html_message);
         $email_recipients++;
 
     }

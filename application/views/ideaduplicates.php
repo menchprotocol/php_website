@@ -1,10 +1,10 @@
 <?php
 
-//Hashtag List Duplicates
+//Post List Duplicates
 
 
-//Do a query to detect Hashtags with the exact same title:
-$q = $this->db->query('select in1.* from ideachainhashtags in1 where (select count(*) from ideachainhashtags in2 where in2.hashtagtext = in1.hashtagtext ORDER BY in1.hashtagtext ASC');
+//Do a query to detect Posts with the exact same title:
+$q = $this->db->query('select in1.* from posts in1 where (select count(*) from posts in2 where in2.posttext = in1.posttext ORDER BY in1.posttext ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
@@ -12,12 +12,12 @@ if(count($duplicates) > 0){
     $prev_title = null;
 
     foreach($duplicates as $in) {
-        if ($prev_title != $in['hashtagtext']) {
+        if ($prev_title != $in['posttext']) {
             echo '<hr />';
-            $prev_title = $in['hashtagtext'];
+            $prev_title = $in['posttext'];
         }
 
-        echo '<div><a href="' . view_memory(42903,33286). $in['hashtagterm'] . '"><b>' . $in['hashtagtext'] . '</b></a> #' . $in['hashtagid'] . '</div>';
+        echo '<div><a href="' . view_memory(42903,33286). $in['posthashtag'] . '"><b>' . $in['posttext'] . '</b></a> #' . $in['postid'] . '</div>';
     }
 
 } else {

@@ -50,7 +50,7 @@ $config['index_page'] = 'index.php';
 |
 | This item determines which server global should be used to retrieve the
 | URI string.  The default setting of 'REQUEST_URI' works for most servers.
-| If your Chains do not seem to work, try one of the other delicious flavors:
+| If your Ideachains do not seem to work, try one of the other delicious flavors:
 |
 | 'REQUEST_URI'    Uses $_SERVER['REQUEST_URI']
 | 'QUERY_STRING'   Uses $_SERVER['QUERY_STRING']
@@ -458,7 +458,7 @@ $config['csrf_exclude_uris'] = array();
 | Enables Gzip output compression for faster page loads.  When enabled,
 | the output class will test whether your server supports Gzip.
 | Even if it does, however, not all browsers support compression
-| so enable only if you are reasonably sure your visitors can handle it.
+| so enable only if you are reasonably sure your visitors can user it.
 |
 | Only used if zlib.output_compression is turned off in your php.ini.
 | Please do not use it together with httpd-level output compression.

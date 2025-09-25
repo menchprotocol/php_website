@@ -9,75 +9,75 @@
 
 
 //Empty both tables:
-$this->db->query("TRUNCATE TABLE public.gephilinks CONTINUE IDENTITY RESTRICT;");
-$this->db->query("TRUNCATE TABLE public.gephinodes CONTINUE IDENTITY RESTRICT;");
+$this->db->query("TRUNCATE TABLE public.links CONTINUE IDENTITY RESTRICT;");
+$this->db->query("TRUNCATE TABLE public.nodes CONTINUE IDENTITY RESTRICT;");
 
-//Load HASHTAG CHAINS:
-$handles___4593 = $this->config->item('handles___4593');
+//Load POST CHAINS:
+$users___4593 = $this->config->item('users___4593');
 
-//To make sure Hashtag/Handle IDs are unique:
+//To make sure Post/User IDs are unique:
 $id_prefix = array(
     12273 => 100,
     12274 => 200,
 );
 
-//Add Hashtags:
-$is = $this->Hashtags->read(array());
+//Add Posts:
+$is = $this->Posts->read(array());
 foreach ($is as $in) {
 
-    //Add Hashtag node:
-    $this->db->insert('gephinodes', array(
-        'id' => $id_prefix[12273] . $in['hashtagid'],
-        'label' => $in['hashtagtext'],
+    //Add Post node:
+    $this->db->insert('nodes', array(
+        'id' => $id_prefix[12273] . $in['postid'],
+        'label' => $in['posttext'],
         'size' => 1,
-        'node_type' => 1, //Hashtag
+        'node_type' => 1, //Post
     ));
 
-    //Fetch Next Hashtags:
-    foreach ($this->Chains->read(array(
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___42345')) . ')' => null, //Active Sequence
-        'chainhashtaginput' => $in['hashtagid'],
-    ), array('chainhashtagoutput'), 0, 0) as $next_i) {
+    //Fetch Next Posts:
+    foreach ($this->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+        'chainpostinput' => $in['postid'],
+    ), array('chainpostoutput'), 0, 0) as $next_i) {
 
-        $this->db->insert('gephilinks', array(
-            'source' => $id_prefix[12273] . $next_i['chainhashtaginput'],
-            'target' => $id_prefix[12273] . $next_i['chainhashtagoutput'],
-            'label' => $handles___4593[$next_i['chainhandletype']]['m__title'], //TODO maybe give visibility to condition here?
+        $this->db->insert('links', array(
+            'source' => $id_prefix[12273] . $next_i['chainpostinput'],
+            'target' => $id_prefix[12273] . $next_i['chainpostoutput'],
+            'label' => $users___4593[$next_i['chainusertype']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_i['chainhandletype'],
+            'edge_type' => $next_i['chainusertype'],
         ));
 
     }
 }
 
 
-//Transfer Handles:
-$es = $this->Handles->read(array());
+//Transfer Users:
+$es = $this->Users->read(array());
 foreach ($es as $en) {
 
-    //Transfer Handle node:
-    $this->db->insert('gephinodes', array(
-        'id' => $id_prefix[12274] . $en['handleid'],
-        'label' => $en['handlename'],
+    //Transfer User node:
+    $this->db->insert('nodes', array(
+        'id' => $id_prefix[12274] . $en['userid'],
+        'label' => $en['username'],
         'size' => 1,
         'node_type' => 2, //Member
     ));
 
     //Fetch followers:
-    foreach ($this->Chains->read(array(
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-        'chainhandleinput' => $en['handleid'],
-    ), array('chainhandleoutput'), 0, 0) as $handle_down) {
+    foreach ($this->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+        'chainuserinput' => $en['userid'],
+    ), array('chainuseroutput'), 0, 0) as $user_down) {
 
-        $this->db->insert('gephilinks', array(
-            'source' => $id_prefix[12274] . $handle_down['chainhandleinput'],
-            'target' => $id_prefix[12274] . $handle_down['chainhandleoutput'],
-            'label' => $handles___4593[$handle_down['chainhandletype']]['m__title'] . ': ' . $handle_down['chainvalue'],
+        $this->db->insert('links', array(
+            'source' => $id_prefix[12274] . $user_down['chainuserinput'],
+            'target' => $id_prefix[12274] . $user_down['chainuseroutput'],
+            'label' => $users___4593[$user_down['chainusertype']]['m__title'] . ': ' . $user_down['chainvalue'],
             'weight' => 1,
-            'edge_type' => $handle_down['chainhandletype'],
+            'edge_type' => $user_down['chainusertype'],
         ));
 
     }
 }
 
-echo count($is) . ' hashtags & ' . count($es) . ' Handles synced.';
+echo count($is) . ' posts & ' . count($es) . ' Users synced.';

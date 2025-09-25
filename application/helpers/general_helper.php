@@ -1,12 +1,12 @@
 <?php
 
 
-function hashtag_sort()
+function post_sort()
 {
-    return array('chainhandletype = \'34513\' DESC' => null, 'chainkey' => 'ASC', 'chaintime' => 'DESC');
+    return array('chainusertype = \'34513\' DESC' => null, 'chainkey' => 'ASC', 'chaintime' => 'DESC');
 }
 
-function handle_sort()
+function user_sort()
 {
     return array('chainkey' => 'ASC', 'chaintime' => 'DESC');
 }
@@ -26,7 +26,7 @@ function string_is_date($str)
     }
 }
 
-function discover_chainhandletype()
+function discover_chainusertype()
 {
     return (isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1) == '/' && substr_count($_POST['js_request_uri'], '/') == 2 ? '/' . strtok(substr($_POST['js_request_uri'], 1), '/') : null);
 }
@@ -38,19 +38,19 @@ function string_is_icon($string)
 }
 
 
-function hashtag_number_calculator($i)
+function post_number_calculator($i)
 {
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-    $count_x = $CI->Chains->read(array(
-        '(chainhashtaginput=' . $i['hashtagid'] . ' OR chainhashtagoutput=' . $i['hashtagid'] . ')' => null,
+    $count_x = $CI->Ideachains->read(array(
+        '(chainpostinput=' . $i['postid'] . ' OR chainpostoutput=' . $i['postid'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $i['hashtagweight']) {
-        return $CI->Hashtags->update($i['hashtagid'], array(
-            'hashtagweight' => $count_x[0]['totals'],
+    if ($count_x[0]['totals'] != $i['postweight']) {
+        return $CI->Posts->update($i['postid'], array(
+            'postweight' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -58,19 +58,19 @@ function hashtag_number_calculator($i)
 
 }
 
-function handle_number_calculator($e)
+function user_number_calculator($e)
 {
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-    $count_x = $CI->Chains->read(array(
-        '(chainhandleoutput=' . $e['handleid'] . ' OR chainhandleinput=' . $e['handleid'] . ' OR chainhandlecreator=' . $e['handleid'] . ')' => null,
+    $count_x = $CI->Ideachains->read(array(
+        '(chainuseroutput=' . $e['userid'] . ' OR chainuserinput=' . $e['userid'] . ' OR chainusercreator=' . $e['userid'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     //Should we update?
-    if ($count_x[0]['totals'] != $e['handleweight']) {
-        return $CI->Handles->update($e['handleid'], array(
-            'handleweight' => $count_x[0]['totals'],
+    if ($count_x[0]['totals'] != $e['userweight']) {
+        return $CI->Users->update($e['userid'], array(
+            'userweight' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -91,15 +91,15 @@ function random_string($length_of_string)
 }
 
 
-function phone_href($chainhandletype, $number)
+function phone_href($chainusertype, $number)
 {
 
     $number = preg_replace("/[^0-9]/", "", $number);
 
-    if ($chainhandletype == 13815) {
+    if ($chainusertype == 13815) {
         //WhatsApp
         return 'https://wa.me/' . $number;
-    } elseif ($chainhandletype == 20337) {
+    } elseif ($chainusertype == 20337) {
         //Telegram
         return 'https://t.me/' . $number;
     } else {
@@ -108,10 +108,10 @@ function phone_href($chainhandletype, $number)
     }
 }
 
-function handlecover_generator($handleid)
+function usercover_generator($userid)
 {
     $CI =& get_instance();
-    $fetch = $CI->config->item('handles___' . $handleid);
+    $fetch = $CI->config->item('users___' . $userid);
     return trim(one_two_explode('class="', '"', $fetch[array_rand($fetch)]['m__cover']));
 }
 
@@ -158,48 +158,48 @@ function prefix_common_words($strs)
 }
 
 
-function reset_cache($chainhandlecreator)
+function reset_cache($chainusercreator)
 {
     $CI =& get_instance();
     $count = 0;
-    foreach ($CI->Chains->read(array(
-        'chainhandletype' => 44176, //Handle View
-        'chainhandleinput' => 14599, //Cache App
-        'chainhandleoutput >' => 0,
+    foreach ($CI->Ideachains->read(array(
+        'chainusertype' => 44176, //User View
+        'chainuserinput' => 14599, //Cache App
+        'chainuseroutput >' => 0,
     )) as $delete_cahce) {
         //Void:
-        $count += $CI->Chains->delete($delete_cahce['chainid'], $chainhandlecreator);
+        $count += $CI->Ideachains->delete($delete_cahce['chainid'], $chainusercreator);
     }
     return $count;
 }
 
-function hashtag_spots_remaining($hashtagid)
+function post_spots_remaining($postid)
 {
 
     $CI =& get_instance();
-    $handle_session = handle_session();
+    $user_session = user_session();
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
-    $max_available = $CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-        'chainhashtagoutput' => $hashtagid,
-        'chainhandleinput' => 26189,
+    $max_available = $CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+        'chainpostoutput' => $postid,
+        'chainuserinput' => 26189,
     ), array(), 1);
     if (count($max_available) && is_numeric($max_available[0]['chainvalue'])) {
 
         //We have a limit! See if we've met it already:
         $query_filters = array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___40986')) . ')' => null, //DISCOVERIES
-            'chainhashtaginput' => $hashtagid,
+            'chainusertype IN (' . join(',', $CI->config->item('userids___40986')) . ')' => null, //DISCOVERIES
+            'chainpostinput' => $postid,
         );
-        if ($handle_session) {
+        if ($user_session) {
             //Do not count current user to give them option to edit & resubmit:
-            $query_filters['chainhandlecreator !='] = $handle_session['handleid'];
+            $query_filters['chainusercreator !='] = $user_session['userid'];
         }
 
 
-        $query = $CI->Chains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
+        $query = $CI->Ideachains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
         $current_discoveries = $query[0]['totals'];
 
         $spots_remaining = intval($max_available[0]['chainvalue']) - $current_discoveries;
@@ -227,15 +227,15 @@ function object_to_array($obj)
     }
 }
 
-function hashtag_redirect_url($i)
+function post_redirect_url($i)
 {
     $CI =& get_instance();
-    if (strlen($i['hashtagtext']) && count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput' => 43871, //Redirect URL
+    if (strlen($i['posttext']) && count($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $i['postid'],
+            'chainuserinput' => 43871, //Redirect URL
         )))) {
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['hashtagtext'], $match);
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['posttext'], $match);
         foreach ($match[0] as $url) {
             if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
@@ -246,16 +246,16 @@ function hashtag_redirect_url($i)
     return false;
 }
 
-function hashtag_popup_url($i)
+function post_popup_url($i)
 {
-    if (!handle_session()) {
+    if (!user_session()) {
         return false;
     }
     $CI =& get_instance();
-    foreach ($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput' => 44266, //Popup URL
+    foreach ($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+        'chainpostoutput' => $i['postid'],
+        'chainuserinput' => 44266, //Popup URL
     )) as $popup_url) {
         if (filter_var($popup_url['chainvalue'], FILTER_VALIDATE_URL)) {
             return $popup_url['chainvalue'];
@@ -264,13 +264,13 @@ function hashtag_popup_url($i)
     return false;
 }
 
-function hashtag_required($i)
+function post_required($i)
 {
     $CI =& get_instance();
-    return count($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput' => 28239, //Required
+    return count($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+        'chainpostoutput' => $i['postid'],
+        'chainuserinput' => 28239, //Required
     )));
 }
 
@@ -279,8 +279,8 @@ function get_redirected($url, $message = null, $log_error = false)
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
     $CI =& get_instance();
-    $handle_session = handle_session();
-    $handle_id = ($handle_session ? $handle_session['handleid'] : 14068);
+    $user_session = user_session();
+    $user_id = ($user_session ? $user_session['userid'] : 14068);
 
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
@@ -289,8 +289,8 @@ function get_redirected($url, $message = null, $log_error = false)
     if ($log_error) {
         //Log thie error:
         log_error($url . ' ' . stripslashes($message), array(
-            'chainhandleoutput' => $handle_id,
-            'chainhandlecreator' => $handle_id,
+            'chainuseroutput' => $user_id,
+            'chainusercreator' => $user_id,
         ));
     }
 
@@ -324,14 +324,14 @@ function verify_cookie()
     $cookie_parts = explode('ABCEFG', $_COOKIE['auth_cookie']);
     $CI =& get_instance();
 
-    $es = $CI->Handles->read(array(
-        'handleid' => $cookie_parts[0],
+    $es = $CI->Users->read(array(
+        'userid' => $cookie_parts[0],
     ));
 
     if (count($es) && $cookie_parts[2] == view_hash($cookie_parts[0] . $cookie_parts[1])) {
 
         //Assign session & log Chain:
-        $CI->Handles->activate($es[0], false, true);
+        $CI->Users->activate($es[0], false, true);
         return $es[0];
 
     } else {
@@ -349,69 +349,69 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 {
 
     $CI =& get_instance();
-    $has_children = count($i['next_hashtags']);
-    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $has_children = count($i['next_posts']);
+    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
 
     echo '<div class="slim_title">';
 
     echo '<div class="hideIfEmpty">';
 
-    echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['hashtagid'] . '\').toggleClass(\'hidden\')">';
-    echo '<span class="icon-block-sm ' . ($open_by_default ? 'hidden' : '') . ' frame_id_' . $i['hashtagid'] . '"><i class="far fa-circle-plus"></i></span>';
-    echo '<span class="icon-block-sm ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['hashtagid'] . '"><i class="far fa-circle-minus"></i></span>';
-    echo '<span class="' . (!isset($i['user_discovered']) || count($i['user_discovered']) ? ' main__title ' : '') . '">' . view_hashtag_title($i, true) . '</span>';
+    echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_' . $i['postid'] . '\').toggleClass(\'hidden\')">';
+    echo '<span class="icon-block-sm ' . ($open_by_default ? 'hidden' : '') . ' frame_id_' . $i['postid'] . '"><i class="far fa-circle-plus"></i></span>';
+    echo '<span class="icon-block-sm ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '"><i class="far fa-circle-minus"></i></span>';
+    echo '<span class="' . (!isset($i['user_discovered']) || count($i['user_discovered']) ? ' main__title ' : '') . '">' . view_post_title($i, true) . '</span>';
     echo '</a>';
 
     echo(isset($i['user_discovered']['chainkey']) && intval($i['user_discovered']['chainkey']) > 1 ? $i['user_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['hashtagtext']) && strlen($i['user_written_response']['hashtagtext']) ? ' ' . $i['user_written_response']['hashtagtext'] : '');
+    echo(isset($i['user_written_response']['posttext']) && strlen($i['user_written_response']['posttext']) ? ' ' . $i['user_written_response']['posttext'] : '');
 
 
-    echo '<span class="float_right inner_items ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['hashtagid'] . '">';
+    echo '<span class="float_right inner_items ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
     //Chain Highlights
-    foreach ($CI->config->item('handles___1592660') as $handleid => $m) {
+    foreach ($CI->config->item('users___1592660') as $userid => $m) {
 
         $opener = '<span ';
         $closer = '</span>';
 
-        if (isset($i['stats']) && $handleid == 12273 && $i['stats']['all_steps'] > 0) {
+        if (isset($i['stats']) && $userid == 12273 && $i['stats']['all_steps'] > 0) {
 
             if ($CI->uri->segment(1) == 'doc') {
-                $opener = '<a href="/' . $i['hashtagterm'] . '" ';
+                $opener = '<a href="/' . $i['posthashtag'] . '" ';
                 $closer = '</a>';
             }
             echo $opener . 'data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_steps'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $handleid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
+        } elseif (isset($i['stats']) && $userid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
 
             if ($CI->uri->segment(1) == 'doc') {
-                $opener = '<a href="/doc/' . $i['hashtagterm'] . '" ';
+                $opener = '<a href="/doc/' . $i['posthashtag'] . '" ';
                 $closer = '</a>';
             }
             echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['current_level'] . '/' . $i['stats']['max_level'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $handleid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
+        } elseif (isset($i['stats']) && $userid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
 
             echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $handleid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
+        } elseif (isset($i['stats']) && $userid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
 
             echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'] . '</span>' . $closer;
 
-        } elseif ($handleid == 31777 && isset($i['hashtag_count_discovery']) && intval($i['hashtag_count_discovery']) > 0) {
+        } elseif ($userid == 31777 && isset($i['post_count_discovery']) && intval($i['post_count_discovery']) > 0) {
 
-            if (hashtag_is_startable($i)) {
-                $opener = '<a href="/' . $i['hashtagterm'] . '/start" ';
+            if (post_is_startable($i)) {
+                $opener = '<a href="/' . $i['posthashtag'] . '/start" ';
                 $closer = '</a>';
             }
 
-            $max_available = $CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput' => 26189,
+            $max_available = $CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $i['postid'],
+                'chainuserinput' => 26189,
             ), array(), 1);
 
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['hashtag_count_discovery'] . (count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="' . $handles___11035[26189]['m__title'] . '" style="border-bottom: 1px dotted #000000;">/' . intval($max_available[0]['chainvalue']) . '</span>' : '') . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['post_count_discovery'] . (count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="' . $users___11035[26189]['m__title'] . '" style="border-bottom: 1px dotted #000000;">/' . intval($max_available[0]['chainvalue']) . '</span>' : '') . '</span>' . $closer;
 
         } else {
             //block
@@ -421,77 +421,77 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo(isset($i['hashtag_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['hashtagid'] . '">' . view_hashtag_value($i) . '</div>' : '');
+    echo(isset($i['post_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_post_value($i) . '</div>' : '');
     echo '</div>';
 
 
-    //Hashtag Discovery Expanded List
+    //Post Discovery Expanded List
     if (isset($_GET['expand'])) {
         $already_shown = array();
-        foreach ($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            'chainhashtaginput' => $i['hashtagid'],
-        ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
-            if (in_array($creator['chainhandlecreator'], $already_shown)) {
+        foreach ($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            'chainpostinput' => $i['postid'],
+        ), array('chainusercreator'), 0, 0, array('chainid' => 'DESC')) as $creator) {
+            if (in_array($creator['chainusercreator'], $already_shown)) {
                 continue;
             }
-            array_push($already_shown, $creator['chainhandlecreator']);
-            echo '<div class="maxwidth cover_x_' . $creator['chainid'] . '" style="padding:3px 0;">' . (strlen($_GET['expand']) > 1 ? '<a href="' . view_app_chain(44328) . '/' . $_GET['expand'] . '@' . $creator['handleterm'] . '" target="_blank" title="' . $handles___11035[44328]['m__title'] . '">' : '') . '<span class="icon-block-sm grey">' . $handles___11035[44328]['m__cover'] . '</span></a> <a href="' . view_memory(42903, 42902) . $creator['handleterm'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><span class="grey">@' . $creator['handleterm'] . '</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['hashtagterm'] . '\')" title="' . $handles___11035[10673]['m__title'] . '" class="grey">' . $handles___11035[10673]['m__cover'] . '</a> ' . view_time_difference($creator['chaintime'], false) . '</span></div>';
+            array_push($already_shown, $creator['chainusercreator']);
+            echo '<div class="maxwidth cover_x_' . $creator['chainid'] . '" style="padding:3px 0;">' . (strlen($_GET['expand']) > 1 ? '<a href="' . view_app_chain(44328) . '/' . $_GET['expand'] . '@' . $creator['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__title'] . '">' : '') . '<span class="icon-block-sm grey">' . $users___11035[44328]['m__cover'] . '</span></a> <a href="' . view_memory(42903, 42902) . $creator['userhandle'] . '"><span class="icon-block">' . view_cover($creator['usercover']) . '</span><span class="grey">@' . $creator['userhandle'] . '</span></a> <span class="grey"><a href="javascript:void(0);" onclick="chain_delete(' . $creator['chainid'] . ', ' . $creator['chainid'] . ',\'' . $i['posthashtag'] . '\')" title="' . $users___11035[10673]['m__title'] . '" class="grey">' . $users___11035[10673]['m__cover'] . '</a> ' . view_time_difference($creator['chaintime'], false) . '</span></div>';
             if (count($already_shown) >= view_memory(6404, 11064)) {
                 break;
             }
         }
-    } elseif (isset($focus_e['handleid']) && !count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            'chainhashtaginput' => $i['hashtagid'],
-            'chainhandlecreator' => $focus_e['handleid'],
+    } elseif (isset($focus_e['userid']) && !count($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            'chainpostinput' => $i['postid'],
+            'chainusercreator' => $focus_e['userid'],
         )))) {
         //Not discovered by this user:
         echo '<span class="grey inline-block"><span class="icon-block-sm"><i class="far fa-eye-slash"></i></span>Not Yet Discovered</span>';
     }
 
 
-    //Hashtag Filters:
+    //Post Filters:
     $filters_ui = '';
-    if (isset($i['hashtag_list_config'])) {
-        //Hashtag<>Handle Settings:
-        $current_handleid = 0;
-        foreach ($CI->config->item('handles___43006') as $handleid => $m) {
-            foreach ($i['hashtag_list_config']['full_config_' . $handleid] as $filtered_handle) {
-                if (!$current_handleid) {
-                    $current_handleid = $handleid;
+    if (isset($i['post_list_config'])) {
+        //Post<>User Settings:
+        $current_userid = 0;
+        foreach ($CI->config->item('users___43006') as $userid => $m) {
+            foreach ($i['post_list_config']['full_config_' . $userid] as $filtered_user) {
+                if (!$current_userid) {
+                    $current_userid = $userid;
                 }
-                if (strlen($filters_ui) && $current_handleid != $handleid) {
-                    $current_handleid = $handleid;
+                if (strlen($filters_ui) && $current_userid != $userid) {
+                    $current_userid = $userid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_handle['handleterm'] . '"><span class="icon-block-sm">' . view_cover($filtered_handle['handlecover']) . '</span>' . $filtered_handle['handlename'] . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/@' . $filtered_user['userhandle'] . '"><span class="icon-block-sm">' . view_cover($filtered_user['usercover']) . '</span>' . $filtered_user['username'] . '</a></div>';
             }
         }
-        //Hashtag<>Hashtag Settings:
-        foreach ($CI->config->item('handles___40792') as $handleid => $m) {
-            foreach ($i['hashtag_list_config']['full_config_' . $handleid] as $filtered_hashtag) {
-                if (!$current_handleid) {
-                    $current_handleid = $handleid;
+        //Post<>Post Settings:
+        foreach ($CI->config->item('users___40792') as $userid => $m) {
+            foreach ($i['post_list_config']['full_config_' . $userid] as $filtered_post) {
+                if (!$current_userid) {
+                    $current_userid = $userid;
                 }
-                if (strlen($filters_ui) && $current_handleid != $handleid) {
-                    $current_handleid = $handleid;
+                if (strlen($filters_ui) && $current_userid != $userid) {
+                    $current_userid = $userid;
                     $filters_ui .= '<div class="and_filter">-AND-</div>';
                 }
-                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_hashtag['hashtagterm'] . '">' . view_hashtag_title($filtered_hashtag) . '</a></div>';
+                $filters_ui .= '<div><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': <a href="/' . $filtered_post['posthashtag'] . '">' . view_post_title($filtered_post) . '</a></div>';
             }
         }
     }
     if ($filters_ui) {
-        $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-        echo '<div class="hideIfEmpty filter_data ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['hashtagid'] . '">';
-        echo '<h3>' . $handles___11035[40946]['m__cover'] . ' ' . $handles___11035[40946]['m__title'] . ':</h3>';
+        $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
+        echo '<div class="hideIfEmpty filter_data ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
+        echo '<h3>' . $users___11035[40946]['m__cover'] . ' ' . $users___11035[40946]['m__title'] . ':</h3>';
         echo $filters_ui;
         echo '</div>';
     }
 
-    foreach ($i['next_hashtags'] as $next_i) {
-        echo '<div class="sub_frame ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['hashtagid'] . '">';
+    foreach ($i['next_posts'] as $next_i) {
+        echo '<div class="sub_frame ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
         view_tree($next_i, (isset($_GET['view_all']) ? true : false));
         echo '</div>';
     }
@@ -500,83 +500,83 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 }
 
 
-function hashtag_list_config($hashtagid, $access_limit = true)
+function post_list_config($postid, $access_limit = true)
 {
 
     $CI =& get_instance();
 
-    $hashtag_list_config = array(); //To compile the settings of this sheet:
+    $post_list_config = array(); //To compile the settings of this sheet:
 
-    foreach ($CI->config->item('handles___40792') as $chainhandletype => $m) {
-        $hashtag_list_config[intval($chainhandletype)] = array(); //Assume no chains for this type
-        $hashtag_list_config['full_config_' . $chainhandletype] = array(); //Assume no chains for this type
+    foreach ($CI->config->item('users___40792') as $chainusertype => $m) {
+        $post_list_config[intval($chainusertype)] = array(); //Assume no chains for this type
+        $post_list_config['full_config_' . $chainusertype] = array(); //Assume no chains for this type
     }
-    foreach ($CI->config->item('handles___43006') as $chainhandletype => $m) {
-        $hashtag_list_config[intval($chainhandletype)] = array(); //Assume no chains for this type
-        $hashtag_list_config['full_config_' . $chainhandletype] = array(); //Assume no chains for this type
-    }
-
-    //Now search for these settings across Handles:
-    foreach ($CI->Chains->read(array(
-        'chainhandleinput >' => 0,
-        'chainhashtagoutput' => $hashtagid,
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___43006')) . ')' => null,
-    ), array('chainhandleinput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
-        array_push($hashtag_list_config[intval($setting_chain['chainhandletype'])], intval($setting_chain['chainhandleinput']));
-        array_push($hashtag_list_config['full_config_' . $setting_chain['chainhandletype']], $setting_chain);
+    foreach ($CI->config->item('users___43006') as $chainusertype => $m) {
+        $post_list_config[intval($chainusertype)] = array(); //Assume no chains for this type
+        $post_list_config['full_config_' . $chainusertype] = array(); //Assume no chains for this type
     }
 
-    //Now search for these settings across hashtags:
-    foreach ($CI->Chains->read(array(
-        'chainhashtagoutput >' => 0,
-        'chainhashtaginput' => $hashtagid,
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___40792')) . ')' => null,
-    ), array('chainhashtagoutput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
-        array_push($hashtag_list_config[intval($setting_chain['chainhandletype'])], intval($setting_chain['chainhashtagoutput']));
-        array_push($hashtag_list_config['full_config_' . $setting_chain['chainhandletype']], $setting_chain);
+    //Now search for these settings across Users:
+    foreach ($CI->Ideachains->read(array(
+        'chainuserinput >' => 0,
+        'chainpostoutput' => $postid,
+        'chainusertype IN (' . join(',', $CI->config->item('userids___43006')) . ')' => null,
+    ), array('chainuserinput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($post_list_config[intval($setting_chain['chainusertype'])], intval($setting_chain['chainuserinput']));
+        array_push($post_list_config['full_config_' . $setting_chain['chainusertype']], $setting_chain);
     }
 
-    return $hashtag_list_config;
+    //Now search for these settings across posts:
+    foreach ($CI->Ideachains->read(array(
+        'chainpostoutput >' => 0,
+        'chainpostinput' => $postid,
+        'chainusertype IN (' . join(',', $CI->config->item('userids___40792')) . ')' => null,
+    ), array('chainpostoutput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($post_list_config[intval($setting_chain['chainusertype'])], intval($setting_chain['chainpostoutput']));
+        array_push($post_list_config['full_config_' . $setting_chain['chainusertype']], $setting_chain);
+    }
+
+    return $post_list_config;
 }
 
 
-function handle_list_config($handleid, $access_limit = true)
+function user_list_config($userid, $access_limit = true)
 {
 
     $CI =& get_instance();
 
-    $handle_list_config = array(); //To compile the settings of this sheet:
-    $memory_detected = is_array($CI->config->item('handleids___6287')) && count($CI->config->item('handleids___6287'));
+    $user_list_config = array(); //To compile the settings of this sheet:
+    $memory_detected = is_array($CI->config->item('userids___6287')) && count($CI->config->item('userids___6287'));
     if (!$memory_detected) {
         return false;
     }
 
-    foreach ($CI->config->item('handles___1645191') as $chainhandletype => $m) {
-        $handle_list_config[intval($chainhandletype)] = array(); //Assume no chains for this type
-        $handle_list_config['full_config_' . $chainhandletype] = array(); //Assume no chains for this type
+    foreach ($CI->config->item('users___1645191') as $chainusertype => $m) {
+        $user_list_config[intval($chainusertype)] = array(); //Assume no chains for this type
+        $user_list_config['full_config_' . $chainusertype] = array(); //Assume no chains for this type
     }
 
-    //Now search for these settings across Handles:
-    foreach ($CI->Chains->read(array(
-        'chainhandleinput >' => 0,
-        'chainhandleoutput' => $handleid,
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___1645191')) . ')' => null,
-    ), array('chainhandleinput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
-        array_push($handle_list_config[intval($setting_chain['chainhandletype'])], intval($setting_chain['chainhandleinput']));
-        array_push($handle_list_config['full_config_' . $setting_chain['chainhandletype']], $setting_chain);
+    //Now search for these settings across Users:
+    foreach ($CI->Ideachains->read(array(
+        'chainuserinput >' => 0,
+        'chainuseroutput' => $userid,
+        'chainusertype IN (' . join(',', $CI->config->item('userids___1645191')) . ')' => null,
+    ), array('chainuserinput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
+        array_push($user_list_config[intval($setting_chain['chainusertype'])], intval($setting_chain['chainuserinput']));
+        array_push($user_list_config['full_config_' . $setting_chain['chainusertype']], $setting_chain);
     }
 
-    return $handle_list_config;
+    return $user_list_config;
 }
 
 
-function hashtag_settings($hashtagterm, $fetch_contact = false)
+function post_settings($posthashtag, $fetch_contact = false)
 {
 
     $CI =& get_instance();
     $mixed_column = array();
-    $handle_column = array();
-    $hashtag_column = array();
+    $user_column = array();
+    $post_column = array();
     $contact_details = array(
         'full_list' => '',
         'email_list' => '',
@@ -584,53 +584,53 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
         'phone_count' => 0,
     );
 
-    foreach ($CI->Hashtags->read(array(
-        'LOWER(hashtagterm)' => strtolower($hashtagterm),
+    foreach ($CI->Posts->read(array(
+        'LOWER(posthashtag)' => strtolower($posthashtag),
     )) as $i) {
 
-        $hashtag_list_config = hashtag_list_config($i['hashtagid']);
+        $post_list_config = post_list_config($i['postid']);
 
         //Generate filter:
         $query_string_all = array();
-        if (count($hashtag_list_config[40791])) {
+        if (count($post_list_config[40791])) {
 
-            //If hashtag discovered Any
-            $query_string_all = $CI->Chains->read(array(
-                'chainhashtaginput IN (' . join(',', $hashtag_list_config[40791]) . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC'));
+            //If post discovered Any
+            $query_string_all = $CI->Ideachains->read(array(
+                'chainpostinput IN (' . join(',', $post_list_config[40791]) . ')' => null,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            ), array('chainusercreator'), 0, 0, array('chainid' => 'DESC'));
 
-        } elseif (count($hashtag_list_config[44161])) {
+        } elseif (count($post_list_config[44161])) {
 
-            //If hashtag discovered All
-            $query_string_all = $CI->Chains->read(array(
-                'chainhashtaginput IN (' . join(',', $hashtag_list_config[44161]) . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC'));
+            //If post discovered All
+            $query_string_all = $CI->Ideachains->read(array(
+                'chainpostinput IN (' . join(',', $post_list_config[44161]) . ')' => null,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            ), array('chainusercreator'), 0, 0, array('chainid' => 'DESC'));
 
-        } elseif (count($hashtag_list_config[27984])) {
+        } elseif (count($post_list_config[27984])) {
 
             //IF Follows Any
-            $query_string_all = $CI->Chains->read(array(
-                'chainhandleinput IN (' . join(',', $hashtag_list_config[27984]) . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
+            $query_string_all = $CI->Ideachains->read(array(
+                'chainuserinput IN (' . join(',', $post_list_config[27984]) . ')' => null,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array('chainuseroutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
-        } elseif (count($hashtag_list_config[43513])) {
+        } elseif (count($post_list_config[43513])) {
 
             //IF Follows All
-            $query_string_all = $CI->Chains->read(array(
-                'chainhandleinput IN (' . join(',', $hashtag_list_config[43513]) . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
+            $query_string_all = $CI->Ideachains->read(array(
+                'chainuserinput IN (' . join(',', $post_list_config[43513]) . ')' => null,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array('chainuseroutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
         } else {
 
             //All Discoveries:
-            $query_string_all = $CI->Chains->read(array(
-                'chainhashtaginput' => $i['hashtagid'],
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            ), array('chainhandlecreator'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
+            $query_string_all = $CI->Ideachains->read(array(
+                'chainpostinput' => $i['postid'],
+                'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            ), array('chainusercreator'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC'));
 
         }
 
@@ -638,62 +638,62 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
         $query_string_filtered = array();
         $unique_users_count = array();
         foreach ($query_string_all as $key => $x) {
-            if (in_array(intval($x['handleid']), $unique_users_count)) {
+            if (in_array(intval($x['userid']), $unique_users_count)) {
                 //Already added:
                 continue;
-            } elseif (!hashtag_access(null, $i['hashtagid'], $i, $x['handleid'], $hashtag_list_config)) {
+            } elseif (!post_access(null, $i['postid'], $i, $x['userid'], $post_list_config)) {
                 //Does not have access:
                 continue;
             } else {
                 //Passed all filters:
                 array_push($query_string_filtered, $x);
-                array_push($unique_users_count, intval($x['handleid']));
+                array_push($unique_users_count, intval($x['userid']));
             }
         }
 
 
         //Determine columns if any:
         $pinned_columns = array();
-        foreach ($CI->Chains->read(array(
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandletype' => 34513, //Pinned
-        ), array('chainhandleinput'), 0) as $setting_chain) {
-            array_push($pinned_columns, intval($setting_chain['handleid']));
+        foreach ($CI->Ideachains->read(array(
+            'chainpostoutput' => $i['postid'],
+            'chainusertype' => 34513, //Pinned
+        ), array('chainuserinput'), 0) as $setting_chain) {
+            array_push($pinned_columns, intval($setting_chain['userid']));
         }
         if (count($pinned_columns)) {
             //Add to results:
-            $hashtag_list_config[34513] = $pinned_columns;
+            $post_list_config[34513] = $pinned_columns;
 
-            $handle_column = $CI->Chains->read(array(
-                'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-            ), array('chainhandleoutput'), 0, 0, handle_sort());
-            $mixed_column = $handle_column;
+            $user_column = $CI->Ideachains->read(array(
+                'chainuserinput IN (' . join(',', $pinned_columns) . ')' => null,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array('chainuseroutput'), 0, 0, user_sort());
+            $mixed_column = $user_column;
 
-            foreach ($CI->Chains->read(array(
-                'chainhandleinput IN (' . join(',', $pinned_columns) . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
-                'chainhashtagoutput !=' => $i['hashtagid'],
-            ), array('chainhashtagoutput'), 0, 0, array('hashtagtext' => 'ASC')) as $chain_i) {
-                array_push($hashtag_column, $chain_i);
+            foreach ($CI->Ideachains->read(array(
+                'chainuserinput IN (' . join(',', $pinned_columns) . ')' => null,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
+                'chainpostoutput !=' => $i['postid'],
+            ), array('chainpostoutput'), 0, 0, array('posttext' => 'ASC')) as $chain_i) {
+                array_push($post_column, $chain_i);
                 array_push($mixed_column, $chain_i);
             }
         }
 
 
         //Append regular references to plot in the sheet:
-        foreach ($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___2108854')) . ')' => null, //Sheet Ideas
-            'chainhashtaginput' => $i['hashtagid'],
-        ), array('chainhashtagoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i) {
-            //array_push($hashtag_column, $chain_i);
+        foreach ($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___2108854')) . ')' => null, //Sheet Ideas
+            'chainpostinput' => $i['postid'],
+        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i) {
+            //array_push($post_column, $chain_i);
             $mixed_column[intval($chain_i['chainkey'])] = $chain_i;
         }
-        foreach ($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___2108865')) . ')' => null, //Sheet Players
-            'chainhashtagoutput' => $i['hashtagid'],
-        ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $chain_e) {
-            //array_push($handle_column, $chain_e);
+        foreach ($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___2108865')) . ')' => null, //Sheet Players
+            'chainpostoutput' => $i['postid'],
+        ), array('chainuserinput'), 0, 0, array('chainkey' => 'ASC')) as $chain_e) {
+            //array_push($user_column, $chain_e);
             $mixed_column[intval($chain_e['chainkey'])] = $chain_e;
         }
 
@@ -702,23 +702,23 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
             foreach ($query_string_filtered as $count => $x) {
 
                 //Fetch email & phone:
-                $fetch_names = $CI->Chains->read(array(
-                    'chainhandleinput' => 42584, //First Name
-                    'chainhandleoutput' => $x['handleid'],
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                $fetch_names = $CI->Ideachains->read(array(
+                    'chainuserinput' => 42584, //First Name
+                    'chainuseroutput' => $x['userid'],
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 ));
-                $fetch_emails = $CI->Chains->read(array(
-                    'chainhandleinput' => 3288, //Email
-                    'chainhandleoutput' => $x['handleid'],
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                $fetch_emails = $CI->Ideachains->read(array(
+                    'chainuserinput' => 3288, //Email
+                    'chainuseroutput' => $x['userid'],
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 ));
-                $fetch_phones = $CI->Chains->read(array(
-                    'chainhandleinput' => 4783, //Phone
-                    'chainhandleoutput' => $x['handleid'],
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                $fetch_phones = $CI->Ideachains->read(array(
+                    'chainuserinput' => 4783, //Phone
+                    'chainuseroutput' => $x['userid'],
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 ));
 
-                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['handlename']);
+                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['username']);
                 $query_string_filtered[$count]['extension_email'] = (count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['chainvalue'] : false);
                 $query_string_filtered[$count]['extension_phone'] = (count($fetch_phones) && strlen($fetch_phones[0]['chainvalue']) >= 10 ? $fetch_phones[0]['chainvalue'] : false);
 
@@ -737,9 +737,9 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
 
         return array(
             'i' => $i,
-            'list_config' => $hashtag_list_config,
-            'handle_column' => $handle_column,
-            'hashtag_column' => $hashtag_column,
+            'list_config' => $post_list_config,
+            'user_column' => $user_column,
+            'post_column' => $post_column,
             'mixed_column' => $mixed_column,
             'query_string_filtered' => $query_string_filtered,
             'contact_details' => $contact_details, //Optional addon
@@ -748,13 +748,13 @@ function hashtag_settings($hashtagterm, $fetch_contact = false)
 }
 
 
-function count_chain_groups($chainhandletype, $chaintime_start = null, $chaintime_end = null)
+function count_chain_groups($chainusertype, $chaintime_start = null, $chaintime_end = null)
 {
 
     $CI =& get_instance();
 
     $query_filters = array(
-        'chainhandletype IN (' . join(',', (is_array($CI->config->item('handleids___' . $chainhandletype)) ? $CI->config->item('handleids___' . $chainhandletype) : array($chainhandletype))) . ')' => null,
+        'chainusertype IN (' . join(',', (is_array($CI->config->item('userids___' . $chainusertype)) ? $CI->config->item('userids___' . $chainusertype) : array($chainusertype))) . ')' => null,
     );
 
     if (strtotime($chaintime_start) > 0) {
@@ -765,7 +765,7 @@ function count_chain_groups($chainhandletype, $chaintime_start = null, $chaintim
     }
 
     //Fetch Results:
-    $query = $CI->Chains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
+    $query = $CI->Ideachains->read($query_filters, array(), 1, 0, array(), 'COUNT(chainid) as totals');
     return intval($query[0]['totals']);
 
 }
@@ -774,17 +774,17 @@ function count_chain_groups($chainhandletype, $chaintime_start = null, $chaintim
 function home_url()
 {
     $CI =& get_instance();
-    $handle_session = handle_session();
-    return ($handle_session ? view_memory(42903, 42902) . $handle_session['handleterm'] : view_memory(42903, 14565));
+    $user_session = user_session();
+    return ($user_session ? view_memory(42903, 42902) . $user_session['userhandle'] : view_memory(42903, 14565));
 }
 
-function hashtag_is_startable($i)
+function post_is_startable($i)
 {
     $CI =& get_instance();
-    return count($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput' => 4235,
+    return count($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+        'chainpostoutput' => $i['postid'],
+        'chainuserinput' => 4235,
     )));
 }
 
@@ -795,27 +795,27 @@ function remove_none_utf8($string)
 }
 
 
-function handle_session($superpower_handleid = null, $force_redirect = 0, $session_handle_session = false)
+function user_session($superpower_userid = null, $force_redirect = 0, $session_user_session = false)
 {
 
-    if (isset($session_handle_session['handleid'])) {
-        //We have the handle!
-        return $session_handle_session;
+    if (isset($session_user_session['userid'])) {
+        //We have the user!
+        return $session_user_session;
     }
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $handle_session = $CI->session->userdata('session_handle');
+    $user_session = $CI->session->userdata('session_user');
 
     //Let's start checking various ways we can give member access:
-    if ($handle_session && !$superpower_handleid) {
+    if ($user_session && !$superpower_userid) {
 
         //No minimum level required, grant access IF member is logged in:
-        return $handle_session;
+        return $user_session;
 
-    } elseif ($handle_session && in_array($superpower_handleid, $CI->session->userdata('session_superpowers_unlocked'))) {
+    } elseif ($user_session && in_array($superpower_userid, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
-        return $handle_session;
+        return $user_session;
 
     }
 
@@ -828,14 +828,14 @@ function handle_session($superpower_handleid = null, $force_redirect = 0, $sessi
     } else {
 
         //Block access:
-        if ($handle_session) {
-            $goto_url = view_memory(42903, 42902) . $handle_session['handleterm'];
+        if ($user_session) {
+            $goto_url = view_memory(42903, 42902) . $user_session['userhandle'];
         } else {
             $goto_url = view_app_chain(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
         }
 
         //Now redirect:
-        return get_redirected($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' . blocked_reasoning($superpower_handleid) . '</div>');
+        return get_redirected($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' . blocked_reasoning($superpower_userid) . '</div>');
     }
 
 }
@@ -849,9 +849,9 @@ function get_server($var_name)
 function html_input_type($data_type)
 {
     $CI =& get_instance();
-    $handles___42291 = $CI->config->item('handles___42291'); //HTML Input Types
-    if (isset($handles___42291[$data_type]['m__message']) && strlen($handles___42291[$data_type]['m__message'])) {
-        return $handles___42291[$data_type]['m__message'];
+    $users___42291 = $CI->config->item('users___42291'); //HTML Input Types
+    if (isset($users___42291[$data_type]['m__message']) && strlen($users___42291[$data_type]['m__message'])) {
+        return $users___42291[$data_type]['m__message'];
     } else {
         //Default option:
         return 'text';
@@ -864,10 +864,10 @@ function js_php_redirect($url, $timer = 0)
 }
 
 
-function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
+function generate_user($focus__node, $str, $suggestion = null, $increment = 1)
 {
 
-    //Generates a Suitable Handle from the title:
+    //Generates a Suitable User from the title:
     $CI =& get_instance();
 
     //Previous suggestion did not work, let's tweak and try again:
@@ -899,19 +899,19 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
     }
 
     if (strlen($suggestion) < 3 || is_numeric($suggestion)) {
-        $suggestion = ($focus__node == 12273 ? 'Hashtag' : 'Handle') . $suggestion;
+        $suggestion = ($focus__node == 12273 ? 'Post' : 'User') . $suggestion;
     }
 
 
     //Make sure no duplicates:
-    if ($focus__node == 12273 && count($CI->Hashtags->read(array(
-            'LOWER(hashtagterm)' => strtolower($suggestion),
+    if ($focus__node == 12273 && count($CI->Posts->read(array(
+            'LOWER(posthashtag)' => strtolower($suggestion),
         )))) {
-        return generate_handle(12273, $str, $suggestion, $increment);
-    } elseif ($focus__node == 12274 && count($CI->Handles->read(array(
-            'LOWER(handleterm)' => strtolower($suggestion),
+        return generate_user(12273, $str, $suggestion, $increment);
+    } elseif ($focus__node == 12274 && count($CI->Users->read(array(
+            'LOWER(userhandle)' => strtolower($suggestion),
         )))) {
-        return generate_handle(12274, $str, $suggestion, $increment);
+        return generate_user(12274, $str, $suggestion, $increment);
     } else {
         //All good:
         return $suggestion;
@@ -921,14 +921,14 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 
 
 
-function process_media($hashtagid, $uploaded_media)
+function process_media($postid, $uploaded_media)
 {
 
     $CI =& get_instance();
-    $handle_session = handle_session();
+    $user_session = user_session();
 
 
-    if (!$handle_session) {
+    if (!$user_session) {
         return false;
     }
 
@@ -940,56 +940,56 @@ function process_media($hashtagid, $uploaded_media)
         $sort_count = 0; //Reset sorting to compare to submitted media...
         foreach ($uploaded_media as $upload_media) {
 
-            if (!$upload_media['handleid']) {
+            if (!$upload_media['userid']) {
                 //Adding new media...
                 //Search eTag to see if we already have it:
                 $etag_detected = false;
                 if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
-                    //We already have this asset, return handle:
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleinput' => 42662, //etag
+                    //We already have this asset, return user:
+                    foreach ($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                        'chainuserinput' => 42662, //etag
                         'chainvalue' => $upload_media['media_cache']['etag'],
-                    ), array('chainhandleoutput'), 1) as $existing_media) {
-                        $upload_media['handleid'] = $existing_media['handleid'];
+                    ), array('chainuseroutput'), 1) as $existing_media) {
+                        $upload_media['userid'] = $existing_media['userid'];
                         $etag_detected = true;
                     }
                 }
 
-                if (!$upload_media['handleid']) {
+                if (!$upload_media['userid']) {
 
-                    //Create Handle for this new media:
-                    $added_e = $CI->Handles->create(array(
-                        'handlevalue' => $upload_media['handlevalue'],
-                        'handlecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['handlecover']),
-                    ), $handle_session['handleid']);
+                    //Create User for this new media:
+                    $added_e = $CI->Users->create(array(
+                        'uservalue' => $upload_media['uservalue'],
+                        'usercover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['usercover']),
+                    ), $user_session['userid']);
                     if (!$added_e['status']) {
-                        log_error('Failed to create a new Handle for [' . $upload_media['handlevalue'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
-                            'chainhandleoutput' => $upload_media['handleid'],
+                        log_error('Failed to create a new User for [' . $upload_media['uservalue'] . '] with cover [' . $upload_media['usercover'] . ']', array(
+                            'chainuseroutput' => $upload_media['userid'],
                         ));
                         continue;
                     }
 
                     //Create new media and assign ID:
-                    $upload_media['handleid'] = $added_e['handle_create']['handleid'];
+                    $upload_media['userid'] = $added_e['user_create']['userid'];
 
-                    //new asset, create new Handle and insert tags...
-                    $handles___32088 = $CI->config->item('handles___32088'); //Platform Variables
-                    foreach ($CI->config->item('handles___42679') as $chainhandletype => $m) {
+                    //new asset, create new User and insert tags...
+                    $users___32088 = $CI->config->item('users___32088'); //Platform Variables
+                    foreach ($CI->config->item('users___42679') as $chainusertype => $m) {
 
                         //Ensure variable name exists so we can check the API call:
                         $target_variable = false;
-                        if (isset($handles___32088[$chainhandletype]['m__message'])) {
+                        if (isset($users___32088[$chainusertype]['m__message'])) {
                             //Determine if variable exists...
-                            if (in_array($chainhandletype, $CI->config->item('handleids___42763')) && isset($upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']])) {
+                            if (in_array($chainusertype, $CI->config->item('userids___42763')) && isset($upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']])) {
                                 //Video info:
-                                $target_variable = $upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']];
-                            } elseif (in_array($chainhandletype, $CI->config->item('handleids___42675')) && isset($upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']])) {
+                                $target_variable = $upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']];
+                            } elseif (in_array($chainusertype, $CI->config->item('userids___42675')) && isset($upload_media['media_cache']['audio'][$users___32088[$chainusertype]['m__message']])) {
                                 //Audio info:
-                                $target_variable = $upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']];
-                            } elseif (isset($upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']])) {
+                                $target_variable = $upload_media['media_cache']['audio'][$users___32088[$chainusertype]['m__message']];
+                            } elseif (isset($upload_media['media_cache'][$users___32088[$chainusertype]['m__message']])) {
                                 //Media info:
-                                $target_variable = $upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']];
+                                $target_variable = $upload_media['media_cache'][$users___32088[$chainusertype]['m__message']];
                             }
                         }
                         if (!strlen($target_variable) || $target_variable == '0') {
@@ -998,115 +998,115 @@ function process_media($hashtagid, $uploaded_media)
                         }
 
                         //We have a variable, see what it is...
-                        if (in_array($chainhandletype, $CI->config->item('handleids___33331'))) {
+                        if (in_array($chainusertype, $CI->config->item('userids___33331'))) {
 
-                            //Single select that needs auto creation of Handles if missing:
+                            //Single select that needs auto creation of Users if missing:
                             $child_id = 0;
-                            foreach ($CI->Chains->read(array(
-                                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                                'chainhandleinput' => $chainhandletype,
-                                'handlevalue' => $target_variable,
-                            ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $child_handle) {
-                                $child_id = $child_handle['handleid'];
+                            foreach ($CI->Ideachains->read(array(
+                                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                                'chainuserinput' => $chainusertype,
+                                'uservalue' => $target_variable,
+                            ), array('chainuseroutput'), 1, 0, array('chainid' => 'ASC')) as $child_user) {
+                                $child_id = $child_user['userid'];
                             }
 
                             //If not found create the child:
                             if (!$child_id) {
-                                $added_child = $CI->Handles->create(array(
-                                    'handlevalue' => $target_variable,
+                                $added_child = $CI->Users->create(array(
+                                    'uservalue' => $target_variable,
                                 ));
                                 if (!$added_child['status']) {
-                                    log_error('Failed to create a new Handle for [' . $target_variable . ']', array(
-                                        'chainhandleoutput' => $chainhandletype,
+                                    log_error('Failed to create a new User for [' . $target_variable . ']', array(
+                                        'chainuseroutput' => $chainusertype,
                                     ));
                                     continue;
                                 }
 
-                                //Add chains for this new Handle:
-                                $CI->Chains->create(array(
-                                    'chainhandlecreator' => $handle_session['handleid'],
-                                    'chainhandleinput' => $chainhandletype,
-                                    'chainhandleoutput' => $added_child['handle_create']['handleid'],
-                                    'chainhandletype' => 4230,
+                                //Add chains for this new User:
+                                $CI->Ideachains->create(array(
+                                    'chainusercreator' => $user_session['userid'],
+                                    'chainuserinput' => $chainusertype,
+                                    'chainuseroutput' => $added_child['user_create']['userid'],
+                                    'chainusertype' => 4230,
                                 ));
 
-                                //Assign child Handle:
-                                $child_id = $added_child['handle_create']['handleid'];
+                                //Assign child User:
+                                $child_id = $added_child['user_create']['userid'];
 
                             }
 
                             if ($child_id) {
-                                //Child Handle found, simply chain:
-                                $CI->Chains->create(array(
-                                    'chainhandlecreator' => $handle_session['handleid'],
-                                    'chainhandleinput' => $child_id,
-                                    'chainhandleoutput' => $upload_media['handleid'],
-                                    'chainhandletype' => 4230,
+                                //Child User found, simply chain:
+                                $CI->Ideachains->create(array(
+                                    'chainusercreator' => $user_session['userid'],
+                                    'chainuserinput' => $child_id,
+                                    'chainuseroutput' => $upload_media['userid'],
+                                    'chainusertype' => 4230,
                                 ));
                             }
 
                         } else {
 
                             //Save variable as is:
-                            $CI->Chains->create(array(
-                                'chainhandlecreator' => $handle_session['handleid'],
-                                'chainhandleinput' => $chainhandletype,
-                                'chainhandleoutput' => $upload_media['handleid'],
+                            $CI->Ideachains->create(array(
+                                'chainusercreator' => $user_session['userid'],
+                                'chainuserinput' => $chainusertype,
+                                'chainuseroutput' => $upload_media['userid'],
                                 'chainvalue' => $target_variable,
-                                'chainhandletype' => 4230,
+                                'chainusertype' => 4230,
                             ));
 
                         }
                     }
                 }
 
-                //By now have the media Handle, create necessary chains:
-                if ($upload_media['handleid'] && $upload_media['media_typeid']) {
+                //By now have the media User, create necessary chains:
+                if ($upload_media['userid'] && $upload_media['media_typeid']) {
 
-                    //Chain to Hashtag:
-                    if (!count($CI->Chains->read(array(
-                        'chainhashtagoutput' => $hashtagid,
-                        'chainhandleinput' => $upload_media['handleid'],
-                        'chainhandletype' => $upload_media['media_typeid'],
+                    //Chain to Post:
+                    if (!count($CI->Ideachains->read(array(
+                        'chainpostoutput' => $postid,
+                        'chainuserinput' => $upload_media['userid'],
+                        'chainusertype' => $upload_media['media_typeid'],
                     )))) {
-                        $CI->Chains->create(array(
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhashtagoutput' => $hashtagid,
-                            'chainhandleinput' => $upload_media['handleid'],
-                            'chainhandletype' => $upload_media['media_typeid'],
+                        $CI->Ideachains->create(array(
+                            'chainusercreator' => $user_session['userid'],
+                            'chainpostoutput' => $postid,
+                            'chainuserinput' => $upload_media['userid'],
+                            'chainusertype' => $upload_media['media_typeid'],
                             'chainvalue' => $upload_media['playback_code'],
                             'chainkey' => $sort_count,
                         ));
                     }
 
 
-                    //Chain to Handle as Uploader:
-                    if (!count($CI->Chains->read(array(
-                        'chainhandleinput' => $handle_session['handleid'],
-                        'chainhandleoutput' => $upload_media['handleid'],
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42657')) . ')' => null, //Uploads
+                    //Chain to User as Uploader:
+                    if (!count($CI->Ideachains->read(array(
+                        'chainuserinput' => $user_session['userid'],
+                        'chainuseroutput' => $upload_media['userid'],
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___42657')) . ')' => null, //Uploads
                     )))) {
-                        $CI->Chains->create(array(
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhandleinput' => $handle_session['handleid'],
-                            'chainhandleoutput' => $upload_media['handleid'],
-                            'chainhandletype' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
+                        $CI->Ideachains->create(array(
+                            'chainusercreator' => $user_session['userid'],
+                            'chainuserinput' => $user_session['userid'],
+                            'chainuseroutput' => $upload_media['userid'],
+                            'chainusertype' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
                             'chainvalue' => $upload_media['playback_code'],
                         ));
                     }
 
 
                     //Chain to Media Type:
-                    if (!count($CI->Chains->read(array(
-                        'chainhandleinput' => $upload_media['media_typeid'],
-                        'chainhandleoutput' => $upload_media['handleid'],
-                        'chainhandletype' => 4230,
+                    if (!count($CI->Ideachains->read(array(
+                        'chainuserinput' => $upload_media['media_typeid'],
+                        'chainuseroutput' => $upload_media['userid'],
+                        'chainusertype' => 4230,
                     )))) {
-                        $CI->Chains->create(array(
-                            'chainhandlecreator' => $handle_session['handleid'],
-                            'chainhandleinput' => $upload_media['media_typeid'],
-                            'chainhandleoutput' => $upload_media['handleid'],
-                            'chainhandletype' => 4230,
+                        $CI->Ideachains->create(array(
+                            'chainusercreator' => $user_session['userid'],
+                            'chainuserinput' => $upload_media['media_typeid'],
+                            'chainuseroutput' => $upload_media['userid'],
+                            'chainusertype' => 4230,
                             'chainvalue' => $upload_media,
                         ));
                     }
@@ -1115,7 +1115,7 @@ function process_media($hashtagid, $uploaded_media)
             }
 
             //Add this to the submitted ones:
-            $upload_media_typeids[$sort_count] = $upload_media['handleid'];
+            $upload_media_typeids[$sort_count] = $upload_media['userid'];
             $sort_count++;
 
         }
@@ -1129,8 +1129,8 @@ function add_media($uploaded_media)
 {
 
     $CI =& get_instance();
-    $handle_session = handle_session();
-    if (!$handle_session || !count($uploaded_media)) {
+    $user_session = user_session();
+    if (!$user_session || !count($uploaded_media)) {
         return false;
     }
 
@@ -1141,49 +1141,49 @@ function add_media($uploaded_media)
         //Search eTag to see if we already have it:
         $etag_detected = false;
         if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
-            //We already have this asset, return handle:
-            foreach ($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                'chainhandleinput' => 42662, //etag
+            //We already have this asset, return user:
+            foreach ($CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                'chainuserinput' => 42662, //etag
                 'chainvalue' => $upload_media['media_cache']['etag'],
-            ), array('chainhandleoutput'), 1) as $existing_media) {
-                $upload_media['handleid'] = $existing_media['handleid'];
+            ), array('chainuseroutput'), 1) as $existing_media) {
+                $upload_media['userid'] = $existing_media['userid'];
                 $etag_detected = true;
             }
         }
 
-        //Create Handle for this new media:
-        $added_e = $CI->Handles->create(array(
-            'handlename' => $upload_media['handlename'],
-            'handlecover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['handlecover']),
-        ), $handle_session['handleid']);
+        //Create User for this new media:
+        $added_e = $CI->Users->create(array(
+            'username' => $upload_media['username'],
+            'usercover' => ($upload_media['media_typeid'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['usercover']),
+        ), $user_session['userid']);
         if (!$added_e['status']) {
-            log_error('Failed to create a new Handle for [' . $upload_media['handlename'] . '] with cover [' . $upload_media['handlecover'] . ']', array(
-                'chainhandleoutput' => $upload_media['handleid'],
+            log_error('Failed to create a new User for [' . $upload_media['username'] . '] with cover [' . $upload_media['usercover'] . ']', array(
+                'chainuseroutput' => $upload_media['userid'],
             ));
             continue;
         }
 
         //Create new media and assign ID:
-        $upload_media['handleid'] = $added_e['handle_create']['handleid'];
+        $upload_media['userid'] = $added_e['user_create']['userid'];
 
-        //new asset, create new Handle and insert tags...
-        $handles___32088 = $CI->config->item('handles___32088'); //Platform Variables
-        foreach ($CI->config->item('handles___42679') as $chainhandletype => $m) {
+        //new asset, create new User and insert tags...
+        $users___32088 = $CI->config->item('users___32088'); //Platform Variables
+        foreach ($CI->config->item('users___42679') as $chainusertype => $m) {
 
             //Ensure variable name exists so we can check the API call:
             $target_variable = false;
-            if (isset($handles___32088[$chainhandletype]['m__message'])) {
+            if (isset($users___32088[$chainusertype]['m__message'])) {
                 //Determine if variable exists...
-                if (in_array($chainhandletype, $CI->config->item('handleids___42763')) && isset($upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']])) {
+                if (in_array($chainusertype, $CI->config->item('userids___42763')) && isset($upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']])) {
                     //Video info:
-                    $target_variable = $upload_media['media_cache']['video'][$handles___32088[$chainhandletype]['m__message']];
-                } elseif (in_array($chainhandletype, $CI->config->item('handleids___42675')) && isset($upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']])) {
+                    $target_variable = $upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']];
+                } elseif (in_array($chainusertype, $CI->config->item('userids___42675')) && isset($upload_media['media_cache']['audio'][$users___32088[$chainusertype]['m__message']])) {
                     //Audio info:
-                    $target_variable = $upload_media['media_cache']['audio'][$handles___32088[$chainhandletype]['m__message']];
-                } elseif (isset($upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']])) {
+                    $target_variable = $upload_media['media_cache']['audio'][$users___32088[$chainusertype]['m__message']];
+                } elseif (isset($upload_media['media_cache'][$users___32088[$chainusertype]['m__message']])) {
                     //Media info:
-                    $target_variable = $upload_media['media_cache'][$handles___32088[$chainhandletype]['m__message']];
+                    $target_variable = $upload_media['media_cache'][$users___32088[$chainusertype]['m__message']];
                 }
             }
             if (!strlen($target_variable) || $target_variable == '0') {
@@ -1192,96 +1192,96 @@ function add_media($uploaded_media)
             }
 
             //We have a variable, see what it is...
-            if (in_array($chainhandletype, $CI->config->item('handleids___33331'))) {
+            if (in_array($chainusertype, $CI->config->item('userids___33331'))) {
 
-                //Single select that needs auto creation of Handles if missing:
+                //Single select that needs auto creation of Users if missing:
                 $child_id = 0;
-                foreach ($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                    'chainhandleinput' => $chainhandletype,
-                    'handlename' => $target_variable,
-                ), array('chainhandleoutput'), 1, 0, array('chainid' => 'ASC')) as $child_handle) {
-                    $child_id = $child_handle['handleid'];
+                foreach ($CI->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                    'chainuserinput' => $chainusertype,
+                    'username' => $target_variable,
+                ), array('chainuseroutput'), 1, 0, array('chainid' => 'ASC')) as $child_user) {
+                    $child_id = $child_user['userid'];
                 }
 
                 //If not found create the child:
                 if (!$child_id) {
-                    $added_child = $CI->Handles->create(array(
-                        'handlename' => $target_variable,
+                    $added_child = $CI->Users->create(array(
+                        'username' => $target_variable,
                     ));
                     if (!$added_child['status']) {
-                        log_error('Failed to create a new Handle for [' . $target_variable . ']', array(
-                            'chainhandleoutput' => $chainhandletype,
+                        log_error('Failed to create a new User for [' . $target_variable . ']', array(
+                            'chainuseroutput' => $chainusertype,
                         ));
                         continue;
                     }
 
-                    //Add chains for this new Handle:
-                    $CI->Chains->create(array(
-                        'chainhandlecreator' => $handle_session['handleid'],
-                        'chainhandleinput' => $chainhandletype,
-                        'chainhandleoutput' => $added_child['handle_create']['handleid'],
-                        'chainhandletype' => 4230,
+                    //Add chains for this new User:
+                    $CI->Ideachains->create(array(
+                        'chainusercreator' => $user_session['userid'],
+                        'chainuserinput' => $chainusertype,
+                        'chainuseroutput' => $added_child['user_create']['userid'],
+                        'chainusertype' => 4230,
                     ));
 
-                    //Assign child Handle:
-                    $child_id = $added_child['handle_create']['handleid'];
+                    //Assign child User:
+                    $child_id = $added_child['user_create']['userid'];
 
                 }
 
                 if ($child_id) {
-                    //Child Handle found, simply chain:
-                    $CI->Chains->create(array(
-                        'chainhandlecreator' => $handle_session['handleid'],
-                        'chainhandleinput' => $child_id,
-                        'chainhandleoutput' => $upload_media['handleid'],
-                        'chainhandletype' => 4230,
+                    //Child User found, simply chain:
+                    $CI->Ideachains->create(array(
+                        'chainusercreator' => $user_session['userid'],
+                        'chainuserinput' => $child_id,
+                        'chainuseroutput' => $upload_media['userid'],
+                        'chainusertype' => 4230,
                     ));
                 }
 
             } else {
 
                 //Save variable as is:
-                $CI->Chains->create(array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhandleinput' => $chainhandletype,
-                    'chainhandleoutput' => $upload_media['handleid'],
+                $CI->Ideachains->create(array(
+                    'chainusercreator' => $user_session['userid'],
+                    'chainuserinput' => $chainusertype,
+                    'chainuseroutput' => $upload_media['userid'],
                     'chainvalue' => $target_variable,
-                    'chainhandletype' => 4230,
+                    'chainusertype' => 4230,
                 ));
 
             }
         }
 
-        //By now have the media Handle, create necessary chains:
-        if ($upload_media['handleid'] && $upload_media['media_typeid']) {
+        //By now have the media User, create necessary chains:
+        if ($upload_media['userid'] && $upload_media['media_typeid']) {
 
-            //Chain to Handle as Uploader:
-            if (!count($CI->Chains->read(array(
-                'chainhandleinput' => $handle_session['handleid'],
-                'chainhandleoutput' => $upload_media['handleid'],
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            //Chain to User as Uploader:
+            if (!count($CI->Ideachains->read(array(
+                'chainuserinput' => $user_session['userid'],
+                'chainuseroutput' => $upload_media['userid'],
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
             )))) {
-                $CI->Chains->create(array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhandleinput' => $handle_session['handleid'],
-                    'chainhandleoutput' => $upload_media['handleid'],
-                    'chainhandletype' => 4230,
+                $CI->Ideachains->create(array(
+                    'chainusercreator' => $user_session['userid'],
+                    'chainuserinput' => $user_session['userid'],
+                    'chainuseroutput' => $upload_media['userid'],
+                    'chainusertype' => 4230,
                     'chainvalue' => $upload_media['playback_code'],
                 ));
             }
 
             //Chain to Media Type:
-            if (!count($CI->Chains->read(array(
-                'chainhandleinput' => $upload_media['media_typeid'],
-                'chainhandleoutput' => $upload_media['handleid'],
-                'chainhandletype' => 4230,
+            if (!count($CI->Ideachains->read(array(
+                'chainuserinput' => $upload_media['media_typeid'],
+                'chainuseroutput' => $upload_media['userid'],
+                'chainusertype' => 4230,
             )))) {
-                $CI->Chains->create(array(
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhandleinput' => $upload_media['media_typeid'],
-                    'chainhandleoutput' => $upload_media['handleid'],
-                    'chainhandletype' => 4230,
+                $CI->Ideachains->create(array(
+                    'chainusercreator' => $user_session['userid'],
+                    'chainuserinput' => $upload_media['media_typeid'],
+                    'chainuseroutput' => $upload_media['userid'],
+                    'chainusertype' => 4230,
                     'chainvalue' => $upload_media,
                 ));
             }
@@ -1294,29 +1294,29 @@ function add_media($uploaded_media)
 }
 
 
-function view_hashtag_media($i)
+function view_post_media($i)
 {
 
     $CI =& get_instance();
     $message_append = '';
 
-    //Query Relevant Handles:
-    foreach ($CI->Chains->read(array(
-        'chainhandletype IN (4258,4259,4260)' => null, //Media TODO
-        'chainhashtagoutput' => $i['hashtagid'],
-    ), array('chainhandleinput'), 0, 0, array('chainkey' => 'ASC')) as $x) {
+    //Query Relevant Users:
+    foreach ($CI->Ideachains->read(array(
+        'chainusertype IN (4258,4259,4260)' => null, //Media TODO
+        'chainpostoutput' => $i['postid'],
+    ), array('chainuserinput'), 0, 0, array('chainkey' => 'ASC')) as $x) {
 
-        if ($x['chainhandletype'] == 4258) {
+        if ($x['chainusertype'] == 4258) {
 
             //Video
-            $template = '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $x['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
+            $template = '<video id="video_user_' . $x['chainvalue'] . '" controls class="cld-video-user cld-fluid cld-video-user-skin-light" poster="' . $x['usercover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>';
 
-        } elseif ($x['chainhandletype'] == 4259) {
+        } elseif ($x['chainusertype'] == 4259) {
 
             //Audio
             $template = '<audio controls src="' . $x['chainvalue'] . '"></audio>';
 
-        } elseif ($x['chainhandletype'] == 4260) {
+        } elseif ($x['chainusertype'] == 4260) {
 
             //Image
             $template = '<img src="' . $x['chainvalue'] . '" />';
@@ -1326,7 +1326,7 @@ function view_hashtag_media($i)
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_' . $x['chainhandletype'] . ($x['chainhandletype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainhandletype'] . '" handleid="' . $x['handleid'] . '"  handlecover="' . $x['handlecover'] . '" playback_code="' . $x['chainvalue'] . '" handlename="' . $x['handlename'] . '">' . $template . '</div>';
+        $message_append .= '<div class="media_display media_display_' . $x['chainusertype'] . ($x['chainusertype'] == 4258 ? ' ignore-click ' : '') . '" id="loaded_media_' . $x['chainid'] . '" class="media_item" media_typeid="' . $x['chainusertype'] . '" userid="' . $x['userid'] . '"  usercover="' . $x['usercover'] . '" playback_code="' . $x['chainvalue'] . '" username="' . $x['username'] . '">' . $template . '</div>';
 
     }
 
@@ -1336,18 +1336,18 @@ function view_hashtag_media($i)
 
 
 
-function append_handle($chainhandleinput, $chainhandlecreator, $chainvalue, $hashtagid, $update_if_existing = true)
+function append_user($chainuserinput, $chainusercreator, $chainvalue, $postid, $update_if_existing = true)
 {
 
     $CI =& get_instance();
 
     //First validate data type to ensure it matches:
-    foreach ($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___4592')) . ')' => null, //Data Types
-        'chainhandleoutput' => $chainhandleinput,
+    foreach ($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+        'chainuserinput IN (' . join(',', $CI->config->item('userids___4592')) . ')' => null, //Data Types
+        'chainuseroutput' => $chainuserinput,
     )) as $data_type) {
-        $data_type_validate = data_type_validate($data_type['chainhandleinput'], $chainvalue);
+        $data_type_validate = data_type_validate($data_type['chainuserinput'], $chainvalue);
         if (!$data_type_validate['status']) {
             //It's not the data type needed:
             return false;
@@ -1355,11 +1355,11 @@ function append_handle($chainhandleinput, $chainhandlecreator, $chainvalue, $has
     }
 
     //Now check existing chains:
-    $existing_x = $CI->Chains->read(array(
+    $existing_x = $CI->Ideachains->read(array(
         'chainvoid >=' => 0, //Any Chain
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-        'chainhandleinput' => $chainhandleinput,
-        'chainhandleoutput' => $chainhandlecreator,
+        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+        'chainuserinput' => $chainuserinput,
+        'chainuseroutput' => $chainusercreator,
     ));
 
     if (count($existing_x)) {
@@ -1373,21 +1373,21 @@ function append_handle($chainhandleinput, $chainhandlecreator, $chainvalue, $has
 
         //Content value has changed, update the Chain:
         if ($update_if_existing) {
-            $CI->Chains->update($existing_x[0]['chainid'], array(
+            $CI->Ideachains->update($existing_x[0]['chainid'], array(
                 'chainvalue' => $chainvalue,
-                'chainhandlecreator' => $chainhandlecreator,
+                'chainusercreator' => $chainusercreator,
             ));
         }
 
     } else {
 
         //Create Chain:
-        $CI->Chains->create(array(
-            'chainhandletype' => 4230, //Follow Handle
+        $CI->Ideachains->create(array(
+            'chainusertype' => 4230, //Follow User
             'chainvalue' => $chainvalue,
-            'chainhandlecreator' => $chainhandlecreator,
-            'chainhandleinput' => $chainhandleinput,
-            'chainhandleoutput' => $chainhandlecreator,
+            'chainusercreator' => $chainusercreator,
+            'chainuserinput' => $chainuserinput,
+            'chainuseroutput' => $chainusercreator,
         ));
 
     }
@@ -1401,36 +1401,36 @@ function data_type_validate($data_type, $data_value, $data_title = null)
 {
 
     $CI =& get_instance();
-    $handles___4592 = $CI->config->item('handles___4592'); //Data types
+    $users___4592 = $CI->config->item('users___4592'); //Data types
 
     if ($data_type == 4319 && !is_numeric($data_value)) {
         //Number:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 42181 && (strlen(preg_replace('/[^0-9]/', '', $data_value)) < 10 || strlen(preg_replace('/[^0-9]/', '', $data_value)) > 14)) {
         //Phone Number:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'] . ' with 10-14 numbers including country code.',
+            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__title'] . ' with 10-14 numbers including country code.',
         );
     } elseif ($data_type == 4318 && !strtotime($data_value)) {
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 4255 && !strlen($data_value)) {
         //Text:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 32097 && !filter_var($data_value, FILTER_VALIDATE_EMAIL)) {
         //Email:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__title'],
         );
     } elseif ($data_type == 42947 && (!is_numeric($data_value) || $data_value < 0 || $data_value > 1)) {
         //Percentage:
@@ -1438,16 +1438,16 @@ function data_type_validate($data_type, $data_value, $data_title = null)
             'status' => 0,
             'message' => $data_title . ' must be set to a number between 0.00 & 1.00.',
         );
-    } elseif (in_array($data_type, $CI->config->item('handleids___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)) {
+    } elseif (in_array($data_type, $CI->config->item('userids___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)) {
         //URL:
         return array(
             'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $handles___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__title'],
         );
-    } elseif (in_array($data_type, $CI->config->item('handleids___42188'))) {
-        //Single Choice of Multi Choice Handle types should not be validated here
+    } elseif (in_array($data_type, $CI->config->item('userids___42188'))) {
+        //Single Choice of Multi Choice User types should not be validated here
         log_error('data_type_validate() was asked to validate choice options for @' . $data_type . ' [' . $data_value . '] [' . $data_title . ']', array(
-            'chainhandleoutput' => $data_type,
+            'chainuseroutput' => $data_type,
         ));
     }
 
@@ -1465,7 +1465,7 @@ function data_type_format($data_type, $data_value)
 
     $CI =& get_instance();
 
-    if (in_array($data_type, $CI->config->item('handleids___4318')) && strtotime($data_value) > 0) {
+    if (in_array($data_type, $CI->config->item('userids___4318')) && strtotime($data_value) > 0) {
         //Format Time:
         return date(view_memory(6404, 4318), strtotime($data_value));
     }
@@ -1475,25 +1475,25 @@ function data_type_format($data_type, $data_value)
 
 }
 
-function change_handle($old_handle)
+function change_user($old_user)
 {
     $max_length = view_memory(6404, 41985);
-    if (strlen($old_handle) < $max_length) {
+    if (strlen($old_user) < $max_length) {
         //We have some room to change:
-        return substr($old_handle . rand(100000, 999999), 0, $max_length);
+        return substr($old_user . rand(100000, 999999), 0, $max_length);
     } else {
         //No room to change, remove some words from the end:
-        return substr($old_handle, 0, ($max_length - 6)) . rand(100000, 999999);
+        return substr($old_user, 0, ($max_length - 6)) . rand(100000, 999999);
     }
 }
 
-function sort_by($handleid, $custom_sort = array())
+function sort_by($userid, $custom_sort = array())
 {
 
     $CI =& get_instance();
     $order_by = array();
-    foreach ($CI->config->item('handles___' . $handleid) as $sort_id => $sort) {
-        $order_by['chainhandleinput = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($CI->config->item('users___' . $userid) as $sort_id => $sort) {
+        $order_by['chainuserinput = \'' . $sort_id . '\' DESC'] = null;
     }
 
     if (is_array($custom_sort)) {
@@ -1504,19 +1504,19 @@ function sort_by($handleid, $custom_sort = array())
 }
 
 
-function validate_update_handle($str, $hashtagid = null, $handleid = null)
+function validate_update_user($str, $postid = null, $userid = null)
 {
 
     $CI =& get_instance();
-    $handle_session = handle_session();
+    $user_session = user_session();
 
     //Validate:
-    if (($hashtagid && $handleid) || (!$hashtagid && !$handleid)) {
+    if (($postid && $userid) || (!$postid && !$userid)) {
 
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Must set either Hashtag or Handle ID! Pick one',
+            'message' => 'Must set either Post or User ID! Pick one',
         );
 
     } elseif (!strlen($str)) {
@@ -1524,7 +1524,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Missing Handle',
+            'message' => 'Missing User',
         );
 
     } elseif (!ctype_alnum($str)) {
@@ -1532,7 +1532,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Hashtag Can only contain alphanumneric numbers and letters',
+            'message' => 'Post Can only contain alphanumneric numbers and letters',
         );
 
     } elseif (!preg_match('/[a-zA-Z]/', $str)) {
@@ -1540,7 +1540,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Hashtag Must contain at-least one letter between A-Z',
+            'message' => 'Post Must contain at-least one letter between A-Z',
         );
 
     } elseif (strlen($str) > view_memory(6404, 41985)) {
@@ -1548,56 +1548,56 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Hashtag Must be ' . view_memory(6404, 41985) . ' characters or less',
+            'message' => 'Post Must be ' . view_memory(6404, 41985) . ' characters or less',
         );
 
-    } elseif ($hashtagid && array_key_exists(strtolower($str), $CI->config->item('handlhandles___6287'))) {
+    } elseif ($postid && array_key_exists(strtolower($str), $CI->config->item('handlusers___6287'))) {
 
         return array(
             'status' => 0,
             'db_duplicate' => 1,
-            'message' => 'Hashtag "' . $str . '" already in use.',
+            'message' => 'Post "' . $str . '" already in use.',
         );
 
     }
 
     //Syntax good! Now let's check the DB for duplicates
-    if ($hashtagid > 0) {
+    if ($postid > 0) {
 
-        foreach ($CI->Hashtags->read(array(
-            'hashtagid !=' => $hashtagid,
-            'LOWER(hashtagterm)' => strtolower($str),
+        foreach ($CI->Posts->read(array(
+            'postid !=' => $postid,
+            'LOWER(posthashtag)' => strtolower($str),
         ), 0) as $matched) {
             return array(
                 'status' => 0,
                 'db_duplicate' => 1,
-                'message' => 'Hashtag "' . $str . '" already in use.',
+                'message' => 'Post "' . $str . '" already in use.',
             );
         }
 
         //Since not found we can replace this:
-        $CI->Hashtags->update($hashtagid, array(
-            'hashtagterm' => change_handle($str),
-        ), $handle_session['handleid']);
+        $CI->Posts->update($postid, array(
+            'posthashtag' => change_user($str),
+        ), $user_session['userid']);
 
-    } elseif ($handleid > 0) {
+    } elseif ($userid > 0) {
 
-        foreach ($CI->Handles->read(array(
-            'handleid !=' => $handleid,
-            'LOWER(handleterm)' => strtolower($str),
+        foreach ($CI->Users->read(array(
+            'userid !=' => $userid,
+            'LOWER(userhandle)' => strtolower($str),
         ), 0) as $matched) {
             //Is it active?
             return array(
                 'status' => 0,
                 'db_duplicate' => 1,
-                'message' => 'Hashtag "' . $str . '" already in use.',
+                'message' => 'Post "' . $str . '" already in use.',
             );
         }
 
         //Since not active we can replace this:
-        $CI->Handles->update($handleid, array(
-            'handleterm' => change_handle($str),
-        ), $handle_session['handleid']);
+        $CI->Users->update($userid, array(
+            'userhandle' => change_user($str),
+        ), $user_session['userid']);
 
     }
 
@@ -1612,7 +1612,7 @@ function validate_update_handle($str, $hashtagid = null, $handleid = null)
 }
 
 
-function validate_handlename($str)
+function validate_username($str)
 {
 
     //Validate:
@@ -1625,21 +1625,21 @@ function validate_handlename($str)
 
         return array(
             'status' => 0,
-            'message' => 'Handle title missing',
+            'message' => 'User title missing',
         );
 
     } elseif (strlen(trim($str)) < 1) {
 
         return array(
             'status' => 0,
-            'message' => 'Enter Handle title to continue.',
+            'message' => 'Enter User title to continue.',
         );
 
     } elseif (strlen($str) > view_memory(6404, 6197)) {
 
         return array(
             'status' => 0,
-            'message' => 'Handle title must be ' . view_memory(6404, 6197) . ' characters or less',
+            'message' => 'User title must be ' . view_memory(6404, 6197) . ' characters or less',
         );
 
     }
@@ -1647,7 +1647,7 @@ function validate_handlename($str)
     //All good, return success:
     return array(
         'status' => 1,
-        'handlename_clean' => trim($title_clean),
+        'username_clean' => trim($title_clean),
     );
 
 }
@@ -1679,19 +1679,19 @@ function delete_all_between($beginning, $end, $string)
     return delete_all_between($beginning, $end, str_replace($textToDelete, '', $string)); // recursion to ensure all occurrences are replaced
 }
 
-function user_website($chainhandlecreator)
+function user_website($chainusercreator)
 {
     $CI =& get_instance();
-    foreach ($CI->Chains->read(array(
-        'chainhandleoutput' => $chainhandlecreator,
-        'chainhandletype' => 4230, //New Handle Created
-    ), array(), 1) as $handle_created) {
-        return $handle_created['chainhandledomain'];
+    foreach ($CI->Ideachains->read(array(
+        'chainuseroutput' => $chainusercreator,
+        'chainusertype' => 4230, //New User Created
+    ), array(), 1) as $user_created) {
+        return $user_created['chainuserdomain'];
     }
-    foreach ($CI->Chains->read(array(
-        'chainhandlecreator' => $chainhandlecreator,
-    ), array(), 1) as $handle_created) {
-        return $handle_created['chainhandledomain'];
+    foreach ($CI->Ideachains->read(array(
+        'chainusercreator' => $chainusercreator,
+    ), array(), 1) as $user_created) {
+        return $user_created['chainuserdomain'];
     }
     return 0;
 }
@@ -1700,13 +1700,13 @@ function user_website($chainhandlecreator)
 function random_adjective()
 {
 
-    $adjectives = array('Amazing', 'Awesome', 'Adventurous', 'Ambitious', 'Adorable', 'Artistic', 'Agile', 'Acrobatic', 'Attractive', 'Alluring', 'Astonishing', 'Authentic', 'Awkward', 'Ancient', 'American', 'Australian', 'Austrian', 'African', 'Asian', 'Brave', 'Beautiful', 'Bright', 'Busy', 'Big', 'Bold', 'Basic', 'Blissful', 'Bouncy', 'Beneficial', 'Bashful', 'Black', 'Brown', 'Burgundy', 'Broad', 'British', 'Belgian', 'Brazilian', 'Creative', 'Confident', 'Cheerful', 'Calm', 'Cute', 'Clever', 'Curious', 'Charming', 'Courageous', 'Clean', 'Cool', 'Considerate', 'Caring', 'Crazy', 'Classic', 'Chic', 'Cloudy', 'Colombian', 'Chinese', 'Delightful', 'Dreamy', 'Daring', 'Dynamic', 'Dark', 'Decent', 'Drastic', 'Defiant', 'Dedicated', 'Deep', 'Desirable', 'Dirty', 'Dramatic', 'Dizzy', 'Demanding', 'Diligent', 'Dutch', 'Danish', 'Delicious', 'Dazzling', 'Easy', 'Elegant', 'Enthusiastic', 'Eager', 'Efficient', 'Empathetic', 'Excellent', 'Exciting', 'Effective', 'Extravagant', 'Entertaining', 'Exotic', 'Expressive', 'Expensive', 'Elaborate', 'European', 'Egyptian', 'Eastern', 'Elderly', 'Educational', 'Fantastic', 'Fabulous', 'Friendly', 'Funny', 'Fearless', 'Fresh', 'Fascinating', 'Fluffy', 'Fierce', 'Fine', 'Free', 'Frugal', 'French', 'Futuristic', 'Fast', 'Flat', 'Famous', 'Flawless', 'Formal', 'Frizzy', 'Gorgeous', 'Great', 'Gentle', 'Generous', 'Gracious', 'Genuine', 'Glorious', 'Graceful', 'Golden', 'Grand', 'Green', 'Growing', 'Groovy', 'Greek', 'Grumpy', 'Gothic', 'Gargantuan', 'Gigantic', 'German', 'Georgian', 'Happy', 'Hot', 'Humble', 'Honest', 'Healthy', 'Heavy', 'Handsome', 'High', 'Helpful', 'Hilarious', 'Heavenly', 'Harmonious', 'Hardworking', 'Historical', 'Heartfelt', 'Homey', 'Hungry', 'Huge', 'Hispanic', 'Hindu', 'Interesting', 'Intelligent', 'Incredible', 'Inspiring', 'Impressive', 'Imaginative', 'Inquisitive', 'Iconic', 'Indigo', 'Industrious', 'Inevitable', 'Inexpensive', 'Incomparable', 'Hashtaglistic', 'Illustrious', 'Indian', 'Italian', 'Irresistible', 'Irrelevant', 'Icy', 'Joyful', 'Jolly', 'Jovial', 'Jaunty', 'Jaded', 'Jazzy', 'Jumpy', 'Juicy', 'Judgmental', 'Jumbled', 'Japanese', 'Javanese', 'Jewish', 'Jittery', 'Junior', 'Justified', 'Jubilant', 'Jade', 'Jumbo', 'Joint', 'Kind', 'Knowledgeable', 'Keen', 'Kooky', 'Knotty', 'Kinetic', 'Known', 'Keen-eyed', 'Knightly', 'Keen-witted', 'Kempt', 'Knockout', 'Knackered', 'Kindhearted', 'Kenyan', 'Kiddy', 'Knotted', 'Kyrgyzstani', 'Kindred', 'Kentuckian', 'Loud', 'Lively', 'Lazy', 'Loyal', 'Long', 'Lonely', 'Lovely', 'Large', 'Light', 'Low', 'Luxurious', 'Lasting', 'Literal', 'Learned', 'Lucky', 'Magnificent', 'Mysterious', 'Modern', 'Moody', 'Musical', 'Mighty', 'Masculine', 'Mesmerizing', 'Mindful', 'Memorable', 'Multicultural', 'Moral', 'Majestic', 'Mischievous', 'Mouthwatering', 'Mellow', 'Modest', 'Magical', 'Melodic', 'Mature', 'Nervous', 'Natural', 'New', 'Nice', 'Noble', 'Naughty', 'Neat', 'Nonchalant', 'Noisy', 'Narrow', 'Nostalgic', 'Needy', 'Negative', 'Nutritious', 'Nonstop', 'Noteworthy', 'Numerous', 'Notable', 'Nurturing', 'Nifty', 'Obvious', 'Original', 'Optimistic', 'Ordinary', 'Official', 'Outstanding', 'Open', 'Organic', 'Odd', 'Observant', 'Obedient', 'Opaque', 'Obsolete', 'Offensive', 'Oily', 'Old-fashioned', 'Ornate', 'Onyx', 'Overwhelming', 'Oceanic', 'Perfect', 'Patient', 'Positive', 'Powerful', 'Popular', 'Polite', 'Peaceful', 'Playful', 'Pleasant', 'Precious', 'Practical', 'Private', 'Proud', 'Profound', 'Pretty', 'Painful', 'Priceless', 'Puzzled', 'Persistent', 'Passionate', 'Quaint', 'Quick', 'Quiet', 'Quirky', 'Quizzical', 'Queenly', 'Quivering', 'Quotable', 'Qualified', 'Quantifiable', 'Questionable', 'Quarrelsome', 'Queasy', 'Quenched', 'Quack', 'Quilted', 'Quizzing', 'Reliable', 'Responsible', 'Romantic', 'Rich', 'Rude', 'Real', 'Radiant', 'Royal', 'Rough', 'Respectful', 'Red', 'Rational', 'Rustic', 'Radiant', 'Robust', 'Rare', 'Resilient', 'Reckless', 'Ready', 'Rambunctious', 'Strong', 'Smart', 'Serious', 'Sad', 'Special', 'Simple', 'Super', 'Sincere', 'Safe', 'Stunning', 'Sweet', 'Shy', 'Successful', 'Satisfied', 'Shiny', 'Silent', 'Sparkling', 'Strong-willed', 'Scary', 'Surprised', 'Tall', 'Talkative', 'Tasty', 'Tender', 'Terrific', 'Terrible', 'Thoughtful', 'Thrifty', 'Timely', 'Tough', 'Traditional', 'Trustworthy', 'Tremendous', 'Tricky', 'Tolerant', 'Tenacious', 'Tiny', 'Tired', 'Top', 'Trembling', 'Ugly', 'Ultimate', 'Unbelievable', 'Uncertain', 'Uncommon', 'Unconditional', 'Unconscious', 'Understanding', 'Unforgettable', 'Unhappy', 'Unique', 'United', 'Universal', 'Unusual', 'Upbeat', 'Uplifting', 'Urbane', 'Urgent', 'Useful', 'Useless', 'Valuable', 'Vague', 'Valid', 'Vast', 'Various', 'Vengeful', 'Vibrant', 'Victorious', 'Vigorous', 'Villainous', 'Vital', 'Vivacious', 'Vocal', 'Volatile', 'Volcanic', 'Voracious', 'Vulnerable', 'Vicious', 'Velvet', 'Verbal', 'Warm', 'Wild', 'Witty', 'Wise', 'Wonderful', 'Worried', 'Wondrous', 'Wealthy', 'Whimsical', 'Wicked', 'Wide', 'Wavy', 'Watery', 'Weighty', 'Wooden', 'Weak', 'Wary', 'Winning', 'Well-groomed', 'Wholesome', 'Xeric', 'Xerophytic', 'Xerotic', 'Xyloid', 'Xylonic', 'Xylophagous', 'Xanthic', 'Xanthous', 'Xerarch', 'Xylotomous', 'Xerographic', 'Xenial', 'Xenogenetic', 'Xenolithic', 'Xylophilous', 'Yellow', 'Young', 'Yielding', 'Yearly', 'Yummy', 'Yawning', 'Yucky', 'Yearning', 'Yeasty', 'Yielding', 'Youthful', 'Yare', 'Yclept', 'Yellowish', 'Yearlong', 'Youth', 'Zealous', 'Zesty', 'Zigzag', 'Zillionth', 'Zinciferous', 'Zingy', 'Zippered', 'Zippy', 'Zoological', 'Zonal', 'Ambitious', 'Amiable', 'Analytical', 'Assertive', 'Authentic', 'Bold', 'Calm', 'Charismatic', 'Charming', 'Cheerful', 'Compassionate', 'Confident', 'Conscientious', 'Considerate', 'Creative', 'Curious', 'Dependable', 'Diligent', 'Disciplined', 'Easygoing', 'Empathetic', 'Enthusiastic', 'Extraverted', 'Flexible', 'Friendly', 'Generous', 'Genuine', 'Gracious', 'Hardworking', 'Honest', 'Humble', 'Independent', 'Innovative', 'Insightful', 'Intelligent', 'Kind', 'Logical', 'Loyal', 'Open-minded', 'Optimistic', 'Outgoing', 'Passionate', 'Patient', 'Persistent', 'Practical', 'Rational', 'Reliable', 'Rehandleful', 'Responsible', 'Self-confident', 'Happy', 'Sad', 'Angry', 'Fearful', 'Anxious', 'Excited', 'Frustrated', 'Nostalgic', 'Hopeful', 'Envious', 'Jealous', 'Empathetic', 'Curious', 'Surprised', 'Disappointed', 'Grateful', 'Confused', 'Content', 'Lonely', 'Loved', 'Joyful', 'Melancholic', 'Irritated', 'Apprehensive', 'Restless', 'Ecstatic', 'Distraught', 'Panicked', 'Annoyed', 'Numb', 'Scared', 'Enraged', 'Heartbroken', 'Amused', 'Overwhelmed', 'Grateful', 'Conflicted', 'Peaceful', 'Devastated', 'Empowered');
+    $adjectives = array('Amazing', 'Awesome', 'Adventurous', 'Ambitious', 'Adorable', 'Artistic', 'Agile', 'Acrobatic', 'Attractive', 'Alluring', 'Astonishing', 'Authentic', 'Awkward', 'Ancient', 'American', 'Australian', 'Austrian', 'African', 'Asian', 'Brave', 'Beautiful', 'Bright', 'Busy', 'Big', 'Bold', 'Basic', 'Blissful', 'Bouncy', 'Beneficial', 'Bashful', 'Black', 'Brown', 'Burgundy', 'Broad', 'British', 'Belgian', 'Brazilian', 'Creative', 'Confident', 'Cheerful', 'Calm', 'Cute', 'Clever', 'Curious', 'Charming', 'Courageous', 'Clean', 'Cool', 'Considerate', 'Caring', 'Crazy', 'Classic', 'Chic', 'Cloudy', 'Colombian', 'Chinese', 'Delightful', 'Dreamy', 'Daring', 'Dynamic', 'Dark', 'Decent', 'Drastic', 'Defiant', 'Dedicated', 'Deep', 'Desirable', 'Dirty', 'Dramatic', 'Dizzy', 'Demanding', 'Diligent', 'Dutch', 'Danish', 'Delicious', 'Dazzling', 'Easy', 'Elegant', 'Enthusiastic', 'Eager', 'Efficient', 'Empathetic', 'Excellent', 'Exciting', 'Effective', 'Extravagant', 'Entertaining', 'Exotic', 'Expressive', 'Expensive', 'Elaborate', 'European', 'Egyptian', 'Eastern', 'Elderly', 'Educational', 'Fantastic', 'Fabulous', 'Friendly', 'Funny', 'Fearless', 'Fresh', 'Fascinating', 'Fluffy', 'Fierce', 'Fine', 'Free', 'Frugal', 'French', 'Futuristic', 'Fast', 'Flat', 'Famous', 'Flawless', 'Formal', 'Frizzy', 'Gorgeous', 'Great', 'Gentle', 'Generous', 'Gracious', 'Genuine', 'Glorious', 'Graceful', 'Golden', 'Grand', 'Green', 'Growing', 'Groovy', 'Greek', 'Grumpy', 'Gothic', 'Gargantuan', 'Gigantic', 'German', 'Georgian', 'Happy', 'Hot', 'Humble', 'Honest', 'Healthy', 'Heavy', 'Handsome', 'High', 'Helpful', 'Hilarious', 'Heavenly', 'Harmonious', 'Hardworking', 'Historical', 'Heartfelt', 'Homey', 'Hungry', 'Huge', 'Hispanic', 'Hindu', 'Interesting', 'Intelligent', 'Incredible', 'Inspiring', 'Impressive', 'Imaginative', 'Inquisitive', 'Iconic', 'Indigo', 'Industrious', 'Inevitable', 'Inexpensive', 'Incomparable', 'Postlistic', 'Illustrious', 'Indian', 'Italian', 'Irresistible', 'Irrelevant', 'Icy', 'Joyful', 'Jolly', 'Jovial', 'Jaunty', 'Jaded', 'Jazzy', 'Jumpy', 'Juicy', 'Judgmental', 'Jumbled', 'Japanese', 'Javanese', 'Jewish', 'Jittery', 'Junior', 'Justified', 'Jubilant', 'Jade', 'Jumbo', 'Joint', 'Kind', 'Knowledgeable', 'Keen', 'Kooky', 'Knotty', 'Kinetic', 'Known', 'Keen-eyed', 'Knightly', 'Keen-witted', 'Kempt', 'Knockout', 'Knackered', 'Kindhearted', 'Kenyan', 'Kiddy', 'Knotted', 'Kyrgyzstani', 'Kindred', 'Kentuckian', 'Loud', 'Lively', 'Lazy', 'Loyal', 'Long', 'Lonely', 'Lovely', 'Large', 'Light', 'Low', 'Luxurious', 'Lasting', 'Literal', 'Learned', 'Lucky', 'Magnificent', 'Mysterious', 'Modern', 'Moody', 'Musical', 'Mighty', 'Masculine', 'Mesmerizing', 'Mindful', 'Memorable', 'Multicultural', 'Moral', 'Majestic', 'Mischievous', 'Mouthwatering', 'Mellow', 'Modest', 'Magical', 'Melodic', 'Mature', 'Nervous', 'Natural', 'New', 'Nice', 'Noble', 'Naughty', 'Neat', 'Nonchalant', 'Noisy', 'Narrow', 'Nostalgic', 'Needy', 'Negative', 'Nutritious', 'Nonstop', 'Noteworthy', 'Numerous', 'Notable', 'Nurturing', 'Nifty', 'Obvious', 'Original', 'Optimistic', 'Ordinary', 'Official', 'Outstanding', 'Open', 'Organic', 'Odd', 'Observant', 'Obedient', 'Opaque', 'Obsolete', 'Offensive', 'Oily', 'Old-fashioned', 'Ornate', 'Onyx', 'Overwhelming', 'Oceanic', 'Perfect', 'Patient', 'Positive', 'Powerful', 'Popular', 'Polite', 'Peaceful', 'Playful', 'Pleasant', 'Precious', 'Practical', 'Private', 'Proud', 'Profound', 'Pretty', 'Painful', 'Priceless', 'Puzzled', 'Persistent', 'Passionate', 'Quaint', 'Quick', 'Quiet', 'Quirky', 'Quizzical', 'Queenly', 'Quivering', 'Quotable', 'Qualified', 'Quantifiable', 'Questionable', 'Quarrelsome', 'Queasy', 'Quenched', 'Quack', 'Quilted', 'Quizzing', 'Reliable', 'Responsible', 'Romantic', 'Rich', 'Rude', 'Real', 'Radiant', 'Royal', 'Rough', 'Respectful', 'Red', 'Rational', 'Rustic', 'Radiant', 'Robust', 'Rare', 'Resilient', 'Reckless', 'Ready', 'Rambunctious', 'Strong', 'Smart', 'Serious', 'Sad', 'Special', 'Simple', 'Super', 'Sincere', 'Safe', 'Stunning', 'Sweet', 'Shy', 'Successful', 'Satisfied', 'Shiny', 'Silent', 'Sparkling', 'Strong-willed', 'Scary', 'Surprised', 'Tall', 'Talkative', 'Tasty', 'Tender', 'Terrific', 'Terrible', 'Thoughtful', 'Thrifty', 'Timely', 'Tough', 'Traditional', 'Trustworthy', 'Tremendous', 'Tricky', 'Tolerant', 'Tenacious', 'Tiny', 'Tired', 'Top', 'Trembling', 'Ugly', 'Ultimate', 'Unbelievable', 'Uncertain', 'Uncommon', 'Unconditional', 'Unconscious', 'Understanding', 'Unforgettable', 'Unhappy', 'Unique', 'United', 'Universal', 'Unusual', 'Upbeat', 'Uplifting', 'Urbane', 'Urgent', 'Useful', 'Useless', 'Valuable', 'Vague', 'Valid', 'Vast', 'Various', 'Vengeful', 'Vibrant', 'Victorious', 'Vigorous', 'Villainous', 'Vital', 'Vivacious', 'Vocal', 'Volatile', 'Volcanic', 'Voracious', 'Vulnerable', 'Vicious', 'Velvet', 'Verbal', 'Warm', 'Wild', 'Witty', 'Wise', 'Wonderful', 'Worried', 'Wondrous', 'Wealthy', 'Whimsical', 'Wicked', 'Wide', 'Wavy', 'Watery', 'Weighty', 'Wooden', 'Weak', 'Wary', 'Winning', 'Well-groomed', 'Wholesome', 'Xeric', 'Xerophytic', 'Xerotic', 'Xyloid', 'Xylonic', 'Xylophagous', 'Xanthic', 'Xanthous', 'Xerarch', 'Xylotomous', 'Xerographic', 'Xenial', 'Xenogenetic', 'Xenolithic', 'Xylophilous', 'Yellow', 'Young', 'Yielding', 'Yearly', 'Yummy', 'Yawning', 'Yucky', 'Yearning', 'Yeasty', 'Yielding', 'Youthful', 'Yare', 'Yclept', 'Yellowish', 'Yearlong', 'Youth', 'Zealous', 'Zesty', 'Zigzag', 'Zillionth', 'Zinciferous', 'Zingy', 'Zippered', 'Zippy', 'Zoological', 'Zonal', 'Ambitious', 'Amiable', 'Analytical', 'Assertive', 'Authentic', 'Bold', 'Calm', 'Charismatic', 'Charming', 'Cheerful', 'Compassionate', 'Confident', 'Conscientious', 'Considerate', 'Creative', 'Curious', 'Dependable', 'Diligent', 'Disciplined', 'Easygoing', 'Empathetic', 'Enthusiastic', 'Extraverted', 'Flexible', 'Friendly', 'Generous', 'Genuine', 'Gracious', 'Hardworking', 'Honest', 'Humble', 'Independent', 'Innovative', 'Insightful', 'Intelligent', 'Kind', 'Logical', 'Loyal', 'Open-minded', 'Optimistic', 'Outgoing', 'Passionate', 'Patient', 'Persistent', 'Practical', 'Rational', 'Reliable', 'Reuserful', 'Responsible', 'Self-confident', 'Happy', 'Sad', 'Angry', 'Fearful', 'Anxious', 'Excited', 'Frustrated', 'Nostalgic', 'Hopeful', 'Envious', 'Jealous', 'Empathetic', 'Curious', 'Surprised', 'Disappointed', 'Grateful', 'Confused', 'Content', 'Lonely', 'Loved', 'Joyful', 'Melancholic', 'Irritated', 'Apprehensive', 'Restless', 'Ecstatic', 'Distraught', 'Panicked', 'Annoyed', 'Numb', 'Scared', 'Enraged', 'Heartbroken', 'Amused', 'Overwhelmed', 'Grateful', 'Conflicted', 'Peaceful', 'Devastated', 'Empowered');
 
     return $adjectives[array_rand($adjectives)];
 }
 
 
-function dispatch_sms($to_phone, $single_message, $handleid = 0, $x_data = array(), $template_hashtagid = 0, $chainhandledomain = 0, $log_tr = true, $demo_only = false)
+function dispatch_sms($to_phone, $single_message, $userid = 0, $x_data = array(), $template_postid = 0, $chainuserdomain = 0, $log_tr = true, $demo_only = false)
 {
 
     $CI =& get_instance();
@@ -1718,9 +1718,9 @@ function dispatch_sms($to_phone, $single_message, $handleid = 0, $x_data = array
         //No way to send an SMS:
         if ($log_tr) {
             log_error('dispatch_sms() missing either: ' . $twilio_account_sid . ' / ' . $twilio_auth_token . ' / ' . $twilio_from_number, array(
-                'chainhandleoutput' => $handleid,
-                'chainhandlecreator' => $handleid,
-                'chainhandledomain' => $chainhandledomain,
+                'chainuseroutput' => $userid,
+                'chainusercreator' => $userid,
+                'chainuserdomain' => $chainuserdomain,
             ));
         }
 
@@ -1758,27 +1758,27 @@ function dispatch_sms($to_phone, $single_message, $handleid = 0, $x_data = array
     //Log Chain:
     if ($log_tr && $sms_success) {
 
-        $handle_session = handle_session();
-        $handleid = ($handleid > 0 ? $handleid : ($handle_session ? $handle_session['handleid'] : 14068));
-        if ($template_hashtagid && count($CI->Hashtags->read(array(
-                'hashtagid' => $template_hashtagid,
+        $user_session = user_session();
+        $userid = ($userid > 0 ? $userid : ($user_session ? $user_session['userid'] : 14068));
+        if ($template_postid && count($CI->Posts->read(array(
+                'postid' => $template_postid,
             )))) {
-            foreach ($CI->Hashtags->read(array(
-                'hashtagid' => $template_hashtagid,
-            )) as $hashtag_template) {
-                $CI->Chains->hashtag_discovered(27676, $handleid, 0, $hashtag_template, array(), array(
+            foreach ($CI->Posts->read(array(
+                'postid' => $template_postid,
+            )) as $post_template) {
+                $CI->Ideachains->post_discovered(27676, $userid, 0, $post_template, array(), array(
                     'chainvalue' => $single_message,
                 ));
             }
-        } elseif ($handleid > 0) {
+        } elseif ($userid > 0) {
 
-            $CI->Chains->create(array_merge($x_data, array(
-                'chainhandletype' => 44176, //Handle View
-                'chainhandleinput' => 27676,
-                'chainhandleoutput' => $handleid,
-                'chainhandlecreator' => $handleid,
+            $CI->Ideachains->create(array_merge($x_data, array(
+                'chainusertype' => 44176, //User View
+                'chainuserinput' => 27676,
+                'chainuseroutput' => $userid,
+                'chainusercreator' => $userid,
                 'chainvalue' => $single_message,
-                'chainhashtagoutput' => $template_hashtagid,
+                'chainpostoutput' => $template_postid,
             )));
         }
 
@@ -1789,18 +1789,18 @@ function dispatch_sms($to_phone, $single_message, $handleid = 0, $x_data = array
 
 }
 
-function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_data = array(), $template_hashtagid = 0, $chainhandledomain = 0, $log_tr = true, $demo_only = false)
+function dispatch_email($to_emails, $subject, $email_body, $userid = 0, $x_data = array(), $template_postid = 0, $chainuserdomain = 0, $log_tr = true, $demo_only = false)
 {
 
     $CI =& get_instance();
-    $domain_name = get_domain('m__title', $handleid, $chainhandledomain);
-    $domain_email = website_setting(28614, $handleid, $chainhandledomain);
+    $domain_name = get_domain('m__title', $userid, $chainuserdomain);
+    $domain_email = website_setting(28614, $userid, $chainuserdomain);
 
     if (!strlen($domain_email)) {
         $domain_name = 'MENCH';
         $domain_name = 'support@mench.com';
         log_error('Domain email is missing! (' . $domain_name . ') (' . $domain_email . ') (' . join(' & ', $to_emails) . ')', array(
-            'chainhandleoutput' => $handleid,
+            'chainuseroutput' => $userid,
         ));
     }
 
@@ -1808,20 +1808,20 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
     $name = 'New User';
     $ReplyToAddresses = array($email_domain);
 
-    if ($handleid > 0) {
+    if ($userid > 0) {
 
-        $es = $CI->Handles->read(array(
-            'handleid' => $handleid,
+        $es = $CI->Users->read(array(
+            'userid' => $userid,
         ));
         if (count($es)) {
 
-            $name = $es[0]['handlename'];
+            $name = $es[0]['username'];
 
             //Also fetch email for this user to populate the reply to:
-            $fetch_emails = $CI->Chains->read(array(
-                'chainhandleinput' => 3288, //Email
-                'chainhandleoutput' => $handleid,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            $fetch_emails = $CI->Ideachains->read(array(
+                'chainuserinput' => 3288, //Email
+                'chainuseroutput' => $userid,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
             ));
             if (count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL)) {
                 array_push($ReplyToAddresses, trim($fetch_emails[0]['chainvalue']));
@@ -1830,22 +1830,22 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
     }
 
     //Email has no word limit to add header & footer:
-    $handles___6287 = $CI->config->item('handles___6287'); //APP
-    $base_domain = 'https://' . get_domain('m__message', $handleid, $chainhandledomain);
+    $users___6287 = $CI->config->item('users___6287'); //APP
+    $base_domain = 'https://' . get_domain('m__message', $userid, $chainuserdomain);
 
     $email_message = '<div class="line">' . randomize_text(29749) . ' ' . $name . ' ' . randomize_text(29750) . '</div>';
     $email_message .= $email_body . "\n";
     $email_message .= '<div class="line">' . randomize_text(12691) . '</div>';
-    $email_message .= '<div class="line">' . get_domain('m__title', $handleid, $chainhandledomain) . '</div>';
+    $email_message .= '<div class="line">' . get_domain('m__title', $userid, $chainuserdomain) . '</div>';
 
 
-    if ($handleid > 0 && count($es) && (!$template_hashtagid || !count($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Writes
-                'chainhandleinput' => 31779, //Mandatory Emails
-                'chainhashtagoutput' => $template_hashtagid,
+    if ($userid > 0 && count($es) && (!$template_postid || !count($CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Writes
+                'chainuserinput' => 31779, //Mandatory Emails
+                'chainpostoutput' => $template_postid,
             ))))) {
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?handlelogin=' . $es[0]['handleterm'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['handleterm']) . '" style="font-size:13px;">' . $handles___6287[28904]['m__title'] . '</a></div>';
+        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?userlogin=' . $es[0]['userhandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['userhandle']) . '" style="font-size:13px;">' . $users___6287[28904]['m__title'] . '</a></div>';
     }
 
 
@@ -1859,7 +1859,7 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
     $email_message = str_replace('href="/', 'style="display:inline-block;" href="' . $base_domain . '/', $email_message);
 
     $email_data = array(
-        // Handle is required
+        // User is required
         'Source' => $email_domain,
         // Destination is required
         'Destination' => array(
@@ -1912,36 +1912,36 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
     //Log Chain:
     if ($log_tr) {
 
-        $handle_session = handle_session();
-        $handleid = ($handleid > 0 ? $handleid : ($handle_session ? $handle_session['handleid'] : 14068));
-        if ($template_hashtagid && count($CI->Hashtags->read(array(
-                'hashtagid' => $template_hashtagid,
+        $user_session = user_session();
+        $userid = ($userid > 0 ? $userid : ($user_session ? $user_session['userid'] : 14068));
+        if ($template_postid && count($CI->Posts->read(array(
+                'postid' => $template_postid,
             )))) {
-            foreach ($CI->Hashtags->read(array(
-                'hashtagid' => $template_hashtagid,
-            )) as $hashtag_template) {
-                $CI->Chains->hashtag_discovered(29399, $handleid, 0, $hashtag_template, array(), array(
+            foreach ($CI->Posts->read(array(
+                'postid' => $template_postid,
+            )) as $post_template) {
+                $CI->Ideachains->post_discovered(29399, $userid, 0, $post_template, array(), array(
                     'chainvalue' => $subject . "\n" . $email_message,
                 ));
             }
-        } elseif ($handleid > 0) {
+        } elseif ($userid > 0) {
 
-            $CI->Chains->create(array_merge($x_data, array(
-                'chainhandletype' => 44176, //Handle View
-                'chainhandleinput' => 29399,
-                'chainhandleoutput' => $handleid,
-                'chainhandlecreator' => $handleid,
+            $CI->Ideachains->create(array_merge($x_data, array(
+                'chainusertype' => 44176, //User View
+                'chainuserinput' => 29399,
+                'chainuseroutput' => $userid,
+                'chainusercreator' => $userid,
                 'chainvalue' => $subject . "\n" . $email_message,
-                'chainhashtagoutput' => $template_hashtagid,
+                'chainpostoutput' => $template_postid,
             )));
         }
 
         //Can we also mark the discovery as complete?
-        if ($handleid && isset($x_data['chainhashtaginput']) && $x_data['chainhashtaginput'] > 0 && isset($x_data['chainhashtagoutput'])) {
-            foreach ($CI->Hashtags->read(array(
-                'hashtagid' => $x_data['chainhashtaginput'],
+        if ($userid && isset($x_data['chainpostinput']) && $x_data['chainpostinput'] > 0 && isset($x_data['chainpostoutput'])) {
+            foreach ($CI->Posts->read(array(
+                'postid' => $x_data['chainpostinput'],
             )) as $email_i) {
-                $CI->Chains->hashtag_discovered(4559, $handleid, $x_data['chainhashtagoutput'], $email_i, $x_data);
+                $CI->Ideachains->post_discovered(4559, $userid, $x_data['chainpostoutput'], $email_i, $x_data);
             }
         }
 
@@ -1953,51 +1953,51 @@ function dispatch_email($to_emails, $subject, $email_body, $handleid = 0, $x_dat
 }
 
 
-function website_setting($setting_id = 0, $initiator_handleid = 0, $chainhandledomain = 0, $force_website = true)
+function website_setting($setting_id = 0, $initiator_userid = 0, $chainuserdomain = 0, $force_website = true)
 {
 
     $CI =& get_instance();
-    $handle_id = 0; //Assume no domain unless found below
+    $user_id = 0; //Assume no domain unless found below
 
-    if (!$initiator_handleid) {
-        $handle_session = handle_session();
-        if ($handle_session && isset($handle_session['handleid']) && $handle_session['handleid'] > 0) {
-            $initiator_handleid = $handle_session['handleid'];
+    if (!$initiator_userid) {
+        $user_session = user_session();
+        if ($user_session && isset($user_session['userid']) && $user_session['userid'] > 0) {
+            $initiator_userid = $user_session['userid'];
         }
     }
 
-    if ($chainhandledomain && $force_website) {
+    if ($chainuserdomain && $force_website) {
 
-        $handle_id = $chainhandledomain;
+        $user_id = $chainuserdomain;
 
     } else {
 
         $server_name = get_server('SERVER_NAME');
         if (strlen($server_name)) {
-            foreach ($CI->config->item('handles___14870') as $chainhandletype => $m) {
+            foreach ($CI->config->item('users___14870') as $chainusertype => $m) {
                 if (substr_count($m['m__message'], $server_name) == 1) {
-                    $handle_id = $chainhandletype;
+                    $user_id = $chainusertype;
                     break;
                 }
             }
         }
 
-        $handle_id = ($handle_id ? $handle_id : ($chainhandledomain > 0 ? $chainhandledomain : 2738 /* Mench */));
+        $user_id = ($user_id ? $user_id : ($chainuserdomain > 0 ? $chainuserdomain : 2738 /* Mench */));
 
     }
 
 
     if (!$setting_id) {
-        return $handle_id;
+        return $user_id;
     }
 
 
-    $handles___domain_sett = $CI->config->item('handles___' . $setting_id); //DOMAINS
+    $users___domain_sett = $CI->config->item('users___' . $setting_id); //DOMAINS
 
-    if (!isset($handles___domain_sett[$handle_id]) || !strlen($handles___domain_sett[$handle_id]['m__message'])) {
-        $target_return = (in_array($setting_id, $CI->config->item('handleids___6404')) ? view_memory(6404, $setting_id) : false);
+    if (!isset($users___domain_sett[$user_id]) || !strlen($users___domain_sett[$user_id]['m__message'])) {
+        $target_return = (in_array($setting_id, $CI->config->item('userids___6404')) ? view_memory(6404, $setting_id) : false);
     } else {
-        $target_return = $handles___domain_sett[$handle_id]['m__message'];
+        $target_return = $users___domain_sett[$user_id]['m__message'];
     }
 
     return $target_return;
@@ -2005,16 +2005,16 @@ function website_setting($setting_id = 0, $initiator_handleid = 0, $chainhandled
 }
 
 
-function get_domain($var_field, $initiator_handleid = 0, $chainhandledomain = 0, $force_website = true)
+function get_domain($var_field, $initiator_userid = 0, $chainuserdomain = 0, $force_website = true)
 {
     $CI =& get_instance();
-    $domain_e = website_setting(0, $initiator_handleid, $chainhandledomain, $force_website);
-    $handles___14870 = $CI->config->item('handles___14870'); //DOMAINS
-    return $handles___14870[$domain_e][$var_field];
+    $domain_e = website_setting(0, $initiator_userid, $chainuserdomain, $force_website);
+    $users___14870 = $CI->config->item('users___14870'); //DOMAINS
+    return $users___14870[$domain_e][$var_field];
 }
 
 
-function handle_access($handleterm = null, $handleid = 0, $e = false, $replacement_handleid = false, $handle_list_config = array())
+function user_access($userhandle = null, $userid = 0, $e = false, $replacement_userid = false, $user_list_config = array())
 {
 
     /*
@@ -2029,24 +2029,24 @@ function handle_access($handleterm = null, $handleid = 0, $e = false, $replaceme
      * */
 
     $CI =& get_instance();
-    $handle_session = handle_session();
-    if (!$replacement_handleid && handle_session(10939)) {
+    $user_session = user_session();
+    if (!$replacement_userid && user_session(10939)) {
         return 3;
-    } elseif (!$replacement_handleid && $handle_session && ($handleterm == $handle_session['handleterm'] || $handleid == $handle_session['handleid'])) {
+    } elseif (!$replacement_userid && $user_session && ($userhandle == $user_session['userhandle'] || $userid == $user_session['userid'])) {
         return 3;
     }
 
-    if (strlen($handleterm)) {
-        $filters['LOWER(handleterm)'] = strtolower($handleterm);
-    } elseif (intval($handleid)) {
-        $filters['handleid'] = $handleid;
-    } elseif (!$e || (!$handle_session && !$replacement_handleid)) {
+    if (strlen($userhandle)) {
+        $filters['LOWER(userhandle)'] = strtolower($userhandle);
+    } elseif (intval($userid)) {
+        $filters['userid'] = $userid;
+    } elseif (!$e || (!$user_session && !$replacement_userid)) {
         return 0;
     }
 
     if (!$e) {
         //Check privacy first:
-        foreach ($CI->Handles->read($filters) as $match_e) {
+        foreach ($CI->Users->read($filters) as $match_e) {
             $e = $match_e;
             break;
         }
@@ -2054,59 +2054,59 @@ function handle_access($handleterm = null, $handleid = 0, $e = false, $replaceme
 
 
     //IF Follows Any
-    $chainhandlecreator = ($replacement_handleid > 0 ? $replacement_handleid : ($handle_session ? $handle_session['handleid'] : 0));
-    if (!count($handle_list_config)) {
-        $handle_list_config = handle_list_config($e['handleid']);
+    $chainusercreator = ($replacement_userid > 0 ? $replacement_userid : ($user_session ? $user_session['userid'] : 0));
+    if (!count($user_list_config)) {
+        $user_list_config = user_list_config($e['userid']);
     }
-    if (is_array($handle_list_config[1645062]) && count($handle_list_config[1645062])) {
+    if (is_array($user_list_config[1645062]) && count($user_list_config[1645062])) {
         $the_counter = 0;
-        if ($chainhandlecreator) {
-            foreach ($handle_list_config[1645062] as $focushandleid) {
-                if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleinput' => $focushandleid,
-                        'chainhandleoutput' => $chainhandlecreator,
+        if ($chainusercreator) {
+            foreach ($user_list_config[1645062] as $focususerid) {
+                if ((($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                        'chainuserinput' => $focususerid,
+                        'chainuseroutput' => $chainusercreator,
                     ))))) {
                     $the_counter++;
                     break;
                 }
             }
         }
-        if (!$chainhandlecreator || !$the_counter) {
+        if (!$chainusercreator || !$the_counter) {
             return 0;
         }
     }
 
 
     //IF Follows All
-    if (is_array($handle_list_config[1645146]) && count($handle_list_config[1645146])) {
+    if (is_array($user_list_config[1645146]) && count($user_list_config[1645146])) {
         $the_counter = 0;
-        if ($chainhandlecreator) {
-            foreach ($handle_list_config[1645146] as $focushandleid) {
-                if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleinput' => $focushandleid,
-                        'chainhandleoutput' => $chainhandlecreator,
+        if ($chainusercreator) {
+            foreach ($user_list_config[1645146] as $focususerid) {
+                if ((($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                        'chainuserinput' => $focususerid,
+                        'chainuseroutput' => $chainusercreator,
                     ))))) {
                     $the_counter++;
                 }
             }
         }
-        if (!$chainhandlecreator || $the_counter < count($handle_list_config[1645146])) {
+        if (!$chainusercreator || $the_counter < count($user_list_config[1645146])) {
             return 0;
         }
     }
 
 
     //IF Not Follows Any
-    if (is_array($handle_list_config[1645161]) && count($handle_list_config[1645161])) {
+    if (is_array($user_list_config[1645161]) && count($user_list_config[1645161])) {
         $the_counter = 0;
-        if ($chainhandlecreator) {
-            foreach ($handle_list_config[1645161] as $focushandleid) {
-                if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleinput' => $focushandleid,
-                        'chainhandleoutput' => $chainhandlecreator,
+        if ($chainusercreator) {
+            foreach ($user_list_config[1645161] as $focususerid) {
+                if (($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                        'chainuserinput' => $focususerid,
+                        'chainuseroutput' => $chainusercreator,
                     )))) {
                     //Found an exclusion, so skip this:
                     $the_counter++;
@@ -2114,27 +2114,27 @@ function handle_access($handleterm = null, $handleid = 0, $e = false, $replaceme
                 }
             }
         }
-        if (!$chainhandlecreator || $the_counter > 0) {
+        if (!$chainusercreator || $the_counter > 0) {
             return 0;
         }
     }
 
     //IF Not Follows All
-    if (is_array($handle_list_config[1645176]) && count($handle_list_config[1645176])) {
+    if (is_array($user_list_config[1645176]) && count($user_list_config[1645176])) {
         $the_counter = 0;
-        if ($chainhandlecreator) {
-            foreach ($handle_list_config[1645176] as $focushandleid) {
-                if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleinput' => $focushandleid,
-                        'chainhandleoutput' => $chainhandlecreator,
+        if ($chainusercreator) {
+            foreach ($user_list_config[1645176] as $focususerid) {
+                if (($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                        'chainuserinput' => $focususerid,
+                        'chainuseroutput' => $chainusercreator,
                     )))) {
                     //Found an exclusion, so skip this:
                     $the_counter++;
                 }
             }
         }
-        if (!$chainhandlecreator || $the_counter == count($handle_list_config[1645176])) {
+        if (!$chainusercreator || $the_counter == count($user_list_config[1645176])) {
             return 0;
         }
     }
@@ -2142,11 +2142,11 @@ function handle_access($handleterm = null, $handleid = 0, $e = false, $replaceme
 
     $is_public = true;
     $is_author = false;
-    if ($handle_session) {
-        $is_author = count($CI->Chains->read(array(
-            'chainhandletype' => 12274,
-            'chainhandlecreator' => $chainhandlecreator,
-            'chainid' => $e['handleid'],
+    if ($user_session) {
+        $is_author = count($CI->Ideachains->read(array(
+            'chainusertype' => 12274,
+            'chainusercreator' => $chainusercreator,
+            'chainuserinput' => $e['userid'],
         )));
     }
 
@@ -2154,23 +2154,23 @@ function handle_access($handleterm = null, $handleid = 0, $e = false, $replaceme
 
 }
 
-function handle_up($handleid, $return_ids = array())
+function user_up($userid, $return_ids = array())
 {
 
     if (!count($return_ids)) {
-        $return_ids = array(intval($handleid));
+        $return_ids = array(intval($userid));
     }
     $CI =& get_instance();
-    foreach ($CI->Chains->read(array(
-        'chainhandleinput > 0' => null,
-        'chainhandleoutput' => $handleid,
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    ), array(), 0) as $up_handle) {
-        if (in_array(intval($up_handle['chainhandleinput']), $return_ids)) {
+    foreach ($CI->Ideachains->read(array(
+        'chainuserinput > 0' => null,
+        'chainuseroutput' => $userid,
+        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+    ), array(), 0) as $up_user) {
+        if (in_array(intval($up_user['chainuserinput']), $return_ids)) {
             continue;
         }
-        array_push($return_ids, intval($up_handle['chainhandleinput']));
-        $return_ids_up = handle_up($up_handle['chainhandleinput'], $return_ids);
+        array_push($return_ids, intval($up_user['chainuserinput']));
+        $return_ids_up = user_up($up_user['chainuserinput'], $return_ids);
         foreach ($return_ids_up as $return_id_up) {
             if (!in_array($return_id_up, $return_ids)) {
                 array_push($return_ids, $return_id_up);
@@ -2181,7 +2181,7 @@ function handle_up($handleid, $return_ids = array())
     return $return_ids;
 }
 
-function hashtag_access($hashtagterm = null, $hashtagid = 0, $i = false, $replacement_handleid = false, $hashtag_list_config = array(), $is_cahce = false)
+function post_access($posthashtag = null, $postid = 0, $i = false, $replacement_userid = false, $post_list_config = array(), $is_cahce = false)
 {
 
     /*
@@ -2196,40 +2196,40 @@ function hashtag_access($hashtagterm = null, $hashtagid = 0, $i = false, $replac
      * */
 
     $CI =& get_instance();
-    $handle_session = handle_session();
-    $discovery_mode = ($replacement_handleid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlhandles___6287'))) ? true : false));
+    $user_session = user_session();
+    $discovery_mode = ($replacement_userid > 0 ? true : ((isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2)) && !array_key_exists(strtolower($CI->uri->segment(1)), $CI->config->item('handlusers___6287'))) ? true : false));
 
     if ($is_cahce) {
         return 1;
     }
 
-    if (!$discovery_mode && handle_session(12700)) {
+    if (!$discovery_mode && user_session(12700)) {
         return 3;
     }
 
 
     if (!$i) {
-        if (strlen($hashtagterm)) {
-            $filters['LOWER(hashtagterm)'] = strtolower($hashtagterm);
-        } elseif (intval($hashtagid)) {
-            $filters['hashtagid'] = $hashtagid;
+        if (strlen($posthashtag)) {
+            $filters['LOWER(posthashtag)'] = strtolower($posthashtag);
+        } elseif (intval($postid)) {
+            $filters['postid'] = $postid;
         } elseif (!$i) {
             return 0;
         }
         //Check privacy first:
-        foreach ($CI->Hashtags->read($filters) as $match_i) {
+        foreach ($CI->Posts->read($filters) as $match_i) {
             $i = $match_i;
             break;
         }
     }
 
-    $chainhandlecreator = ($replacement_handleid > 0 ? $replacement_handleid : ($handle_session ? $handle_session['handleid'] : 0));
+    $chainusercreator = ($replacement_userid > 0 ? $replacement_userid : ($user_session ? $user_session['userid'] : 0));
     $is_author = false;
-    if ($chainhandlecreator) {
-        $is_author = count($CI->Chains->read(array(
-            'chainhandletype' => 12273,
-            'chainhandlecreator' => $chainhandlecreator,
-            'chainid' => $i['hashtagid'],
+    if ($chainusercreator) {
+        $is_author = count($CI->Ideachains->read(array(
+            'chainusertype' => 12273,
+            'chainusercreator' => $chainusercreator,
+            'chainpostinput' => $i['postid'],
         )));
     }
 
@@ -2238,10 +2238,10 @@ function hashtag_access($hashtagterm = null, $hashtagid = 0, $i = false, $replac
         //Authors can always edit:
         return (!$discovery_mode ? 3 : 2);
 
-    } elseif (!$discovery_mode && count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42953')) . ')' => null, //Mentioned Handles
-            'chainhandleinput' => $chainhandlecreator,
-            'chainhashtagoutput' => $i['hashtagid'],
+    } elseif (!$discovery_mode && count($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___42953')) . ')' => null, //Mentioned Users
+            'chainuserinput' => $chainusercreator,
+            'chainpostoutput' => $i['postid'],
         )))) {
 
         //Mentioned can always reply:
@@ -2250,68 +2250,68 @@ function hashtag_access($hashtagterm = null, $hashtagid = 0, $i = false, $replac
     } else {
 
         //Inventory Limits:
-        if (!count($hashtag_list_config) && hashtag_spots_remaining($hashtagid) == 0) {
+        if (!count($post_list_config) && post_spots_remaining($postid) == 0) {
             return 0;
         }
 
-        // HASHTAG RELATION CHECK:
-        $hashtag_list_config = hashtag_list_config($hashtagid);
+        // POST RELATION CHECK:
+        $post_list_config = post_list_config($postid);
 
 
-        //If hashtag discovered All
-        if (count($hashtag_list_config[44161])) {
+        //If post discovered All
+        if (count($post_list_config[44161])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[44161] as $focushashtagid) {
-                    if (count($CI->Chains->read(array(
-                        'chainhandlecreator' => $chainhandlecreator,
-                        'chainhashtaginput' => $focushashtagid,
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            if ($chainusercreator) {
+                foreach ($post_list_config[44161] as $focuspostid) {
+                    if (count($CI->Ideachains->read(array(
+                        'chainusercreator' => $chainusercreator,
+                        'chainpostinput' => $focuspostid,
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                     }
                 }
             }
-            if (!$chainhandlecreator || $the_counter < count($hashtag_list_config[44161])) {
+            if (!$chainusercreator || $the_counter < count($post_list_config[44161])) {
                 return 0;
             }
         }
 
-        //If hashtag discovered Any
-        if (count($hashtag_list_config[40791])) {
+        //If post discovered Any
+        if (count($post_list_config[40791])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[40791] as $focushashtagid) {
-                    if (count($CI->Chains->read(array(
-                        'chainhandlecreator' => $chainhandlecreator,
-                        'chainhashtaginput' => $focushashtagid,
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            if ($chainusercreator) {
+                foreach ($post_list_config[40791] as $focuspostid) {
+                    if (count($CI->Ideachains->read(array(
+                        'chainusercreator' => $chainusercreator,
+                        'chainpostinput' => $focuspostid,
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                         break;
                     }
                 }
             }
-            if (!$chainhandlecreator || !$the_counter) {
+            if (!$chainusercreator || !$the_counter) {
                 return 0;
             }
         }
 
 
-        //If Not hashtag discovered All
-        if (count($hashtag_list_config[44162])) {
+        //If Not post discovered All
+        if (count($post_list_config[44162])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[44162] as $focushashtagid) {
-                    if (count($CI->Chains->read(array(
-                        'chainhandlecreator' => $chainhandlecreator,
-                        'chainhashtaginput' => $focushashtagid,
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            if ($chainusercreator) {
+                foreach ($post_list_config[44162] as $focuspostid) {
+                    if (count($CI->Ideachains->read(array(
+                        'chainusercreator' => $chainusercreator,
+                        'chainpostinput' => $focuspostid,
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                     }
                 }
-                if (!$chainhandlecreator || $the_counter >= count($hashtag_list_config[44162])) {
+                if (!$chainusercreator || $the_counter >= count($post_list_config[44162])) {
                     return 0;
                 }
             } else {
@@ -2320,80 +2320,80 @@ function hashtag_access($hashtagterm = null, $hashtagid = 0, $i = false, $replac
         }
 
 
-        //If Not hashtag discovered Any
-        if (count($hashtag_list_config[40793])) {
+        //If Not post discovered Any
+        if (count($post_list_config[40793])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[40793] as $focushashtagid) {
-                    if (count($CI->Chains->read(array(
-                        'chainhandlecreator' => $chainhandlecreator,
-                        'chainhashtaginput' => $focushashtagid,
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            if ($chainusercreator) {
+                foreach ($post_list_config[40793] as $focuspostid) {
+                    if (count($CI->Ideachains->read(array(
+                        'chainusercreator' => $chainusercreator,
+                        'chainpostinput' => $focuspostid,
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                     )))) {
                         $the_counter++;
                         break;
                     }
                 }
             }
-            if (!$chainhandlecreator || $the_counter > 0) {
+            if (!$chainusercreator || $the_counter > 0) {
                 return 0;
             }
         }
 
 
-        // HANDLE RELATION CHECK:
+        // USER RELATION CHECK:
 
 
         //IF Follows Any
-        if (count($hashtag_list_config[27984])) {
+        if (count($post_list_config[27984])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[27984] as $focushandleid) {
-                    if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                            'chainhandleinput' => $focushandleid,
-                            'chainhandleoutput' => $chainhandlecreator,
+            if ($chainusercreator) {
+                foreach ($post_list_config[27984] as $focususerid) {
+                    if ((($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                            'chainuserinput' => $focususerid,
+                            'chainuseroutput' => $chainusercreator,
                         ))))) {
                         $the_counter++;
                         break;
                     }
                 }
             }
-            if (!$chainhandlecreator || !$the_counter) {
+            if (!$chainusercreator || !$the_counter) {
                 return 0;
             }
         }
 
 
         //IF Follows All
-        if (count($hashtag_list_config[43513])) {
+        if (count($post_list_config[43513])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[43513] as $focushandleid) {
-                    if ((($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                            'chainhandleinput' => $focushandleid,
-                            'chainhandleoutput' => $chainhandlecreator,
+            if ($chainusercreator) {
+                foreach ($post_list_config[43513] as $focususerid) {
+                    if ((($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                            'chainuserinput' => $focususerid,
+                            'chainuseroutput' => $chainusercreator,
                         ))))) {
                         $the_counter++;
                     }
                 }
             }
-            if (!$chainhandlecreator || $the_counter < count($hashtag_list_config[43513])) {
+            if (!$chainusercreator || $the_counter < count($post_list_config[43513])) {
                 return 0;
             }
         }
 
 
         //IF Not Follows Any
-        if (count($hashtag_list_config[43514])) {
+        if (count($post_list_config[43514])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[43514] as $focushandleid) {
-                    if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                            'chainhandleinput' => $focushandleid,
-                            'chainhandleoutput' => $chainhandlecreator,
+            if ($chainusercreator) {
+                foreach ($post_list_config[43514] as $focususerid) {
+                    if (($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                            'chainuserinput' => $focususerid,
+                            'chainuseroutput' => $chainusercreator,
                         )))) {
                         //Found an exclusion, so skip this:
                         $the_counter++;
@@ -2401,27 +2401,27 @@ function hashtag_access($hashtagterm = null, $hashtagid = 0, $i = false, $replac
                     }
                 }
             }
-            if (!$chainhandlecreator || $the_counter > 0) {
+            if (!$chainusercreator || $the_counter > 0) {
                 return 0;
             }
         }
 
         //IF Not Follows All
-        if (count($hashtag_list_config[26600])) {
+        if (count($post_list_config[26600])) {
             $the_counter = 0;
-            if ($chainhandlecreator) {
-                foreach ($hashtag_list_config[26600] as $focushandleid) {
-                    if (($chainhandlecreator == $focushandleid) || count($CI->Chains->read(array(
-                            'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                            'chainhandleinput' => $focushandleid,
-                            'chainhandleoutput' => $chainhandlecreator,
+            if ($chainusercreator) {
+                foreach ($post_list_config[26600] as $focususerid) {
+                    if (($chainusercreator == $focususerid) || count($CI->Ideachains->read(array(
+                            'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                            'chainuserinput' => $focususerid,
+                            'chainuseroutput' => $chainusercreator,
                         )))) {
                         //Found an exclusion, so skip this:
                         $the_counter++;
                     }
                 }
             }
-            if (!$chainhandlecreator || $the_counter == count($hashtag_list_config[26600])) {
+            if (!$chainusercreator || $the_counter == count($post_list_config[26600])) {
                 return 0;
             }
         }
@@ -2467,7 +2467,7 @@ function update_algolia($focus__node = null, $s__id = 0)
      *
      * */
 
-    if ($focus__node && !in_array($focus__node, $CI->config->item('handleids___12761'))) {
+    if ($focus__node && !in_array($focus__node, $CI->config->item('userids___12761'))) {
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
@@ -2486,9 +2486,9 @@ function update_algolia($focus__node = null, $s__id = 0)
 
 
     if ($focus__node == 12273) {
-        $focus_field_id = 'hashtagid';
+        $focus_field_id = 'postid';
     } elseif ($focus__node == 12274) {
-        $focus_field_id = 'handleid';
+        $focus_field_id = 'userid';
     }
 
 
@@ -2507,8 +2507,8 @@ function update_algolia($focus__node = null, $s__id = 0)
 
     } else {
 
-        //Do both hashtags and Handles:
-        $fetch_objects = $CI->config->item('handleids___12761');
+        //Do both posts and Users:
+        $fetch_objects = $CI->config->item('userids___12761');
 
         //We need to update the entire index, so let's truncate it first:
         $search_index->clearIndex();
@@ -2532,19 +2532,19 @@ function update_algolia($focus__node = null, $s__id = 0)
         if ($loop_obj == 12273) {
 
             if ($s__id) {
-                $filters['hashtagid'] = $s__id;
+                $filters['postid'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->Hashtags->read($filters, 0);
+            $db_rows[$loop_obj] = $CI->Posts->read($filters, 0);
 
         } elseif ($loop_obj == 12274) {
 
-            //HANDLES
+            //USERS
             if ($s__id) {
-                $filters['handleid'] = $s__id;
+                $filters['userid'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->Handles->read($filters, 0);
+            $db_rows[$loop_obj] = $CI->Users->read($filters, 0);
 
         }
 
@@ -2561,9 +2561,9 @@ function update_algolia($focus__node = null, $s__id = 0)
             if ($s__id) {
                 //Update weight before updating this object:
                 if ($focus__node == 12273) {
-                    hashtag_number_calculator($s);
+                    post_number_calculator($s);
                 } elseif ($focus__node == 12274) {
-                    handle_number_calculator($s);
+                    user_number_calculator($s);
                 }
             }
 
@@ -2571,7 +2571,7 @@ function update_algolia($focus__node = null, $s__id = 0)
             //Attempt to fetch Algolia object ID from object Metadata:
             if ($focus__node) {
 
-                $external_name = ($focus__node == 12273 ? 'hashtagexternal' : 'handleexternal');
+                $external_name = ($focus__node == 12273 ? 'postexternal' : 'userexternal');
 
                 if (intval($s[$external_name]) > 0) {
                     //We found it! Let's just update existing algolia record
@@ -2582,12 +2582,12 @@ function update_algolia($focus__node = null, $s__id = 0)
 
                 //Clear possible metadata algolia ID's that have been cached:
                 if ($loop_obj == 12273) {
-                    $CI->Hashtags->update($s['hashtagid'], array(
-                        'hashtagexternal' => 0,
+                    $CI->Posts->update($s['postid'], array(
+                        'postexternal' => 0,
                     ));
                 } elseif ($loop_obj == 12274) {
-                    $CI->Handles->update($s['handleid'], array(
-                        'handleexternal' => 0,
+                    $CI->Users->update($s['userid'], array(
+                        'userexternal' => 0,
                     ));
                 }
 
@@ -2600,49 +2600,49 @@ function update_algolia($focus__node = null, $s__id = 0)
             //Now build object-specific index:
             if ($loop_obj == 12273) {
 
-                //HASHTAGS
-                //See if this hashtag has a time-range:
+                //POSTS
+                //See if this post has a time-range:
                 $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['hashtagid']);
-                $export_row['s__handle'] = $s['hashtagterm'];
-                $export_row['s__url'] = view_memory(42903, 33286) . $s['hashtagterm']; //Default to hashtag, forward to discovery is lacking superpowers
+                $export_row['s__id'] = intval($s['postid']);
+                $export_row['s__user'] = $s['posthashtag'];
+                $export_row['s__url'] = view_memory(42903, 33286) . $s['posthashtag']; //Default to post, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['hashtagtext'];
-                $export_row['s__weight'] = intval($s['hashtagweight']);
+                $export_row['s__title'] = $s['posttext'];
+                $export_row['s__weight'] = intval($s['postweight']);
 
-                if (hashtag_is_startable($s)) {
+                if (post_is_startable($s)) {
                     array_push($export_row['_tags'], 'public_index');
                 }
 
             } elseif ($loop_obj == 12274) {
 
-                //HANDLES
+                //USERS
                 $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['handleid']);
-                $export_row['s__handle'] = $s['handleterm'];
-                $export_row['s__url'] = view_memory(42903, 42902) . $s['handleterm'];
-                $export_row['s__cover'] = $s['handlecover'];
-                $export_row['s__title'] = $s['handlename'];
-                $export_row['s__weight'] = intval($s['handleweight']);
+                $export_row['s__id'] = intval($s['userid']);
+                $export_row['s__user'] = $s['userhandle'];
+                $export_row['s__url'] = view_memory(42903, 42902) . $s['userhandle'];
+                $export_row['s__cover'] = $s['usercover'];
+                $export_row['s__title'] = $s['username'];
+                $export_row['s__weight'] = intval($s['userweight']);
 
                 //Is this an image?
-                if (strlen($s['handlecover'])) {
+                if (strlen($s['usercover'])) {
                     array_push($export_row['_tags'], 'has_image');
                 }
 
                 array_push($export_row['_tags'], 'public_index');
 
                 //Fetch Following:
-                foreach ($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                    'chainhandleoutput' => $s['handleid'], //This follower Handle
-                ), array('chainhandleinput'), 0, 0, array('handlename' => 'DESC')) as $x) {
+                foreach ($CI->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                    'chainuseroutput' => $s['userid'], //This follower User
+                ), array('chainuserinput'), 0, 0, array('username' => 'DESC')) as $x) {
 
                     //Add tags:
-                    array_push($export_row['_tags'], 'z_' . $x['handleid']);
+                    array_push($export_row['_tags'], 'z_' . $x['userid']);
 
                     //Add Keywords:
-                    $export_row['s__keywords'] .= $x['handlename'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
+                    $export_row['s__keywords'] .= $x['username'] . (strlen($x['chainvalue']) ? ' ' . $x['chainvalue'] : '') . ' ';
 
                 }
             }
@@ -2696,12 +2696,12 @@ function update_algolia($focus__node = null, $s__id = 0)
             if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1) {
                 foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
                     if ($focus__node == 12273) {
-                        $CI->Hashtags->update($all_db_rows[$key][$focus_field_id], array(
-                            'hashtagexternal' => $algolia_id,
+                        $CI->Posts->update($all_db_rows[$key][$focus_field_id], array(
+                            'postexternal' => $algolia_id,
                         ));
                     } elseif ($focus__node == 12274) {
-                        $CI->Handles->update($all_db_rows[$key][$focus_field_id], array(
-                            'handleexternal' => $algolia_id,
+                        $CI->Users->update($all_db_rows[$key][$focus_field_id], array(
+                            'userexternal' => $algolia_id,
                         ));
                     }
                 }
@@ -2732,13 +2732,13 @@ function update_algolia($focus__node = null, $s__id = 0)
 
             foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                if (isset($all_db_rows[$key]['hashtagid'])) {
-                    $CI->Hashtags->update($all_db_rows[$key][(isset($all_db_rows[$key]['hashtagid']) ? 'hashtagid' : 'handleid')], array(
-                        'hashtagexternal' => intval($algolia_id),
+                if (isset($all_db_rows[$key]['postid'])) {
+                    $CI->Posts->update($all_db_rows[$key][(isset($all_db_rows[$key]['postid']) ? 'postid' : 'userid')], array(
+                        'postexternal' => intval($algolia_id),
                     ));
                 } else {
-                    $CI->Handles->update($all_db_rows[$key][(isset($all_db_rows[$key]['hashtagid']) ? 'hashtagid' : 'handleid')], array(
-                        'handleexternal' => intval($algolia_id),
+                    $CI->Users->update($all_db_rows[$key][(isset($all_db_rows[$key]['postid']) ? 'postid' : 'userid')], array(
+                        'userexternal' => intval($algolia_id),
                     ));
                 }
 
@@ -2780,11 +2780,11 @@ function one_two_explode($one, $two, $str)
 }
 
 
-function hashtag_creation_time($hashtagid)
+function post_creation_time($postid)
 {
     $CI =& get_instance();
-    foreach ($CI->Chains->read(array(
-        'chainid' => $hashtagid,
+    foreach ($CI->Ideachains->read(array(
+        'chainid' => $postid,
     )) as $x) {
         return $x['chaintime'];
     }
@@ -2886,14 +2886,14 @@ function chainprevious($starting_id = -1)
 {
     $CI =& get_instance();
     if ($starting_id < 0) {
-        foreach ($CI->Chains->read(array(
+        foreach ($CI->Ideachains->read(array(
             '(chainhash IS NOT NULL) AND (chainprevious IS NOT NULL)' => NULL,
             'chainvoid >=' => 0, //Any Chain
         ), array(), 1, 0, array('chainid' => 'DESC')) as $x) {
             return $x['chainhash'];
         }
     } elseif ($starting_id > 0) {
-        foreach ($CI->Chains->read(array(
+        foreach ($CI->Ideachains->read(array(
             'chainid >=' => $starting_id,
             'chainvoid >=' => 0, //Any Chain
         ), array(), 1, 0, array('chainid' => 'ASC')) as $x) {
@@ -2908,13 +2908,13 @@ function chainhash($x)
 {
     return sha1(
         substr(strtotime($x['chaintime']), 0, 10) .
-        $x['chainhandledomain'] .
-        $x['chainhandlecreator'] .
-        $x['chainhandletype'] .
-        (isset($x['chainhandleinput']) ? $x['chainhandleinput'] : 0) .
-        (isset($x['chainhandleoutput']) ? $x['chainhandleoutput'] : 0) .
-        (isset($x['chainhashtaginput']) ? $x['chainhashtaginput'] : 0) .
-        (isset($x['chainhashtagoutput']) ? $x['chainhashtagoutput'] : 0) .
+        $x['chainuserdomain'] .
+        $x['chainusercreator'] .
+        $x['chainusertype'] .
+        (isset($x['chainuserinput']) ? $x['chainuserinput'] : 0) .
+        (isset($x['chainuseroutput']) ? $x['chainuseroutput'] : 0) .
+        (isset($x['chainpostinput']) ? $x['chainpostinput'] : 0) .
+        (isset($x['chainpostoutput']) ? $x['chainpostoutput'] : 0) .
         (isset($x['chainvalue']) ? $x['chainvalue'] : '') .
         (isset($x['chainkey']) ? $x['chainkey'] : 0) .
         $x['chainprevious']
@@ -2927,62 +2927,62 @@ function chain_view($x)
     $CI =& get_instance();
     $row1 = '<tr width="100%" style="border-top: 1px solid #000000;">';
     $row2 = '<tr width="100%">';
-    foreach ($CI->config->item('handles___4341') as $handleid => $m) {
+    foreach ($CI->config->item('users___4341') as $userid => $m) {
 
         $column_value = null;
 
-        if (in_array($handleid, array(4593, 14870, 4364, 4366, 4429))) {
+        if (in_array($userid, array(4593, 14870, 4364, 4366, 4429))) {
 
-            //HANDLE
+            //USER
             $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
-            if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
-                foreach ($CI->Handles->read(array('handleid' => $x[$m['m__handle']])) as $focus_e) {
-                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['handleterm'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['handlename'] . '" class="icon-block-sm">' . view_cover($focus_e['handlecover'], '<i class="far fa-at"></i>') . '</a>';
+            if (isset($x[$m['m__user']]) && intval($x[$m['m__user']]) > 0) {
+                foreach ($CI->Users->read(array('userid' => $x[$m['m__user']])) as $focus_e) {
+                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['userhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['username'] . '" class="icon-block-sm">' . view_cover($focus_e['usercover']) . '</a>';
                 }
             }
             $column_value .= '</div></td>';
 
-        } elseif (in_array($handleid, array(4368, 4369))) {
+        } elseif (in_array($userid, array(4368, 4369))) {
 
-            //HASHTAG
+            //POST
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
-            if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
-                foreach ($CI->Hashtags->read(array('hashtagid' => $x[$m['m__handle']])) as $focus_i) {
-                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['hashtagterm'] . '" data-toggle="popover">#' . $focus_i['hashtagterm'] . '</a>';
+            if (isset($x[$m['m__user']]) && intval($x[$m['m__user']]) > 0) {
+                foreach ($CI->Posts->read(array('postid' => $x[$m['m__user']])) as $focus_i) {
+                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['posthashtag'] . '" data-toggle="popover">#' . $focus_i['posthashtag'] . '</a>';
                 }
             }
             $column_value .= '</div></td>';
 
-        } elseif ($handleid == 4367) {
+        } elseif ($userid == 4367) {
 
             //Chain ID
 
             //Determine chain group:
-            $handleterm_sign = '';
-            if (in_array($x['chainhandletype'], array(12273, 12274))) {
-                $handles___4593 = $CI->config->item('handles___4593'); //Chain Type
-                $handleterm_sign = '<span class="group_sign" title="' . $handles___4593[$x['chainhandletype']]['m__title'] . '">' . $handles___4593[$x['chainhandletype']]['m__cover'] . '</span>';
+            $userhandle_sign = '';
+            if (in_array($x['chainusertype'], array(12273, 12274))) {
+                $users___4593 = $CI->config->item('users___4593'); //Chain Type
+                $userhandle_sign = '<span class="group_sign" title="' . $users___4593[$x['chainusertype']]['m__title'] . '">' . $users___4593[$x['chainusertype']]['m__cover'] . '</span>';
             } else {
-                foreach ($CI->config->item('handles___31770') as $groupid => $groupm) {
-                    if (in_array($x['chainhandletype'], $CI->config->item('handleids___' . $groupid))) {
-                        $handleterm_sign = '<span class="group_sign" title="' . $groupm['m__title'] . '">' . $groupm['m__cover'] . '</span>';
+                foreach ($CI->config->item('users___31770') as $groupid => $groupm) {
+                    if (in_array($x['chainusertype'], $CI->config->item('userids___' . $groupid))) {
+                        $userhandle_sign = '<span class="group_sign" title="' . $groupm['m__title'] . '">' . $groupm['m__cover'] . '</span>';
                         break;
                     }
                 }
             }
 
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $handleterm_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__user']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__user']] . '" target="_blank">' . $userhandle_sign . $x[$m['m__user']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
-        } elseif ($handleid == 44395) {
+        } elseif ($userid == 44395) {
 
             //Void:
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__user']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__user']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__user']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
-        } elseif ($handleid == 4362) {
+        } elseif ($userid == 4362) {
 
             //TIME
             $column_value .= '<td style="width:25px !important;">';
@@ -2991,23 +2991,23 @@ function chain_view($x)
             $column_value .= '</div>';
             $column_value .= '</td>';
 
-        } elseif (in_array($handleid, array(1579301, 1579321))) {
+        } elseif (in_array($userid, array(1579301, 1579321))) {
 
             //HASH
             $column_value .= '<td style="width:50px !important;">';
             $column_value .= '<div style="width:50px !important; overflow:hidden;">';
-            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x' . substr($x[$m['m__handle']], -4) . '</span>';
+            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__user']] . '">0x' . substr($x[$m['m__user']], -4) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
 
-        } elseif ($handleid == 4370) {
+        } elseif ($userid == 4370) {
 
             //Number
             $column_value .= '<td>';
             $column_value .= ($x['chainkey'] > 0 ? $x['chainkey'] : '&nbsp;');
             $column_value .= '</td>';
 
-        } elseif ($handleid == 4372) {
+        } elseif ($userid == 4372) {
 
             //Text
             $column_value .= '<td>';
@@ -3016,7 +3016,7 @@ function chain_view($x)
 
         }
 
-        if (in_array($handleid, $CI->config->item('handleids___1579727'))) {
+        if (in_array($userid, $CI->config->item('userids___1579727'))) {
             //Second row:
             $row2 .= $column_value;
         } else {
@@ -3081,13 +3081,13 @@ function view_time_difference($t, $micro = false)
 
 function view_app_chain($app_id)
 {
-    return view_memory(42903, 6287) . view_memory(6287, $app_id, 'm__handle');
+    return view_memory(42903, 6287) . view_memory(6287, $app_id, 'm__user');
 }
 
 function view_memory($following, $follower, $filed = 'm__message')
 {
     $CI =& get_instance();
-    $memory_tree = @$CI->config->item('handles___' . $following);
+    $memory_tree = @$CI->config->item('users___' . $following);
     if (is_array($memory_tree) && count($memory_tree) && isset($memory_tree[$follower][$filed])) {
         return $memory_tree[$follower][$filed];
     } else {
@@ -3096,21 +3096,21 @@ function view_memory($following, $follower, $filed = 'm__message')
 }
 
 
-function view_cache($following, $handleid, $micro_status = true, $data_placement = 'top', $hashtagid = 0)
+function view_cache($following, $userid, $micro_status = true, $data_placement = 'top', $postid = 0)
 {
 
     /*
      *
-     * UI for Platform Cache Handles
+     * UI for Platform Cache Users
      *
      * */
 
     $CI =& get_instance();
-    $config_array = $CI->config->item('handles___' . $following);
-    if (!isset($config_array[$handleid])) {
+    $config_array = $CI->config->item('users___' . $following);
+    if (!isset($config_array[$userid])) {
         return false;
     }
-    $cache = $config_array[$handleid];
+    $cache = $config_array[$userid];
     if (!$cache) {
         //Could not find matching item
         return false;
@@ -3126,30 +3126,30 @@ function view_cache($following, $handleid, $micro_status = true, $data_placement
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="' . ($micro_status ? 'cache_micro_' . $following . '_' . $hashtagid : '') . '" ' . ($micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
+        return '<span class="' . ($micro_status ? 'cache_micro_' . $following . '_' . $postid : '') . '" ' . ($micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
     }
 }
 
 
-function view_card($href, $is_current, $chainhandletype, $o__type, $o__title, $chainvalue = null)
+function view_card($href, $is_current, $chainusertype, $o__type, $o__title, $chainvalue = null)
 {
     $CI =& get_instance();
-    $handles___4593 = $CI->config->item('handles___4593');
+    $users___4593 = $CI->config->item('users___4593');
     return '<a href="' . ($is_current ? 'javascript:alert(\'You are here already!\');' : $href) . '" class="dropdown-item ' . ($is_current ? ' active ' : '') . '">' .
-        (in_array($chainhandletype, $CI->config->item('handleids___32172')) ? '<span class="icon-block-xs">' . $handles___4593[$chainhandletype]['m__cover'] . '</span>' : '') .
+        (in_array($chainusertype, $CI->config->item('userids___32172')) ? '<span class="icon-block-xs">' . $users___4593[$chainusertype]['m__cover'] . '</span>' : '') .
         (strlen($o__type) ? '<span class="icon-block-xs">' . $o__type . '</span>' : '&nbsp;') . //Type or Cover
         $o__title .
-        (strlen($chainvalue) && handle_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
+        (strlen($chainvalue) && user_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
         '</a>';
 }
 
-function view_more($href, $is_current, $chainhandletype, $o__type, $o__title, $chainvalue = null)
+function view_more($href, $is_current, $chainusertype, $o__type, $o__title, $chainvalue = null)
 {
     return '<a href="' . ($is_current ? 'javascript:alert(\'You are here already!\');' : $href) . '" class="dropdown-item ' . ($is_current ? ' active ' : '') . '">' .
-        ($chainhandletype ? '<span class="icon-block-xs">' . $chainhandletype . '</span>' : '') .
+        ($chainusertype ? '<span class="icon-block-xs">' . $chainusertype . '</span>' : '') .
         (strlen($o__type) ? '<span class="icon-block-xs">' . $o__type . '</span>' : '&nbsp;') . //Type or Cover
         $o__title .
-        (strlen($chainvalue) && handle_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
+        (strlen($chainvalue) && user_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .
         '</a>';
 }
 
@@ -3170,21 +3170,21 @@ function log_error($error_message, $error_data = array(), $log_error = true)
 {
 
     //Log in PHP File:
-    $handle_session = handle_session();
+    $user_session = user_session();
 
     if ($log_error) {
 
         $CI =& get_instance();
         log_message('error', 'MENCH ERROR: ' . $error_message
-            . ($handle_session ? ' | PLAYER: ' . print_r($handle_session, true) : '')
-            . ($handle_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
+            . ($user_session ? ' | PLAYER: ' . print_r($user_session, true) : '')
+            . ($user_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
-        $CI->Chains->create(array_merge($error_data, array(
-            'chainhandleinput' => 4246, //Platform Bug Reports
-            'chainhandletype' => 44176, //Handle View
+        $CI->Ideachains->create(array_merge($error_data, array(
+            'chainuserinput' => 4246, //Platform Bug Reports
+            'chainusertype' => 44176, //User View
             'chainvalue' => $error_message,
-            'chainhandlecreator' => (isset($error_data['chainhandlecreator']) && $error_data['chainhandlecreator'] > 0 ? $error_data['chainhandlecreator'] : ($handle_session ? $handle_session['handleid'] : 0)),
+            'chainusercreator' => (isset($error_data['chainusercreator']) && $error_data['chainusercreator'] > 0 ? $error_data['chainusercreator'] : ($user_session ? $user_session['userid'] : 0)),
         )));
 
     }
@@ -3192,172 +3192,172 @@ function log_error($error_message, $error_data = array(), $log_error = true)
     return array(
         'status' => 0,
         'message' => $error_message,
-        'handle_session' => $handle_session,
+        'user_session' => $user_session,
         'error_data' => $error_data,
     );
 
 }
 
 
-function handles_query($chainhandletype, $handleid, $current_page = 0, $append_card_icon = true, $chainhandlesub = 0)
+function users_query($chainusertype, $userid, $current_page = 0, $append_card_icon = true, $chainusersub = 0)
 {
 
     /*
      *
-     * Loads Handle
+     * Loads User
      *
      * */
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if ($chainhandletype == 12273) {
+    if ($chainusertype == 12273) {
 
-        //Hashtags Created
+        //Posts Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainhashtagoutput');
+        $joins_objects = array('chainpostoutput');
         $query_filters = array(
-            'chainhandlecreator' => $handleid,
-            'chainhandletype' => $chainhandletype,
+            'chainusercreator' => $userid,
+            'chainusertype' => $chainusertype,
         );
 
-    } elseif ($chainhandletype == 12274) {
+    } elseif ($chainusertype == 12274) {
 
-        //Handle Created
+        //User Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainhandleoutput');
+        $joins_objects = array('chainuseroutput');
         $query_filters = array(
-            'chainhandlecreator' => $handleid,
-            'chainhandletype' => $chainhandletype,
+            'chainusercreator' => $userid,
+            'chainusertype' => $chainusertype,
         );
 
-    } elseif (!in_array($chainhandletype, $CI->config->item('handleids___4527')) || !is_array($CI->config->item('handleids___' . $chainhandletype)) || !count($CI->config->item('handleids___' . $chainhandletype))) {
+    } elseif (!in_array($chainusertype, $CI->config->item('userids___4527')) || !is_array($CI->config->item('userids___' . $chainusertype)) || !count($CI->config->item('userids___' . $chainusertype))) {
 
-        log_error('handles_query() @' . $chainhandletype . ' Empty Array in Cache @4527');
+        log_error('users_query() @' . $chainusertype . ' Empty Array in Cache @4527');
         return false;
 
-    } elseif ($chainhandletype == 32292) {
+    } elseif ($chainusertype == 32292) {
 
         //Relationships
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainhandleoutput');
+        $joins_objects = array('chainuseroutput');
         $query_filters = array(
-            'chainhandlecreator' => $handleid,
-            'chainhandleoutput !=' => $handleid,
-            'chainhandleinput !=' => $handleid,
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HANDLE CHAINS
+            'chainusercreator' => $userid,
+            'chainuseroutput !=' => $userid,
+            'chainuserinput !=' => $userid,
+            'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null, //USER CHAINS
         );
 
-    } elseif ($chainhandletype == 42373) {
+    } elseif ($chainusertype == 42373) {
 
-        $order_columns = handle_sort();
-        $joins_objects = array('chainhandleoutput');
+        $order_columns = user_sort();
+        $joins_objects = array('chainuseroutput');
 
-        if (in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
+        if (in_array($chainusersub, $CI->config->item('userids___32292'))) {
 
             //Down/Followers Sub
             $query_filters = array(
-                'chainhandleinput' => $handleid,
-                'chainhandletype' => $chainhandlesub,
+                'chainuserinput' => $userid,
+                'chainusertype' => $chainusersub,
             );
 
         } else {
 
-            //Down/Followers Handle Chain Groups:
+            //Down/Followers User Chain Groups:
             $query_filters = array(
-                'chainhandleinput' => $handleid,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HANDLE CHAINS
+                'chainuserinput' => $userid,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null, //USER CHAINS
             );
 
         }
 
-    } elseif ($chainhandletype == 42279) {
+    } elseif ($chainusertype == 42279) {
 
-        $order_columns = handle_sort();
-        $joins_objects = array('chainhandleinput');
+        $order_columns = user_sort();
+        $joins_objects = array('chainuserinput');
 
-        if (in_array($chainhandlesub, $CI->config->item('handleids___32292'))) {
+        if (in_array($chainusersub, $CI->config->item('userids___32292'))) {
 
             //Up/Following Sub
             $query_filters = array(
-                'chainhandleoutput' => $handleid,
-                'chainhandletype' => $chainhandlesub,
+                'chainuseroutput' => $userid,
+                'chainusertype' => $chainusersub,
             );
 
         } else {
 
-            //Up/Following Handle Chain Groups:
+            //Up/Following User Chain Groups:
             $query_filters = array(
-                'chainhandleoutput' => $handleid,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HANDLE CHAINS
+                'chainuseroutput' => $userid,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null, //USER CHAINS
             );
 
         }
 
-    } elseif ($chainhandletype == 13550) {
+    } elseif ($chainusertype == 13550) {
 
-        $joins_objects = array('chainhashtagoutput');
-        $order_columns = hashtag_sort();
+        $joins_objects = array('chainpostoutput');
+        $order_columns = post_sort();
 
-        if (in_array($chainhandlesub, $CI->config->item('handleids___13550'))) {
+        if (in_array($chainusersub, $CI->config->item('userids___13550'))) {
             //Mentions Sub
             $query_filters = array(
-                'chainhandletype' => $chainhandlesub,
-                'chainhandleinput' => $handleid,
+                'chainusertype' => $chainusersub,
+                'chainuserinput' => $userid,
             );
         } else {
             //Mentions
             $query_filters = array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
-                'chainhandleinput' => $handleid,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null,
+                'chainuserinput' => $userid,
             );
         }
 
-    } elseif ($chainhandletype == 4486) {
+    } elseif ($chainusertype == 4486) {
 
         $order_columns = array();
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainhashtagoutput');
+        $joins_objects = array('chainpostoutput');
 
 
-        if (in_array($chainhandlesub, $CI->config->item('handleids___4486'))) {
+        if (in_array($chainusersub, $CI->config->item('userids___4486'))) {
 
-            //Hashtags Sub
+            //Posts Sub
             $query_filters = array(
-                'chainhandlecreator' => $handleid,
-                'chainhandletype' => $chainhandlesub,
+                'chainusercreator' => $userid,
+                'chainusertype' => $chainusersub,
             );
 
         } else {
 
-            //Hashtags
+            //Posts
             $query_filters = array(
-                'chainhandlecreator' => $handleid,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //DISCOVERY GROUP
+                'chainusercreator' => $userid,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null, //DISCOVERY GROUP
             );
 
         }
 
-    } elseif ($chainhandletype == 31777) {
+    } elseif ($chainusertype == 31777) {
 
         $order_columns = array();
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainhashtaginput');
+        $joins_objects = array('chainpostinput');
 
-        if (in_array($chainhandlesub, $CI->config->item('handleids___31777'))) {
+        if (in_array($chainusersub, $CI->config->item('userids___31777'))) {
 
             //Discoveries SUB
             $query_filters = array(
-                '(chainhandlecreator=' . $handleid . ' OR chainhandleinput=' . $handleid . ' OR chainhandleoutput=' . $handleid . ')' => null,
-                'chainhandletype' => $chainhandlesub,
+                '(chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
+                'chainusertype' => $chainusersub,
             );
 
         } else {
 
             //Discoveries
             $query_filters = array(
-                '(chainhandlecreator=' . $handleid . ' OR chainhandleinput=' . $handleid . ' OR chainhandleoutput=' . $handleid . ')' => null,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //DISCOVERY GROUP
+                '(chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null, //DISCOVERY GROUP
             );
 
         }
@@ -3374,25 +3374,25 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
     if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        $query = $CI->Chains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
+        $query = $CI->Ideachains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
         return $query;
 
     } else {
 
-        $handles___11035 = $CI->config->item('handles___11035');
-        if (!isset($handles___11035[$chainhandletype]['m__title'])) {
-            log_error('@' . $chainhandletype . ' Missing from Nav @11035', array(
-                'chainhandleoutput' => $chainhandletype,
+        $users___11035 = $CI->config->item('users___11035');
+        if (!isset($users___11035[$chainusertype]['m__title'])) {
+            log_error('@' . $chainusertype . ' Missing from Nav @11035', array(
+                'chainuseroutput' => $chainusertype,
             ));
-            $handles___11035[$chainhandletype] = array(
+            $users___11035[$chainusertype] = array(
                 'm__title' => '',
                 'm__cover' => '',
             );
         }
-        $query = $CI->Chains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
+        $query = $CI->Ideachains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">' . view_number($count_query) . '<span>';
-        $title_desc = number_format($count_query, 0) . ' ' . $handles___11035[$chainhandletype]['m__title'];
+        $title_desc = number_format($count_query, 0) . ' ' . $users___11035[$chainusertype]['m__title'];
 
         if ($append_card_icon) {
 
@@ -3400,11 +3400,11 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-xs">' . $handles___11035[$chainhandletype]['m__cover'] . '</span>';
+            $card_icon = '<span class="icon-block-xs">' . $users___11035[$chainusertype]['m__cover'] . '</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding loadhandle_cards button_of_' . $handleid . '_' . $chainhandletype . '" id="cardhandle_group_' . $chainhandletype . '_' . $handleid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainhandletype="' . $chainhandletype . '" load_handleid="' . $handleid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
-            $ui .= '<div class="dropdown-menu dropdown_' . $chainhandletype . ' coinshandle_' . $handleid . '_' . $chainhandletype . '" aria-labelledby="cardhandle_group_' . $chainhandletype . '_' . $handleid . '">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding loaduser_cards button_of_' . $userid . '_' . $chainusertype . '" id="carduser_group_' . $chainusertype . '_' . $userid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainusertype="' . $chainusertype . '" load_userid="' . $userid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
+            $ui .= '<div class="dropdown-menu dropdown_' . $chainusertype . ' coinsuser_' . $userid . '_' . $chainusertype . '" aria-labelledby="carduser_group_' . $chainusertype . '_' . $userid . '">';
             //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
             $ui .= '</div>';
@@ -3419,56 +3419,56 @@ function handles_query($chainhandletype, $handleid, $current_page = 0, $append_c
 }
 
 
-function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append_card_icon = true, $headline_authors = array())
+function posts_query($chainusertype, $postid, $current_page = 0, $append_card_icon = true, $headline_authors = array())
 {
 
     /*
      *
-     * Loads Hashtag
+     * Loads Post
      *
      * */
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if ($chainhandletype == 13550) {
+    if ($chainusertype == 13550) {
 
-        //HANDLES
-        $joins_objects = array('chainhandleinput');
+        //USERS
+        $joins_objects = array('chainuserinput');
         $query_filters = array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
-            'chainhashtagoutput' => $hashtagid,
+            'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null,
+            'chainpostoutput' => $postid,
         );
-        $order_columns = hashtag_sort();
+        $order_columns = post_sort();
 
-    } elseif ($chainhandletype == 11019) {
+    } elseif ($chainusertype == 11019) {
 
-        //HASHTAG Chain Groups Previous
+        //POST Chain Groups Previous
         $order_columns = array('chainid' => 'DESC');
-        $joins_objects = array('chainhashtaginput');
+        $joins_objects = array('chainpostinput');
         $query_filters = array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //HASHTAG CHAINS
-            'chainhashtagoutput' => $hashtagid,
+            'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null, //POST CHAINS
+            'chainpostoutput' => $postid,
         );
 
-    } elseif ($chainhandletype == 12840) {
+    } elseif ($chainusertype == 12840) {
 
-        //HASHTAG Chain Groups Next
+        //POST Chain Groups Next
         $order_columns = array('chainkey' => 'ASC');
-        $joins_objects = array('chainhashtagoutput');
+        $joins_objects = array('chainpostoutput');
         $query_filters = array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null,
-            'chainhashtaginput' => $hashtagid,
+            'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null,
+            'chainpostinput' => $postid,
         );
 
-    } elseif (in_array($chainhandletype, $CI->config->item('handleids___12144'))) {
+    } elseif (in_array($chainusertype, $CI->config->item('userids___12144'))) {
 
         //DISCOVERIES
         $order_columns = array('chainid' => 'DESC');
-        $joins_objects = array('chainhandlecreator');
+        $joins_objects = array('chainusercreator');
         $query_filters = array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___' . $chainhandletype)) . ')' => null, //DISCOVERIES
-            'chainhashtaginput' => $hashtagid,
+            'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null, //DISCOVERIES
+            'chainpostinput' => $postid,
         );
 
     } else {
@@ -3483,15 +3483,15 @@ function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append
     if ($current_page > 0) {
 
         $limit = view_memory(6404, 11064);
-        return $CI->Chains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
+        return $CI->Ideachains->read($query_filters, $joins_objects, $limit, ($current_page - 1) * $limit, $order_columns);
 
     } else {
 
-        $handles___11035 = $CI->config->item('handles___11035'); //COINS
-        $query = $CI->Chains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
+        $users___11035 = $CI->config->item('users___11035'); //COINS
+        $query = $CI->Ideachains->read($query_filters, $joins_objects, 1, 0, array(), 'COUNT(chainid) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">' . view_number($count_query) . '<span>';
-        $title_desc = number_format($count_query, 0) . (isset($handles___11035[$chainhandletype]['m__title']) ? ' ' . $handles___11035[$chainhandletype]['m__title'] : '');
+        $title_desc = number_format($count_query, 0) . (isset($users___11035[$chainusertype]['m__title']) ? ' ' . $users___11035[$chainusertype]['m__title'] : '');
 
         if ($append_card_icon) {
 
@@ -3499,13 +3499,13 @@ function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-sm">' . $handles___11035[$chainhandletype]['m__cover'] . '</span>';
+            $card_icon = '<span class="icon-block-sm">' . $users___11035[$chainusertype]['m__cover'] . '</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_hashtag_cards button_of_' . $hashtagid . '_' . $chainhandletype . '" id="card_group_hashtag_' . $chainhandletype . '_' . $hashtagid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainhandletype="' . $chainhandletype . '" load_hashtagid="' . $hashtagid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding load_post_cards button_of_' . $postid . '_' . $chainusertype . '" id="card_group_post_' . $chainusertype . '_' . $postid . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_chainusertype="' . $chainusertype . '" load_postid="' . $postid . '" load_counter="' . $count_query . '" load_first_segment="' . $first_segment . '"><span title="' . $title_desc . '" data-toggle="tooltip" data-placement="top">' . $card_icon . $visual_counter . '</span></button>';
 
             //Menu To be loaded dynamically via AJAX:
-            $ui .= '<div class="dropdown-menu dropdown_' . $chainhandletype . ' coins_hashtag_' . $hashtagid . '_' . $chainhandletype . '" aria-labelledby="card_group_hashtag_' . $chainhandletype . '_' . $hashtagid . '"></div>';
+            $ui .= '<div class="dropdown-menu dropdown_' . $chainusertype . ' coins_post_' . $postid . '_' . $chainusertype . '" aria-labelledby="card_group_post_' . $chainusertype . '_' . $postid . '"></div>';
 
             $ui .= '</div>';
 
@@ -3519,30 +3519,30 @@ function hashtags_query($chainhandletype, $hashtagid, $current_page = 0, $append
 
 }
 
-function view_dynamic_headline($dynamic_handleid, $m, $selected_e = null)
+function view_dynamic_headline($dynamic_userid, $m, $selected_e = null)
 {
 
     $CI =& get_instance();
-    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
+    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
 
     $headline = '<span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__title'] . ': ';
 
-    if (in_array($dynamic_handleid, $CI->config->item('handleids___28239'))) {
-        $headline .= '<span class="icon-block-sm" title="' . $handles___11035[28239]['m__message'] . '" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">' . $handles___11035[28239]['m__cover'] . '</span>';
+    if (in_array($dynamic_userid, $CI->config->item('userids___28239'))) {
+        $headline .= '<span class="icon-block-sm" title="' . $users___11035[28239]['m__message'] . '" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">' . $users___11035[28239]['m__cover'] . '</span>';
     }
-    if (in_array($dynamic_handleid, $CI->config->item('handleids___32145'))) {
-        $headline .= '<span class="icon-block-sm" title="' . $handles___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $handles___11035[32145]['m__cover'] . '</span>';
+    if (in_array($dynamic_userid, $CI->config->item('userids___32145'))) {
+        $headline .= '<span class="icon-block-sm" title="' . $users___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $users___11035[32145]['m__cover'] . '</span>';
     }
 
-    if (isset($handles___11035[$dynamic_handleid]) && strlen($handles___11035[$dynamic_handleid]['m__message'])) {
-        $headline .= '<span class="doregular info_blob ' . (strlen($handles___11035[$dynamic_handleid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$dynamic_handleid]['m__message'] . '</span></span>';
+    if (isset($users___11035[$dynamic_userid]) && strlen($users___11035[$dynamic_userid]['m__message'])) {
+        $headline .= '<span class="doregular info_blob ' . (strlen($users___11035[$dynamic_userid]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $users___11035[$dynamic_userid]['m__message'] . '</span></span>';
     }
 
     return $headline;
 }
 
 
-function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 0)
+function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
 {
 
     /*
@@ -3550,32 +3550,32 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
      * */
 
     $CI =& get_instance();
-    $handles___42179 = $CI->config->item('handles___42179'); //Dynamic Input Fields
-    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-    $handles___4527 = $CI->config->item('handles___4527'); //Memory
-    $is_compact = in_array($focus__id, $CI->config->item('handleids___42191'));
-    $single_select = in_array($focus__id, $CI->config->item('handleids___33331'));
-    $multi_select = in_array($focus__id, $CI->config->item('handleids___33332'));
-    $access_locked = in_array($focus__id, $CI->config->item('handleids___32145'));
-    $focus_select = $CI->config->item($single_select ? 'handles___33331' : 'handles___33332');
+    $users___42179 = $CI->config->item('users___42179'); //Dynamic Input Fields
+    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
+    $users___4527 = $CI->config->item('users___4527'); //Memory
+    $is_compact = in_array($focus__id, $CI->config->item('userids___42191'));
+    $single_select = in_array($focus__id, $CI->config->item('userids___33331'));
+    $multi_select = in_array($focus__id, $CI->config->item('userids___33332'));
+    $access_locked = in_array($focus__id, $CI->config->item('userids___32145'));
+    $focus_select = $CI->config->item($single_select ? 'users___33331' : 'users___33332');
 
     if (!$single_select && !$multi_select) {
         //Must be either:
         log_error('view_instant_select() @' . $focus__id . ' not in single select @33331 or multi select 33332', array(
-            'chainhandleoutput' => $focus__id,
-            'chainhashtagoutput' => $right_hashtagid,
+            'chainuseroutput' => $focus__id,
+            'chainpostoutput' => $right_postid,
         ));
         return false;
     }
 
     $already_selected = array();
     $selection_ids = array();
-    $selection_options = $CI->Chains->read(array(
-        'chainhandleinput' => $focus__id,
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-    ), array('chainhandleoutput'), 0, 0, array('chainkey' => 'ASC'));
+    $selection_options = $CI->Ideachains->read(array(
+        'chainuserinput' => $focus__id,
+        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+    ), array('chainuseroutput'), 0, 0, array('chainkey' => 'ASC'));
     foreach ($selection_options as $list_item) {
-        array_push($selection_ids, $list_item['handleid']);
+        array_push($selection_ids, $list_item['userid']);
     }
 
     //UI for Single select or multi?
@@ -3585,39 +3585,39 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
     }
     $ui .= '<div class="list-group list-radio-select grey-line radio-' . $focus__id . ($is_compact ? ' is_compact ' : '') . '">';
 
-    if ($down_handleid > 0) {
+    if ($down_userid > 0) {
 
-        //Handle Focus:
+        //User Focus:
         if (count($selection_ids)) {
-            foreach ($CI->Chains->read(array(
-                'chainhandleinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-                'chainhandleoutput' => $down_handleid,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            foreach ($CI->Ideachains->read(array(
+                'chainuserinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+                'chainuseroutput' => $down_userid,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
             )) as $sel) {
-                array_push($already_selected, $sel['chainhandleinput']);
+                array_push($already_selected, $sel['chainuserinput']);
             }
         }
 
-        if (!count($already_selected) && $single_select && handle_session()) {
+        if (!count($already_selected) && $single_select && user_session()) {
             //FIND DEFAULT if set in session of this user:
             $var_id = @$CI->session->userdata('session_custom_ui_' . $focus__id);
-            foreach ($selection_ids as $handleid2) {
-                if ($var_id == $handleid2) {
-                    $already_selected = array($handleid2);
+            foreach ($selection_ids as $userid2) {
+                if ($var_id == $userid2) {
+                    $already_selected = array($userid2);
                     break;
                 }
             }
         }
 
-    } elseif ($right_hashtagid > 0) {
+    } elseif ($right_postid > 0) {
 
-        //Hashtag focus:
-        foreach ($CI->Chains->read(array(
-            'chainhandleinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-            'chainhashtagoutput' => $right_hashtagid,
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Hashtag/Handle Chains Active
+        //Post focus:
+        foreach ($CI->Ideachains->read(array(
+            'chainuserinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+            'chainpostoutput' => $right_postid,
+            'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
         )) as $sel) {
-            array_push($already_selected, $sel['chainhandleinput']);
+            array_push($already_selected, $sel['chainuserinput']);
         }
 
     }
@@ -3627,46 +3627,46 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
     $has_selected = count($already_selected);
     $has_multiple = count($selection_options) > 1;
     $overflow_reached = false;
-    $exclude_fonts = (in_array($focus__id, $CI->config->item('handleids___42417')) ? 'exclude_fonts' : '');
-    $handles___42179 = $CI->config->item('handles___42179'); //Dynamic Input Fields
+    $exclude_fonts = (in_array($focus__id, $CI->config->item('userids___42417')) ? 'exclude_fonts' : '');
+    $users___42179 = $CI->config->item('users___42179'); //Dynamic Input Fields
 
     foreach ($selection_options as $list_item) {
 
         //Has superpower?
-        if (isset($handles___42179[$list_item['handleid']]['m__following']) && count($handles___42179[$list_item['handleid']]['m__following'])) {
-            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $handles___42179[$list_item['handleid']]['m__following']);
-            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
+        if (isset($users___42179[$list_item['userid']]['m__following']) && count($users___42179[$list_item['userid']]['m__following'])) {
+            $superpowers_required = array_intersect($CI->config->item('userids___10957'), $users___42179[$list_item['userid']]['m__following']);
+            if (count($superpowers_required) && !user_session(end($superpowers_required))) {
                 continue;
             }
         }
 
-        $selected = in_array($list_item['handleid'], $already_selected);
+        $selected = in_array($list_item['userid'], $already_selected);
         if (!$overflow_reached && $unselected_count >= $overflow_unselected_limit && !$selected && !$is_compact) {
             $overflow_reached = true;
         }
 
-        $headline = '<span class="inner_headline">' . (strlen($list_item['handlecover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['handlecover']) . '</span>' : '') . $list_item['handlename'] . '</span>';
-        if (in_array($list_item['handleid'], $CI->config->item('handleids___32145'))) {
-            $headline .= '<span class="icon-block-sm" title="' . $handles___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $handles___11035[32145]['m__cover'] . '</span>';
+        $headline = '<span class="inner_headline">' . (strlen($list_item['usercover']) ? '<span class="icon-block-sm change-results">' . view_cover($list_item['usercover']) . '</span>' : '') . $list_item['username'] . '</span>';
+        if (in_array($list_item['userid'], $CI->config->item('userids___32145'))) {
+            $headline .= '<span class="icon-block-sm" title="' . $users___11035[32145]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $users___11035[32145]['m__cover'] . '</span>';
         }
         if ($selected) {
             $headline .= '<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>';
         }
-        if (in_array($list_item['handleid'], $CI->config->item('handleids___11035')) && strlen($handles___11035[$list_item['handleid']]['m__message']) > 0) {
-            $headline .= '<span class="doregular info_blob ' . (strlen($handles___11035[$list_item['handleid']]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $handles___11035[$list_item['handleid']]['m__message'] . '</span></span>';
+        if (in_array($list_item['userid'], $CI->config->item('userids___11035')) && strlen($users___11035[$list_item['userid']]['m__message']) > 0) {
+            $headline .= '<span class="doregular info_blob ' . (strlen($users___11035[$list_item['userid']]['m__message']) < 55 ? ' short_blob ' : '') . '"><span>' . $users___11035[$list_item['userid']]['m__message'] . '</span></span>';
         }
 
 
         if ($selected) {
             if ($access_locked) {
-                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlename']) . '">' . $headline . '</span>';
+                $ui .= '<span class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['userid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['username']) . '">' . $headline . '</span>';
             } elseif ($has_multiple) {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['handlename']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item custom_ui_' . $focus__id . '_' . $list_item['userid'] . ' ' . $exclude_fonts . ' itemsetting_' . $focus__id . ' selection_preview selection_preview_' . $focus__id . ' itemsetting active" title="' . stripslashes($list_item['username']) . '">' . $headline . '<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
             }
         }
 
         if (!$access_locked) {
-            $ui .= '<a href="javascript:void(0);" onclick="handle_select_apply(' . $focus__id . ',' . $list_item['handleid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_handleid . ',' . $right_hashtagid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['handleid'] . ' ' . $exclude_fonts . ' item-' . $list_item['handleid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['handlename']) . '">' . $headline . '</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="user_select_apply(' . $focus__id . ',' . $list_item['userid'] . ',' . ($multi_select ? 1 : 0) . ',' . $down_userid . ',' . $right_postid . ')" class="list-group-item itemsetting custom_ui_' . $focus__id . '_' . $list_item['userid'] . ' ' . $exclude_fonts . ' item-' . $list_item['userid'] . ' itemsetting_' . $focus__id . ' selection_item_' . $focus__id . (($has_selected && $has_multiple) || $overflow_reached ? ' hidden' : '') . ($selected ? ' active ' : '') . '" title="' . stripslashes($list_item['username']) . '">' . $headline . '</a>';
         }
 
 
@@ -3687,26 +3687,26 @@ function view_instant_select($focus__id, $down_handleid = 0, $right_hashtagid = 
 
 
 
-function randomize_text($handleid)
+function randomize_text($userid)
 {
     $CI =& get_instance();
-    $handles___12687 = $CI->config->item('handles___12687');
-    $line_messages = explode("\n", $handles___12687[$handleid]['m__message']);
+    $users___12687 = $CI->config->item('users___12687');
+    $line_messages = explode("\n", $users___12687[$userid]['m__message']);
     return $line_messages[rand(0, (count($line_messages) - 1))];
 }
 
-function blocked_reasoning($superpower_handleid = 0)
+function blocked_reasoning($superpower_userid = 0)
 {
 
-    if (!handle_session()) {
+    if (!user_session()) {
 
         return 'Sign-in to continue';
 
-    } elseif ($superpower_handleid && !handle_session($superpower_handleid)) {
+    } elseif ($superpower_userid && !user_session($superpower_userid)) {
 
         $CI =& get_instance();
-        $handles___10957 = $CI->config->item('handles___10957');
-        return 'Error: You are missing access to ' . $handles___10957[$superpower_handleid]['m__title'];
+        $users___10957 = $CI->config->item('users___10957');
+        return 'Error: You are missing access to ' . $users___10957[$superpower_userid]['m__title'];
 
     } else {
 
@@ -3724,47 +3724,47 @@ function view_hash($string)
 }
 
 
-function view_hashtag_title($i, $string_only = false)
+function view_post_title($i, $string_only = false)
 {
 
-    if (!isset($i['hashtagtext'])) {
+    if (!isset($i['posttext'])) {
         return null;
     }
 
     //Break down by lines:
-    foreach (explode("\n", $i['hashtagtext']) as $line) {
+    foreach (explode("\n", $i['posttext']) as $line) {
         if (strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)) {
             return ($string_only ? $line : '<span class="main__title">' . $line . '</span>');
         }
     }
 
     //If not yet found we need to use other data to generate title:
-    return (isset($i['hashtagterm']) && strlen($i['hashtagterm']) ? $i['hashtagterm'] : (isset($i['hashtagid']) && intval($i['hashtagid']) ? 'Hashtag Number ' . $i['hashtagid'] : 'Hashtag' . rand(100000000000, 999999999999)));
+    return (isset($i['posthashtag']) && strlen($i['posthashtag']) ? $i['posthashtag'] : (isset($i['postid']) && intval($i['postid']) ? 'Post Number ' . $i['postid'] : 'Post' . rand(100000000000, 999999999999)));
 
 }
 
-function view_valid_handle_handle($string, $check_db = false)
+function view_valid_user_user($string, $check_db = false)
 {
     $CI =& get_instance();
-    return (substr($string, 0, 1) == '@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Handles->read(array(
-            'LOWER(handleterm)' => strtolower(substr($string, 1)),
+    return (substr($string, 0, 1) == '@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Users->read(array(
+            'LOWER(userhandle)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false);
 }
 
-function view_valid_handle_hashtag($string, $check_db = false)
+function view_valid_user_post($string, $check_db = false)
 {
     //TODO MUst remove
     $CI =& get_instance();
-    return (substr($string, 0, 1) == '#' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Hashtags->read(array(
-            'LOWER(hashtagterm)' => strtolower(substr($string, 1)),
+    return (substr($string, 0, 1) == '#' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->Posts->read(array(
+            'LOWER(posthashtag)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false);
 }
 
 
-function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_mode = true, $show_hashtagedit = false)
+function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode = true, $show_postedit = false)
 {
 
-    if (!isset($i['hashtagid'])) {
+    if (!isset($i['postid'])) {
         return null;
     }
 
@@ -3772,30 +3772,30 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
     $CI =& get_instance();
 
     //This is still flawed, we need to fix this to exlude cache apps and more:
-    $field = ($show_hashtagedit ? 'hashtagedit' : 'hashtagdiscover');
+    $field = ($show_postedit ? 'postedit' : 'postdiscover');
 
-    if ($handleid > 0) {
-        foreach ($CI->Chains->read(array(
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandletype' => 31835, //References
-        ), array('chainhandleinput'), 0) as $message_references) {
-            if (!substr_count(strtolower($i[$field]), '>@' . strtolower($message_references['handleterm']))) {
+    if ($userid > 0) {
+        foreach ($CI->Ideachains->read(array(
+            'chainpostoutput' => $i['postid'],
+            'chainusertype' => 31835, //References
+        ), array('chainuserinput'), 0) as $message_references) {
+            if (!substr_count(strtolower($i[$field]), '>@' . strtolower($message_references['userhandle']))) {
                 //Maybe because it was duplicated, etc... REMOVE IT:
-                //$CI->Chains->delete($message_references['chainid']);
+                //$CI->Ideachains->delete($message_references['chainid']);
                 continue;
             }
-            foreach ($CI->Chains->read(array(
-                'chainhandleinput' => $message_references['handleid'],
-                'chainhandleoutput' => $handleid,
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+            foreach ($CI->Ideachains->read(array(
+                'chainuserinput' => $message_references['userid'],
+                'chainuseroutput' => $userid,
+                'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 'LENGTH(chainvalue) > 0' => null,
             ), array(), 1) as $reference_profile) {
                 if (strlen($reference_profile['chainvalue'])) {
                     if (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL)) {
-                        $i[$field] = str_ireplace('@' . $message_references['handleterm'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i[$field]);
+                        $i[$field] = str_ireplace('@' . $message_references['userhandle'] . '</a>', '</a>' . '<a href="' . $reference_profile['chainvalue'] . '" target="_blank">' . $reference_profile['chainvalue'] . '</a>', $i[$field]);
 
                     } else {
-                        $i[$field] = str_ireplace('@' . $message_references['handleterm'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['handleterm'] . ' ') . $reference_profile['chainvalue'], $i[$field]);
+                        $i[$field] = str_ireplace('@' . $message_references['userhandle'], (filter_var($reference_profile['chainvalue'], FILTER_VALIDATE_URL) ? '' : '@' . $message_references['userhandle'] . ' ') . $reference_profile['chainvalue'], $i[$field]);
                     }
                 }
             }
@@ -3803,39 +3803,39 @@ function view_hashtag_value($i, $handleid = 0, $focus__node = false, $discovery_
     }
 
     return
-        $i[$field] . view_list_handle($i, !$focus__node); //. view_hashtag_media($i)
+        $i[$field] . view_list_user($i, !$focus__node); //. view_post_media($i)
 }
 
 
 
-function hashtag_to_title($hashtag, $parent_hashtag = null){
+function post_to_title($post, $parent_post = null){
 
-    //Generates a title from a hashtag:
+    //Generates a title from a post:
 
-    //Remove Common prefix with parent hashtagif any:
+    //Remove Common prefix with parent postif any:
     $common_start = '';
-    $new_hashtag = '';
-    if(strlen($parent_hashtag)){
-        //See if hashtag has anything in common with its parent, if any:
-        $parent_hashtag_array = str_split($parent_hashtag);
-        foreach(str_split($hashtag) as $key=>$value){
-            if(isset($parent_hashtag_array[$key]) && $parent_hashtag_array[$key]===$value){
+    $new_post = '';
+    if(strlen($parent_post)){
+        //See if post has anything in common with its parent, if any:
+        $parent_post_array = str_split($parent_post);
+        foreach(str_split($post) as $key=>$value){
+            if(isset($parent_post_array[$key]) && $parent_post_array[$key]===$value){
                 $common_start .= $value;
             } else {
-                $new_hashtag .= $value;
+                $new_post .= $value;
             }
         }
-        if(strlen($common_start) && strlen($new_hashtag)){
+        if(strlen($common_start) && strlen($new_post)){
             //Remove this from the string:
-            $hashtag = $new_hashtag;
+            $post = $new_post;
         }
     }
 
-    //Now detect the title based on remaining hashtag:
+    //Now detect the title based on remaining post:
     $new_title = '';
-    $hashtag_array = str_split($hashtag);
-    foreach($hashtag_array as $key=>$value){
-        $new_title .= (ctype_upper($value) && ((isset($hashtag_array[($key-1)]) && !ctype_upper($hashtag_array[($key-1)])) || (isset($hashtag_array[($key+1)]) && !ctype_upper($hashtag_array[($key+1)]))) ? ' ' : '').$value;
+    $post_array = str_split($post);
+    foreach($post_array as $key=>$value){
+        $new_title .= (ctype_upper($value) && ((isset($post_array[($key-1)]) && !ctype_upper($post_array[($key-1)])) || (isset($post_array[($key+1)]) && !ctype_upper($post_array[($key+1)]))) ? ' ' : '').$value;
     }
 
     return ( strlen($new_title)>=2 ? trim($new_title) : 'New Post' );
@@ -3843,18 +3843,18 @@ function hashtag_to_title($hashtag, $parent_hashtag = null){
 }
 
 
-function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $current_term = null, $new_term = null)
+function post_index($posttext, $save_postid, $chainusercreator, $current_term = null, $new_term = null)
 {
 
     //Display Images, Audio, Video & PDF Files:
     //Analyze the message to find referencing URLs and Members in the message text:
     $CI =& get_instance();
     $core_references = array('@', '#');
-    $hashtag_cache = array(
-        'hashtagchain' => '',
-        'hashtagtext' => '',
-        'hashtagdiscover' => '',
-        'hashtagedit' => '',
+    $post_index = array(
+        'postchain' => '',
+        'posttext' => '',
+        'postdiscover' => '',
+        'postedit' => '',
         'actionstats' => array(
             'current' => 0,
             'added' => 0,
@@ -3864,13 +3864,13 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
     );
 
     //All the possible reference types that can be found:
-    $hashtag_references = array();
+    $post_references = array();
     $chainkey = 0;
-    $hashtagtext = str_replace('	', ' ', $hashtagtext);
-    //$hashtagtext = preg_replace('/\s+/', ' ', $hashtagtext);
+    $posttext = str_replace('	', ' ', $posttext);
+    //$posttext = preg_replace('/\s+/', ' ', $posttext);
 
     //See what we can find:
-    foreach (explode("\n", $hashtagtext) as $line_count => $line) {
+    foreach (explode("\n", $posttext) as $line_count => $line) {
 
         $first_ref_hidden = false;
         $first_line = !$line_count;
@@ -3878,10 +3878,10 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
         $only_word_in_line = count($words) == 1;
         $second_word_onwards = null;
 
-        $linehashtagchain = null;
-        $linehashtagtext = null;
-        $linehashtagdiscover = null;
-        $linehashtagedit = null;
+        $linepostchain = null;
+        $lineposttext = null;
+        $linepostdiscover = null;
+        $linepostedit = null;
 
         foreach ($words as $word_count => $word_text) {
 
@@ -3890,45 +3890,45 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
             if ($first_word && strlen($word_text . ' ') < strlen($line)) {
                 $second_word_onwards .= ltrim($line, $word_text . ' ');
             }
-            $hashtagchain = null;
-            $hashtagtext = null;
-            $hashtagdiscover = null;
-            $hashtagedit = null;
+            $postchain = null;
+            $posttext = null;
+            $postdiscover = null;
+            $postedit = null;
 
             if (filter_var($word_text, FILTER_VALIDATE_URL)) {
 
                 //Generic URL, Try to find:
-                $newHandleTerm = null;
-                foreach ($CI->Chains->read(array(
+                $newUserTerm = null;
+                foreach ($CI->Ideachains->read(array(
                     'chainvalue' => $word_text,
-                    'chainhandleinput' => 1326, //URL
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                ), array('chainhandleoutput'), 0) as $x) {
-                    $newHandleTerm = $x['handleterm'];
+                    'chainuserinput' => 1326, //URL
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ), array('chainuseroutput'), 0) as $x) {
+                    $newUserTerm = $x['userhandle'];
                 }
 
-                if (!$newHandleTerm) {
+                if (!$newUserTerm) {
                     //Not found, create it:
-                    $added_e = $CI->Handles->create(array(
-                        'handlename' => 'URL ' . random_string(8),
+                    $added_e = $CI->Users->create(array(
+                        'username' => 'URL ' . random_string(8),
                     ));
                     if ($added_e['status']) {
 
                         //Chain:
-                        $CI->Chains->create(array(
-                            'chainhandletype' => 4230, //Follow
-                            'chainhandleinput' => 1326, //URL
-                            'chainhandleoutput' => $added_e['handle_create']['handleid'],
+                        $CI->Ideachains->create(array(
+                            'chainusertype' => 4230, //Follow
+                            'chainuserinput' => 1326, //URL
+                            'chainuseroutput' => $added_e['user_create']['userid'],
                             'chainvalue' => $word_text,
                         ));
 
-                        $newHandleTerm = $added_e['handle_create']['handleterm'];
+                        $newUserTerm = $added_e['user_create']['userhandle'];
 
                     }
                 }
 
                 //Replace Word:
-                $word_text = '@' . $newHandleTerm;
+                $word_text = '@' . $newUserTerm;
 
             }
 
@@ -3936,7 +3936,7 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
             //Could be another reference, check:
             if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
 
-                foreach ($CI->config->item('handles___1696899') as $chainhandletype => $m) {
+                foreach ($CI->config->item('users___1696899') as $chainusertype => $m) {
 
                     //Found a reference?
                     $term = substr($word_text, strlen($m['m__cover']));
@@ -3945,70 +3945,70 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
                         continue;
                     }
 
-                    if (in_array($chainhandletype, $CI->config->item('handleids___4486'))) {
+                    if (in_array($chainusertype, $CI->config->item('userids___4486'))) {
 
                         if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
                             $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
                         }
 
-                        //Hashtag reference:
-                        $found_hashtags = $CI->Hashtags->read(array(
-                            'LOWER(hashtagterm)' => strtolower($term),
+                        //Post reference:
+                        $found_posts = $CI->Posts->read(array(
+                            'LOWER(posthashtag)' => strtolower($term),
                         ));
 
-                        if(!count($found_hashtags)){
+                        if(!count($found_posts)){
 
-                            //New hashtag not found, try to create:
+                            //New post not found, try to create:
                             $parent_term = ( strlen($new_term) ? $new_term : $current_term );
-                            if(!$parent_term){
+                            if(!$parent_term && $save_postid>0){
                                 //Fetch the term using the ID:
-                                foreach($CI->Hashtags->read(array(
-                                    'hashtagid' => $save_hashtagid,
+                                foreach($CI->Posts->read(array(
+                                    'postid' => $save_postid,
                                 )) as $i){
-                                    $parent_term = $i['hashtagterm'];
+                                    $parent_term = $i['posthashtag'];
                                 }
                             }
 
-                            //Craete this hashtag since we could not find it:
-                            $hashtag_new = $CI->Hashtags->create(array(
-                                'hashtagterm' => $term,
-                                'hashtagtext' => hashtag_to_title($term, $parent_term),
-                            ), $chainhandlecreator);
+                            //Craete this referenced post since we could not find it:
+                            $post_new = $CI->Posts->create(array(
+                                'posthashtag' => $term,
+                                'posttext' => post_to_title($term, $parent_term),
+                            ), $chainusercreator);
 
-                            if(isset($hashtag_new['hashtag_create']['hashtagid'])){
+                            if(isset($post_new['post_create']['postid'])){
                                 //Re-fetch newly created:
-                                $found_hashtags = $CI->Hashtags->read(array(
-                                    'hashtagid' => $hashtag_new['hashtag_create']['hashtagid'],
+                                $found_posts = $CI->Posts->read(array(
+                                    'postid' => $post_new['post_create']['postid'],
                                 ));
                             }
 
                         }
 
-                        foreach ($found_hashtags as $hashtag) {
+                        foreach ($found_posts as $post) {
 
-                            //Valid Hashtag
-                            $reference_type = $chainhandletype;
+                            //Valid Post
+                            $reference_type = $chainusertype;
 
                             $chainkey++;
-                            $hashtag_references[($chainkey - 1)] = array(
-                                'chainhandletype' => $chainhandletype,
-                                'chainhandleinput' => 0,
-                                'chainhandleoutput' => 0,
-                                'chainhashtaginput' => $save_hashtagid,
-                                'chainhashtagoutput' => $hashtag['hashtagid'],
+                            $post_references[($chainkey - 1)] = array(
+                                'chainusertype' => $chainusertype,
+                                'chainuserinput' => 0,
+                                'chainuseroutput' => 0,
+                                'chainpostinput' => $save_postid,
+                                'chainpostoutput' => $post['postid'],
                                 'chainkey' => $chainkey,
                                 'chainvalue' => null,
                             );
 
-                            $hashtagchain = $m['m__cover'] . $hashtag['hashtagid'];
-                            $hashtagtext = $word_text;
+                            $postchain = $m['m__cover'] . $post['postid'];
+                            $posttext = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
-                                $hashtagdiscover = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '" data-toggle="popover" class="ref_hashtag">' . $word_text . '</a>';
+                                $postdiscover = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
                             } else {
                                 $first_ref_hidden = true;
                             }
-                            $hashtagedit = '<a href="' . view_memory(42903, 33286) . $hashtag['hashtagterm'] . '">' . $word_text . '</a>';
+                            $postedit = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '">' . $word_text . '</a>';
 
                         }
 
@@ -4021,52 +4021,52 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
                         if (is_numeric(trim($term))) {
                             $filter = array(
-                                'handleid' => intval(trim($term)),
+                                'userid' => intval(trim($term)),
                             );
                         } else {
                             $filter = array(
-                                'LOWER(handleterm)' => strtolower($term),
+                                'LOWER(userhandle)' => strtolower($term),
                             );
                         }
 
-                        //Handle Reference
-                        foreach ($CI->Handles->read($filter) as $handle) {
+                        //User Reference
+                        foreach ($CI->Users->read($filter) as $user) {
 
                             if (is_numeric($term)) {
                                 //Replace Word:
-                                $term = $handle['handleterm'];
-                                $word_text = $m['m__cover'] . $handle['handleterm'];
+                                $term = $user['userhandle'];
+                                $word_text = $m['m__cover'] . $user['userhandle'];
                             }
 
                             $media_append_end = false;
 
-                            if ($chainhandletype == 31835) {
+                            if ($chainusertype == 31835) {
 
                                 //This is the main @User reference
 
                                 $media_attachments = array();
 
-                                foreach ($CI->Chains->read(array(
-                                    'chainhandleinput IN (' . join(',', $CI->config->item('handleids___1735577')) . ')' => null, //HANDLE DISPLAY
-                                    'chainhandleoutput' => $handle['handleid'],
-                                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+                                foreach ($CI->Ideachains->read(array(
+                                    'chainuserinput IN (' . join(',', $CI->config->item('userids___1735577')) . ')' => null, //USER DISPLAY
+                                    'chainuseroutput' => $user['userid'],
+                                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                                 ), array(), 0) as $x) {
-                                    if ($x['chainhandleinput'] == 1326) {
+                                    if ($x['chainuserinput'] == 1326) {
 
                                         //URL
                                         array_push($media_attachments, '<a href="' . $x['chainvalue'] . '" target="_blank">' . $x['chainvalue'] . '</a>');
 
-                                    } elseif ($x['chainhandleinput'] == 4258) {
+                                    } elseif ($x['chainuserinput'] == 4258) {
 
                                         //Video
-                                        array_push($media_attachments, '<video id="video_handle_' . $x['chainvalue'] . '" controls class="cld-video-handle cld-fluid cld-video-handle-skin-light" poster="' . $handle['handlecover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
+                                        array_push($media_attachments, '<video id="video_user_' . $x['chainvalue'] . '" controls class="cld-video-user cld-fluid cld-video-user-skin-light" poster="' . $user['usercover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
 
-                                    } elseif ($x['chainhandleinput'] == 4259) {
+                                    } elseif ($x['chainuserinput'] == 4259) {
 
                                         //Audio
                                         array_push($media_attachments, '<audio controls src="' . $x['chainvalue'] . '"></audio>');
 
-                                    } elseif ($x['chainhandleinput'] == 4260) {
+                                    } elseif ($x['chainuserinput'] == 4260) {
 
                                         //Image
                                         array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
@@ -4080,30 +4080,30 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
                                 }
                             }
 
-                            //Valid Handle
-                            $reference_type = $chainhandletype;
+                            //Valid User
+                            $reference_type = $chainusertype;
                             $chainkey++;
-                            $hashtag_references[($chainkey - 1)] = array(
-                                'chainhandletype' => $chainhandletype,
-                                'chainhandleinput' => $handle['handleid'],
-                                'chainhandleoutput' => 0,
-                                'chainhashtaginput' => $save_hashtagid,
-                                'chainhashtagoutput' => $save_hashtagid, //TODO could be removed later must check all references
+                            $post_references[($chainkey - 1)] = array(
+                                'chainusertype' => $chainusertype,
+                                'chainuserinput' => $user['userid'],
+                                'chainuseroutput' => 0,
+                                'chainpostinput' => $save_postid,
+                                'chainpostoutput' => $save_postid, //TODO could be removed later must check all references
                                 'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
                                 'chainkey' => $chainkey,
                             );
 
-                            $hashtagchain = $m['m__cover'] . $handle['handleid'];
-                            $hashtagtext = $word_text;
-                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainhandleinput'] == 1326)) {
-                                $hashtagdiscover = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
+                            $postchain = $m['m__cover'] . $user['userid'];
+                            $posttext = $word_text;
+                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
+                                $postdiscover = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
                             } else {
                                 $first_ref_hidden = true;
                                 if ($media_append_end) {
-                                    $hashtagdiscover = $media_append_end;
+                                    $postdiscover = $media_append_end;
                                 }
                             }
-                            $hashtagedit = '<a href="' . view_memory(42903, 42902) . $handle['handleterm'] . '" data-toggle="popover" class="ref_handle">' . $word_text . '</a>' . $media_append_end;
+                            $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
 
                         }
 
@@ -4119,74 +4119,74 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
             if (!$reference_type) {
                 //This word is not referencing anything!
-                $hashtagchain = $word_text;
-                $hashtagtext = $word_text;
+                $postchain = $word_text;
+                $posttext = $word_text;
                 if (!$first_ref_hidden) {
-                    $hashtagdiscover = $word_text;
+                    $postdiscover = $word_text;
                 }
-                $hashtagedit = $word_text;
+                $postedit = $word_text;
             }
 
             //See what we found to add:
-            $linehashtagchain .= (!$first_word && $hashtagchain ? ' ' : '') . $hashtagchain;
-            $linehashtagtext .= (!$first_word && $hashtagtext ? ' ' : '') . $hashtagtext;
-            $linehashtagdiscover .= (!$first_word && $hashtagdiscover ? ' ' : '') . $hashtagdiscover;
-            $linehashtagedit .= (!$first_word && $hashtagedit ? ' ' : '') . $hashtagedit;
+            $linepostchain .= (!$first_word && $postchain ? ' ' : '') . $postchain;
+            $lineposttext .= (!$first_word && $posttext ? ' ' : '') . $posttext;
+            $linepostdiscover .= (!$first_word && $postdiscover ? ' ' : '') . $postdiscover;
+            $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
 
         }
 
-        $hashtag_cache['hashtagchain'] .= (!$first_line && $linehashtagchain ? "\n" : '') . $linehashtagchain;
-        $hashtag_cache['hashtagtext'] .= (!$first_line && $linehashtagtext ? "\n" : '') . $linehashtagtext;
-        $hashtag_cache['hashtagdiscover'] .= ($linehashtagdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linehashtagdiscover . '</div>' : '');
-        $hashtag_cache['hashtagedit'] .= ($linehashtagedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linehashtagedit . '</div>' : '');
+        $post_index['postchain'] .= (!$first_line && $linepostchain ? "\n" : '') . $linepostchain;
+        $post_index['posttext'] .= (!$first_line && $lineposttext ? "\n" : '') . $lineposttext;
+        $post_index['postdiscover'] .= ($linepostdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdiscover . '</div>' : '');
+        $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');
 
     }
 
     //Give HTML their frame:
-    if (strlen($hashtag_cache['hashtagdiscover'])) {
-        $hashtag_cache['hashtagdiscover'] = '<div class="i_cache i_hashtagdiscover cache_frame_' . $save_hashtagid . '">' . $hashtag_cache['hashtagdiscover'] . '</div>';
+    if (strlen($post_index['postdiscover'])) {
+        $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . '</div>';
     }
-    if (strlen($hashtag_cache['hashtagedit'])) {
-        $hashtag_cache['hashtagedit'] = '<div class="i_cache i_hashtagedit cache_frame_' . $save_hashtagid . '">' . $hashtag_cache['hashtagedit'] . '</div>';
+    if (strlen($post_index['postedit'])) {
+        $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . '</div>';
     }
 
-    if (!intval($chainhandlecreator)) {
+    if (!intval($chainusercreator)) {
         //Nothing else we need to do:
-        return $hashtag_cache;
+        return $post_index;
     }
 
     //Save Found references to remove the ones who exist in DB:
     $chainkey = 0;
 
-    if (intval($save_hashtagid)) {
+    if (intval($save_postid)) {
 
-        $saved_items = $CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___1696899')) . ')' => null, //All possible refereces
-            'chainhashtaginput' => intval($save_hashtagid),
+        $saved_items = $CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___1696899')) . ')' => null, //All possible refereces
+            'chainpostinput' => intval($save_postid),
         ), array(), 0, 0, array('chainkey' => 'ASC'));
 
         //Nothing else we need to do:
         foreach ($saved_items as $x) {
 
-            $hashtag_cache['actionstats']['current']++;
+            $post_index['actionstats']['current']++;
 
             //What should happen here?
             $chainkey++;
 
-            if (!isset($hashtag_references[($chainkey - 1)])) {
+            if (!isset($post_references[($chainkey - 1)])) {
                 //Must be removed:
-                $CI->Chains->delete($x['chainid']);
-                $hashtag_cache['actionstats']['removed']++;
+                $CI->Ideachains->delete($x['chainid']);
+                $post_index['actionstats']['removed']++;
                 continue;
             }
 
             //We have it, see if it matches or needs updating:
-            foreach ($hashtag_references[($chainkey - 1)] as $key => $value) {
+            foreach ($post_references[($chainkey - 1)] as $key => $value) {
                 if ($x[$key] . '' != $value . '') {
                     //Updating needed:
-                    $hashtag_references[($chainkey - 1)]['chainhandlecreator'] = $chainhandlecreator;
-                    $CI->Chains->update($x['chainid'], $hashtag_references[($chainkey - 1)]);
-                    $hashtag_cache['actionstats']['updated']++;
+                    $post_references[($chainkey - 1)]['chainusercreator'] = $chainusercreator;
+                    $CI->Ideachains->update($x['chainid'], $post_references[($chainkey - 1)]);
+                    $post_index['actionstats']['updated']++;
                     break;
                 }
             }
@@ -4195,76 +4195,72 @@ function hashtag_cache($save_hashtagid, $hashtagtext, $chainhandlecreator, $curr
 
 
     //Any more links left that were not in DB?
-    for ($i = $chainkey; $i <= count($hashtag_references); $i++) {
-        if (isset($hashtag_references[$i])) {
-            $hashtag_references[$i]['chainhandlecreator'] = $chainhandlecreator;
-            $CI->Chains->create($hashtag_references[$i]);
-            $hashtag_cache['actionstats']['added']++;
+    for ($i = $chainkey; $i <= count($post_references); $i++) {
+        if (isset($post_references[$i])) {
+            $post_references[$i]['chainusercreator'] = $chainusercreator;
+            $CI->Ideachains->create($post_references[$i]);
+            $post_index['actionstats']['added']++;
         }
     }
 
 
-    $hashtag_cache['actionstats']['$save_hashtagid'] = $save_hashtagid;
-    $hashtag_cache['actionstats']['$chainhandlecreator'] = $chainhandlecreator;
-    $hashtag_cache['actionstats']['references_count'] = count($hashtag_references);
-    $hashtag_cache['actionstats']['references'] = $hashtag_references;
     if (isset($saved_items)) {
-        $hashtag_cache['actionstats']['saved_items_count'] = count($saved_items);
-        $hashtag_cache['actionstats']['saved_items'] = $saved_items;
+        $post_index['actionstats']['saved_items_count'] = count($saved_items);
+        $post_index['actionstats']['saved_items'] = $saved_items;
     }
-    return $hashtag_cache;
+    return $post_index;
 
 }
 
 
-function view_featured_chains($chainhandletype, $location, $m = null, $focus__node)
+function view_featured_chains($chainusertype, $location, $m = null, $focus__node)
 {
     $CI =& get_instance();
-    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['handleterm']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['handleterm'] . '">' : '') . '<span class="grey ' . ($chainhandletype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $handles___11035[$chainhandletype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainhandletype == 41949 ? 'mini-font' : '') . '">' . $location['handlename'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
+    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
+    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['userhandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['userhandle'] . '">' : '') . '<span class="grey ' . ($chainusertype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $users___11035[$chainusertype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainusertype == 41949 ? 'mini-font' : '') . '">' . $location['username'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
 }
 
 
-function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
+function view_post_nav($discovery_mode, $focus_i, $x_completes = false)
 {
 
     $CI =& get_instance();
     $coins_count = array();
     $body_content = '';
-    $handle_session = handle_session();
-    $hashtagtion_pen = handle_session(10939);
+    $user_session = user_session();
+    $posttion_pen = user_session(10939);
 
 
-    if ($handle_session && !is_array($x_completes)) {
-        $x_completes = $CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            'chainhandlecreator' => $handle_session['handleid'],
-            'chainhashtaginput' => $focus_i['hashtagid'],
-        ), array('chainhashtagoutput'));
+    if ($user_session && !is_array($x_completes)) {
+        $x_completes = $CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            'chainusercreator' => $user_session['userid'],
+            'chainpostinput' => $focus_i['postid'],
+        ), array('chainpostoutput'));
     }
 
 
     $ui = '';
-    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['hashtagid'] . ' hideIfEmpty">';
-    foreach ($CI->config->item('handles___' . ($discovery_mode ? 42877 : 31890)) as $chainhandletype => $m) {
+    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['postid'] . ' hideIfEmpty">';
+    foreach ($CI->config->item('users___' . ($discovery_mode ? 42877 : 31890)) as $chainusertype => $m) {
 
-        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m['m__following']);
-        if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
+        $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m['m__following']);
+        if (count($superpowers_required) && !user_session(end($superpowers_required))) {
             continue;
         }
 
 
-        $coins_count[$chainhandletype] = hashtags_query($chainhandletype, $focus_i['hashtagid'], 0, false);
-        if (!$coins_count[$chainhandletype] && $discovery_mode) {
+        $coins_count[$chainusertype] = posts_query($chainusertype, $focus_i['postid'], 0, false);
+        if (!$coins_count[$chainusertype] && $discovery_mode) {
             continue;
         }
 
 
-        if (($handle_session && in_array($chainhandletype, $CI->config->item('handleids___42945'))) || $coins_count[$chainhandletype] > 0) {
-            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainhandletype . ' hidden" read-counter="' . $coins_count[$chainhandletype] . '"><div class="tab_content"></div></div>';
+        if (($user_session && in_array($chainusertype, $CI->config->item('userids___42945'))) || $coins_count[$chainusertype] > 0) {
+            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainusertype . ' hidden" read-counter="' . $coins_count[$chainusertype] . '"><div class="tab_content"></div></div>';
 
 
-            $ui .= '<li class="nav-item thepill' . $chainhandletype . '"><a class="nav-chain handle_nav_' . $m['m__handle'] . '" chainhandletype="' . $chainhandletype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainhandletype . '">' . view_number($coins_count[$chainhandletype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainhandletype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
+            $ui .= '<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain user_nav_' . $m['m__user'] . '" chainusertype="' . $chainusertype . '" href="#' . $m['m__user'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($coins_count[$chainusertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainusertype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
 
         }
 
@@ -4273,18 +4269,18 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
     $ui .= $body_content;
 
 
-    $handles___focus = $CI->config->item('handles___26005');
+    $users___focus = $CI->config->item('users___26005');
     $focus_tab = 0;
-    foreach($handles___focus as $chainhandletype => $m) {
-        if(isset($coins_count[$chainhandletype]) && $coins_count[$chainhandletype] > 0){
-            $focus_tab = $chainhandletype;
-            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
+    foreach($users___focus as $chainusertype => $m) {
+        if(isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0){
+            $focus_tab = $chainusertype;
+            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__user'].'\'); } }); </script>';
             break;
         }
     }
     if(!$focus_tab){
-        foreach($handles___focus as $chainhandletype => $m) {
-            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
+        foreach($users___focus as $chainusertype => $m) {
+            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__user'].'\'); } }); </script>';
             break;
         }
     }
@@ -4297,7 +4293,7 @@ function view_hashtag_nav($discovery_mode, $focus_i, $x_completes = false)
 function nextchainid()
 {
     $CI =& get_instance();
-    foreach ($CI->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain) {
+    foreach ($CI->Ideachains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain) {
         return $bigchain['chainid'] + 1;
     }
     return 0;
@@ -4475,76 +4471,76 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 }
 
 
-function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagterm = null, $focus_handleid = 0, $x_completes = false)
+function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag = null, $focus_userid = 0, $x_completes = false)
 {
 
-    //Search to see if an  hashtaghas a thumbnail:
+    //Search to see if an  posthas a thumbnail:
     $CI =& get_instance();
 
     $chainid = (isset($i['chainid']) && $i['chainid'] > 0 ? $i['chainid'] : 0);
-    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-    $handles___4593 = $CI->config->item('handles___4593');
+    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
+    $users___4593 = $CI->config->item('users___4593');
     $is_ajax = strtolower($CI->uri->segment(1)) == 'ajax' || strtolower($CI->uri->segment(1)) == 'controller';
-    $is_cache = in_array($chainhandletype, $CI->config->item('handleids___14599'));
-    $goto_start = in_array($chainhandletype, $CI->config->item('handleids___42988'));
-    $handle_session = handle_session();
-    $superpower_10939 = !$is_cache && handle_session(10939);
-    $hashtag_startable = hashtag_is_startable($i);
-    $chainhandlecreator = ($focus_handleid > 0 ? $focus_handleid : ($handle_session ? $handle_session['handleid'] : 0));
-    $chain_creator = isset($i['chainhandlecreator']) && $i['chainhandlecreator'] == $chainhandlecreator;
-    $focus__node = in_array($chainhandletype, $CI->config->item('handleids___12149')); //NODE COIN
+    $is_cache = in_array($chainusertype, $CI->config->item('userids___14599'));
+    $goto_start = in_array($chainusertype, $CI->config->item('userids___42988'));
+    $user_session = user_session();
+    $superpower_10939 = !$is_cache && user_session(10939);
+    $post_startable = post_is_startable($i);
+    $chainusercreator = ($focus_userid > 0 ? $focus_userid : ($user_session ? $user_session['userid'] : 0));
+    $chain_creator = isset($i['chainusercreator']) && $i['chainusercreator'] == $chainusercreator;
+    $focus__node = in_array($chainusertype, $CI->config->item('userids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
     $discovery_term = (!$is_ajax && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
-    $discovery_mode = $chainhandlecreator && ($discovery_uri || $discovery_term);
-    $hashtag_access = hashtag_access($i['hashtagterm'], 0, $i, false, array(), $is_cache);
-    $focus_hashtag_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
-    $focus_hashtag_seg = ($discovery_term ? $CI->uri->segment(2) : false);
-    $focus_hashtagterm = ($focus_hashtag_uri ? $focus_hashtag_uri : ($focus_hashtag_seg ? $focus_hashtag_seg : false));
-    $show_hashtagedit = ($superpower_10939 && !$is_cache && ((!$is_ajax && !strlen($CI->uri->segment(2))) || ($is_ajax && substr_count($_POST['js_request_uri'], '/') == 1)));
-    if ($discovery_mode && !$target_hashtagterm && ($discovery_uri || $discovery_term)) {
-        $target_hashtagterm = ($discovery_uri ? $discovery_uri : $discovery_term);
+    $discovery_mode = $chainusercreator && ($discovery_uri || $discovery_term);
+    $post_access = post_access($i['posthashtag'], 0, $i, false, array(), $is_cache);
+    $focus_post_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
+    $focus_post_seg = ($discovery_term ? $CI->uri->segment(2) : false);
+    $focus_posthashtag = ($focus_post_uri ? $focus_post_uri : ($focus_post_seg ? $focus_post_seg : false));
+    $show_postedit = ($superpower_10939 && !$is_cache && ((!$is_ajax && !strlen($CI->uri->segment(2))) || ($is_ajax && substr_count($_POST['js_request_uri'], '/') == 1)));
+    if ($discovery_mode && !$target_posthashtag && ($discovery_uri || $discovery_term)) {
+        $target_posthashtag = ($discovery_uri ? $discovery_uri : $discovery_term);
     }
-    if ($target_hashtagterm && $focus_hashtagterm && $focus_hashtagterm == $i['hashtagterm']) {
-        $focus_hashtagterm = false;
+    if ($target_posthashtag && $focus_posthashtag && $focus_posthashtag == $i['posthashtag']) {
+        $focus_posthashtag = false;
     }
 
     //Log Preview:
-    $chainhandlecreator_id = ($chainhandlecreator > 0 ? $chainhandlecreator : 14068 /* GUEST */);
+    $chainusercreator_id = ($chainusercreator > 0 ? $chainusercreator : 14068 /* GUEST */);
 
-    if ($chainhandlecreator && !is_array($x_completes)) {
+    if ($chainusercreator && !is_array($x_completes)) {
         //Fetch discovery
-        $x_completes = $CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            'chainhandlecreator' => $chainhandlecreator,
-            'chainhashtaginput' => $i['hashtagid'],
-        ), array('chainhashtagoutput'));
+        $x_completes = $CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            'chainusercreator' => $chainusercreator,
+            'chainpostinput' => $i['postid'],
+        ), array('chainpostoutput'));
     }
 
-    $focus_hashtag_or = false;
-    if ($discovery_mode && $focus_hashtagterm && !$focus__node && isset($previous_i['hashtagid']) && $chainhandlecreator && !count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $previous_i['hashtagid'],
-            'chainhandleinput' => 43758,
+    $focus_post_or = false;
+    if ($discovery_mode && $focus_posthashtag && !$focus__node && isset($previous_i['postid']) && $chainusercreator && !count($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $previous_i['postid'],
+            'chainuserinput' => 43758,
         )))) {
-        foreach ($CI->Hashtags->read(array(
-            'LOWER(hashtagterm)' => strtolower($focus_hashtagterm),
+        foreach ($CI->Posts->read(array(
+            'LOWER(posthashtag)' => strtolower($focus_posthashtag),
         )) as $focus_i) {
-            if (count($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $focus_i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $CI->config->item('handleids___7712')) . ')' => null, //Input Choice
+            if (count($CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $focus_i['postid'],
+                'chainuserinput IN (' . join(',', $CI->config->item('userids___7712')) . ')' => null, //Input Choice
             )))) {
-                $focus_hashtag_or = $focus_i;
+                $focus_post_or = $focus_i;
             }
         }
     }
 
     $was_discovered = 0;
-    if (!$is_cache && $chainhandlecreator) {
-        $discoveries = $CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            'chainhandlecreator' => $chainhandlecreator,
-            'chainhashtaginput' => $i['hashtagid'],
+    if (!$is_cache && $chainusercreator) {
+        $discoveries = $CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            'chainusercreator' => $chainusercreator,
+            'chainpostinput' => $i['postid'],
         ));
         $was_discovered = count($discoveries);
     }
@@ -4552,218 +4548,218 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         $i = array_merge($i, $discoveries[0]);
     }
 
-    $target_hashtagterm_discover = null;
-    if ($was_discovered && !$target_hashtagterm) {
-        foreach ($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            'chainhandlecreator' => $chainhandlecreator,
-            'chainhashtaginput' => $i['hashtagid'],
-            'chainhashtagoutput > 0' => null,
-        ), array('chainhashtagoutput')) as $CI_dis) {
-            $target_hashtagterm_discover = $CI_dis['hashtagterm'];
-            $target_hashtagterm = $target_hashtagterm_discover;
+    $target_posthashtag_discover = null;
+    if ($was_discovered && !$target_posthashtag) {
+        foreach ($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            'chainusercreator' => $chainusercreator,
+            'chainpostinput' => $i['postid'],
+            'chainpostoutput > 0' => null,
+        ), array('chainpostoutput')) as $CI_dis) {
+            $target_posthashtag_discover = $CI_dis['posthashtag'];
+            $target_posthashtag = $target_posthashtag_discover;
         }
     }
 
     $is_locked = ($discovery_mode && !$was_discovered && !$focus__node);
-    $is_required = count($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput' => 28239, //Required
+    $is_required = count($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+        'chainpostoutput' => $i['postid'],
+        'chainuserinput' => 28239, //Required
     )));
 
-    if (($goto_start || !$superpower_10939) && $hashtag_startable) {
-        $href = view_memory(42903, 30795) . $i['hashtagterm'] . '/' . view_memory(6404, 4235);
+    if (($goto_start || !$superpower_10939) && $post_startable) {
+        $href = view_memory(42903, 30795) . $i['posthashtag'] . '/' . view_memory(6404, 4235);
     } elseif ($is_locked) {
         $href = null;
-    } elseif ($discovery_mode && $target_hashtagterm) {
-        $href = view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'];
-        //} elseif ($target_hashtagterm_discover) {
-        //$href = view_memory(42903, 30795) . $target_hashtagterm_discover . '/' . $i['hashtagterm'];
+    } elseif ($discovery_mode && $target_posthashtag) {
+        $href = view_memory(42903, 30795) . $target_posthashtag . '/' . $i['posthashtag'];
+        //} elseif ($target_posthashtag_discover) {
+        //$href = view_memory(42903, 30795) . $target_posthashtag_discover . '/' . $i['posthashtag'];
     } elseif ($discovery_mode) {
-        $href = view_memory(42903, 33286) . $i['hashtagterm'];
+        $href = view_memory(42903, 33286) . $i['posthashtag'];
     } else {
-        $href = view_memory(42903, 33286) . $i['hashtagterm'];
+        $href = view_memory(42903, 33286) . $i['posthashtag'];
     }
 
 
     //Top action menu:
-    $ui = '<div hashtagid="' . $i['hashtagid'] . '" hashtagterm="' . $i['hashtagterm'] . '" discovery_mode="' . intval($discovery_mode) . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_hashtag_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['hashtagid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_hashtag_or && $is_locked ? ' is_locked' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
+    $ui = '<div postid="' . $i['postid'] . '" posthashtag="' . $i['posthashtag'] . '" discovery_mode="' . intval($discovery_mode) . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_post_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+     ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['postid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_post_or && $is_locked ? ' is_locked' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
 
-    if ($discovery_mode && $chainhandlecreator && $focus__node) {
-        $ui .= '<style> .add_hashtag{ display:none; } </style>';
+    if ($discovery_mode && $chainusercreator && $focus__node) {
+        $ui .= '<style> .add_post{ display:none; } </style>';
     }
 
     if ($is_required) {
         //Add required icon:
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_' . $i['hashtagid'] . ' .first_line:first\').append(\'<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' asterisk" title="Required">*</span>\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_' . $i['postid'] . ' .first_line:first\').append(\'<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' asterisk" title="Required">*</span>\'); }); </script>';
     }
 
-    if ($focus_hashtag_or) {
-        $ui .= '<div class="this_selector this_selector_' . $i['hashtagid'] . '" selection_hashtagid="' . $i['hashtagid'] . '"><span class="icon-block-sm">' . (count($CI->Chains->read(array(
-                'chainhandletype' => 7712, //Input Choice
-                'chainhandlecreator' => $chainhandlecreator,
-                'chainhashtaginput' => $focus_hashtag_or['hashtagid'],
-                'chainhashtagoutput' => $i['hashtagid'],
+    if ($focus_post_or) {
+        $ui .= '<div class="this_selector this_selector_' . $i['postid'] . '" selection_postid="' . $i['postid'] . '"><span class="icon-block-sm">' . (count($CI->Ideachains->read(array(
+                'chainusertype' => 7712, //Input Choice
+                'chainusercreator' => $chainusercreator,
+                'chainpostinput' => $focus_post_or['postid'],
+                'chainpostoutput' => $i['postid'],
             ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>') . '</span></div>';
     }
 
-    $ui .= '<div class="cover-content ' . ($focus_hashtag_or ? ' cover_selector ' : '') . '">';
+    $ui .= '<div class="cover-content ' . ($focus_post_or ? ' cover_selector ' : '') . '">';
     $ui .= '<div class="inner-content">';
     $ui .= '<div class="cover-text">';
 
     //Show Chain User:
-    $ui .= '<div class="creator_frame creator_frame_' . $i['hashtagid'] . '">';
+    $ui .= '<div class="creator_frame creator_frame_' . $i['postid'] . '">';
 
     //Show Creator if any:
     $headline_authors = array();
-    foreach ($CI->Chains->read(array(
+    foreach ($CI->Ideachains->read(array(
         'chainvoid >=' => 0, //Does not matter if it has been updated, we want the original author here
-        'chainhandletype' => 12273, //Hashtag Created
-        '(chainid='.$i['hashtagid'].' OR chainhashtaginput='.$i['hashtagid'].' OR chainhashtagoutput='.$i['hashtagid'].')' => null,
-    ), array('chainhandlecreator'), 1, 0, array('chainid' => 'ASC')) as $creator) {
+        'chainusertype' => 12273,
+        'chainpostinput' => $i['postid'],
+    ), array('chainusercreator'), 1, 0, array('chainid' => 'ASC')) as $creator) {
 
-        array_push($headline_authors, $creator['handleid']);
+        array_push($headline_authors, $creator['userid']);
         $follow_btn = null;
 
-        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['handleterm'] . '"><span class="icon-block">' . view_cover($creator['handlecover']) . '</span><b class="hidden">' . $creator['handlename'] . '</b><span class="grey mini-font mini-frame">@' . $creator['handleterm'] . '</span></a>' . (!in_array($creator['handleid'], $CI->config->item('handleids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
+        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['userhandle'] . '"><span class="icon-block">' . view_cover($creator['usercover']) . '</span><b class="hidden">' . $creator['username'] . '</b><span class="grey mini-font mini-frame">@' . $creator['userhandle'] . '</span></a>' . (!in_array($creator['userid'], $CI->config->item('userids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
 
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['hashtagid'] . '" class="sub__handle space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainhandlecreator) ? ' hidden ' : '') . '">'.( isset($i['chainhandletype']) ? ( substr_count($handles___4593[$i['chainhandletype']]['m__cover'], '#') ? $handles___4593[$i['chainhandletype']]['m__cover'] : $handles___4593[$i['chainhandletype']]['m__cover'].' #' ) : '#' ).'<span class="ui_hashtagterm_' . $i['hashtagid'] . '">' . $i['hashtagterm'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainusercreator) ? ' hidden ' : '') . '">'.( isset($i['chainusertype']) ? ( substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'].' #' ) : '#' ).'<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
     $bottom_bar_ui = '';
 
     //Determine Chain Group
-    $chainhandletype_id = 4593; //Chain Type
-    $chainhandletype_ui = '';
+    $chainusertype_id = 4593; //Chain Type
+    $chainusertype_ui = '';
     if (!$focus__node && $chainid && !$is_cache) {
-        foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
-            if (in_array($i['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
-                $chainhandletype_id = $chainhandletype1;
+        foreach ($CI->config->item('users___31770') as $chainusertype1 => $m1) {
+            if (in_array($i['chainusertype'], $CI->config->item('userids___' . $chainusertype1))) {
+                $chainusertype_id = $chainusertype1;
                 break;
             }
         }
     }
 
-    foreach ($CI->config->item('handles___31904') as $chainhandletype_target_bar => $m_target_bar) {
+    foreach ($CI->config->item('users___31904') as $chainusertype_target_bar => $m_target_bar) {
 
         //See if missing superpower?
-        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_target_bar['m__following']);
-        if (count($superpowers_required) && (!handle_session(end($superpowers_required)) || $is_cache)) {
+        $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m_target_bar['m__following']);
+        if (count($superpowers_required) && (!user_session(end($superpowers_required)) || $is_cache)) {
             continue;
         }
 
         //Determine hover state:
-        if ($chainhandletype_target_bar == 31770 && !$discovery_mode && $chainhandletype_ui && $superpower_10939) {
+        if ($chainusertype_target_bar == 31770 && !$discovery_mode && $chainusertype_ui && $superpower_10939) {
 
-            //Chains
-            $bottom_bar_ui .= $chainhandletype_ui;
+            //Ideachains
+            $bottom_bar_ui .= $chainusertype_ui;
 
-        } elseif ($chainhandletype_target_bar == 4362 && !$is_cache && !$discovery_mode && $handle_session && isset($i['chaintime']) && strtotime($i['chaintime']) > 0 && $chainhandletype_ui && ($hashtag_access >= 3 || ($handle_session && $chainhandlecreator == $i['chainhandlecreator']))) {
+        } elseif ($chainusertype_target_bar == 4362 && !$is_cache && !$discovery_mode && $user_session && isset($i['chaintime']) && strtotime($i['chaintime']) > 0 && $chainusertype_ui && ($post_access >= 3 || ($user_session && $chainusercreator == $i['chainusercreator']))) {
 
             //Chain Time / Creator
             $creator_details = '';
             $time_diff = view_time_difference($i['chaintime'], true);
             $creator_name = '';
-            if ($i['chainhandlecreator'] > 0) {
-                foreach ($CI->Handles->read(array(
-                    'handleid' => $i['chainhandlecreator'],
+            if ($i['chainusercreator'] > 0) {
+                foreach ($CI->Users->read(array(
+                    'userid' => $i['chainusercreator'],
                 )) as $creator) {
-                    $creator_name = 'Chained by ' . $creator['handlename'] . ' @' . $creator['handleterm'] . ' on ';
-                    $creator_details = '<a href="' . view_memory(42903, 33286) . $i['hashtagterm'] . '"><span class="icon-block-sm">' . view_cover($creator['handlecover']) . '</span></a>';
+                    $creator_name = 'Chained by ' . $creator['username'] . ' @' . $creator['userhandle'] . ' on ';
+                    $creator_details = '<a href="' . view_memory(42903, 33286) . $i['posthashtag'] . '"><span class="icon-block-sm">' . view_cover($creator['usercover']) . '</span></a>';
                 }
             }
 
             $bottom_bar_ui .= '<span class="icon-block-sm"><div class="grey created_time" title="' . $creator_name . date("Y-m-d H:i:s", strtotime($i['chaintime'])) . ' which is ' . $time_diff . ' ago | ID ' . $i['chainid'] . '">' . ($creator_details ? $creator_details : $time_diff) . '</div></span>';
 
-        } elseif ($chainhandletype_target_bar == 14980 && !$is_cache && $hashtag_access >= 1 && !$discovery_mode) {
+        } elseif ($chainusertype_target_bar == 14980 && !$is_cache && $post_access >= 1 && !$discovery_mode) {
 
             //Drop Down
             $action_buttons = null;
             if (!$chainid) {
-                $focus_dropdown = 11047; //Hashtag Dropdown
-            } elseif ($chainhandletype_id == 4486) { //Hashtag/Hashtag Chains
-                $focus_dropdown = 14955; //Hashtag/Hashtag Dropdown
-            } elseif ($chainhandletype_id == 13550) { //Hashtag/Handle Chains
-                $focus_dropdown = 28787; //Hashtag/Handle Dropdown
+                $focus_dropdown = 11047; //Post Dropdown
+            } elseif ($chainusertype_id == 4486) { //Post/Post Ideachains
+                $focus_dropdown = 14955; //Post/Post Dropdown
+            } elseif ($chainusertype_id == 13550) { //Post/User Ideachains
+                $focus_dropdown = 28787; //Post/User Dropdown
             } else {
                 //Discoveries
-                $focus_dropdown = 32069; //Hashtag/Discoveries Dropdown
+                $focus_dropdown = 32069; //Post/Discoveries Dropdown
             }
 
-            if (is_array($CI->config->item('handles___' . $focus_dropdown))) {
-                foreach ($CI->config->item('handles___' . $focus_dropdown) as $handleid_dropdown => $m_dropdown) {
+            if (is_array($CI->config->item('users___' . $focus_dropdown))) {
+                foreach ($CI->config->item('users___' . $focus_dropdown) as $userid_dropdown => $m_dropdown) {
 
                     //Skip if missing superpower:
-                    $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_dropdown['m__following']);
-                    if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
+                    $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m_dropdown['m__following']);
+                    if (count($superpowers_required) && !user_session(end($superpowers_required))) {
                         continue;
                     }
 
                     $anchor = '<span class="icon-block-sm">' . $m_dropdown['m__cover'] . '</span>' . $m_dropdown['m__title'];
 
-                    if ($handleid_dropdown == 12589 && $hashtag_access >= 3) {
+                    if ($userid_dropdown == 12589 && $post_access >= 3) {
 
                         //Mass Apply
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(12589,' . $i['hashtagid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(12589,' . $i['postid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 33286 && $discovery_mode && $hashtag_access >= 3) {
+                    } elseif ($userid_dropdown == 33286 && $discovery_mode && $post_access >= 3) {
 
-                        //Hashtags Mode
-                        $action_buttons .= '<a href="' . view_memory(42903, 33286) . $i['hashtagterm'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Posts Mode
+                        $action_buttons .= '<a href="' . view_memory(42903, 33286) . $i['posthashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 31911 && $hashtag_access >= 3) {
+                    } elseif ($userid_dropdown == 31911 && $post_access >= 3) {
 
-                        //Hashtag Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_editor(' . $i['hashtagid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Post Editor
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_editor(' . $i['postid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 13007 && $hashtag_access >= 3) {
+                    } elseif ($userid_dropdown == 13007 && $post_access >= 3) {
 
                         //Reset Alphabetic order
                         $action_buttons .= '<a href="javascript:void(0);" onclick="chain_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 31911 && $hashtag_access >= 3 && $discovery_mode) {
+                    } elseif ($userid_dropdown == 31911 && $post_access >= 3 && $discovery_mode) {
 
-                        //Hashtag Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_editor(' . $i['hashtagid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Post Editor
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_editor(' . $i['postid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 10673 && $chainid && $hashtag_access >= 3) {
+                    } elseif ($userid_dropdown == 10673 && $chainid && $post_access >= 3) {
 
                         //Unchain
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $chainhandletype . ',\'' . $i['hashtagterm'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $chainusertype . ',\'' . $i['posthashtag'] . '\')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 30873 && $hashtag_access >= 3) {
+                    } elseif ($userid_dropdown == 30873 && $post_access >= 3) {
 
-                        //Clone Hashtag Tree:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_copy(' . $i['hashtagid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Clone Post Tree:
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_copy(' . $i['postid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 33292 && $handle_session) {
+                    } elseif ($userid_dropdown == 33292 && $user_session) {
 
                         //Stats
-                        $action_buttons .= '<a href="' . view_app_chain(33292) . view_memory(42903, 33286) . $i['hashtagterm'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain(33292) . view_memory(42903, 33286) . $i['posthashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 29771 && $hashtag_access >= 3) {
+                    } elseif ($userid_dropdown == 29771 && $post_access >= 3) {
 
-                        //Clone Single Hashtag:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="hashtag_copy(' . $i['hashtagid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
+                        //Clone Single Post:
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_copy(' . $i['postid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 4341 && $hashtag_access >= 3 && $chainid) {
+                    } elseif ($userid_dropdown == 4341 && $post_access >= 3 && $chainid) {
 
                         //Chain Details
                         $action_buttons .= '<a href="' . view_app_chain(4341) . '?chainid=' . $chainid . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 42648 && $hashtag_access >= 3) {
+                    } elseif ($userid_dropdown == 42648 && $post_access >= 3) {
 
                         //Delete Permanently
                         $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                        $action_buttons .= '<a href="javascript:void();" onclick="hashtag_delete(' . $i['hashtagid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void();" onclick="post_delete(' . $i['postid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($handleid_dropdown == 28637 && isset($i['chainhandletype']) && handle_session(12700)) {
+                    } elseif ($userid_dropdown == 28637 && isset($i['chainusertype']) && user_session(12700)) {
 
                         //Paypal Details
                         $chainvalue = @unserialize($i['chainvalue']);
@@ -4771,10 +4767,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
                             $action_buttons .= '<a href="https://www.paypal.com/activity/payment/' . $chainvalue['txn_id'] . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
                         }
 
-                    } elseif (in_array($handleid_dropdown, $CI->config->item('handleids___6287')) && $hashtag_access >= 3) {
+                    } elseif (in_array($userid_dropdown, $CI->config->item('userids___6287')) && $post_access >= 3) {
 
                         //Standard button
-                        $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 33286) . $i['hashtagterm'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain($userid_dropdown) . view_memory(42903, 33286) . $i['posthashtag'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     }
                 }
@@ -4783,12 +4779,12 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             //Any items found?
             if ($action_buttons && $focus_dropdown > 0) {
                 //Right Action Menu
-                $handles___14980 = $CI->config->item('handles___14980'); //Dropdowns
+                $users___14980 = $CI->config->item('users___14980'); //Dropdowns
 
                 $bottom_bar_ui .= '<span>';
                 $bottom_bar_ui .= '<div class="dropdown inline-block">';
-                $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="action_menu_hashtag_' . $i['hashtagid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $handles___14980[$focus_dropdown]['m__title'] . '">' . $handles___14980[$focus_dropdown]['m__cover'] . '</button>';
-                $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_hashtag_' . $i['hashtagid'] . '">';
+                $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="action_menu_post_' . $i['postid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $users___14980[$focus_dropdown]['m__title'] . '">' . $users___14980[$focus_dropdown]['m__cover'] . '</button>';
+                $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_post_' . $i['postid'] . '">';
                 $bottom_bar_ui .= $action_buttons;
                 $bottom_bar_ui .= '</div>';
                 $bottom_bar_ui .= '</div>';
@@ -4805,17 +4801,17 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     }
 
 
-    //Hashtag Location if any:
-    foreach ($CI->Chains->read(array(
-        'chainhandletype' => 41949, //Locate
-        'chainhashtagoutput' => $i['hashtagid'],
-    ), array('chainhandleinput')) as $location) {
+    //Post Location if any:
+    foreach ($CI->Ideachains->read(array(
+        'chainusertype' => 41949, //Locate
+        'chainpostoutput' => $i['postid'],
+    ), array('chainuserinput')) as $location) {
         $ui .= view_featured_chains(41949, $location, null, $focus__node);
     }
 
     //Chain Message if any:
     /*
-    if ($chainid && $handle_session) {
+    if ($chainid && $user_session) {
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '" style="padding-left:40px;">' . htmlentities($i['chainvalue']) . '</div>';
     }
     */
@@ -4824,19 +4820,19 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     $ui .= '</div>';
 
 
-    //Hashtag Message (Remaining)
-    $ui .= '<div class="ui_hashtagdiscover_' . $i['hashtagid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_hashtag_value($i, $chainhandlecreator, $focus__node, $discovery_mode, $show_hashtagedit) . '</div>';
+    //Post Message (Remaining)
+    $ui .= '<div class="ui_postdiscover_' . $i['postid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_post_value($i, $chainusercreator, $focus__node, $discovery_mode, $show_postedit) . '</div>';
 
 
-    $hashtag_popup_url = hashtag_popup_url($i);
-    if ($hashtag_popup_url) {
-        $ui .= '<div class="ignore-click chain_click chain_click_' . $i['hashtagid'] . ' hideIfEmpty"><a href="' . $hashtag_popup_url . '" class="hideIfEmpty" target="_blank" onclick="chain_clicked(' . $i['hashtagid'] . ')">' . $hashtag_popup_url . '</a></div>';
+    $post_popup_url = post_popup_url($i);
+    if ($post_popup_url) {
+        $ui .= '<div class="ignore-click chain_click chain_click_' . $i['postid'] . ' hideIfEmpty"><a href="' . $post_popup_url . '" class="hideIfEmpty" target="_blank" onclick="chain_clicked(' . $i['postid'] . ')">' . $post_popup_url . '</a></div>';
     }
 
 
     //Raw Data:
-    $ui .= '<div class="ui_hashtagtext_' . $i['hashtagid'] . '
-     hidden">' . $i['hashtagtext'] . '</div>';
+    $ui .= '<div class="ui_posttext_' . $i['postid'] . '
+     hidden">' . $i['posttext'] . '</div>';
 
 
     $ui .= '</div>';
@@ -4846,16 +4842,16 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
     //Three main actions: (Excludes reading which is no action)
     $input_ui = '';
 
-    //Any inputs for this hashtag?
-    if (isset($previous_i['hashtagid']) && (count($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $previous_i['hashtagid'],
-                'chainhandleinput' => 43758,
-            ))) || ($focus__node && count($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $i['hashtagid'],
-                    'chainhandleinput IN (' . join(',', $CI->config->item('handleids___41055')) . ')' => null,
-                    'chainhandleinput !=' => 43758,
+    //Any inputs for this post?
+    if (isset($previous_i['postid']) && (count($CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $previous_i['postid'],
+                'chainuserinput' => 43758,
+            ))) || ($focus__node && count($CI->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                    'chainpostoutput' => $i['postid'],
+                    'chainuserinput IN (' . join(',', $CI->config->item('userids___41055')) . ')' => null,
+                    'chainuserinput !=' => 43758,
                 )))))) {
 
         //PAYMENT TICKET
@@ -4868,12 +4864,12 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
             //Referesh soon so we can check if completed or not
-            js_php_redirect(view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1', 987);
+            js_php_redirect(view_memory(42903, 30795) . $target_posthashtag . '/' . $i['posthashtag'] . '?process_pay=1', 987);
 
-        } elseif (isset($previous_i['hashtagid']) && !count($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $previous_i['hashtagid'],
-                'chainhandleinput' => 43758,
+        } elseif (isset($previous_i['postid']) && !count($CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $previous_i['postid'],
+                'chainuserinput' => 43758,
             ))) && count($x_completes)) {
 
             foreach ($x_completes as $x_complete) {
@@ -4888,7 +4884,7 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             }
 
             $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $chainvalue['mc_gross'] . '">';
-            $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
+            $input_ui .= '<input type="hidden" class="postweight" name="quantity" value="' . $chainvalue['quantity'] . '">'; //Dynamic Variable that JS will update
 
         } else {
 
@@ -4896,29 +4892,29 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
             $paypal_email = website_setting(30882);
 
-            $currency_types = $CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => (isset($previous_i['hashtagid']) && count($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $previous_i['hashtagid'],
-                    'chainhandleinput' => 43758,
-                ))) ? $previous_i['hashtagid'] : $i['hashtagid']),
-                'chainhandleinput IN (' . join(',', $CI->config->item('handleids___26661')) . ')' => null, //Currency
+            $currency_types = $CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => (isset($previous_i['postid']) && count($CI->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                    'chainpostoutput' => $previous_i['postid'],
+                    'chainuserinput' => 43758,
+                ))) ? $previous_i['postid'] : $i['postid']),
+                'chainuserinput IN (' . join(',', $CI->config->item('userids___26661')) . ')' => null, //Currency
             ));
-            $total_dues = $CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput' => 26562, //Total Due
+            $total_dues = $CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $i['postid'],
+                'chainuserinput' => 26562, //Total Due
             ));
-            $cart_max = $CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput' => 29651, //Cart Max Quantity
+            $cart_max = $CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $i['postid'],
+                'chainuserinput' => 29651, //Cart Max Quantity
             ));
-            $cart_min = $CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput' => 31008, //Cart Min Quantity
+            $cart_min = $CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $i['postid'],
+                'chainuserinput' => 31008, //Cart Min Quantity
             ));
 
 
@@ -4926,19 +4922,19 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             if (count($total_dues) && doubleval($total_dues[0]['chainvalue'])) {
                 $unit_price = doubleval($total_dues[0]['chainvalue']);
             } else {
-                //Try to find the first handle reference and see if this user has a personalized value there to replace a fixed value:
-                foreach ($CI->Chains->read(array(
-                    'chainhandletype' => 31835, //Mention
-                    'chainhashtagoutput' => $i['hashtagid'],
+                //Try to find the first user reference and see if this user has a personalized value there to replace a fixed value:
+                foreach ($CI->Ideachains->read(array(
+                    'chainusertype' => 31835, //Mention
+                    'chainpostoutput' => $i['postid'],
                     'chainkey' => 1,
-                ), array('chainhandleinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_output) {
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
-                        'chainhandleinput' => $handle_output['handleid'],
-                        'chainhandleoutput' => $handle_session['handleid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it
-                    ), array('chainhandleinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $handle_session['handleid'] */) as $handle_data) {
-                        if (doubleval($handle_data['chainvalue'])) {
-                            $unit_price = doubleval($handle_data['chainvalue']);
+                ), array('chainuserinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $user_session['userid'] */) as $user_output) {
+                    foreach ($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                        'chainuserinput' => $user_output['userid'],
+                        'chainuseroutput' => $user_session['userid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it
+                    ), array('chainuserinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $user_session['userid'] */) as $user_data) {
+                        if (doubleval($user_data['chainvalue'])) {
+                            $unit_price = doubleval($user_data['chainvalue']);
                         }
                     }
                 }
@@ -4949,71 +4945,71 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
             $unit_currency = '';
             $unit_fee = 0;
             $max_allowed = (count($cart_max) && is_numeric($cart_max[0]['chainvalue']) && $cart_max[0]['chainvalue'] > 0 ? intval($cart_max[0]['chainvalue']) : view_memory(6404, 29651));
-            $spots_remaining = hashtag_spots_remaining($i['hashtagid']);
+            $spots_remaining = post_spots_remaining($i['postid']);
             $max_allowed = ($spots_remaining > -1 && $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed);
 
             $min_allowed = (count($cart_min) && is_numeric($cart_min[0]['chainvalue']) && intval($cart_min[0]['chainvalue']) > $is_required ? intval($cart_min[0]['chainvalue']) : $is_required);
-            $handles___26661 = $CI->config->item('handles___26661'); //Currency
+            $users___26661 = $CI->config->item('users___26661'); //Currency
             if (count($currency_types)) {
-                $unit_currency = $handles___26661[$currency_types[0]['chainhandleinput']]['m__message'];
+                $unit_currency = $users___26661[$currency_types[0]['chainuserinput']]['m__message'];
             }
 
-            $prev_invoice = isset($previous_i['hashtagid']) && count($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $previous_i['hashtagid'],
-                    'chainhandleinput' => 43758,
+            $prev_invoice = isset($previous_i['postid']) && count($CI->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                    'chainpostoutput' => $previous_i['postid'],
+                    'chainuserinput' => 43758,
                 )));
 
-            if ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && !$prev_invoice && $unit_price && count($currency_types) == 1) {
+            if ($chainusercreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && !$prev_invoice && $unit_price && count($currency_types) == 1) {
 
                 $valid_instant_pay = true;
 
-                $digest_fees = count($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $i['hashtagid'], //Paypal data is in the current hashtag
-                    'chainhandleinput' => 30589, //Digest Fees
+                $digest_fees = count($CI->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                    'chainpostoutput' => $i['postid'], //Paypal data is in the current post
+                    'chainuserinput' => 30589, //Digest Fees
                 )));
 
                 //Break down amount & currency
-                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
+                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainusercreator)) + doubleval(website_setting(27017, $chainusercreator))) / 100), 2, ".", "");
 
                 //Append information to cart about Paypal:
                 $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
 
-            } elseif ($chainhandlecreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $prev_invoice && $unit_price) {
+            } elseif ($chainusercreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $prev_invoice && $unit_price) {
 
-                $digest_fees = count($CI->Chains->read(array(
-                    'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                    'chainhashtagoutput' => $previous_i['hashtagid'], //Invoice data is on the previous hashtag
-                    'chainhandleinput' => 30589, //Digest Fees
+                $digest_fees = count($CI->Ideachains->read(array(
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                    'chainpostoutput' => $previous_i['postid'], //Invoice data is on the previous post
+                    'chainuserinput' => 30589, //Digest Fees
                 )));
 
                 //Break down amount & currency
-                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainhandlecreator)) + doubleval(website_setting(27017, $chainhandlecreator))) / 100), 2, ".", "");
+                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainusercreator)) + doubleval(website_setting(27017, $chainusercreator))) / 100), 2, ".", "");
 
             }
 
 
             $current_value = $min_allowed;
-            foreach ($CI->Chains->read(array(
-                'chainhandletype' => 7712, //Input Choice
-                'chainhandlecreator' => $handle_session['handleid'],
-                'chainhashtagoutput' => $i['hashtagid'],
+            foreach ($CI->Ideachains->read(array(
+                'chainusertype' => 7712, //Input Choice
+                'chainusercreator' => $user_session['userid'],
+                'chainpostoutput' => $i['postid'],
             ), array(), 1) as $x_selection) {
                 $current_value = $x_selection['chainkey'];
             }
 
 
             //Is multi selectable, allow show down for quantity:
-            $input_ui .= '<div class="handle-info ticket-notice" title="' . $handles___11035[44242]['m__title'] . '">'
-                . '<span class="icon-block">' . $handles___11035[44242]['m__cover'] . '</span>'
-                . '<div class="handle_info_box">';
+            $input_ui .= '<div class="user-info ticket-notice" title="' . $users___11035[44242]['m__title'] . '">'
+                . '<span class="icon-block">' . $users___11035[44242]['m__cover'] . '</span>'
+                . '<div class="user_info_box">';
 
             if ($max_allowed > 0 || $min_allowed > 0) {
-                $input_ui .= '<div class="sale_controller sale_controller_' . $i['hashtagid'] . '" unitprice="' . $unit_price . '" unitcurrency="' . $unit_currency . '" hashtagid="' . $i['hashtagid'] . '">';
-                $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_down"><i class="fas fa-minus ' . ($current_value == $min_allowed ? ' hidden ' : '') . '"></i></a>';
+                $input_ui .= '<div class="sale_controller sale_controller_' . $i['postid'] . '" unitprice="' . $unit_price . '" unitcurrency="' . $unit_currency . '" postid="' . $i['postid'] . '">';
+                $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,' . $i['postid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_down"><i class="fas fa-minus ' . ($current_value == $min_allowed ? ' hidden ' : '') . '"></i></a>';
                 $input_ui .= '<span class="main__title current_count">' . $current_value . '</span>';
-                $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,' . $i['hashtagid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_up">' . ($max_allowed == $min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>') . '</a>';
+                $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,' . $i['postid'] . ',' . $max_allowed . ',' . $min_allowed . ',' . ($unit_fee + $unit_price) . ',' . $unit_fee . ')" class="sale_increment sale_up">' . ($max_allowed == $min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>') . '</a>';
                 $input_ui .= '</div>';
             } else {
                 $input_ui .= '<span class="current_count" style="display: none;">' . $min_allowed . '</span>';
@@ -5027,22 +5023,22 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
             if ($valid_instant_pay) {
 
-                $handles___14870 = $CI->config->item('handles___14870'); //DOMAINS
+                $users___14870 = $CI->config->item('users___14870'); //DOMAINS
 
                 //Load Paypal Pay button:
                 $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 
                 $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
-                $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_hashtag_title($i, true)) . '">';
-                $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_hashtagterm ? $target_hashtagterm . ' #' : '') . $i['hashtagterm'] . ' @' . get_domain('m__handle') . ' @' . $handle_session['handleterm'] . '">';
+                $input_ui .= '<input type="hidden" class="postweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_post_title($i, true)) . '">';
+                $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_posthashtag ? $target_posthashtag . ' #' : '') . $i['posthashtag'] . ' @' . get_domain('m__user') . ' @' . $user_session['userhandle'] . '">';
 
                 $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                 $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
                 $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
-                $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $handles___14870[2738]['m__message'] . view_app_chain(26595) . '">';
-                $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?cancel_pay=1">';
-                $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_hashtagterm . '/' . $i['hashtagterm'] . '?process_pay=1">';
+                $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $users___14870[2738]['m__message'] . view_app_chain(26595) . '">';
+                $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_posthashtag . '/' . $i['posthashtag'] . '?cancel_pay=1">';
+                $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_posthashtag . '/' . $i['posthashtag'] . '?process_pay=1">';
                 $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                 $input_ui .= '<input type="hidden" name="business" value="' . $paypal_email . '">';
 
@@ -5056,53 +5052,53 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
                 //FREE TICKET
                 $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
-                $input_ui .= '<input type="hidden" class="hashtagweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" class="postweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
 
             }
         }
 
-    } elseif (count($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___33532')) . ')' => null,
+    } elseif (count($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+        'chainpostoutput' => $i['postid'],
+        'chainuserinput IN (' . join(',', $CI->config->item('userids___33532')) . ')' => null,
     )))) {
 
-        //Find the created hashtag if any:
-        $handle_private_replies = $CI->Chains->read(array(
-            'chainhandletype' => 4228,
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandlecreator' => $chainhandlecreator,
-        ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC'));
+        //Find the created post if any:
+        $user_private_replies = $CI->Ideachains->read(array(
+            'chainusertype' => 4228,
+            'chainpostoutput' => $i['postid'],
+            'chainusercreator' => $chainusercreator,
+        ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC'));
 
         $input_attributes = '';
-        $previous_response = ($chainhandlecreator && isset($handle_private_replies[0]['hashtagtext']) ? $handle_private_replies[0]['hashtagtext'] : '');
+        $previous_response = ($chainusercreator && isset($user_private_replies[0]['posttext']) ? $user_private_replies[0]['posttext'] : '');
 
-        if (count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43002')) . ')' => null,
+        if (count($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $i['postid'],
+            'chainuserinput IN (' . join(',', $CI->config->item('userids___43002')) . ')' => null,
         )))) {
 
             //Textarea
-            $handles___6201 = $CI->config->item('handles___6201'); //HASHTAG Cache
-            $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($handles___6201[4736]['m__message']) ? $handles___6201[4736]['m__message'] : $handles___6201[4736]['m__title'] . '...') . '">' . $previous_response . '</textarea>';
+            $users___12273 = $CI->config->item('users___12273'); //POST Cache
+            $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'] . '...') . '">' . $previous_response . '</textarea>';
             $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
 
         } else {
 
-            foreach ($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43003')) . ')' => null,
+            foreach ($CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $i['postid'],
+                'chainuserinput IN (' . join(',', $CI->config->item('userids___43003')) . ')' => null,
             )) as $input_field) {
 
-                if ($input_field['chainhandleinput'] == 31794) {
+                if ($input_field['chainuserinput'] == 31794) {
 
                     //Number
-                    if (count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 42181, //Phone
+                    if (count($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $i['postid'],
+                        'chainuserinput' => 42181, //Phone
                     )))) {
                         //It's a phone number:
                         $input_type = 'text';
@@ -5114,10 +5110,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
                     }
 
                     //Steps
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 31813, //Steps
+                    foreach ($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $i['postid'],
+                        'chainuserinput' => 31813, //Steps
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
                             $input_attributes .= ' step="' . $num_steps['chainvalue'] . '" ';
@@ -5125,10 +5121,10 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
                     }
 
                     //Min Value
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 31800, //Min Value
+                    foreach ($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $i['postid'],
+                        'chainuserinput' => 31800, //Min Value
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
                             $input_attributes .= ' min="' . $num_steps['chainvalue'] . '" ';
@@ -5136,28 +5132,28 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
                     }
 
                     //Max Value
-                    foreach ($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 31801, //Max Value
+                    foreach ($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $i['postid'],
+                        'chainuserinput' => 31801, //Max Value
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
                             $input_attributes .= ' max="' . $num_steps['chainvalue'] . '" ';
                         }
                     }
 
-                } elseif ($input_field['chainhandleinput'] == 30350) {
+                } elseif ($input_field['chainuserinput'] == 30350) {
 
-                    $has_time = count($CI->Chains->read(array(
-                        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                        'chainhashtagoutput' => $i['hashtagid'],
-                        'chainhandleinput' => 32442, //Select Time
+                    $has_time = count($CI->Ideachains->read(array(
+                        'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                        'chainpostoutput' => $i['postid'],
+                        'chainuserinput' => 32442, //Select Time
                     )));
 
                     $input_type = ($has_time ? 'datetime-local' : 'date');
                     $placeholder = ($has_time ? 'Select Date & Time...' : 'Select Date...');
 
-                } elseif ($input_field['chainhandleinput'] == 42915) {
+                } elseif ($input_field['chainuserinput'] == 42915) {
 
                     //URL
                     $input_type = 'url';
@@ -5171,73 +5167,73 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
         }
 
         //Uploader
-        if (count($CI->Chains->read(array(
-            'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43004')) . ')' => null,
+        if (count($CI->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $i['postid'],
+            'chainuserinput IN (' . join(',', $CI->config->item('userids___43004')) . ')' => null,
         )))) {
-            foreach ($handle_private_replies as $x_response) {
-                $input_ui .= '<div class="hidden">' . hashtag_view(31777, $x_response) . '</div>';
+            foreach ($user_private_replies as $x_response) {
+                $input_ui .= '<div class="hidden">' . post_view(31777, $x_response) . '</div>';
             }
         }
 
     }
 
-    //Display Hashtag media:
+    //Display Post media:
     /*
-    $ui .= '<div class="media_outer_frame hideIfEmpty">
-                    <div id="media_outer_' . $i['hashtagid'] . '" class="media_frame media_frame_' . $i['hashtagid'] . ' hideIfEmpty"></div>
+    $ui .= '<div class="post_preview_frame hideIfEmpty">
+                    <div id="media_outer_' . $i['postid'] . '" class="media_frame media_frame_' . $i['postid'] . ' hideIfEmpty"></div>
                     <div class="doclear">&nbsp;</div>
                 </div>';
-    $ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['hashtagid'] . '"><span class="icon-block-sm">' . $handles___11035[7637]['m__cover'] . '</span>' . $handles___11035[7637]['m__title'] . '</div></div>';
+    $ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['postid'] . '"><span class="icon-block-sm">' . $users___11035[7637]['m__cover'] . '</span>' . $users___11035[7637]['m__title'] . '</div></div>';
 
-    $ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['hashtagid'] . ', [\'#' . $i['hashtagid'] . '\'], \'.inner_uploader_' . $i['hashtagid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['hashtagid'] . '\', 43004, ' . $i['hashtagid'] . '); }, 144); }); </script>';
+    $ui .= '<script> $(document).ready(function () { load_cloudinary(43004, ' . $i['postid'] . ', [\'#' . $i['postid'] . '\'], \'.inner_uploader_' . $i['postid'] . '\'); setTimeout(function () { display_media(\'media_outer_' . $i['postid'] . '\', 43004, ' . $i['postid'] . '); }, 144); }); </script>';
     */
 
     if (strlen($input_ui)) {
-        $ui .= '<div class="ignore-click input_ui input_ui_' . $i['hashtagid'] . '">' . $input_ui . '</div>';
+        $ui .= '<div class="ignore-click input_ui input_ui_' . $i['postid'] . '">' . $input_ui . '</div>';
     }
 
     //Bottom Bar
     $bottom_menu_ui = '';
 
 
-    foreach ($CI->config->item('handles___44257') as $chainhandletype_target_bar => $m_target_bar) {
+    foreach ($CI->config->item('users___44257') as $chainusertype_target_bar => $m_target_bar) {
 
         //See if missing superpower?
-        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_target_bar['m__following']);
-        if (count($superpowers_required) && (!handle_session(end($superpowers_required)) || $is_cache)) {
+        $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m_target_bar['m__following']);
+        if (count($superpowers_required) && (!user_session(end($superpowers_required)) || $is_cache)) {
             continue;
         }
 
         //Determine hover state:
-        if ($chainhandletype_target_bar == 33532 && !$is_cache && $handle_session && $hashtag_access >= 2 && !$is_locked) {
+        if ($chainusertype_target_bar == 33532 && !$is_cache && $user_session && $post_access >= 2 && !$is_locked) {
 
-            //Hashtag Reply
+            //Post Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="hashtag_editor(0,0,' . $i['hashtagid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="post_editor(0,0,' . $i['postid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__title'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
-        } elseif ($chainhandletype_target_bar == 4235 && (!$discovery_mode && $hashtag_startable && $hashtag_access >= 1)) {
+        } elseif ($chainusertype_target_bar == 4235 && (!$discovery_mode && $post_startable && $post_access >= 1)) {
 
             //Start
-            $bottom_menu_ui .= '<span><a href="' . view_memory(42903, 30795) . $i['hashtagterm'] . '/' . view_memory(6404, 4235) . '" class="btn btn-sm btn-black"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span><a href="' . view_memory(42903, 30795) . $i['posthashtag'] . '/' . view_memory(6404, 4235) . '" class="btn btn-sm btn-black"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
-        } elseif ($chainhandletype_target_bar == 42924 && $discovery_mode && $focus__node) {
+        } elseif ($chainusertype_target_bar == 42924 && $discovery_mode && $focus__node) {
 
             //Next
-            $handles___31777 = $CI->config->item('handles___31777');
-            $focus_menu = ($was_discovered || !isset($handles___31777[4559]) ? $m_target_bar : $handles___31777[4559]);
-            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="hashtag_discovered(0)" class="btn btn-sm post_button discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
+            $users___31777 = $CI->config->item('users___31777');
+            $focus_menu = ($was_discovered || !isset($users___31777[4559]) ? $m_target_bar : $users___31777[4559]);
+            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="post_discovered(0)" class="btn btn-sm post_button discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
-        } elseif ($chainhandletype_target_bar == 31022 && $discovery_mode && $focus__node && $handle_session && !count($x_completes) && count($CI->Chains->read(array(
-                'chainhandletype IN (' . join(',', $CI->config->item('handleids___42991')) . ')' => null, //Active Writes
-                'chainhashtagoutput' => $i['hashtagid'],
-                'chainhandleinput IN (' . join(',', $CI->config->item('handleids___43009')) . ')' => null,
-            ))) && !hashtag_required($i)) {
+        } elseif ($chainusertype_target_bar == 31022 && $discovery_mode && $focus__node && $user_session && !count($x_completes) && count($CI->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainpostoutput' => $i['postid'],
+                'chainuserinput IN (' . join(',', $CI->config->item('userids___43009')) . ')' => null,
+            ))) && !post_required($i)) {
 
             //Skip
-            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="hashtag_discovered(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
+            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="post_discovered(1)" class="btn btn-sm"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__title'] . '</a></span>';
 
         }
     }
@@ -5245,14 +5241,14 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
     //Bottom Bar menu
     if (!$focus__node && !$is_locked && !$is_cache) {
-        foreach ($CI->config->item('handles___' . ($discovery_mode ? 42877 : 31890)) as $handleid_bottom_bar => $m_bottom_bar) {
+        foreach ($CI->config->item('users___' . ($discovery_mode ? 42877 : 31890)) as $userid_bottom_bar => $m_bottom_bar) {
 
-            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_bottom_bar['m__following']);
-            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
+            $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m_bottom_bar['m__following']);
+            if (count($superpowers_required) && !user_session(end($superpowers_required))) {
                 continue;
             }
 
-            $coins_ui = hashtags_query($handleid_bottom_bar, $i['hashtagid'], 0, true, $headline_authors);
+            $coins_ui = posts_query($userid_bottom_bar, $i['postid'], 0, true, $headline_authors);
             if (strlen($coins_ui)) {
                 $bottom_menu_ui .= '<span class="hideIfEmpty">';
                 $bottom_menu_ui .= $coins_ui;
@@ -5279,92 +5275,92 @@ function hashtag_view($chainhandletype, $i, $previous_i = null, $target_hashtagt
 
 function view_random_title()
 {
-    $handlecover_generator = handlecover_generator(12279);
-    return random_adjective() . str_replace('Badger Honey', 'Honey Badger', str_replace('Black Widow', '', ucwords(str_replace('-', ' ', one_two_explode('fa-', ' ', $handlecover_generator)))));
+    $usercover_generator = usercover_generator(12279);
+    return random_adjective() . str_replace('Badger Honey', 'Honey Badger', str_replace('Black Widow', '', ucwords(str_replace('-', ' ', one_two_explode('fa-', ' ', $usercover_generator)))));
 }
 
-function view_list_handle($i, $plain_no_html = false)
+function view_list_user($i, $plain_no_html = false)
 {
 
     $CI =& get_instance();
     $message_append = '';
 
     //Define Order:
-    $handles___42421 = $CI->config->item('handles___42421');
+    $users___42421 = $CI->config->item('users___42421');
     $order_columns = array();
-    foreach ($handles___42421 as $sort_id => $sort) {
-        $order_columns['chainhandleinput = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($users___42421 as $sort_id => $sort) {
+        $order_columns['chainuserinput = \'' . $sort_id . '\' DESC'] = null;
     }
 
-    //Query Relevant Handles:
-    foreach ($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___33602')) . ')' => null, //Writer Chains Active
-        'chainhashtagoutput' => $i['hashtagid'],
-        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___42421')) . ')' => null, //Featured Inputs
-    ), array('chainhandleinput'), 0, 0, $order_columns) as $x) {
+    //Query Relevant Users:
+    foreach ($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Writer Ideachains Active
+        'chainpostoutput' => $i['postid'],
+        'chainuserinput IN (' . join(',', $CI->config->item('userids___42421')) . ')' => null, //Featured Inputs
+    ), array('chainuserinput'), 0, 0, $order_columns) as $x) {
 
         //Format data if needed:
-        $x['chainvalue'] = data_type_format($x['chainhandleinput'], $x['chainvalue']);
+        $x['chainvalue'] = data_type_format($x['chainuserinput'], $x['chainvalue']);
 
-        $message_append .= '<div class="handle-info">'
-            . '<span class="icon-block">' . $handles___42421[$x['chainhandleinput']]['m__cover'] . '</span>' . $handles___42421[$x['chainhandleinput']]['m__title'] . (strlen($x['chainvalue']) ? ':' : '')
-            . (strlen($x['chainvalue']) ? '<div class="handle_info_box"><div class="sub_note main__title">' . (!$plain_no_html ? nl2br(view_url($x['chainvalue'])) : $x['chainvalue']) . '</div></div>' : '')
+        $message_append .= '<div class="user-info">'
+            . '<span class="icon-block">' . $users___42421[$x['chainuserinput']]['m__cover'] . '</span>' . $users___42421[$x['chainuserinput']]['m__title'] . (strlen($x['chainvalue']) ? ':' : '')
+            . (strlen($x['chainvalue']) ? '<div class="user_info_box"><div class="sub_note main__title">' . (!$plain_no_html ? nl2br(view_url($x['chainvalue'])) : $x['chainvalue']) . '</div></div>' : '')
             . '</div>';
 
     }
 
-    return (strlen($message_append) ? ($plain_no_html ? $message_append : '<div class="handle-featured">' . $message_append . '</div>') : false);
+    return (strlen($message_append) ? ($plain_no_html ? $message_append : '<div class="user-featured">' . $message_append . '</div>') : false);
 
 }
 
 
 
-function view_pill($focus__node, $chainhandletype, $counter, $m, $ui = null, $is_open = true)
+function view_pill($focus__node, $chainusertype, $counter, $m, $ui = null, $is_open = true)
 {
 
-    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainhandletype . '"><a class="nav-chain" chainhandletype="' . $chainhandletype . '" href="#' . $m['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainhandletype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
-        '<div class="headlinebody pillbody hidden headline_body_' . $chainhandletype . '" read-counter="' . $counter . '">' . $ui . '</div>';
+    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain" chainusertype="' . $chainusertype . '" href="#' . $m['m__user'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
+        '<div class="headlinebody pillbody hidden headline_body_' . $chainusertype . '" read-counter="' . $counter . '">' . $ui . '</div>';
 
 }
 
 
-function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = null)
+function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
 {
 
     $CI =& get_instance();
 
-    if (!isset($e['handleid']) || !isset($e['handlename'])) {
-        log_error('handle_view() Missing core variables', array(
-            'chainhandleoutput' => $chainhandletype,
+    if (!isset($e['userid']) || !isset($e['username'])) {
+        log_error('user_view() Missing core variables', array(
+            'chainuseroutput' => $chainusertype,
         ));
         return 'Missing core variables';
     }
 
     $chainid = (isset($e['chainid']) ? $e['chainid'] : 0);
-    $is_cache = in_array($chainhandletype, $CI->config->item('handleids___14599'));
-    $handle_access = ($is_cache ? 1 : handle_access($e['handleterm'], 0, $e));
-    $superpower_10939 = (!$is_cache && handle_session(10939));
-    $handle_session = (!$is_cache ? handle_session() : false);
-    $handles___11035 = $CI->config->item('handles___11035'); //Encyclopedia
-    $focus__node = in_array($chainhandletype, $CI->config->item('handleids___12149')); //NODE COIN
-    $is_app = $chainhandletype == 6287;
-    $href = ($is_app ? view_app_chain($e['handleid']) : view_memory(42903, 42902) . $e['handleterm']);
-    $cover_is_image = filter_var($e['handlecover'], FILTER_VALIDATE_URL);
-    $has_sortable = $chainid > 0 && $handle_access >= 3 && in_array($chainhandletype, $CI->config->item('handleids___13911'));
-    $handles___4593 = $CI->config->item('handles___4593');
+    $is_cache = in_array($chainusertype, $CI->config->item('userids___14599'));
+    $user_access = ($is_cache ? 1 : user_access($e['userhandle'], 0, $e));
+    $superpower_10939 = (!$is_cache && user_session(10939));
+    $user_session = (!$is_cache ? user_session() : false);
+    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
+    $focus__node = in_array($chainusertype, $CI->config->item('userids___12149')); //NODE COIN
+    $is_app = $chainusertype == 6287;
+    $href = ($is_app ? view_app_chain($e['userid']) : view_memory(42903, 42902) . $e['userhandle']);
+    $cover_is_image = filter_var($e['usercover'], FILTER_VALIDATE_URL);
+    $has_sortable = $chainid > 0 && $user_access >= 3 && in_array($chainusertype, $CI->config->item('userids___13911'));
+    $users___4593 = $CI->config->item('users___4593');
 
 
     //Log preview view:
-    $chainhandlecreator_id = ($handle_session && isset($handle_session['handleid']) ? $handle_session['handleid'] : 14068 /* GUEST */);
+    $chainusercreator_id = ($user_session && isset($user_session['userid']) ? $user_session['userid'] : 14068 /* GUEST */);
 
-    //Handle UI
-    $ui = '<div handleid="' . $e['handleid'] . '" handlelogin="' . $e['handleterm'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover cardhandle_cover no-padding card-12274 s__12274_' . $e['handleid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
+    //User UI
+    $ui = '<div userid="' . $e['userid'] . '" userlogin="' . $e['userhandle'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover carduser_cover no-padding card-12274 s__12274_' . $e['userid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
 
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= (!$focus__node ? '<a href="' . $href . '"' : '<div') . ' class="handle_hrefhandle_' . $e['handleid'] . ' coinType12274 ' . ($handle_access >= 3 ? '' : ' ready-only ') . ' black-background-obs cover-chain" ' . ($cover_is_image ? 'style="background-image:url(\'' . $e['handlecover'] . '\');"' : '') . '>';
-    $ui .= '<div class="cover-btn ui_handlecover_' . $e['handleid'] . '" raw_cover="' . $e['handlecover'] . '">' . (!$cover_is_image && $e['handlecover'] ? view_cover($e['handlecover'], true) : '') . '</div>';
+    $ui .= (!$focus__node ? '<a href="' . $href . '"' : '<div') . ' class="user_hrefuser_' . $e['userid'] . ' coinType12274 ' . ($user_access >= 3 ? '' : ' ready-only ') . ' black-background-obs cover-chain" ' . ($cover_is_image ? 'style="background-image:url(\'' . $e['usercover'] . '\');"' : '') . '>';
+    $ui .= '<div class="cover-btn ui_usercover_' . $e['userid'] . '" raw_cover="' . $e['usercover'] . '">' . (!$cover_is_image && $e['usercover'] ? view_cover($e['usercover'], true) : '') . '</div>';
     $ui .= (!$focus__node ? '</a>' : '</div>');
 
     $ui .= '</div>';
@@ -5375,41 +5371,41 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
     $ui .= '<div class="inner-content">';
 
 
-    if ($handle_access >= 3) {
+    if ($user_access >= 3) {
         //Editable:
-        $ui .= view_handle_input(6197, $e['handlename'], $e['handleid'], $handle_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
-        $ui .= '<div class="hidden text__6197_' . $e['handleid'] . '">' . $e['handlename'] . '</div>';
+        $ui .= view_user_input(6197, $e['username'], $e['userid'], $user_access, (isset($e['chainkey']) ? ($e['chainkey'] * 100) + 1 : 0), true);
+        $ui .= '<div class="hidden usertitle_' . $e['userid'] . '">' . $e['username'] . '</div>';
     } else {
         //Static:
-        $ui .= '<input type="hidden" class="text__6197_' . $e['handleid'] . '" value="' . $e['handlename'] . '">';
+        $ui .= '<input type="hidden" class="usertitle_' . $e['userid'] . '" value="' . $e['username'] . '">';
         $ui .= '<div class="center">';
-        $ui .= '<span class="main__title text__6197_' . $e['handleid'] . '">' . $e['handlename'] . '</span>';
+        $ui .= '<span class="main__title usertitle_' . $e['userid'] . '">' . $e['username'] . '</span>';
         $ui .= '</div>';
     }
 
 
-    //Handle Handle
+    //User User
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">'.( isset($e['chainhandletype']) ? ( substr_count($handles___4593[$e['chainhandletype']]['m__cover'], '@') ? $handles___4593[$e['chainhandletype']]['m__cover'] : $handles___4593[$e['chainhandletype']]['m__cover'].' @' ) : '@' ).'<span class="ignore-click ui_handleterm_' . $e['handleid'] . '" title="ID ' . $e['handleid'] . '">' . $e['handleterm'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey">'.( isset($e['chainusertype']) ? ( substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? $users___4593[$e['chainusertype']]['m__cover'] : $users___4593[$e['chainusertype']]['m__cover'].' @' ) : '@' ).'<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">' . $e['userhandle'] . '</span></div>';
 
-    //Handle Location:
-    $handles___42777 = $CI->config->item('handles___42777');
+    //User Location:
+    $users___42777 = $CI->config->item('users___42777');
     $order_columns = array();
-    foreach ($handles___42777 as $sort_id => $sort) {
-        $order_columns['chainhandletype = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($users___42777 as $sort_id => $sort) {
+        $order_columns['chainusertype = \'' . $sort_id . '\' DESC'] = null;
     }
-    foreach ($CI->Chains->read(array(
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___42777')) . ')' => null, //Featured Profile
-        'chainhandleoutput' => $e['handleid'],
-    ), array('chainhandleinput'), 0, 0, $order_columns) as $location) {
-        $ui .= view_featured_chains($location['chainhandletype'], $location, $handles___42777[$location['chainhandletype']], $focus__node);
+    foreach ($CI->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $CI->config->item('userids___42777')) . ')' => null, //Featured Profile
+        'chainuseroutput' => $e['userid'],
+    ), array('chainuserinput'), 0, 0, $order_columns) as $location) {
+        $ui .= view_featured_chains($location['chainusertype'], $location, $users___42777[$location['chainusertype']], $focus__node);
     }
 
 
     if ($is_app && isset($e['chainvalue']) && strlen($e['chainvalue']) && !$is_cache && $superpower_10939) {
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $e['chainvalue'] . '"><i class="far fa-info-circle"></i></span>';
-    } else if ($chainid && $handle_access >= 3 && !$is_cache && $superpower_10939) {
+    } else if ($chainid && $user_access >= 3 && !$is_cache && $superpower_10939) {
         //Main description:
         $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '">' . htmlentities($e['chainvalue']) . '</div>';
     }
@@ -5422,30 +5418,30 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
 
 
     //Start with Chain Note
-    $featured_handles = '';
+    $featured_users = '';
 
 
-    //Featured Handles
+    //Featured Users
     $bio = null;
-    $handles___14036 = $CI->config->item('handles___14036');
+    $users___14036 = $CI->config->item('users___14036');
     $order_columns = array();
-    foreach ($handles___14036 as $sort_id => $sort) {
-        $order_columns['chainhandleinput = \'' . $sort_id . '\' DESC'] = null;
+    foreach ($users___14036 as $sort_id => $sort) {
+        $order_columns['chainuserinput = \'' . $sort_id . '\' DESC'] = null;
     }
-    foreach ($CI->Chains->read(array(
-        'chainhandleinput IN (' . join(',', $CI->config->item('handleids___14036')) . ')' => null, //Featured Handles
-        'chainhandleoutput' => $e['handleid'],
-        'chainhandletype IN (' . join(',', $CI->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+    foreach ($CI->Ideachains->read(array(
+        'chainuserinput IN (' . join(',', $CI->config->item('userids___14036')) . ')' => null, //Featured Users
+        'chainuseroutput' => $e['userid'],
+        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
     ), array(), 0, 0, $order_columns) as $social_chain) {
 
-        if (in_array($social_chain['chainhandleinput'], $CI->config->item('handleids___32172'))) {
+        if (in_array($social_chain['chainuserinput'], $CI->config->item('userids___32172'))) {
             /*
              *
              * Before showing this we must enture all information is updated...
              *
             if (strlen($social_chain['chainvalue'])) {
                 //Must always see, show content here:
-                $bio .= '<div class="handle_bio grey center">' . $social_chain['chainvalue'] . '</div>';
+                $bio .= '<div class="user_bio grey center">' . $social_chain['chainvalue'] . '</div>';
             }
             */
             continue;
@@ -5454,132 +5450,132 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
         //Determine chain type:
         $social_url = false;
 
-        if (in_array(32097, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
+        if (in_array(32097, $users___14036[$social_chain['chainuserinput']]['m__following'])) {
             $social_url = 'href="mailto:' . $social_chain['chainvalue'] . '"';
-        } elseif (in_array(42181, $handles___14036[$social_chain['chainhandleinput']]['m__following'])) {
+        } elseif (in_array(42181, $users___14036[$social_chain['chainuserinput']]['m__following'])) {
             //Phone Number
-            $social_url = 'href="' . phone_href($social_chain['chainhandleinput'], $social_chain['chainvalue']) . '"';
+            $social_url = 'href="' . phone_href($social_chain['chainuserinput'], $social_chain['chainvalue']) . '"';
         }
 
-        $info = (strlen($social_chain['chainvalue']) && !$social_url ? $handles___14036[$social_chain['chainhandleinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $handles___14036[$social_chain['chainhandleinput']]['m__title']));
+        $info = (strlen($social_chain['chainvalue']) && !$social_url ? $users___14036[$social_chain['chainuserinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $users___14036[$social_chain['chainuserinput']]['m__title']));
 
         //Append to chains:
-        $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . (filter_var($social_chain['chainvalue'], FILTER_VALIDATE_URL) ? $social_chain['chainvalue'] : view_memory(42903, 42902) . $handles___14036[$social_chain['chainhandleinput']]['m__handle']) . '" target="_blank" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $handles___14036[$social_chain['chainhandleinput']]['m__cover'] . '</span>')) . '</span>';
+        $featured_users .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . (filter_var($social_chain['chainvalue'], FILTER_VALIDATE_URL) ? $social_chain['chainvalue'] : view_memory(42903, 42902) . $users___14036[$social_chain['chainuserinput']]['m__user']) . '" target="_blank" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</span>')) . '</span>';
 
     }
 
 
     //Start with top bar:
-    if (!$is_app && !$is_cache && $handle_access >= 1) {
+    if (!$is_app && !$is_cache && $user_access >= 1) {
 
-        //Handle Chain Groups
-        $chainhandletype_id = 0;
-        $chainhandletype_ui = '';
+        //User Chain Groups
+        $chainusertype_id = 0;
+        $chainusertype_ui = '';
         if ($chainid) {
-            foreach ($CI->config->item('handles___31770') as $chainhandletype1 => $m1) {
-                if (in_array($e['chainhandletype'], $CI->config->item('handleids___' . $chainhandletype1))) {
-                    $chainhandletype_id = $chainhandletype1;
+            foreach ($CI->config->item('users___31770') as $chainusertype1 => $m1) {
+                if (in_array($e['chainusertype'], $CI->config->item('userids___' . $chainusertype1))) {
+                    $chainusertype_id = $chainusertype1;
                     break;
                 }
             }
         }
 
         //Top Bar
-        foreach ($CI->config->item('handles___31963') as $chainhandletype_target_bar => $m_target_bar) {
+        foreach ($CI->config->item('users___31963') as $chainusertype_target_bar => $m_target_bar) {
 
             //See if missing superpower?
-            $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_target_bar['m__following']);
-            if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
+            $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m_target_bar['m__following']);
+            if (count($superpowers_required) && !user_session(end($superpowers_required))) {
                 continue;
             }
 
-            if ($chainhandletype_target_bar == 31770 && $chainid && $superpower_10939) {
+            if ($chainusertype_target_bar == 31770 && $chainid && $superpower_10939) {
 
-                $featured_handles .= $chainhandletype_ui;
+                $featured_users .= $chainusertype_ui;
 
-            } elseif ($chainhandletype_target_bar == 41037 && $handle_access >= 3 && !$focus__node) {
+            } elseif ($chainusertype_target_bar == 41037 && $user_access >= 3 && !$focus__node) {
 
                 //Selector
-                $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' ignore-click">';
-                $featured_handles .= '<input class="form-check-input" type="checkbox" value="" handleid="' . $e['handleid'] . '" id="selectorhandle_' . $e['handleid'] . '" aria-label="...">';
-                $featured_handles .= '</span>';
+                $featured_users .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' ignore-click">';
+                $featured_users .= '<input class="form-check-input" type="checkbox" value="" userid="' . $e['userid'] . '" id="selectoruser_' . $e['userid'] . '" aria-label="...">';
+                $featured_users .= '</span>';
 
-            } elseif ($chainhandletype_target_bar == 13911 && $has_sortable && $handle_access >= 3) {
+            } elseif ($chainusertype_target_bar == 13911 && $has_sortable && $user_access >= 3) {
 
-                //Sort Handle
-                $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' sorthandle_frame hidden">';
-                $featured_handles .= '<span title="' . $m_target_bar['m__title'] . '" class="sorthandle_grab">' . $m_target_bar['m__cover'] . '</span>';
-                $featured_handles .= '</span>';
+                //Sort User
+                $featured_users .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' sortuser_frame hidden">';
+                $featured_users .= '<span title="' . $m_target_bar['m__title'] . '" class="sortuser_grab">' . $m_target_bar['m__cover'] . '</span>';
+                $featured_users .= '</span>';
 
-            } elseif ($chainhandletype_target_bar == 14980 && $handle_access >= 3) {
+            } elseif ($chainusertype_target_bar == 14980 && $user_access >= 3) {
 
                 $action_buttons = null;
 
                 if (!$chainid) {
-                    $focus_dropdown = 12887; //Handle Dropdown
-                } elseif ($chainhandletype_id == 32292) { //Handle/Handle Chains
-                    $focus_dropdown = 14956; //Handle/Handle Dropdown
-                } elseif ($chainhandletype_id == 31777 || $chainhandletype_id == 31777) { //Discoveries
-                    $focus_dropdown = 32070; //Handle>Discoveries Dropdown
-                } elseif ($chainhandletype_id == 13550) { //Hashtag/Handle Chains
-                    $focus_dropdown = 28792; //Handle/Hashtag Dropdown
+                    $focus_dropdown = 12887; //User Dropdown
+                } elseif ($chainusertype_id == 32292) { //User/User Ideachains
+                    $focus_dropdown = 14956; //User/User Dropdown
+                } elseif ($chainusertype_id == 31777 || $chainusertype_id == 31777) { //Discoveries
+                    $focus_dropdown = 32070; //User>Discoveries Dropdown
+                } elseif ($chainusertype_id == 13550) { //Post/User Ideachains
+                    $focus_dropdown = 28792; //User/Post Dropdown
                 } else {
                     $focus_dropdown = 0;
                 }
 
-                if ($focus_dropdown > 0 && is_array($CI->config->item('handles___' . $focus_dropdown))) {
-                    foreach ($CI->config->item('handles___' . $focus_dropdown) as $handleid_dropdown => $m_dropdown) {
+                if ($focus_dropdown > 0 && is_array($CI->config->item('users___' . $focus_dropdown))) {
+                    foreach ($CI->config->item('users___' . $focus_dropdown) as $userid_dropdown => $m_dropdown) {
 
                         //Skip if missing superpower:
-                        $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_dropdown['m__following']);
-                        if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
+                        $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m_dropdown['m__following']);
+                        if (count($superpowers_required) && !user_session(end($superpowers_required))) {
                             continue;
                         }
 
                         $anchor = '<span class="icon-block">' . $m_dropdown['m__cover'] . '</span>' . $m_dropdown['m__title'];
 
 
-                        if ($handleid_dropdown == 4997) {
+                        if ($userid_dropdown == 4997) {
 
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(4997,' . $e['handleid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(4997,' . $e['userid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($handleid_dropdown == 6287) {
+                        } elseif ($userid_dropdown == 6287) {
 
                             //App Store
-                            if (in_array($e['handleid'], $CI->config->item('handleids___6287'))) {
-                                $action_buttons .= '<a href="' . view_app_chain($e['handleid']) . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                            if (in_array($e['userid'], $CI->config->item('userids___6287'))) {
+                                $action_buttons .= '<a href="' . view_app_chain($e['userid']) . '" class="dropdown-item main__title">' . $anchor . '</a>';
                             }
 
-                        } elseif ($handleid_dropdown == 31912 && $handle_access >= 3) {
+                        } elseif ($userid_dropdown == 31912 && $user_access >= 3) {
 
-                            //Edit Handle
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="handle_editor(' . $e['handleid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            //Edit User
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="user_editor(' . $e['userid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($handleid_dropdown == 29771 && $handle_access >= 3) {
+                        } elseif ($userid_dropdown == 29771 && $user_access >= 3) {
 
                             //Clone:
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="handle_copy(' . $e['handleid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="user_copy(' . $e['userid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($handleid_dropdown == 10673 && $chainid > 0 && $handle_access >= 3 && $superpower_10939) {
+                        } elseif ($userid_dropdown == 10673 && $chainid > 0 && $user_access >= 3 && $superpower_10939) {
 
                             //UNCHAIN
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $e['chainhandletype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="chain_delete(' . $chainid . ', ' . $e['chainusertype'] . ')" class="dropdown-item main__title">' . $anchor . '</span></a>';
 
-                        } elseif ($handleid_dropdown == 42649 && $handle_access >= 3) {
+                        } elseif ($userid_dropdown == 42649 && $user_access >= 3) {
 
-                            //Delete Handle
+                            //Delete User
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" onclick="handle_delete(' . $e['handleid'] . ', ' . $chainid . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="javascript:void();" onclick="user_delete(' . $e['userid'] . ', ' . $chainid . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($handleid_dropdown == 13007 && $handle_access >= 3) {
+                        } elseif ($userid_dropdown == 13007 && $user_access >= 3) {
 
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="chain_sort_reset()" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif (in_array($handleid_dropdown, $CI->config->item('handleids___6287')) && $handle_access >= 3) {
+                        } elseif (in_array($userid_dropdown, $CI->config->item('userids___6287')) && $user_access >= 3) {
 
                             //Standard button
-                            $action_buttons .= '<a href="' . view_app_chain($handleid_dropdown) . view_memory(42903, 42902) . $e['handleterm'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
+                            $action_buttons .= '<a href="' . view_app_chain($userid_dropdown) . view_memory(42903, 42902) . $e['userhandle'] . '" class="dropdown-item main__title">' . $anchor . '</a>';
 
                         }
                     }
@@ -5588,16 +5584,16 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
                 //Any items found?
                 if ($action_buttons && $focus_dropdown > 0) {
                     //Right Action Menu
-                    $handles___14980 = $CI->config->item('handles___14980'); //Dropdowns
+                    $users___14980 = $CI->config->item('users___14980'); //Dropdowns
 
-                    $featured_handles .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
-                    $featured_handles .= '<div class="dropdown inline-block">';
-                    $featured_handles .= '<button type="button" class="btn no-left-padding no-right-padding" id="action_menuhandle_' . $e['handleid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $handles___14980[$focus_dropdown]['m__title'] . '">' . $handles___14980[$focus_dropdown]['m__cover'] . '</button>';
-                    $featured_handles .= '<div class="dropdown-menu" aria-labelledby="action_menuhandle_' . $e['handleid'] . '">';
-                    $featured_handles .= $action_buttons;
-                    $featured_handles .= '</div>';
-                    $featured_handles .= '</div>';
-                    $featured_handles .= '</span>';
+                    $featured_users .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">';
+                    $featured_users .= '<div class="dropdown inline-block">';
+                    $featured_users .= '<button type="button" class="btn no-left-padding no-right-padding" id="action_menuuser_' . $e['userid'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $users___14980[$focus_dropdown]['m__title'] . '">' . $users___14980[$focus_dropdown]['m__cover'] . '</button>';
+                    $featured_users .= '<div class="dropdown-menu" aria-labelledby="action_menuuser_' . $e['userid'] . '">';
+                    $featured_users .= $action_buttons;
+                    $featured_users .= '</div>';
+                    $featured_users .= '</div>';
+                    $featured_users .= '</span>';
                 }
             }
         }
@@ -5608,7 +5604,7 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
 
     if ($focus__node) {
         $ui .= '<div class="center-block">';
-        $ui .= $featured_handles;
+        $ui .= $featured_users;
         $ui .= '</div>';
     }
 
@@ -5618,23 +5614,23 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
 
 
     //Bottom Bar
-    if (!$is_app && $handle_access >= 1) {
+    if (!$is_app && $user_access >= 1) {
 
         $ui .= '<div class="card_cards hideIfEmpty">';
 
         if (!$focus__node) {
 
-            $ui .= $featured_handles;
+            $ui .= $featured_users;
 
             //Also Append bottom bar / main menu:
-            foreach ($CI->config->item('handles___31916') as $handleid_bottom_bar => $m_bottom_bar) {
-                $superpowers_required = array_intersect($CI->config->item('handleids___10957'), $m_bottom_bar['m__following']);
-                if (count($superpowers_required) && !handle_session(end($superpowers_required))) {
+            foreach ($CI->config->item('users___31916') as $userid_bottom_bar => $m_bottom_bar) {
+                $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m_bottom_bar['m__following']);
+                if (count($superpowers_required) && !user_session(end($superpowers_required))) {
                     continue;
                 }
 
                 $ui .= '<span class="hideIfEmpty">';
-                $ui .= handles_query($handleid_bottom_bar, $e['handleid']);
+                $ui .= users_query($userid_bottom_bar, $e['userid']);
                 $ui .= '</span>';
             }
         }
@@ -5650,22 +5646,22 @@ function handle_view($chainhandletype, $e, $extra_class = null, $extra_value = n
 }
 
 
-function view_handle_input($cache_handleid, $current_value, $s__id, $hashtag_access, $tabindex = 0, $extra_large = false)
+function view_user_input($cache_userid, $current_value, $s__id, $post_access, $tabindex = 0, $extra_large = false)
 {
 
     $CI =& get_instance();
-    $handles___12112 = $CI->config->item('handles___12112');
+    $users___12112 = $CI->config->item('users___12112');
     $current_value = htmlentities($current_value);
-    $name = 'input' . substr(md5($cache_handleid . $current_value . $s__id . $hashtag_access . $tabindex), 0, 8);
+    $name = 'input' . substr(md5($cache_userid . $current_value . $s__id . $post_access . $tabindex), 0, 8);
 
     //Define element attributes:
-    $attributes = ($hashtag_access >= 3 ? '' : 'disabled') . ' spellcheck="false" tabindex="' . $tabindex . '" old-value="' . $current_value . '" id="input_' . $cache_handleid . '_' . $s__id . '" class="form-control 
-     inline-block editing-mode x_set_class_text text__' . $cache_handleid . '_' . $s__id . ($extra_large ? ' texttype_lg ' : ' texttype_sm ') . ' texthandle_' . $cache_handleid . '" cache_handleid="' . $cache_handleid . '" handleid="' . $s__id . '" ';
+    $attributes = ($post_access >= 3 ? '' : 'disabled') . ' spellcheck="false" tabindex="' . $tabindex . '" old-value="' . $current_value . '" id="input_' . $cache_userid . '_' . $s__id . '" class="form-control 
+     inline-block editing-mode x_set_class_text text__' . $cache_userid . '_' . $s__id . ($extra_large ? ' texttype_lg ' : ' texttype_sm ') . ' textuser_' . $cache_userid . '" cache_userid="' . $cache_userid . '" userid="' . $s__id . '" ';
 
     //Also Append Counter to the end?
     if ($extra_large) {
 
-        $focus_element = '<textarea name="' . $name . '" placeholder="' . $handles___12112[$cache_handleid]['m__title'] . '" ' . $attributes . '>' . $current_value . '</textarea>';
+        $focus_element = '<textarea name="' . $name . '" placeholder="' . $users___12112[$cache_userid]['m__title'] . '" ' . $attributes . '>' . $current_value . '</textarea>';
 
     } else {
 
@@ -5673,7 +5669,7 @@ function view_handle_input($cache_handleid, $current_value, $s__id, $hashtag_acc
 
     }
 
-    return '<span class="span__' . $cache_handleid . ' ' . (!($hashtag_access >= 3) ? ' edit-locked ' : '') . '">' . $focus_element . '</span>';
+    return '<span class="span__' . $cache_userid . ' ' . (!($post_access >= 3) ? ' edit-locked ' : '') . '">' . $focus_element . '</span>';
 
 }
 

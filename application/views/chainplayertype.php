@@ -1,7 +1,7 @@
 <?php
 
 //List all interactions types and their counts:
-$handles___11035 = $this->config->item('handles___11035'); //Encyclopedia
+$users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $table_sortable = array('#th_primary','#th_count','#th_total','#th_points','#th_perfect');
 $total_count = 0;
 $total_access = array();
@@ -10,24 +10,24 @@ $total_points = 0;
 $table_body = '';
 
 //Count total first:
-$totals_count = $this->Chains->read(array(), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+$totals_count = $this->Ideachains->read(array(), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
-foreach($this->config->item('handles___4593') as $chainhandletype => $m) {
+foreach($this->config->item('users___4593') as $chainusertype => $m) {
 
     $total_count++;
 
     $table_body .= '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
-    $table_body .= '<td style="text-align: left;"><a href="'.view_memory(42903,42902).$m['m__handle'].'">'.$m['m__title'].'</a></td>';
-    $table_body .= '<td style="text-align: left;">'.$chainhandletype.'</td>';
+    $table_body .= '<td style="text-align: left;"><a href="'.view_memory(42903,42902).$m['m__user'].'">'.$m['m__title'].'</a></td>';
+    $table_body .= '<td style="text-align: left;">'.$chainusertype.'</td>';
 
     //List all statuses:
-    $listhandle_count = $this->Chains->read(array(
-        'chainhandletype' => $chainhandletype,
+    $listuser_count = $this->Ideachains->read(array(
+        'chainusertype' => $chainusertype,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
-    $interactions_this = $listhandle_count[0]['totals'];
+    $interactions_this = $listuser_count[0]['totals'];
     $total_interactions += $interactions_this;
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad(number_format(($interactions_this/$totals_count[0]['totals']*100), 3), 6, '0', STR_PAD_LEFT).'%</th>';

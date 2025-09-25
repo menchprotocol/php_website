@@ -10,7 +10,7 @@ if(!isset($_GET['chainid']) || !intval($_GET['chainid'])){
 
 
     //Fetch Chain metadata and display it:
-    $x = $this->Chains->read(array(
+    $x = $this->Ideachains->read(array(
         'chainid' => $_GET['chainid'],
     ));
 
@@ -18,7 +18,7 @@ if(!isset($_GET['chainid']) || !intval($_GET['chainid'])){
 
         echo 'Invalid Chain ID';
 
-    } elseif(!handle_session(12701)) {
+    } elseif(!user_session(12701)) {
 
         echo blocked_reasoning(12701);
 

@@ -6,12 +6,12 @@ $previous = chainprevious($starting_id);
 
 
 if($starting_id==0){
-    $this->db->query("UPDATE ideachain SET chainprevious = NULL, chainhash = NULL WHERE ((chainhash IS NOT NULL) OR (chainprevious IS NOT NULL)) AND chainid >" . $starting_id . ";");
+    $this->db->query("UPDATE ideachains SET chainprevious = NULL, chainhash = NULL WHERE ((chainhash IS NOT NULL) OR (chainprevious IS NOT NULL)) AND chainid >" . $starting_id . ";");
 }
 
 $count = 0;
 $fixed = 0;
-foreach ($this->Chains->read(array(
+foreach ($this->Ideachains->read(array(
     'chainid >' => $starting_id,
     'chainvoid >=' => 0, //Any Chain
 ), array(), 0, 0, array('chainid' => 'ASC')) as $x) {
@@ -23,7 +23,7 @@ foreach ($this->Chains->read(array(
     $hash = chainhash($x);
     if($x['chainhash']!=$hash || $must_fix){
         if($starting_id!=1){
-            $this->db->query("UPDATE ideachain SET chainprevious = '" . $previous . "', chainhash = '" . $hash . "' WHERE chainid=" . $x['chainid'] . ";");
+            $this->db->query("UPDATE ideachains SET chainprevious = '" . $previous . "', chainhash = '" . $hash . "' WHERE chainid=" . $x['chainid'] . ";");
         }
         $fixed++;
     }

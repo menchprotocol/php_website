@@ -1,12 +1,12 @@
 <?php
 
-$handle_session = handle_session(null, 0, $this->handle_session);
-if(!$handle_session){
+$user_session = user_session(null, 0, $this->user_session);
+if(!$user_session){
     return view_json(array(
         'status' => 0,
         'message' => blocked_reasoning(),
     ));
-} elseif (!isset($_POST['target_hashtagterm']) || !isset($_POST['target_hashtagid']) || !isset($_POST['invoice_items']) || !isset($_POST['do_skip'])) {
+} elseif (!isset($_POST['target_posthashtag']) || !isset($_POST['target_postid']) || !isset($_POST['invoice_items']) || !isset($_POST['do_skip'])) {
     return view_json(array(
         'status' => 0,
         'message' => 'Missing Core Data',
@@ -22,8 +22,8 @@ if(!$handle_session){
 $items = [];
 foreach ($_POST['invoice_items'] as $key => $value) {
 
-    foreach($this->Hashtags->read(array(
-        'hashtagid' => $_POST['invoice_items'][$key]['hashtagid'], //ACTIVE
+    foreach($this->Posts->read(array(
+        'postid' => $_POST['invoice_items'][$key]['postid'], //ACTIVE
     )) as $this_i){
 
         if($_POST['invoice_items'][$key]['quantity']<1){
@@ -46,25 +46,25 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 }
 
 //Fetch User Data:
-$fetch_emails = $this->Chains->read(array(
-    'chainhandleinput' => 3288, //Email
-    'chainhandleoutput' => $handle_session['handleid'],
-    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+$fetch_emails = $this->Ideachains->read(array(
+    'chainuserinput' => 3288, //Email
+    'chainuseroutput' => $user_session['userid'],
+    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ));
-$fetch_phones = $this->Chains->read(array(
-    'chainhandleinput' => 4783, //Phone
-    'chainhandleoutput' => $handle_session['handleid'],
-    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+$fetch_phones = $this->Ideachains->read(array(
+    'chainuserinput' => 4783, //Phone
+    'chainuseroutput' => $user_session['userid'],
+    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ));
-$fetch_first_names = $this->Chains->read(array(
-    'chainhandleinput' => 42584, //First Name
-    'chainhandleoutput' => $handle_session['handleid'],
-    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+$fetch_first_names = $this->Ideachains->read(array(
+    'chainuserinput' => 42584, //First Name
+    'chainuseroutput' => $user_session['userid'],
+    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ));
-$fetch_last_names = $this->Chains->read(array(
-    'chainhandleinput' => 30198, //Last Name
-    'chainhandleoutput' => $handle_session['handleid'],
-    'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //HANDLE CHAINS
+$fetch_last_names = $this->Ideachains->read(array(
+    'chainuserinput' => 30198, //Last Name
+    'chainuseroutput' => $user_session['userid'],
+    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ));
 
 $set_email = false;
@@ -79,32 +79,32 @@ if(count($fetch_phones) && strlen($fetch_phones[0]['chainvalue'])>=8) {
 if(!$set_email){
     //No Valid email:
     return view_json(log_error('Your account does not have a valid email address for us to send your invoice. Click on Edit Profile from Top/Right menu, edit your email address, and try again.', array(
-        'chainhandleoutput' => $handle_session['handleid'],
-        'chainhandlecreator' => $handle_session['handleid'],
-        'chainhashtagoutput' => $_POST['focus__id'],
+        'chainuseroutput' => $user_session['userid'],
+        'chainusercreator' => $user_session['userid'],
+        'chainpostoutput' => $_POST['focus__id'],
     )));
 }
 
 
 
-foreach($this->Hashtags->read(array(
-    'hashtagid' => $_POST['target_hashtagid'], //ACTIVE
-)) as $hashtag_target){
+foreach($this->Posts->read(array(
+    'postid' => $_POST['target_postid'], //ACTIVE
+)) as $post_target){
 
-    foreach($this->Hashtags->read(array(
-        'hashtagid' => $_POST['focus__id'], //ACTIVE
+    foreach($this->Posts->read(array(
+        'postid' => $_POST['focus__id'], //ACTIVE
     )) as $i){
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
-        $invoice_due_dates = $this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput' => 44378, //Invoice Due Date
+        $invoice_due_dates = $this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $i['postid'],
+            'chainuserinput' => 44378, //Invoice Due Date
         ));
-        $invoice_min_payments = $this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___42991')) . ')' => null, //Active Writes
-            'chainhashtagoutput' => $i['hashtagid'],
-            'chainhandleinput' => 44379, //Invoice Min Payment
+        $invoice_min_payments = $this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostoutput' => $i['postid'],
+            'chainuserinput' => 44379, //Invoice Min Payment
         ));
         $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['chainvalue'])>0 ? floatval($invoice_min_payments[0]['chainvalue']) : 0 );
 
@@ -113,22 +113,22 @@ foreach($this->Hashtags->read(array(
             // Sample invoice data
             $invoiceData = [
                 'invoicer_logo_url' => $website_logo,
-                'invoicer_given_name' => view_hashtag_title($hashtag_target, true),
+                'invoicer_given_name' => view_post_title($post_target, true),
                 'invoicer_address_line_1' => '', //Atlas Foundation; Non-Profit #774760508BC0001
                 'invoicer_address_line_2' => '', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
-                'invoicer_website' => 'https://'.get_domain('m__message', $handle_session['handleid']),
+                'invoicer_website' => 'https://'.get_domain('m__message', $user_session['userid']),
                 'invoicer_email' => website_setting(30882),
 
-                'note' => $i['hashtagtext'],
+                'note' => $i['posttext'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $min_pay>0 && $_POST['total_price'] >= $min_pay ? $min_pay."" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['chainvalue'])>time() ? strtotime($invoice_due_dates[0]['chainvalue']) : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $handle_session['handlename'],
+                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['chainvalue']) ? $fetch_first_names[0]['chainvalue'] : $user_session['username'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['chainvalue'] : '',
-                'recipient_address_line_1' => 'https://'.get_domain('m__message', $handle_session['handleid']).'/@'.$handle_session['handleterm'],
+                'recipient_address_line_1' => 'https://'.get_domain('m__message', $user_session['userid']).'/@'.$user_session['userhandle'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
             ];
@@ -150,73 +150,73 @@ foreach($this->Hashtags->read(array(
 
 
         //Delete Old Parent Invoice:
-        foreach($this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-            'chainhashtaginput' => $i['hashtagid'],
-            'chainhandlecreator' => $handle_session['handleid'],
+        foreach($this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+            'chainpostinput' => $i['postid'],
+            'chainusercreator' => $user_session['userid'],
         ), array(), 0) as $x_discovery){
-            $this->Chains->delete($x_discovery['chainid'], $handle_session['handleid']);
+            $this->Ideachains->delete($x_discovery['chainid'], $user_session['userid']);
         }
 
         //Delete Old Child Answers:
-        foreach($this->Chains->read(array(
-            'chainhandletype' => 7712, //Input Choice
-            'chainhandlecreator' => $handle_session['handleid'],
-            'chainhashtaginput' => $i['hashtagid'],
-        ), array('chainhashtagoutput')) as $x_selection){
+        foreach($this->Ideachains->read(array(
+            'chainusertype' => 7712, //Input Choice
+            'chainusercreator' => $user_session['userid'],
+            'chainpostinput' => $i['postid'],
+        ), array('chainpostoutput')) as $x_selection){
 
             //Remove Selection:
-            $this->Chains->delete($x_selection['chainid'], $handle_session['handleid']);
+            $this->Ideachains->delete($x_selection['chainid'], $user_session['userid']);
 
             //Remove discovery:
-            foreach($this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-                'chainhashtaginput' => $x_selection['hashtagid'],
-                'chainhandlecreator' => $handle_session['handleid'],
+            foreach($this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+                'chainpostinput' => $x_selection['postid'],
+                'chainusercreator' => $user_session['userid'],
             ), array(), 0) as $x_discovery){
-                $this->Chains->delete($x_discovery['chainid'], $handle_session['handleid']);
+                $this->Ideachains->delete($x_discovery['chainid'], $user_session['userid']);
             }
         }
 
 
         //Save New Invoice:
-        $this->Chains->hashtag_discovered(4559, $handle_session['handleid'], $hashtag_target['hashtagid'], $i);
+        $this->Ideachains->post_discovered(4559, $user_session['userid'], $post_target['postid'], $i);
 
 
         //Save New Child Answers:
         foreach ($_POST['invoice_items'] as $key => $value) {
-            foreach($this->Hashtags->read(array(
-                'hashtagid' => $_POST['invoice_items'][$key]['hashtagid'], //ACTIVE
+            foreach($this->Posts->read(array(
+                'postid' => $_POST['invoice_items'][$key]['postid'], //ACTIVE
             )) as $this_i){
 
                 //Complete this item:
-                $this->Chains->hashtag_discovered(4559, $handle_session['handleid'], $hashtag_target['hashtagid'], $this_i, array(), array(
+                $this->Ideachains->post_discovered(4559, $user_session['userid'], $post_target['postid'], $this_i, array(), array(
                     'chainkey' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
                 //Save Answer:
-                $this->Chains->create(array(
-                    'chainhandletype' => 7712, //Input Choice
-                    'chainhandlecreator' => $handle_session['handleid'],
-                    'chainhashtaginput' => $_POST['focus__id'],
+                $this->Ideachains->create(array(
+                    'chainusertype' => 7712, //Input Choice
+                    'chainusercreator' => $user_session['userid'],
+                    'chainpostinput' => $_POST['focus__id'],
                     'chainkey' => $_POST['invoice_items'][$key]['quantity'],
-                    'chainhashtagoutput' => $_POST['invoice_items'][$key]['hashtagid'],
+                    'chainpostoutput' => $_POST['invoice_items'][$key]['postid'],
                 ));
             }
         }
 
 
         //Find Next:
-        $hashtag_redirect_url = hashtag_redirect_url($i);
-        if(!$hashtag_redirect_url){
-            $hashtag_next = $this->Chains->next_hashtags($handle_session['handleid'], $_POST['target_hashtagterm']);
+        $post_redirect_url = post_redirect_url($i);
+        if(!$post_redirect_url){
+            $post_next = $this->Ideachains->next_posts($user_session['userid'], $_POST['target_posthashtag']);
         }
 
 
         //Return Data:
         return view_json(array(
             'status' => 1,
-            'next__url' => ( $hashtag_redirect_url ? $hashtag_redirect_url : ( $hashtag_next ? $hashtag_next : 'start' ) ),
+            'next__url' => ( $post_redirect_url ? $post_redirect_url : ( $post_next ? $post_next : 'start' ) ),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
         ));

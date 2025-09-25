@@ -2,33 +2,33 @@
 
 //Sync All Adding followers:
 $counter = 0;
-foreach ($this->Chains->read(array(
-    'chainhandletype' => 7545,
-    'chainhandleinput NOT IN (' . join(',', $this->config->item('handleids___43048')) . ')' => null, //No need to add these special ones... HandleNickname
-), array('chainhandleinput'), 0) as $addition_sync) {
+foreach ($this->Ideachains->read(array(
+    'chainusertype' => 7545,
+    'chainuserinput NOT IN (' . join(',', $this->config->item('userids___43048')) . ')' => null, //No need to add these special ones... UserNickname
+), array('chainuserinput'), 0) as $addition_sync) {
 
     $is_found = false;
-    //Fetch everyone who has hashtag discovered this hashtag:
-    foreach ($this->Chains->read(array(
-        'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
-        'chainhashtaginput' => $addition_sync['chainhashtagoutput'],
-    ), array('chainhandlecreator'), 0, 0, array('chainid' => 'DESC')) as $dicovered) {
+    //Fetch everyone who has post discovered this post:
+    foreach ($this->Ideachains->read(array(
+        'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+        'chainpostinput' => $addition_sync['chainpostoutput'],
+    ), array('chainusercreator'), 0, 0, array('chainid' => 'DESC')) as $dicovered) {
 
         //Any responses by this user?
         $set_chainvalue = $dicovered['chainvalue'];
-        foreach ($this->Chains->read(array(
-            'chainhandletype' => 4228, //Sequence
-            'chainhashtagoutput' => $addition_sync['chainhashtagoutput'],
-            'chainhandlecreator' => $dicovered['chainhandlecreator'],
-        ), array('chainhashtaginput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-            $set_chainvalue = $response['hashtagtext'];
+        foreach ($this->Ideachains->read(array(
+            'chainusertype' => 4228, //Sequence
+            'chainpostoutput' => $addition_sync['chainpostoutput'],
+            'chainusercreator' => $dicovered['chainusercreator'],
+        ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
+            $set_chainvalue = $response['posttext'];
         }
 
-        //lets append this Handle:
-        if (append_handle($addition_sync['chainhandleinput'], $dicovered['chainhandlecreator'], $set_chainvalue, $addition_sync['chainhashtagoutput'], false)) {
+        //lets append this User:
+        if (append_user($addition_sync['chainuserinput'], $dicovered['chainusercreator'], $set_chainvalue, $addition_sync['chainpostoutput'], false)) {
             $counter++;
         }
     }
 }
 
-echo $counter . ' Handles synced.';
+echo $counter . ' Users synced.';

@@ -1,9 +1,9 @@
 //Define some global variables:
-var has_unsaved_changes = false; //Tracks handle/hashtag modal edits
+var has_unsaved_changes = false; //Tracks user/post modal edits
 var focus_group = 0;
 
 
-if (!js_pl_id || !js_handleids___43512.includes(js_pl_id)) {
+if (!js_pl_id || !js_userids___43512.includes(js_pl_id)) {
     //Microsoft Clarity=
     (function (c, l, a, r, i, t, y) {
         c[a] = c[a] || function () {
@@ -19,7 +19,7 @@ if (!js_pl_id || !js_handleids___43512.includes(js_pl_id)) {
         clarity("set", "website_uri", js_request_uri);
         clarity("set", "user_id", js_pl_id);
         clarity("set", "user_name", js_pl_name);
-        clarity("set", "user_handle", js_pl_handle);
+        clarity("set", "user_user", js_pl_user);
     })(window, document, "clarity", "script", "59riunqvfm");
 }
 
@@ -94,14 +94,14 @@ function watch_cover_change(new_cover) {
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
         $('#modal31912 .fa_search a').attr('href', 'https://fontawesome.com/search?q=' + encodeURIComponent(split_cover_2arr2[0]) + '&o=r');
-        $('#modal31912 .save_handlecover,  #modal31912 .fa_search').removeClass('hidden');
+        $('#modal31912 .save_usercover,  #modal31912 .fa_search').removeClass('hidden');
     } else {
-        $('#modal31912 .save_handlecover, #modal31912 .fa_search').addClass('hidden');
+        $('#modal31912 .save_usercover, #modal31912 .fa_search').addClass('hidden');
     }
 }
 
 function watch_cover() {
-    $('#modal31912 .save_handlecover').change(function () {
+    $('#modal31912 .save_usercover').change(function () {
 
         console.log('change detexted:' + $(this).val());
         watch_cover_change($(this).val());
@@ -170,16 +170,16 @@ function load_editor() {
         return false;
     }
 
-    $('.handle_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
+    $('.user_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        $(this).val('@' + suggestion.s__handle);
+        $(this).val('@' + suggestion.s__user);
 
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
         source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12274' + search_and_filter,
-                hitsPerPage: js_handles___6404[31112]['m__message'],
+                hitsPerPage: js_users___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -189,14 +189,14 @@ function load_editor() {
             });
         },
         displayKey: function (suggestion) {
-            return '@' + suggestion.s__handle;
+            return '@' + suggestion.s__user;
         },
         templates: {
             suggestion: function (suggestion) {
                 return search_js_line(suggestion, '@');
             },
             empty: function (data) {
-                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Handles Found</div>';
+                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Users Found</div>';
             },
         }
 
@@ -204,14 +204,14 @@ function load_editor() {
 
     $('.i_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        $(this).val('#' + suggestion.s__handle);
+        $(this).val('#' + suggestion.s__user);
 
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
         source: function (q, cb) {
             index_algolia.search(q, {
                 filters: 's__type=12273' + search_and_filter,
-                hitsPerPage: js_handles___6404[31112]['m__message'],
+                hitsPerPage: js_users___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -221,14 +221,14 @@ function load_editor() {
             });
         },
         displayKey: function (suggestion) {
-            return '#' + suggestion.s__handle;
+            return '#' + suggestion.s__user;
         },
         templates: {
             suggestion: function (suggestion) {
                 return search_js_line(suggestion, '#');
             },
             empty: function (data) {
-                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Hashtags Found</div>';
+                return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Posts Found</div>';
             },
         }
     }]);
@@ -243,31 +243,31 @@ function search_title(suggestion) {
 }
 
 
-function search_js_line(suggestion, default_handle = '@') {
+function search_js_line(suggestion, default_user = '@') {
     if (suggestion.s__type == 12273) {
-        return '<span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + search_title(suggestion) + '</span>';
+        return '<span class="grey">' + default_user + suggestion.s__user + '</span>&nbsp;<span class="main__title">' + search_title(suggestion) + '</span>';
     } else if (suggestion.s__type == 12274) {
-        return '<span class="icon-block-xs">' + view_cover_js(suggestion.s__cover) + '</span><span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + search_title(suggestion) + '</span>';
+        return '<span class="icon-block-xs">' + view_cover_js(suggestion.s__cover) + '</span><span class="grey">' + default_user + suggestion.s__user + '</span>&nbsp;<span class="main__title">' + search_title(suggestion) + '</span>';
     }
 }
 
-function handle_load_finder(chainhandletype) {
-    console.log(chainhandletype + " handle_load_finder()");
+function user_load_finder(chainusertype) {
+    console.log(chainusertype + " user_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-' + chainhandletype + ' .add-input').keypress(function (e) {
+    $('.new-list-' + chainusertype + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            handle_create(chainhandletype, 0);
+            user_create(chainusertype, 0);
             return true;
         }
     });
 }
 
-function search_js_cover(chainhandletype, suggestion, action_id) {
+function search_js_cover(chainusertype, suggestion, action_id) {
 
-    if (!js_handleids___26010.includes(chainhandletype)) {
+    if (!js_userids___26010.includes(chainusertype)) {
         alert('Missing type in JS UI');
         return false;
     }
@@ -284,14 +284,14 @@ function search_js_cover(chainhandletype, suggestion, action_id) {
     }
 
     //Return appropriate UI:
-    if (chainhandletype == 26011) {
+    if (chainusertype == 26011) {
         //Mini Coin
         var search_only_app = $("#website_finder").val().charAt(0) == '-';
         var target_url = (search_only_app ? suggestion.s__url.replace('/@', '/') : suggestion.s__url);
         return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' ' + (search_only_app ? ' card-6287 ' : '') + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="' + target_url + '" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="' + target_url + '" class="main__title">' + '<span class="main__title">' + suggestion.s__title + '</span>' + '</a></div></div></div>';
-    } else if (chainhandletype == 26013) {
-        //Chain Handle
-        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="handle_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="handle_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
+    } else if (chainusertype == 26013) {
+        //Chain User
+        return '<div title="ID ' + suggestion.s__id + '" class="card_cover mini-cover card-' + suggestion.s__type + ' card-id-' + suggestion.s__id + ' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="user_create(' + action_id + ', ' + suggestion.s__id + ')" class="black-background-obs cover-chain coinType' + suggestion.s__type + '" ' + background_image + '><div class="cover-btn">' + icon_image + '</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="user_create(' + action_id + ', ' + suggestion.s__id + ')" class="main__title">' + suggestion.s__title + '</a></div></div></div>';
     }
 
 }
@@ -301,26 +301,26 @@ function search_mini_js(s__cover, s__title) {
 }
 
 
-function toggle_headline(chainhandletype) {
+function toggle_headline(chainusertype) {
 
-    var chainhandleoutput = 0;
-    var chainhashtagoutput = 0;
+    var chainuseroutput = 0;
+    var chainpostoutput = 0;
     var focus__node = parseInt($('#focus__node').val());
     if (focus__node == 12273) {
-        chainhashtagoutput = parseInt($('#focus__id').val());
+        chainpostoutput = parseInt($('#focus__id').val());
     } else if (focus__node == 12274) {
-        chainhandleoutput = parseInt($('#focus__id').val());
+        chainuseroutput = parseInt($('#focus__id').val());
     }
 
-    if ($('.headline_title_' + chainhandletype + ' .icon_26008').hasClass('hidden')) {
+    if ($('.headline_title_' + chainusertype + ' .icon_26008').hasClass('hidden')) {
 
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-        $('.headline_title_' + chainhandletype + ' .icon_26008').removeClass('hidden');
-        $('.headline_title_' + chainhandletype + ' .icon_26007').addClass('hidden');
-        $('.headline_body_' + chainhandletype).addClass('hidden');
+        $('.headline_title_' + chainusertype + ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + chainusertype + ' .icon_26007').addClass('hidden');
+        $('.headline_body_' + chainusertype).addClass('hidden');
 
-        if (chainhandletype == 31777) {
+        if (chainusertype == 31777) {
             $('.navigate_12273').removeClass('active');
         }
 
@@ -333,17 +333,17 @@ function toggle_headline(chainhandletype) {
 
         //Currently closed, must now be opened
         var action_id = 26007; //Open
-        $('.headline_title_' + chainhandletype + ' .icon_26007').removeClass('hidden');
-        $('.headline_title_' + chainhandletype + ' .icon_26008').addClass('hidden');
-        $('.headline_body_' + chainhandletype).removeClass('hidden');
+        $('.headline_title_' + chainusertype + ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + chainusertype + ' .icon_26008').addClass('hidden');
+        $('.headline_body_' + chainusertype).removeClass('hidden');
 
-        if (chainhandletype == 31777) {
+        if (chainusertype == 31777) {
             $('.navigate_12273').addClass('active');
         }
 
         //Scroll To:
         $('html, body').animate({
-            scrollTop: $('.headline_body_' + chainhandletype).offset().top
+            scrollTop: $('.headline_body_' + chainusertype).offset().top
         }, 13);
 
     }
@@ -351,41 +351,41 @@ function toggle_headline(chainhandletype) {
 }
 
 
-function handle_sort_load(chainhandletype) {
+function user_sort_load(chainusertype) {
 
     load_cards();
     load_card_clickers();
 
-    console.log('Tring to load Handle Sort for @' + chainhandletype);
+    console.log('Tring to load User Sort for @' + chainusertype);
 
-    var sort_item_count = parseInt($('.headline_body_' + chainhandletype).attr('read-counter'));
+    var sort_item_count = parseInt($('.headline_body_' + chainusertype).attr('read-counter'));
 
-    if (!js_handleids___13911.includes(chainhandletype)) {
+    if (!js_userids___13911.includes(chainusertype)) {
         //Does not support sorting:
-        console.log(chainhandletype + ' is not sortable');
+        console.log(chainusertype + ' is not sortable');
         return false;
-    } else if (sort_item_count < 1 || sort_item_count > parseInt(js_handles___6404[11064]['m__message'])) {
+    } else if (sort_item_count < 1 || sort_item_count > parseInt(js_users___6404[11064]['m__message'])) {
         return false;
     }
 
     setTimeout(function () {
-        var theobject = document.getElementById("list-in-" + chainhandletype);
+        var theobject = document.getElementById("list-in-" + chainusertype);
         if (!theobject) {
-            //due to duplicate hashtags belonging in this hashtag:
+            //due to duplicate posts belonging in this post:
             console.log('No object');
             return false;
         }
 
         //Show sort icon:
-        console.log('Completed Loading Sorting for @' + chainhandletype)
-        $('.sorthandle_frame').removeClass('hidden');
+        console.log('Completed Loading Sorting for @' + chainusertype)
+        $('.sortuser_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-" + chainhandletype + " .sort_draggable", // Specifies which items inside the element should be sortable
-            source: "#list-in-" + chainhandletype + " .sorthandle_grab", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-" + chainusertype + " .sort_draggable", // Specifies which items inside the element should be sortable
+            source: "#list-in-" + chainusertype + " .sortuser_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                handle_sort_save(chainhandletype);
+                user_sort_save(chainusertype);
             }
         });
     }, 377);
@@ -394,16 +394,16 @@ function handle_sort_load(chainhandletype) {
 
 
 window.onpopstate = function (event) {
-    load_hashtag_menu(null, false);
+    load_post_menu(null, false);
 };
 
-function load_hashtag_menu(load_hashtag = null, is_first_load = true) {
-    if (load_hashtag) {
-        toggle_menu(load_hashtag, is_first_load);
+function load_post_menu(load_post = null, is_first_load = true) {
+    if (load_post) {
+        toggle_menu(load_post, is_first_load);
     } else if (document.location.hash) {
-        var hashtag = document.location.hash.substr(1);
-        if (hashtag && hashtag.length > 0) {
-            toggle_menu(hashtag, is_first_load);
+        var post = document.location.hash.substr(1);
+        if (post && post.length > 0) {
+            toggle_menu(post, is_first_load);
         }
     }
 }
@@ -413,49 +413,49 @@ var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
 
-function toggle_menu(chainhandletype_hash, is_first_load) {
+function toggle_menu(chainusertype_hash, is_first_load) {
 
-    console.log('Toggle Pill: ' + chainhandletype_hash);
+    console.log('Toggle Pill: ' + chainusertype_hash);
 
-    if (pills_loading && !loaded_pills.includes(chainhandletype_hash)) {
+    if (pills_loading && !loaded_pills.includes(chainusertype_hash)) {
         return false;
     } else if (loading_in_progress) {
         return false;
     }
 
-    console.log('Toggle Pill Active: ' + chainhandletype_hash);
+    console.log('Toggle Pill Active: ' + chainusertype_hash);
 
-    if ($('.handle_nav_' + chainhandletype_hash).attr('chainhandletype') && $('.handle_nav_' + chainhandletype_hash).attr('chainhandletype').length) {
-        chainhandletype = parseInt($('.handle_nav_' + chainhandletype_hash).attr('chainhandletype'));
+    if ($('.user_nav_' + chainusertype_hash).attr('chainusertype') && $('.user_nav_' + chainusertype_hash).attr('chainusertype').length) {
+        chainusertype = parseInt($('.user_nav_' + chainusertype_hash).attr('chainusertype'));
     } else {
-        console.log('ERROR: #' + chainhandletype_hash + ' is not a valid menu.');
+        console.log('ERROR: #' + chainusertype_hash + ' is not a valid menu.');
         return false;
     }
 
     loading_in_progress = true;
 
-    if (!loaded_pills.includes(chainhandletype_hash)) {
-        pills_loading = chainhandletype_hash;
+    if (!loaded_pills.includes(chainusertype_hash)) {
+        pills_loading = chainusertype_hash;
     }
 
-    var chainhandleoutput = 0;
-    var chainhashtagoutput = 0;
+    var chainuseroutput = 0;
+    var chainpostoutput = 0;
     var focus__node = parseInt($('#focus__node').val());
 
     if (focus__node == 12273) {
-        chainhashtagoutput = parseInt($('#focus__id').val());
+        chainpostoutput = parseInt($('#focus__id').val());
     } else if (focus__node == 12274) {
-        chainhandleoutput = parseInt($('#focus__id').val());
+        chainuseroutput = parseInt($('#focus__id').val());
     }
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
     $('.nav_sub').addClass('hidden');
-    $('.nav_sub_' + chainhandletype).removeClass('hidden');
-    $('.xtypetitle_' + chainhandletype).removeClass('hidden');
+    $('.nav_sub_' + chainusertype).removeClass('hidden');
+    $('.xtypetitle_' + chainusertype).removeClass('hidden');
 
 
-    if (!$('.thepill' + chainhandletype + ' .nav-chain').hasClass('active')) {
+    if (!$('.thepill' + chainusertype + ' .nav-chain').hasClass('active')) {
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
@@ -463,43 +463,43 @@ function toggle_menu(chainhandletype_hash, is_first_load) {
         //Hide all elements
         $('.nav-chain').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + chainhandletype + ' .nav-chain').addClass('active');
-        $('.headline_body_' + chainhandletype).removeClass('hidden');
+        $('.thepill' + chainusertype + ' .nav-chain').addClass('active');
+        $('.headline_body_' + chainusertype).removeClass('hidden');
 
         //Set focus tab:
-        console.log('focus_group Updated from ' + focus_group + ' to ' + chainhandletype);
-        focus_group = chainhandletype;
-        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainhandletype + ' .nav-chain').attr('href'))) {
-            window.location.hash = $('.thepill' + chainhandletype + ' .nav-chain').attr('href');
+        console.log('focus_group Updated from ' + focus_group + ' to ' + chainusertype);
+        focus_group = chainusertype;
+        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainusertype + ' .nav-chain').attr('href'))) {
+            window.location.hash = $('.thepill' + chainusertype + ' .nav-chain').attr('href');
         }
 
         //Do we need to load data via ajax?
-        if (!loaded_pills.includes(chainhandletype_hash)) {
+        if (!loaded_pills.includes(chainusertype_hash)) {
 
-            $('.headline_body_' + chainhandletype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + chainusertype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
             var focus__node = parseInt($('#focus__node').val());
-            console.log('Tab loading from @' + focus__node + ' for @' + chainhandletype);
+            console.log('Tab loading from @' + focus__node + ' for @' + chainusertype);
 
             if (focus__node == 12273) {
 
-                var loading_url = "/controller/hashtag_list";
+                var loading_url = "/controller/post_list";
                 var loading_data = {
                     focus__node: focus__node,
-                    chainhandletype: chainhandletype,
-                    counter: $('.headline_body_' + chainhandletype).attr('read-counter'),
-                    hashtagid: parseInt($('#focus__id').val()),
+                    chainusertype: chainusertype,
+                    counter: $('.headline_body_' + chainusertype).attr('read-counter'),
+                    postid: parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
             } else if (focus__node == 12274) {
 
-                var loading_url = "/controller/handle_list";
+                var loading_url = "/controller/user_list";
                 var loading_data = {
                     focus__node: focus__node,
-                    chainhandletype: chainhandletype,
-                    counter: $('.headline_body_' + chainhandletype).attr('read-counter'),
-                    handleid: parseInt($('#focus__id').val()),
+                    chainusertype: chainusertype,
+                    counter: $('.headline_body_' + chainusertype).attr('read-counter'),
+                    userid: parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
@@ -516,9 +516,9 @@ function toggle_menu(chainhandletype_hash, is_first_load) {
             $.post(loading_url, loading_data, function (data) {
 
                 //Add data to the page:
-                $('.headline_body_' + chainhandletype + ' .tab_content').html(data);
+                $('.headline_body_' + chainusertype + ' .tab_content').html(data);
 
-                loaded_pills.push(chainhandletype_hash);
+                loaded_pills.push(chainusertype_hash);
 
                 load_card_clickers();
                 initiate_algolia();
@@ -540,8 +540,8 @@ function toggle_menu(chainhandletype_hash, is_first_load) {
                 setTimeout(function () {
 
                     //TODO Fix Sorting
-                    if (js_handleids___11028.includes(chainhandletype) || (focus__node == 12273 && ( chainhandletype==13550 || chainhandletype==31777 ))) {
-                        handle_sort_load(chainhandletype);
+                    if (js_userids___11028.includes(chainusertype) || (focus__node == 12273 && ( chainusertype==13550 || chainusertype==31777 ))) {
+                        user_sort_load(chainusertype);
                     }
 
                     setup_popover();
@@ -563,49 +563,60 @@ function toggle_menu(chainhandletype_hash, is_first_load) {
 }
 
 
-function hashtag_copy(hashtagid, do_recursive) {
+function post_copy(postid, do_recursive) {
 
     //Go ahead and delete:
-    $.post("/controller/hashtag_copy", {
-        hashtagid: hashtagid,
+    $.post("/controller/post_copy", {
+        postid: postid,
         do_recursive: do_recursive,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
-            js_redirect(js_handles___42903[33286]['m__message'] + data.hashtag_createhashtag);
+            js_redirect(js_users___42903[33286]['m__message'] + data.post_createpost);
         } else {
             alert('ERROR:' + data.message);
         }
     });
 }
 
-function handle_title(handleid) {
+function user_title(userid) {
     //Load Instant Fields:
     var return_title = '';
-    if ($('.text__6197_' + handleid + ':first').text().length) {
-        return_title = $('.text__6197_' + handleid + ':first').text();
-    } else if ($('.text__6197_' + handleid + ':first').val().length) {
-        return_title = $('.text__6197_' + handleid + ':first').val();
+    if ($('.usertitle_' + userid + ':first').text().length) {
+        return_title = $('.usertitle_' + userid + ':first').text();
+    } else if ($('.usertitle_' + userid + ':first').val().length) {
+        return_title = $('.usertitle_' + userid + ':first').val();
     }
     return return_title;
 }
 
-function handle_copy(handleid) {
+function user_summary(userid) {
+    //Load Instant Fields:
+    var return_title = '';
+    if ($('.usertitle_' + userid + ':first').text().length) {
+        return_title = $('.usertitle_' + userid + ':first').text();
+    } else if ($('.usertitle_' + userid + ':first').val().length) {
+        return_title = $('.usertitle_' + userid + ':first').val();
+    }
+    return return_title;
+}
 
-    var copy_handle_title = prompt("What would be the title of the new Handle?", handle_title(handleid));
-    if (!copy_handle_title.length) {
+function user_copy(userid) {
+
+    var copy_user_title = prompt("What would be the title of the new User?", user_title(userid));
+    if (!copy_user_title.length) {
         alert('You must enter a title to copy.');
         return false;
     }
 
     //Go ahead and delete:
-    $.post("/controller/handle_copy", {
-        handleid: handleid,
-        copy_handle_title: copy_handle_title,
+    $.post("/controller/user_copy", {
+        userid: userid,
+        copy_user_title: copy_user_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
-            js_redirect(js_handles___42903[42902]['m__message'] + data.handle_createhandle);
+            js_redirect(js_users___42903[42902]['m__message'] + data.user_createuser);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -613,8 +624,8 @@ function handle_copy(handleid) {
 }
 
 
-function js_randomize_text(handleid) {
-    var messages = js_handles___12687[handleid]['m__message'].split("\n");
+function js_randomize_text(userid) {
+    var messages = js_users___12687[userid]['m__message'].split("\n");
     if (messages.length == 1) {
         //Return message:
         return messages[0];
@@ -625,29 +636,29 @@ function js_randomize_text(handleid) {
 }
 
 
-function loadtab(chainhandletype, tab_data_id) {
+function loadtab(chainusertype, tab_data_id) {
 
     //Hide all tabs:
-    $('.tab-group-' + chainhandletype).addClass('hidden');
-    $('.tab-nav-' + chainhandletype).removeClass('active');
+    $('.tab-group-' + chainusertype).addClass('hidden');
+    $('.tab-nav-' + chainusertype).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-' + chainhandletype + '.tab-data-' + tab_data_id).removeClass('hidden');
-    $('.tab-nav-' + chainhandletype + '.tab-head-' + tab_data_id).addClass('active');
+    $('.tab-group-' + chainusertype + '.tab-data-' + tab_data_id).removeClass('hidden');
+    $('.tab-nav-' + chainusertype + '.tab-head-' + tab_data_id).addClass('active');
 
 }
 
 
 var init_in_process = 0;
 
-function chain_delete(chainid, chainhandletype, hashtagterm = null) {
+function chain_delete(chainid, chainusertype, posthashtag = null) {
 
     if (init_in_process == chainid) {
         return false;
     }
     init_in_process = chainid;
 
-    var r = confirm("Are you Sure You Want to Unchain" + (hashtagterm ? ' #' + hashtagterm : '') + "?");
+    var r = confirm("Are you Sure You Want to Unchain" + (posthashtag ? ' #' + posthashtag : '') + "?");
     if (!(r == true)) {
         return false;
     }
@@ -656,14 +667,14 @@ function chain_delete(chainid, chainhandletype, hashtagterm = null) {
     $.post("/controller/chain_delete", {
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
-        hashtagterm: hashtagterm, //Always append to AJAX Calls
+        posthashtag: posthashtag, //Always append to AJAX Calls
     }, function (data) {
         //Update UI to confirm with member:
         if (!data.status) {
             //There was some sort of an error returned!
             alert(data.message);
         } else {
-            chain_counter(chainhandletype, -1);
+            chain_counter(chainusertype, -1);
             $(".cover_x_" + chainid).fadeOut();
             setTimeout(function () {
                 $(".cover_x_" + chainid).remove();
@@ -675,9 +686,9 @@ function chain_delete(chainid, chainhandletype, hashtagterm = null) {
 }
 
 
-function updathandlecover(new_cover, changed = true) {
-    $('#modal31912 .save_handlecover').val(new_cover);
-    update_cover_main(new_cover, '.demo_cover');
+function updatusercover(new_cover, changed = true) {
+    $('#modal31912 .save_usercover').val(new_cover);
+    update_cover_main(new_cover, '.preview_cover');
     watch_cover_change(new_cover);
     if (changed) {
         has_unsaved_changes = true;
@@ -685,7 +696,7 @@ function updathandlecover(new_cover, changed = true) {
 }
 
 function image_cover(cover_preview, cover_apply, new_title) {
-    return '<a href="javascript:void(0);" onclick="updathandlecover(\'' + cover_apply + '\')">' + search_mini_js(cover_preview, new_title) + '</a>';
+    return '<a href="javascript:void(0);" onclick="updatusercover(\'' + cover_apply + '\')">' + search_mini_js(cover_preview, new_title) + '</a>';
 }
 
 
@@ -699,44 +710,44 @@ function initiate_algolia() {
     });
 }
 
-function handle_cover(chainhandletype, handleid, counter, first_segment) {
+function user_cover(chainusertype, userid, counter, first_segment) {
 
-    if ($('.coinshandle_' + handleid + '_' + chainhandletype).html().length) {
+    if ($('.coinsuser_' + userid + '_' + chainusertype).html().length) {
         //Already loaded:
         return false;
     }
 
-    $('.coinshandle_' + handleid + '_' + chainhandletype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coinsuser_' + userid + '_' + chainusertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/handle_cover", {
-        chainhandletype: chainhandletype,
-        handleid: handleid,
+    $.post("/controller/user_cover", {
+        chainusertype: chainusertype,
+        userid: userid,
         counter: counter,
         first_segment: first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coinshandle_' + handleid + '_' + chainhandletype).html(data);
+        $('.coinsuser_' + userid + '_' + chainusertype).html(data);
     });
 
 }
 
-function hashtag_cover(chainhandletype, hashtagid, counter, first_segment, current_e) {
+function post_cover(chainusertype, postid, counter, first_segment, current_e) {
 
-    if ($('.coins_hashtag_' + hashtagid + '_' + chainhandletype).html().length) {
+    if ($('.coins_post_' + postid + '_' + chainusertype).html().length) {
         //Already loaded:
         return false;
     }
 
-    $('.coins_hashtag_' + hashtagid + '_' + chainhandletype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_post_' + postid + '_' + chainusertype).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/hashtag_cover", {
-        chainhandletype: chainhandletype,
-        hashtagid: hashtagid,
+    $.post("/controller/post_cover", {
+        chainusertype: chainusertype,
+        postid: postid,
         counter: counter,
         first_segment: first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_hashtag_' + hashtagid + '_' + chainhandletype).html(data);
+        $('.coins_post_' + postid + '_' + chainusertype).html(data);
     });
 
 }
@@ -779,13 +790,13 @@ function toggle_finder() {
 
 
 function load_cards() {
-    $(".loadhandle_cards, .load_hashtag_cards").unbind();
+    $(".loaduser_cards, .load_post_cards").unbind();
 
-    $(".loadhandle_cards").click(function (event) {
-        handle_cover($(this).attr('load_chainhandletype'), $(this).attr('load_handleid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
+    $(".loaduser_cards").click(function (event) {
+        user_cover($(this).attr('load_chainusertype'), $(this).attr('load_userid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
     });
-    $(".load_hashtag_cards").click(function (event) {
-        hashtag_cover($(this).attr('load_chainhandletype'), $(this).attr('load_hashtagid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
+    $(".load_post_cards").click(function (event) {
+        post_cover($(this).attr('load_chainusertype'), $(this).attr('load_postid'), $(this).attr('load_counter'), $(this).attr('load_first_segment'));
     });
 }
 
@@ -804,7 +815,7 @@ function js_redirect(url, timer = 0) {
 function load_card_clickers() {
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .chainvalue, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_handle, .this_selector';
+    var ignore_clicks = 'a, .btn, textarea, .chainvalue, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_user, .this_selector';
     $(".card_click").click(function (e) {
         if ($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length) {
             js_redirect($(this).attr('href'));
@@ -812,9 +823,9 @@ function load_card_clickers() {
     });
 
     //For Discovery only:
-    if (typeof focus_hashtag_types !== 'undefined' && focus_hashtag_types.length>0) {
+    if (typeof focus_post_types !== 'undefined' && focus_post_types.length>0) {
 
-        var is_single_choice = ( focus_hashtag_types.includes(6684) );
+        var is_single_choice = ( focus_post_types.includes(6684) );
 
         if ($(".this_selector").length == 1) {
             //Auto select if only 1 choice is available:
@@ -822,10 +833,10 @@ function load_card_clickers() {
         }
 
         $(".this_selector").click(function (e) {
-            if ($('.this_selector_' + $(this).attr('selection_hashtagid') + ' i').hasClass('fa-square-check')) {
+            if ($('.this_selector_' + $(this).attr('selection_postid') + ' i').hasClass('fa-square-check')) {
 
                 //Already selected, so unselect:
-                $('.this_selector_' + $(this).attr('selection_hashtagid') + ' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
+                $('.this_selector_' + $(this).attr('selection_postid') + ' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
 
             } else {
 
@@ -835,14 +846,14 @@ function load_card_clickers() {
                     console.log('Single Choice');
 
                     //Unselect the previously selected:
-                    $('.this_selector:not(.this_selector_' + $(this).attr('selection_hashtagid') + ') i.fa-square-check').each(function () {
+                    $('.this_selector:not(.this_selector_' + $(this).attr('selection_postid') + ') i.fa-square-check').each(function () {
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
                     });
                     //Go Next:
-                    if (!$('.input_ui_' + $(this).attr('selection_hashtagid'))[0]) {
+                    if (!$('.input_ui_' + $(this).attr('selection_postid'))[0]) {
                         //Since there is no input for this single select, we can instantly go next:
                         setTimeout(function () {
-                            hashtag_discovered(0);
+                            post_discovered(0);
                         }, 89);
                     } else {
                         //Make button visible if hidden:
@@ -854,10 +865,10 @@ function load_card_clickers() {
                     $(".fixed-bottom").removeClass('hidden');
                 }
 
-                if ($('.input_ui_' + $(this).attr('selection_hashtagid'))[0]) {
-                    $('.input_ui_' + $(this).attr('selection_hashtagid') + ' .x_write').focus();
+                if ($('.input_ui_' + $(this).attr('selection_postid'))[0]) {
+                    $('.input_ui_' + $(this).attr('selection_postid') + ' .x_write').focus();
                 }
-                $('.this_selector_' + $(this).attr('selection_hashtagid') + ' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
+                $('.this_selector_' + $(this).attr('selection_postid') + ' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
 
             }
         });
@@ -867,9 +878,9 @@ function load_card_clickers() {
 
 var busy_processing = false;
 
-function sale_increment(increment, hashtagid, max_allowed, min_allowed, unit_total, unit_fee) {
+function sale_increment(increment, postid, max_allowed, min_allowed, unit_total, unit_fee) {
 
-    var current_quentity = parseInt($('.input_ui_' + hashtagid + ' .current_count').text());
+    var current_quentity = parseInt($('.input_ui_' + postid + ' .current_count').text());
     var new_quantity = current_quentity + increment;
 
     if (new_quantity < min_allowed || new_quantity > max_allowed) {
@@ -879,14 +890,14 @@ function sale_increment(increment, hashtagid, max_allowed, min_allowed, unit_tot
     }
 
     if (new_quantity > min_allowed) {
-        $(".sale_controller_" + hashtagid + " .sale_down>i").removeClass('hidden');
+        $(".sale_controller_" + postid + " .sale_down>i").removeClass('hidden');
     } else {
-        $(".sale_controller_" + hashtagid + " .sale_down>i").addClass('hidden');
+        $(".sale_controller_" + postid + " .sale_down>i").addClass('hidden');
     }
     if (new_quantity < max_allowed) {
-        $(".sale_controller_" + hashtagid + " .sale_up>i").removeClass('hidden');
+        $(".sale_controller_" + postid + " .sale_up>i").removeClass('hidden');
     } else {
-        $(".sale_controller_" + hashtagid + " .sale_up>i").addClass('hidden');
+        $(".sale_controller_" + postid + " .sale_up>i").addClass('hidden');
     }
 
     busy_processing = true;
@@ -896,9 +907,9 @@ function sale_increment(increment, hashtagid, max_allowed, min_allowed, unit_tot
     var new_total = (unit_total * new_quantity);
 
     //Update UI:
-    $(".input_ui_" + hashtagid + " .hashtagweight").val(new_quantity);
-    $(".input_ui_" + hashtagid + " .current_count").text(new_quantity);
-    $(".input_ui_" + hashtagid + " .paypal_handling").val(handling_total);
+    $(".input_ui_" + postid + " .postweight").val(new_quantity);
+    $(".input_ui_" + postid + " .current_count").text(new_quantity);
+    $(".input_ui_" + postid + " .paypal_handling").val(handling_total);
 
     invoice_update(); //to show new numbers
 
@@ -915,9 +926,9 @@ function invoice_update() {
 
     $(".sale_controller").each(function () {
 
-        var item_hashtagid = parseInt($(this).attr('hashtagid'));
-        var item_hashtag_title = $('.cache_frame_' + item_hashtagid + ' .first_line').text();
-        var current_count = parseFloat($('.input_ui_' + item_hashtagid + ' .current_count').text());
+        var item_postid = parseInt($(this).attr('postid'));
+        var item_post_title = $('.cache_frame_' + item_postid + ' .first_line').text();
+        var current_count = parseFloat($('.input_ui_' + item_postid + ' .current_count').text());
         var current_price = parseFloat($(this).attr('unitprice'));
         var current_currency = $(this).attr('unitcurrency');
 
@@ -957,7 +968,7 @@ function setup_popover() {
         //title: '<a class="close" href="javascript:void(0);" style="display: block;">Close</a>',
         content: function (inner_content) {
             $.post("/controller/chain_popover", {
-                handle_string: inner_content.innerText,
+                user_string: inner_content.innerText,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
                 $('.popover-body').html(data);
@@ -1016,18 +1027,18 @@ $(document).ready(function () {
 
     watch_cover();
 
-    //Only for hashtag page but still:
-    set_autosize($('.text__6197_' + parseInt($('#focus__id').val())));
+    //Only for post page but still:
+    set_autosize($('.usertitle_' + parseInt($('#focus__id').val())));
 
     $(document).on('keydown', function (e) {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {
             if (String.fromCharCode(e.which).toLowerCase() === 'i') {
-                //Add Hashtag
-                hashtag_editor();
+                //Add Post
+                post_editor();
             } else if (String.fromCharCode(e.which).toLowerCase() === 's') {
-                //Add Handle:
-                handle_editor(0, 0);
+                //Add User:
+                user_editor(0, 0);
             } else if (String.fromCharCode(e.which).toLowerCase() === 'f' && search_enabled()) {
                 //Finder:
                 toggle_finder();
@@ -1061,16 +1072,16 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#modal31912 .save_handlecover').keyup(function () {
-        update_cover_main($(this).val(), '.demo_cover');
+    $('#modal31912 .save_usercover').keyup(function () {
+        update_cover_main($(this).val(), '.preview_cover');
     });
 
     set_autosize($('#sugg_note'));
     set_autosize($('.texttype_lg'));
 
     $('.trigger_modal').click(function (e) {
-        var chainhandletype = parseInt($(this).attr('chainhandletype'));
-        $('#modal' + chainhandletype).modal('show');
+        var chainusertype = parseInt($(this).attr('chainusertype'));
+        $('#modal' + chainusertype).modal('show');
     });
 
 
@@ -1109,7 +1120,7 @@ $(document).ready(function () {
                 match: /(^|\s)\.@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1125,7 +1136,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '.@');
                 },
                 replace: function (suggestion) {
-                    return ' .@' + suggestion.s__handle + ' ';
+                    return ' .@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1135,7 +1146,7 @@ $(document).ready(function () {
                 match: /(^|\s),@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1151,7 +1162,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, ',@');
                 },
                 replace: function (suggestion) {
-                    return ' ,@' + suggestion.s__handle + ' ';
+                    return ' ,@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1161,7 +1172,7 @@ $(document).ready(function () {
                 match: /(^|\s);@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1177,7 +1188,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, ';@');
                 },
                 replace: function (suggestion) {
-                    return ' ;@' + suggestion.s__handle + ' ';
+                    return ' ;@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1187,7 +1198,7 @@ $(document).ready(function () {
                 match: /(^|\s):@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1203,7 +1214,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, ':@');
                 },
                 replace: function (suggestion) {
-                    return ' :@' + suggestion.s__handle + ' ';
+                    return ' :@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1213,7 +1224,7 @@ $(document).ready(function () {
                 match: /(^|\s)\+@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1229,7 +1240,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '+@');
                 },
                 replace: function (suggestion) {
-                    return ' +@' + suggestion.s__handle + ' ';
+                    return ' +@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1239,7 +1250,7 @@ $(document).ready(function () {
                 match: /(^|\s)-@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1255,7 +1266,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '-@');
                 },
                 replace: function (suggestion) {
-                    return ' -@' + suggestion.s__handle + ' ';
+                    return ' -@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1265,7 +1276,7 @@ $(document).ready(function () {
                 match: /(^|\s)~@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1281,7 +1292,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '~@');
                 },
                 replace: function (suggestion) {
-                    return ' ~@' + suggestion.s__handle + ' ';
+                    return ' ~@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1291,7 +1302,7 @@ $(document).ready(function () {
                 match: /(^|\s)!@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1307,7 +1318,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '!@');
                 },
                 replace: function (suggestion) {
-                    return ' !@' + suggestion.s__handle + ' ';
+                    return ' !@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1317,7 +1328,7 @@ $(document).ready(function () {
                 match: /(^|\s)\*@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1333,7 +1344,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '*@');
                 },
                 replace: function (suggestion) {
-                    return ' *@' + suggestion.s__handle + ' ';
+                    return ' *@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1343,7 +1354,7 @@ $(document).ready(function () {
                 match: /(^|\s)\|@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1359,7 +1370,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '|@');
                 },
                 replace: function (suggestion) {
-                    return ' |@' + suggestion.s__handle + ' ';
+                    return ' |@' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1370,7 +1381,7 @@ $(document).ready(function () {
                 match: /(^|\s)=#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1386,7 +1397,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '=#');
                 },
                 replace: function (suggestion) {
-                    return ' =#' + suggestion.s__handle + ' ';
+                    return ' =#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1396,7 +1407,7 @@ $(document).ready(function () {
                 match: /(^|\s)!#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1412,7 +1423,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '!#');
                 },
                 replace: function (suggestion) {
-                    return ' !#' + suggestion.s__handle + ' ';
+                    return ' !#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1422,7 +1433,7 @@ $(document).ready(function () {
                 match: /(^|\s)~#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1438,7 +1449,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '~#');
                 },
                 replace: function (suggestion) {
-                    return ' ~#' + suggestion.s__handle + ' ';
+                    return ' ~#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1448,7 +1459,7 @@ $(document).ready(function () {
                 match: /(^|\s)\+#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1464,7 +1475,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '+#');
                 },
                 replace: function (suggestion) {
-                    return ' +#' + suggestion.s__handle + ' ';
+                    return ' +#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1474,7 +1485,7 @@ $(document).ready(function () {
                 match: /(^|\s)-#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1490,7 +1501,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '-#');
                 },
                 replace: function (suggestion) {
-                    return ' -#' + suggestion.s__handle + ' ';
+                    return ' -#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1500,7 +1511,7 @@ $(document).ready(function () {
                 match: /(^|\s);#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1516,7 +1527,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, ';#');
                 },
                 replace: function (suggestion) {
-                    return ' ;#' + suggestion.s__handle + ' ';
+                    return ' ;#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1526,7 +1537,7 @@ $(document).ready(function () {
                 match: /(^|\s):#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1542,7 +1553,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, ':#');
                 },
                 replace: function (suggestion) {
-                    return ' :#' + suggestion.s__handle + ' ';
+                    return ' :#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1552,7 +1563,7 @@ $(document).ready(function () {
                 match: /(^|\s)\.#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1568,7 +1579,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '.#');
                 },
                 replace: function (suggestion) {
-                    return ' .#' + suggestion.s__handle + ' ';
+                    return ' .#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1578,7 +1589,7 @@ $(document).ready(function () {
                 match: /(^|\s),#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1594,7 +1605,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, ',#');
                 },
                 replace: function (suggestion) {
-                    return ' ,#' + suggestion.s__handle + ' ';
+                    return ' ,#' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1604,7 +1615,7 @@ $(document).ready(function () {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1620,7 +1631,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '@');
                 },
                 replace: function (suggestion) {
-                    return ' @' + suggestion.s__handle + ' ';
+                    return ' @' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1630,7 +1641,7 @@ $(document).ready(function () {
                 match: /(^|\s)#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31112]['m__message'],
+                        hitsPerPage: js_users___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
@@ -1646,7 +1657,7 @@ $(document).ready(function () {
                     return search_js_line(suggestion, '#');
                 },
                 replace: function (suggestion) {
-                    return ' #' + suggestion.s__handle + ' ';
+                    return ' #' + suggestion.s__user + ' ';
                 }
             },
         ]);
@@ -1715,7 +1726,7 @@ $(document).ready(function () {
 
                         //For Members:
                         if (!js_session_superpowers_unlocked.includes(12701)) {
-                            //Can view limited Handles:
+                            //Can view limited Users:
                             if (search_filters.length > 0) {
                                 search_filters += ' AND ';
                             }
@@ -1724,7 +1735,7 @@ $(document).ready(function () {
 
                     } else {
 
-                        //Guest can search hashtags only by default as they start typing;
+                        //Guest can search posts only by default as they start typing;
                         if (search_filters.length > 0) {
                             search_filters += ' AND ';
                         }
@@ -1734,7 +1745,7 @@ $(document).ready(function () {
 
                     //Append filters:
                     index_algolia.search(q, {
-                        hitsPerPage: js_handles___6404[31113]['m__message'],
+                        hitsPerPage: js_users___6404[31113]['m__message'],
                         filters: search_filters,
                     }, function (error, content) {
                         if (error) {
@@ -1801,18 +1812,18 @@ function update_cover_mini(cover_code, target_css) {
 }
 
 
-function display_media(mediaframe_id, uploader_id, hashtagid) {
-    $(".ui_hashtagdiscover_" + hashtagid + " .media_display").each(function () {
-        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""></div>');
-        cloudinary_prehandle_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('handlecover'), $(this).attr('handlename'), $(this).attr('handleid'));
+function display_media(mediaframe_id, uploader_id, postid) {
+    $(".ui_postdiscover_" + postid + " .media_display").each(function () {
+        $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" userid="0"  usercover=""></div>');
+        cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('usercover'), $(this).attr('username'), $(this).attr('userid'));
     });
     sort_media(mediaframe_id);
 }
 
-function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
+function post_editor(postid = 0, chainid = 0, next_postid = 0) {
 
-    var chainhandletype = 0;
-    var focus_hashtag_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
+    var chainusertype = 0;
+    var focus_post_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
     $("#modal31911 .save_results").html('');
 
     //Reset Fields:
@@ -1820,81 +1831,81 @@ function hashtag_editor(hashtagid = 0, chainid = 0, next_hashtagid = 0) {
     $('#modal31911 .media_frame').html('');
     $("#modal31911 .dynamic_item").attr('d__id', '').attr('d_chainid', '');
     $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
-    $('#modal31911 .created_hashtagid').val(0);
+    $('#modal31911 .created_postid').val(0);
     $("#modal31911 .unsaved_warning").val('');
     $("#modal31911 .save_frame").addClass('hidden');
-    $('#modal31911 .save_hashtagid').val(hashtagid);
+    $('#modal31911 .save_postid').val(postid);
     $('#modal31911 .save_chainid').val(chainid);
-    $("#modal31911 .save_hashtagterm").val('');
+    $("#modal31911 .save_posthashtag").val('');
 
-    //Are we adding an hashtag for a target action tab?
+    //Are we adding an post for a target action tab?
     console.log('i Modal loaded for ' + focus_group);
-    if (focus_hashtag_id && focus_group > 0 && !next_hashtagid && !hashtagid && !chainid) {
-        //Next hashtag group:
-        next_hashtagid = focus_hashtag_id;
+    if (focus_post_id && focus_group > 0 && !next_postid && !postid && !chainid) {
+        //Next post group:
+        next_postid = focus_post_id;
     }
 
-    if (!hashtagid && !next_hashtagid && focus_hashtag_id) {
-        next_hashtagid = focus_hashtag_id;
+    if (!postid && !next_postid && focus_post_id) {
+        next_postid = focus_post_id;
     }
 
 
     //Assign updates:
     var insert_message = '';
-    $('#modal31911 .next_hashtagid').val(next_hashtagid);
-    //$('#modal31911 .hash_group').addClass('hidden'); //Hide hashtag
-    //load_hashtag_dynamic(hashtagid, chainid, true);
+    $('#modal31911 .next_postid').val(next_postid);
+    //$('#modal31911 .hash_group').addClass('hidden'); //Hide post
+    //load_post_dynamic(postid, chainid, true);
 
-    if(hashtagid>0){
-        insert_message = $('.ui_hashtagtext_' + hashtagid).text();
+    if(postid>0){
+        insert_message = $('.ui_posttext_' + postid).text();
     } else {
         //New idea:
-        if (next_hashtagid && $('.ui_hashtagterm_' + next_hashtagid).length) {
+        if (next_postid && $('.ui_posthashtag_' + next_postid).length) {
             //Append to textarea:
-            insert_message = '#'+$('.ui_hashtagterm_'+next_hashtagid).val()+' ';
-        } else if (!next_hashtagid) {
-            //See where we are at and append anything needed to the hashtag:
+            insert_message = '#'+$('.ui_posthashtag_'+next_postid).val()+' ';
+        } else if (!next_postid) {
+            //See where we are at and append anything needed to the post:
             var focus__node = parseInt($('#focus__node').val());
             if (focus__node == 12273) {
-                insert_message = '#'+$('#focus_handle').val()+' ';
+                insert_message = '#'+$('#focus_user').val()+' ';
             } else if (focus__node == 12274 && parseInt($('#focus__id').val()) != js_pl_id) {
-                insert_message = '@' + $('#focus_handle').val() + ' ';
+                insert_message = '@' + $('#focus_user').val() + ' ';
             }
         }
     }
 
 
     if (insert_message.length) {
-        $("#modal31911 .save_hashtagtext").val(insert_message);
+        $("#modal31911 .save_posttext").val(insert_message);
     }
 
-    if($('.ui_hashtagterm_'+hashtagid).text().length){
-        $("#modal31911 .save_hashtagterm").val($('.ui_hashtagterm_'+hashtagid).text());
+    if($('.ui_posthashtag_'+postid).text().length){
+        $("#modal31911 .save_posthashtag").val($('.ui_posthashtag_'+postid).text());
     }
 
     $('#modal31911').modal('show');
 
     setTimeout(function () {
         //Adjust sizes:
-        set_autosize($('#modal31911 .save_hashtagtext'));
+        set_autosize($('#modal31911 .save_posttext'));
         set_autosize($('#modal31911 .save_chainvalue'));
     }, 233);
 
     setTimeout(function () {
         //Focus on writing a message:
-        $('#modal31911 .save_hashtagtext').focus();
+        $('#modal31911 .save_posttext').focus();
     }, 611);
 
 }
 
-function load_hashtag_dynamic(hashtagid, chainid, initial_loading) {
+function load_post_dynamic(postid, chainid, initial_loading) {
 
     $(".dynamic_item").addClass('hidden'); //Hide all current items...
     $(".dynamic_editing_loading").removeClass('hidden');
-    var created_hashtagid = 0;
+    var created_postid = 0;
 
-    $.post("/controller/hashtag_editor", {
-        hashtagid: hashtagid,
+    $.post("/controller/post_editor", {
+        postid: postid,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -1903,17 +1914,17 @@ function load_hashtag_dynamic(hashtagid, chainid, initial_loading) {
 
         if (data.status) {
 
-            if (!hashtagid && data.created_hashtagid > 0) {
-                console.log('NEW HASHTAG #' + data.created_hashtagid + ' has been created');
-                created_hashtagid = data.created_hashtagid;
-                $('#modal31911 .created_hashtagid').val(created_hashtagid);
-                hashtagid = created_hashtagid;
+            if (!postid && data.created_postid > 0) {
+                console.log('NEW POST #' + data.created_postid + ' has been created');
+                created_postid = data.created_postid;
+                $('#modal31911 .created_postid').val(created_postid);
+                postid = created_postid;
             }
 
             if (initial_loading) {
 
-                //Initiate Hashtag  Uploader:
-                load_cloudinary(13572, hashtagid, ['#' + hashtagid], '.uploader_13572', '#modal31911');
+                //Initiate Post  Uploader:
+                load_cloudinary(13572, postid, ['#' + postid], '.uploader_13572', '#modal31911');
 
                 //Track unsaved changes to prevent unwated modal closure:
                 $("#modal31911 .unsaved_warning").change(function () {
@@ -1925,7 +1936,7 @@ function load_hashtag_dynamic(hashtagid, chainid, initial_loading) {
             var current_header = null;
 
             //Dynamic Input Fields:
-            for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
+            for (let i = 1; i <= js_users___6404[42206]['m__message']; i++) {
 
                 var index_i = i - 1;
 
@@ -1951,7 +1962,7 @@ function load_hashtag_dynamic(hashtagid, chainid, initial_loading) {
                 }
 
 
-                var is_locked = js_handleids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_userids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if (is_locked && !data.return_inputs[index_i]["d__value"].length) {
                     //Hide since its locked without a value:
                     $("#modal31911 .dynamic_" + i + " .inner_dynamic").addClass('hidden');
@@ -1993,44 +2004,44 @@ function load_hashtag_dynamic(hashtagid, chainid, initial_loading) {
 
         }
     });
-    return created_hashtagid;
+    return created_postid;
 }
 
 
 var i_saving = false; //Prevent double saving
-function hashtag_update() {
+function post_update() {
 
     if (i_saving) {
-        console.log('Hashtag updating aborted');
+        console.log('Post updating aborted');
         return false;
     }
 
     i_saving = true;
-    $(".hashtag_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".post_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
-    var current_hashtagid = parseInt($('#modal31911 .save_hashtagid').val());
-    var created_hashtagid = parseInt($('#modal31911 .created_hashtagid').val());
-    var save_hashtagid = (current_hashtagid > 0 ? current_hashtagid : created_hashtagid);
-    console.log('Hashtag updating begins #' + current_hashtagid);
+    var current_postid = parseInt($('#modal31911 .save_postid').val());
+    var created_postid = parseInt($('#modal31911 .created_postid').val());
+    var save_postid = (current_postid > 0 ? current_postid : created_postid);
+    console.log('Post updating begins #' + current_postid);
 
     //TODO Preview Media
     var modify_data = {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        save_hashtagid: save_hashtagid,
+        save_postid: save_postid,
         save_chainid: $('#modal31911 .save_chainid').val(),
-        next_hashtagid: $('#modal31911 .next_hashtagid').val(),
-        save_discoverymode: $('.s__12273_' + save_hashtagid).attr('discovery_mode'),
+        next_postid: $('#modal31911 .next_postid').val(),
+        save_discoverymode: $('.s__12273_' + save_postid).attr('discovery_mode'),
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
-        save_hashtagtext: $('#modal31911 .save_hashtagtext').val().trim(),
-        save_hashtagterm: $('#modal31911 .save_hashtagterm').val().trim(),
+        save_posttext: $('#modal31911 .save_posttext').val().trim(),
+        save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
-    for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
+    for (let i = 1; i <= js_users___6404[42206]['m__message']; i++) {
         if ($('#modal31911 .dynamic_' + i).attr('d__id').length) {
             modify_data['save_dynamic_' + i] = $('#modal31911 .dynamic_' + i).attr('d_chainid').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_' + i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_' + i).val().trim();
         } else {
@@ -2039,11 +2050,11 @@ function hashtag_update() {
         }
     }
 
-    $.post("/controller/hashtag_update", modify_data, function (data) {
+    $.post("/controller/post_update", modify_data, function (data) {
 
         //Load Images:
         i_saving = false;
-        $(".hashtag_update").html('SAVE');
+        $(".post_update").html('SAVE');
 
         if (!data.status) {
 
@@ -2052,30 +2063,30 @@ function hashtag_update() {
 
         } else {
 
-            if (data.redirect_hashtag) {
+            if (data.redirect_post) {
                 //Give option to open the post:
                 $(".i_footer_note").removeClass('hidden');
-                $(".i_footer_note a").attr('href', data.redirect_hashtag);
+                $(".i_footer_note a").attr('href', data.redirect_post);
                 setTimeout(function () {
                     $(".i_footer_note").addClass('hidden');
                 }, 6765);
             }
 
-            //Update Handle & Href chains if needed:
-            var old_handle = $(".ui_hashtagterm_" + modify_data['save_hashtagid'] + ':first').text();
-            var new_handle = modify_data['save_hashtagterm'];
-            var on_focus__hashtag = parseInt($('#focus__node').val()) == 12273 && modify_data['save_hashtagid'] == parseInt($('#focus__id').val());
+            //Update User & Href chains if needed:
+            var old_user = $(".ui_posthashtag_" + modify_data['save_postid'] + ':first').text();
+            var new_user = modify_data['save_posthashtag'];
+            var on_focus__post = parseInt($('#focus__node').val()) == 12273 && modify_data['save_postid'] == parseInt($('#focus__id').val());
 
-            //Update Handle & Href chains if needed:
+            //Update User & Href chains if needed:
             /*
-            if (old_handle != new_handle) {
-                if (on_focus__hashtag) {
-                    //Refresh page since focus item handle changed:
-                    js_redirect(js_handles___42903[33286]['m__message'] + new_handle);
+            if (old_user != new_user) {
+                if (on_focus__post) {
+                    //Refresh page since focus item user changed:
+                    js_redirect(js_users___42903[33286]['m__message'] + new_user);
                 } else {
-                    //Update Hashtag & Chain:
-                    $('.s__12273_' + modify_data['save_hashtagid']).attr('hashtagterm', new_handle);
-                    $(".ui_hashtagterm_" + modify_data['save_hashtagid']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+                    //Update Post & Chain:
+                    $('.s__12273_' + modify_data['save_postid']).attr('posthashtag', new_user);
+                    $(".ui_posthashtag_" + modify_data['save_postid']).text(new_user).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
                 }
             }
             */
@@ -2084,21 +2095,21 @@ function hashtag_update() {
             has_unsaved_changes = false;
             $('#modal31911').modal('hide');
 
-            //Update Hashtag Message:
-            $('.ui_hashtagtext_' + modify_data['save_hashtagid']).text(modify_data['save_hashtagtext']);
+            //Update Post Message:
+            $('.ui_posttext_' + modify_data['save_postid']).text(modify_data['save_posttext']);
 
-            //Insert hashtag into the page if new:
+            //Insert post into the page if new:
             console.log('START INSERTING');
-            if (!current_hashtagid && created_hashtagid > 0 && focus_group > 0) {
+            if (!current_postid && created_postid > 0 && focus_group > 0) {
 
-                $("#list-in-" + focus_group).append(data.return_hashtagdiscover_full);
+                $("#list-in-" + focus_group).append(data.return_postdiscover_full);
 
                 chain_counter(focus_group, 1);
 
             } else {
 
                 //Update Cache otherwise:
-                $('.ui_hashtagdiscover_' + modify_data['save_hashtagid']).html(data.return_hashtagdiscover_chains);
+                $('.ui_postdiscover_' + modify_data['save_postid']).html(data.return_postdiscover_chains);
 
             }
 
@@ -2133,19 +2144,19 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
     console.log('Initiating Uploader @' + uploader_id + ' with tags ' + uploader_tags.join(' & '));
 
-    if (js_handles___42363[uploader_id] == undefined) {
+    if (js_users___42363[uploader_id] == undefined) {
         console.log('Unknown Uploader @' + uploader_id + ' Missing in @42363');
         return false;
     }
 
     media_cache[uploader_id] = [];
     //Fetch global defaults:
-    var default_max_file_count = parseFloat(js_handles___6404[42382]['m__message']);
+    var default_max_file_count = parseFloat(js_users___6404[42382]['m__message']);
 
     var global_tags = ['@' + uploader_id, '@' + website_id, '@' + js_pl_id];
-    var allow_videos = js_handles___42390[uploader_id] !== undefined;
-    var allow_imgaes = js_handles___42389[uploader_id] !== undefined;
-    var allow_audio = js_handles___42644[uploader_id] !== undefined;
+    var allow_videos = js_users___42390[uploader_id] !== undefined;
+    var allow_imgaes = js_users___42389[uploader_id] !== undefined;
+    var allow_audio = js_users___42644[uploader_id] !== undefined;
 
     if (!allow_videos && !allow_imgaes && !allow_audio) {
         //Assume all are allowed:
@@ -2155,21 +2166,21 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
     }
 
     //Initiate CLoudiary for cover:
-    var max_file_count = (js_handles___42382[uploader_id] !== undefined && parseFloat(js_handles___42382[uploader_id]['m__message']) > 0 && parseFloat(js_handles___42382[uploader_id]['m__message']) < default_max_file_count ? parseFloat(js_handles___42382[uploader_id]['m__message']) : default_max_file_count);
+    var max_file_count = (js_users___42382[uploader_id] !== undefined && parseFloat(js_users___42382[uploader_id]['m__message']) > 0 && parseFloat(js_users___42382[uploader_id]['m__message']) < default_max_file_count ? parseFloat(js_users___42382[uploader_id]['m__message']) : default_max_file_count);
 
-    var enable_crop = (js_handles___42386[uploader_id] !== undefined);
-    var force_crop = (js_handles___42387[uploader_id] !== undefined);
+    var enable_crop = (js_users___42386[uploader_id] !== undefined);
+    var force_crop = (js_users___42387[uploader_id] !== undefined);
 
 
     var clientAllowedFormats = [];
     if (allow_videos) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_handles___42641[4258]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_users___42641[4258]['m__message'].split(' '));
     }
     if (allow_imgaes) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_handles___42641[4260]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_users___42641[4260]['m__message'].split(' '));
     }
     if (allow_audio) {
-        clientAllowedFormats = clientAllowedFormats.concat(js_handles___42641[4259]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_users___42641[4259]['m__message'].split(' '));
     }
 
     var widget_setting = {
@@ -2186,15 +2197,15 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         cropping: enable_crop,
         showSkipCropButton: !force_crop,
         croppingShowBackButton: !force_crop,
-        croppingAspectRatio: (js_handles___42388[uploader_id] !== undefined && parseFloat(js_handles___42388[uploader_id]['m__message']) > 0 ? parseFloat(js_handles___42388[uploader_id]['m__message']) : null),
+        croppingAspectRatio: (js_users___42388[uploader_id] !== undefined && parseFloat(js_users___42388[uploader_id]['m__message']) > 0 ? parseFloat(js_users___42388[uploader_id]['m__message']) : null),
 
-        minImageWidth: (js_handles___42407[uploader_id] !== undefined && parseInt(js_handles___42407[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42407[uploader_id]['m__message']) : null),
-        maxImageWidth: (js_handles___42408[uploader_id] !== undefined && parseInt(js_handles___42408[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42408[uploader_id]['m__message']) : null),
-        minImageHeight: (js_handles___42409[uploader_id] !== undefined && parseInt(js_handles___42409[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42409[uploader_id]['m__message']) : null),
-        maxImageHeight: (js_handles___42410[uploader_id] !== undefined && parseInt(js_handles___42410[uploader_id]['m__message']) > 0 ? parseInt(js_handles___42410[uploader_id]['m__message']) : null),
+        minImageWidth: (js_users___42407[uploader_id] !== undefined && parseInt(js_users___42407[uploader_id]['m__message']) > 0 ? parseInt(js_users___42407[uploader_id]['m__message']) : null),
+        maxImageWidth: (js_users___42408[uploader_id] !== undefined && parseInt(js_users___42408[uploader_id]['m__message']) > 0 ? parseInt(js_users___42408[uploader_id]['m__message']) : null),
+        minImageHeight: (js_users___42409[uploader_id] !== undefined && parseInt(js_users___42409[uploader_id]['m__message']) > 0 ? parseInt(js_users___42409[uploader_id]['m__message']) : null),
+        maxImageHeight: (js_users___42410[uploader_id] !== undefined && parseInt(js_users___42410[uploader_id]['m__message']) > 0 ? parseInt(js_users___42410[uploader_id]['m__message']) : null),
 
-        validateMaxWidthHeight: (js_handles___42411[uploader_id] !== undefined),
-        croppingValidateDimensions: (js_handles___42412[uploader_id] !== undefined),
+        validateMaxWidthHeight: (js_users___42411[uploader_id] !== undefined),
+        croppingValidateDimensions: (js_users___42412[uploader_id] !== undefined),
 
         inlineContainer: loading_inline_container,
 
@@ -2205,8 +2216,8 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         autoMinimize: true,
         theme: 'minimal',
         tags: global_tags.concat(uploader_tags),
-        handles: ['local', 'url', 'image_search', 'camera', 'unsplash'], //, 'google_drive', 'dropbox'
-        defaultHandle: 'local',
+        users: ['local', 'url', 'image_search', 'camera', 'unsplash'], //, 'google_drive', 'dropbox'
+        defaultUser: 'local',
         styles: {
             palette: {
                 window: "#FFFFFF",
@@ -2221,7 +2232,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 error: "#FC1B44",
                 inProgress: "#000000",
                 complete: "#000000",
-                handleBg: "#FFFFFF"
+                userBg: "#FFFFFF"
             },
             frame: {
                 background: "#999999"
@@ -2250,7 +2261,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Enable Sorting:
             if (uploader_id == 13572) {
 
-                //Hashtagtor Uploader
+                //Posttor Uploader
                 sort_media('media_editor_frame');
 
             } else if (uploader_id == 43004) {
@@ -2269,19 +2280,19 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Append loaders:
             if (uploader_id == 42359) {
 
-                //Handle Cover Uploader:
-                updathandlecover('fas fa-yin-yang fa-spin');
+                //User Cover Uploader:
+                updatusercover('fas fa-yin-yang fa-spin');
 
             } else if (uploader_id == 13572) {
 
-                //Hashtagtor Uploader
+                //Posttor Uploader
                 has_unsaved_changes = true;
-                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_editor_frame').append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" userid="0"  usercover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             } else if (uploader_id == 43004) {
 
                 //Discovery Uploader
-                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" handleid="0"  handlecover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_outer_' + s__id).append('<div id="' + result.info.id + '" class="media_item" media_typeid="" playback_code="" userid="0"  usercover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
@@ -2290,33 +2301,33 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             console.log(result.event);
             console.log(result);
 
-            //Create a new handle for this  media:
+            //Create a new user for this  media:
 
 
             //Add uploaded media:
             if (uploader_id == 42359) {
 
-                //Handle Cover Uploader:
-                updathandlecover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+                //User Cover Uploader:
+                updatusercover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
 
             } else if (uploader_id == 13572 || uploader_id == 43004) {
 
-                //Hashtag Uploader
+                //Post Uploader
                 var playback_code = '';
                 var media_typeid = 0;
                 var media_typename = '';
                 if (result.info.format && result.info.format.length > 0) {
-                    if (js_handles___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.rehandle_type == 'video') {
+                    if (js_users___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'video') {
                         //Video
                         media_typeid = 4258;
                         media_typename = 'Video';
                         playback_code = result.info.public_id;
-                    } else if (js_handles___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
+                    } else if (js_users___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio) {
                         //Audio
                         media_typeid = 4259;
                         media_typename = 'Audio';
                         playback_code = result.info.secure_url;
-                    } else if (js_handles___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.rehandle_type == 'image') {
+                    } else if (js_users___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type == 'image') {
                         //Image
                         media_typeid = 4260;
                         media_typename = 'Image';
@@ -2324,10 +2335,10 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                     }
                 }
 
-                //Append this to the main Handle:
+                //Append this to the main User:
                 if (media_typeid) {
 
-                    cloudinary_prehandle_view(uploader_id, result.info.id, media_typeid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), ( result.info.original_filename ? media_typename + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : media_typename + ' File'));
+                    cloudinary_presource_view(uploader_id, result.info.id, media_typeid, playback_code, (result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90', 'c_fill,h_377,w_377') : null), ( result.info.original_filename ? media_typename + ' ' + result.info.original_filename.replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ').replaceAll('  ', ' ') : media_typename + ' File'));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log(media_cache);
@@ -2368,36 +2379,36 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
 
 function play_video(public_id) {
-    var cld = cloudinary.videoPlayer('video_handle_' + public_id, {cloudName: 'menchcloud'});
+    var cld = cloudinary.videoPlayer('video_user_' + public_id, {cloudName: 'menchcloud'});
     cld.source(public_id);
 }
 
-function cloudinary_prehandle_view(uploader_id, info_id, media_typeid, playback_code, handlecover, handlename, handleid = 0) {
+function cloudinary_presource_view(uploader_id, info_id, media_typeid, playback_code, usercover, username, userid = 0) {
 
     //Update meta variables:
-    $('#' + info_id).attr('media_typeid', media_typeid).attr('playback_code', playback_code).attr('handleid', handleid).attr('handlecover', handlecover);
+    $('#' + info_id).attr('media_typeid', media_typeid).attr('playback_code', playback_code).attr('userid', userid).attr('usercover', usercover);
 
     if (media_typeid == 4258) {
 
         //Video
-        $('#' + info_id).html('<input type="text" value="' + handlename + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Video"><i class="far fa-play-circle" aria-hidden="true"></i></span><img src="' + handlecover + '" />');
-        //<video id="video_handle_'+playback_code+'" controls class="cld-video-handle vjs-fade-out cld-fluid cld-video-handle-skin-light" poster="'+handlecover+'"></video>
+        $('#' + info_id).html('<input type="text" value="' + username + '" placeholder="User Title" class="hidden_superpower__10939" /><span title="Video"><i class="far fa-play-circle" aria-hidden="true"></i></span><img src="' + usercover + '" />');
+        //<video id="video_user_'+playback_code+'" controls class="cld-video-user vjs-fade-out cld-fluid cld-video-user-skin-light" poster="'+usercover+'"></video>
         //play_video(playback_code);
 
     } else if (media_typeid == 4260) {
 
         //Image
-        $('#' + info_id).html('<input type="text" value="' + handlename + '" placeholder="Handle Title" class="hidden_superpower__10939" /><img src="' + handlecover + '" />');
+        $('#' + info_id).html('<input type="text" value="' + username + '" placeholder="User Title" class="hidden_superpower__10939" /><img src="' + usercover + '" />');
 
     } else if (media_typeid == 4259) {
 
         //Audio
-        $('#' + info_id).html('<input type="text" value="' + handlename + '" placeholder="Handle Title" class="hidden_superpower__10939" /><span title="Audio"><i class="far fa-volume-up" aria-hidden="true"></i></span><audio controls src="' + playback_code + '"></audio>');
+        $('#' + info_id).html('<input type="text" value="' + username + '" placeholder="User Title" class="hidden_superpower__10939" /><span title="Audio"><i class="far fa-volume-up" aria-hidden="true"></i></span><audio controls src="' + playback_code + '"></audio>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
-        alert('Upload Error: Uploaded File ' + handlename + ' is not a valid Video, Image or Audio file.');
+        alert('Upload Error: Uploaded File ' + username + ' is not a valid Video, Image or Audio file.');
 
     }
 
@@ -2405,7 +2416,7 @@ function cloudinary_prehandle_view(uploader_id, info_id, media_typeid, playback_
 }
 
 
-function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue = null) {
+function user_editor(userid = 0, chainid = 0, bar_title = null, chainvalue = null) {
 
     $('#modal31912').modal('show');
 
@@ -2419,23 +2430,25 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
     $("#modal31912 .dynamic_item").attr('d__id', '').attr('d_chainid', '');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
-    //Handle resets:
+    //User resets:
     $('#search_cover').val('');
     $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
-    var current_title = handle_title(handleid);
-    var current_cover = $('.ui_handlecover_' + handleid + ':first').attr('raw_cover');
+    var current_title = user_title(userid);
+    var current_summary = user_summary(userid);
+    var current_cover = $('.ui_usercover_' + userid + ':first').attr('raw_cover');
 
-    $('#modal31912 .save_handleid').val(handleid);
+    $('#modal31912 .save_userid').val(userid);
     $('#modal31912 .save_chainid').val(chainid);
-    $('#modal31912 .save_handleterm').val($('.ui_handleterm_' + handleid + ':first').text());
-    $('#modal31912 .save_handlename').val(current_title);
-
+    $('#modal31912 .save_userhandle').val($('.ui_userhandle_' + userid + ':first').text());
+    $('#modal31912 .save_username').val(current_title);
+    $('#modal31912 .save_userbio').val(current_summary);
+    
 
     $('#modal31912 .random_animal').html('<i class="' + random_animal(true) + '"></i>');
-    updathandlecover(current_cover, false);
+    updatusercover(current_cover, false);
 
 
     if (chainid) {
@@ -2446,26 +2459,27 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
         }, 377);
     }
     setTimeout(function () {
-        set_autosize($('#modal31912 .save_handlename'));
+        set_autosize($('#modal31912 .save_username'));
+        set_autosize($('#modal31912 .save_userbio'));
     }, 377);
 
 
-    $.post("/controller/handle_editor", {
-        handleid: handleid,
+    $.post("/controller/user_editor", {
+        userid: userid,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
         if (data.status) {
 
-            //Initiate Handle Cover Uploader:
-            load_cloudinary(42359, handleid, ['@' + handleid], '.uploader_42359', '#modal31912');
+            //Initiate User Cover Uploader:
+            load_cloudinary(42359, userid, ['@' + userid], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
-            var index_hashtag_content = 0;
+            var index_post_content = 0;
             var current_header = null;
 
-            for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
+            for (let i = 1; i <= js_users___6404[42206]['m__message']; i++) {
 
                 var index_i = i - 1;
                 if (data.return_inputs[index_i] == undefined) {
@@ -2478,7 +2492,7 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
                     data.return_inputs[index_i]["d__placeholder"] = '';
                     $("#modal31912 .dynamic_" + i).addClass('hidden');
                 } else {
-                    index_hashtag_content++;
+                    index_post_content++;
                     $("#modal31912 .dynamic_" + i).removeClass('hidden');
                 }
 
@@ -2493,7 +2507,7 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
                 $("#modal31912 .dynamic_" + i + " .radio_frame").remove();
                 $("#modal31912 .dynamic_" + i).attr('d__id', data.return_inputs[index_i]["d__id"]).attr('d_chainid', data.return_inputs[index_i]["d_chainid"]);
 
-                var is_locked = js_handleids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                var is_locked = js_userids___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if (is_locked && !data.return_inputs[index_i]["d__value"].length) {
                     //Hide since its locked without a value:
                     $("#modal31912 .dynamic_" + i + " .inner_dynamic").addClass('hidden');
@@ -2510,7 +2524,7 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
                     $("#modal31912 .dynamic_" + i + " h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_" + i + " input").attr('placeholder', data.return_inputs[index_i]["d__placeholder"]).attr('type', data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if (chainid && ((parseInt($('#focus__node').val()) == 12274 && data.return_inputs[index_i]["d__id"] == parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"] == handleid)) {
+                    if (chainid && ((parseInt($('#focus__node').val()) == 12274 && data.return_inputs[index_i]["d__id"] == parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"] == userid)) {
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         //$("#modal31912 .save_chainvalue").val('IGNORE_INPUT');
                         //$("#modal31912 .save_frame").addClass('hidden');
@@ -2519,8 +2533,8 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
             }
 
             //Add a second save button at the bottom if we have too much data:
-            if (index_hashtag_content > 5) {
-                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default handle_save_edit post_button" onclick="handle_save_edit()">SAVE</button>');
+            if (index_post_content > 5) {
+                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default user_save_edit post_button" onclick="user_save_edit()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
             }
@@ -2547,28 +2561,29 @@ function handle_editor(handleid = 0, chainid = 0, bar_title = null, chainvalue =
 
 e_saving = false;
 
-function handle_save_edit() {
+function user_save_edit() {
 
     if (e_saving) {
         return false;
     }
 
     e_saving = true;
-    $(".handle_save_edit").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".user_save_edit").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
-        save_handleid: $('#modal31912 .save_handleid').val(),
-        save_handlename: $('#modal31912 .save_handlename').val().trim(),
-        save_handlecover: $('#modal31912 .save_handlecover').val().trim(),
-        save_handleterm: $('#modal31912 .save_handleterm').val().trim(),
+        save_userid: $('#modal31912 .save_userid').val(),
+        save_username: $('#modal31912 .save_username').val().trim(),
+        save_userbio: $('#modal31912 .save_userbio').val().trim(),
+        save_usercover: $('#modal31912 .save_usercover').val().trim(),
+        save_userhandle: $('#modal31912 .save_userhandle').val().trim(),
         save_chainid: $('#modal31912 .save_chainid').val(),
         save_chainvalue: $('#modal31912 .save_chainvalue').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
-    for (let i = 1; i <= js_handles___6404[42206]['m__message']; i++) {
+    for (let i = 1; i <= js_users___6404[42206]['m__message']; i++) {
         if ($('#modal31912 .dynamic_' + i).attr('d__id').length) {
             modify_data['save_dynamic_' + i] = $('#modal31912 .dynamic_' + i).attr('d_chainid').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_' + i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_' + i).val().trim();
         } else {
@@ -2577,10 +2592,10 @@ function handle_save_edit() {
         }
     }
 
-    $.post("/controller/handle_save_edit", modify_data, function (data) {
+    $.post("/controller/user_save_edit", modify_data, function (data) {
 
         e_saving = false;
-        $(".handle_save_edit").html('SAVE');
+        $(".user_save_edit").html('SAVE');
 
         if (!data.status) {
 
@@ -2589,29 +2604,30 @@ function handle_save_edit() {
 
         } else {
 
-            //Update Handle & Href chains if needed:
-            var old_handle = $(".ui_handleterm_" + modify_data['save_handleid'] + ':first').text();
-            var new_handle = modify_data['save_handleterm'];
-            if (old_handle != new_handle) {
-                if (parseInt($('#focus__node').val()) == 12274 && modify_data['save_handleid'] == parseInt($('#focus__id').val())) {
-                    //Refresh page since focus item handle changed:
-                    return js_redirect(js_handles___42903[42902]['m__message'] + new_handle);
+            //Update User & Href chains if needed:
+            var old_user = $(".ui_userhandle_" + modify_data['save_userid'] + ':first').text();
+            var new_user = modify_data['save_userhandle'];
+            if (old_user != new_user) {
+                if (parseInt($('#focus__node').val()) == 12274 && modify_data['save_userid'] == parseInt($('#focus__id').val())) {
+                    //Refresh page since focus item user changed:
+                    return js_redirect(js_users___42903[42902]['m__message'] + new_user);
                 } else {
                     //Make adjustments to current page:
-                    $('.s__12274_' + modify_data['save_handleid']).attr('handleterm', new_handle);
-                    $('.ui_handleterm_' + modify_data['save_handleid']).text(new_handle);
-                    $(".handle_hrefhandle_" + modify_data['save_handleid']).attr('href', $(".handle_hrefhandle_" + modify_data['save_handleid'] + ':first').attr('href').replaceAll(old_handle, new_handle));
+                    $('.s__12274_' + modify_data['save_userid']).attr('userhandle', new_user);
+                    $('.ui_userhandle_' + modify_data['save_userid']).text(new_user);
+                    $(".user_hrefuser_" + modify_data['save_userid']).attr('href', $(".user_hrefuser_" + modify_data['save_userid'] + ':first').attr('href').replaceAll(old_user, new_user));
                 }
             }
 
             //Update Title:
-            update_text_name(6197, modify_data['save_handleid'], modify_data['save_handlename']);
+            update_text_name(6197, modify_data['save_userid'], modify_data['save_username']);
+            update_text_name(2135504, modify_data['save_userid'], modify_data['save_userbio']);
 
             //Update Raw Cover:
-            $('.ui_handlecover_' + modify_data['save_handleid'] + ':first').attr('raw_cover', modify_data['save_handlecover']);
+            $('.ui_usercover_' + modify_data['save_userid'] + ':first').attr('raw_cover', modify_data['save_usercover']);
 
             //Update Main Cover:
-            update_cover_main(modify_data['save_handlecover'], '.s__12274_' + modify_data['save_handleid']);
+            update_cover_main(modify_data['save_usercover'], '.s__12274_' + modify_data['save_userid']);
 
             if (modify_data['save_chainid'] && modify_data['save_chainvalue'] != 'IGNORE_INPUT') {
                 $('.ui_chainvalue_' + modify_data['save_chainid']).text(modify_data['save_chainvalue']);
@@ -2627,9 +2643,9 @@ function handle_save_edit() {
             $('#modal31912').modal('hide');
 
             //Do we need to refresh the page?
-            if (parseInt($('#focus__node').val()) == 12274 && parseInt($('#focus__id').val()) == modify_data['save_handleid']) {
-                //Refresh page since Handle edited their own profile:
-                js_redirect(js_handles___42903[42902]['m__message'] + $('#focus_handle').val());
+            if (parseInt($('#focus__node').val()) == 12274 && parseInt($('#focus__id').val()) == modify_data['save_userid']) {
+                //Refresh page since User edited their own profile:
+                js_redirect(js_users___42903[42902]['m__message'] + $('#focus_user').val());
             }
 
         }
@@ -2653,7 +2669,7 @@ function chain_page_load() {
     }
 
     var current_total_count = parseInt($('.headline_body_' + focus_group).attr('read-counter')); //Total of that item
-    var has_more_to_load = (current_total_count > parseInt(js_handles___6404[11064]['m__message']) * current_page[focus_group]);
+    var has_more_to_load = (current_total_count > parseInt(js_users___6404[11064]['m__message']) * current_page[focus_group]);
 
     if (!has_more_to_load) {
         return false;
@@ -2668,7 +2684,7 @@ function chain_page_load() {
     $.post("/controller/chain_page_load", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        chainhandletype: focus_group,
+        chainusertype: focus_group,
         current_page: current_page[focus_group],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -2703,46 +2719,46 @@ function toggle_max_view(css_class) {
 }
 
 
-//Adds OR chains Handles to Handles
-var handle_is_adding = false;
+//Adds OR chains Users to Users
+var user_is_adding = false;
 
-function handle_create(chainhandletype, handle_current_id) {
+function user_create(chainusertype, user_current_id) {
 
-    if (handle_is_adding) {
+    if (user_is_adding) {
         return false;
     }
 
-    //if handle_current_id>0 it means we're adding an existing Handle, in which case handle_new_string should be null
-    //If handle_current_id=0 it means we are creating a new Handle and then adding it, in which case handle_new_string is required
-    handle_is_adding = true;
+    //if user_current_id>0 it means we're adding an existing User, in which case user_new_string should be null
+    //If user_current_id=0 it means we are creating a new User and then adding it, in which case user_new_string is required
+    user_is_adding = true;
 
-    var input = $('.new-list-' + chainhandletype + ' .add-input');
+    var input = $('.new-list-' + chainusertype + ' .add-input');
 
-    var original_photo = $('.mini-cover.card-12274.card-id-' + handle_current_id + ' .cover-btn').html();
-    $('.mini-cover.card-12274.card-id-' + handle_current_id + ' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
-    var handle_new_string = null;
-    if (handle_current_id == 0) {
-        handle_new_string = input.val();
-        if (handle_new_string.length < 1) {
-            alert('Missing Handle name or URL, try again');
+    var original_photo = $('.mini-cover.card-12274.card-id-' + user_current_id + ' .cover-btn').html();
+    $('.mini-cover.card-12274.card-id-' + user_current_id + ' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    var user_new_string = null;
+    if (user_current_id == 0) {
+        user_new_string = input.val();
+        if (user_new_string.length < 1) {
+            alert('Missing User name or URL, try again');
             input.focus();
             return false;
         }
     }
 
     //Add via Ajax:
-    $.post("/controller/handle_create", {
+    $.post("/controller/user_create", {
 
         focus__node: parseInt($('#focus__node').val()),
-        chainhandletype: chainhandletype,
+        chainusertype: chainusertype,
         focus__id: parseInt($('#focus__id').val()),
-        handle_current_id: handle_current_id,
-        handle_new_string: handle_new_string,
+        user_current_id: user_current_id,
+        user_new_string: user_new_string,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
 
     }, function (data) {
 
-        handle_is_adding = false;
+        user_is_adding = false;
 
         if (data.status) {
 
@@ -2750,15 +2766,15 @@ function handle_create(chainhandletype, handle_current_id) {
             //input.focus();
 
             //Add new object to list:
-            chain_counter(chainhandletype, 1);
+            chain_counter(chainusertype, 1);
 
             //See if we previously have a list in place?
-            if ($("#list-in-" + chainhandletype + " .card-12274").length > 0) {
+            if ($("#list-in-" + chainusertype + " .card-12274").length > 0) {
                 //Downwards add to start"
-                $("#list-in-" + chainhandletype + " .card-12274:first").before(data.handle_new_echo);
+                $("#list-in-" + chainusertype + " .card-12274:first").before(data.user_new_echo);
             } else {
                 //Raw list, add before input filed:
-                $("#list-in-" + chainhandletype).prepend(data.handle_new_echo);
+                $("#list-in-" + chainusertype).prepend(data.user_new_echo);
             }
 
             //Allow inline editing if enabled:
@@ -2766,11 +2782,11 @@ function handle_create(chainhandletype, handle_current_id) {
 
             setTimeout(function () {
                 setup_popover();
-                handle_sort_load(chainhandletype);
+                user_sort_load(chainusertype);
             }, 987);
 
             //Hide Coin:
-            $('.mini-cover.card-12274.card-id-' + handle_current_id).fadeOut();
+            $('.mini-cover.card-12274.card-id-' + user_current_id).fadeOut();
 
         } else {
             //We had an error:
@@ -2820,24 +2836,24 @@ function x_set_start_text() {
     $('.x_set_class_text').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            handle_text_update(this);
+            user_text_update(this);
             e.preventDefault();
         }
     }).change(function () {
-        handle_text_update(this);
+        user_text_update(this);
     });
 }
 
-function update_text_name(cache_handleid, handleid, handlename) {
-    var target_element = ".text__" + cache_handleid + "_" + handleid;
-    $(target_element).text(handlename).attr('old-value', handlename); //.val(handlename)
+function update_text_name(cache_userid, userid, username) {
+    var target_element = ".text__" + cache_userid + "_" + userid;
+    $(target_element).text(username).attr('old-value', username); //.val(username)
     set_autosize($(target_element));
 }
 
 
 var setting_text = false;
 
-function handle_text_update(this_grabr) {
+function user_text_update(this_grabr) {
 
     if (setting_text) {
         return false;
@@ -2845,21 +2861,21 @@ function handle_text_update(this_grabr) {
 
     setting_text = true;
     var modify_data = {
-        handleid: parseInt($(this_grabr).attr('handleid')),
-        cache_handleid: parseInt($(this_grabr).attr('cache_handleid')),
-        hashtag_createtext: $(this_grabr).val().trim(),
+        userid: parseInt($(this_grabr).attr('userid')),
+        cache_userid: parseInt($(this_grabr).attr('cache_userid')),
+        post_createtext: $(this_grabr).val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //See if anything changes:
-    if ($(this_grabr).attr('old-value') == modify_data['hashtag_createtext']) {
+    if ($(this_grabr).attr('old-value') == modify_data['post_createtext']) {
         //Nothing changed:
         return false;
     }
 
     //Grey background to indicate saving
-    var target_element = '.text__' + modify_data['cache_handleid'] + '_' + modify_data['s__id'];
-    $.post("/controller/handle_text_update", modify_data, function (data) {
+    var target_element = '.text__' + modify_data['cache_userid'] + '_' + modify_data['s__id'];
+    $.post("/controller/user_text_update", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -2872,7 +2888,7 @@ function handle_text_update(this_grabr) {
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_handleid'], modify_data['s__id'], modify_data['hashtag_createtext']);
+            update_text_name(modify_data['cache_userid'], modify_data['s__id'], modify_data['post_createtext']);
 
         }
 
@@ -2882,13 +2898,13 @@ function handle_text_update(this_grabr) {
 }
 
 
-function chain_counter(chainhandletype, adjustment_count) {
-    $('.xtypecounter' + chainhandletype).text((parseInt($('.headline_body_' + chainhandletype).attr('read-counter')) + adjustment_count));
+function chain_counter(chainusertype, adjustment_count) {
+    $('.xtypecounter' + chainusertype).text((parseInt($('.headline_body_' + chainusertype).attr('read-counter')) + adjustment_count));
 }
 
 
 function search_enabled() {
-    return universal_search_enabled && parseInt(js_handles___6404[12678]['m__message']);
+    return universal_search_enabled && parseInt(js_users___6404[12678]['m__message']);
 }
 
 
@@ -2909,15 +2925,15 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function handle_select_apply(focus__id, selected_handleid, enable_mulitiselect, down_handleid, right_hashtagid) {
+function user_select_apply(focus__id, selected_userid, enable_mulitiselect, down_userid, right_postid) {
 
     //Any warning needed?
-    if (js_handleids___31780.includes(selected_handleid) && !confirm(js_handles___31780[selected_handleid]['m__message'])) {
+    if (js_userids___31780.includes(selected_userid) && !confirm(js_users___31780[selected_userid]['m__message'])) {
         return false;
     }
 
-    var field_required = js_handleids___28239.includes(focus__id);
-    var was_previously_selected = ($('.radio-' + focus__id + ' .item-' + selected_handleid).hasClass('active') ? 1 : 0);
+    var field_required = js_userids___28239.includes(focus__id);
+    var was_previously_selected = ($('.radio-' + focus__id + ' .item-' + selected_userid).hasClass('active') ? 1 : 0);
 
     //Save the rest of the content:
     if (!enable_mulitiselect && field_required && was_previously_selected) {
@@ -2926,15 +2942,15 @@ function handle_select_apply(focus__id, selected_handleid, enable_mulitiselect, 
     }
 
     //Updating Customizable Theme?
-    if (js_handleids___13890.includes(focus__id)) {
+    if (js_userids___13890.includes(focus__id)) {
         current_focus = focus__id;
         $('body').removeClass('custom_ui_' + focus__id + '_');
-        window['js_handleids___' + focus__id].forEach(remove_ui_class); //Removes all Classes
-        $('body').addClass('custom_ui_' + focus__id + '_' + selected_handleid);
+        window['js_userids___' + focus__id].forEach(remove_ui_class); //Removes all Classes
+        $('body').addClass('custom_ui_' + focus__id + '_' + selected_userid);
     }
 
     //Show spinner on the notification element:
-    var notify_el = '.radio-' + focus__id + ' .item-' + selected_handleid + ' .change-results';
+    var notify_el = '.radio-' + focus__id + ' .item-' + selected_userid + ' .change-results';
     var initial_icon = $(notify_el).html();
     $(notify_el).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
@@ -2947,18 +2963,18 @@ function handle_select_apply(focus__id, selected_handleid, enable_mulitiselect, 
 
     //Enable currently selected:
     if ((enable_mulitiselect || !field_required) && was_previously_selected) {
-        $('.radio-' + focus__id + ' .item-' + selected_handleid).removeClass('active');
-        $('.radio-' + focus__id + ' .item-' + selected_handleid + ' .checked_icon').remove();
+        $('.radio-' + focus__id + ' .item-' + selected_userid).removeClass('active');
+        $('.radio-' + focus__id + ' .item-' + selected_userid + ' .checked_icon').remove();
     } else {
-        $('.radio-' + focus__id + ' .item-' + selected_handleid).addClass('active');
-        $('.radio-' + focus__id + ' .item-' + selected_handleid + ' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
+        $('.radio-' + focus__id + ' .item-' + selected_userid).addClass('active');
+        $('.radio-' + focus__id + ' .item-' + selected_userid + ' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
     }
 
-    $.post("/controller/handle_select_apply", {
+    $.post("/controller/user_select_apply", {
         focus__id: focus__id,
-        down_handleid: down_handleid,
-        right_hashtagid: right_hashtagid,
-        selected_handleid: selected_handleid,
+        down_userid: down_userid,
+        right_postid: right_postid,
+        selected_userid: selected_userid,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2985,67 +3001,67 @@ function isNormalInteger(str) {
 }
 
 
-function update_form_select(element_id, handle_createid, initial_loading, show_title) {
-    console.log('update_form_select: ' + element_id + '/' + handle_createid);
+function update_form_select(element_id, user_createid, initial_loading, show_title) {
+    console.log('update_form_select: ' + element_id + '/' + user_createid);
 
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
-    $('.dropd_form_' + element_id + ' .optiond_' + handle_createid).addClass('active');
-    $('.dropd_form_' + element_id).attr('selected_value', handle_createid);
+    $('.dropd_form_' + element_id + ' .optiond_' + user_createid).addClass('active');
+    $('.dropd_form_' + element_id).attr('selected_value', user_createid);
     if (show_title) {
-        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_' + handle_createid).html());
+        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_' + user_createid).html());
     } else {
         //Just replace icon:
-        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_' + handle_createid + ' span').html());
+        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_' + user_createid + ' span').html());
     }
 }
 
-function ui_instant_select(element_id, handle_createid, o__id, chainid, show_full_name) {
+function ui_instant_select(element_id, user_createid, o__id, chainid, show_full_name) {
 
     //Update x:
-    console.log('UI instant .dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn' + handle_createid);
-    var data_object = eval('js_handles___' + element_id);
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[handle_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[handle_createid]['m__title'] : ''));
+    console.log('UI instant .dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn' + user_createid);
+    var data_object = eval('js_users___' + element_id);
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[user_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[user_createid]['m__title'] : ''));
 
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .drop_item_instant_' + element_id + '_' + o__id + '_' + chainid).removeClass('active');
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .optiond_' + handle_createid + '_' + o__id + '_' + chainid).addClass('active');
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .optiond_' + user_createid + '_' + o__id + '_' + chainid).addClass('active');
 
-    var selected_handleid = $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value');
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value', handle_createid);
+    var selected_userid = $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value');
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid).attr('selected_value', user_createid);
 
 
     var main_object_type = 0;
     var main_object_update = false;
 
     if (main_object_type > 0 && main_object_update) {
-        $('.s__' + main_object_type + '_' + o__id).attr(main_object_update, handle_createid);
+        $('.s__' + main_object_type + '_' + o__id).attr(main_object_update, user_createid);
     }
 
 }
 
-function hashtag_delete(hashtagid) {
+function post_delete(postid) {
 
-    var migratehandle = prompt("Are you sure you want to permanently delete this hashtag?\nYou can reference #anotherHashtag to migrate to or leave blank to delete permanently...", "#");
-    if (migratehandle === null) {
+    var migrateuser = prompt("Are you sure you want to permanently delete this post?\nYou can reference #anotherPost to migrate to or leave blank to delete permanently...", "#");
+    if (migrateuser === null) {
         return false;
     }
 
-    $.post("/controller/hashtag_delete", {
+    $.post("/controller/post_delete", {
         focus__id: parseInt($('#focus__id').val()),
-        hashtagid: hashtagid,
-        migratehandle: migratehandle,
+        postid: postid,
+        migrateuser: migrateuser,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
             if (data.delete_redirect && data.delete_redirect.length > 0) {
 
-                //Go to main hashtag page:
+                //Go to main post page:
                 js_redirect(data.delete_redirect);
 
             } else if (data.delete_element && data.delete_element.length > 0) {
 
-                //Go to main hashtag page:
+                //Go to main post page:
                 setTimeout(function () {
                     //Restore background:
                     $(data.delete_element).fadeOut();
@@ -3068,29 +3084,29 @@ function hashtag_delete(hashtagid) {
 }
 
 
-function handle_delete(handleid) {
+function user_delete(userid) {
 
-    var migratehandle = prompt("Are you sure you want to permanently delete this Handle?\nYou can reference @anotherHandle to migrate to or leave blank to delete permanently...", "@");
-    if (migratehandle === null) {
+    var migrateuser = prompt("Are you sure you want to permanently delete this User?\nYou can reference @anotherUser to migrate to or leave blank to delete permanently...", "@");
+    if (migrateuser === null) {
         return false;
     }
 
-    $.post("/controller/handle_delete", {
+    $.post("/controller/user_delete", {
         focus__id: parseInt($('#focus__id').val()),
-        handleid: handleid,
-        migratehandle: migratehandle,
+        userid: userid,
+        migrateuser: migrateuser,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
             if (data.delete_redirect && data.delete_redirect.length > 0) {
 
-                //Go to main hashtag page:
+                //Go to main post page:
                 js_redirect(data.delete_redirect);
 
             } else if (data.delete_element && data.delete_element.length > 0) {
 
-                //Go to main hashtag page:
+                //Go to main post page:
                 setTimeout(function () {
                     //Restore background:
                     $(data.delete_element).fadeOut();
@@ -3113,7 +3129,7 @@ function handle_delete(handleid) {
 }
 
 
-function selector(element_id, handle_createid, o__id = 0, chainid = 0, show_full_name = false) {
+function selector(element_id, user_createid, o__id = 0, chainid = 0, show_full_name = false) {
 
     /*
     *
@@ -3133,45 +3149,45 @@ function selector(element_id, handle_createid, o__id = 0, chainid = 0, show_full
         chainid = $('.dropmenu_instant_' + element_id + ':first').attr('chainid');
     }
 
-    console.log('Attempt to update dropdown @' + element_id + ' to @' + handle_createid);
+    console.log('Attempt to update dropdown @' + element_id + ' to @' + user_createid);
 
-    handle_createid = parseInt(handle_createid);
+    user_createid = parseInt(user_createid);
 
     //Deleting Anything?
     var main_object_type = 0;
     var main_object_update = false;
-    var migratehandle = null;
+    var migrateuser = null;
 
     //Show Loading
-    var data_object = eval('js_handles___' + element_id);
-    if (!data_object[handle_createid]) {
-        alert('Invalid element ID: ' + element_id + '/' + handle_createid + '/' + o__id + '/' + chainid + '/' + show_full_name);
+    var data_object = eval('js_users___' + element_id);
+    if (!data_object[user_createid]) {
+        alert('Invalid element ID: ' + element_id + '/' + user_createid + '/' + o__id + '/' + chainid + '/' + show_full_name);
         return false;
     }
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/handle_select", {
+    $.post("/controller/user_select", {
         focus__id: parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
-        handle_createid: handle_createid,
-        migratehandle: migratehandle,
+        user_createid: user_createid,
+        migrateuser: migrateuser,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
             //Update on page:
-            ui_instant_select(element_id, handle_createid, o__id, chainid, show_full_name);
+            ui_instant_select(element_id, user_createid, o__id, chainid, show_full_name);
 
             if (data.delete_redirect && data.delete_redirect.length > 0) {
 
-                //Go to main hashtag page:
+                //Go to main post page:
                 js_redirect(data.delete_redirect);
 
             } else if (data.delete_element && data.delete_element.length > 0) {
 
-                //Go to main hashtag page:
+                //Go to main post page:
                 setTimeout(function () {
                     //Restore background:
                     $(data.delete_element).fadeOut();
@@ -3183,9 +3199,9 @@ function selector(element_id, handle_createid, o__id = 0, chainid = 0, show_full
 
             }
 
-            if (data.auto_open_hashtag_modal) {
-                //We need to show hashtag modal:
-                hashtag_editor(o__id, $('.s__12273_' + o__id).attr('chainid'));
+            if (data.auto_open_post_modal) {
+                //We need to show post modal:
+                post_editor(o__id, $('.s__12273_' + o__id).attr('chainid'));
             }
 
         } else {
@@ -3198,14 +3214,14 @@ function selector(element_id, handle_createid, o__id = 0, chainid = 0, show_full
 }
 
 
-function handle_sort_save(chainhandletype) {
+function user_sort_save(chainusertype) {
 
     var new_chainkey = [];
     var sort_rank = 0;
 
-    $("#list-in-" + chainhandletype + " .card-12274").each(function () {
-        //Fetch variables for this hashtag:
-        var handleid = parseInt($(this).attr('handleid'));
+    $("#list-in-" + chainusertype + " .card-12274").each(function () {
+        //Fetch variables for this post:
+        var userid = parseInt($(this).attr('userid'));
         var chainid = parseInt($(this).attr('chainid'));
 
         sort_rank++;
@@ -3217,9 +3233,9 @@ function handle_sort_save(chainhandletype) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/controller/handle_sort_save", {
-            handleid: parseInt($('#focus__id').val()),
-            chainhandletype: chainhandletype,
+        $.post("/controller/user_sort_save", {
+            userid: parseInt($('#focus__id').val()),
+            chainusertype: chainusertype,
             new_chainkey: new_chainkey,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -3239,7 +3255,7 @@ function chain_sort_reset() {
 
         var focus__node = parseInt($('#focus__node').val());
         var focus__id = parseInt($('#focus__id').val());
-        var focus_handle = $('#focus_handle').val();
+        var focus_user = $('#focus_user').val();
 
         //Update via call:
         $.post("/controller/chain_sort_reset", {
@@ -3257,11 +3273,11 @@ function chain_sort_reset() {
 
                 //Refresh page:
                 if (focus__node == 12273) {
-                    //Hashtags
-                    js_redirect(js_handles___42903[33286]['m__message'] + focus_handle);
+                    //Posts
+                    js_redirect(js_users___42903[33286]['m__message'] + focus_user);
                 } else if (focus__node == 12274) {
-                    //Handles
-                    js_redirect(js_handles___42903[42902]['m__message'] + focus_handle);
+                    //Users
+                    js_redirect(js_users___42903[42902]['m__message'] + focus_user);
                 }
 
             }
@@ -3270,21 +3286,21 @@ function chain_sort_reset() {
 }
 
 
-function chain_clicked(hashtagid) {
-    $(".chain_click_" + hashtagid).addClass('was_clicked');
+function chain_clicked(postid) {
+    $(".chain_click_" + postid).addClass('was_clicked');
 }
 
 
 var next_processing = false;
 
-function hashtag_discovered(do_skip) {
+function post_discovered(do_skip) {
 
     if (next_processing) {
         return false;
     }
     next_processing = true;
 
-    var selection_hashtagid = [];
+    var selection_postid = [];
 
     if ($(".chain_click")[0] && !$(".was_clicked")[0]) {
         next_processing = false;
@@ -3294,36 +3310,36 @@ function hashtag_discovered(do_skip) {
 
     const filteredArray = array1.filter(value => array2.includes(value));
 
-    for (var i = 0; i < js_handleids___7712.length; i++) {
-        if(focus_hashtag_types.includes(js_handleids___7712[i])){
+    for (var i = 0; i < js_userids___7712.length; i++) {
+        if(focus_post_types.includes(js_userids___7712[i])){
             //Choose
             $(".this_selector").each(function () {
-                var selection_hashtagid_this = parseInt($(this).attr('selection_hashtagid'));
-                if ($('.this_selector_' + selection_hashtagid_this + ' i').hasClass('fa-square-check') || $(".this_selector").length == 1) {
-                    selection_hashtagid.push(selection_hashtagid_this);
+                var selection_postid_this = parseInt($(this).attr('selection_postid'));
+                if ($('.this_selector_' + selection_postid_this + ' i').hasClass('fa-square-check') || $(".this_selector").length == 1) {
+                    selection_postid.push(selection_postid_this);
                 }
             });
             break;
         }
     }
 
-    //Compile all next hashtags, if any:
-    var next_hashtag_data = []; //Aggregate the data for all children
+    //Compile all next posts, if any:
+    var next_post_data = []; //Aggregate the data for all children
     $("#list-in-12840 .edge-cover").each(function () {
-        next_hashtag_data.push({
-            hashtagid: parseInt($(this).attr('hashtagid')),
-            hashtag_createtext: ($('.s__12273_' + $(this).attr('hashtagid') + ' .x_write').val() ? $('.s__12273_' + $(this).attr('hashtagid') + ' .x_write').val() : null),
-            hashtagweight: ($('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagweight').val() ? $('.input_ui_' + $(this).attr('hashtagid') + ' .hashtagweight').val() : 0),
+        next_post_data.push({
+            postid: parseInt($(this).attr('postid')),
+            post_createtext: ($('.s__12273_' + $(this).attr('postid') + ' .x_write').val() ? $('.s__12273_' + $(this).attr('postid') + ' .x_write').val() : null),
+            postweight: ($('.input_ui_' + $(this).attr('postid') + ' .postweight').val() ? $('.input_ui_' + $(this).attr('postid') + ' .postweight').val() : 0),
         });
     });
 
     //Payment Error?
-    if (focus_hashtag_types.includes(26560) && !$(".tickets_issued")[0]) {
+    if (focus_post_types.includes(26560) && !$(".tickets_issued")[0]) {
         //Ticket not yet issued!
         alert('Pay Now via Paypal before going next.');
         next_processing = false;
         return false;
-    } else if ( focus_hashtag_types.includes(43758) ) {
+    } else if ( focus_post_types.includes(43758) ) {
 
         //Invoice Process, make sure something is in the cart:
         var invoice_items = {};
@@ -3334,15 +3350,15 @@ function hashtag_discovered(do_skip) {
         $(".sale_controller").each(function (i, e) {
 
             currency_code = $(this).attr('unitcurrency');
-            var item_hashtagid = parseInt($(this).attr('hashtagid'));
-            var item_title = $('.cache_frame_' + item_hashtagid + ' .first_line').text();
-            var quantity = parseFloat($('.input_ui_' + item_hashtagid + ' .current_count').text());
+            var item_postid = parseInt($(this).attr('postid'));
+            var item_title = $('.cache_frame_' + item_postid + ' .first_line').text();
+            var quantity = parseFloat($('.input_ui_' + item_postid + ' .current_count').text());
 
             if (quantity > 0) {
                 var this_item = {
-                    hashtagid: item_hashtagid,
+                    postid: item_postid,
                     name: item_title,
-                    description: $('.cache_frame_' + item_hashtagid).text().replace(item_title, ''),
+                    description: $('.cache_frame_' + item_postid).text().replace(item_title, ''),
                     quantity: quantity,
                     currency_code: currency_code,
                     currency_value: parseFloat($(this).attr('unitprice')),
@@ -3362,8 +3378,8 @@ function hashtag_discovered(do_skip) {
 
             //Submit to go next:
             $.post("/invoice", {
-                target_hashtagterm: $('#target_hashtagterm').val(),
-                target_hashtagid: parseInt($('#target_hashtagid').val()),
+                target_posthashtag: $('#target_posthashtag').val(),
+                target_postid: parseInt($('#target_postid').val()),
                 focus__id: parseInt($('#focus__id').val()),
                 invoice_items: invoice_items,
                 currency_code: currency_code,
@@ -3397,17 +3413,17 @@ function hashtag_discovered(do_skip) {
     $('.discovered_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
-    $.post("/controller/hashtag_discovered", {
-        target_hashtagterm: $('#target_hashtagterm').val(),
-        target_hashtagid: parseInt($('#target_hashtagid').val()),
-        handle_submitted_data: {
-            hashtagid: parseInt($('#focus__id').val()),
-            hashtag_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
-            hashtagweight: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagweight').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .hashtagweight').val() : 0),
+    $.post("/controller/post_discovered", {
+        target_posthashtag: $('#target_posthashtag').val(),
+        target_postid: parseInt($('#target_postid').val()),
+        user_submitted_data: {
+            postid: parseInt($('#focus__id').val()),
+            post_createtext: ($('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null),
+            postweight: ($('.input_ui_' + parseInt($('#focus__id').val()) + ' .postweight').val() ? $('.input_ui_' + parseInt($('#focus__id').val()) + ' .postweight').val() : 0),
         },
         do_skip: do_skip,
-        selection_hashtagid: selection_hashtagid,
-        next_hashtag_data: next_hashtag_data,
+        selection_postid: selection_postid,
+        next_post_data: next_post_data,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {

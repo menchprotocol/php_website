@@ -1,21 +1,21 @@
 <?php
 
-if($handle_session){
+if($user_session){
     //Remove all Active Cache:
-    echo '<div class="alert alert-warning" role="alert">Deleted '.reset_cache($handle_session['handleid']).' active caches</div>';
+    echo '<div class="alert alert-warning" role="alert">Deleted '.reset_cache($user_session['userid']).' active caches</div>';
 }
 
 
 $found_cache = 0;
 echo '<div class="row justify-content margin-top-down">';
-foreach($this->config->item('handles___14599') as $app_handleid => $cache_apps){
+foreach($this->config->item('users___14599') as $app_userid => $cache_apps){
 
     //Fetch Last Cache
-    $latest_cache = $this->Chains->read(array(
-        'chainhandledomain' => website_setting(0),
-        'chainhandletype' => 44176, //Handle View
-        'chainhandleinput' => 14599, //Cache App
-        'chainhandleoutput' => $app_handleid,
+    $latest_cache = $this->Ideachains->read(array(
+        'chainuserdomain' => website_setting(0),
+        'chainusertype' => 44176, //User View
+        'chainuserinput' => 14599, //Cache App
+        'chainuseroutput' => $app_userid,
         ), array(), 1, 0, array('chaintime' => 'DESC'));
 
     echo '<div class="col-8 main__title"><span class="icon-block">'.$cache_apps['m__cover'].'</span>'.$cache_apps['m__title'].'</div>';

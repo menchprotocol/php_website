@@ -1,38 +1,38 @@
 <?php
 
-$chainhandlecreator = ( $handle_session ? $handle_session['handleid'] : 14068 /* GUEST */ );
+$chainusercreator = ( $user_session ? $user_session['userid'] : 14068 /* GUEST */ );
 
 //Log view:
-$this->Chains->create(array(
-    'chainhandletype' => 1309378, //Hashtag Viewed
-    'chainhandlecreator' => $chainhandlecreator,
-    'chainhandleinput' => $chainhandlecreator,
-    'chainhashtaginput' => $focus_i['hashtagid'],
+$this->Ideachains->create(array(
+    'chainusertype' => 1309378, //Post Viewed
+    'chainusercreator' => $chainusercreator,
+    'chainuserinput' => $chainusercreator,
+    'chainpostinput' => $focus_i['postid'],
 ));
 
 //See if we need to redirect to starting point?
-if($handle_session && !handle_session(10939) && count($this->Chains->read(array(
-        'chainhandlecreator' => $handle_session['handleid'],
-        'chainhandletype' => 4235, //Get started
-        'chainhashtaginput' => $focus_i['hashtagid'],
+if($user_session && !user_session(10939) && count($this->Ideachains->read(array(
+        'chainusercreator' => $user_session['userid'],
+        'chainusertype' => 4235, //Get started
+        'chainpostinput' => $focus_i['postid'],
     )))){
-    //Handle without editing superpowers has viewed an hashtag they have hashtag discovered already, so get them there:
-    js_php_redirect('/'.$focus_i['hashtagterm'].'/start', 13);
+    //User without editing superpowers has viewed an post they have post discovered already, so get them there:
+    js_php_redirect('/'.$focus_i['posthashtag'].'/start', 13);
 }
 
-//Focus Hashtag:
+//Focus Post:
 echo '<div class="view_12273 row justify-content">';
-echo hashtag_view(42288,  $focus_i);
+echo post_view(42288,  $focus_i);
 echo '</div>';
 
-if(handle_session(10939) || isset($_GET['open'])){
-    echo view_hashtag_nav(false, $focus_i);
+if(user_session(10939) || isset($_GET['open'])){
+    echo view_post_nav(false, $focus_i);
 }
 
 ?>
 
 <script>
     $(document).ready(function () {
-        load_hashtag_menu();
+        load_post_menu();
     });
 </script>

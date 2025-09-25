@@ -5,26 +5,26 @@ $start_month = 01;
 
 echo '<table>';
 
-foreach ($this->config->item('handles___14874') as $chainhandletype => $m) {
+foreach ($this->config->item('users___14874') as $chainusertype => $m) {
 
-    if ($chainhandletype == 12273) {
+    if ($chainusertype == 12273) {
 
-        //HASHTAGS
-        $unique = $this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13480')) . ')' => null, //UNIQUE HASHTAGS
-        ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+        //POSTS
+        $unique = $this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___13480')) . ')' => null, //UNIQUE POSTS
+        ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif ($chainhandletype == 12274) {
+    } elseif ($chainusertype == 12274) {
 
-        //HANDLE
-        $unique = $this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //AUTHORED HANDLES
-        ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+        //USER
+        $unique = $this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //AUTHORED USERS
+        ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-    } elseif ($chainhandletype==31777) {
+    } elseif ($chainusertype==31777) {
 
-        $unique = $this->Chains->read(array(
-            'chainhandletype IN (' . join(',', $this->config->item('handleids___' . $chainhandletype)) . ')' => null,
+        $unique = $this->Ideachains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___' . $chainusertype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } else {
@@ -47,28 +47,28 @@ foreach ($this->config->item('handles___14874') as $chainhandletype => $m) {
         $time_start = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i, 1, $start_year));
         $time_end = date("Y-m-d H:i:s", mktime(0, 0, 0, $start_month + $i + 1, 1, $start_year));
 
-        if ($chainhandletype == 12273) {
+        if ($chainusertype == 12273) {
 
-            //HASHTAGS
-            $query = $this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13480')) . ')' => null, //UNIQUE HASHTAGS
+            //POSTS
+            $query = $this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___13480')) . ')' => null, //UNIQUE POSTS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
-            ), array('chainhashtagoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+            ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-        } elseif ($chainhandletype == 12274) {
+        } elseif ($chainusertype == 12274) {
 
-            //HANDLE
-            $query = $this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___13548')) . ')' => null, //UNIQUE HANDLES
+            //USER
+            $query = $this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //UNIQUE USERS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
-            ), array('chainhandleoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+            ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
-        } elseif ($chainhandletype == 31777) {
+        } elseif ($chainusertype == 31777) {
 
-            $query = $this->Chains->read(array(
-                'chainhandletype IN (' . join(',', $this->config->item('handleids___31777')) . ')' => null, //DISCOVERIES
+            $query = $this->Ideachains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
