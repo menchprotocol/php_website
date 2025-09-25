@@ -586,8 +586,8 @@ echo '<style>
 
     img { max-width: 100% !important; } 
     
-    .maxwidth {
-        max-width: 1200px !important;
+    .container {
+        max-width: calc(100% - 16px) !important;
     }
         
         </style>';
