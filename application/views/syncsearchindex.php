@@ -1,9 +1,4 @@
 <?php
 
-//TODO REplace with $_GET['posthashtag'] & $_GET['userhandle']
-
-$obj = ( isset($_GET['obj']) ? $_GET['obj'] : null );
-$s__id = ( isset($_GET['s__id']) && $obj ? intval($_GET['s__id']) : 0 );
-
 //Call the update function and passon possible values:
-print_r(update_algolia($obj, $s__id));
+print_r(update_algolia(( $focus_i ? 12273 : ( $focus_e ? 12274 : null ) ), ( $focus_i ? $focus_i['postid'] : ( $focus_e ? $focus_e['userid'] : null ) )));

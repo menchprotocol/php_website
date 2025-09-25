@@ -4,7 +4,7 @@ $userhandle = (isset($_GET['userhandle']) ? $_GET['userhandle'] : null);
 $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag'] : null);
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
-echo '<h1><a href="'.view_app_chain(4341).'"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> <a href="/@'.$users___11035[4341]['m__user'].'">'.$users___11035[4341]['m__title'].'</a></h1>';
+echo '<h1><a href="'.view_app_chain(4341).'"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> <a href="/@'.$users___11035[4341]['m__user'].'">'.$users___11035[4341]['m__cover'].' '.$users___11035[4341]['m__title'].'</a></h1>';
 
 if ($userhandle) {
     foreach ($this->Users->read(array(
@@ -26,15 +26,15 @@ echo '<div class="center hideIfEmpty"></div>';
 foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
     if($userid1==1309754){
-        echo '<div class="mid-text-line compact-midline"><span><a href="'.view_app_chain(4341).'?chainvoid=1" class="grey card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__title'] . '</a></span></div>';
-        //Void Ideachains
+        echo '<div class="mid-text-line compact-midline"><span class="grey"><a href="'.view_app_chain(4341).'?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__cover'] . ' ' . $m1['m__title'] . '</a></span></div>';
+        //Voided
         continue;
     } elseif($userid1==28956){
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span><a href="'.view_app_chain(4341).'?chainusertype=12273,12274&chainvoid=0" class="grey card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__title'] . '</a>:</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span class="grey"><a href="'.view_app_chain(4341).'?chainusertype=12273,12274&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__cover'] . ' ' . $m1['m__title'] . '</a>:</span></div>';
     } elseif($userid1==31770){
-        //Ideachains
-        echo '<div class="mid-text-line compact-midline"><span><a target="_blank" href="'.view_app_chain(4341).'?chainusertype='.join(',',$this->config->item('userids___2123863')).'&chainvoid=0" class="grey card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__title'] . '</a>:</span></div>';
+        //Links
+        echo '<div class="mid-text-line compact-midline"><span class="grey"><a target="_blank" href="'.view_app_chain(4341).'?chainusertype='.join(',',$this->config->item('userids___2123863')).'&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__cover'] . ' ' . $m1['m__title'] . '</a>:</span></div>';
     }
 
     echo '<div class="row justify-content list-covers">';

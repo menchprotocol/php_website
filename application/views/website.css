@@ -133,7 +133,7 @@ table td { border: none !important; }
 h1 {
     padding:0 8px 34px !important;
     margin:0;
-    font-size:3.77em;
+    font-size:3em;
     text-align: center;
 }
 
@@ -1475,15 +1475,6 @@ label {
 
 
 
-.btn-grey,
-.btn-grey i,
-.mini-grey,
-.grey,
-.grey i,
-.grey a
-{ color:#999999 !important;
-    --fa-primary-color:#999999 !important;
-    --fa-secondary-color:#CCCCCC !important;}
 
 
 .card_cards a.btn-sm.btn-black:hover,
@@ -4544,6 +4535,18 @@ main {
     line-height: 134%;
     padding: 0;
     max-width: 100%;
+}
+
+
+.btn-grey,
+.btn-grey i,
+.mini-grey,
+.grey,
+.grey i,
+.grey a
+{ color:#999999 !important;
+    --fa-primary-color:#999999 !important;
+    --fa-secondary-color:#CCCCCC !important;
 }
 
 

@@ -18,7 +18,7 @@ if(!$obj || $obj==12273){
     //Update the weights for active posts
     foreach($this->Posts->read(array()) as $in) {
         $stats['post_scanned']++;
-        $stats['post_updated'] += post_number_calculator($in);
+        $stats['post_updated'] += post_weight_calculator($in);
     }
 
 }
@@ -29,7 +29,7 @@ if(!$obj || $obj==12274){
     foreach($this->Users->read(array(
         )) as $en) {
         $stats['user_scanned']++;
-        $stats['user_changed'] += user_number_calculator($en);
+        $stats['user_changed'] += user_weight_calculator($en);
     }
 }
 

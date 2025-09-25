@@ -38,7 +38,7 @@ function string_is_icon($string)
 }
 
 
-function post_number_calculator($i)
+function post_weight_calculator($i)
 {
 
     //TODO Improve later (This is a very basic logic)
@@ -49,16 +49,16 @@ function post_number_calculator($i)
 
     //Should we update?
     if ($count_x[0]['totals'] != $i['postweight']) {
-        return $CI->Posts->update($i['postid'], array(
+        $CI->Posts->update($i['postid'], array(
             'postweight' => $count_x[0]['totals'],
         ));
-    } else {
-        return 0;
     }
+
+    return $count_x[0]['totals'];
 
 }
 
-function user_number_calculator($e)
+function user_weight_calculator($e)
 {
 
     //TODO Improve later (This is a very basic logic)
@@ -69,12 +69,12 @@ function user_number_calculator($e)
 
     //Should we update?
     if ($count_x[0]['totals'] != $e['userweight']) {
-        return $CI->Users->update($e['userid'], array(
+        $CI->Users->update($e['userid'], array(
             'userweight' => $count_x[0]['totals'],
         ));
-    } else {
-        return 0;
     }
+
+    return $count_x[0]['totals'];
 
 }
 
@@ -2467,7 +2467,7 @@ function update_algolia($focus__node = null, $s__id = 0)
      *
      * */
 
-    if ($focus__node && !in_array($focus__node, $CI->config->item('userids___12761'))) {
+    if ($focus__node && !in_array($focus__node, $CI->config->item('userids___28956'))) {
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
@@ -2508,7 +2508,7 @@ function update_algolia($focus__node = null, $s__id = 0)
     } else {
 
         //Do both posts and Users:
-        $fetch_objects = $CI->config->item('userids___12761');
+        $fetch_objects = $CI->config->item('userids___28956');
 
         //We need to update the entire index, so let's truncate it first:
         $search_index->clearIndex();
@@ -2561,9 +2561,9 @@ function update_algolia($focus__node = null, $s__id = 0)
             if ($s__id) {
                 //Update weight before updating this object:
                 if ($focus__node == 12273) {
-                    post_number_calculator($s);
+                    post_weight_calculator($s);
                 } elseif ($focus__node == 12274) {
-                    user_number_calculator($s);
+                    user_weight_calculator($s);
                 }
             }
 
