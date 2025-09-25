@@ -240,7 +240,7 @@ class Ideachains extends CIdea_cache
             $this->db->join('users', 'chainid=userid', 'left');
         }
 
-        $chain_void_found = false;
+        $void_found = false;
         foreach ($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -248,10 +248,10 @@ class Ideachains extends CIdea_cache
                 $this->db->where($key);
             }
             if (substr_count($key, 'chainvoid')) {
-                $chain_void_found = true;
+                $void_found = true;
             }
         }
-        if (!$chain_void_found) {
+        if (!$void_found) {
             //Auto add:
             $this->db->where('chainvoid', 0); //Not Void
         }

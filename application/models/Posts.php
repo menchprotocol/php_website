@@ -82,8 +82,20 @@ class Posts extends CIdea_cache
         $this->db->select($select);
         $this->db->from('posts');
 
+        $void_found = false;
         foreach ($query_filters as $key => $value) {
-            $this->db->where($key, $value);
+            if (!is_null($value)) {
+                $this->db->where($key, $value);
+            } else {
+                $this->db->where($key);
+            }
+            if (substr_count($key, 'postvoid')) {
+                $void_found = true;
+            }
+        }
+        if (!$void_found) {
+            //Auto add:
+            $this->db->where('postvoid', 0); //Not Void
         }
 
         if ($group_by) {

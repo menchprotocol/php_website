@@ -8,64 +8,7 @@ $count = 0;
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
-if($focus_i['posthashtag']=='Discotique2024') {
-
-    //Update
-    /*
-     *
-
-
-    foreach(array(1733119,
-                1733121,
-                1733123,
-                1733125,
-                1733127,
-                1733129,
-                1733131
-            ) as $daysofweek){
-
-    }
-    echo 'yayyy';
-
-
-    $this->Ideachains->create(array(
-        'chainusertype' => 43513,
-        'chainusercreator' => 1,
-        'chainpostoutput' => 1733119,
-        'chainuserinput' => 1636421, //Discotique Leaders 25
-    ));
-    $this->Ideachains->create(array(
-        'chainusertype' => 43513,
-        'chainusercreator' => 1,
-        'chainpostoutput' => 1733121,
-        'chainuserinput' => 27093, //Trusted
-    ));
-
-
-
-*/
-
-
-    echo 'done done';
-
-    foreach($this->Ideachains->read(array(
-        'chainvoid >=' => 0, //Any Chain
-        'chainusertype' => 12273,
-    ), array(''), 0, 0, array('chainid' => 'ASC')) as $x){
-
-    }
-
-    foreach ($this->Posts->read(array(
-        'LOWER(posthashtag)' => strtolower(view_valid_user_post($action_command1)),
-    )) as $i) {
-
-    }
-    $this->Posts->update($ref['postid'], array(
-        'posttext' => str_replace('#' . $is[0]['posthashtag'], '#' . trim($_POST['save_posthashtag']), $ref['posttext']),
-    ), $user_session['userid']);
-
-
-} elseif($focus_i['posthashtag']=='Discotique2025') {
+if($focus_i['posthashtag']=='user') {
 
     //USER
     $chainuseroutput = array();
@@ -74,15 +17,14 @@ if($focus_i['posthashtag']=='Discotique2024') {
         'users_delete' => 0,
         'users_duplicate' => 0,
         'users_void' => 0,
-        'users_voidcreaetor' => 0,
+        'users_creaetor_not_found' => 0,
         'users_void_cachevalid' => 0,
         'users_valid_cachevoid' => 0,
     );
 
     foreach ($this->Ideachains->read(array(
-        'chainvoid >=' => 0, //Any Chain
         'chainusertype' => 12274,
-    ), array(), 377, 0, array('chainid' => 'ASC')) as $x) {
+    ), array(), 0, 0, array('chainid' => 'ASC')) as $x) {
 
         $is_duplicate = in_array($x['chainuseroutput'], $chainuseroutput);
         if (!$is_duplicate) {
@@ -103,7 +45,7 @@ if($focus_i['posthashtag']=='Discotique2024') {
         if ($x['chainvoid'] > 0) {
             $stats['users_void']++;
         } elseif (!count($es)) {
-            $stats['users_voidcreaetor']++;
+            $stats['users_creaetor_not_found']++;
         }
         if ($x['chainvoid'] > 0 && count($es_cache)) {
             $stats['users_void_cachevalid']++;
@@ -140,7 +82,7 @@ if($focus_i['posthashtag']=='Discotique2024') {
             ($delete ? '[DELETE]' : '') .
             ($x['chainvoid'] > 0 ? '[VOID]' : '') .
             ($is_duplicate ? '[DUPLICATE]' : '') .
-            (!$x['chainvoid'] && !count($es) ? '[users_voidcreaetor]' : '') .
+            (!$x['chainvoid'] && !count($es) ? '[users_creaetor_not_found]' : '') .
             (!$x['chainvoid'] && !count($es_cache) ? '[users_valid_cachevoid]' : '') .
             '</td>';
         $table .= '<td>T@' . $x['chainusertype'] . '<br />C@' . $x['chainusercreator'] . '<br />@' . $x['chainuseroutput'] . '</td>';
@@ -149,200 +91,8 @@ if($focus_i['posthashtag']=='Discotique2024') {
         $table .= '</tr>';
     }
 
-} elseif(0){
 
-    //Scan/Fix 3x Media Links
-
-    $table .= '<tr>';
-    $table .= '<td>ID</td>';
-    $table .= '<td>Type</td>';
-    $table .= '<td>NOW</td>';
-    $table .= '<td>FIXED</td>';
-    $table .= '<td>DELETE?</td>';
-    $table .= '</tr>';
-
-    $success = array(
-        1326 => 0,
-        4258 => 0,
-        4259 => 0,
-        4260 => 0,
-    );
-    $fail = array(
-        1326 => 0,
-        4258 => 0,
-        4259 => 0,
-        4260 => 0,
-    );
-    $fixed = array(
-        1326 => 0,
-        4258 => 0,
-        4259 => 0,
-        4260 => 0,
-    );
-    $delete = array(
-        1326 => 0,
-        4258 => 0,
-        4259 => 0,
-        4260 => 0,
-    );
-
-
-    foreach ($this->Ideachains->read(array(
-        'chainuserinput IN (' . join(',', $this->config->item('userids___1735577')) . ')' => null, //USER DISPLAY
-        'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-    ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC')) as $x) {
-
-        $must_delete = false;
-        $newchainvalue = false;
-
-        if ($x['chainuserinput'] == 1326) {
-
-            if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
-                $success[$x['chainuserinput']]++;
-            } else {
-                $fail[$x['chainuserinput']]++;
-                //See if we can find it?
-                foreach ($this->Ideachains->read(array(
-                    'chainuseroutput' => $x['chainuseroutput'],
-                    'LENGTH(chainvalue) > 0' => null,
-                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ), array('chainuserinput'), 0, 0, array('chainuserinput' => 'ASC')) as $x2) {
-                    if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainuserinput']]++;
-                        $newchainvalue = $x2['chainvalue'];
-                        break;
-                    }
-                }
-                if(!$newchainvalue){
-                    $must_delete = true;
-                }
-            }
-
-        } elseif ($x['chainuserinput'] == 4258) {
-
-            //Video
-            if(strlen($x['chainvalue'])){
-                $success[$x['chainuserinput']]++;
-            } else {
-                $fail[$x['chainuserinput']]++;
-                //See if we can find it?
-                foreach ($this->Ideachains->read(array(
-                    'chainuserinput' => 42660, //Media Public ID
-                    'chainuseroutput' => $x['chainuseroutput'],
-                    'LENGTH(chainvalue) > 0' => null,
-                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC')) as $x2) {
-                    $fixed[$x['chainuserinput']]++;
-                    $newchainvalue = $x2['chainvalue'];
-                    break;
-                }
-                if(!$newchainvalue){
-                    $must_delete = true;
-                }
-            }
-
-        } elseif ($x['chainuserinput'] == 4259) {
-
-            //Audio
-            if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
-                $success[$x['chainuserinput']]++;
-            } else {
-                $fail[$x['chainuserinput']]++;
-                //See if we can find it?
-                foreach ($this->Ideachains->read(array(
-                    'chainuserinput' => 42693, //Secure URL
-                    'chainuseroutput' => $x['chainuseroutput'],
-                    'LENGTH(chainvalue) > 0' => null,
-                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC')) as $x2) {
-                    if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainuserinput']]++;
-                        $newchainvalue = $x2['chainvalue'];
-                        break;
-                    }
-                }
-                if(!$newchainvalue){
-                    $must_delete = true;
-                }
-            }
-
-        } elseif ($x['chainuserinput'] == 4260) {
-
-            //Image
-            if(filter_var($x['chainvalue'], FILTER_VALIDATE_URL)){
-                $success[$x['chainuserinput']]++;
-            } else {
-                $fail[$x['chainuserinput']]++;
-                //See if we can find it?
-                foreach ($this->Ideachains->read(array(
-                    'chainuseroutput' => $x['chainuseroutput'],
-                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ), array('chainuserinput'), 0) as $x2) {
-                    if(filter_var($x2['chainvalue'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainuserinput']]++;
-                        $newchainvalue = $x2['chainvalue'];
-                        break;
-                    }
-                }
-                if(!$newchainvalue){
-                    if(filter_var($x['usercover'], FILTER_VALIDATE_URL)){
-                        $fixed[$x['chainuserinput']]++;
-                        $newchainvalue = $x['usercover'];
-                    } else {
-                        $must_delete = true;
-                    }
-                }
-            }
-
-        } else {
-
-            $must_delete = true;
-
-        }
-
-
-        if(strlen($newchainvalue) && 0){
-            $this->Ideachains->update($x['chainid'], array(
-                'chainvalue' => $newchainvalue,
-            ));
-        } elseif($must_delete && 0){
-            //Delete chain:
-            $this->Ideachains->delete($x['chainid']);
-        }
-
-
-
-        $table .= '<tr>';
-
-        $table .= '<td>'.$x['chainid'].'</td>';
-        $table .= '<td>'.$x['chainuserinput'].'</td>';
-        $table .= '<td><div style="max-width:233px;">'.$x['chainvalue'].'</div></td>';
-        $table .= '<td><div style="max-width:233px;">'.( strlen($newchainvalue) ? 'FIXED: ' : '' ).$newchainvalue.'</div></td>';
-        $table .= '<td>'.( $must_delete ? 'DELETE' : '' ).'</td>';
-
-        $table .= '</tr>';
-
-        if($must_delete){
-            $delete[$x['chainuserinput']]++;
-        }
-
-    }
-
-    $table .= '</table>';
-
-    echo 'Success:';
-    print_r($success);
-    echo '<hr />Fail:';
-    print_r($fail);
-    echo '<hr />Fixed:';
-    print_r($fixed);
-    echo '<hr />Delete:';
-    print_r($delete);
-    echo $table;
-
-} elseif($focus_i['posthashtag']=='YourBio') {
-
-
+} elseif($focus_i['posthashtag']=='post') {
 
     if(isset($_GET['reset'])){
         $q = $this->db->query('Update ideachains SET chainpostinput=0 WHERE chainusertype=12273 AND chainpostinput>0;');
@@ -377,7 +127,6 @@ if($focus_i['posthashtag']=='Discotique2024') {
     );
 
     $filters = array(
-        'chainvoid >=' => 0,
         'chainusertype' => 12273,
     );
     if(isset($_GET['id'])){
@@ -579,8 +328,10 @@ if($focus_i['posthashtag']=='Discotique2024') {
 
 $table .= '</table>';
 
+if(isset($stats)){
+    print_r($stats);
+}
 
-print_r($stats);
 echo $table;
 echo '<style> 
 
@@ -590,4 +341,4 @@ echo '<style>
         max-width: calc(100% - 16px) !important;
     }
         
-        </style>';
+</style>';

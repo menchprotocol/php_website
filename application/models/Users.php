@@ -92,13 +92,23 @@ class Users extends CIdea_cache
         //Fetch the target Users:
         $this->db->select($select);
         $this->db->from('users');
+
+        $void_found = false;
         foreach ($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
             } else {
                 $this->db->where($key);
             }
+            if (substr_count($key, 'uservoid')) {
+                $void_found = true;
+            }
         }
+        if (!$void_found) {
+            //Auto add:
+            $this->db->where('uservoid', 0); //Not Void
+        }
+
         if ($group_by) {
             $this->db->group_by($group_by);
         }
@@ -232,7 +242,7 @@ class Users extends CIdea_cache
         //Find all chains to delete/migrate:
         $x_adjusted = 0;
         foreach ($this->Ideachains->read(array(
-            '(chainid=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainusertype=' . $userid . ' OR chainuserdomain=' . $userid . ')' => null,
+            '(chainid=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainusertype=' . $userid . ')' => null,
         ), array(), 0) as $migrate) {
 
             if ($migrateid) {
@@ -240,7 +250,6 @@ class Users extends CIdea_cache
                 $new_array = array(
                     'chainusercreator' => ($migrate['chainusercreator'] == $userid ? $migrateid : ($chainusercreator > 0 ? $chainusercreator : $migrate['chainusercreator'])),
                     'chainusertype' => ($migrate['chainusertype'] == $userid ? $migrateid : $migrate['chainusertype']),
-                    'chainuserdomain' => ($migrate['chainuserdomain'] == $userid ? $migrateid : $migrate['chainuserdomain']),
                     'chainuserinput' => ($migrate['chainuserinput'] == $userid ? $migrateid : $migrate['chainuserinput']),
                     'chainuseroutput' => ($migrate['chainuseroutput'] == $userid ? $migrateid : $migrate['chainuseroutput']),
                     'chainpostinput' => $migrate['chainpostinput'],
