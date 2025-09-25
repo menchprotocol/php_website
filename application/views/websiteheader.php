@@ -839,19 +839,19 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="hidden" class="save_chainid" value="0" />
 
 
-                        <!-- User User -->
+                        <!-- User Name -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_userhandle" style="margin-top: -20px;" placeholder="'.( strlen($users___12273[32338]['m__message']) ? $users___12273[32338]['m__message'] : $users___12273[32338]['m__title'] ).'...'.'">';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_userhandle" style="margin-top: -20px;" placeholder="'.( strlen($users___12274[32338]['m__message']) ? $users___12274[32338]['m__message'] : $users___12274[32338]['m__title'] ).'...'.'">';  ?></h3>
                         </div>
 
                         <!-- User Title -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[6197]['m__cover'].'</span><textarea class="form-control unsaved_warning save_username main__title" placeholder="'.( strlen($users___12273[6197]['m__message']) ? $users___12273[6197]['m__message'] : $users___12273[6197]['m__title'] ).'...'.'" style="margin:0; width:100%; margin-top: -30px; background-color: #FFFFFF !important;"></textarea>';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[6197]['m__cover'].'</span><textarea class="form-control unsaved_warning save_username main__title" placeholder="'.( strlen($users___12274[6197]['m__message']) ? $users___12274[6197]['m__message'] : $users___12274[6197]['m__title'] ).'...'.'" style="margin:0; width:100%; margin-top: -30px; background-color: #FFFFFF !important;"></textarea>';  ?></h3>
                         </div>
 
                         <!-- User Bio -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder editing-mode unsaved_warning algolia__e algolia__i save_userbio" placeholder="<?= ( strlen($users___12273[2135504]['m__message']) ? $users___12273[2135504]['m__message'] : $users___12273[2135504]['m__title'] ).'...' ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder editing-mode unsaved_warning algolia__e algolia__i save_userbio" placeholder="<?= ( strlen($users___12274[2135504]['m__message']) ? $users___12274[2135504]['m__message'] : $users___12274[2135504]['m__title'] ).'...' ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
                         <!-- USER COVER -->
@@ -860,7 +860,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <tr>
                                     <td>
                                         <!-- Upload Cover -->
-                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $users___11035[42359]['m__title'] ?>"><?= $users___11035[42359]['m__cover'] ?></a>
+                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $users___12274[42359]['m__title'] ?>"><?= $users___12274[42359]['m__cover'] ?></a>
                                     </td>
                                     <td class="hidden_superpower__13758">
                                         <!-- EMOJI -->
@@ -886,7 +886,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[6198]['m__cover'].'</span>'.$users___12274[6198]['m__title'].': ';  ?></h3>
 
                             <!-- Cover HIDDEN Input -->
-                            <input type="text" class="form-control unsaved_warning save_usercover hidden_superpower__13758" data-lpignore="true" placeholder="<?= ( strlen($users___12273[6198]['m__message']) ? $users___12273[6198]['m__message'] : $users___12273[6198]['m__title'] ).'...' ?>">
+                            <input type="text" class="form-control unsaved_warning save_usercover hidden_superpower__13758" data-lpignore="true" placeholder="<?= ( strlen($users___12274[6198]['m__message']) ? $users___12274[6198]['m__message'] : $users___12274[6198]['m__title'] ).'...' ?>">
 
                             <!-- Font Awesome Search -->
                             <div class="hidden_superpower__13758 fa_search hidden">
