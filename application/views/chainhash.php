@@ -11,7 +11,7 @@ if($starting_id==0){
 
 $count = 0;
 $fixed = 0;
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainid >' => $starting_id,
     'chainvoid >=' => 0, //Any Chain
 ), array(), 0, 0, array('chainid' => 'ASC')) as $x) {

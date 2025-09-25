@@ -1,5 +1,6 @@
 <?php
 
+$max_load = 1597;
 boost_power();
 $mentions = $this->config->item('users___13550');
 $ideas = $this->config->item('users___4486');
@@ -23,9 +24,9 @@ if($_GET['posthashtag']=='user') {
         'users_valid_cachevoid' => 0,
     );
 
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype' => 12274,
-    ), array(), 1597, 0, array('chainid' => 'ASC')) as $x) {
+    ), array(), $max_load, 0, array('chainid' => 'ASC')) as $x) {
 
         $is_duplicate = in_array($x['chainuserinput'], $chainuserinput);
         if (!$is_duplicate) {
@@ -56,7 +57,7 @@ if($_GET['posthashtag']=='user') {
         }
 
         //Orphan?
-        $total_links = count($this->Ideachains->read(array(
+        $total_links = count($this->Chains->read(array(
             '(chainuserdomain='.$x['chainuserinput'].' OR chainusertype='.$x['chainuserinput'].' OR chainusercreator='.$x['chainuserinput'].' OR chainuserinput='.$x['chainuserinput'].' OR chainuseroutput='.$x['chainuserinput'].')' => null,
         )));
 
@@ -68,7 +69,7 @@ if($_GET['posthashtag']=='user') {
         }
 
         //Append Description if any
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'LENGTH(chainvalue) > 0' => null,
             'chainuserinput IN (11035,42628)' => null,
             'chainuseroutput' => $x['chainuserinput'],
@@ -103,12 +104,6 @@ if($_GET['posthashtag']=='user') {
 
 
 } elseif($_GET['posthashtag']=='post') {
-
-    if(isset($_GET['reset'])){
-        $q = $this->db->query('Update ideachains SET chainpostinput=0 WHERE chainusertype=12273 AND chainpostinput>0;');
-        print_r(array('reset_result' => $q->result_array()));
-        die('done');
-    }
 
     //POSTS
     $table .= '<tr>';
@@ -147,7 +142,7 @@ if($_GET['posthashtag']=='user') {
         $filters['chainpostinput'] = 0;
     }
     $has_media = false;
-    foreach($this->Ideachains->read($filters, array('chainpostinput'), ( isset($_GET['limit']) ? $_GET['limit'] : 1 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+    foreach($this->Chains->read($filters, array('chainpostinput'), ( isset($_GET['limit']) ? $_GET['limit'] : $max_load ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
         $is_duplicate = in_array($x['chainpostinput'], $chainpostinput);
 
@@ -166,7 +161,7 @@ if($_GET['posthashtag']=='user') {
         ));
 
         //Orphan?
-        $total_links = count($this->Ideachains->read(array(
+        $total_links = count($this->Chains->read(array(
             '(chainpostinput='.$x['chainpostinput'].' OR chainpostoutput='.$x['chainpostinput'].')' => null,
         )));
         if(!$total_links){
@@ -241,9 +236,8 @@ if($_GET['posthashtag']=='user') {
 
         $this_media = false;
 
-
         //Add Ideas:
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___4486')) . ')' => null, //Ideas
             'chainpostinput' => $x['chainpostinput'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $count => $x2) {
@@ -265,7 +259,7 @@ if($_GET['posthashtag']=='user') {
         }
 
         //Fetch Mentions
-        foreach($this->Ideachains->read(array(
+        foreach($this->Chains->read(array(
             'chainpostoutput' => $x['chainpostinput'],
             'chainuserinput NOT IN (1,2,32337)' => null,
             'chainusertype IN (' . join(',', $this->config->item('userids___13550')) . ')' => null, //Mentions
@@ -287,9 +281,16 @@ if($_GET['posthashtag']=='user') {
             if(strlen($x2['chainvalue'])){
                 $posttext .= ' '.$x2['chainvalue'];
             }
+
         }
 
 
+        if(!$x['chainvoid'] && !count($es)){
+            //Update to Shervin:
+            $this->Chains->update($x['chainid'], array(
+                'chainusercreator' => 1,
+            ));
+        }
 
 
         if(!strlen(trim($core_content))){
@@ -299,25 +300,34 @@ if($_GET['posthashtag']=='user') {
             }
         }
 
-        $delete = !$total_links || $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate || (!$x['chainvoid'] && !count($es)) || (!$x['chainvoid'] && !count($is));
+        $delete = !$total_links || $x['chainvoid']>0 || !strlen(trim($core_content)) || $is_duplicate;
         if($delete){
             $stats['posts_delete']++;
         }
 
+        if(!$x['chainvoid'] && !count($es)){
+            //Update to Shervin:
+            $this->Chains->update($x['chainid'], array(
+                'chainusercreator' => 1,
+            ));
+        }
+
         $post_index = post_index($posttext, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
+
+        /*
         $this->Posts->update($x['chainid'], array(
             'posttext' => $post_index['posttext'],
             'postdiscover' => $post_index['postdiscover'],
             'postedit' => $post_index['postedit'],
         ));
 
-        if(!$x['chainpostinput']){
-            $this->db->where('chainid', $x['chainid']);
-            $this->db->update('ideachains', array(
-                'chainpostinput' =>  $x['chainid'],
-                'chainvalue' =>  '#'.$x['posthashtag']."\n".$post_index['postchain'],
-            ));
-        }
+        $this->db->where('chainid', $x['chainid']);
+        $this->db->update('ideachains', array(
+            'chainpostinput' =>  $x['chainid'],
+            'chainvalue' =>  '#'.$x['posthashtag']."\n".$post_index['postchain'],
+        ));
+
+        */
 
 
         $table .= '<tr>';

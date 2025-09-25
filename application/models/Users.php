@@ -47,13 +47,13 @@ class Users extends CIdea_cache
                 . "\n" . $add_fields['usercover']
                 . "\n" . $add_fields['userbio']
         );
-        $new_x = $this->Ideachains->create($new_array);
+        $new_x = $this->Chains->create($new_array);
 
         if (!$new_x['chainid']) {
             return log_error('create() failed to create a new User', $new_array);
         } elseif ($nextchainid > 0 && $nextchainid != $new_x['chainid']) {
             //Update new ID:
-            $this->Ideachains->update($new_x['chainid'], array(
+            $this->Chains->update($new_x['chainid'], array(
                 'chainuserinput' => $new_x['chainid'],
             ));
         }
@@ -150,7 +150,7 @@ class Users extends CIdea_cache
         }
 
         //Find existing chain to update:
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype' => 12274,
             'chainuserinput' => $userid,
         ), array(), 1) as $chain) {
@@ -186,7 +186,7 @@ class Users extends CIdea_cache
                         } elseif ($key == 'userhandle') {
 
                             //Update term on all references
-                            foreach ($this->Ideachains->read(array(
+                            foreach ($this->Chains->read(array(
                                 'chainusertype IN (' . join(',', $this->config->item('userids___13550')) . ')' => null, //Mentions
                                 'chainuserinput' => $userid,
                             ), array('chainpostoutput'), 0) as $ref) {
@@ -213,7 +213,7 @@ class Users extends CIdea_cache
                 //Update Chain only if needed:
                 if ($must_update_chain_now) {
 
-                    $this->Ideachains->update($chain['chainid'], array(
+                    $this->Chains->update($chain['chainid'], array(
                         'chainvalue' => "@" . (isset($update_columns['userhandle']) ? $update_columns['userhandle'] : $cache['userhandle'])
                             . "\n" . (isset($update_columns['username']) ? $update_columns['username'] : $cache['username'])
                             . "\n" . (isset($update_columns['usercover']) ? $update_columns['usercover'] : $cache['usercover'])
@@ -241,7 +241,7 @@ class Users extends CIdea_cache
 
         //Find all chains to delete/migrate:
         $x_adjusted = 0;
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             '(chainid=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainusertype=' . $userid . ')' => null,
         ), array(), 0) as $migrate) {
 
@@ -257,14 +257,14 @@ class Users extends CIdea_cache
                 );
 
                 //Update if this new one is unique:
-                if (!count($this->Ideachains->read($new_array))) {
-                    $x_adjusted += $this->Ideachains->update($migrate['chainid'], $new_array);
+                if (!count($this->Chains->read($new_array))) {
+                    $x_adjusted += $this->Chains->update($migrate['chainid'], $new_array);
                     continue;
                 }
             }
 
             //Just remove it:
-            $x_adjusted += $this->Ideachains->delete($migrate['chainid'], $chainusercreator);
+            $x_adjusted += $this->Chains->delete($migrate['chainid'], $chainusercreator);
 
         }
 
@@ -287,7 +287,7 @@ class Users extends CIdea_cache
         }
 
 
-        //Return Ideachains deleted:
+        //Return Chains deleted:
         return $x_adjusted;
 
     }
@@ -332,7 +332,7 @@ class Users extends CIdea_cache
         $applied_success = 0; //To be populated
 
         //Fetch all followers:
-        $followers = $this->Ideachains->read(array(
+        $followers = $this->Chains->read(array(
             'chainuserinput' => $userid,
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array('chainuseroutput'), 0);
@@ -368,7 +368,7 @@ class Users extends CIdea_cache
                 )) as $e) {
 
                     //See if follower User has searched followings User:
-                    $down_up_e = $this->Ideachains->read(array(
+                    $down_up_e = $this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                         'chainuseroutput' => $x['userid'], //This follower User
                         'chainuserinput' => $e['userid'],
@@ -389,13 +389,13 @@ class Users extends CIdea_cache
                         }
 
                         //Following Member Addition
-                        $this->Ideachains->create($add_fields);
+                        $this->Chains->create($add_fields);
 
                         $applied_success++;
 
                         if ($action_userid == 13441) {
                             //Since we're migrating we should remove from here:
-                            $this->Ideachains->delete($x['chainid'], $chainusercreator);
+                            $this->Chains->delete($x['chainid'], $chainusercreator);
                         }
 
                     } elseif (in_array($action_userid, array(5982, 11956)) && count($down_up_e) > 0) {
@@ -404,7 +404,7 @@ class Users extends CIdea_cache
 
                             //Following Member Removal
                             foreach ($down_up_e as $delete_tr) {
-                                $this->Ideachains->delete($delete_tr['chainid'], $chainusercreator);
+                                $this->Chains->delete($delete_tr['chainid'], $chainusercreator);
                                 $applied_success++;
                             }
 
@@ -414,7 +414,7 @@ class Users extends CIdea_cache
                                 'LOWER(userhandle)' => strtolower(view_valid_user_user($action_command2)),
                             )) as $e) {
                                 //Add as a followings because it meets the condition
-                                $this->Ideachains->create(array(
+                                $this->Chains->create(array(
                                     'chainusercreator' => $chainusercreator,
                                     'chainusertype' => 4230,
                                     'chainuseroutput' => $x['userid'], //This follower User
@@ -462,7 +462,7 @@ class Users extends CIdea_cache
 
                 $new_message = str_replace($action_command1, $action_command2, $x['chainvalue']);
 
-                $this->Ideachains->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chainvalue' => $new_message,
                     'chainusercreator' => $chainusercreator,
                 ));
@@ -471,7 +471,7 @@ class Users extends CIdea_cache
 
             } elseif ($action_userid == 26093) { //Replace Chain Matching String
 
-                $this->Ideachains->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chainvalue' => $action_command1,
                     'chainusercreator' => $chainusercreator,
                 ));
@@ -480,7 +480,7 @@ class Users extends CIdea_cache
 
             } elseif ($action_userid == 42804 && ($action_command1 == '*' || $x['chainusertype'] == $action_command1) && in_array($action_command2, $this->config->item('userids___13548') /* User Chain Types */)) { //Update Matching Interaction Type
 
-                $this->Ideachains->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chainusertype' => $action_command2,
                     'chainusercreator' => $chainusercreator,
                 ));
@@ -510,12 +510,12 @@ class Users extends CIdea_cache
         $websiteuserid = website_setting(0);
 
         //Make sure they also belong to this website's members:
-        if ($websiteuserid != 4341 && !count($this->Ideachains->read(array(
+        if ($websiteuserid != 4341 && !count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 'chainuserinput' => $websiteuserid,
                 'chainuseroutput' => $e['userid'],
             )))) {
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainusercreator' => $e['userid'],
                 'chainusertype' => 4230,
                 'chainuserinput' => $websiteuserid,
@@ -526,16 +526,16 @@ class Users extends CIdea_cache
 
         //Check & Adjust their subscription, IF needed:
         $resubscribed = 0;
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $this->config->item('userids___29648')) . ')' => null, //Unsubscribers
             'chainuseroutput' => $e['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         )) as $unsubscribe) {
-            $resubscribed += $this->Ideachains->delete($unsubscribe['chainid'], $e['userid']);
+            $resubscribed += $this->Chains->delete($unsubscribe['chainid'], $e['userid']);
         }
         if ($resubscribed > 0) {
             //Add Back to Subscribers:
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainusertype' => 4230,
                 'chainuserinput' => 4430, //Active Member
                 'chainusercreator' => $e['userid'],
@@ -554,7 +554,7 @@ class Users extends CIdea_cache
 
         //Fetch Platform Defaults:
         $platform_theme = array();
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $this->config->item('userids___14926')) . ')' => null, //Website Theme Items
             'chainuseroutput' => 6404, //Platform Default
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -564,7 +564,7 @@ class Users extends CIdea_cache
 
         //Fetch Website Defaults:
         $website_theme = array();
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $this->config->item('userids___14926')) . ')' => null, //Website Theme Items
             'chainuseroutput' => website_setting(0), //Website ID
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -575,7 +575,7 @@ class Users extends CIdea_cache
 
         //Fetch User Defaults:
         $user_theme = array();
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuseroutput' => $e['userid'], //This follower User
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array('chainuserinput'), 0) as $user_up) {
@@ -641,17 +641,17 @@ class Users extends CIdea_cache
         //TODO Resubscribe IF they are Permanently Unsubscribed:
         /*
         $unsubscribed_time = null;
-        foreach($this->Ideachains->read(array(
+        foreach($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $this->config->item('userids___31057')) . ')' => null, //Permanently Unsubscribed
             'chainuseroutput' => $e['userid'], //This follower User
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 ), array(), 0) as $unsubscribed){
             $unsubscribed_time = $unsubscribed['chaintime'];
-            $this->Ideachains->delete($unsubscribed['chainid'], $e['userid']); //Resubscribe
+            $this->Chains->delete($unsubscribed['chainid'], $e['userid']); //Resubscribe
         }
         if($unsubscribed_time){
             //Add to subscribed again:
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainusertype' => 4230,
                 'chainuserinput' => 4430, //Active Member
                 'chainusercreator' => $e['userid'],
@@ -669,14 +669,14 @@ class Users extends CIdea_cache
     function scissor($chainuserinput, $sub_id)
     {
 
-        $all_results = $this->Ideachains->read(array(
+        $all_results = $this->Chains->read(array(
             'chainuserinput' => $chainuserinput,
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array('chainuseroutput'), 0, 0, user_sort());
 
         //Remove if not in the secondary group:
         foreach ($all_results as $key => $primary_list) {
-            if (!count($this->Ideachains->read(array(
+            if (!count($this->Chains->read(array(
                 'chainuserinput' => $sub_id,
                 'chainuseroutput' => $primary_list['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -721,7 +721,7 @@ class Users extends CIdea_cache
 
         //Add email?
         if ($email) {
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainusertype' => 4230,
                 'chainvalue' => trim(strtolower($email)),
                 'chainuserinput' => 3288, //Email
@@ -733,7 +733,7 @@ class Users extends CIdea_cache
 
         //Add Number?
         if ($phone_number) {
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainuserinput' => 4783, //Phone
                 'chainusertype' => 4230,
                 'chainvalue' => $phone_number,
@@ -746,19 +746,19 @@ class Users extends CIdea_cache
         if ($email || $phone_number) {
 
             //Remove from Anonymous:
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 'chainuserinput IN (' . join(',', $this->config->item('userids___32540')) . ')' => null, //Unsubscribers
                 'chainuseroutput' => $added_e['user_create']['userid'],
             )) as $unsubscriber_x) {
-                $this->Ideachains->delete($unsubscriber_x['chainid'], $added_e['user_create']['userid']);
+                $this->Chains->delete($unsubscriber_x['chainid'], $added_e['user_create']['userid']);
             }
 
             $session_data = $this->session->all_userdata();
             $this->session->set_userdata($session_data);
 
             //Add to Subscriber:
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainuserinput' => 4430, //Subscriber
                 'chainusertype' => 4230,
                 'chainusercreator' => $added_e['user_create']['userid'],
@@ -769,7 +769,7 @@ class Users extends CIdea_cache
         } else {
 
             //Add to anonymous:
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainuserinput' => 14938, //Guest Login
                 'chainusertype' => 4230,
                 'chainusercreator' => $added_e['user_create']['userid'],
@@ -784,12 +784,12 @@ class Users extends CIdea_cache
         }
 
         //Add if chain not already there:
-        if (!count($this->Ideachains->read(array(
+        if (!count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             'chainuserinput' => $chainuserdomain,
             'chainuseroutput' => $added_e['user_create']['userid'],
         )))) {
-            $this->Ideachains->create(array(
+            $this->Chains->create(array(
                 'chainusercreator' => $added_e['user_create']['userid'], //Belongs to this Member
                 'chainusertype' => 4230,
                 'chainuserinput' => $chainuserdomain,
@@ -799,17 +799,17 @@ class Users extends CIdea_cache
 
         //Send Welcome Email if any:
         if ($email) {
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainusertype' => 31835, //Mention
                 'chainuserinput' => 14929, //Website Welcome Email Templates
             ), array('chainpostoutput'), 0) as $i) {
-                if (count($this->Ideachains->read(array(
+                if (count($this->Chains->read(array(
                     'chainusertype' => 31835, //Mention
                     'chainuserinput' => $chainuserdomain, //for Current website
                     'chainpostoutput' => $i['postid'], //Is this the template?
                 )))) {
                     //Found the email template to send:
-                    $total_sent = $this->Ideachains->broadcast(array($added_e['user_create']), $i, $chainuserdomain);
+                    $total_sent = $this->Chains->broadcast(array($added_e['user_create']), $i, $chainuserdomain);
                     break; //Just the first template match
                 }
             }
@@ -863,11 +863,11 @@ class Users extends CIdea_cache
         }
 
 
-        foreach ($this->Ideachains->read($query_filters, $joins_objects, 0, 0, $order_columns) as $user_down) {
+        foreach ($this->Chains->read($query_filters, $joins_objects, 0, 0, $order_columns) as $user_down) {
 
             //Filter Users, if needed:
             $qualified_e = true;
-            if (count($include_any_e) && !count($this->Ideachains->read(array(
+            if (count($include_any_e) && !count($this->Chains->read(array(
                     'chainuserinput IN (' . join(',', $include_any_e) . ')' => null,
                     'chainuseroutput' => $user_down['userid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -875,7 +875,7 @@ class Users extends CIdea_cache
                 //Must include all Users, skip:
                 $qualified_e = false;
             }
-            if (count($exclude_all_e) && count($this->Ideachains->read(array(
+            if (count($exclude_all_e) && count($this->Chains->read(array(
                     'chainuserinput IN (' . join(',', $exclude_all_e) . ')' => null,
                     'chainuseroutput' => $user_down['userid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS

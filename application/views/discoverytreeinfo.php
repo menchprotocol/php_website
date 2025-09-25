@@ -21,7 +21,7 @@ foreach($this->Users->read(array(
 )) as $e){
     //List the post:
     print_r(array(
-        'next_posts' => $this->Ideachains->next_posts($e['userid'], $post_settings['i']['posthashtag'], $post_settings['i'], 0, false),
-        'progress' => $this->Ideachains->progress($e['userid'], $post_settings['i']),
+        'next_posts' => $this->Chains->next_posts($e['userid'], $post_settings['i']['posthashtag'], $post_settings['i'], 0, false),
+        'progress' => $this->Chains->progress($e['userid'], $post_settings['i']),
     ));
 }

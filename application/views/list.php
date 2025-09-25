@@ -37,7 +37,7 @@ foreach($post_settings['query_string_filtered'] as $x){
     $name = '';
     foreach($post_settings['post_column'] as $post_var){
 
-        $discoveries = $this->Ideachains->read(array(
+        $discoveries = $this->Chains->read(array(
             'chainpostinput' => $post_var['postid'],
             'chainusercreator' => $x['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
@@ -77,13 +77,13 @@ foreach($post_settings['query_string_filtered'] as $x){
     //USERS
     foreach($post_settings['user_column'] as $e){
 
-        $require_writing = count($this->Ideachains->read(array(
+        $require_writing = count($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $this->config->item('userids___43510')) . ')' => null, //Require Written Answers
             'chainuseroutput' => $e['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 )));
 
-        $fetch_data = $this->Ideachains->read(array(
+        $fetch_data = $this->Chains->read(array(
                     'chainuseroutput' => $x['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             'chainuserinput' => $e['userid'],
@@ -117,7 +117,7 @@ foreach($post_settings['query_string_filtered'] as $x){
                 $count_totals['e'][$e['userid']] = 0;
             }
 
-            $count_totals['e'][$e['userid']] = $count_totals['e'][$e['userid']] + ( count($this->Ideachains->read(array(
+            $count_totals['e'][$e['userid']] = $count_totals['e'][$e['userid']] + ( count($this->Chains->read(array(
                                     'chainuseroutput' => $e['userid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                     'chainuserinput IN (' . join(',', $this->config->item('userids___39609')) . ')' => null, //ADDUP NUMBER
@@ -145,7 +145,7 @@ foreach($post_settings['user_column'] as $e){
 }
 foreach($post_settings['post_column'] as $post_var){
 
-    $max_available = $this->Ideachains->read(array(
+    $max_available = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
         'chainpostoutput' => $post_var['postid'],
         'chainuserinput' => 26189,

@@ -15,7 +15,7 @@ if(in_array($website_id, $this->config->item('userids___30984'))){
 
 $secondary_i = '';
 $primary_i = array();
-foreach($this->Ideachains->read(array(
+foreach($this->Chains->read(array(
     'chainusertype' => 34513, //Pinned
     'chainuserinput' => $website_id,
 ), array('chainpostoutput'), 1, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $primary_i){
@@ -26,7 +26,7 @@ foreach($this->Ideachains->read(array(
 
     $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_post_value($primary_i) . '</div>';
 
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
         'chainpostinput' => $primary_i['postid'],
     ), array('chainpostoutput'), 0, 0) as $next_i) {
@@ -67,7 +67,7 @@ if($domain_phone || $email_domain) {
 foreach($this->Users->scissor($website_id, 14903) as $user_item) {
     //Any Followers?
     $info_item = null;
-    foreach($this->Ideachains->read(array(
+    foreach($this->Chains->read(array(
         'chainuserinput' => $user_item['userid'],
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array('chainuseroutput'), 0, 0, array('chainkey' => 'ASC')) as $info_element) {
@@ -122,7 +122,7 @@ if(strlen($secondary_i)){
 $social_ui = null;
 $users___14870 = $this->config->item('users___14870'); //Website Partner
 foreach($this->config->item('users___14036') as $userid => $m){
-    foreach($this->Ideachains->read(array(
+    foreach($this->Chains->read(array(
         'chainuserinput' => $userid,
         'chainuseroutput' => $website_id,
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS

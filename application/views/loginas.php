@@ -1,7 +1,7 @@
 <?php
 
 //Make sure member:
-if(!count($this->Ideachains->read(array(
+if(!count($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
     'chainuserinput IN (' . join(',', $this->config->item('userids___32537')) . ')' => null, //Interested Member
     'chainuseroutput' => $focus_e['userid'],

@@ -46,22 +46,22 @@ foreach ($_POST['invoice_items'] as $key => $value) {
 }
 
 //Fetch User Data:
-$fetch_emails = $this->Ideachains->read(array(
+$fetch_emails = $this->Chains->read(array(
     'chainuserinput' => 3288, //Email
     'chainuseroutput' => $user_session['userid'],
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ));
-$fetch_phones = $this->Ideachains->read(array(
+$fetch_phones = $this->Chains->read(array(
     'chainuserinput' => 4783, //Phone
     'chainuseroutput' => $user_session['userid'],
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ));
-$fetch_first_names = $this->Ideachains->read(array(
+$fetch_first_names = $this->Chains->read(array(
     'chainuserinput' => 42584, //First Name
     'chainuseroutput' => $user_session['userid'],
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ));
-$fetch_last_names = $this->Ideachains->read(array(
+$fetch_last_names = $this->Chains->read(array(
     'chainuserinput' => 30198, //Last Name
     'chainuseroutput' => $user_session['userid'],
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -96,12 +96,12 @@ foreach($this->Posts->read(array(
     )) as $i){
 
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
-        $invoice_due_dates = $this->Ideachains->read(array(
+        $invoice_due_dates = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $i['postid'],
             'chainuserinput' => 44378, //Invoice Due Date
         ));
-        $invoice_min_payments = $this->Ideachains->read(array(
+        $invoice_min_payments = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $i['postid'],
             'chainuserinput' => 44379, //Invoice Min Payment
@@ -150,37 +150,37 @@ foreach($this->Posts->read(array(
 
 
         //Delete Old Parent Invoice:
-        foreach($this->Ideachains->read(array(
+        foreach($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
             'chainpostinput' => $i['postid'],
             'chainusercreator' => $user_session['userid'],
         ), array(), 0) as $x_discovery){
-            $this->Ideachains->delete($x_discovery['chainid'], $user_session['userid']);
+            $this->Chains->delete($x_discovery['chainid'], $user_session['userid']);
         }
 
         //Delete Old Child Answers:
-        foreach($this->Ideachains->read(array(
+        foreach($this->Chains->read(array(
             'chainusertype' => 7712, //Input Choice
             'chainusercreator' => $user_session['userid'],
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput')) as $x_selection){
 
             //Remove Selection:
-            $this->Ideachains->delete($x_selection['chainid'], $user_session['userid']);
+            $this->Chains->delete($x_selection['chainid'], $user_session['userid']);
 
             //Remove discovery:
-            foreach($this->Ideachains->read(array(
+            foreach($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                 'chainpostinput' => $x_selection['postid'],
                 'chainusercreator' => $user_session['userid'],
             ), array(), 0) as $x_discovery){
-                $this->Ideachains->delete($x_discovery['chainid'], $user_session['userid']);
+                $this->Chains->delete($x_discovery['chainid'], $user_session['userid']);
             }
         }
 
 
         //Save New Invoice:
-        $this->Ideachains->post_discovered(4559, $user_session['userid'], $post_target['postid'], $i);
+        $this->Chains->post_discovered(4559, $user_session['userid'], $post_target['postid'], $i);
 
 
         //Save New Child Answers:
@@ -190,12 +190,12 @@ foreach($this->Posts->read(array(
             )) as $this_i){
 
                 //Complete this item:
-                $this->Ideachains->post_discovered(4559, $user_session['userid'], $post_target['postid'], $this_i, array(), array(
+                $this->Chains->post_discovered(4559, $user_session['userid'], $post_target['postid'], $this_i, array(), array(
                     'chainkey' => $_POST['invoice_items'][$key]['quantity'],
                 ));
 
                 //Save Answer:
-                $this->Ideachains->create(array(
+                $this->Chains->create(array(
                     'chainusertype' => 7712, //Input Choice
                     'chainusercreator' => $user_session['userid'],
                     'chainpostinput' => $_POST['focus__id'],
@@ -209,7 +209,7 @@ foreach($this->Posts->read(array(
         //Find Next:
         $post_redirect_url = post_redirect_url($i);
         if(!$post_redirect_url){
-            $post_next = $this->Ideachains->next_posts($user_session['userid'], $_POST['target_posthashtag']);
+            $post_next = $this->Chains->next_posts($user_session['userid'], $_POST['target_posthashtag']);
         }
 
 

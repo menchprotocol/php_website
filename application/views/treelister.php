@@ -15,7 +15,7 @@ if(!isset($post_settings['list_config'][34513]) || !count($post_settings['list_c
 }
 
 
-foreach($this->Ideachains->read(array(
+foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
     'chainuserinput IN (' . join(',', $post_settings['list_config'][34513]) . ')' => null, //Active Writes
 ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i){

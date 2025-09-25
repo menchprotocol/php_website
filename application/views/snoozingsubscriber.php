@@ -8,7 +8,7 @@ foreach($this->config->item('users___28917') as $chainusertype => $m) {
         $total_members = 0;
         $unsnooze_members = 0;
 
-        foreach($this->Ideachains->read(array(
+        foreach($this->Chains->read(array(
             'chainuserinput' => $chainusertype,
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array('chainuseroutput'), 0) as $x) {
@@ -16,10 +16,10 @@ foreach($this->config->item('users___28917') as $chainusertype => $m) {
             if((time()-strtotime($x['chaintime']))>(86400*intval($m['m__message']))){
 
                 //Remove from Snooze:
-                $this->Ideachains->delete($x['chainid'], $x['chainusercreator']);
+                $this->Chains->delete($x['chainid'], $x['chainusercreator']);
 
                 //Add to subscribers:
-                $this->Ideachains->create(array(
+                $this->Chains->create(array(
                     'chainusertype' => 4230,
                     'chainusercreator' => $x['chainusercreator'],
                     'chainuserinput' => 4430, //Active Member

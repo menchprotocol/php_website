@@ -21,16 +21,16 @@ $chains_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds posts:
-foreach ($this->Ideachains->read($filters, array('chainpostoutput'), 0) as $expires) {
+foreach ($this->Chains->read($filters, array('chainpostoutput'), 0) as $expires) {
 
     //Now go through everyone who post discovered this selection:
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___7704')) . ')' => null, //Discovery Expansions
         'chainpostinput' => $expires['postid'],
     ), array('chainusercreator'), 0) as $x_progress) {
 
         //Now see if the answer is completed:
-        $answer_completed = $this->Ideachains->read(array(
+        $answer_completed = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
             'chainpostinput' => $x_progress['chainpostoutput'],
             'chainusercreator' => $x_progress['userid'],
@@ -41,14 +41,14 @@ foreach ($this->Ideachains->read($filters, array('chainpostoutput'), 0) as $expi
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                 'chainpostinput' => $expires['postid'],
                 'chainusercreator' => $x_progress['userid'],
             ), array(), 0) as $delete) {
 
                 $deleted = true;
-                $this->Ideachains->delete($delete['chainid'], $user_session['userid']); //Time Expired
+                $this->Chains->delete($delete['chainid'], $user_session['userid']); //Time Expired
 
             }
 

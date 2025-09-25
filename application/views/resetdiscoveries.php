@@ -12,7 +12,7 @@ if (!isset($_GET['confirm'])) {
 } else {
 
     //Fetch their current progress chains:
-    $progress_x = $this->Ideachains->read(array(
+    $progress_x = $this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
         'chainusercreator' => $focus_e['userid'],
     ), array(), 0);
@@ -24,7 +24,7 @@ if (!isset($_GET['confirm'])) {
 
         //Delete all progressions:
         foreach ($progress_x as $progress_x) {
-            $this->Ideachains->delete($progress_x['chainid'], $focus_e['userid']);
+            $this->Chains->delete($progress_x['chainid'], $focus_e['userid']);
         }
 
     } else {

@@ -9,7 +9,7 @@ $at_starting_point = $target_posthashtag==$focus_i['posthashtag'];
 $breadcrum_content = null;
 if ($chainusercreator && !$at_starting_point) {
 
-    $previous = $this->Ideachains->previouspost($chainusercreator, $target_posthashtag, $focus_i['postid']);
+    $previous = $this->Chains->previouspost($chainusercreator, $target_posthashtag, $focus_i['postid']);
     if (count($previous)) {
 
         $nav_list = array();
@@ -25,7 +25,7 @@ if ($chainusercreator && !$at_starting_point) {
             $level++;
 
             //Does this have a follower list?
-            $query_subset = $this->Ideachains->read(array(
+            $query_subset = $this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $followings_i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, true);
@@ -43,7 +43,7 @@ if ($chainusercreator && !$at_starting_point) {
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_' . $followings_i['postid'] . '">';
                 foreach ($query_subset as $post_subset) {
 
-                    if (count($this->Ideachains->read(array(
+                    if (count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                         'chainusercreator' => $chainusercreator,
                         'chainpostinput' => $post_subset['postid'],
@@ -75,10 +75,10 @@ if ($breadcrum_content) {
 
 //Progress?
 if ($user_session) {
-    $progress = $this->Ideachains->progress($chainusercreator, $target_i);
+    $progress = $this->Chains->progress($chainusercreator, $target_i);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
-    if($target_completed && !count($this->Ideachains->read(array(
+    if($target_completed && !count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $focus_i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43050')) . ')' => null, //Direct Input Ideas
@@ -98,7 +98,7 @@ if ($user_session) {
 
 $x_completes = array();
 if ($user_session) {
-    $x_completes = $this->Ideachains->read(array(
+    $x_completes = $this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
         'chainusercreator' => $chainusercreator,
         'chainpostinput' => $focus_i['postid'],
@@ -119,7 +119,7 @@ if ($user_session || isset($_GET['open'])) {
 
 //Fetch Post Types:
 $focus_post_types = array();
-foreach($this->Ideachains->read(array(
+foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
     'chainpostoutput' => $focus_i['postid'],
     'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types

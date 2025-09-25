@@ -4,7 +4,7 @@ $community_pills = '';
 
 foreach ((isset($_GET['userhandle']) && strlen($_GET['userhandle']) ? $this->Users->read(array('LOWER(userhandle)' => strtolower($_GET['userhandle']))) : $this->Users->scissor(website_setting(0), 13207)) as $user_item) {
 
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainuserinput' => $user_item['userid'],
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
     ), array('chainuseroutput'), 0, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $x) {

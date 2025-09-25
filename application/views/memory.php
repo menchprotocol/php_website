@@ -16,13 +16,13 @@ $biggest_user_user = '';
 
 
 //CONFIG VARS
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => 4527,
     'chainusertype' => 4230,
 ), array('chainuseroutput'), 0, 0, array('userid' => 'ASC')) as $en) {
 
     //Now fetch all its followers:
-    $down__e = $this->Ideachains->read(array(
+    $down__e = $this->Chains->read(array(
         'chainuserinput' => $en['chainuseroutput'],
         'chainusertype' => 4230,
     ), array('chainuseroutput'), 0, 0, user_sort());
@@ -56,7 +56,7 @@ foreach ($this->Ideachains->read(array(
         }
 
         //Does this have any Pins?
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuserinput' => $follower['userid'],
             'chainusertype' => 41011, //PINNED FOLLOWER
         ), array(), 0) as $x_pinned) {
@@ -77,7 +77,7 @@ foreach ($this->Ideachains->read(array(
 
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuseroutput' => $follower['userid'],
             'chainusertype' => 4230,
         ), array('chainuserinput'), 0) as $cp_en) {
@@ -100,13 +100,13 @@ foreach ($this->Ideachains->read(array(
 
 //Append all App Userrs for quick checking:
 $memory_text .= "\n" . "\n";
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => 42043, //User Cache
     'chainusertype' => 4230,
 ), array('chainuseroutput'), 0) as $user) {
 
     $memory_text .= '$config[\'handlusers___' . $user['userid'] . '\'] = array(' . "\n";
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainuserinput' => $user['userid'],
         'chainusertype' => 4230,
     ), array('chainuseroutput'), 0) as $app) {
@@ -116,7 +116,7 @@ foreach ($this->Ideachains->read(array(
 }
 
 
-//Append Pinned Ideachains:
+//Append Pinned Chains:
 $memory_text .= "\n" . "\n";
 $memory_text .= '$config[\'pinned_down\'] = array(' . "\n";
 foreach ($pinned_down as $key => $value) {
@@ -151,14 +151,14 @@ $routes_text .= "\n";
 $special_route_text = '';
 $routes_text .= '//APPS:' . "\n\n";
 
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => 6287, //Apps
     'chainusertype' => 4230,
 ), array('chainuseroutput'), 0, 0, array('username' => 'ASC')) as $app) {
 
     if (!$memory_detected) {
         $special_routes = false;
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype' => 4230,
             'chainuserinput' => 42921,
             'chainuseroutput' => $app['userid'], //Required
@@ -173,7 +173,7 @@ foreach ($this->Ideachains->read(array(
     }
 
 
-    if (count($this->Ideachains->read(array(
+    if (count($this->Chains->read(array(
         'chainusertype' => 4230,
         'chainuserinput' => 44330,
         'chainuseroutput' => $app['userid'], //Required
@@ -182,7 +182,7 @@ foreach ($this->Ideachains->read(array(
         $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$2/$1' . '";' . "\n";
         $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/0/$1' . '";' . "\n"; //Should give error
         $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$1/0' . '";' . "\n"; //Should give error
-    } elseif (count($this->Ideachains->read(array(
+    } elseif (count($this->Chains->read(array(
         'chainusertype' => 4230,
         'chainuserinput' => 42905,
         'chainuseroutput' => $app['userid'], //Required
@@ -193,7 +193,7 @@ foreach ($this->Ideachains->read(array(
         } else {
             $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$1' . '";' . "\n";
         }
-    } elseif (count($this->Ideachains->read(array(
+    } elseif (count($this->Chains->read(array(
         'chainusertype' => 4230,
         'chainuserinput' => 42911,
         'chainuseroutput' => $app['userid'], //Required
@@ -204,7 +204,7 @@ foreach ($this->Ideachains->read(array(
         } else {
             $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/0/$1' . '";' . "\n";
         }
-    } elseif (count($this->Ideachains->read(array(
+    } elseif (count($this->Chains->read(array(
         'chainusertype' => 4230,
         'chainuserinput' => 44329,
         'chainuseroutput' => $app['userid'], //Required

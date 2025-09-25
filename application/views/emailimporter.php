@@ -15,7 +15,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             $total_emails++;
             //echo $email.'<hr />';
 
-            foreach($this->Ideachains->read(array(
+            foreach($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 'chainuserinput' => 3288, //Email
                 'chainvalue' => trim(strtolower($email)),
@@ -24,14 +24,14 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                 $found_emails++;
 
                 //Do we need to add?
-                if(isset($_POST['import_userid']) && intval($_POST['import_userid']) && !count($this->Ideachains->read(array(
+                if(isset($_POST['import_userid']) && intval($_POST['import_userid']) && !count($this->Chains->read(array(
                                     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                     'chainuserinput' => $_POST['import_userid'],
                     'chainuseroutput' => $user_data['chainuseroutput'],
                 )))){
 
                     $added_emails++;
-                    $this->Ideachains->create(array(
+                    $this->Chains->create(array(
                         'chainusertype' => 4230,
                         'chainusercreator' => $user_session['userid'],
                         'chainuserinput' => $_POST['import_userid'],

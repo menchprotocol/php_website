@@ -10,7 +10,7 @@ if(!isset($_GET['chainid']) || !intval($_GET['chainid'])){
 
 
     //Fetch Chain metadata and display it:
-    $x = $this->Ideachains->read(array(
+    $x = $this->Chains->read(array(
         'chainid' => $_GET['chainid'],
     ));
 

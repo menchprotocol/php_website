@@ -5,7 +5,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
     //This is a request to cancel, do so and redirect:
     if (view_hash($_GET['time'] . $_GET['userlogin']) == $_GET['hash']) {
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___40986')) . ')' => null, //DISCOVERIES
             'chainid' => $_GET['chainid'],
             'LOWER(userhandle)' => strtolower($_GET['userlogin']),
@@ -21,7 +21,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
             if (isset($_GET['submit'])) {
 
                 //They have confirmed, remove:
-                $this->Ideachains->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chainusertype' => 42333, //RSVP No
                     'chainusercreator' => $x['userid'],
                 ));
@@ -58,7 +58,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
     //Track successful post dispatches:
     $post_scanned = array();
 
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
         'chainuserinput IN (' . join(',', $this->config->item('userids___42216')) . ')' => null, //Event Reminder
     ), array('chainpostoutput'), 0) as $i) {
@@ -70,7 +70,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
             //Fetch Start time for this post:
             $time_starts = 0;
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainpostoutput' => $i['postid'],
                 'chainuserinput' => 26556, //Time Starts
@@ -86,7 +86,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
                 if (($time_starts - intval($users___42216[$i['chainuserinput']]['m__message'])) < time()) {
 
                     //End time?
-                    $time_ends = $this->Ideachains->read(array(
+                    $time_ends = $this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostoutput' => $i['postid'],
                         'chainuserinput' => 26557, //Time Ends
@@ -97,7 +97,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
                     $total_sent = 0;
 
                     //The time is here! Send event reminders to those who successfully post discovered this:
-                    foreach ($this->Ideachains->read(array(
+                    foreach ($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___40986')) . ')' => null, //DISCOVERIES
                         'chainpostinput' => $i['postid'],
                     ), array('chainusercreator'), 0) as $x) {
@@ -115,7 +115,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
                             "\n" . 'https://' . get_domain('m__message', $x['userid'], $user_website) . view_app_chain(42216) . '?chainid=' . $x['chainid'] . '&userlogin=' . $x['userhandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $x['userhandle']);
 
                         //Send message:
-                        $message = $this->Ideachains->message($x['userid'], $subject, $html_message, array(
+                        $message = $this->Chains->message($x['userid'], $subject, $html_message, array(
                             'chainpostinput' => $i['postid'],
                         ), $i['postid'], $user_website);
 
@@ -142,7 +142,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
         if ($remind_status < 0 || $remind_status > 0) {
             //We are done with this reminder request:
-            $this->Ideachains->update($i['chainid'], array(
+            $this->Chains->update($i['chainid'], array(
                 'chainusertype' => ($remind_status > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
                 'chainusercreator' => $user_session['userid'],
             ));
@@ -151,7 +151,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
     }
 
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
         'chainkey >' => time(), //Future event
         'chainuserinput' => 26556, //Time Starts
@@ -159,7 +159,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
         //Determine if it's time to send this message:
         $time_starts = 0;
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $i['postid'],
             'chainuserinput' => 26556, //Time Starts
@@ -175,7 +175,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
         //Does it have an end time?
         $end_sending = 0;
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $i['postid'],
             'chainuserinput' => 26557, //Time Ends
@@ -185,7 +185,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
         }
 
 
-        $children = $this->Ideachains->read(array(
+        $children = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'));
@@ -198,7 +198,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
         foreach ($post_settings['query_string_filtered'] as $x) {
 
-            if (count($this->Ideachains->read(array(
+            if (count($this->Chains->read(array(
                 'chainpostinput' => $i['postid'],
                 'chainusercreator' => $x['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
@@ -218,7 +218,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
             $html_message = '';
             foreach ($children as $down_or) {
 
-                $discoveries = $this->Ideachains->read(array(
+                $discoveries = $this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                     'chainusercreator' => $x['userid'],
                     'chainpostinput' => $down_or['postid'],
@@ -229,7 +229,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
             }
 
-            $message = $this->Ideachains->message($x['userid'], $subject_line, $content_message . "\n" . trim($html_message), array(
+            $message = $this->Chains->message($x['userid'], $subject_line, $content_message . "\n" . trim($html_message), array(
                 'chainpostinput' => $i['postid'],
             ), $i['postid'], $i['chainuserdomain'], true);
             $total_sent += ($message['status'] ? 1 : 0);
@@ -240,7 +240,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
         //Mark this as complete?
         if (!$end_sending || $end_sending < time()) {
             //Ready to be done:
-            $this->Ideachains->update($i['chainid'], array(
+            $this->Chains->update($i['chainid'], array(
                 'chainusertype' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
                 'chainusercreator' => $user_session['userid'],
             ));

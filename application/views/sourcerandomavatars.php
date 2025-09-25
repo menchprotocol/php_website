@@ -12,7 +12,7 @@ if(isset($_GET['update_u_icons'])){
     }
 
     $updated = 0;
-    foreach($this->Ideachains->read($base_filters, array('chainuseroutput'), 0) as $x){
+    foreach($this->Chains->read($base_filters, array('chainuseroutput'), 0) as $x){
         $updated += $this->Users->update($x['userid'], array(
             'usercover' => usercover_generator(12279),
         ));

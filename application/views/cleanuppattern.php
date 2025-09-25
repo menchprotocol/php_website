@@ -6,7 +6,7 @@ foreach($this->Posts->read(array(
 
     echo '<h2>' . view_post_title($i) . '</h2>';
 
-    $preg_query = $this->Ideachains->read(array(
+    $preg_query = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
         'chainpostoutput' => $i['postid'],
         'chainuserinput' => 32103,
@@ -15,7 +15,7 @@ foreach($this->Posts->read(array(
 
     //See apply to Users:
     $apply_to = array();
-    foreach($this->Ideachains->read(array(
+    foreach($this->Chains->read(array(
             'chainusertype' => 7545, //Following Add
         'chainpostoutput' => $i['postid'],
     ), array('chainuserinput')) as $this_tag){
@@ -38,7 +38,7 @@ foreach($this->Posts->read(array(
             foreach($this->Users->read(array(
                 'LOWER(userhandle)' => strtolower($_GET['userhandle']),
             )) as $e){
-                foreach($this->Ideachains->read(array(
+                foreach($this->Chains->read(array(
                     'chainuserinput' => $e['userid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                                 ), array('chainuseroutput'), 0) as $x) {
@@ -54,19 +54,19 @@ foreach($this->Posts->read(array(
                             $updated++;
                             if(isset($_GET['update'])){
 
-                                $this->Ideachains->update($x['chainid'], array(
+                                $this->Chains->update($x['chainid'], array(
                                     'chainvalue' => $new_form,
                                     'chainusercreator' => $user_session['userid'],
                                 ));
 
                                 foreach($apply_to as $apply_userid){
-                                    foreach($this->Ideachains->read(array(
+                                    foreach($this->Chains->read(array(
                                         'chainuserinput' => $apply_userid,
                                         'chainuseroutput' => $x['chainusercreator'],
                                         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                                                                         ), array(), 0) as $follow_appended) {
                                         $chains_updated++;
-                                        $this->Ideachains->update($follow_appended['chainid'], array(
+                                        $this->Chains->update($follow_appended['chainid'], array(
                                             'chainvalue' => $new_form,
                                             'chainusercreator' => $user_session['userid'],
                                         ));
@@ -81,17 +81,17 @@ foreach($this->Posts->read(array(
                             $removed++;
                             if(isset($_GET['update'])){
 
-                                $this->Ideachains->delete($x['chainid']);
+                                $this->Chains->delete($x['chainid']);
 
                                 //Also update follower chain?
                                 foreach($apply_to as $apply_userid){
-                                    foreach($this->Ideachains->read(array(
+                                    foreach($this->Chains->read(array(
                                         'chainuserinput' => $apply_userid,
                                         'chainuseroutput' => $x['chainusercreator'],
                                         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                                                             ), array(), 0) as $follow_appended) {
                                         $chains_removed++;
-                                        $this->Ideachains->delete($follow_appended['chainid']);
+                                        $this->Chains->delete($follow_appended['chainid']);
                                     }
                                 }
                                 echo 'Removed! ';
@@ -104,7 +104,7 @@ foreach($this->Posts->read(array(
             }
 
 
-            echo 'USERS '.$updated.'/'.$responses.' Updated & '.$removed.' removed! (Ideachains Removed: '.$chains_removed.' & Ideachains Updated: '.$chains_updated.')<hr /><hr /><hr />';
+            echo 'USERS '.$updated.'/'.$responses.' Updated & '.$removed.' removed! (Chains Removed: '.$chains_removed.' & Chains Updated: '.$chains_updated.')<hr /><hr /><hr />';
 
         }
 
@@ -115,7 +115,7 @@ foreach($this->Posts->read(array(
 
         echo '<p>Applying against ['.$preg_query[0]['chainvalue'].'] results in:</p>';
 
-        foreach($this->Ideachains->read(array(
+        foreach($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
             'LENGTH(chainvalue)>0' => null,
             'chainpostinput' => $i['postid'],
@@ -131,19 +131,19 @@ foreach($this->Posts->read(array(
                     $updated++;
                     if(isset($_GET['update'])){
 
-                        $this->Ideachains->update($x['chainid'], array(
+                        $this->Chains->update($x['chainid'], array(
                             'chainvalue' => $new_form,
                             'chainusercreator' => $user_session['userid'],
                         ));
 
                         foreach($apply_to as $apply_userid){
-                            foreach($this->Ideachains->read(array(
+                            foreach($this->Chains->read(array(
                                 'chainuserinput' => $apply_userid,
                                 'chainuseroutput' => $x['chainusercreator'],
                                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                                             ), array(), 0) as $follow_appended) {
                                 $chains_updated++;
-                                $this->Ideachains->update($follow_appended['chainid'], array(
+                                $this->Chains->update($follow_appended['chainid'], array(
                                     'chainvalue' => $new_form,
                                     'chainusercreator' => $user_session['userid'],
                                 ));
@@ -157,17 +157,17 @@ foreach($this->Posts->read(array(
                     $removed++;
                     if(isset($_GET['update'])){
 
-                        $this->Ideachains->delete($x['chainid']);
+                        $this->Chains->delete($x['chainid']);
 
                         //Also update follower chain?
                         foreach($apply_to as $apply_userid){
-                            foreach($this->Ideachains->read(array(
+                            foreach($this->Chains->read(array(
                                 'chainuserinput' => $apply_userid,
                                 'chainuseroutput' => $x['chainusercreator'],
                                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                                             ), array(), 0) as $follow_appended) {
                                 $chains_removed++;
-                                $this->Ideachains->delete($follow_appended['chainid']);
+                                $this->Chains->delete($follow_appended['chainid']);
                             }
                         }
                         echo 'Removed! ';
@@ -178,7 +178,7 @@ foreach($this->Posts->read(array(
             }
         }
 
-        echo $updated.'/'.$responses.' Updated & '.$removed.' removed! (Ideachains Removed: '.$chains_removed.' & Ideachains Updated: '.$chains_updated.')<hr /><hr /><hr />';
+        echo $updated.'/'.$responses.' Updated & '.$removed.' removed! (Chains Removed: '.$chains_removed.' & Chains Updated: '.$chains_updated.')<hr /><hr /><hr />';
 
     } else {
 

@@ -576,7 +576,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_userid.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Interaction Types</option>';
-                                    foreach($this->config->item('users___32292') /* User Ideachains */ as $chainusertype3 => $m3){
+                                    foreach($this->config->item('users___32292') /* User Chains */ as $chainusertype3 => $m3){
                                         $input_options .= '<option value="'.$chainusertype3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
@@ -584,7 +584,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_userid.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status</option>';
-                                    foreach($this->config->item('users___32292') /* User Ideachains */ as $chainusertype3 => $m3){
+                                    foreach($this->config->item('users___32292') /* User Chains */ as $chainusertype3 => $m3){
                                         $input_options .= '<option value="'.$chainusertype3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';

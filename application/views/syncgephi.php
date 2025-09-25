@@ -34,7 +34,7 @@ foreach ($is as $in) {
     ));
 
     //Fetch Next Posts:
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
         'chainpostinput' => $in['postid'],
     ), array('chainpostoutput'), 0, 0) as $next_i) {
@@ -64,7 +64,7 @@ foreach ($es as $en) {
     ));
 
     //Fetch followers:
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         'chainuserinput' => $en['userid'],
     ), array('chainuseroutput'), 0, 0) as $user_down) {

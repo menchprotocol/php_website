@@ -54,9 +54,9 @@ if($user_http_request && !isset($_GET['email_trigger'])){
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->Ideachains->read($subscriber_filters, array('chainuseroutput')) as $subscribed_u){
+    foreach($this->Chains->read($subscriber_filters, array('chainuseroutput')) as $subscribed_u){
 
-        $this->Ideachains->message($subscribed_u['userid'], $subject, $html_message);
+        $this->Chains->message($subscribed_u['userid'], $subject, $html_message);
         $email_recipients++;
 
     }

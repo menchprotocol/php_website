@@ -10,7 +10,7 @@ $total_points = 0;
 $table_body = '';
 
 //Count total first:
-$totals_count = $this->Ideachains->read(array(), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+$totals_count = $this->Chains->read(array(), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
 foreach($this->config->item('users___4593') as $chainusertype => $m) {
@@ -24,7 +24,7 @@ foreach($this->config->item('users___4593') as $chainusertype => $m) {
     $table_body .= '<td style="text-align: left;">'.$chainusertype.'</td>';
 
     //List all statuses:
-    $listuser_count = $this->Ideachains->read(array(
+    $listuser_count = $this->Chains->read(array(
         'chainusertype' => $chainusertype,
     ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
     $interactions_this = $listuser_count[0]['totals'];

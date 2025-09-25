@@ -2,21 +2,21 @@
 
 //Sync All Adding followers:
 $counter = 0;
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainusertype' => 7545,
     'chainuserinput NOT IN (' . join(',', $this->config->item('userids___43048')) . ')' => null, //No need to add these special ones... UserNickname
 ), array('chainuserinput'), 0) as $addition_sync) {
 
     $is_found = false;
     //Fetch everyone who has post discovered this post:
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
         'chainpostinput' => $addition_sync['chainpostoutput'],
     ), array('chainusercreator'), 0, 0, array('chainid' => 'DESC')) as $dicovered) {
 
         //Any responses by this user?
         $set_chainvalue = $dicovered['chainvalue'];
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype' => 4228, //Sequence
             'chainpostoutput' => $addition_sync['chainpostoutput'],
             'chainusercreator' => $dicovered['chainusercreator'],

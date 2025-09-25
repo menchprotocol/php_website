@@ -214,7 +214,7 @@ $users___11035 = $this->config->item('users___11035'); //Encyclopedia
                 alert(data.message);
             } else {
                 //Load Report:
-                $('#table_ideachains tr:last').after(data.message);
+                $('#table_chains tr:last').after(data.message);
                 if (data.overall_stats.length) {
                     $('.overall_stats').html(data.overall_stats);
                 }
@@ -234,7 +234,7 @@ $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
     $(document).ready(function () {
 
-        //Load first page of Ideachains:
+        //Load first page of Chains:
         chain_load();
 
         $(function () {
@@ -355,7 +355,7 @@ if (isset($_GET['chainusertype']) && substr_count($_GET['chainusertype'], ',') >
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach ($this->Ideachains->read($ini_filter, array('chainusertype'), 0, 0, user_sort(), 'COUNT(chainusertype) as total_count, username, chainusertype', 'chainusertype, username') as $x) {
+        foreach ($this->Chains->read($ini_filter, array('chainusertype'), 0, 0, user_sort(), 'COUNT(chainusertype) as total_count, username, chainusertype', 'chainusertype, username') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['chainusertype'] . '" ' . ((isset($_GET['chainusertype']) && $_GET['chainusertype'] == $x['chainusertype']) ? 'selected="selected"' : '') . '>' . $x['username'] . ' (' . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
@@ -426,7 +426,7 @@ foreach ($this->config->item('users___4341') as $chainusertype => $m) {
 }
 $row1 .= '</tr>';
 $row2 .= '</tr>';
-echo '<table id="table_ideachains" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
+echo '<table id="table_chains" class="table table-sm image-mini" style="font-size: 0.8em;">'.$row1.$row2.'</table>';
 
 //Table Data
 echo '<div class="main__title center hidden load_message"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span><span class="random_message"></span></div>';

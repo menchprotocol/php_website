@@ -7,11 +7,11 @@ echo '<table class="table table-striped" style="border: 1px solid #000;">';
 
 //Check this users @user:
 $was_found = false;
-foreach($this->Ideachains->read(array(
+foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
     'chainuserinput' => $focus_e['userid'],
 ), array('chainuseroutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $user_session['userid'] */) as $user_output){
-    foreach($this->Ideachains->read(array(
+    foreach($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         'chainuserinput' => $user_output['userid'],
         'chainuseroutput' => $user_session['userid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it
@@ -24,7 +24,7 @@ echo '</table>';
 
 
 //Check this users @user:
-foreach($this->Ideachains->read(array(
+foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
     'chainuserinput' => 1727532, //@checkmy
     'chainuseroutput' => $focus_e['userid'],
@@ -41,7 +41,7 @@ if(!$was_found){
 
 } else {
 
-    foreach($this->Ideachains->read(array(
+    foreach($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         'chainuserinput' => $user_output['userid'],
         'chainuseroutput' => $user_session['userid'], //Since we are limiting the query to session user we could disable the $access_limit in the query before it

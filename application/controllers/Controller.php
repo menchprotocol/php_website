@@ -238,7 +238,7 @@ class Controller extends CI_Controller
                         if (post_is_startable($focus_i)) {
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this post. Scroll to the bottom & go next to continue.</div>';
                         } else {
-                            $this->Ideachains->post_discovered(4559, $focus_e['userid'], ($target_i ? $target_i['postid'] : 0), $focus_i);
+                            $this->Chains->post_discovered(4559, $focus_e['userid'], ($target_i ? $target_i['postid'] : 0), $focus_i);
 
                             //Inform user of changes:
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Posts has been discovered</div>';
@@ -301,7 +301,7 @@ class Controller extends CI_Controller
 
                 if (!isset($_GET['reset_cache'])) {
                     //Fetch Most Recent Cache:
-                    foreach ($this->Ideachains->read(array(
+                    foreach ($this->Chains->read(array(
                         'chainuserdomain' => website_setting(0),
                         'chainusertype' => 44176, //User View
                         'chainuserinput' => 14599, //Cache App
@@ -309,7 +309,7 @@ class Controller extends CI_Controller
                     ), array(), 1, 0, array('chaintime' => 'DESC')) as $latest_cache) {
                         if (strtotime($latest_cache['chaintime']) <= (time() - view_memory(6404, 14599))) {
                             //Its expired, void it:
-                            $this->Ideachains->delete($latest_cache['chainid']);
+                            $this->Chains->delete($latest_cache['chainid']);
                         } else {
                             $ui = $latest_cache['chainvalue'];
                             $cache_chaintime = '<div class="texttransparent center main__title">Updated ' . view_time_difference($latest_cache['chaintime']) . ' Ago</div>';
@@ -371,7 +371,7 @@ class Controller extends CI_Controller
 
 
         if ($new_cache) {
-            $cache_x = $this->Ideachains->create(array(
+            $cache_x = $this->Chains->create(array(
                 'chainuserdomain' => website_setting(0),
                 'chainusertype' => 44176, //User View
                 'chainuserinput' => 14599, //Cache App
@@ -400,17 +400,17 @@ class Controller extends CI_Controller
                 //Not a valid starting point:
                 return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['posthashtag'] . ' is not an active starting point.</div>');
 
-            } elseif (!count($this->Ideachains->read(array(
+            } elseif (!count($this->Chains->read(array(
                 'LOWER(posthashtag)' => strtolower($target_i['posthashtag']),
                 'chainusercreator' => $user_session['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
             ), array('chainpostinput')))) {
 
                 //Not yet started, add to their starting point:
-                $completion_status = $this->Ideachains->post_discovered(4235, $user_session['userid'], 0, $target_i);
+                $completion_status = $this->Chains->post_discovered(4235, $user_session['userid'], 0, $target_i);
 
                 //Now return next post:
-                $next__url = $this->Ideachains->next_posts($user_session['userid'], $target_i['posthashtag'], $target_i);
+                $next__url = $this->Chains->next_posts($user_session['userid'], $target_i['posthashtag'], $target_i);
 
                 if ($next__url) {
                     //Go Next:
@@ -542,7 +542,7 @@ class Controller extends CI_Controller
         $users___42179 = $this->config->item('users___42179'); //Dynamic Input Fields
         $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $is[0]['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
@@ -599,7 +599,7 @@ class Controller extends CI_Controller
                     $counted = 0;
                     $unique_values = array();
                     if ($postid > 0) { //Must have an original ID to possibly have a value...
-                        foreach ($this->Ideachains->read(array(
+                        foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
                             'chainpostoutput' => $postid,
                             'chainuserinput' => $dynamic_userid,
@@ -703,7 +703,7 @@ class Controller extends CI_Controller
         $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
 
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $is[0]['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
@@ -759,7 +759,7 @@ class Controller extends CI_Controller
                     $counted = 0;
                     $unique_values = array();
                     if ($postid > 0) { //Must have an original ID to possibly have a value...
-                        foreach ($this->Ideachains->read(array(
+                        foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
                             'chainpostoutput' => $postid,
                             'chainuserinput' => $dynamic_userid,
@@ -855,7 +855,7 @@ class Controller extends CI_Controller
         if ($_POST['postid'] == $_POST['focus__id']) {
 
             //Find Published Followings:
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostoutput' => $_POST['postid'],
             ), array('chainpostinput'), 1) as $previous_i) {
@@ -864,7 +864,7 @@ class Controller extends CI_Controller
 
             //If not found, find active followings:
             if (!$delete_redirect) {
-                foreach ($this->Ideachains->read(array(
+                foreach ($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                     'chainpostoutput' => $_POST['postid'],
                 ), array('chainpostinput'), 1) as $previous_i) {
@@ -888,7 +888,7 @@ class Controller extends CI_Controller
 
         }
 
-        //Delete all Ideachains:
+        //Delete all Chains:
         $chains_removed = $this->Posts->delete($_POST['postid'], $user_session['userid'], $migrateid);
 
         return view_json(array(
@@ -959,7 +959,7 @@ class Controller extends CI_Controller
         if ($_POST['userid'] == $_POST['focus__id']) {
 
             //Find Published Followings:
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 'chainuseroutput' => $_POST['userid'],
             ), array('chainuserinput'), 1, 0, array('username' => 'DESC')) as $up_e) {
@@ -979,7 +979,7 @@ class Controller extends CI_Controller
 
         }
 
-        //Delete all Ideachains:
+        //Delete all Chains:
         $chains_removed = $this->Users->delete($_POST['userid'], $user_session['userid'], $migrateid);
 
         if(!$chains_removed['status']){
@@ -1108,7 +1108,7 @@ class Controller extends CI_Controller
             if (isset($update_array['posthashtag'])) {
 
                 //Now Users everywhere they are referenced:
-                foreach ($this->Ideachains->read(array(
+                foreach ($this->Chains->read(array(
                     'chainpostoutput' => $is[0]['postid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___4486')) . ')' => null, //Ideas
                 ), array('chainpostinput')) as $ref) {
@@ -1431,7 +1431,7 @@ class Controller extends CI_Controller
             ));
 
             //Count followers:
-            $listuser_count = $this->Ideachains->read(array(
+            $listuser_count = $this->Chains->read(array(
                 'chainuserinput' => $_POST['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             ), array('chainuseroutput'), 0, 0, array(), 'COUNT(userid) as totals');
@@ -1456,7 +1456,7 @@ class Controller extends CI_Controller
                 $updated = 0;
                 foreach ($_POST['new_chainkey'] as $rank => $chainid) {
                     if ($chainid > 0) {
-                        $updated += $this->Ideachains->update($chainid, array(
+                        $updated += $this->Chains->update($chainid, array(
                             'chainkey' => intval($rank),
                         ));
                     }
@@ -1465,7 +1465,7 @@ class Controller extends CI_Controller
                 //Display message:
                 return view_json(array(
                     'status' => 1,
-                    'message' => $updated . ' Ideachains updated',
+                    'message' => $updated . ' Chains updated',
                 ));
 
             }
@@ -1557,17 +1557,17 @@ class Controller extends CI_Controller
 
 
         //Followings:
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuseroutput' => $_POST['userid'],
-            'chainusertype IN (' . join(',', $this->config->item('userids___41303')) . ')' => null, //Clone User Ideachains
+            'chainusertype IN (' . join(',', $this->config->item('userids___41303')) . ')' => null, //Clone User Chains
         ), array(), 0) as $x) {
-            if (!count($this->Ideachains->read(array(
+            if (!count($this->Chains->read(array(
                 'chainusertype' => $x['chainusertype'],
                 'chainuserinput' => $x['chainuserinput'],
                 'chainuseroutput' => $focus_e['userid'],
                 'chainvalue' => $x['chainvalue'],
             )))) {
-                $this->Ideachains->create(array(
+                $this->Chains->create(array(
                     'chainusercreator' => $user_session['userid'],
                     'chainkey' => $x['chainkey'],
                     'chainusertype' => $x['chainusertype'],
@@ -1581,19 +1581,19 @@ class Controller extends CI_Controller
         if($copy_children){
 
             //Followers:
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainuserinput' => $_POST['userid'],
-                'chainusertype IN (' . join(',', $this->config->item('userids___41303')) . ')' => null, //Clone User Ideachains
+                'chainusertype IN (' . join(',', $this->config->item('userids___41303')) . ')' => null, //Clone User Chains
             ), array(), 0) as $x) {
 
                 //Make sure none existent in new User:
-                if (!count($this->Ideachains->read(array(
+                if (!count($this->Chains->read(array(
                     'chainusertype' => $x['chainusertype'],
                     'chainuserinput' => $focus_e['userid'],
                     'chainuseroutput' => $x['chainuseroutput'],
                     'chainvalue' => $x['chainvalue'],
                 )))) {
-                    $this->Ideachains->create(array(
+                    $this->Chains->create(array(
                         'chainusercreator' => $user_session['userid'],
                         'chainkey' => $x['chainkey'],
                         'chainusertype' => $x['chainusertype'],
@@ -1733,7 +1733,7 @@ class Controller extends CI_Controller
 
             //Add Up/Down User:
 
-            //Add Ideachains only if not previously added by the URL function:
+            //Add Chains only if not previously added by the URL function:
             if ($is_upwards) {
 
                 //Following
@@ -1754,7 +1754,7 @@ class Controller extends CI_Controller
             $chainvalue = null;
 
             //Create Chain:
-            $ur2 = $this->Ideachains->create(array(
+            $ur2 = $this->Chains->create(array(
                 'chainusercreator' => $user_session['userid'],
                 'chainusertype' => 4230,
                 'chainvalue' => $chainvalue,
@@ -1815,7 +1815,7 @@ class Controller extends CI_Controller
         $profile_header = '';
 
         //Fetch User Templates, if any:
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $this->config->item('userids___42178')) . ')' => null, //Dynamic Users
             'chainuseroutput' => $es[0]['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -1826,7 +1826,7 @@ class Controller extends CI_Controller
             }
             array_push($scanned_users, $user_group['userid']);
 
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainuseroutput' => $user_group['userid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___42145')) . ')' => null, //Dynamic Input Templates
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -1909,7 +1909,7 @@ class Controller extends CI_Controller
                         //Fetch the current value(s):
                         $counted = 0;
                         $unique_values = array();
-                        foreach ($this->Ideachains->read(array(
+                        foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                             'chainuseroutput' => $es[0]['userid'],
                             'chainuserinput' => $dynamic_userid,
@@ -1959,7 +1959,7 @@ class Controller extends CI_Controller
             )) as $selected_e) {
                 foreach (array_intersect($users___42776[$selected_e['userid']]['m__following'], $this->config->item('userids___4592')) as $data_type) {
                     //Any value?
-                    $values = $this->Ideachains->read(array(
+                    $values = $this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                         'chainuseroutput' => $es[0]['userid'],
                         'chainuserinput' => $selected_e['userid'],
@@ -2081,13 +2081,13 @@ class Controller extends CI_Controller
 
             //Fetch the current value:
             if ($d_chainid > 0) {
-                $values = $this->Ideachains->read(array(
+                $values = $this->Chains->read(array(
                     'chainid' => $d_chainid,
                 ));
             }
 
             if (!$d_chainid || !count($values)) {
-                $values = $this->Ideachains->read(array(
+                $values = $this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                     'chainuserinput' => $dynamic_userid,
                     'chainuseroutput' => $es[0]['userid'],
@@ -2102,14 +2102,14 @@ class Controller extends CI_Controller
                 //HACK: Summary are key chains that should not be removed
                 /*
                 if (count($values) && $dynamic_userid != 11035) {
-                    $this->Ideachains->delete($values[0]['chainid'], $user_session['userid']);
+                    $this->Chains->delete($values[0]['chainid'], $user_session['userid']);
                 }
                 */
 
             } elseif (!count($values)) {
 
                 //Create Chain:
-                $this->Ideachains->create(array(
+                $this->Chains->create(array(
                     'chainusercreator' => $user_session['userid'],
                     'chainusertype' => 4230,
                     'chainuserinput' => $dynamic_userid,
@@ -2121,7 +2121,7 @@ class Controller extends CI_Controller
             } elseif ($values[0]['chainvalue'] != $dynamic_value) {
 
                 //Update Chain:
-                $this->Ideachains->update($values[0]['chainid'], array(
+                $this->Chains->update($values[0]['chainid'], array(
                     'chainvalue' => $dynamic_value,
                     'chainusercreator' => $user_session['userid'],
                 ));
@@ -2173,7 +2173,7 @@ class Controller extends CI_Controller
         $new_user_string = trim($_POST['save_userhandle']);
         if ($es[0]['userhandle'] != $new_user_string) {
             //Update Users everywhere they are referenced:
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainuserinput' => $es[0]['userid'],
                 'chainusertype' => 31835, //User Mention
             ), array('chainpostoutput')) as $ref) {
@@ -2189,14 +2189,14 @@ class Controller extends CI_Controller
         if ($_POST['save_chainid'] > 0 && $_POST['save_chainvalue'] != 'IGNORE_INPUT') {
 
             //Fetch Chain:
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainid' => $_POST['save_chainid'],
             )) as $this_x) {
 
                 $es[0] = array_merge($es[0], $this_x);
 
                 if ($this_x['chainvalue'] != trim($_POST['save_chainvalue'])) {
-                    $this->Ideachains->update($this_x['chainid'], array(
+                    $this->Chains->update($this_x['chainid'], array(
                         'chainvalue' => trim($_POST['save_chainvalue']),
                         'chainusercreator' => $user_session['userid'],
                     ));
@@ -2267,17 +2267,17 @@ class Controller extends CI_Controller
 
             //Dispatch Any Emails Necessary:
             if (isset($_POST['selected_userid']) && intval($_POST['selected_userid']) > 0) {
-                foreach ($this->Ideachains->read(array(
+                foreach ($this->Chains->read(array(
                     'chainusertype' => 31835, //Mention
                     'chainuserinput' => $_POST['selected_userid'],
                 ), array('chainpostoutput'), 0) as $i) {
-                    if (count($this->Ideachains->read(array(
+                    if (count($this->Chains->read(array(
                         'chainusertype' => 31835, //Mention
                         'chainuserinput' => 31065, //Choice Update Email Templates
                         'chainpostoutput' => $i['postid'], //Is this the template?
                     )))) {
                         //Found the email template to send:
-                        $total_sent = $this->Ideachains->broadcast(array($user_session), $i, website_setting(0), false);
+                        $total_sent = $this->Chains->broadcast(array($user_session), $i, website_setting(0), false);
                         break; //Just the first template match
                     }
                 }
@@ -2303,30 +2303,30 @@ class Controller extends CI_Controller
 
             //List all possible answers:
             $possible_answers = array();
-            foreach ($this->Ideachains->read($query_filters, array('chainuseroutput'), 0, 0) as $answer_e) {
+            foreach ($this->Chains->read($query_filters, array('chainuseroutput'), 0, 0) as $answer_e) {
                 $stats['total']++;
                 array_push($possible_answers, $answer_e['userid']);
             }
 
             //Delete previously selected options:
             if ($_POST['down_userid']) {
-                $delete_query = $this->Ideachains->read(array(
+                $delete_query = $this->Chains->read(array(
                     'chainuserinput IN (' . join(',', $possible_answers) . ')' => null,
                     'chainuseroutput' => $_POST['down_userid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 ));
             } elseif ($_POST['right_postid']) {
-                $delete_query = $this->Ideachains->read(array(
+                $delete_query = $this->Chains->read(array(
                     'chainuserinput IN (' . join(',', $possible_answers) . ')' => null,
                     'chainpostoutput' => $_POST['right_postid'],
-                    'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
+                    'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
                 ));
             }
 
             foreach ($delete_query as $delete) {
                 $stats['deleted']++;
                 //Should usually delete a single option:
-                $this->Ideachains->delete($delete['chainid'], $user_session['userid']);
+                $this->Chains->delete($delete['chainid'], $user_session['userid']);
             }
 
         }
@@ -2335,7 +2335,7 @@ class Controller extends CI_Controller
         if ((!$_POST['enable_mulitiselect'] && $is_required) || !$_POST['was_previously_selected']) {
             if ($_POST['down_userid']) {
                 $stats['added']++;
-                $this->Ideachains->create(array(
+                $this->Chains->create(array(
                     'chainusercreator' => $user_session['userid'],
                     'chainuserinput' => $_POST['selected_userid'],
                     'chainusertype' => 4230,
@@ -2423,21 +2423,21 @@ class Controller extends CI_Controller
 
         //Auth Code:
         $is_authenticated = false;
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainusertype' => 44176, //User View
             'chainuserinput' => 32078, //Sign In Key
             'LOWER(chainvalue) LIKE \'' . strtolower($_POST['account_email_phone']) . '%\'' => null,
         ), array(), 1, 0, array('chaintime' => 'DESC')) as $sent_key) {
             if (strtotime($sent_key['chaintime']) <= (time() - 86400)) {
                 //Expired
-                $this->Ideachains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
+                $this->Chains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
                 break;
             }
             $session_key = $this->session->userdata('session_key');
             $key_parts = explode('/', $sent_key['chainvalue'], 2);
             if (strlen($session_key) && $key_parts[1] == md5($session_key . $_POST['input_code'])) {
                 //Void access code:
-                $is_authenticated = $this->Ideachains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
+                $is_authenticated = $this->Chains->delete($sent_key['chainid'], $_POST['account_id']); //Code Verified
             }
         }
         if (!$is_authenticated) {
@@ -2515,7 +2515,7 @@ class Controller extends CI_Controller
 
             $_POST['require_writing'] = intval($_POST['require_writing']);
 
-            $already_added = $this->Ideachains->read(array(
+            $already_added = $this->Chains->read(array(
                 'chainuserinput' => $_POST['userid'],
                 'chainuseroutput' => $_POST['chainusercreator'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -2527,12 +2527,12 @@ class Controller extends CI_Controller
 
                     //Updating current value if changed:
                     if (strlen($_POST['written_answer']) && trim($_POST['written_answer']) != $already_added[0]['chainvalue']) {
-                        $this->Ideachains->update($already_added[0]['chainid'], array(
+                        $this->Chains->update($already_added[0]['chainid'], array(
                             'chainvalue' => $_POST['written_answer'],
                             'chainusercreator' => $user_session['userid'],
                         ));
                     } elseif (!strlen($_POST['written_answer'])) {
-                        $this->Ideachains->delete($already_added[0]['chainid'], $user_session['userid']);
+                        $this->Chains->delete($already_added[0]['chainid'], $user_session['userid']);
                     }
 
                     return view_json(array(
@@ -2543,7 +2543,7 @@ class Controller extends CI_Controller
                 } else {
 
                     //Already exists, let's remove:
-                    $this->Ideachains->delete($already_added[0]['chainid'], $user_session['userid']);
+                    $this->Chains->delete($already_added[0]['chainid'], $user_session['userid']);
 
                     return view_json(array(
                         'status' => 1,
@@ -2569,7 +2569,7 @@ class Controller extends CI_Controller
                     )) as $e) {
 
                         //Does not exist, Add:
-                        $this->Ideachains->create(array(
+                        $this->Chains->create(array(
                             'chainuserinput' => $_POST['userid'],
                             'chainuseroutput' => $_POST['chainusercreator'],
                             'chainusercreator' => $user_session['userid'],
@@ -2632,7 +2632,7 @@ class Controller extends CI_Controller
 
         //Search for email/phone to see if it exists
         $chainusercreator = 0;
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'LOWER(chainvalue)' => strtolower($_POST['account_email_phone']),
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             'chainuserinput' => (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783), //Email / Phone
@@ -2666,7 +2666,7 @@ class Controller extends CI_Controller
         }
 
         //Log new key:
-        $this->Ideachains->create(array(
+        $this->Chains->create(array(
             'chainusertype' => 44176, //User View
             'chainuserinput' => 32078, //Sign In Key
             'chainuseroutput' => $chainusercreator, //Member making request
@@ -2790,7 +2790,7 @@ class Controller extends CI_Controller
             } elseif ($_POST['apply_id'] == 12589) {
 
                 //post list:
-                $is_next = $this->Ideachains->read(array(
+                $is_next = $this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                     'chainpostinput' => $_POST['s__id'],
                 ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'));
@@ -2896,22 +2896,22 @@ class Controller extends CI_Controller
         if ($_POST['focus__node'] == 12273) {
             //Posts order based on alphabetical order
             $order = 0;
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $_POST['focus__id'],
             ), array('chainpostoutput'), 0, 0, array('posttext' => 'ASC')) as $x) {
                 $order++;
-                $this->Ideachains->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chainkey' => $order,
                 ));
             }
         } elseif ($_POST['focus__node'] == 12274) {
             //Users reset order
-            foreach ($this->Ideachains->read(array(
+            foreach ($this->Chains->read(array(
                 'chainuserinput' => $_POST['focus__id'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             ), array('chainuseroutput'), 0, 0) as $x) {
-                $this->Ideachains->update($x['chainid'], array(
+                $this->Chains->update($x['chainid'], array(
                     'chainkey' => 0,
                 ));
             }
@@ -2956,22 +2956,22 @@ class Controller extends CI_Controller
             'postid' => $_POST['user_submitted_data']['postid'],
         )) as $focus_i) {
 
-            $input__selection = count($this->Ideachains->read(array(
+            $input__selection = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainpostoutput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
             )));
-            $input__upload = count($this->Ideachains->read(array(
+            $input__upload = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainpostoutput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
             )));
-            $skipping_not_allowed = count($this->Ideachains->read(array(
+            $skipping_not_allowed = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainpostoutput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___43009')) . ')' => null,
             )));
-            $input__text = count($this->Ideachains->read(array(
+            $input__text = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainpostoutput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
@@ -3001,7 +3001,7 @@ class Controller extends CI_Controller
             //Now complete relevant next posts, if any:
             if ($input__selection) {
 
-                $is_single_selection = count($this->Ideachains->read(array(
+                $is_single_selection = count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                     'chainpostoutput' => $focus_i['postid'],
                     'chainuserinput IN (' . join(',', $this->config->item('userids___33331')) . ')' => null,
@@ -3012,7 +3012,7 @@ class Controller extends CI_Controller
 
                     //How about the min selection?
                     if ($post_required) {
-                        foreach ($this->Ideachains->read(array(
+                        foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                             'chainpostoutput' => $focus_i['postid'],
                             'chainuserinput' => 40834, //Min Selection
@@ -3027,7 +3027,7 @@ class Controller extends CI_Controller
                     }
 
                     //How about max selection?
-                    foreach ($this->Ideachains->read(array(
+                    foreach ($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostoutput' => $focus_i['postid'],
                         'chainuserinput' => 40833, //Max Selection
@@ -3045,7 +3045,7 @@ class Controller extends CI_Controller
 
                 //Delete ALL previous answers that are not currently selected, if any:
                 $already_answered = array();
-                foreach ($this->Ideachains->read(array(
+                foreach ($this->Chains->read(array(
                     'chainusertype' => 7712, //Input Choice
                     'chainusercreator' => $user_session['userid'],
                     'chainpostinput' => $focus_i['postid'],
@@ -3057,20 +3057,20 @@ class Controller extends CI_Controller
                         continue; //Nothing we need to do here...
                     }
 
-                    $this->Ideachains->delete($x_selection['chainid'], $user_session['userid']);
+                    $this->Chains->delete($x_selection['chainid'], $user_session['userid']);
 
                     //Remove discovery if we can:
-                    if (!count($this->Ideachains->read(array(
+                    if (!count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostoutput' => $x_selection['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___42905')) . ')' => null,
                     )))) {
-                        foreach ($this->Ideachains->read(array(
+                        foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                             'chainpostinput' => $x_selection['postid'],
                             'chainusercreator' => $user_session['userid'],
                         ), array(), 0) as $x_discovery) {
-                            $this->Ideachains->delete($x_discovery['chainid'], $user_session['userid']);
+                            $this->Chains->delete($x_discovery['chainid'], $user_session['userid']);
                         }
                     }
                 }
@@ -3078,7 +3078,7 @@ class Controller extends CI_Controller
                 //Save New Answers if not already:
                 foreach ($_POST['selection_postid'] as $answer_postid) {
                     if (!in_array($answer_postid, $already_answered)) {
-                        $this->Ideachains->create(array(
+                        $this->Chains->create(array(
                             'chainusertype' => 7712, //Input Choice
                             'chainusercreator' => $user_session['userid'],
                             'chainuserinput' => $user_session['userid'],
@@ -3092,7 +3092,7 @@ class Controller extends CI_Controller
 
             //Save Skip if no answer was selected:
             if($trying_to_skip){
-                $completion_status = $this->Ideachains->post_discovered(31022, $user_session['userid'], $_POST['target_postid'], $focus_i, $_POST['user_submitted_data'], array(
+                $completion_status = $this->Chains->post_discovered(31022, $user_session['userid'], $_POST['target_postid'], $focus_i, $_POST['user_submitted_data'], array(
                     'chainkey' => $_POST['user_submitted_data']['postweight'],
                 ));
                 if (!$completion_status['status']) {
@@ -3115,7 +3115,7 @@ class Controller extends CI_Controller
                 )) as $post_next) {
 
                     //Analyze input:
-                    $input__required = count($this->Ideachains->read(array(
+                    $input__required = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostoutput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___43039')) . ')' => null,
@@ -3123,17 +3123,17 @@ class Controller extends CI_Controller
                     if ($input__required) {
                         continue;
                     }
-                    $input__text = count($this->Ideachains->read(array(
+                    $input__text = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostoutput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
                     )));
-                    $input__upload = count($this->Ideachains->read(array(
+                    $input__upload = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostoutput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
                     )));
-                    $skipping_not_allowed = count($this->Ideachains->read(array(
+                    $skipping_not_allowed = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostoutput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___43009')) . ')' => null,
@@ -3141,7 +3141,7 @@ class Controller extends CI_Controller
 
 
                     //Cleanup phone number:
-                    if($input__text && strlen($next_post_data['post_createtext']) && !is_numeric($next_post_data['post_createtext']) && count($this->Ideachains->read(array(
+                    if($input__text && strlen($next_post_data['post_createtext']) && !is_numeric($next_post_data['post_createtext']) && count($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                             'chainpostoutput' => $post_next['postid'],
                             'chainuserinput' => 42181, //Phone
@@ -3169,7 +3169,7 @@ class Controller extends CI_Controller
                     }
 
                     //Try to complete:
-                    $completion_status = $this->Ideachains->post_discovered(( $trying_to_skip ? 31022 : 4559 ), $user_session['userid'], $_POST['target_postid'], $post_next, $next_post_data, array(
+                    $completion_status = $this->Chains->post_discovered(( $trying_to_skip ? 31022 : 4559 ), $user_session['userid'], $_POST['target_postid'], $post_next, $next_post_data, array(
                         'chainkey' => $next_post_data['postweight'],
                     ));
                     if ($post_required && !$completion_status['status']) {
@@ -3187,7 +3187,7 @@ class Controller extends CI_Controller
                 $post_redirect_url = post_redirect_url($primary_i);
             }
             if (!$post_redirect_url) {
-                $post_next = $this->Ideachains->next_posts($user_session['userid'], $_POST['target_posthashtag']);
+                $post_next = $this->Chains->next_posts($user_session['userid'], $_POST['target_posthashtag']);
             }
 
             //All good:
@@ -3245,11 +3245,11 @@ class Controller extends CI_Controller
         if (is_array($_POST['o__id'])) {
             $mass_result = array();
             foreach ($_POST['o__id'] as $o__id) {
-                array_push($mass_result, $this->Ideachains->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['user_createid'], $_POST['migrateuser'], $_POST['chainid']));
+                array_push($mass_result, $this->Chains->select($_POST['focus__id'], $o__id, $_POST['element_id'], $_POST['user_createid'], $_POST['migrateuser'], $_POST['chainid']));
             }
             return view_json($mass_result);
         } else {
-            return view_json($this->Ideachains->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['user_createid'], $_POST['migrateuser'], $_POST['chainid']));
+            return view_json($this->Chains->select($_POST['focus__id'], $_POST['o__id'], $_POST['element_id'], $_POST['user_createid'], $_POST['migrateuser'], $_POST['chainid']));
         }
 
     }
@@ -3282,7 +3282,7 @@ class Controller extends CI_Controller
         }
 
         //Remove Post
-        $this->Ideachains->delete($_POST['chainid'], $user_session['userid']);
+        $this->Chains->delete($_POST['chainid'], $user_session['userid']);
 
         return view_json(array(
             'status' => 1,
@@ -3293,7 +3293,7 @@ class Controller extends CI_Controller
     {
 
         /*
-         * Loads the list of Ideachains based on the
+         * Loads the list of Chains based on the
          * filters passed on.
          *
          * */
@@ -3312,9 +3312,9 @@ class Controller extends CI_Controller
         $message = '';
         $overall_stats = '';
 
-        //Fetch Ideachains and total Chain counts:
-        $x = $this->Ideachains->read($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
-        $x_count = $this->Ideachains->read($query_filters, $joined_by, 0, 0, array(), 'COUNT(chainid) as total_count');
+        //Fetch Chains and total Chain counts:
+        $x = $this->Chains->read($query_filters, $joined_by, view_memory(6404, 11064), $query_offset);
+        $x_count = $this->Chains->read($query_filters, $joined_by, 0, 0, array(), 'COUNT(chainid) as total_count');
         $total_items_loaded = ($query_offset + count($x));
         $has_more_chains = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 
@@ -3334,7 +3334,7 @@ class Controller extends CI_Controller
 
             //Do we have more to show?
             if (!$has_more_chains) {
-                $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Ideachains have been loaded</div></td></tr>';
+                $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>All ' . $x_count[0]['total_count'] . ' Chains have been loaded</div></td></tr>';
 
 
             }
@@ -3342,7 +3342,7 @@ class Controller extends CI_Controller
         } else {
 
             //Show no Chain warning:
-            $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Ideachains found with the selected filters. Modify filters and try again.</div></td></tr>';
+            $message .= '<tr class="main__title x-info grey"><td colspan="100%"><div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Chains found with the selected filters. Modify filters and try again.</div></td></tr>';
 
         }
 
@@ -3394,7 +3394,7 @@ class Controller extends CI_Controller
         }
 
 
-        //Count Ideachains:
+        //Count Chains:
         $return_array = array(
             4341 => 0,
         );
@@ -3410,12 +3410,12 @@ class Controller extends CI_Controller
                 } elseif ($has_post) {
                     $void_filter['(chainvoid >0 AND ( chainpostinput = ' . $is[0]['postid'] . ' OR chainpostoutput = ' . $is[0]['postid'] . ' ))'] = null;
                 } else {
-                    //Void Ideachains
+                    //Void Chains
                     $void_filter = array(
-                        'chainvoid > 0' => null, //Ideachains that have been voided
+                        'chainvoid > 0' => null, //Chains that have been voided
                     );
                 }
-                $sub_counter = $this->Ideachains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');
+                $sub_counter = $this->Chains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');
                 $return_array[$chainusertype1] = intval($sub_counter[0]['totals']);
                 $return_array[4341] += intval($sub_counter[0]['totals']);
                 continue;
@@ -3423,14 +3423,14 @@ class Controller extends CI_Controller
 
             foreach ($this->config->item('users___' . $chainusertype1) as $chainusertype2 => $m2) {
 
-                //Nodes/Ideachains
+                //Nodes/Chains
                 $level2_total = 0;
                 if ($chainusertype2 == 12273) {
 
                     if ($has_user) {
 
-                        $sub_counter = $this->Ideachains->read(array(
-                            'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
+                        $sub_counter = $this->Chains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
                             'chainuserinput' => $es[0]['userid'],
                         ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -3443,7 +3443,7 @@ class Controller extends CI_Controller
 
                     } else {
 
-                        $sub_counter = $this->Ideachains->read(array(
+                        $sub_counter = $this->Chains->read(array(
                             'chainusertype' => $chainusertype2,
                         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -3456,7 +3456,7 @@ class Controller extends CI_Controller
 
                     if ($has_user) {
 
-                        $sub_counter = $this->Ideachains->read(array(
+                        $sub_counter = $this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                             'chainuserinput' => $es[0]['userid'],
                         ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
@@ -3464,14 +3464,14 @@ class Controller extends CI_Controller
                     } elseif ($has_post && count($copy['recursive_post_ids'])) {
 
                         //See stats for this post:
-                        $sub_counter = $this->Ideachains->read(array(
-                            'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Ideachains Active
+                        $sub_counter = $this->Chains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
                             'chainpostoutput IN (' . join(',', $copy['recursive_post_ids']) . ')' => null,
                         ), array('chainuserinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                     } else {
 
-                        $sub_counter = $this->Ideachains->read(array(
+                        $sub_counter = $this->Chains->read(array(
                             'chainusertype' => $chainusertype2,
                         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -3486,21 +3486,21 @@ class Controller extends CI_Controller
 
                         if ($has_user) {
 
-                            $sub_counter = $this->Ideachains->read(array(
+                            $sub_counter = $this->Chains->read(array(
                                 'chainusertype' => $chainusertype3,
                                 '( chainuseroutput = ' . $es[0]['userid'] . ' OR chainuserinput = ' . $es[0]['userid'] . ' OR chainusercreator = ' . $es[0]['userid'] . ' )' => null,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } elseif ($has_post && count($copy['recursive_post_ids'])) {
 
-                            $sub_counter = $this->Ideachains->read(array(
+                            $sub_counter = $this->Chains->read(array(
                                 'chainusertype' => $chainusertype3,
                                 '( chainpostinput IN (' . join(',', $copy['recursive_post_ids']) . ') OR chainpostoutput IN (' . join(',', $copy['recursive_post_ids']) . '))' => null,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } else {
 
-                            $sub_counter = $this->Ideachains->read(array(
+                            $sub_counter = $this->Chains->read(array(
                                 'chainusertype' => $chainusertype3,
                             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 

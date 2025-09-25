@@ -3,7 +3,7 @@
 $chainusercreator = ( $user_session && isset($user_session['userid']) ? $user_session['userid'] : 14068 /* GUEST */ );
 //Log view:
 if($focus_e['userid']!=$chainusercreator){
-    $this->Ideachains->create(array(
+    $this->Chains->create(array(
         'chainusertype' => 44176, //User View
         'chainuserinput' => $focus_e['userid'],
         'chainuseroutput' => $chainusercreator,

@@ -10,20 +10,20 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
     if ($chainusertype == 12273) {
 
         //POSTS
-        $unique = $this->Ideachains->read(array(
+        $unique = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13480')) . ')' => null, //UNIQUE POSTS
         ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } elseif ($chainusertype == 12274) {
 
         //USER
-        $unique = $this->Ideachains->read(array(
+        $unique = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //AUTHORED USERS
         ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } elseif ($chainusertype==31777) {
 
-        $unique = $this->Ideachains->read(array(
+        $unique = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___' . $chainusertype)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
 
@@ -50,7 +50,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
         if ($chainusertype == 12273) {
 
             //POSTS
-            $query = $this->Ideachains->read(array(
+            $query = $this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___13480')) . ')' => null, //UNIQUE POSTS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
@@ -59,7 +59,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
         } elseif ($chainusertype == 12274) {
 
             //USER
-            $query = $this->Ideachains->read(array(
+            $query = $this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //UNIQUE USERS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
@@ -67,7 +67,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
 
         } elseif ($chainusertype == 31777) {
 
-            $query = $this->Ideachains->read(array(
+            $query = $this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,

@@ -6,7 +6,7 @@ $users___6287 = $this->config->item('users___6287'); //APP
 
 //Start with Featured Apps
 echo '<div class="row">';
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => 30841, //Featured Apps
     'chainuseroutput NOT IN (' . join(',', $already_loaded) . ')' => null, //USER CHAINS
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -30,7 +30,7 @@ echo '</div>';
 
 //List Regular Apps:
 echo '<div class="row">';
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => 6287, //Featured Apps
     'chainuseroutput NOT IN (' . join(',', $already_loaded) . ')' => null, //USER CHAINS
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS

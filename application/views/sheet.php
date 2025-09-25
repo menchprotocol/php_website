@@ -42,7 +42,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
         $this_quantity = 1;
         foreach ($post_settings['post_column'] as $post_var) {
 
-            $discoveries = $this->Ideachains->read(array(
+            $discoveries = $this->Chains->read(array(
                 'chainpostinput' => $post_var['postid'],
                 'chainusercreator' => $x['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
@@ -57,7 +57,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                 }
 
                 $set_chainvalue = '';
-                foreach ($this->Ideachains->read(array(
+                foreach ($this->Chains->read(array(
                     'chainusertype' => 4228,
                     'chainpostoutput' => $post_var['postid'],
                     'chainusercreator' => $x['userid'],
@@ -98,13 +98,13 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
         //USERS
         foreach ($post_settings['user_column'] as $e) {
 
-            $require_writing = count($this->Ideachains->read(array(
+            $require_writing = count($this->Chains->read(array(
                 'chainuserinput IN (' . join(',', $this->config->item('userids___43510')) . ')' => null, //Require Written Answers
                 'chainuseroutput' => $e['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             )));
 
-            $fetch_data = $this->Ideachains->read(array(
+            $fetch_data = $this->Chains->read(array(
                 'chainuseroutput' => $x['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 'chainuserinput' => $e['userid'],
@@ -134,7 +134,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
             if ($e['userid'] == 44328) {
                 //Fetch primary filter:
-                foreach ($this->Ideachains->read(array(
+                foreach ($this->Chains->read(array(
                     'chainpostinput' => $focus_i['postid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___44344')) . ')' => null, //Post Filter Additions
                 ), array('chainpostoutput'), 1) as $target_i) {
@@ -153,7 +153,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                     $count_totals['e'][$e['userid']] = 0;
                 }
 
-                $count_totals['e'][$e['userid']] = $count_totals['e'][$e['userid']] + (count($this->Ideachains->read(array(
+                $count_totals['e'][$e['userid']] = $count_totals['e'][$e['userid']] + (count($this->Chains->read(array(
                         'chainuseroutput' => $e['userid'],
                         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                         'chainuserinput IN (' . join(',', $this->config->item('userids___39609')) . ')' => null, //ADDUP NUMBER
@@ -170,13 +170,13 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
                 if (isset($this_var['userid'])) {
 
-                    $require_writing = count($this->Ideachains->read(array(
+                    $require_writing = count($this->Chains->read(array(
                         'chainuserinput IN (' . join(',', $this->config->item('userids___43510')) . ')' => null, //Require Written Answers
                         'chainuseroutput' => $this_var['userid'],
                         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                     )));
 
-                    $fetch_data = $this->Ideachains->read(array(
+                    $fetch_data = $this->Chains->read(array(
                         'chainuseroutput' => $x['userid'],
                         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                         'chainuserinput' => $this_var['userid'],
@@ -206,7 +206,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
                     if ($this_var['userid'] == 44328) {
                         //Fetch primary filter:
-                        foreach ($this->Ideachains->read(array(
+                        foreach ($this->Chains->read(array(
                             'chainpostinput' => $focus_i['postid'],
                             'chainusertype IN (' . join(',', $this->config->item('userids___44344')) . ')' => null, //Post Filter Additions
                         ), array('chainpostoutput'), 1) as $target_i) {
@@ -225,7 +225,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                             $count_totals['e'][$this_var['userid']] = 0;
                         }
 
-                        $count_totals['e'][$this_var['userid']] = $count_totals['e'][$this_var['userid']] + (count($this->Ideachains->read(array(
+                        $count_totals['e'][$this_var['userid']] = $count_totals['e'][$this_var['userid']] + (count($this->Chains->read(array(
                                 'chainuseroutput' => $this_var['userid'],
                                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
                                 'chainuserinput IN (' . join(',', $this->config->item('userids___39609')) . ')' => null, //ADDUP NUMBER
@@ -234,7 +234,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
                 } elseif (isset($this_var['postid'])) {
 
-                    $discoveries = $this->Ideachains->read(array(
+                    $discoveries = $this->Chains->read(array(
                         'chainpostinput' => $this_var['postid'],
                         'chainusercreator' => $x['userid'],
                         'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
@@ -249,7 +249,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                         }
 
                         $set_chainvalue = '';
-                        foreach ($this->Ideachains->read(array(
+                        foreach ($this->Chains->read(array(
                             'chainusertype' => 4228,
                             'chainpostoutput' => $this_var['postid'],
                             'chainusercreator' => $x['userid'],
@@ -306,7 +306,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
     foreach ($post_settings['post_column'] as $post_var) {
 
-        $max_available = $this->Ideachains->read(array(
+        $max_available = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $post_var['postid'],
             'chainuserinput' => 26189,
@@ -326,7 +326,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                 array_push($table_sortable, '#thuser_' . $this_var['userid']);
                 echo '<th id="thuser_' . $this_var['userid'] . '" title="'.(isset($count_totals['e'][$this_var['userid']]) ? number_format($count_totals['e'][$this_var['userid']], 2) : '').'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $this_var['userhandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$this_var['userid']]) ? view_number($count_totals['e'][$this_var['userid']]) : '0') . '</a><span class="vertical_col">' . view_cover($this_var['usercover'], '✔️', ' ') . $this_var['username'] . '</span></th>';
             } elseif(isset($this_var['postid'])){
-                $max_available = $this->Ideachains->read(array(
+                $max_available = $this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                     'chainpostoutput' => $this_var['postid'],
                     'chainuserinput' => 26189,

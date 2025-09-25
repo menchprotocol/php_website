@@ -11,7 +11,7 @@ echo '<div class="row justify-content margin-top-down">';
 foreach($this->config->item('users___14599') as $app_userid => $cache_apps){
 
     //Fetch Last Cache
-    $latest_cache = $this->Ideachains->read(array(
+    $latest_cache = $this->Chains->read(array(
         'chainuserdomain' => website_setting(0),
         'chainusertype' => 44176, //User View
         'chainuserinput' => 14599, //Cache App

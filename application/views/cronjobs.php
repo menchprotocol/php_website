@@ -3,7 +3,7 @@
 //List CronJobs command:
 $longest_time = 0;
 $longest_id = 0;
-$cron_jobs = $this->Ideachains->read(array(
+$cron_jobs = $this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
     'chainuserinput' => 7274,
 ), array('chainuseroutput'), view_memory(6404,11064), 0, array('chainkey' => 'ASC'));

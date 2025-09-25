@@ -7,7 +7,7 @@ if(isset($_GET['userhandle'])){
     //Find Chain Content Duplicates for this User:
     $main_index = array();
     $duplicates_found = array();
-    foreach($this->Ideachains->read(array(
+    foreach($this->Chains->read(array(
         'LOWER(userhandle)' => strtolower($_GET['userhandle']),
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array('chainuserinput'), 0) as $x) {

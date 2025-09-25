@@ -10,7 +10,7 @@ echo '<img src="https://res.cloudinary.com/menchcloud/image/upload/v1755829760/g
 $groups_ids = array();
 $groups_all = array();
 
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => $focus_e['userid'],
     'chainusertype' => 4230, //USER FOLLOW
 ), array('chainuseroutput'), 0, 1, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
@@ -19,7 +19,7 @@ foreach ($this->Ideachains->read(array(
 }
 
 $full_group_ids = array();
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => $focus_e['userid'],
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ), array(), 0, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
@@ -30,14 +30,14 @@ foreach ($this->Ideachains->read(array(
 $content_ui = '';
 $group_counts = array();
 $content_ui .= '<div class="row justify-content group_content">';
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => $focus_e['userid'],
     'chainusertype' => 4230, //USER FOLLOW
 ), array('chainuseroutput'), 1, 0, user_sort()) as $group_main) {
 
     $main_user_id = intval($group_main['userid']);
 
-    foreach ($this->Ideachains->read(array(
+    foreach ($this->Chains->read(array(
         'chainuserinput' => $group_main['userid'],
         'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
     ), array('chainuseroutput'), 0, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $us) {
@@ -51,7 +51,7 @@ foreach ($this->Ideachains->read(array(
 
         //See which filters belong to this member:
         $group_class = 'main_group';
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $groups_ids) . ')' => null,
             'chainuseroutput' => $us['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -67,7 +67,7 @@ foreach ($this->Ideachains->read(array(
         }
 
         $extra_value = '';
-        foreach ($this->Ideachains->read(array(
+        foreach ($this->Chains->read(array(
             'chainuserinput IN (' . join(',', $full_group_ids) . ')' => null,
             'chainuseroutput' => $us['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
@@ -86,7 +86,7 @@ $content_ui .= '</div>';
 
 
 echo '<ul class="nav nav-tabs nav12274" style="display: flex !important; justify-content: space-evenly;">';
-foreach ($this->Ideachains->read(array(
+foreach ($this->Chains->read(array(
     'chainuserinput' => $focus_e['userid'],
     'chainusertype' => 4230, //USER FOLLOW
 ), array('chainuseroutput'), 0, 0, user_sort()) as $group) {

@@ -3,7 +3,7 @@
 $chainusercreator = ( $user_session ? $user_session['userid'] : 14068 /* GUEST */ );
 
 //Log view:
-$this->Ideachains->create(array(
+$this->Chains->create(array(
     'chainusertype' => 1309378, //Post Viewed
     'chainusercreator' => $chainusercreator,
     'chainuserinput' => $chainusercreator,
@@ -11,7 +11,7 @@ $this->Ideachains->create(array(
 ));
 
 //See if we need to redirect to starting point?
-if($user_session && !user_session(10939) && count($this->Ideachains->read(array(
+if($user_session && !user_session(10939) && count($this->Chains->read(array(
         'chainusercreator' => $user_session['userid'],
         'chainusertype' => 4235, //Get started
         'chainpostinput' => $focus_i['postid'],
