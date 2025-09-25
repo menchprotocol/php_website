@@ -1,5 +1,7 @@
 <?php
 
+die('dead for now');
+
 boost_power();
 
 foreach ($this->Ideachains->read(array(
