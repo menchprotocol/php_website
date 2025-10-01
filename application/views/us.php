@@ -4,7 +4,6 @@ $community_pills = '';
 $main_user_id = 0;
 
 echo '<h1>'.$focus_e['username'].'</h1>';
-echo '<img src="https://res.cloudinary.com/menchcloud/image/upload/v1755829760/gx8bun1gwibjmfh3kvqz.jpg" style="max-width: 100%;" alt="Discotique 25 Camp Map" />';
 
 //Load Filters:
 $groups_ids = array();

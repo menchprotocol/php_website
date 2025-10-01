@@ -29,8 +29,6 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
     echo '<h1>' . view_post_title($post_settings['i']) . '</h1>';
 
-    echo '<img src="https://res.cloudinary.com/menchcloud/image/upload/v1755829760/gx8bun1gwibjmfh3kvqz.jpg" style="max-width: 100%;" alt="Discotique 25 Camp Map" />';
-
     echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_post_value($post_settings['i'], (isset($user_session['userid']) ? $user_session['userid'] : 0)) . '</div>';
 
     foreach ($post_settings['query_string_filtered'] as $x) {

@@ -5225,7 +5225,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
             $focus_menu = ($was_discovered || !isset($users___31777[4559]) ? $m_target_bar : $users___31777[4559]);
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="post_discovered(0)" class="btn btn-sm post_button discovered_btn"><span class="icon-block-sm">' . $focus_menu['m__cover'] . '</span>' . $focus_menu['m__title'] . '</a></span>';
 
-        } elseif ($chainusertype_target_bar == 31022 && $discovery_mode && $focus__node && $user_session && !count($x_completes) && count($CI->Chains->read(array(
+        } elseif ($chainusertype_target_bar == 31022 && $discovery_mode && $focus__node && $user_session && !count($x_completes) && !count($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainpostoutput' => $i['postid'],
                 'chainuserinput IN (' . join(',', $CI->config->item('userids___43009')) . ')' => null,
