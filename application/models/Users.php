@@ -61,7 +61,6 @@ class Users extends CIdea_cache
             'userid' => $new_x['chainid'],
             'usercreator' => $new_x['chainusercreator'],
             'usertime' => $new_x['chaintime'],
-
             'userhandle' => $add_fields['userhandle'],
             'username' => $validate_username['username_clean'],
             'usercover' => $add_fields['usercover'],

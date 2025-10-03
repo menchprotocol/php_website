@@ -2452,7 +2452,7 @@ function search_enabled()
 function update_algolia($focus__node = null, $s__id = 0)
 {
 
-    if (!search_enabled() || isset($_GET['disable_algolia'])) {
+    if (!search_enabled()) {
         return array(
             'status' => 0,
             'message' => 'Search engine disabled',
@@ -2472,7 +2472,7 @@ function update_algolia($focus__node = null, $s__id = 0)
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif (($focus__node && !$s__id) || ($s__id && !$focus__node)) {
+    } elseif ($s__id && !$focus__node) {
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
@@ -2577,6 +2577,8 @@ function update_algolia($focus__node = null, $s__id = 0)
                     //We found it! Let's just update existing algolia record
                     $export_row['objectID'] = intval($s[$external_name]);
                 }
+
+
 
             } else {
 
@@ -2693,17 +2695,15 @@ function update_algolia($focus__node = null, $s__id = 0)
 
 
             //Now update local database with the new objectIDs:
-            if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1) {
-                foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
-                    if ($focus__node == 12273) {
-                        $CI->Posts->update($all_db_rows[$key][$focus_field_id], array(
-                            'postexternal' => $algolia_id,
-                        ));
-                    } elseif ($focus__node == 12274) {
-                        $CI->Users->update($all_db_rows[$key][$focus_field_id], array(
-                            'userexternal' => $algolia_id,
-                        ));
-                    }
+            foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+                if ($focus__node == 12273) {
+                    $CI->Posts->update($all_db_rows[$key][$focus_field_id], array(
+                        'postexternal' => $algolia_id,
+                    ));
+                } elseif ($focus__node == 12274) {
+                    $CI->Users->update($all_db_rows[$key][$focus_field_id], array(
+                        'userexternal' => $algolia_id,
+                    ));
                 }
             }
 
