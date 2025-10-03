@@ -136,14 +136,11 @@ class Users extends CIdea_cache
     function update($userid, $update_columns, $chainusercreator = 0)
     {
 
-        if (!count($update_columns)) {
-            return false;
-        }
-
         //Find existing chain to update:
         foreach ($this->Chains->read(array(
             'chainusertype' => 12274,
             'chainuserinput' => $userid,
+            'chainvoid >=' => 0,
         ), array(), 1) as $chain) {
 
             //Now fetch existing data from cache table:

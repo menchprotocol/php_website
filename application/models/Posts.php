@@ -125,38 +125,29 @@ class Posts extends CIdea_cache
     function update($postid, $update_columns, $chainusercreator = 0)
     {
 
-        if (!count($update_columns)) {
-            return false;
-        }
-
-        $posts_found = $this->Posts->read(array('postid' => $postid));
-        if (!count($posts_found)) {
-            log_error('Post #' . $postid . ' not found in Posts table');
-            return false;
-        }
-
-
         //Find existing chain to update:
         foreach ($this->Chains->read(array(
             'chainusertype' => 12273,
             'chainpostinput' => $postid,
+            'chainvoid >=' => 0,
         ), array(), 1) as $chain) {
 
             //Now fetch existing data from cache table:
             foreach ($this->Posts->read(array(
                 'postid' => $postid,
+                'postvoid >=' => 0,
             ), array(), 1) as $cache) {
 
                 //Validate that something has changed:
                 $must_update_chain_now = 0;
 
                 foreach ($update_columns as $key => $value) {
-                    if (strlen($value) && $cache[$key] === $value) {
+                    if ($cache[$key] === $value) {
 
                         //its the same so remove it:
                         unset($update_columns[$key]);
 
-                    } elseif (strlen($value) && in_array($key, array('posthashtag', 'posttext'))) {
+                    } elseif (in_array($key, array('posthashtag', 'posttext'))) {
 
                         $must_update_chain_now = 1;
 
@@ -195,11 +186,16 @@ class Posts extends CIdea_cache
                 //Update Chain only if needed:
                 if ($must_update_chain_now) {
 
-                    $this->Chains->update($chain['chainid'], array(
+                    $update_chain = array(
                         'chainvalue' => "#" . ( isset($update_columns['userhandle']) ? $update_columns['userhandle'] : $cache['userhandle'] )
                             . "\n" . $add_fields['posttext']
+                    );
 
-                    ));
+                    if($chainusercreator){
+                        $update_chain['chainusercreator'] = $chainusercreator;
+                    }
+
+                    $this->Chains->update($chain['chainid'], $update_chain);
 
                     //Sync algolia:
                     update_algolia(12274, intval($postid));
@@ -208,10 +204,14 @@ class Posts extends CIdea_cache
                 return $affected_rows;
 
             }
+
+            log_error('Post #' . $postid . ' not found on cache');
+            return 0;
+
         }
 
 
-        log_error('Active Post #' . $postid . ' not found');
+        log_error('Post #' . $postid . ' not found on chain or cache');
         return 0;
 
 

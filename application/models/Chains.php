@@ -310,15 +310,12 @@ class Chains extends CIdea_cache
             'chainid' => $chainid,
         )) as $old_x) {
 
-            if (!isset($update_columns['chainusercreator'])) {
-                //Fetch session user:
-                $update_columns['chainusercreator'] = ($chainusercreator > 0 ? $chainusercreator : $old_x['chainusercreator'] );
-            }
-
             //Make sure something changed:
             $something_changed = false;
-            foreach(array('chainusertype','chainuserinput','chainuseroutput','chainpostinput','chainpostoutput','chainkey','chainvalue','chainvoid','chaintime') as $must_change){
+            foreach(array('chainusertype','chainuserinput','chainuseroutput','chainpostinput','chainpostoutput','chainkey','chainvalue','chainvoid') as $must_change){
+
                 $this_changed = isset($update_columns[$must_change]) && $old_x[$must_change]!=$update_columns[$must_change];
+
                 if(!isset($update_columns[$must_change])){
                     $update_columns[$must_change] = $old_x[$must_change];
                 }
@@ -330,8 +327,15 @@ class Chains extends CIdea_cache
                 return 0; //Nothing changed
             }
 
+
             //Create New Chain
+            if (!isset($update_columns['chainusercreator'])) {
+                //Fetch session user:
+                $update_columns['chainusercreator'] = ($chainusercreator > 0 ? $chainusercreator : $old_x['chainusercreator'] );
+            }
+            $update_columns['chaintime'] = date("Y-m-d H:i:s"); //Always update time
             $new_x = $this->Chains->create($update_columns, true, false);
+
 
             if ($new_x['chainid'] > 0) {
                 //Void Old Chain:
@@ -339,9 +343,12 @@ class Chains extends CIdea_cache
                 return $this->db->affected_rows();
             }
 
+            log_error('Chains->update() failed to create new chain', $update_columns);
+
         }
 
         //Invalid chain:
+        log_error('Chains->update() did not find chain id '.$chainid, $update_columns);
         return 0;
 
     }
