@@ -53,9 +53,7 @@ class Users extends CIdea_cache
             return log_error('create() failed to create a new User', $new_array);
         } elseif ($nextchainid > 0 && $nextchainid != $new_x['chainid']) {
             //Update new ID:
-            $this->Chains->update($new_x['chainid'], array(
-                'chainuserinput' => $new_x['chainid'],
-            ));
+            $this->db->query("UPDATE ideachains SET chainuserinput = " . $new_x['chainid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
         }
 
         //Add to cache:
@@ -203,15 +201,11 @@ class Users extends CIdea_cache
                     return 0;
                 }
 
-                //Always Update Cache:
-                $update_columns['usertime'] = date("Y-m-d H:i:s");
-                $this->db->where('userid', $userid);
-                $this->db->update('users', $update_columns);
-                $affected_rows = $this->db->affected_rows();
-
 
                 //Update Chain only if needed:
                 if ($must_update_chain_now) {
+
+                    $update_columns['usertime'] = date("Y-m-d H:i:s"); //Update timestamp
 
                     $this->Chains->update($chain['chainid'], array(
                         'chainvalue' => "@" . (isset($update_columns['userhandle']) ? $update_columns['userhandle'] : $cache['userhandle'])
@@ -224,7 +218,11 @@ class Users extends CIdea_cache
                     update_algolia(12274, intval($userid));
                 }
 
-                return $affected_rows;
+
+                //Update Cache:
+                $this->db->where('userid', $userid);
+                $this->db->update('users', $update_columns);
+                return $this->db->affected_rows();
 
             }
         }
