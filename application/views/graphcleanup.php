@@ -31,6 +31,7 @@ if($_GET['posthashtag']=='user') {
             'chainusertype' => 12274,
             'chainuserinput' => $e['userid'],
         )))){
+            $this->db->query("DELETE FROM users WHERE userid = " . $e['userid'] . ";");
             $stats['cachevalid_chainvoid']++;
         }
     }
