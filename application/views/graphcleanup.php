@@ -36,9 +36,6 @@ if($_GET['posthashtag']=='user') {
         }
     }
 
-    print_r($stats);
-    die('done');
-
     foreach ($this->Chains->read(array(
         'chainusertype' => 12274,
     ), array(), $max_load, 0, array('chainid' => 'ASC')) as $x) {
