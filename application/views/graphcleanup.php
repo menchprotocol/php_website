@@ -18,6 +18,7 @@ if($_GET['posthashtag']=='user') {
         'users_orphan' => 0,
         'users_void' => 0,
         'users_creaetor_not_found' => 0,
+        'users_void_cachevalid' => 0,
         'users_valid_cachevoid' => 0,
     );
 
@@ -56,7 +57,9 @@ if($_GET['posthashtag']=='user') {
             ));
 
         }
-
+        if ($x['chainvoid'] > 0 && count($es_cache)) {
+            $stats['users_void_cachevalid']++;
+        }
         if (!count($es_cache)) {
             $this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
             $stats['users_valid_cachevoid']++;
@@ -131,6 +134,7 @@ if($_GET['posthashtag']=='user') {
         'posts_voidcreaetor' => 0,
         'posts_void_cachevalid' => 0,
         'posts_valid_cachevoid' => 0,
+        'cache_valid_postvoid' => 0,
     );
 
     $filters = array(
@@ -140,6 +144,22 @@ if($_GET['posthashtag']=='user') {
     if(isset($_GET['id'])){
         $filters['chainpostinput'] = $_GET['id'];
     }
+
+    //First remove cache items not found on chain:
+    foreach($this->Users->read(array(
+        'userid >' => 0,
+    )) as $e){
+        if(!count($this->Chains->read(array(
+            'chainusertype' => 12273,
+            'chainpostinput' => $e['userid'],
+        )))){
+            $stats['cache_valid_postvoid']++;
+        }
+    }
+
+    print_r($stats);
+    die('done');
+
 
     $has_media = false;
     foreach($this->Chains->read($filters, array(), ( isset($_GET['limit']) ? $_GET['limit'] : $max_load ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
