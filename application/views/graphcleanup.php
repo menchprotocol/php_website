@@ -12,7 +12,6 @@ $table = '<table class="table table-sm table-striped stats-table mini-stats-tabl
 if($_GET['posthashtag']=='user') {
 
     //USER
-    $chainuserinput = array();
     $stats = array(
         'users_all' => 0,
         'users_delete' => 0,
@@ -28,17 +27,16 @@ if($_GET['posthashtag']=='user') {
         'chainusertype' => 12274,
     ), array(), $max_load, 0, array('chainid' => 'ASC')) as $x) {
 
-        $is_duplicate = in_array($x['chainuserinput'], $chainuserinput);
-        if (!$is_duplicate) {
-            array_push($chainuserinput, $x['chainuserinput']);
-        } else {
-            $stats['users_duplicate']++;
-        }
-
+        $stats['users_duplicate']++;
         $count++;
         $es_cache = $this->Users->read(array(
             'userid' => $x['chainuserinput'],
         ));
+        if(!count($es_cache)){
+            $es_cache = $this->Users->read(array(
+                'userid' => $x['chainuserinput'],
+            ));
+        }
         $es = $this->Users->read(array(
             'userid' => $x['chainusercreator'],
         ));
@@ -47,23 +45,28 @@ if($_GET['posthashtag']=='user') {
         if ($x['chainvoid'] > 0) {
             $stats['users_void']++;
         } elseif (!count($es)) {
+
             $stats['users_creaetor_not_found']++;
+
             //Update to Shervin:
             $x['chainusercreator'] = 1;
-            /*
-             * //TODO ACTIVATE LATER
+
             $this->Chains->update($x['chainid'], array(
                 'chainusercreator' => $x['chainusercreator'],
             ));
-            */
+            $this->Users->update($x['chainusercreator'], array(
+                'usercreator' => $x['chainusercreator'],
+            ));
             $es = $this->Users->read(array(
                 'userid' => $x['chainusercreator'],
             ));
+
         }
         if ($x['chainvoid'] > 0 && count($es_cache)) {
             $stats['users_void_cachevalid']++;
         }
         if (!count($es_cache)) {
+            $this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
             $stats['users_valid_cachevoid']++;
         }
 
@@ -90,7 +93,7 @@ if($_GET['posthashtag']=='user') {
             $userbio .= "\n" . $social_chain['chainvalue'];
         }
 
-        $delete = !$total_links || $x['chainvoid'] > 0 || $is_duplicate;
+        $delete = !$total_links || $x['chainvoid'] > 0;
         if ($delete) {
             $stats['users_delete']++;
         }
@@ -104,7 +107,6 @@ if($_GET['posthashtag']=='user') {
             ($delete ? '[DELETED USER]' : '') .
             ( !$total_links ? '[ORPHAN]' : '') .
             ($x['chainvoid'] > 0 ? '[VOID]' : '') .
-            ($is_duplicate ? '[DUPLICATE]' : '') .
             (!count($es) ? '[users_creaetor_not_found]' : '') .
             (!count($es_cache) ? '[users_valid_cachevoid]' : '') .
             '</td>';
@@ -126,7 +128,6 @@ if($_GET['posthashtag']=='user') {
     $table .= '<td><div style="max-width:233px;">postedit</div></td>'; //EDITOR
     $table .= '</tr>';
 
-    $chainpostinput = array();
     $stats = array(
         'posts_all' => 0,
         'posts_orphan' => 0,
@@ -150,14 +151,7 @@ if($_GET['posthashtag']=='user') {
     $has_media = false;
     foreach($this->Chains->read($filters, array(), ( isset($_GET['limit']) ? $_GET['limit'] : $max_load ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
-        $is_duplicate = in_array($x['chainpostinput'], $chainpostinput);
-
-        if(!$is_duplicate){
-            array_push($chainpostinput, $x['chainpostinput']);
-        } else {
-            $stats['posts_duplicate']++;
-        }
-
+        $stats['posts_duplicate']++;
         $count++;
         $is = $this->Posts->read(array(
             'postid' => $x['chainpostinput'],
@@ -208,7 +202,7 @@ if($_GET['posthashtag']=='user') {
         }
 
 
-        $delete = !$total_links || $is_duplicate;
+        $delete = !$total_links;
         if($delete){
             $stats['posts_delete']++;
         }
@@ -247,7 +241,6 @@ if($_GET['posthashtag']=='user') {
             ( $delete ? '[DELETED POST]' : '' ).
             ( !$total_links ? '[ORPHAN]' : '') .
             ( $x['chainvoid']>0 ? '[VOID]' : '' ).
-            ( $is_duplicate ? '[DUPLICATE]' : '' ).
             ( $posts_empty ? '[EMPTY]' : '' ).
             ( !count($es) ? '[posts_voidcreaetor]' : '' ).
             ( !count($is) ? '[posts_valid_cachevoid]' : '' ).

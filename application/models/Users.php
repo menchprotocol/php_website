@@ -145,7 +145,7 @@ class Users extends CIdea_cache
 
         $users_found = $this->Users->read(array('userid' => $userid));
         if (!count($users_found)) {
-            log_error('User @' . $userid . ' not found in Users table');
+            log_error('@' . $userid . ' not found');
             return false;
         }
 
