@@ -140,12 +140,6 @@ class Users extends CIdea_cache
             return false;
         }
 
-        $users_found = $this->Users->read(array('userid' => $userid));
-        if (!count($users_found)) {
-            log_error('@' . $userid . ' not found');
-            return false;
-        }
-
         //Find existing chain to update:
         foreach ($this->Chains->read(array(
             'chainusertype' => 12274,
@@ -155,18 +149,19 @@ class Users extends CIdea_cache
             //Now fetch existing data from cache table:
             foreach ($this->Users->read(array(
                 'userid' => $userid,
+                'uservoid >=' => 0,
             ), array(), 1) as $cache) {
 
                 //Validate that something has changed:
                 $must_update_chain_now = 0;
 
                 foreach ($update_columns as $key => $value) {
-                    if (strlen($value) && $cache[$key] === $value) {
+                    if ($cache[$key] === $value) {
 
                         //its the same so remove it:
                         unset($update_columns[$key]);
 
-                    } elseif (strlen($value) && in_array($key, array('userhandle', 'username', 'usercover', 'userbio'))) {
+                    } elseif (in_array($key, array('userhandle', 'username', 'usercover', 'userbio'))) {
 
                         $must_update_chain_now = 1;
 
@@ -215,6 +210,7 @@ class Users extends CIdea_cache
 
                     //Sync algolia:
                     update_algolia(12274, intval($userid));
+
                 }
 
 
@@ -224,10 +220,13 @@ class Users extends CIdea_cache
                 return $this->db->affected_rows();
 
             }
+
+            log_error('Active User @' . $userid . ' not found on cache');
+            return 0;
+
         }
 
-        //There was an error:
-        log_error('Active User @' . $userid . ' not found');
+        log_error('Active User @' . $userid . ' not found on chain or cache');
         return 0;
 
     }
