@@ -20,7 +20,23 @@ if($_GET['posthashtag']=='user') {
         'users_creaetor_not_found' => 0,
         'users_void_cachevalid' => 0,
         'users_valid_cachevoid' => 0,
+        'cachevalid_chainvoid' => 0,
     );
+
+    //First remove cache items not found on chain:
+    foreach($this->Users->read(array(
+        'userid >' => 0,
+    )) as $e){
+        if(!count($this->Chains->read(array(
+            'chainusertype' => 12274,
+            'chainpostinput' => $e['userid'],
+        )))){
+            $stats['cachevalid_chainvoid']++;
+        }
+    }
+
+    print_r($stats);
+    die('done');
 
     foreach ($this->Chains->read(array(
         'chainusertype' => 12274,
@@ -144,21 +160,6 @@ if($_GET['posthashtag']=='user') {
     if(isset($_GET['id'])){
         $filters['chainpostinput'] = $_GET['id'];
     }
-
-    //First remove cache items not found on chain:
-    foreach($this->Users->read(array(
-        'userid >' => 0,
-    )) as $e){
-        if(!count($this->Chains->read(array(
-            'chainusertype' => 12273,
-            'chainpostinput' => $e['userid'],
-        )))){
-            $stats['cache_valid_postvoid']++;
-        }
-    }
-
-    print_r($stats);
-    die('done');
 
 
     $has_media = false;
