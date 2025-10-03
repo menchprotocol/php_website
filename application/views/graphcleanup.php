@@ -29,7 +29,7 @@ if($_GET['posthashtag']=='user') {
     )) as $e){
         if(!count($this->Chains->read(array(
             'chainusertype' => 12274,
-            'chainpostinput' => $e['userid'],
+            'chainuserinput' => $e['userid'],
         )))){
             $stats['cachevalid_chainvoid']++;
         }
