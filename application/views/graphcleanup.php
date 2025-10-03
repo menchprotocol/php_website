@@ -15,11 +15,9 @@ if($_GET['posthashtag']=='user') {
     $stats = array(
         'users_all' => 0,
         'users_delete' => 0,
-        'users_duplicate' => 0,
         'users_orphan' => 0,
         'users_void' => 0,
         'users_creaetor_not_found' => 0,
-        'users_void_cachevalid' => 0,
         'users_valid_cachevoid' => 0,
     );
 
@@ -27,7 +25,6 @@ if($_GET['posthashtag']=='user') {
         'chainusertype' => 12274,
     ), array(), $max_load, 0, array('chainid' => 'ASC')) as $x) {
 
-        $stats['users_duplicate']++;
         $count++;
         $es_cache = $this->Users->read(array(
             'userid' => $x['chainuserinput'],
@@ -50,21 +47,16 @@ if($_GET['posthashtag']=='user') {
 
             //Update to Shervin:
             $x['chainusercreator'] = 1;
-
-            $this->Chains->update($x['chainid'], array(
-                'chainusercreator' => $x['chainusercreator'],
-            ));
-            $this->Users->update($x['chainusercreator'], array(
-                'usercreator' => $x['chainusercreator'],
-            ));
+            $this->db->query("UPDATE ideachains SET chainusercreator=".$x['chainusercreator']." WHERE chainid = " . $x['chainid'] . ";");
+            if(count($es_cache)){
+                $this->db->query("UPDATE users SET usercreator=".$x['chainusercreator']." WHERE userid = " . $es_cache[0]['userid'] . ";");
+            }
             $es = $this->Users->read(array(
                 'userid' => $x['chainusercreator'],
             ));
 
         }
-        if ($x['chainvoid'] > 0 && count($es_cache)) {
-            $stats['users_void_cachevalid']++;
-        }
+
         if (!count($es_cache)) {
             $this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
             $stats['users_valid_cachevoid']++;
@@ -95,6 +87,7 @@ if($_GET['posthashtag']=='user') {
 
         $delete = !$total_links || $x['chainvoid'] > 0;
         if ($delete) {
+            $this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
             $stats['users_delete']++;
         }
 
@@ -153,9 +146,27 @@ if($_GET['posthashtag']=='user') {
 
         $stats['posts_duplicate']++;
         $count++;
-        $is = $this->Posts->read(array(
-            'postid' => $x['chainpostinput'],
-        ));
+
+        //Extra hashtag:
+        $is = array();
+        $chain_hashtag = ( substr($x['chainvalue'], 0, 1)=='#' ? one_two_explode('#',"\n",$x['chainvalue']) : false );
+        if(strlen($chain_hashtag)){
+            $is = $this->Posts->read(array(
+                'LOWER(posthashtag)' => strtolower($chain_hashtag),
+            ));
+        }
+        if(count($is)){
+            //See if IDs match:
+
+        } else {
+            //Search the ID:
+            $is = $this->Posts->read(array(
+                'postid' => $x['chainpostinput'],
+            ));
+        }
+
+
+
         $es = $this->Users->read(array(
             'userid' => $x['chainusercreator'],
         ));
