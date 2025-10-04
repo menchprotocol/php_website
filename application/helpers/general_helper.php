@@ -2452,7 +2452,7 @@ function search_enabled()
 function update_algolia($focus__node = null, $s__id = 0)
 {
 
-    if (!search_enabled() || 1) {
+    if (!search_enabled()) {
         return array(
             'status' => 0,
             'message' => 'Search engine disabled',
