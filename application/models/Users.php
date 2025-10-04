@@ -215,12 +215,12 @@ class Users extends CIdea_cache
 
             }
 
-            log_error('Active User @' . $userid . ' not found on cache');
+            log_error('Active User @' . $userid . ' not found on cache', $update_columns);
             return 0;
 
         }
 
-        log_error('Active User @' . $userid . ' not found on chain or cache');
+        log_error('Active User @' . $userid . ' not found on chain or cache', $update_columns);
         return 0;
 
     }
