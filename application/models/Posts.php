@@ -131,7 +131,6 @@ class Posts extends CIdea_cache
         foreach ($this->Chains->read(array(
             'chainusertype' => 12273,
             'chainpostinput' => $postid,
-            'chainvoid >=' => 0,
         ), array(), 1) as $chain) {
 
             //Now fetch existing data from cache table:

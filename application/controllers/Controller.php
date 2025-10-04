@@ -2721,7 +2721,6 @@ class Controller extends CI_Controller
                 ));
             }
 
-
             $validate_username = validate_username($_POST['post_createtext']);
             if (!$validate_username['status']) {
                 return view_json(array_merge($validate_username, array(
