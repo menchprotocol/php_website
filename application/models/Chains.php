@@ -344,6 +344,7 @@ class Chains extends CIdea_cache
             }
 
             log_error('Chains->update() failed to create new chain', $update_columns);
+            return 0;
 
         }
 

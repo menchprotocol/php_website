@@ -150,7 +150,7 @@ class Users extends CIdea_cache
             ), array(), 1) as $cache) {
 
                 //Validate that something has changed:
-                $must_update_chain_now = 0;
+                $must_update_chain = 0;
 
                 foreach ($update_columns as $key => $value) {
                     if ($cache[$key] === $value) {
@@ -160,7 +160,7 @@ class Users extends CIdea_cache
 
                     } elseif (in_array($key, array('userhandle', 'username', 'usercover', 'userbio'))) {
 
-                        $must_update_chain_now = 1;
+                        $must_update_chain = 1;
 
                         if ($key == 'username') {
 
@@ -192,9 +192,8 @@ class Users extends CIdea_cache
                     return 0;
                 }
 
-
                 //Update Chain only if needed:
-                if ($must_update_chain_now) {
+                if ($must_update_chain) {
 
                     $update_columns['usertime'] = date("Y-m-d H:i:s"); //Update timestamp
 
@@ -209,7 +208,6 @@ class Users extends CIdea_cache
                     update_algolia(12274, intval($userid));
 
                 }
-
 
                 //Update Cache:
                 $this->db->where('userid', $userid);

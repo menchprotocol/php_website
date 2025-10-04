@@ -125,6 +125,8 @@ class Posts extends CIdea_cache
     function update($postid, $update_columns, $chainusercreator = 0)
     {
 
+        $core_fields = array('posttext', 'posthashtag');
+
         //Find existing chain to update:
         foreach ($this->Chains->read(array(
             'chainusertype' => 12273,
@@ -139,66 +141,81 @@ class Posts extends CIdea_cache
             ), array(), 1) as $cache) {
 
                 //Validate that something has changed:
-                $must_update_chain_now = 0;
+                $must_update_chain = 0;
+                $must_update_cache = 0;
+                $affected_rows = 0;
 
                 foreach ($update_columns as $key => $value) {
+
                     if ($cache[$key] === $value) {
 
                         //its the same so remove it:
-                        unset($update_columns[$key]);
+                        continue;
 
-                    } elseif (in_array($key, array('posthashtag', 'posttext'))) {
+                    } elseif (in_array($key, $core_fields)) {
 
-                        $must_update_chain_now = 1;
-
-                        if ($key == 'posttext') {
-
-                            //Update index & cache:
-                            post_index($update_columns['posttext'], $postid, $chainusercreator, (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $cache['posthashtag']));
-
-                        } elseif ($key == 'posthashtag') {
-
-                            //Update Cache:
-                            $update_columns['posttime'] = date("Y-m-d H:i:s");
-                            $this->db->where('postid', $postid);
-                            $this->db->update('posts', $update_columns);
-                            $affected_rows = $this->db->affected_rows();
-
-                            //Update term on all references
-                            foreach ($this->Chains->read(array(
-                                'chainusertype IN (' . join(',', $this->config->item('userids___4486')) . ')' => null, //Ideas
-                                'chainpostoutput' => $postid,
-                            ), array('chainpostinput'), 0) as $ref) {
-
-                                //Update the post index:
-                                post_index($ref['posttext'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
-
-                            }
+                        if($must_update_chain){
+                            continue; //Only need to run through this once...
                         }
+
+                        //We only do it once:
+                        $must_update_chain = 1;
+
+                        $new_posthashtag = trim( isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $cache['posthashtag'] );
+                        $new_posttext = trim( isset($update_columns['posttext']) ? $update_columns['posttext'] : $cache['posttext'] );
+                        $post_index = post_index($new_posttext, $postid, $chainusercreator, $new_posthashtag);
+
+                        if($new_posttext!=trim($cache['posttext'])){
+                            $update_columns['posttext'] = $post_index['posttext'];
+                            $update_columns['postdiscover'] = $post_index['postdiscover'];
+                            $update_columns['postedit'] = $post_index['postedit'];
+                        }
+
+                        $update_columns['posttime'] = date("Y-m-d H:i:s");
+
+                        //Update Cache:
+                        $this->db->where('postid', $postid);
+                        $this->db->update('posts', $update_columns);
+                        $affected_rows = $this->db->affected_rows();
+
+                        //Update Chain:
+                        $this->Chains->update($chain['chainid'], array(
+                            'chainvalue' => "#" . $new_posthashtag
+                                . "\n" . $post_index['chainvalue']
+                        ), $chainusercreator);
+
+
+                        //Update term on all references
+                        foreach ($this->Chains->read(array(
+                            'chainusertype IN (' . join(',', $this->config->item('userids___4486')) . ')' => null, //Ideas
+                            'chainpostoutput' => $postid,
+                        ), array('chainpostinput'), 0) as $ref) {
+                            //Update the post index:
+                            $post_index = post_index($ref['posttext'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
+                        }
+
+                        //Sync algolia:
+                        update_algolia(12274, intval($postid));
+
+                    } else {
+
+                        if($must_update_cache){
+                            continue;
+                        }
+
+                        $must_update_cache = 1;
+
+                        $update_columns_cache = $update_columns;
+                        foreach($core_fields as $core_field => $core_value){
+                            unset($update_columns_cache[$core_value]);
+                        }
+
+                        //Update regular field:
+                        $this->db->where('postid', $postid);
+                        $this->db->update('posts', $update_columns_cache);
+                        $affected_rows = $this->db->affected_rows();
+
                     }
-                }
-                if (!count($update_columns)) {
-                    //Nothing to update:
-                    return 0;
-                }
-
-
-                //Update Chain only if needed:
-                if ($must_update_chain_now) {
-
-                    $update_chain = array(
-                        'chainvalue' => "#" . ( isset($update_columns['userhandle']) ? $update_columns['userhandle'] : $cache['userhandle'] )
-                            . "\n" . $add_fields['posttext']
-                    );
-
-                    if($chainusercreator){
-                        $update_chain['chainusercreator'] = $chainusercreator;
-                    }
-
-                    $this->Chains->update($chain['chainid'], $update_chain);
-
-                    //Sync algolia:
-                    update_algolia(12274, intval($postid));
                 }
 
                 return $affected_rows;
