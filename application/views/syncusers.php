@@ -16,7 +16,7 @@ $nochain = 0;
 $nocache = 0;
 foreach($this->Chains->read(array(
     'chainvoid' => 0,
-)) as $x){
+), 0) as $x){
 
     $chains++;
 
