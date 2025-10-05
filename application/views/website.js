@@ -603,7 +603,7 @@ function user_bio(userid) {
 
 function user_copy(userid) {
 
-    var copy_user_title = prompt("What would be the title of the new User?", user_title(userid));
+    var copy_user_title = prompt("New Username:", user_title(userid));
     if (!copy_user_title.length) {
         alert('You must enter a title to copy.');
         return false;

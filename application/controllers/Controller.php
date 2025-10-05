@@ -1546,6 +1546,7 @@ class Controller extends CI_Controller
         $added_e = $this->Users->create(array(
             'username' => $_POST['copy_user_title'],
             'usercover' => $fetch_o[0]['usercover'],
+            'userbio' => $fetch_o[0]['userbio'],
         ), $user_session['userid']);
         if (!$added_e['status']) {
             //We had an error, return it:
