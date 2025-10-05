@@ -11,14 +11,14 @@ $missing = array(1720491, 2107851, 1738391, 2107409, 2108190, 1731975, 2109028, 
 
 
 $found = 0;
-foreach($this->Users->read2(array(
+foreach($this->Users->read(array(
     'userid IN (' . join(',', $missing) . ')' => null,
 ), 0) as $user){
     $found++;
     echo '@'.$user['userhandle'].' ('.$user['userid'].') ';
 }
 
-echo '<hr />'.$found.'/'.count($missing).'/'.count($this->Users->read2(array(
+echo '<hr />NEW:: '.$found.'/'.count($missing).'/'.count($this->Users->read(array(
         'userid > 0' => null,
     ), 0)).' found in db2';
 die();
