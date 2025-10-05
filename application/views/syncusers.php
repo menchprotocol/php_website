@@ -18,7 +18,9 @@ foreach($this->Users->read2(array(
     echo '@'.$user['userhandle'].' ('.$user['userid'].') ';
 }
 
-echo '<hr />'.$found.'/'.count($missing).' found in db2';
+echo '<hr />'.$found.'/'.count($missing).'/'.count($this->Users->read2(array(
+        'userid > 0' => null,
+    ), 0)).' found in db2';
 die();
 
 $creators = array();
