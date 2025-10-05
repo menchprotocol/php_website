@@ -1668,8 +1668,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-chain>.icon-block { width:28px !import
 }
 .block-x, i, .nav .icon-block i,
 
-.icon-block-sm   i { font-size: 1em !important; } /* 1.21em */
-.icon-block      i { font-size: 1em !important; } /* 1.34em */
+.icon-block-sm   i { font-size: 1.21em !important; }
+.icon-block      i { font-size: 1.34em !important; }
 
 .icon-block-xs i,
 .icon-block-xs .icon-block-sm   i,
