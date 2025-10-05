@@ -34,6 +34,8 @@ foreach($this->Chains->read(array(
     if(!$anything_count) {
         array_push($anything, intval($x['chainusercreator']));
         $noanything++;
+    } else {
+        echo '@'.$x['chainusercreator'].' ['.$anything_count.']<br />';
     }
 
     //Validate:
