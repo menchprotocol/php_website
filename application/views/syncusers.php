@@ -10,6 +10,7 @@ $count = 0;
 
 $creators = array();
 $missing = array();
+$chains = 0;
 $valid = 0;
 $nochain = 0;
 $nocache = 0;
@@ -17,12 +18,15 @@ foreach($this->Chains->read(array(
     'chainvoid' => 0,
 )) as $x){
 
-    if(in_array($x['chainusercreator'], $creators)){
+    $chains++;
+
+    if(in_array(intval($x['chainusercreator']), $creators)){
        continue;
     }
 
-    array_push($creators, $x['chainusercreator']);
+    array_push($creators, intval($x['chainusercreator']));
 
+    //Validate:
     if(!count($this->Chains->read(array(
         'chainusertype' => 12274,
         'chainuserinput' => $x['chainusercreator'],
@@ -33,8 +37,7 @@ foreach($this->Chains->read(array(
 
     } elseif(!count($this->Users->read(array(
         'userid' => $x['chainusercreator'],
-        'uservoid >=' => 0,
-    ), 1))){
+    )))){
 
         $nocache++;
         array_push($missing, $x['chainusercreator']);
@@ -47,11 +50,9 @@ foreach($this->Chains->read(array(
 
 }
 
-echo count($creators).' Unique creators, '.$nochain.' nochain, ,'.$nocache.' nocache, '.$valid.' valid<hr />';
+echo count($creators).' Unique creators in '.$chains.' chains: '.$nochain.' nochain,'.$nocache.' nocache & '.$valid.' valid<hr />';
 
 print_r($missing);
-
-
 
 die();
 
