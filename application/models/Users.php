@@ -132,6 +132,55 @@ class Users extends CIdea_cache
 
     }
 
+    function read2($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('userid' => 'DESC'), $select = '*', $group_by = null)
+    {
+
+        //Fetch the target Users:
+        $this->db2->select($select);
+        $this->db2->from('users');
+
+        $void_found = false;
+        foreach ($query_filters as $key => $value) {
+            if (!is_null($value)) {
+                $this->db2->where($key, $value);
+            } else {
+                $this->db2->where($key);
+            }
+            if (substr_count($key, 'uservoid')) {
+                $void_found = true;
+            }
+        }
+        if (!$void_found) {
+            //Auto add:
+            $this->db2->where('uservoid', 0); //Not Void
+        }
+
+        if ($group_by) {
+            $this->db2->group_by($group_by);
+        }
+        foreach ($order_columns as $key => $value) {
+            $this->db2->order_by($key, $value);
+        }
+        if ($limit > 0) {
+            $this->db2->limit($limit, $limit_offset);
+        }
+
+        $q = $this->db2->get();
+        $results = $q->result_array();
+
+        //Make sure user has access to each item:
+        if ($select == '*' && 0) {
+            foreach ($results as $key => $value) {
+                if (!user_access(null, $value['userid'], $value)) {
+                    unset($results[$key]); //Remove this option
+                }
+            }
+        }
+
+        return $results;
+
+    }
+
 
     function update($userid, $update_columns, $chainusercreator = 0)
     {
