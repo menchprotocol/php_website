@@ -11,7 +11,7 @@ $count = 0;
 $total = 0;
 $update = 0;
 foreach($this->Chains->read(array(
-    'chainuserinput' => 42628,
+    'chainuserinput' => 11035,
     'LENGTH(chainvalue)>0' => null,
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ), array('chainuseroutput'), 0) as $x){
