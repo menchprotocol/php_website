@@ -7,26 +7,6 @@ $ideas = $this->config->item('users___4486');
 $count = 0;
 
 
-
-$total = 0;
-$update = 0;
-foreach($this->Chains->read(array(
-    'chainuserinput' => 11035,
-    'LENGTH(chainvalue)>0' => null,
-    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-), array('chainuseroutput'), 0) as $x){
-    $total++;
-    if(!strlen($x['userbio']) && strlen($x['chainvalue'])){
-        $update++;
-        $this->Users->update($x['userid'], array(
-            'userbio' => trim($x['chainvalue']),
-        ), $x['userid']);
-        echo '@'.$x['userhandle'].' from ['.$x['userbio'].'] to ['.$x['chainvalue'].']<br />';
-    }
-}
-
-die($update.'/'.$total.' Bios Updated.');
-
 $creators = array();
 $missing = array();
 $chains = 0;
