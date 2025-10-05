@@ -17,6 +17,7 @@ if($_GET['posthashtag']=='user') {
         'users_delete' => 0,
         'users_orphan' => 0,
         'users_void' => 0,
+        'users_bio' => 0,
         'users_creaetor_not_found' => 0,
         'users_void_cachevalid' => 0,
         'users_valid_cachevoid' => 0,
@@ -87,10 +88,27 @@ if($_GET['posthashtag']=='user') {
 
         //Fetch from Cache table:
         if (count($es_cache)) {
+            foreach ($this->Chains->read(array(
+                'LENGTH(chainvalue) > 0' => null,
+                'chainuserinput' => 11035,
+                'chainuseroutput' => $x['chainuserinput'],
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            ), array(), 0, 0) as $social_chain) {
+                if(strlen($social_chain['chainvalue'])>0 && !strlen($es_cache[0]['userbio'])){
+                    $stats['users_bio']++;
+                    $this->Users->update($es_cache[0]['userid'], array(
+                        'userbio' => trim($social_chain['chainvalue']),
+                    ));
+                }
+            }
             $userbio = '@' . $es_cache[0]['userhandle'] . "\n" . $es_cache[0]['username'] . "\n" . $es_cache[0]['usercover'];
         } else {
             $userbio = '@???' . $x['chainvalue'] . "\n" . $x['chainvalue'] . "\nfar fa-user";
         }
+
+        //Append Bio if any
+
+
 
         $delete = !$total_links || $x['chainvoid'] > 0;
         if ($delete) {
