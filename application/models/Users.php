@@ -215,7 +215,9 @@ class Users extends CIdea_cache
 
             }
 
-            log_error('Active User @' . $userid . ' not found on cache', $update_columns);
+
+
+            log_error('Active User @' . $userid . ' not found on cache with query: '.$this->db->last_query(), $update_columns);
             return 0;
 
         }
