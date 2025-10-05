@@ -15,8 +15,11 @@ foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ), array('chainuseroutput'), 0) as $x){
     $total++;
-    if(!strlen($x['userbio'])){
+    if(!strlen($x['userbio']) && strlen($x['chainvalue'])){
         $update++;
+        $this->Users->update($x['userid'], array(
+            'userbio' => $x['chainvalue'],
+        ), $x['userid']);
     }
 }
 
