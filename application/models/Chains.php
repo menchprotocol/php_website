@@ -394,10 +394,10 @@ class Chains extends CIdea_cache
 
     }
 
-    function readalt($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('chain_id' => 'DESC'), $select = '*', $group_by = null)
+    function read2($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('chain_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        $this->dbalt = $this->load->database('alt', TRUE);
+        $this->dbalt = $this->load->database('snapshot', TRUE);
         $this->dbalt->select($select);
         $this->dbalt->from('mench_ledger');
 
