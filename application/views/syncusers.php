@@ -20,6 +20,7 @@ foreach($this->Chains->read(array(
         $this->Users->update($x['userid'], array(
             'userbio' => $x['chainvalue'],
         ), $x['userid']);
+        echo '@'.$x['userhandle'].' from ['.$x['userbio'].'] to ['.$x['chainvalue'].']<br />';
     }
 }
 
