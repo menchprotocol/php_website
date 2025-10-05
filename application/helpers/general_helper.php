@@ -5395,7 +5395,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     $ui .= '<div class="center-block">';
 
     $ui .= '<div class="creator_headline grey">'.( isset($e['chainusertype']) ? ( substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? $users___4593[$e['chainusertype']]['m__cover'] : $users___4593[$e['chainusertype']]['m__cover'].' @' ) : '@' ).'<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">' . $e['userhandle'] . '</span></div>';
-    $ui .= '<div class="creator_headline grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div>';
+    //$ui .= '<div class="creator_headline grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div>';
 
     //User Location:
     $users___42777 = $CI->config->item('users___42777');
