@@ -50,9 +50,7 @@ foreach($this->Chains->read(array(
 
 }
 
-echo count($creators).' Unique creators in '.$chains.' chains: '.$nochain.' nochain,'.$nocache.' nocache & '.$valid.' valid<hr />';
-
-print_r($missing);
+echo count($creators).' Unique creators in '.$chains.' chains: '.$nochain.' nochain,'.$nocache.' nocache & '.$valid.' valid<hr />'.join( ',', $missing);
 
 die();
 
