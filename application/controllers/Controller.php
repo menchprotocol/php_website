@@ -2708,7 +2708,7 @@ class Controller extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif ($_POST['cache_userid'] == 6197 /* USER FULL NAME */) {
+        } elseif ($_POST['cache_userid'] == 6197 /* USERNAME */) {
 
             $es = $this->Users->read(array(
                 'userid' => $_POST['userid'],
@@ -2729,12 +2729,18 @@ class Controller extends CI_Controller
             }
 
             //All good, go ahead and update:
-            $this->Users->update($es[0]['userid'], array(
+            if(!$this->Users->update($_POST['userid'], array(
                 'username' => $validate_username['username_clean'],
-            ), $user_session['userid']);
+            ), $user_session['userid'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'There was an error in updating',
+                    'original_val' => $validate_username['username_clean'],
+                ));
+            }
 
             //Reset member session data if this data belongs to the logged-in member:
-            if ($es[0]['userid'] == $user_session['userid']) {
+            if ($_POST['userid'] == $user_session['userid']) {
                 //set Session with new data:
                 $es[0]['username'] = $validate_username['username_clean'];
                 $this->Users->activate($es[0], true);
