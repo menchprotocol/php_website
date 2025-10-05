@@ -146,7 +146,7 @@ class Users extends CIdea_cache
             foreach ($this->Users->read(array(
                 'userid' => $userid,
                 'uservoid >=' => 0,
-            ), array(), 1) as $cache) {
+            ), 1) as $cache) {
 
                 //Validate that something has changed:
                 $must_update_chain = 0;
@@ -209,7 +209,7 @@ class Users extends CIdea_cache
                 }
 
                 //Update Cache:
-                $this->db->where('userid', intval($userid));
+                $this->db->where('userid', $userid);
                 $this->db->update('users', $update_columns);
                 return $this->db->affected_rows();
 

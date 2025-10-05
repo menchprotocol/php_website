@@ -137,7 +137,7 @@ class Posts extends CIdea_cache
             foreach ($this->Posts->read(array(
                 'postid' => $postid,
                 'postvoid >=' => 0,
-            ), array(), 1) as $cache) {
+            ), 1) as $cache) {
 
                 //Validate that something has changed:
                 $must_update_chain = 0;
