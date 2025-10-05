@@ -27,10 +27,7 @@ foreach($this->Chains->read(array(
 
     array_push($creators, intval($x['chainusercreator']));
 
-    $anything_count = count($this->Chains->read(array(
-        'chainid !=' => $x['chainid'],
-        '(chainusercreator='.$x['chainusercreator'].' OR chainuserinput='.$x['chainusercreator'].' OR chainuseroutput='.$x['chainusercreator'].')' => null,
-    ), array(), 0));
+    $anything_count = 0;
     $onchain = count($this->Chains->read(array(
         'chainusertype' => 12274,
         'chainuserinput' => $x['chainusercreator'],
@@ -38,6 +35,19 @@ foreach($this->Chains->read(array(
     $oncache = count($this->Users->read(array(
         'userid' => $x['chainusercreator'],
     )));
+
+
+    foreach($this->Chains->read(array(
+        'chainid !=' => $x['chainid'],
+        '(chainusercreator='.$x['chainusercreator'].' OR chainuserinput='.$x['chainusercreator'].' OR chainuseroutput='.$x['chainusercreator'].')' => null,
+    ), array(), 0) as $del){
+        if(!$onchain || !$oncache) {
+            $anything_count++;
+            $this->db->query("DELETE FROM ideachains WHERE chainid = " . $del['chainid'] . ";");
+        }
+    }
+
+
 
     if(!$anything_count) {
         array_push($anything, intval($x['chainusercreator']));
@@ -63,6 +73,8 @@ foreach($this->Chains->read(array(
 
     if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $missing)){
         $valid++;
+    } else {
+        $this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
     }
 
 }
