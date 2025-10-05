@@ -135,7 +135,7 @@ class Users extends CIdea_cache
     function read2($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('userid' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        $this->db2 = $this->load->database('snapshot', TRUE); // Load second DB manually
+        $this->db2 = $this->load->database('altdb', TRUE); // Load second DB manually
 
         //Fetch the target Users:
         $this->db2->select($select);

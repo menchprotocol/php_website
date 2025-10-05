@@ -397,7 +397,7 @@ class Chains extends CIdea_cache
     function read2($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('chain_id' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        $this->dbalt = $this->load->database('snapshot', TRUE);
+        $this->dbalt = $this->load->database('altdb', TRUE);
         $this->dbalt->select($select);
         $this->dbalt->from('mench_ledger');
 
