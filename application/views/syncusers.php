@@ -26,39 +26,43 @@ foreach($this->Chains->read(array(
 
     array_push($creators, intval($x['chainusercreator']));
 
+
+    $anything_count = count($this->Chains->read(array(
+        'chainid !=' => $x['chainid'],
+        '(chainusercreator='.$x['chainusercreator'].' OR chainuserinput='.$x['chainusercreator'].' OR chainuseroutput='.$x['chainusercreator'].')' => null,
+    ), array(), 0));
+    if(!$anything_count) {
+        array_push($anything, intval($x['chainusercreator']));
+        $noanything++;
+    }
+
     //Validate:
     if(!count($this->Chains->read(array(
         'chainusertype' => 12274,
         'chainuserinput' => $x['chainusercreator'],
     ), array(), 1))) {
         $nochain++;
-        array_push($missing, intval($x['chainusercreator']));
+        if(!in_array(intval($x['chainusercreator']), $anything)){
+            array_push($missing, intval($x['chainusercreator']));
+        }
     }
 
     if(!count($this->Users->read(array(
         'userid' => $x['chainusercreator'],
     )))){
         $nocache++;
-        if(!in_array(intval($x['chainusercreator']), $missing)){
+        if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $missing)){
             array_push($missing, intval($x['chainusercreator']));
         }
     }
 
-    if(!in_array(intval($x['chainusercreator']), $missing)){
+    if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $missing)){
         $valid++;
-    }
-
-
-    if(!count($this->Chains->read(array(
-        'chainid !=' => $x['chainid'],
-        '(chainusercreator='.$x['chainusercreator'].' OR chainuserinput='.$x['chainusercreator'].' OR chainuseroutput='.$x['chainusercreator'].')' => null,
-    ), array(), 1))) {
-        $noanything++;
     }
 
 }
 
-echo count($creators).' Unique creators in '.$chains.' chains: '.$nochain.' nochain,'.$nocache.' nocache, '.$noanything.' noanything & '.$valid.' valid<hr />'.join( ', ', $missing);
+echo count($creators).' Unique creators in '.$chains.' chains: '.$nochain.' nochain,'.$nocache.' nocache, '.$noanything.' noanything & '.$valid.' valid<hr />'.join( ', ', $missing).'<hr />'.join( ', ', $anything);
 
 die();
 
