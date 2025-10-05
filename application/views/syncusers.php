@@ -9,6 +9,7 @@ $count = 0;
 
 $creators = array();
 $missing = array();
+$anything = array();
 $chains = 0;
 $valid = 0;
 $nochain = 0;
