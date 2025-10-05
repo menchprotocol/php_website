@@ -209,7 +209,7 @@ class Users extends CIdea_cache
                 }
 
                 //Update Cache:
-                $this->db->where('userid', $userid);
+                $this->db->where('userid', intval($userid));
                 $this->db->update('users', $update_columns);
                 return $this->db->affected_rows();
 
