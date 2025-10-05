@@ -4,7 +4,7 @@ $chainusercreator = ( $user_session ? $user_session['userid'] : 14068 /* GUEST *
 
 //Log view:
 $this->Chains->create(array(
-    'chainusertype' => 1309378, //Post Viewed
+    'chainusertype' => 1309378, //Creator View
     'chainusercreator' => $chainusercreator,
     'chainuserinput' => $chainusercreator,
     'chainpostinput' => $focus_i['postid'],

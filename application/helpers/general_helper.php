@@ -3181,6 +3181,13 @@ function log_error($error_message, $error_data = array(), $log_error = true)
             . ($user_session ? ' | ERROR DATA: ' . print_r($error_data, true) : '')
         );
 
+        //Remove
+        foreach($error_data as $key => $value){
+            if(substr($key, 0, 5)!='chain'){
+                unset($error_data[$key]);
+            }
+        }
+
         $CI->Chains->create(array_merge($error_data, array(
             'chainuserinput' => 4246, //Platform Bug Reports
             'chainusertype' => 44176, //User View
