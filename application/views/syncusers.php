@@ -27,32 +27,34 @@ foreach($this->Chains->read(array(
 
     array_push($creators, intval($x['chainusercreator']));
 
-
     $anything_count = count($this->Chains->read(array(
         'chainid !=' => $x['chainid'],
         '(chainusercreator='.$x['chainusercreator'].' OR chainuserinput='.$x['chainusercreator'].' OR chainuseroutput='.$x['chainusercreator'].')' => null,
     ), array(), 0));
+    $onchain = count($this->Chains->read(array(
+        'chainusertype' => 12274,
+        'chainuserinput' => $x['chainusercreator'],
+    ), array(), 1));
+    $oncache = count($this->Users->read(array(
+        'userid' => $x['chainusercreator'],
+    )));
+
     if(!$anything_count) {
         array_push($anything, intval($x['chainusercreator']));
         $noanything++;
-    } else {
+    } elseif(!$onchain || !$oncache) {
         echo '@'.$x['chainusercreator'].' ['.$anything_count.']<br />';
     }
 
     //Validate:
-    if(!count($this->Chains->read(array(
-        'chainusertype' => 12274,
-        'chainuserinput' => $x['chainusercreator'],
-    ), array(), 1))) {
+    if(!$onchain) {
         $nochain++;
         if(!in_array(intval($x['chainusercreator']), $anything)){
             array_push($missing, intval($x['chainusercreator']));
         }
     }
 
-    if(!count($this->Users->read(array(
-        'userid' => $x['chainusercreator'],
-    )))){
+    if(!$oncache){
         $nocache++;
         if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $missing)){
             array_push($missing, intval($x['chainusercreator']));
