@@ -376,7 +376,6 @@ class Controller extends CI_Controller
                 'chainusertype' => 44176, //User View
                 'chainuserinput' => 14599, //Cache App
                 'chainuseroutput' => $app_userid,
-
                 'chainusercreator' => $chainusercreator,
                 'chainvalue' => $ui,
                 'chainpostinput' => $chainpostinput,
