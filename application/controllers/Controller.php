@@ -2729,15 +2729,9 @@ class Controller extends CI_Controller
             }
 
             //All good, go ahead and update:
-            if(!$this->Users->update($_POST['userid'], array(
+            $this->Users->update($_POST['userid'], array(
                 'username' => $validate_username['username_clean'],
-            ), $user_session['userid'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'There was an error in updating',
-                    'original_val' => $validate_username['username_clean'],
-                ));
-            }
+            ), $user_session['userid']);
 
             //Reset member session data if this data belongs to the logged-in member:
             if ($_POST['userid'] == $user_session['userid']) {
