@@ -7,47 +7,6 @@ $ideas = $this->config->item('users___4486');
 $count = 0;
 
 
-//Go through cache and add to chain if missing:
-$total = 0;
-$toupdate = 0;
-$update = 0;
-foreach($this->Users->read(array(
-    'userid >' => 0,
-), 0) as $user){
-    $total++;
-    if(!count($this->Chains->read(array(
-        'chainvoid >=' => 0,
-        'chainusertype' => 12274,
-        'chainuserinput' => $user['userid'],
-    ), array(), 1))){
-
-        $toupdate++;
-        $new_x = $this->Chains->create(array(
-            'chainusertype' => 12274,
-            'chainusercreator' => $user['userid'],
-            'chainuserinput' => $user['userid'],
-            'chainvalue' => "@" . $user['userhandle']
-                . "\n" . $user['username']
-                . "\n" . $user['usercover']
-                . "\n" . $user['userbio']
-        ));
-
-        if($new_x['chainid'] > 0 && !count($this->Chains->read(array(
-                'chainvoid >=' => 0,
-                'chainusertype' => 12274,
-                'chainuserinput' => $user['userid'],
-            ), array(), 1))){
-            $update++;
-            $this->db->query("UPDATE ideachains SET chainid = " . $user['userid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
-            echo '@'.$user['userhandle'].' Missing Chain Added<br />';
-        } else {
-            echo '@'.$user['userhandle'].' Missing Chain FAILED!!!<br />';
-        }
-    }
-}
-
-die($update.'/'.$toupdate.'/'.$total.' Users missing on chain and added.');
-
 
 $total = 0;
 $update = 0;
