@@ -17,6 +17,7 @@ if($_GET['posthashtag']=='user') {
         'users_delete' => 0,
         'users_orphan' => 0,
         'users_void' => 0,
+        'users_bio' => 0,
         'users_creaetor_not_found' => 0,
         'users_void_cachevalid' => 0,
         'users_valid_cachevoid' => 0,
@@ -93,13 +94,19 @@ if($_GET['posthashtag']=='user') {
         }
 
         //Append Bio if any
+
         foreach ($this->Chains->read(array(
             'LENGTH(chainvalue) > 0' => null,
             'chainuserinput IN (11035,42628)' => null,
             'chainuseroutput' => $x['chainuserinput'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0, 0) as $social_chain) {
-            $userbio .= "\n" . $social_chain['chainvalue'];
+            if(count($es_cache) && strlen($social_chain['chainvalue'])>0 && !strlen($es_cache[0]['userbio'])){
+                $stats['users_bio']++;
+                $this->Users->update($es_cache[0]['userid'], array(
+                    'userbio' => trim($social_chain['chainvalue']),
+                ));
+            }
         }
 
         $delete = !$total_links || $x['chainvoid'] > 0;
