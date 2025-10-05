@@ -26,8 +26,8 @@ echo '<div class="center hideIfEmpty"></div>';
 foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
     if($userid1==1309754){
-        echo '<div class="mid-text-line compact-midline"><span class="grey"><a href="'.view_app_chain(4341).'?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__cover'] . ' ' . $m1['m__title'] . '</a></span></div>';
         //Voided
+        //echo '<div class="mid-text-line compact-midline hidden"><span class="grey"><a href="'.view_app_chain(4341).'?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__user'].'">' . $m1['m__cover'] . ' ' . $m1['m__title'] . '</a></span></div>';
         continue;
     } elseif($userid1==28956){
         //Nodes
