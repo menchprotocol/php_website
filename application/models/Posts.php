@@ -227,7 +227,7 @@ class Posts extends CIdea_cache
         }
 
 
-        log_error('Post #' . $postid . ' not found on chain or cache', $update_columns);
+        log_error('Post #' . $postid . ' not found on chain', $update_columns);
         return 0;
 
 

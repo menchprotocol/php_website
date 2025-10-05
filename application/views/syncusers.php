@@ -7,6 +7,26 @@ $ideas = $this->config->item('users___4486');
 $count = 0;
 
 
+//Go through cache and add to chain if missing:
+$total = 0;
+$update = 0;
+foreach($this->Users->read(array(
+    'userid >' => 0,
+), 0) as $user){
+    $total++;
+    if(!count($this->Chains->read(array(
+        'chainvoid >=' => 0,
+        'chainusertype' => 12274,
+        'chainuserinput' => $user['userid'],
+    ), array(), 1))){
+        $update++;
+        echo '@'.$user['userhandle'].' Missing on Chain<br />';
+    }
+}
+
+die($update.'/'.$total.' Users missing on chain and added.');
+
+
 $total = 0;
 $update = 0;
 foreach($this->Chains->read(array(
@@ -18,7 +38,7 @@ foreach($this->Chains->read(array(
     if(!strlen($x['userbio']) && strlen($x['chainvalue'])){
         $update++;
         $this->Users->update($x['userid'], array(
-            'userbio' => $x['chainvalue'],
+            'userbio' => trim($x['chainvalue']),
         ), $x['userid']);
         echo '@'.$x['userhandle'].' from ['.$x['userbio'].'] to ['.$x['chainvalue'].']<br />';
     }
