@@ -438,7 +438,7 @@ if ($focus_i){
 
                     //Add User
                     if(user_session(10939)){
-                        //echo '<td class="block-x"><a href="javascript:void(0);" onclick="user_editor()" title="'.$users___11035[42819]['m__title'].'">'.$users___11035[42819]['m__cover'].'</a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="user_editor()" title="'.$users___11035[42819]['m__title'].'">'.$users___11035[42819]['m__cover'].'</a></td>';
                     }
 
                     ?>
@@ -717,7 +717,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
         ?>
 
 
-        <!-- Edit Post Modal -->
+        <!-- Post Modal -->
         <div class="i_footer_note hidden">Posts saved. <a href=""><b>View</b></a></div>
         <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -819,7 +819,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-        <!-- Edit User Modal -->
+        <!-- User Modal -->
         <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
