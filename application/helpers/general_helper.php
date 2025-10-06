@@ -5323,6 +5323,8 @@ function view_pill($focus__node, $chainusertype, $counter, $m, $ui = null, $is_o
 
 function user_validate($userid, $chainid = 0)
 {
+    $userid = intval($userid);
+    $chainid = intval($chainid);
     $CI =& get_instance();
     $foundchain = count($CI->Chains->read(array(
         'chainusertype' => 12274,

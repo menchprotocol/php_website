@@ -16,10 +16,11 @@ $stats = array(
     //Validate 5+2 fields users & posts:
     'count_users' => 0,
     'count_users_missing' => 0,
+
+    'message' => '',
     'unique_users' => array(),
     'unique_users_missing' => array(),
 
-    'message' => '',
 );
 
 
@@ -145,5 +146,6 @@ echo $update.'/'.$total.' Bios Updated.<hr />';
 
 $stats['count_users'] = count($stats['unique_users']);
 $stats['count_users_missing'] = count($stats['unique_users_missing']);
+unset($stats['unique_users']);
 
 view_json($stats);
