@@ -5330,9 +5330,11 @@ function user_validate($userid, $chainid = 0)
         'chainusertype' => 12274,
         'chainuserinput' => $userid,
     ), array(), 1));
-    $foundcache = count($CI->Users->read(array(
+
+    $es = $CI->Users->read(array(
         'userid' => $userid,
-    )));
+    ));
+    $foundcache = count($es);
     $activechains = count($CI->Chains->read(array(
         'chainid !=' => $chainid,
         '(chainuserdomain=' . $userid . ' OR chainusertype=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
@@ -5343,7 +5345,7 @@ function user_validate($userid, $chainid = 0)
         'userid' => $userid,
         'chainid' => $chainid,
         'foundchain' => $foundchain,
-        'foundcache' => $foundcache,
+        'cacheuserhandle' => ( $foundcache ? '@'.$es[0]['userhandle'] : '' ),
         'activechains' => $activechains,
     );
 }
