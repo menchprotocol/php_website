@@ -133,7 +133,7 @@ table td { border: none !important; }
 h1 {
     padding:0 8px 34px !important;
     margin:0;
-    font-size:2.8em;
+    font-size:3.2em;
     text-align: center;
 }
 
@@ -3320,7 +3320,7 @@ h4.main__title{
 @media (max-width:610px) {
 
     h1 {
-        font-size:2em;
+        font-size:2.4em;
     }
     h2 {
         font-size:1.7em;

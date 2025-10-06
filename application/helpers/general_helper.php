@@ -920,7 +920,6 @@ function generate_user($focus__node, $str, $suggestion = null, $increment = 1)
 }
 
 
-
 function process_media($postid, $uploaded_media)
 {
 
@@ -1333,7 +1332,6 @@ function view_post_media($i)
     return $message_append;
 
 }
-
 
 
 function append_user($chainuserinput, $chainusercreator, $chainvalue, $postid, $update_if_existing = true)
@@ -2514,9 +2512,6 @@ function update_algolia($focus__node = null, $s__id = 0)
         //We need to update the entire index, so let's truncate it first:
         $search_index->clearIndex();
 
-        //Boost processing power:
-        boost_power();
-
     }
 
 
@@ -2578,7 +2573,6 @@ function update_algolia($focus__node = null, $s__id = 0)
                     //We found it! Let's just update existing algolia record
                     $export_row['objectID'] = intval($s[$external_name]);
                 }
-
 
 
             } else {
@@ -3182,8 +3176,8 @@ function log_error($error_message, $error_data = array(), $log_error = true)
         );
 
         //Remove
-        foreach($error_data as $key => $value){
-            if(substr($key, 0, 5)!='chain'){
+        foreach ($error_data as $key => $value) {
+            if (substr($key, 0, 5) != 'chain') {
                 unset($error_data[$key]);
             }
         }
@@ -3694,7 +3688,6 @@ function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
 }
 
 
-
 function randomize_text($userid)
 {
     $CI =& get_instance();
@@ -3815,25 +3808,25 @@ function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode 
 }
 
 
-
-function post_to_title($post, $parent_post = null){
+function post_to_title($post, $parent_post = null)
+{
 
     //Generates a title from a post:
 
     //Remove Common prefix with parent postif any:
     $common_start = '';
     $new_post = '';
-    if(strlen($parent_post)){
+    if (strlen($parent_post)) {
         //See if post has anything in common with its parent, if any:
         $parent_post_array = str_split($parent_post);
-        foreach(str_split($post) as $key=>$value){
-            if(isset($parent_post_array[$key]) && $parent_post_array[$key]===$value){
+        foreach (str_split($post) as $key => $value) {
+            if (isset($parent_post_array[$key]) && $parent_post_array[$key] === $value) {
                 $common_start .= $value;
             } else {
                 $new_post .= $value;
             }
         }
-        if(strlen($common_start) && strlen($new_post)){
+        if (strlen($common_start) && strlen($new_post)) {
             //Remove this from the string:
             $post = $new_post;
         }
@@ -3842,11 +3835,11 @@ function post_to_title($post, $parent_post = null){
     //Now detect the title based on remaining post:
     $new_title = '';
     $post_array = str_split($post);
-    foreach($post_array as $key=>$value){
-        $new_title .= (ctype_upper($value) && ((isset($post_array[($key-1)]) && !ctype_upper($post_array[($key-1)])) || (isset($post_array[($key+1)]) && !ctype_upper($post_array[($key+1)]))) ? ' ' : '').$value;
+    foreach ($post_array as $key => $value) {
+        $new_title .= (ctype_upper($value) && ((isset($post_array[($key - 1)]) && !ctype_upper($post_array[($key - 1)])) || (isset($post_array[($key + 1)]) && !ctype_upper($post_array[($key + 1)]))) ? ' ' : '') . $value;
     }
 
-    return ( strlen($new_title)>=2 ? trim($new_title) : 'New Post' );
+    return (strlen($new_title) >= 2 ? trim($new_title) : 'New Post');
 
 }
 
@@ -3964,15 +3957,15 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                             'LOWER(posthashtag)' => strtolower($term),
                         ));
 
-                        if(!count($found_posts)){
+                        if (!count($found_posts)) {
 
                             //New post not found, try to create:
-                            $parent_term = ( strlen($new_term) ? $new_term : $current_term );
-                            if(!$parent_term && $save_postid>0){
+                            $parent_term = (strlen($new_term) ? $new_term : $current_term);
+                            if (!$parent_term && $save_postid > 0) {
                                 //Fetch the term using the ID:
-                                foreach($CI->Posts->read(array(
+                                foreach ($CI->Posts->read(array(
                                     'postid' => $save_postid,
-                                )) as $i){
+                                )) as $i) {
                                     $parent_term = $i['posthashtag'];
                                 }
                             }
@@ -3983,7 +3976,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                                 'posttext' => post_to_title($term, $parent_term),
                             ), $chainusercreator);
 
-                            if(isset($post_new['post_create']['postid'])){
+                            if (isset($post_new['post_create']['postid'])) {
                                 //Re-fetch newly created:
                                 $found_posts = $CI->Posts->read(array(
                                     'postid' => $post_new['post_create']['postid'],
@@ -4021,7 +4014,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
 
                     } else {
 
-                        if ($term==$current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                        if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
                             $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
                         }
@@ -4113,7 +4106,6 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                             $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
 
                         }
-
 
 
                     }
@@ -4278,16 +4270,16 @@ function view_post_nav($discovery_mode, $focus_i, $x_completes = false)
 
     $users___focus = $CI->config->item('users___26005');
     $focus_tab = 0;
-    foreach($users___focus as $chainusertype => $m) {
-        if(isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0){
+    foreach ($users___focus as $chainusertype => $m) {
+        if (isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0) {
             $focus_tab = $chainusertype;
-            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__user'].'\'); } }); </script>';
+            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
             break;
         }
     }
-    if(!$focus_tab){
-        foreach($users___focus as $chainusertype => $m) {
-            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__user'].'\'); } }); </script>';
+    if (!$focus_tab) {
+        foreach ($users___focus as $chainusertype => $m) {
+            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
             break;
         }
     }
@@ -4635,7 +4627,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainusercreator) ? ' hidden ' : '') . '">'.( isset($i['chainusertype']) ? ( substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'].' #' ) : '#' ).'<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainusercreator) ? ' hidden ' : '') . '">' . (isset($i['chainusertype']) ? (substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'] . ' #') : '#') . '<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
@@ -5321,7 +5313,6 @@ function view_list_user($i, $plain_no_html = false)
 }
 
 
-
 function view_pill($focus__node, $chainusertype, $counter, $m, $ui = null, $is_open = true)
 {
 
@@ -5330,6 +5321,30 @@ function view_pill($focus__node, $chainusertype, $counter, $m, $ui = null, $is_o
 
 }
 
+function user_validate($userid, $chainid = 0)
+{
+    $CI =& get_instance();
+    $foundchain = count($CI->Chains->read(array(
+        'chainusertype' => 12274,
+        'chainuserinput' => $userid,
+    ), array(), 1));
+    $foundcache = count($CI->Users->read(array(
+        'userid' => $userid,
+    )));
+    $activechains = count($CI->Chains->read(array(
+        'chainid !=' => $chainid,
+        '(chainuserdomain=' . $userid . ' OR chainusertype=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
+    ), array(), 0));
+
+    return array(
+        'status' => ($foundchain && $foundcache && $activechains ? 1 : 0),
+        'userid' => $userid,
+        'chainid' => $chainid,
+        'foundchain' => $foundchain,
+        'foundcache' => $foundcache,
+        'activechains' => $activechains,
+    );
+}
 
 function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
 {
@@ -5394,8 +5409,8 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     //User User
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">'.( isset($e['chainusertype']) ? ( substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? $users___4593[$e['chainusertype']]['m__cover'] : $users___4593[$e['chainusertype']]['m__cover'].' @' ) : '@' ).'<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">' . $e['userhandle'] . '</span></div>';
-    $ui .= '<div class="'.( $focus__node ? '' : ' hidden ' ).'"><div class="creator_headline hidden grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div></div>';
+    $ui .= '<div class="creator_headline grey">' . (isset($e['chainusertype']) ? (substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? $users___4593[$e['chainusertype']]['m__cover'] : $users___4593[$e['chainusertype']]['m__cover'] . ' @') : '@') . '<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">' . $e['userhandle'] . '</span></div>';
+    $ui .= '<div class="' . ($focus__node ? '' : ' hidden ') . '"><div class="creator_headline hidden grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div></div>';
 
     //User Location:
     $users___42777 = $CI->config->item('users___42777');

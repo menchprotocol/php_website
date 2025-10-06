@@ -2,7 +2,6 @@
 
 die('dead for now');
 
-boost_power();
 
 foreach ($this->Chains->read(array(
     'chainusertype' => 10573, //Subscriber Mention
