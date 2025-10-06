@@ -1,6 +1,5 @@
 <?php
 
-
 //USER
 $stats = array(
     //Cache users
@@ -119,33 +118,29 @@ foreach ($this->Chains->read(array(
             array_push($stats['unique_users_missing'], $user_validate);
         }
     }
-
 }
 
 
 
-/*
 
 //Sync bio once:
-$total = 0;
-$update = 0;
 foreach($this->Chains->read(array(
-    'chainuserinput' => 42628,
+    'chainuserinput IN (' . join(',', array(42628, 11035)) . ')' => null, //USER CHAINS
     'LENGTH(chainvalue)>0' => null,
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ), array('chainuseroutput'), 0) as $x){
-    $total++;
-    if(!strlen($x['userbio'])){
-        $update++;
+    if(!strlen($x['userbio']) && strlen(trim($x['chainvalue']))){
+        $stats['users_bio']++;
+        $this->Users->update($x['userid'], array(
+            'userbio' => $x['userbio'],
+        ), $x['userid']);
     }
 }
-echo $update.'/'.$total.' Bios Updated.<hr />';
-
-*/
 
 
 $stats['count_users'] = count($stats['unique_users']);
 $stats['count_users_missing'] = count($stats['unique_users_missing']);
 unset($stats['unique_users']);
+
 
 view_json($stats);

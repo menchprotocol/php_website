@@ -944,7 +944,7 @@ p.menu_header {
 .mid-text-line span{
     display: inline-block;
     margin: 0 auto;
-    padding: 3px;
+    padding: 0 5px;
     margin-bottom: 0px;
     color: #999999 !important;
     background-color: #FFFFFF;
@@ -3982,7 +3982,7 @@ a,
 
 .compact-midline {
     margin: -17px 0 0px !important;
-    font-size: 1.5em !important;
+    font-size: 1.3em !important;
 }
 
 

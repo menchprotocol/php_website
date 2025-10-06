@@ -5321,7 +5321,7 @@ function view_pill($focus__node, $chainusertype, $counter, $m, $ui = null, $is_o
 
 }
 
-function user_validate($userid, $chainid = 0)
+function user_validate($userid, $chainid = 0, $delete_missing = false)
 {
     $userid = intval($userid);
     $chainid = intval($chainid);
@@ -5339,14 +5339,26 @@ function user_validate($userid, $chainid = 0)
         'chainid !=' => $chainid,
         '(chainuserdomain=' . $userid . ' OR chainusertype=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
     ), array(), 0));
+    
+    $status = ($foundchain && $foundcache && $activechains ? 1 : 0);
+    $chain_deletes = 0;
+    if($delete_missing && !$status){
+        foreach($CI->Chains->read(array(
+            '(chainuserdomain=' . $userid . ' OR chainusertype=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
+        ), array(), 0) as $del){
+            $CI->db->query("DELETE FROM ideachains WHERE chainid = " . $del['chainid'] . ";");
+            $chain_deletes++;
+        }
+    }
 
     return array(
-        'status' => ($foundchain && $foundcache && $activechains ? 1 : 0),
+        'status' => $status,
         'userid' => $userid,
         'chainid' => $chainid,
         'foundchain' => $foundchain,
-        'cacheuserhandle' => ( $foundcache ? '@'.$es[0]['userhandle'] : '' ),
+        'cacheuserhandle' => ( $foundcache ? '@'.$es[0]['userhandle'] : false ),
         'activechains' => $activechains,
+        'chain_deletes' => $chain_deletes,
     );
 }
 
