@@ -40,6 +40,8 @@ foreach ($this->Users->read(array(
 
         $stats['cache_notonchain']++;
 
+        $new_x = array();
+        /*
         $new_x = $this->Chains->create(array(
             'chainusertype' => 12274,
             'chainusercreator' => $user['userid'],
@@ -49,8 +51,9 @@ foreach ($this->Users->read(array(
                 . "\n" . $user['usercover']
                 . "\n" . $user['userbio']
         ));
+        */
 
-        if ($new_x['chainid'] > 0) {
+        if (0 && $new_x['chainid'] > 0) {
 
             $stats['cache_addedtochain']++;
             $stats['message'] .= "@" . $user['userhandle'] . " Added to Chain\n";
