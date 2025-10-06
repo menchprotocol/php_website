@@ -1,5 +1,7 @@
 <?php
 
+$delete_missing_users = true;
+
 //USER
 $stats = array(
     //Cache users
@@ -10,6 +12,7 @@ $stats = array(
     //On Chain users
     'chain_all' => 0,
     'users_onchain' => 0,
+    'users_chain_deleted' => 0,
     'users_bio' => 0,
 
     //Validate 5+2 fields users & posts:
@@ -76,46 +79,52 @@ foreach ($this->Chains->read(array(
     if($x['chainusertype'] == 12274 && $x['chainuserinput'] > 0) {
         $stats['users_onchain']++;
         array_push($stats['unique_users'], intval($x['chainuserinput']));
-        $user_validate = user_validate($x['chainuserinput'], $x['chainid']);
+        $user_validate = user_validate($x['chainuserinput'], $x['chainid'], $delete_missing_users);
         if (!$user_validate['status']) {
             array_push($stats['unique_users_missing'], $user_validate);
+            $stats['users_chain_deleted'] += $user_validate['chain_deletes'];
         }
     }
 
     //5x User references on chain:
     if ($x['chainuserdomain']>0 && !in_array(intval($x['chainuserdomain']), $stats['unique_users'])) {
         array_push($stats['unique_users'], intval($x['chainuserdomain']));
-        $user_validate = user_validate($x['chainuserdomain'], $x['chainid']);
+        $user_validate = user_validate($x['chainuserdomain'], $x['chainid'], $delete_missing_users);
         if (!$user_validate['status']) {
             array_push($stats['unique_users_missing'], $user_validate);
+            $stats['users_chain_deleted'] += $user_validate['chain_deletes'];
         }
     }
     if ($x['chainusertype']>0 && !in_array(intval($x['chainusertype']), $stats['unique_users'])) {
         array_push($stats['unique_users'], intval($x['chainusertype']));
-        $user_validate = user_validate($x['chainusertype'], $x['chainid']);
+        $user_validate = user_validate($x['chainusertype'], $x['chainid'], $delete_missing_users);
         if (!$user_validate['status']) {
             array_push($stats['unique_users_missing'], $user_validate);
+            $stats['users_chain_deleted'] += $user_validate['chain_deletes'];
         }
     }
     if ($x['chainusercreator']>0 && !in_array(intval($x['chainusercreator']), $stats['unique_users'])) {
         array_push($stats['unique_users'], intval($x['chainusercreator']));
-        $user_validate = user_validate($x['chainusercreator'], $x['chainid']);
+        $user_validate = user_validate($x['chainusercreator'], $x['chainid'], $delete_missing_users);
         if (!$user_validate['status']) {
             array_push($stats['unique_users_missing'], $user_validate);
+            $stats['users_chain_deleted'] += $user_validate['chain_deletes'];
         }
     }
     if ($x['chainuserinput']>0 && !in_array(intval($x['chainuserinput']), $stats['unique_users'])) {
         array_push($stats['unique_users'], intval($x['chainuserinput']));
-        $user_validate = user_validate($x['chainuserinput'], $x['chainid']);
+        $user_validate = user_validate($x['chainuserinput'], $x['chainid'], $delete_missing_users);
         if (!$user_validate['status']) {
             array_push($stats['unique_users_missing'], $user_validate);
+            $stats['users_chain_deleted'] += $user_validate['chain_deletes'];
         }
     }
     if ($x['chainuseroutput']>0 && !in_array(intval($x['chainuseroutput']), $stats['unique_users'])) {
         array_push($stats['unique_users'], intval($x['chainuseroutput']));
-        $user_validate = user_validate($x['chainuseroutput'], $x['chainid']);
+        $user_validate = user_validate($x['chainuseroutput'], $x['chainid'], $delete_missing_users);
         if (!$user_validate['status']) {
             array_push($stats['unique_users_missing'], $user_validate);
+            $stats['users_chain_deleted'] += $user_validate['chain_deletes'];
         }
     }
 }
