@@ -1,93 +1,51 @@
 <?php
 
-$max_load = 9999999;
 boost_power();
-$mentions = $this->config->item('users___13550');
-$ideas = $this->config->item('users___4486');
-$count = 0;
 
+/*
 
-$creators = array();
-$missing = array();
-$anything = array();
-$chains = 0;
-$valid = 0;
-$nochain = 0;
-$nocache = 0;
-$noanything = 0;
+$total = 0;
+$update = 0;
 foreach($this->Chains->read(array(
-    'chainvoid' => 0,
-), array(), 0) as $x){
-
-    $chains++;
-
-    if(in_array(intval($x['chainusercreator']), $creators)){
-       continue;
+    'chainuserinput' => 42628,
+    'LENGTH(chainvalue)>0' => null,
+    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+), array('chainuseroutput'), 0) as $x){
+    $total++;
+    if(!strlen($x['userbio'])){
+        $update++;
     }
-
-    array_push($creators, intval($x['chainusercreator']));
-
-    $anything_count = 0;
-    $onchain = count($this->Chains->read(array(
-        'chainusertype' => 12274,
-        'chainuserinput' => $x['chainusercreator'],
-    ), array(), 1));
-    $oncache = count($this->Users->read(array(
-        'userid' => $x['chainusercreator'],
-    )));
-
-
-    foreach($this->Chains->read(array(
-        'chainid !=' => $x['chainid'],
-        '(chainusercreator='.$x['chainusercreator'].' OR chainuserinput='.$x['chainusercreator'].' OR chainuseroutput='.$x['chainusercreator'].')' => null,
-    ), array(), 0) as $del){
-        if(!$onchain || !$oncache) {
-            $anything_count++;
-            $this->db->query("DELETE FROM ideachains WHERE chainid = " . $del['chainid'] . ";");
-        }
-    }
-
-
-
-    if(!$anything_count) {
-        array_push($anything, intval($x['chainusercreator']));
-        $noanything++;
-    } elseif(!$onchain || !$oncache) {
-        echo '@'.$x['chainusercreator'].' ['.$anything_count.']<br />';
-    }
-
-    //Validate:
-    if(!$onchain) {
-        $nochain++;
-        if(!in_array(intval($x['chainusercreator']), $anything)){
-            array_push($missing, intval($x['chainusercreator']));
-        }
-    }
-
-    if(!$oncache){
-        $nocache++;
-        if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $missing)){
-            array_push($missing, intval($x['chainusercreator']));
-        }
-    }
-
-    if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $missing)){
-        $valid++;
-    } else {
-        $this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
-    }
-
 }
+echo $update.'/'.$total.' Bios Updated.<hr />';
 
-echo count($creators).' Unique creators in '.$chains.' chains: '.$nochain.' nochain,'.$nocache.' nocache, '.$noanything.' noanything & '.$valid.' valid<hr />'.join( ', ', $missing).'<hr />'.join( ', ', $anything);
-
-die();
-
-//Translator
-$table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
+*/
 
 //USER
 $stats = array(
+    'count' => 0,
+
+    //Cache users
+    'cache_all' => 0,
+    'cache_notonchain' => 0,
+    'cache_addedtochain' => 0,
+
+    //Validate 5+2 fields:
+    'unique_chainusercreator' => array(),
+    'unique_chainusercreator_missing' => array(),
+    'unique_chainuserdomain' => array(),
+    'unique_chainuserdomain_missing' => array(),
+    'unique_chainusertype' => array(),
+    'unique_chainusertype_missing' => array(),
+    'unique_chainuserinput' => array(),
+    'unique_chainuserinput_missing' => array(),
+    'unique_chainuseroutput' => array(),
+    'unique_chainuseroutput_missing' => array(),
+    'unique_chainpostinput' => array(),
+    'unique_chainpostinput_missing' => array(),
+    'unique_chainpostonput' => array(),
+    'unique_chainpostonput_missing' => array(),
+
+    //On Chain users
     'users_all' => 0,
     'users_delete' => 0,
     'users_orphan' => 0,
@@ -97,7 +55,127 @@ $stats = array(
     'users_void_cachevalid' => 0,
     'users_valid_cachevoid' => 0,
     'cachevalid_chainvoid' => 0,
+
+    'message' => '',
 );
+
+
+//First start with cache and see what might be missing:
+foreach($this->Users->read(array(
+    'userid >' => 0,
+), 0) as $user){
+
+    $stats['cache_all']++;
+
+    if(!count($this->Chains->read(array(
+        'chainvoid >=' => 0,
+        'chainusertype' => 12274,
+        'chainuserinput' => $user['userid'],
+    ), array(), 1))){
+
+        $stats['cache_notonchain']++;
+
+        $new_x = $this->Chains->create(array(
+            'chainusertype' => 12274,
+            'chainusercreator' => $user['userid'],
+            'chainuserinput' => $user['userid'],
+            'chainvalue' => "@" . $user['userhandle']
+                . "\n" . $user['username']
+                . "\n" . $user['usercover']
+                . "\n" . $user['userbio']
+        ));
+
+        if($new_x['chainid'] > 0){
+
+            $stats['cache_addedtochain']++;
+            $stats['message'] .= "@".$user['userhandle']." Added to Chain\n";
+
+            //Edit ID
+            if(!count($this->Chains->read(array(
+                'chainvoid >=' => 0,
+                'chainid' => $new_x['chainid'],
+            ), array(), 1))){
+                $this->db->query("UPDATE ideachains SET chainid = " . $user['userid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
+            }
+        }
+    }
+}
+
+
+//Validate Chain Sources:
+$anything = array();
+$chains = 0;
+$valid = 0;
+$nochain = 0;
+$nocache = 0;
+$noanything = 0;
+
+foreach($this->Chains->read(array(
+    'chainvoid' => 0,
+), array(), 0) as $x){
+
+    $chains++;
+
+    if(!in_array(intval($x['chainusercreator']), $stats['unique_chainusercreator'])){
+
+        array_push($stats['unique_chainusercreator'], intval($x['chainusercreator']));
+
+        $anything_count = count($this->Chains->read(array(
+            'chainid !=' => $x['chainid'],
+            '(chainusercreator='.$x['chainusercreator'].' OR chainuserinput='.$x['chainusercreator'].' OR chainuseroutput='.$x['chainusercreator'].')' => null,
+        ), array(), 0));
+
+        $onchain = count($this->Chains->read(array(
+            'chainusertype' => 12274,
+            'chainuserinput' => $x['chainusercreator'],
+        ), array(), 1));
+
+        $oncache = count($this->Users->read(array(
+            'userid' => $x['chainusercreator'],
+        )));
+
+        if(!$anything_count) {
+            array_push($anything, intval($x['chainusercreator']));
+            $noanything++;
+        } elseif(!$onchain || !$oncache) {
+            echo '@'.$x['chainusercreator'].' ['.$anything_count.']<br />';
+        }
+
+        //Validate:
+        if(!$onchain) {
+            $nochain++;
+            if(!in_array(intval($x['chainusercreator']), $anything)){
+                array_push($stats['unique_chainusercreator_missing'], intval($x['chainusercreator']));
+            }
+        }
+
+        if(!$oncache){
+            $nocache++;
+            if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $stats['unique_chainusercreator_missing'])){
+                array_push($stats['unique_chainusercreator_missing'], intval($x['chainusercreator']));
+            }
+        }
+
+        if(!in_array(intval($x['chainusercreator']), $anything) && !in_array(intval($x['chainusercreator']), $stats['unique_chainusercreator_missing'])){
+            $valid++;
+        }
+
+    }
+
+
+
+
+
+
+
+
+}
+
+
+die();
+
+//Translator
+$table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
 
 //First remove cache items not found on chain:
 foreach($this->Users->read(array(
@@ -114,9 +192,8 @@ foreach($this->Users->read(array(
 
 foreach ($this->Chains->read(array(
     'chainusertype' => 12274,
-), array(), $max_load, 0, array('chainid' => 'ASC')) as $x) {
+), array(), 0, 0, array('chainid' => 'ASC')) as $x) {
 
-    $count++;
     $es_cache = $this->Users->read(array(
         'userid' => $x['chainuserinput'],
     ));
@@ -196,7 +273,7 @@ foreach ($this->Chains->read(array(
     }
 
     $table .= '<tr>';
-    $table .= '<td>' . $x['chainid'] . '<br />V' . $x['chainvoid'] . '/' . $count . '/' .
+    $table .= '<td>' . $x['chainid'] . '<br />V' . $x['chainvoid'] . '/' . $stats['users_all'] . '/' .
         ($delete ? '[DELETED USER]' : '') .
         ( !$total_links ? '[ORPHAN]' : '') .
         ($x['chainvoid'] > 0 ? '[VOID]' : '') .
@@ -211,9 +288,7 @@ foreach ($this->Chains->read(array(
 
 $table .= '</table>';
 
-if(isset($stats)){
-    print_r($stats);
-}
+print_r($stats);
 
 echo $table;
 echo '<style> 

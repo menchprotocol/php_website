@@ -141,7 +141,7 @@ h1 {
 h2 {
     padding:21px 8px;
     margin:0;
-    font-size:1.9em;
+    font-size:2.1em;
     text-align: left;
 }
 h3{
@@ -3322,6 +3322,9 @@ h4.main__title{
     h1 {
         font-size:2em;
     }
+    h2 {
+        font-size:1.7em;
+    }
 
     .inner_items>a,
     .inner_items>span{
@@ -4693,7 +4696,12 @@ h1 i,
 h1 i.fas,
 h1 i.fal,
 h1 i.far,
-h1 i.fad{
+h1 i.fad,
+h2 i,
+h2 i.fas,
+h2 i.fal,
+h2 i.far,
+h2 i.fad{
     font-size:0.7em !important;
 }
 

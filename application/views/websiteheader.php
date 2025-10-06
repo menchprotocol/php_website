@@ -5,7 +5,6 @@ $user_segment = view_valid_user_user($first_segment);
 $second_segment = $this->uri->segment(2);
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $users___14870 = $this->config->item('users___14870'); //Website Partner
-$handlusers___40904 = $this->config->item('handlusers___40904');
 $website_id = website_setting(0);
 $website_favicon = website_setting(31887);
 $basic_header_footer = in_array($app_userid, $this->config->item('userids___14562'));

@@ -4,7 +4,7 @@ $userhandle = (isset($_GET['userhandle']) ? $_GET['userhandle'] : null);
 $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag'] : null);
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 
-echo '<h1><a href="'.view_app_chain(4341).'?chainvoid=0"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> <a href="/@'.$users___11035[4341]['m__user'].'">'.$users___11035[4341]['m__cover'].' '.$users___11035[4341]['m__title'].'</a>:</h1>';
+echo '<h2><a href="'.view_app_chain(4341).'?chainvoid=0"><span class="card_count_4341" style="min-width:160px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> <a href="/@'.$users___11035[4341]['m__user'].'">'.$users___11035[4341]['m__cover'].' '.$users___11035[4341]['m__title'].'</a>:</h2>';
 
 if ($userhandle) {
     foreach ($this->Users->read(array(
