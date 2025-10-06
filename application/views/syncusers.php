@@ -3,8 +3,6 @@
 
 //USER
 $stats = array(
-    'count' => 0,
-
     //Cache users
     'cache_all' => 0,
     'cache_notonchain' => 0,
@@ -40,8 +38,6 @@ foreach ($this->Users->read(array(
 
         $stats['cache_notonchain']++;
 
-        $new_x = array();
-        /*
         $new_x = $this->Chains->create(array(
             'chainusertype' => 12274,
             'chainusercreator' => $user['userid'],
@@ -51,9 +47,8 @@ foreach ($this->Users->read(array(
                 . "\n" . $user['usercover']
                 . "\n" . $user['userbio']
         ));
-        */
 
-        if (0 && $new_x['chainid'] > 0) {
+        if ($new_x['chainid'] > 0) {
 
             $stats['cache_addedtochain']++;
             $stats['message'] .= "@" . $user['userhandle'] . " Added to Chain\n";
@@ -148,7 +143,7 @@ echo $update.'/'.$total.' Bios Updated.<hr />';
 */
 
 
-$stats['count_users'] = count($stats['count_users']);
+$stats['count_users'] = count($stats['unique_users']);
 $stats['count_users_missing'] = count($stats['unique_users_missing']);
 
 view_json($stats);
