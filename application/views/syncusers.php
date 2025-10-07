@@ -149,7 +149,7 @@ foreach ($this->Chains->read(array(
 //Sync bio once:
 foreach($this->Chains->read(array(
     'LENGTH(chainvalue)>0' => null,
-    'LENGTH(usersbio)=0' => null,
+    'LENGTH(userbio)=0' => null,
     'chainusertype' => 32292,
 ), array('chainuseroutput'), 0) as $x){
     if(!strlen($x['userbio']) && strlen(trim($x['chainvalue']))>21 && substr_count($x['chainvalue'], ' ')>=3) {
