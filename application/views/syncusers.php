@@ -64,6 +64,7 @@ foreach ($this->Users->read(array(
                 $this->db->query("UPDATE ideachains SET chainid = " . $user['userid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
             }
         }
+
     } else {
 
         $update_cache = array();
@@ -71,10 +72,11 @@ foreach ($this->Users->read(array(
             $update_cache['usercreator'] = $cache_chains[0]['chainusercreator'];
         }
         if (!strlen($user['usertime'])) {
-            $update_cache['usertime'] = $cache_chains[0]['chainusercreator'];
+            $update_cache['usertime'] = date("Y-m-d H:i:s");
         }
-        if (count($update_cache)) {
-            $this->Users->update($user['userid'], $update_cache);
+
+        //Update if there is anything:
+        if (count($update_cache) && $this->Users->update($user['userid'], $update_cache)) {
             $stats['users_oncache_synced']++;
         }
 
