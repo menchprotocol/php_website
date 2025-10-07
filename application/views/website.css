@@ -293,7 +293,12 @@ h3 {
     margin-left: 40px !important;
     width: calc(100% - 40px) !important;
 }
-
+.info-box {
+    padding: 5px;
+}
+.info-box i{
+    font-size: 0.7em;
+}
 .single_line {
     margin: 0 !important;
 }
