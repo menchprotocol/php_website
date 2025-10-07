@@ -853,36 +853,40 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <textarea class="form-control note-textarea algolia_finder editing-mode unsaved_warning algolia__e algolia__i save_userbio" placeholder="<?= ( strlen($users___12274[2135504]['m__message']) ? $users___12274[2135504]['m__message'] : $users___12274[2135504]['m__title'] ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
-                        <!-- USER COVER -->
-                        <div class="message_controllers">
-                            <table class="emoji_table">
-                                <tr>
-                                    <td>
-                                        <!-- Upload Cover -->
-                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $users___11035[42359]['m__title'] ?>"><?= $users___11035[42359]['m__cover'] ?></a>
-                                    </td>
-                                    <td class="hidden_superpower__13758">
-                                        <!-- EMOJI -->
-                                        <div class="icon-block-sm">
-                                            <div class="dropdown emoji_selector" style="max-height: 21px; margin-top: -18px;">
-                                                <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
-                                                <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="hidden_superpower__13758">
-                                        <!-- Font Awesome Insert -->
-                                        <a href="javascript:void(0);" class="icon-block-sm" onclick="updatusercover('far fa-icons')" title="Use Font Awesome"><i class="far fa-icons"></i></a>
-                                    </td>
-                                    <td>
-                                        <!-- Ramdom Animal -->
-                                        <a href="javascript:void(0);" class="random_animal" onclick="updatusercover('hide '+random_animal())" title="Set a random animal"></a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+
                         <div class="dynamic_editing_input">
+
+
                             <h3 class="mini-font" style="margin-bottom: -34px;"><?= '<span class="icon-block">'.$users___12274[6198]['m__cover'].'</span>';  ?></h3>
+
+                            <!-- USER COVER -->
+                            <div class="message_controllers">
+                                <table class="emoji_table">
+                                    <tr>
+                                        <td>
+                                            <!-- Upload Cover -->
+                                            <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $users___11035[42359]['m__title'] ?>"><?= $users___11035[42359]['m__cover'] ?></a>
+                                        </td>
+                                        <td class="hidden_superpower__13758">
+                                            <!-- EMOJI -->
+                                            <div class="icon-block-sm">
+                                                <div class="dropdown emoji_selector" style="max-height: 21px; margin-top: -18px;">
+                                                    <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
+                                                    <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="hidden_superpower__13758">
+                                            <!-- Font Awesome Insert -->
+                                            <a href="javascript:void(0);" class="icon-block-sm" onclick="updatusercover('far fa-icons')" title="Use Font Awesome"><i class="far fa-icons"></i></a>
+                                        </td>
+                                        <td>
+                                            <!-- Ramdom Animal -->
+                                            <a href="javascript:void(0);" class="random_animal" onclick="updatusercover('hide '+random_animal())" title="Set a random animal"></a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
 
                             <!-- Cover HIDDEN Input -->
                             <input type="text" class="form-control unsaved_warning save_usercover hidden_superpower__13758" data-lpignore="true" placeholder="<?= ( strlen($users___12274[6198]['m__message']) ? $users___12274[6198]['m__message'] : $users___12274[6198]['m__title'] ) ?>">
