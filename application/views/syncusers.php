@@ -54,12 +54,13 @@ foreach ($this->Users->read(array(
         if ($new_x['chainid'] > 0) {
 
             $stats['cache_addedtochain']++;
+
             $stats['message'] .= "@" . $user['userhandle'] . " Added to Chain\n";
 
             //Edit ID
             if (!count($this->Chains->read(array(
                 'chainvoid >=' => 0,
-                'chainid' => $new_x['chainid'],
+                'chainid' => $user['userid'],
             ), array(), 1))) {
                 $this->db->query("UPDATE ideachains SET chainid = " . $user['userid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
             }
