@@ -850,7 +850,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- User Bio -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder editing-mode unsaved_warning algolia__e algolia__i save_userbio" placeholder="<?= ( strlen($users___12274[2135504]['m__message']) ? $users___12274[2135504]['m__message'] : $users___12274[2135504]['m__title'] ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[2135504]['m__cover'].'</span>' ?><textarea class="form-control note-textarea algolia_finder editing-mode unsaved_warning algolia__e algolia__i save_userbio" placeholder="<?= ( strlen($users___12274[2135504]['m__message']) ? $users___12274[2135504]['m__message'] : $users___12274[2135504]['m__title'] ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea></h3>
                         </div>
 
 
