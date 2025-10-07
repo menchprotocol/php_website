@@ -1,13 +1,26 @@
 <?php
 
-$max_load = 9999999;
-$mentions = $this->config->item('users___13550');
-$ideas = $this->config->item('users___4486');
-$count = 0;
+$delete_missing = true;
+$stats = array(
+    //Cache posts
+    'cache_all' => 0,
+    'cache_notonchain' => 0,
+    'cache_addedtochain' => 0,
 
+    //On Chain posts
+    'chain_all' => 0,
+    'posts_onchain' => 0,
+    'posts_chain_deleted' => 0,
 
+    //Validate 5+2 fields posts & posts:
+    'count_posts' => 0,
+    'count_posts_missing' => 0,
 
+    'message' => '',
+    'unique_posts' => array(),
+    'unique_posts_missing' => array(),
 
+);
 
 //Translator
 $table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
@@ -46,10 +59,9 @@ if(isset($_GET['id'])){
 
 
 $has_media = false;
-foreach($this->Chains->read($filters, array(), ( isset($_GET['limit']) ? $_GET['limit'] : $max_load ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+foreach($this->Chains->read($filters, array(), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
     $stats['posts_duplicate']++;
-    $count++;
 
     //Extra hashtag:
     $is = array();
@@ -151,7 +163,7 @@ foreach($this->Chains->read($filters, array(), ( isset($_GET['limit']) ? $_GET['
 
     $table .= '<tr>';
 
-    $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.$count.'/'.
+    $table .= '<td>'.$x['chainid'].'<br />V'.$x['chainvoid'].'/'.
         ( $delete ? '[DELETED POST]' : '' ).
         ( !$total_links ? '[ORPHAN]' : '') .
         ( $x['chainvoid']>0 ? '[VOID]' : '' ).
