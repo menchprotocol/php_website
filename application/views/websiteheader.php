@@ -882,7 +882,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </table>
                         </div>
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[6198]['m__cover'].'</span>';  ?></h3>
+                            <h3 class="mini-font" style="margin-bottom: -34px;"><?= '<span class="icon-block">'.$users___12274[6198]['m__cover'].'</span>';  ?></h3>
 
                             <!-- Cover HIDDEN Input -->
                             <input type="text" class="form-control unsaved_warning save_usercover hidden_superpower__13758" data-lpignore="true" placeholder="<?= ( strlen($users___12274[6198]['m__message']) ? $users___12274[6198]['m__message'] : $users___12274[6198]['m__title'] ) ?>">
