@@ -52,7 +52,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         if ($is_chain) {
             echo '<div class="medium_cover card_header" userid="' . $userid2 . '">' . $m2['m__cover'] . '</div>';
         } else {
-            echo '<a href="'.$chain_link.'" class="large_cover" style="cursor:default !important;">' . $m2['m__cover'] . '</a>';
+            echo '<a href="'.$chain_link.'" class="large_cover" style="cursor: pointer !important;">' . $m2['m__cover'] . '</a>';
         }
 
         echo '<div class="main__title large_title"><a href="'.$chain_link.'" class="card_count_' . $userid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
