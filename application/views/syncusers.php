@@ -134,6 +134,7 @@ foreach ($this->Chains->read(array(
 
 
 //Sync bio once:
+/*
 foreach($this->Chains->read(array(
     'chainuserinput IN (' . join(',', array(42628, 11035)) . ')' => null, //USER CHAINS
     'LENGTH(chainvalue)>0' => null,
@@ -146,6 +147,7 @@ foreach($this->Chains->read(array(
         ), $x['userid']);
     }
 }
+*/
 
 
 $stats['count_users'] = count($stats['unique_users']);
