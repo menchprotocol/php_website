@@ -1935,7 +1935,7 @@ function post_editor(postid = 0, chainid = 0, next_postid = 0) {
     //load_post_dynamic(postid, chainid, true);
 
     if(postid>0){
-        insert_message = $('.ui_posttext_' + postid).text();
+        insert_message = $('.ui_postmessage_' + postid).text();
     } else {
         //New idea:
         if (next_postid && $('.ui_posthashtag_' + next_postid).length) {
@@ -1954,7 +1954,7 @@ function post_editor(postid = 0, chainid = 0, next_postid = 0) {
 
 
     if (insert_message.length) {
-        $("#modal31911 .save_posttext").val(insert_message);
+        $("#modal31911 .save_postmessage").val(insert_message);
     }
 
     if($('.ui_posthashtag_'+postid).text().length){
@@ -1965,13 +1965,13 @@ function post_editor(postid = 0, chainid = 0, next_postid = 0) {
 
     setTimeout(function () {
         //Adjust sizes:
-        set_autosize($('#modal31911 .save_posttext'));
+        set_autosize($('#modal31911 .save_postmessage'));
         set_autosize($('#modal31911 .save_chainvalue'));
     }, 233);
 
     setTimeout(function () {
         //Focus on writing a message:
-        $('#modal31911 .save_posttext').focus();
+        $('#modal31911 .save_postmessage').focus();
     }, 611);
 
 }
@@ -2113,7 +2113,7 @@ function post_update() {
         save_discoverymode: $('.s__12273_' + save_postid).attr('discovery_mode'),
         focus_group: focus_group,
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
-        save_posttext: $('#modal31911 .save_posttext').val().trim(),
+        save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
         save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
@@ -2174,7 +2174,7 @@ function post_update() {
             $('#modal31911').modal('hide');
 
             //Update Post Message:
-            $('.ui_posttext_' + modify_data['save_postid']).text(modify_data['save_posttext']);
+            $('.ui_postmessage_' + modify_data['save_postid']).text(modify_data['save_postmessage']);
 
             //Insert post into the page if new:
             console.log('START INSERTING');

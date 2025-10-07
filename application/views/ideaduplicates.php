@@ -4,7 +4,7 @@
 
 
 //Do a query to detect Posts with the exact same title:
-$q = $this->db->query('select in1.* from posts in1 where (select count(*) from posts in2 where in2.posttext = in1.posttext ORDER BY in1.posttext ASC');
+$q = $this->db->query('select in1.* from posts in1 where (select count(*) from posts in2 where in2.postmessage = in1.postmessage ORDER BY in1.postmessage ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){
@@ -12,12 +12,12 @@ if(count($duplicates) > 0){
     $prev_title = null;
 
     foreach($duplicates as $in) {
-        if ($prev_title != $in['posttext']) {
+        if ($prev_title != $in['postmessage']) {
             echo '<hr />';
-            $prev_title = $in['posttext'];
+            $prev_title = $in['postmessage'];
         }
 
-        echo '<div><a href="' . view_memory(42903,33286). $in['posthashtag'] . '"><b>' . $in['posttext'] . '</b></a> #' . $in['postid'] . '</div>';
+        echo '<div><a href="' . view_memory(42903,33286). $in['posthashtag'] . '"><b>' . $in['postmessage'] . '</b></a> #' . $in['postid'] . '</div>';
     }
 
 } else {

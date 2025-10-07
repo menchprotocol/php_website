@@ -60,7 +60,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                     'chainpostoutput' => $post_var['postid'],
                     'chainusercreator' => $x['userid'],
                 ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-                    $set_chainvalue = $response['posttext'];
+                    $set_chainvalue = $response['postmessage'];
                 }
 
                 if ($set_chainvalue) {
@@ -252,7 +252,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                             'chainpostoutput' => $this_var['postid'],
                             'chainusercreator' => $x['userid'],
                         ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-                            $set_chainvalue = $response['posttext'];
+                            $set_chainvalue = $response['postmessage'];
                         }
 
                         if ($set_chainvalue) {

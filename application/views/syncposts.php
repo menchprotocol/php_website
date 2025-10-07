@@ -57,7 +57,7 @@ foreach($this->Chains->read(array(
         $stats['posts_orphan']++;
     }
 
-    $posts_empty = count($is) && !strlen($is[0]['posttext']);
+    $posts_empty = count($is) && !strlen($is[0]['postmessage']);
     if($posts_empty){
         $stats['posts_empty']++;
     }
@@ -83,7 +83,7 @@ foreach($this->Chains->read(array(
     if(!count($is) && 0){
         //Add post:
         $post_new = $this->Posts->create(array(
-            'posttext' => $x['chainvalue'],
+            'postmessage' => $x['chainvalue'],
         ), $x['chainusercreator']);
         $is[0] = $post_new['post_create'];
     }
@@ -99,7 +99,7 @@ foreach($this->Chains->read(array(
     } else {
         $post_index = array(
             'chainvalue' => $x['chainvalue'],
-            'posttext' => '',
+            'postmessage' => '',
             'postdiscover' => '',
             'postedit' => '',
             'posthashtag' => '',
@@ -107,9 +107,9 @@ foreach($this->Chains->read(array(
     }
 
     /*
-    $post_index = post_index($posttext, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
+    $post_index = post_index($postmessage, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
     $this->Posts->update($x['chainid'], array(
-        'posttext' => $post_index['posttext'],
+        'postmessage' => $post_index['postmessage'],
         'postdiscover' => $post_index['postdiscover'],
         'postedit' => $post_index['postedit'],
     ));
@@ -135,7 +135,7 @@ foreach($this->Chains->read(array(
 
     $table .= '<td>T@'.$x['chainusertype'].'<br />C@'.$x['chainusercreator'].'</td>';
     $table .= '<td><div style="max-width:233px;">'.nl2br($x['chainvalue']).'</div></td>'; //RAW
-    $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['posttext']).'</div></td>'; //TEXT
+    $table .= '<td><div style="max-width:233px;">'.nl2br($post_index['postmessage']).'</div></td>'; //TEXT
     $table .= '<td><div style="max-width:233px;">'.($post_index['postdiscover']).'</div></td>'; //DISCOVER
     $table .= '<td><div style="max-width:233px;">'.($post_index['postedit']).'</div></td>'; //EDIT
     $table .= '</tr>';

@@ -1010,7 +1010,7 @@ class Controller extends CI_Controller
                 'message' => blocked_reasoning(),
             ));
 
-        } elseif (!isset($_POST['save_posttext'])) {
+        } elseif (!isset($_POST['save_postmessage'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -1052,7 +1052,7 @@ class Controller extends CI_Controller
                 'message' => 'Missing Chain Data',
             ));
 
-        } elseif (strlen($_POST['save_posttext']) > view_memory(6404, 4736)) {
+        } elseif (strlen($_POST['save_postmessage']) > view_memory(6404, 4736)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Post message must be less than ' . view_memory(6404, 4736) . ' characters.',
@@ -1087,15 +1087,15 @@ class Controller extends CI_Controller
                 $update_array['posthashtag'] = $_POST['save_posthashtag'];
             }
 
-            if ($is[0]['posttext'] !== trim($_POST['save_posttext'])) {
-                if (!strlen(trim($_POST['save_posttext']))) {
+            if ($is[0]['postmessage'] !== trim($_POST['save_postmessage'])) {
+                if (!strlen(trim($_POST['save_postmessage']))) {
                     //Since we do not have media, we must have a message:
                     return view_json(array(
                         'status' => 0,
                         'message' => 'Write something to save.',
                     ));
                 }
-                $update_array['posttext'] = $_POST['save_posttext'];
+                $update_array['postmessage'] = $_POST['save_postmessage'];
             }
 
             //Update new post fields:
@@ -1113,12 +1113,12 @@ class Controller extends CI_Controller
                 ), array('chainpostinput')) as $ref) {
 
                     //Redo their cache:
-                    $post_index = post_index($ref['posttext'], $ref['postid'], $user_session['userid'], $is[0]['posthashtag'], $update_array['posthashtag']);
+                    $post_index = post_index($ref['postmessage'], $ref['postid'], $user_session['userid'], $is[0]['posthashtag'], $update_array['posthashtag']);
 
                     $update_columns = array();
 
-                    if($update_columns['posttext']!=$post_index['posttext']){
-                        $update_columns['posttext'] = $post_index['posttext'];
+                    if($update_columns['postmessage']!=$post_index['postmessage']){
+                        $update_columns['postmessage'] = $post_index['postmessage'];
                     }
                     if($update_columns['postdiscover']!=$post_index['postdiscover']){
                         $update_columns['postdiscover'] = $post_index['postdiscover'];
@@ -1143,7 +1143,7 @@ class Controller extends CI_Controller
             //Create new post
             $post_new = $this->Posts->create(array(
                 'posthashtag' => $_POST['save_posthashtag'],
-                'posttext' => $_POST['save_posttext'],
+                'postmessage' => $_POST['save_postmessage'],
             ), $user_session['userid']);
 
             $_POST['save_postid'] = intval($post_new['post_create']['postid']);
@@ -1164,7 +1164,7 @@ class Controller extends CI_Controller
                 'return_postdiscover_chains' => view_post_value($new_i, $user_session['userid'], $focus__node, $discovery_mode, $discovery_mode),
                 'return_postdiscover_full' => post_view($_POST['focus_group'], $new_i),
                 'save_postid' => $new_i['postid'],
-                'save_posttext' => trim($_POST['save_posttext']),
+                'save_postmessage' => trim($_POST['save_postmessage']),
                 'redirect_post' => ( $focus__node ? : ( isset($new_i['posthashtag']) ? view_memory(42903, 33286) . $new_i['posthashtag'] : null) ),
                 'message' => 'Success',
             ));
@@ -2178,7 +2178,7 @@ class Controller extends CI_Controller
                 'chainusertype' => 31835, //User Mention
             ), array('chainpostoutput')) as $ref) {
                 $this->Posts->update($ref['postid'], array(
-                    'posttext' => str_replace('@' . $es[0]['userhandle'], '@' . $new_user_string, $ref['posttext']),
+                    'postmessage' => str_replace('@' . $es[0]['userhandle'], '@' . $new_user_string, $ref['postmessage']),
                 ), $user_session['userid']);
             }
             $es[0]['userhandle'] = $new_user_string;
@@ -2898,7 +2898,7 @@ class Controller extends CI_Controller
             foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $_POST['focus__id'],
-            ), array('chainpostoutput'), 0, 0, array('posttext' => 'ASC')) as $x) {
+            ), array('chainpostoutput'), 0, 0, array('postmessage' => 'ASC')) as $x) {
                 $order++;
                 $this->Chains->update($x['chainid'], array(
                     'chainkey' => $order,

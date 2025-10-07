@@ -230,12 +230,12 @@ function object_to_array($obj)
 function post_redirect_url($i)
 {
     $CI =& get_instance();
-    if (strlen($i['posttext']) && count($CI->Chains->read(array(
+    if (strlen($i['postmessage']) && count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostoutput' => $i['postid'],
             'chainuserinput' => 43871, //Redirect URL
         )))) {
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['posttext'], $match);
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['postmessage'], $match);
         foreach ($match[0] as $url) {
             if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
@@ -364,7 +364,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
     echo(isset($i['user_discovered']['chainkey']) && intval($i['user_discovered']['chainkey']) > 1 ? $i['user_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['posttext']) && strlen($i['user_written_response']['posttext']) ? ' ' . $i['user_written_response']['posttext'] : '');
+    echo(isset($i['user_written_response']['postmessage']) && strlen($i['user_written_response']['postmessage']) ? ' ' . $i['user_written_response']['postmessage'] : '');
 
 
     echo '<span class="float_right inner_items ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
@@ -674,7 +674,7 @@ function post_settings($posthashtag, $fetch_contact = false)
                 'chainuserinput IN (' . join(',', $pinned_columns) . ')' => null,
                 'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
                 'chainpostoutput !=' => $i['postid'],
-            ), array('chainpostoutput'), 0, 0, array('posttext' => 'ASC')) as $chain_i) {
+            ), array('chainpostoutput'), 0, 0, array('postmessage' => 'ASC')) as $chain_i) {
                 array_push($post_column, $chain_i);
                 array_push($mixed_column, $chain_i);
             }
@@ -2604,7 +2604,7 @@ function update_algolia($focus__node = null, $s__id = 0)
                 $export_row['s__user'] = $s['posthashtag'];
                 $export_row['s__url'] = view_memory(42903, 33286) . $s['posthashtag']; //Default to post, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['posttext'];
+                $export_row['s__title'] = $s['postmessage'];
                 $export_row['s__weight'] = intval($s['postweight']);
 
                 if (post_is_startable($s)) {
@@ -3728,12 +3728,12 @@ function view_hash($string)
 function view_post_title($i, $string_only = false)
 {
 
-    if (!isset($i['posttext'])) {
+    if (!isset($i['postmessage'])) {
         return null;
     }
 
     //Break down by lines:
-    foreach (explode("\n", $i['posttext']) as $line) {
+    foreach (explode("\n", $i['postmessage']) as $line) {
         if (strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)) {
             return ($string_only ? $line : '<span class="main__title">' . $line . '</span>');
         }
@@ -3844,7 +3844,7 @@ function post_to_title($post, $parent_post = null)
 }
 
 
-function post_index($posttext, $save_postid, $chainusercreator, $current_term = null, $new_term = null)
+function post_index($postmessage, $save_postid, $chainusercreator, $current_term = null, $new_term = null)
 {
 
     //Display Images, Audio, Video & PDF Files:
@@ -3853,7 +3853,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
     $core_references = array('@', '#');
     $post_index = array(
         'chainvalue' => '',
-        'posttext' => '',
+        'postmessage' => '',
         'postdiscover' => '',
         'postedit' => '',
         'actionstats' => array(
@@ -3867,10 +3867,10 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
     //All the possible reference types that can be found:
     $post_references = array();
     $chainkey = 0;
-    $posttext = str_replace('	', ' ', $posttext);
+    $postmessage = str_replace('	', ' ', $postmessage);
 
     //See what we can find:
-    foreach (explode("\n", $posttext) as $line_count => $line) {
+    foreach (explode("\n", $postmessage) as $line_count => $line) {
 
         $first_ref_hidden = false;
         $first_line = !$line_count;
@@ -3879,7 +3879,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
         $second_word_onwards = null;
 
         $linechainvalue = null;
-        $lineposttext = null;
+        $linepostmessage = null;
         $linepostdiscover = null;
         $linepostedit = null;
 
@@ -3891,7 +3891,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                 $second_word_onwards .= ltrim($line, $word_text . ' ');
             }
             $chainvalue = null;
-            $posttext = null;
+            $postmessage = null;
             $postdiscover = null;
             $postedit = null;
 
@@ -3973,7 +3973,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                             //Craete this referenced post since we could not find it:
                             $post_new = $CI->Posts->create(array(
                                 'posthashtag' => $term,
-                                'posttext' => post_to_title($term, $parent_term),
+                                'postmessage' => post_to_title($term, $parent_term),
                             ), $chainusercreator);
 
                             if (isset($post_new['post_create']['postid'])) {
@@ -4002,7 +4002,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                             );
 
                             $chainvalue = $m['m__cover'] . $post['postid'];
-                            $posttext = $word_text;
+                            $postmessage = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
                                 $postdiscover = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
                             } else {
@@ -4094,7 +4094,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
                             );
 
                             $chainvalue = $m['m__cover'] . $user['userid'];
-                            $posttext = $word_text;
+                            $postmessage = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
                                 $postdiscover = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
                             } else {
@@ -4119,7 +4119,7 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
             if (!$reference_type) {
                 //This word is not referencing anything!
                 $chainvalue = $word_text;
-                $posttext = $word_text;
+                $postmessage = $word_text;
                 if (!$first_ref_hidden) {
                     $postdiscover = $word_text;
                 }
@@ -4128,14 +4128,14 @@ function post_index($posttext, $save_postid, $chainusercreator, $current_term = 
 
             //See what we found to add:
             $linechainvalue .= (!$first_word && $chainvalue ? ' ' : '') . $chainvalue;
-            $lineposttext .= (!$first_word && $posttext ? ' ' : '') . $posttext;
+            $linepostmessage .= (!$first_word && $postmessage ? ' ' : '') . $postmessage;
             $linepostdiscover .= (!$first_word && $postdiscover ? ' ' : '') . $postdiscover;
             $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
 
         }
 
         $post_index['chainvalue'] .= (!$first_line && $linechainvalue ? "\n" : '') . $linechainvalue;
-        $post_index['posttext'] .= (!$first_line && $lineposttext ? "\n" : '') . $lineposttext;
+        $post_index['postmessage'] .= (!$first_line && $linepostmessage ? "\n" : '') . $linepostmessage;
         $post_index['postdiscover'] .= ($linepostdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdiscover . '</div>' : '');
         $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');
 
@@ -4830,8 +4830,8 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
 
     //Raw Data:
-    $ui .= '<div class="ui_posttext_' . $i['postid'] . '
-     hidden">' . $i['posttext'] . '</div>';
+    $ui .= '<div class="ui_postmessage_' . $i['postid'] . '
+     hidden">' . $i['postmessage'] . '</div>';
 
 
     $ui .= '</div>';
@@ -5070,7 +5070,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC'));
 
         $input_attributes = '';
-        $previous_response = ($chainusercreator && isset($user_private_replies[0]['posttext']) ? $user_private_replies[0]['posttext'] : '');
+        $previous_response = ($chainusercreator && isset($user_private_replies[0]['postmessage']) ? $user_private_replies[0]['postmessage'] : '');
 
         if (count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes

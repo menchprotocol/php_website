@@ -139,7 +139,7 @@ if(!$basic_header_footer){
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
         const picker_i = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
             //Insert into post text box:
-            insertText($(".save_posttext"), res.native);
+            insertText($(".save_postmessage"), res.native);
             //We keep it open!
         }});
         const picker_e = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
@@ -155,7 +155,7 @@ if(!$basic_header_footer){
         });
 
         $(".add_post_4486").click(function (e) {
-            insertText($(".save_posttext"), '#');
+            insertText($(".save_postmessage"), '#');
         });
 
     </script>
@@ -754,7 +754,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Post Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_posttext" placeholder="<?= ( strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessage" placeholder="<?= ( strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="post_preview_frame hideIfEmpty" style="margin-left: 40px;">
                                 <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
                                 <div class="doclear">&nbsp;</div>

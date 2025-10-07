@@ -1029,10 +1029,10 @@ class Chains extends CIdea_cache
                 if (count($user_private_replies)) {
 
                     //Update existing response if different:
-                    if ($user_submitted_data['post_createtext'] != $user_private_replies[0]['posttext']) {
+                    if ($user_submitted_data['post_createtext'] != $user_private_replies[0]['postmessage']) {
 
                         $this->Posts->update($user_private_replies[0]['postid'], array(
-                            'posttext' => $user_submitted_data['post_createtext'],
+                            'postmessage' => $user_submitted_data['post_createtext'],
                         ), $chainusercreator);
 
                     }
@@ -1043,7 +1043,7 @@ class Chains extends CIdea_cache
 
                     //Create a new post:
                     $post_new = $this->Posts->create(array(
-                        'posttext' => $user_submitted_data['post_createtext'],
+                        'postmessage' => $user_submitted_data['post_createtext'],
                     ), $chainusercreator);
 
                     $this_postid = $post_new['post_create']['postid'];
@@ -1158,7 +1158,7 @@ class Chains extends CIdea_cache
                 if ($clone_i['chainusertype'] == 32247) {
 
                     //Discovery Clone
-                    $new_title = $es_creator[0]['username'] . ' ' . $clone_i['posttext'];
+                    $new_title = $es_creator[0]['username'] . ' ' . $clone_i['postmessage'];
                     $result = $this->Posts->copy($clone_i['postid'], 0, $x_data['chainusercreator'], null, $new_title);
                     if ($result['status']) {
 

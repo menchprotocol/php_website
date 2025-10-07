@@ -11,7 +11,7 @@ class Posts extends CIdea_cache
     function create($add_fields, $chainusercreator = 0)
     {
 
-        if (!isset($add_fields['posttext'])) {
+        if (!isset($add_fields['postmessage'])) {
             return false;
         }
 
@@ -21,10 +21,10 @@ class Posts extends CIdea_cache
 
         //Set defaults if missing:
         if (!isset($add_fields['posthashtag'])) {
-            $add_fields['posthashtag'] = generate_user(12273, one_two_explode('', "\n", $add_fields['posttext']));
+            $add_fields['posthashtag'] = generate_user(12273, one_two_explode('', "\n", $add_fields['postmessage']));
         }
 
-        $post_index = post_index($add_fields['posttext'], 0, 0, $add_fields['posthashtag']);
+        $post_index = post_index($add_fields['postmessage'], 0, 0, $add_fields['posthashtag']);
 
         //Add to Chain:
         $new_array = array(
@@ -38,7 +38,7 @@ class Posts extends CIdea_cache
         }
 
         //Update other data on chain:
-        $post_index = post_index($add_fields['posttext'], $new_x['chainid'], $chainusercreator, $add_fields['posthashtag']);
+        $post_index = post_index($add_fields['postmessage'], $new_x['chainid'], $chainusercreator, $add_fields['posthashtag']);
         //Update new ID:
         $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='"."#" . $add_fields['posthashtag'] . "\n" . $post_index['chainvalue']."' WHERE chainid = " . $new_x['chainid'] . ";");
 
@@ -49,7 +49,7 @@ class Posts extends CIdea_cache
             'postcreator' => $new_x['chainusercreator'],
             'posttime' => $new_x['chaintime'],
             'posthashtag' => $add_fields['posthashtag'],
-            'posttext' => $post_index['posttext'],
+            'postmessage' => $post_index['postmessage'],
             'postdiscover' => $post_index['postdiscover'],
             'postedit' => $post_index['postedit'],
         ));
@@ -125,7 +125,7 @@ class Posts extends CIdea_cache
     function update($postid, $update_columns, $chainusercreator = 0)
     {
 
-        $core_fields = array('posttext', 'posthashtag');
+        $core_fields = array('postmessage', 'posthashtag');
 
         //Find existing chain to update:
         foreach ($this->Chains->read(array(
@@ -161,11 +161,11 @@ class Posts extends CIdea_cache
                         $must_update_chain = 1;
 
                         $new_posthashtag = trim( isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $cache['posthashtag'] );
-                        $new_posttext = trim( isset($update_columns['posttext']) ? $update_columns['posttext'] : $cache['posttext'] );
-                        $post_index = post_index($new_posttext, $postid, $chainusercreator, $new_posthashtag);
+                        $new_postmessage = trim( isset($update_columns['postmessage']) ? $update_columns['postmessage'] : $cache['postmessage'] );
+                        $post_index = post_index($new_postmessage, $postid, $chainusercreator, $new_posthashtag);
 
-                        if($new_posttext!=trim($cache['posttext'])){
-                            $update_columns['posttext'] = $post_index['posttext'];
+                        if($new_postmessage!=trim($cache['postmessage'])){
+                            $update_columns['postmessage'] = $post_index['postmessage'];
                             $update_columns['postdiscover'] = $post_index['postdiscover'];
                             $update_columns['postedit'] = $post_index['postedit'];
                         }
@@ -190,7 +190,7 @@ class Posts extends CIdea_cache
                             'chainpostoutput' => $postid,
                         ), array('chainpostinput'), 0) as $ref) {
                             //Update the post index:
-                            $post_index = post_index($ref['posttext'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
+                            $post_index = post_index($ref['postmessage'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
                         }
 
                         //Sync algolia:
@@ -234,10 +234,10 @@ class Posts extends CIdea_cache
         $affected_rows = 0;
         foreach ($posts_found as $post_current) {
 
-            if (isset($update_columns['posttext']) || isset($update_columns['posthashtag'])) {
+            if (isset($update_columns['postmessage']) || isset($update_columns['posthashtag'])) {
                 //Update Post Text:
-                $post_index = post_index($update_columns['posttext'], $postid, $chainusercreator, (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : null));
-                $update_columns['posttext'] = $post_index['posttext']; //May be updated
+                $post_index = post_index($update_columns['postmessage'], $postid, $chainusercreator, (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : null));
+                $update_columns['postmessage'] = $post_index['postmessage']; //May be updated
                 $update_columns['postdiscover'] = $post_index['postdiscover'];
                 $update_columns['postedit'] = $post_index['postedit'];
             }
@@ -252,7 +252,7 @@ class Posts extends CIdea_cache
             $affected_rows = $this->db->affected_rows();
 
             //Chain data changed?
-            if ((isset($update_columns['posttext']) && $post_index['posttext'] != $post_current['posttext']) || (isset($update_columns['posthashtag']) && $update_columns['posthashtag'] != $post_current['posthashtag'])) {
+            if ((isset($update_columns['postmessage']) && $post_index['postmessage'] != $post_current['postmessage']) || (isset($update_columns['posthashtag']) && $update_columns['posthashtag'] != $post_current['posthashtag'])) {
                 //Fetch latest chain:
                 foreach ($this->Chains->read(array(
                     'chainusertype' => 12273,
@@ -261,12 +261,12 @@ class Posts extends CIdea_cache
                     $this->Chains->update($chain_i['chainid'], array(
                         'chainpostinput' => $postid,
                         'chainusercreator' => $chainusercreator,
-                        'chainvalue' => '#' . (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $post_current['posthashtag']) . "\n" . $post_index['posttext'],
+                        'chainvalue' => '#' . (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $post_current['posthashtag']) . "\n" . $post_index['postmessage'],
                     ));
                 }
             }
 
-            if (isset($update_columns['posttext']) && $post_index['posttext'] != $post_current['posttext']) {
+            if (isset($update_columns['postmessage']) && $post_index['postmessage'] != $post_current['postmessage']) {
                 //Sync algolia:
                 update_algolia(12273, $postid);
             }
@@ -626,7 +626,7 @@ class Posts extends CIdea_cache
         }
 
         $post_new = $this->Posts->create(array(
-            'posttext' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['posttext']),
+            'postmessage' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['postmessage']),
         ), $chainusercreator);
 
         return array(

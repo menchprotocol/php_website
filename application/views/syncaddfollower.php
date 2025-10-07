@@ -21,7 +21,7 @@ foreach ($this->Chains->read(array(
             'chainpostoutput' => $addition_sync['chainpostoutput'],
             'chainusercreator' => $dicovered['chainusercreator'],
         ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-            $set_chainvalue = $response['posttext'];
+            $set_chainvalue = $response['postmessage'];
         }
 
         //lets append this User:
