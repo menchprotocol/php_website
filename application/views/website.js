@@ -958,6 +958,8 @@ var interval = null;
 
 function setup_popover() {
 
+    return false; //TODO remove later when fixed?
+
     if (interval) {
         clearInterval(interval);
     }

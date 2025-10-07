@@ -71,9 +71,6 @@ foreach ($this->Users->read(array(
         if ($cache_chains[0]['chainusercreator'] != $user['usercreator']) {
             $update_cache['usercreator'] = $cache_chains[0]['chainusercreator'];
         }
-        if (!strlen($user['usertime'])) {
-            $update_cache['usertime'] = date("Y-m-d H:i:s");
-        }
 
         //Update if there is anything:
         if (count($update_cache) && $this->Users->update($user['userid'], $update_cache)) {

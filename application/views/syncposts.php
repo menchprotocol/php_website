@@ -1,13 +1,13 @@
 <?php
 
 $delete_missing = true;
+$_GET['limit'] = 100;
 
 $stats = array(
-    'posts_all' => 0,
+    'posts_onchain' => 0,
     'posts_orphan' => 0,
     'posts_empty' => 0,
     'posts_delete' => 0,
-    'posts_duplicate' => 0,
     'posts_void' => 0,
     'posts_voidcreaetor' => 0,
     'posts_void_cachevalid' => 0,
@@ -15,12 +15,71 @@ $stats = array(
     'cache_valid_postvoid' => 0,
 );
 
-$has_media = false;
+
+
+//First start with cache and see what might be missing:
+foreach ($this->Posts->read(array(
+    'postid >' => 0,
+), $_GET['limit']) as $post) {
+
+    $stats['posts_oncache']++;
+    $cache_chains = $this->Chains->read(array(
+        'chainusertype' => 12274,
+        'chainuserinput' => $post['postid'],
+    ), array(), 1);
+
+    if (!count($cache_chains)) {
+
+        $stats['posts_oncache_notonchain']++;
+
+        $new_x = $this->Chains->create(array(
+            'chainusertype' => 12274,
+            'chainusercreator' => $post['postid'],
+            'chainuserinput' => $post['postid'],
+            'chainvalue' => "@" . $post['posthandle']
+                . "\n" . $post['postname']
+                . "\n" . $post['postcover']
+                . "\n" . $post['postbio']
+        ));
+
+        if ($new_x['chainid'] > 0) {
+
+            $stats['posts_oncache_chainadded']++;
+
+            $stats['message'] .= "@" . $post['posthandle'] . " Added to Chain\n";
+
+            //Edit ID
+            if (!count($this->Chains->read(array(
+                'chainvoid >=' => 0,
+                'chainid' => $post['postid'],
+            ), array(), 1))) {
+                $this->db->query("UPDATE ideachains SET chainid = " . $post['postid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
+            }
+        }
+
+    } else {
+
+        $update_cache = array();
+        if ($cache_chains[0]['chainusercreator'] != $post['postcreator']) {
+            $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
+        }
+        if (!strlen($post['posttime'])) {
+            $update_cache['posttime'] = date("Y-m-d H:i:s");
+        }
+
+        //Update if there is anything:
+        if (count($update_cache) && $this->Users->update($post['postid'], $update_cache)) {
+            $stats['posts_oncache_synced']++;
+        }
+
+    }
+}
+
+
+
 foreach($this->Chains->read(array(
     'chainusertype' => 12273,
 ), array(), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
-
-    $stats['posts_duplicate']++;
 
     //Extra hashtag:
     $is = array();
@@ -60,7 +119,7 @@ foreach($this->Chains->read(array(
         $stats['posts_empty']++;
     }
 
-    $stats['posts_all']++;
+    $stats['posts_onchain']++;
     if($x['chainvoid']>0){
         $stats['posts_void']++;
     } elseif(!count($es)){
@@ -140,19 +199,4 @@ foreach($this->Chains->read(array(
 
 }
 
-$table .= '</table>';
-
-if(isset($stats)){
-    print_r($stats);
-}
-
-echo $table;
-echo '<style> 
-
-    img { max-width: 100% !important; } 
-    
-    .container {
-        max-width: calc(100% - 16px) !important;
-    }
-        
-</style>';
+view_json($stats);
