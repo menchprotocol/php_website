@@ -56,7 +56,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         }
 
         echo '<div class="main__title large_title"><a href="'.$chain_link.'" class="card_count_' . $userid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title" title="@' . $userid2 . ' @' . $m2['m__user'] . '"><a href="'.view_memory(42903,42902).$m2['m__user'].'">' . $m2['m__title'] . '</a></div>';
+        echo '<div class="main__title large_title" title="@' . $userid2 . ' @' . $m2['m__user'] . '"><a href="'.view_memory(42903,42902).$m2['m__user'].'">' . $m2['m__title'] . '</a>'.( strlen($m2['m__message']) ? '<i class="fas fa-info-circle grey" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '"></i>' : '' ).'</div>';
         echo '</div>';
 
         if ($is_chain) {
