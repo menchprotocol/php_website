@@ -936,11 +936,11 @@ function process_media($postid, $uploaded_media)
     if (count($uploaded_media) > 0) {
 
         //We have media to process:
-        $sort_count = 0; //Reset sorting to compare to submitted media...
+        $sort_count = 0; //Reset sorting to compare to submitted media
         foreach ($uploaded_media as $upload_media) {
 
             if (!$upload_media['userid']) {
-                //Adding new media...
+                //Adding new media
                 //Search eTag to see if we already have it:
                 $etag_detected = false;
                 if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
@@ -972,14 +972,14 @@ function process_media($postid, $uploaded_media)
                     //Create new media and assign ID:
                     $upload_media['userid'] = $added_e['user_create']['userid'];
 
-                    //new asset, create new User and insert tags...
+                    //new asset, create new User and insert tags
                     $users___32088 = $CI->config->item('users___32088'); //Platform Variables
                     foreach ($CI->config->item('users___42679') as $chainusertype => $m) {
 
                         //Ensure variable name exists so we can check the API call:
                         $target_variable = false;
                         if (isset($users___32088[$chainusertype]['m__message'])) {
-                            //Determine if variable exists...
+                            //Determine if variable exists
                             if (in_array($chainusertype, $CI->config->item('userids___42763')) && isset($upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']])) {
                                 //Video info:
                                 $target_variable = $upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']];
@@ -992,11 +992,11 @@ function process_media($postid, $uploaded_media)
                             }
                         }
                         if (!strlen($target_variable) || $target_variable == '0') {
-                            //This variable does not have a value, move on...
+                            //This variable does not have a value, move on
                             continue;
                         }
 
-                        //We have a variable, see what it is...
+                        //We have a variable, see what it is
                         if (in_array($chainusertype, $CI->config->item('userids___33331'))) {
 
                             //Single select that needs auto creation of Users if missing:
@@ -1136,7 +1136,7 @@ function add_media($uploaded_media)
     //We have media to process:
     foreach ($uploaded_media as $upload_media) {
 
-        //Adding new media...
+        //Adding new media
         //Search eTag to see if we already have it:
         $etag_detected = false;
         if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
@@ -1166,14 +1166,14 @@ function add_media($uploaded_media)
         //Create new media and assign ID:
         $upload_media['userid'] = $added_e['user_create']['userid'];
 
-        //new asset, create new User and insert tags...
+        //new asset, create new User and insert tags
         $users___32088 = $CI->config->item('users___32088'); //Platform Variables
         foreach ($CI->config->item('users___42679') as $chainusertype => $m) {
 
             //Ensure variable name exists so we can check the API call:
             $target_variable = false;
             if (isset($users___32088[$chainusertype]['m__message'])) {
-                //Determine if variable exists...
+                //Determine if variable exists
                 if (in_array($chainusertype, $CI->config->item('userids___42763')) && isset($upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']])) {
                     //Video info:
                     $target_variable = $upload_media['media_cache']['video'][$users___32088[$chainusertype]['m__message']];
@@ -1186,11 +1186,11 @@ function add_media($uploaded_media)
                 }
             }
             if (!strlen($target_variable) || $target_variable == '0') {
-                //This variable does not have a value, move on...
+                //This variable does not have a value, move on
                 continue;
             }
 
-            //We have a variable, see what it is...
+            //We have a variable, see what it is
             if (in_array($chainusertype, $CI->config->item('userids___33331'))) {
 
                 //Single select that needs auto creation of Users if missing:
@@ -3548,7 +3548,7 @@ function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
 {
 
     /*
-     * Either single or multi select UI elements...
+     * Either single or multi select UI elements
      * */
 
     $CI =& get_instance();
@@ -3679,7 +3679,7 @@ function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
 
     if ($overflow_reached && !$has_selected && !$access_locked) {
         //We show this only if non are selected and has too many options:
-        $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item itemsetting selection_preview selection_preview_' . $focus__id . '"><span class="icon-block"><i class="far fa-search-plus"></i></span>Show More...</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_' . $focus__id . '\').removeClass(\'hidden\');$(\'.selection_preview_' . $focus__id . '\').addClass(\'hidden\');" class="list-group-item itemsetting selection_preview selection_preview_' . $focus__id . '"><span class="icon-block"><i class="far fa-search-plus"></i></span>Show More</a>';
     }
 
     $ui .= '</div>';
@@ -3781,7 +3781,7 @@ function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode 
             'chainusertype' => 31835, //References
         ), array('chainuserinput'), 0) as $message_references) {
             if (!substr_count(strtolower($i[$field]), '>@' . strtolower($message_references['userhandle']))) {
-                //Maybe because it was duplicated, etc... REMOVE IT:
+                //Maybe because it was duplicated, etc REMOVE IT:
                 //$CI->Chains->delete($message_references['chainid']);
                 continue;
             }
@@ -5080,7 +5080,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
             //Textarea
             $users___12273 = $CI->config->item('users___12273'); //POST Cache
-            $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'] . '...') . '">' . $previous_response . '</textarea>';
+            $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'] ) . '">' . $previous_response . '</textarea>';
             $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
 
         } else {
@@ -5101,11 +5101,11 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     )))) {
                         //It's a phone number:
                         $input_type = 'text';
-                        $placeholder = 'Enter Phone Number...';
+                        $placeholder = 'Enter Phone Number';
                     } else {
                         //A regular number:
                         $input_type = 'number';
-                        $placeholder = 'Enter Number...';
+                        $placeholder = 'Enter Number';
                     }
 
                     //Steps
@@ -5150,13 +5150,13 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     )));
 
                     $input_type = ($has_time ? 'datetime-local' : 'date');
-                    $placeholder = ($has_time ? 'Select Date & Time...' : 'Select Date...');
+                    $placeholder = ($has_time ? 'Select Date & Time' : 'Select Date');
 
                 } elseif ($input_field['chainuserinput'] == 42915) {
 
                     //URL
                     $input_type = 'url';
-                    $placeholder = 'Paste URL...';
+                    $placeholder = 'Paste URL';
 
                 }
 
@@ -5480,7 +5480,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
         if (in_array($social_chain['chainuserinput'], $CI->config->item('userids___32172'))) {
             /*
              *
-             * Before showing this we must enture all information is updated...
+             * Before showing this we must enture all information is updated
              *
             if (strlen($social_chain['chainvalue'])) {
                 //Must always see, show content here:
@@ -5540,7 +5540,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
 
                 //Selector
                 $featured_users .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . ' ignore-click">';
-                $featured_users .= '<input class="form-check-input" type="checkbox" value="" userid="' . $e['userid'] . '" id="selectoruser_' . $e['userid'] . '" aria-label="...">';
+                $featured_users .= '<input class="form-check-input" type="checkbox" value="" userid="' . $e['userid'] . '" id="selectoruser_' . $e['userid'] . '" aria-label="">';
                 $featured_users .= '</span>';
 
             } elseif ($chainusertype_target_bar == 13911 && $has_sortable && $user_access >= 3) {

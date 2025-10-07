@@ -5,7 +5,7 @@ $chainusercreator = ($user_session ? $user_session['userid'] : 0);
 $target_posthashtag = (count($target_i) && $chainusercreator ? $target_i['posthashtag'] : null);
 $at_starting_point = $target_posthashtag==$focus_i['posthashtag'];
 
-//Breadcrump for logged in users NOT at the starting point...
+//Breadcrump for logged in users NOT at the starting point
 $breadcrum_content = null;
 if ($chainusercreator && !$at_starting_point) {
 

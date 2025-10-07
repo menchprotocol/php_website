@@ -597,7 +597,7 @@ class Controller extends CI_Controller
                     //Fetch the current value:
                     $counted = 0;
                     $unique_values = array();
-                    if ($postid > 0) { //Must have an original ID to possibly have a value...
+                    if ($postid > 0) { //Must have an original ID to possibly have a value
                         foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
                             'chainpostoutput' => $postid,
@@ -613,7 +613,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
                                     'd__profile_header' => '',
                                 ));
                             }
@@ -632,7 +632,7 @@ class Controller extends CI_Controller
                                 'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                 'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
-                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
                                 'd__profile_header' => '',
                             ));
                         }
@@ -757,7 +757,7 @@ class Controller extends CI_Controller
                     //Fetch the current value:
                     $counted = 0;
                     $unique_values = array();
-                    if ($postid > 0) { //Must have an original ID to possibly have a value...
+                    if ($postid > 0) { //Must have an original ID to possibly have a value.
                         foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
                             'chainpostoutput' => $postid,
@@ -773,7 +773,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
                                     'd__profile_header' => '',
                                 ));
                             }
@@ -792,7 +792,7 @@ class Controller extends CI_Controller
                                 'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                 'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
-                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
                                 'd__profile_header' => '',
                             ));
                         }
@@ -1832,7 +1832,7 @@ class Controller extends CI_Controller
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             ), array('chainuserinput'), 0, 0, $order_42145) as $user_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($user_template['usercover']) . '</span>' . $user_template['username'] . '<a href="' . view_memory(42903, 42902) . $user_group['userhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $user_group['username'] . '... Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($user_group['usercover']) . '</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($user_template['usercover']) . '</span>' . $user_template['username'] . '<a href="' . view_memory(42903, 42902) . $user_group['userhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $user_group['username'] . '. Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($user_group['usercover']) . '</span></a></div>';
 
 
                 //Load template:
@@ -1924,7 +1924,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $m, $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
@@ -1941,7 +1941,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $m, $selected_e),
                                     'd__value' => '',
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
@@ -1971,7 +1971,7 @@ class Controller extends CI_Controller
                         'd__html' => view_dynamic_headline($selected_e['userid'], $users___42776[$selected_e['userid']], $selected_e),
                         'd__value' => (isset($values[0]['chainvalue']) && strlen($values[0]['chainvalue']) > 0 ? $values[0]['chainvalue'] : ''),
                         'd__type_name' => html_input_type($data_type),
-                        'd__placeholder' => (strlen($users___42776[$selected_e['userid']]['m__message']) ? $users___42776[$selected_e['userid']]['m__message'] : $users___4592[$data_type]['m__title'] . '...'),
+                        'd__placeholder' => (strlen($users___42776[$selected_e['userid']]['m__message']) ? $users___42776[$selected_e['userid']]['m__message'] : $users___4592[$data_type]['m__title'] ),
                         'd__profile_header' => '', //No header for universals
                     ));
                     break;
@@ -2610,7 +2610,7 @@ class Controller extends CI_Controller
         if (!$valid_email && !$possible_phone) {
             return view_json(array(
                 'status' => 0,
-                'message' => (strlen($_POST['account_email_phone']) ? '[' . $_POST['account_email_phone'] . '] is Invalid!' : 'Enter your email to continue...'),
+                'message' => (strlen($_POST['account_email_phone']) ? '[' . $_POST['account_email_phone'] . '] is Invalid!' : 'Enter your email to continue:'),
             ));
         } elseif (!isset($_POST['sign_postid'])) {
             return view_json(array(
@@ -2993,7 +2993,7 @@ class Controller extends CI_Controller
             if ($post_required && $trying_to_skip) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => ($input__selection ? 'Make a selection to continue...' : 'Respond to continue...'),
+                    'message' => ($input__selection ? 'Make a selection to continue:' : 'Respond to continue:'),
                 ));
             }
 
@@ -3053,7 +3053,7 @@ class Controller extends CI_Controller
                     if (in_array($x_selection['postid'], $_POST['selection_postid'])) {
                         //Current selection is already in the database from before:
                         array_push($already_answered, $x_selection['postid']);
-                        continue; //Nothing we need to do here...
+                        continue; //Nothing we need to do here
                     }
 
                     $this->Chains->delete($x_selection['chainid'], $user_session['userid']);

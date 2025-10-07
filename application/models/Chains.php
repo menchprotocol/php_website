@@ -538,7 +538,7 @@ class Chains extends CIdea_cache
                 }
             }
 
-            //Reactions...
+            //Reactions
             if ($chainid > 0) {
                 if (in_array($user_createid, $this->config->item('userids___42850'))) {
                     $status = $this->Chains->delete($chainid, $user_session['userid']); //Removed
@@ -599,7 +599,7 @@ class Chains extends CIdea_cache
 
         //Make sure not recently contacted:
         /*
-         * Did not work with subscription notifications which could happen back to back...
+         * Did not work with subscription notifications which could happen back to back
          *
         $minutes_limit = 60;
         foreach($this->Chains->read(array(
@@ -1504,7 +1504,7 @@ class Chains extends CIdea_cache
                 'chainuserinput' => 28239, //Required
             )));
 
-            $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later...
+            $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later
             $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
             $i['post_list_config'] = post_list_config($i['postid'], false);
             $i['stats'] = array(

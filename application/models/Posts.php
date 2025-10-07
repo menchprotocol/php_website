@@ -154,7 +154,7 @@ class Posts extends CIdea_cache
                     } elseif (in_array($key, $core_fields)) {
 
                         if($must_update_chain){
-                            continue; //Only need to run through this once...
+                            continue; //Only need to run through this once
                         }
 
                         //We only do it once:

@@ -14,7 +14,7 @@ if(!$user_session){
 } elseif(!(filter_var(website_setting(30882), FILTER_VALIDATE_EMAIL) && strlen(website_setting(44355))>10 && strlen(website_setting(44354))>10)) {
     return view_json(array(
         'status' => 0,
-        'message' => 'Paypal Invoicing is Not Active on This Domain... Contact Webmaster...',
+        'message' => 'Paypal Invoicing is Not Active on This Domain. Contact Webmaster.',
     ));
 }
 

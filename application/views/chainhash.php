@@ -1,6 +1,6 @@
 <?php
 
-$starting_id = 1; //Will only check currrent hash to ensure its all valid...
+$starting_id = 1; //Will only check currrent hash to ensure its all valid
 $previous = chainprevious($starting_id);
 
 

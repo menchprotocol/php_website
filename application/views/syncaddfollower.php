@@ -4,7 +4,7 @@
 $counter = 0;
 foreach ($this->Chains->read(array(
     'chainusertype' => 7545,
-    'chainuserinput NOT IN (' . join(',', $this->config->item('userids___43048')) . ')' => null, //No need to add these special ones... UserNickname
+    'chainuserinput NOT IN (' . join(',', $this->config->item('userids___43048')) . ')' => null, //No need to add these special ones UserNickname
 ), array('chainuserinput'), 0) as $addition_sync) {
 
     $is_found = false;

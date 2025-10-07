@@ -109,7 +109,7 @@ if(user_session()) {
             var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
             if (document.documentElement.classList ){
                 if (isInstagram) {
-                    $('.login-content').html('Instagram Frame detected! Visit us from A Web Browser like Google Chrome or Safari to Continue...');
+                    $('.login-content').html('Instagram Frame detected! Visit us from A Web Browser like Google Chrome or Safari to Continue');
                 }
             }
         });
