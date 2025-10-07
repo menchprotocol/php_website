@@ -150,7 +150,7 @@ if(!$basic_header_footer){
         $(".emoji_i").append(picker_i);
         $(".emoji_e").append(picker_e);
         $('.emoji_selector').on('click', function(event){
-            //This prevents the emoji modal from closing when an emoji is selected...
+            //This prevents the emoji modal from closing when an emoji is selected
             event.stopPropagation();
         });
 
@@ -313,7 +313,7 @@ if(!$basic_header_footer){
 echo '<body class="'.$body_class.'" id="main_body">';
 echo $bgVideo;
 
-//JS Variables for this app on page...
+//JS Variables for this app on page
 if ($focus_i){
     echo '<input type="hidden" id="focus__node" value="12273" />
 <input type="hidden" id="focus_user" value="'.$focus_i['posthashtag'].'" />
@@ -754,7 +754,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Post Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessage" placeholder="<?= ( strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessage" placeholder="<?= ( strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'] ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="post_preview_frame hideIfEmpty" style="margin-left: 40px;">
                                 <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
                                 <div class="doclear">&nbsp;</div>
@@ -840,17 +840,17 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- User Handle -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_userhandle" style="margin-top: -20px;" placeholder="'.( strlen($users___12274[32338]['m__message']) ? $users___12274[32338]['m__message'] : $users___12274[32338]['m__title'] ).'...'.'">';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[32338]['m__cover'].'</span><input type="text" class="form-control unsaved_warning save_userhandle" style="margin-top: -20px;" placeholder="'.( strlen($users___12274[32338]['m__message']) ? $users___12274[32338]['m__message'] : $users___12274[32338]['m__title'] ).'">';  ?></h3>
                         </div>
 
                         <!-- User Title -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[6197]['m__cover'].'</span><textarea class="form-control unsaved_warning save_username main__title" placeholder="'.( strlen($users___12274[6197]['m__message']) ? $users___12274[6197]['m__message'] : $users___12274[6197]['m__title'] ).'...'.'" style="margin:0; width:100%; margin-top: -30px; background-color: #FFFFFF !important;"></textarea>';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[6197]['m__cover'].'</span><textarea class="form-control unsaved_warning save_username main__title" placeholder="'.( strlen($users___12274[6197]['m__message']) ? $users___12274[6197]['m__message'] : $users___12274[6197]['m__title'] ).'" style="margin:0; width:100%; margin-top: -30px; background-color: #FFFFFF !important;"></textarea>';  ?></h3>
                         </div>
 
                         <!-- User Bio -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control note-textarea algolia_finder editing-mode unsaved_warning algolia__e algolia__i save_userbio" placeholder="<?= ( strlen($users___12274[2135504]['m__message']) ? $users___12274[2135504]['m__message'] : $users___12274[2135504]['m__title'] ).'...' ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder editing-mode unsaved_warning algolia__e algolia__i save_userbio" placeholder="<?= ( strlen($users___12274[2135504]['m__message']) ? $users___12274[2135504]['m__message'] : $users___12274[2135504]['m__title'] ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
                         <!-- USER COVER -->
@@ -885,7 +885,7 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$users___12274[6198]['m__cover'].'</span>'.$users___12274[6198]['m__title'].': ';  ?></h3>
 
                             <!-- Cover HIDDEN Input -->
-                            <input type="text" class="form-control unsaved_warning save_usercover hidden_superpower__13758" data-lpignore="true" placeholder="<?= ( strlen($users___12274[6198]['m__message']) ? $users___12274[6198]['m__message'] : $users___12274[6198]['m__title'] ).'...' ?>">
+                            <input type="text" class="form-control unsaved_warning save_usercover hidden_superpower__13758" data-lpignore="true" placeholder="<?= ( strlen($users___12274[6198]['m__message']) ? $users___12274[6198]['m__message'] : $users___12274[6198]['m__title'] ) ?>">
 
                             <!-- Font Awesome Search -->
                             <div class="hidden_superpower__13758 fa_search hidden">

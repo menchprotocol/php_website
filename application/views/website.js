@@ -239,7 +239,7 @@ function load_editor() {
 function search_title(suggestion) {
     var title = (suggestion._highlightResult && suggestion._highlightResult.s__title.value ? suggestion._highlightResult.s__title.value : suggestion.s__title);
     var max_limit = 89;
-    return htmlentitiesjs(title.length >= max_limit ? title.substring(0, max_limit) + '...' : title);
+    return htmlentitiesjs(title.length >= max_limit ? title.substring(0, max_limit) + ' ' : title);
 }
 
 
@@ -1978,7 +1978,7 @@ function post_editor(postid = 0, chainid = 0, next_postid = 0) {
 
 function load_post_dynamic(postid, chainid, initial_loading) {
 
-    $(".dynamic_item").addClass('hidden'); //Hide all current items...
+    $(".dynamic_item").addClass('hidden'); //Hide all current items
     $(".dynamic_editing_loading").removeClass('hidden');
     var created_postid = 0;
 
@@ -2210,7 +2210,7 @@ function sort_media(sort_id) {
         draggable: ".media_item", // Specifies which items inside the element should be sortable
         source: ".media_item", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            //Nothing we need to do since the order will be grabbed upon submission...
+            //Nothing we need to do since the order will be grabbed upon submission
             //Just mark as unsaved again to make sure it saves:
             has_unsaved_changes = true;
         }
@@ -3119,7 +3119,7 @@ function ui_instant_select(element_id, user_createid, o__id, chainid, show_full_
 
 function post_delete(postid) {
 
-    var migrateuser = prompt("Are you sure you want to permanently delete this post?\nYou can reference #anotherPost to migrate to or leave blank to delete permanently...", "#");
+    var migrateuser = prompt("Are you sure you want to permanently delete this post?\nYou can reference #anotherPost to migrate to or leave blank to delete permanently", "#");
     if (migrateuser === null) {
         return false;
     }
@@ -3164,7 +3164,7 @@ function post_delete(postid) {
 
 function user_delete(userid) {
 
-    var migrateuser = prompt("Are you sure you want to permanently delete this User?\nYou can reference @anotherUser to migrate to or leave blank to delete permanently...", "@");
+    var migrateuser = prompt("Are you sure you want to permanently delete this User?\nYou can reference @anotherUser to migrate to or leave blank to delete permanently", "@");
     if (migrateuser === null) {
         return false;
     }
