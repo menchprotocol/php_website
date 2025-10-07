@@ -141,7 +141,7 @@ foreach($this->Chains->read(array(
     if(!strlen($x['userbio']) && strlen(trim($x['chainvalue']))){
         $stats['users_bio']++;
         $this->Users->update($x['userid'], array(
-            'userbio' => $x['userbio'],
+            'userbio' => trim($x['chainvalue']),
         ), $x['userid']);
     }
 }
