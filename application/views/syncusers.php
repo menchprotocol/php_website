@@ -148,11 +148,11 @@ foreach ($this->Chains->read(array(
 
 //Sync bio once:
 foreach($this->Chains->read(array(
-    'LENGTH(chainvalue)>0' => null,
-    'LENGTH(userbio)=0' => null,
+    'LENGTH(chainvalue)>10' => null,
+    'LENGTH(userbio)<1' => null,
     'chainusertype' => 32292,
 ), array('chainuseroutput'), 0) as $x){
-    if(!strlen($x['userbio']) && strlen(trim($x['chainvalue']))>21 && substr_count($x['chainvalue'], ' ')>=3) {
+    if(strlen(trim($x['chainvalue']))>10 && substr_count($x['chainvalue'], ' ')>=2) {
         $stats['users_bio']++;
         $stats['message'] .= "@" . $x['userhandle'] . " ".$x['chainvalue']."\n";
         /*
