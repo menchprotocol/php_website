@@ -295,7 +295,7 @@ h3 {
 }
 .info-box {
     padding: 5px;
-    cursor: pointer;
+    cursor: help;
 }
 .info-box i{
     font-size: 0.75em !important;
