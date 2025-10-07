@@ -5335,12 +5335,16 @@ function user_validate($userid, $chainid = 0, $delete_missing = false)
         'userid' => $userid,
     ));
     $foundcache = count($es);
-    $activechains = count($CI->Chains->read(array(
-        'chainid !=' => $chainid,
+
+    $active_filter = array(
         '(chainuserdomain=' . $userid . ' OR chainusertype=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
-    ), array(), 0));
+    );
+    if(!$delete_missing){
+        $active_filter['chainid !='] = $chainid;
+    }
+    $activechains = count($CI->Chains->read($active_filter, array(), 0));
     
-    $status = ($foundchain && $foundcache && $activechains ? 1 : 0);
+    $status = ( $foundchain && $foundcache && $activechains ? 1 : 0);
     $chain_deletes = 0;
     if($delete_missing && !$status){
         foreach($CI->Chains->read(array(
