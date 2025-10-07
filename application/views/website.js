@@ -1482,7 +1482,7 @@ $(document).ready(function () {
 
         $('.algolia__e').textcomplete([
             {
-                match: /(^|\s)+#(\w*(?:\s*\w*))$/,
+                match: /(^|\s)\+#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
                         hitsPerPage: js_users___6404[31112]['m__message'],

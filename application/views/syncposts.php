@@ -1,40 +1,7 @@
 <?php
 
 $delete_missing = true;
-$stats = array(
-    //Cache posts
-    'users_oncache' => 0,
-    'users_oncache_notonchain' => 0,
-    'users_oncache_chainadded' => 0,
 
-    //On Chain posts
-    'chain_all' => 0,
-    'posts_onchain' => 0,
-    'posts_chain_deleted' => 0,
-
-    //Validate 5+2 fields posts & posts:
-    'count_posts' => 0,
-    'count_posts_missing' => 0,
-
-    'message' => '',
-    'unique_posts' => array(),
-    'unique_posts_missing' => array(),
-
-);
-
-//Translator
-$table = '<table class="table table-sm table-striped stats-table mini-stats-table" border="1">';
-
-
-//POSTS
-$table .= '<tr>';
-$table .= '<td>&nbsp;</td>';
-$table .= '<td>&nbsp;</td>';
-$table .= '<td><div style="max-width:233px;">chainvalue</div></td>'; //RAW
-$table .= '<td><div style="max-width:233px;">posttext</div></td>'; //TEXT
-$table .= '<td><div style="max-width:233px;">postdiscover</div></td>'; //DISCOVERY
-$table .= '<td><div style="max-width:233px;">postedit</div></td>'; //EDITOR
-$table .= '</tr>';
 
 $stats = array(
     'posts_all' => 0,
@@ -49,17 +16,11 @@ $stats = array(
     'cache_valid_postvoid' => 0,
 );
 
-$filters = array(
-    'chainusertype' => 12273,
-);
-
-if(isset($_GET['id'])){
-    $filters['chainpostinput'] = $_GET['id'];
-}
-
 
 $has_media = false;
-foreach($this->Chains->read($filters, array(), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+foreach($this->Chains->read(array(
+    'chainusertype' => 12273,
+), array(), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
 
     $stats['posts_duplicate']++;
 
