@@ -3,9 +3,9 @@
 $delete_missing = true;
 $stats = array(
     //Cache posts
-    'cache_all' => 0,
-    'cache_notonchain' => 0,
-    'cache_addedtochain' => 0,
+    'users_oncache' => 0,
+    'users_oncache_notonchain' => 0,
+    'users_oncache_chainadded' => 0,
 
     //On Chain posts
     'chain_all' => 0,

@@ -3,9 +3,9 @@
 $delete_missing = true;
 $stats = array(
     //Cache users
-    'cache_all' => 0,
-    'cache_notonchain' => 0,
-    'cache_addedtochain' => 0,
+    'users_oncache' => 0,
+    'users_oncache_notonchain' => 0,
+    'users_oncache_chainadded' => 0,
 
     //On Chain users
     'chain_all' => 0,
@@ -28,14 +28,14 @@ foreach ($this->Users->read(array(
     'userid >' => 0,
 ), 0) as $user) {
 
-    $stats['cache_all']++;
+    $stats['users_oncache']++;
 
     if (!count($this->Chains->read(array(
         'chainusertype' => 12274,
         'chainuserinput' => $user['userid'],
     ), array(), 1))) {
 
-        $stats['cache_notonchain']++;
+        $stats['users_oncache_notonchain']++;
 
         $new_x = $this->Chains->create(array(
             'chainusertype' => 12274,
@@ -49,7 +49,7 @@ foreach ($this->Users->read(array(
 
         if ($new_x['chainid'] > 0) {
 
-            $stats['cache_addedtochain']++;
+            $stats['users_oncache_chainadded']++;
 
             $stats['message'] .= "@" . $user['userhandle'] . " Added to Chain\n";
 
