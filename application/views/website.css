@@ -295,7 +295,7 @@ h3 {
 }
 .info-box {
     padding: 5px;
-    cursor: help;
+    cursor: pointer;
 }
 .info-box i{
     font-size: 0.75em !important;
@@ -1144,7 +1144,7 @@ h4 .halfbg {
 .dotted_under {
     padding-bottom: 2px;
     border-bottom: 1px dotted #999999 !important;
-    cursor: help;
+    cursor: pointer;
 }
 
 .dropdown-menu {
