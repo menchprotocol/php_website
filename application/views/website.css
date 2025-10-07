@@ -295,9 +295,10 @@ h3 {
 }
 .info-box {
     padding: 5px;
+    cursor: pointer;
 }
 .info-box i{
-    font-size: 0.7em;
+    font-size: 0.75em !important;
 }
 .single_line {
     margin: 0 !important;
