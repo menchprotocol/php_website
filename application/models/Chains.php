@@ -111,16 +111,16 @@ class Chains extends CIdea_cache
         //Sync algolia?
         if ($external_sync) {
             if ($add_fields['chainuserinput'] > 0) {
-                update_algolia(12274, $add_fields['chainuserinput']);
+                update_search(12274, $add_fields['chainuserinput']);
             }
             if ($add_fields['chainuseroutput'] > 0) {
-                update_algolia(12274, $add_fields['chainuseroutput']);
+                update_search(12274, $add_fields['chainuseroutput']);
             }
             if ($add_fields['chainpostinput'] > 0) {
-                update_algolia(12273, $add_fields['chainpostinput']);
+                update_search(12273, $add_fields['chainpostinput']);
             }
             if ($add_fields['chainpostoutput'] > 0) {
-                update_algolia(12273, $add_fields['chainpostoutput']);
+                update_search(12273, $add_fields['chainpostoutput']);
             }
         }
 

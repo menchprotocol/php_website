@@ -2448,7 +2448,7 @@ function search_enabled()
 }
 
 
-function update_algolia($focus__node = null, $s__id = 0)
+function update_search($focus__node = null, $s__id = 0)
 {
 
     if (!search_enabled()) {

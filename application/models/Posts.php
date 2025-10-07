@@ -55,7 +55,7 @@ class Posts extends CIdea_cache
         ));
 
         //Update Search Index:
-        update_algolia(12273, $new_x['chainid']);
+        update_search(12273, $new_x['chainid']);
 
         //Fetch to return the complete Post
         $is = $this->Posts->read(array(
@@ -194,7 +194,7 @@ class Posts extends CIdea_cache
                         }
 
                         //Sync algolia:
-                        update_algolia(12274, intval($postid));
+                        update_search(12274, intval($postid));
 
                     } else {
 
@@ -268,7 +268,7 @@ class Posts extends CIdea_cache
 
             if (isset($update_columns['postmessage']) && $post_index['postmessage'] != $post_current['postmessage']) {
                 //Sync algolia:
-                update_algolia(12273, $postid);
+                update_search(12273, $postid);
             }
 
         }

@@ -2,7 +2,6 @@
 
 $delete_missing = true;
 
-
 $stats = array(
     'posts_all' => 0,
     'posts_orphan' => 0,
@@ -15,7 +14,6 @@ $stats = array(
     'posts_valid_cachevoid' => 0,
     'cache_valid_postvoid' => 0,
 );
-
 
 $has_media = false;
 foreach($this->Chains->read(array(

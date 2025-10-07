@@ -1155,7 +1155,7 @@ class Controller extends CI_Controller
         )) as $new_i) {
 
             //Update Search Index:
-            update_algolia(12273, $new_i['postid']);
+            update_search(12273, $new_i['postid']);
 
             $discovery_mode = ( isset($_POST['save_discoverymode']) && intval($_POST['save_discoverymode']) );
 

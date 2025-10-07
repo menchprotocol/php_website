@@ -47,7 +47,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         echo '<div class="card_cover no-padding col-6">';
         echo '<div class="card_frame dropdown_d' . $userid1 . ' dropdown_' . $userid2 . '">';
 
-        echo '<div class="card_header" title="' . $m2['m__message'] . '" userid="' . $userid2 . '">';
+        echo '<div>';
 
         if ($is_chain) {
             echo '<div class="medium_cover">' . $m2['m__cover'] . '</div>';
@@ -56,7 +56,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         }
 
         echo '<div class="main__title large_title"><a href="'.$chain_link.'" class="card_count_' . $userid2 . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title" title="@' . $userid2 . ' @' . $m2['m__user'] . '"><a href="'.view_memory(42903,42902).$m2['m__user'].'">' . $m2['m__title'] . '</a>'.( strlen($m2['m__message']) ? '<span class="info-box" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '"><i class="far fa-info-circle grey"></i></span>' : '' ).'</div>';
+        echo '<div class="main__title large_title" title="@' . $userid2 . ' @' . $m2['m__user'] . '"><a href="'.view_memory(42903,42902).$m2['m__user'].'">' . $m2['m__title'] . '</a>'.( strlen($m2['m__message']) ? '<span class="info-box" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '"><i class="far fa-info-circle grey"></i></span>' : '' ).'<span class="info-box card_header" userid="' . $userid2 . '"><i class="far fa-plus-circle grey card_subcat_' . $userid2 . '"></i><i class="far fa-minus-circle grey hidden card_subcat_' . $userid2 . '"></i></span></div>';
         echo '</div>';
 
         if ($is_chain) {

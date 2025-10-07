@@ -68,7 +68,7 @@ class Users extends CIdea_cache
         ));
 
         //Update Search Index:
-        update_algolia(12274, $new_x['chainid']);
+        update_search(12274, $new_x['chainid']);
 
         //Fetch to return the complete User data:
         $es = $this->Users->read(array(
@@ -255,7 +255,7 @@ class Users extends CIdea_cache
                     ));
 
                     //Sync algolia:
-                    update_algolia(12274, intval($userid));
+                    update_search(12274, intval($userid));
 
                 }
 
@@ -857,7 +857,7 @@ class Users extends CIdea_cache
         }
 
         //Update Search Index:
-        update_algolia(12274, $added_e['user_create']['userid']);
+        update_search(12274, $added_e['user_create']['userid']);
 
         //Assign session & log login Chain:
         $this->Users->activate($added_e['user_create']);
