@@ -96,19 +96,25 @@ class Controller extends CI_Controller
 
 
         //Load menu:
-        $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
         $is = $this->Posts->read(array(
             'postid' => $_POST['postid'],
         ));
-        if (!count($is) || !$posts_query) {
+        if (!count($is)) {
             return false;
         }
+
 
         //Loading App?
         if(in_array(intval($_POST['chainusertype']), $this->config->item('userids___6287'))){
             //yes load the app:
             echo 'hi';
             echo '<iframe src="'.$this->config->item('base_url').view_memory(42903,$_POST['chainusertype']).$is[0]['posthashtag'].'" style="height:100%;width:100%;" frameborder="0"></iframe>';
+            return false;
+        }
+
+
+        $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
+        if (!$posts_query) {
             return false;
         }
 
