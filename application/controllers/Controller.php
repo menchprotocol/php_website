@@ -107,7 +107,7 @@ class Controller extends CI_Controller
         //Loading App?
         if(in_array(intval($_POST['chainusertype']), $this->config->item('userids___6287'))){
             //yes load the app:
-            echo '<iframe src="'.$this->config->item('base_url').view_app_chain($_POST['chainusertype']).'/'.$is[0]['posthashtag'].'" style="height:100%;width:100%;" frameborder="0"></iframe>';
+            echo '<iframe src="'.$this->config->item('base_url').view_app_chain($_POST['chainusertype']).'/'.$is[0]['posthashtag'].'" style="height:500px;width:100%;" frameborder="0"></iframe>';
             return false;
         }
 
