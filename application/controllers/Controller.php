@@ -1240,7 +1240,7 @@ class Controller extends CI_Controller
         if(in_array($_POST['chainusertype'], $this->config->item('userids___6287'))){
 
             //yes load the app:
-            $this->load(intval($_POST['chainusertype']), 0, 0, intval($_POST['postid']));
+            echo $this->load(intval($_POST['chainusertype']), 0, 0, intval($_POST['postid']));
             return false;
 
         }
