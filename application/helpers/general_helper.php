@@ -4219,7 +4219,8 @@ function view_featured_chains($chainusertype, $location, $m = null, $focus__node
     return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['userhandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['userhandle'] . '">' : '') . '<span class="grey ' . ($chainusertype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $users___11035[$chainusertype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainusertype == 41949 ? 'mini-font' : '') . '">' . $location['username'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
 }
 
-function load_app($app_userid = 14563 /* Error if none provided */, $focus_user = 0, $focus_post = 0, $target_post = 0){
+function load_app($app_userid = 14563 /* Error if none provided */, $focus_user = 0, $focus_post = 0, $target_post = 0, $inframe = false)
+{
 
     $CI =& get_instance();
 
@@ -4291,7 +4292,7 @@ function load_app($app_userid = 14563 /* Error if none provided */, $focus_user 
             }
         }
 
-        if ($app_userid == 33286 && $focus_i && $focus_i['posthashtag'] !== $_GET['posthashtag']) {
+        if (!$inframe && $app_userid == 33286 && $focus_i && $focus_i['posthashtag'] !== $_GET['posthashtag']) {
             //Adjust URL Case Sensitive:
             return get_redirected(view_memory(42903, 33286) . $focus_i['posthashtag']);
         }
@@ -4315,24 +4316,41 @@ function load_app($app_userid = 14563 /* Error if none provided */, $focus_user 
                 }
             }
         }
-        if ($app_userid == 42902 && $focus_e && $focus_e['userhandle'] !== $_GET['userhandle']) {
+        if (!$inframe && $app_userid == 42902 && $focus_e && $focus_e['userhandle'] !== $_GET['userhandle']) {
             //Adjust URL Case Sensitive:
             return get_redirected(view_memory(42903, 42902) . $focus_e['userhandle']);
         }
     }
 
 
+    $error_message = false;
+    $redirect_url = false;
     if ($memory_detected && !in_array($app_userid, $CI->config->item('userids___6287'))) {
+
         //Invalid App:
-        return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__user'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__user'] . ' Is not an APP, yet 🤔</div>');
+        $error_message = '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__user'] . ' Is not an APP, yet 🤔</div>';
+        $redirect_url = view_memory(42903, 42902) . $users___6287[$app_userid]['m__user'];
+
     } elseif ($memory_detected && !in_array($app_userid, $CI->config->item('userids___42922'))) {
         //Validate Required App input:
         if (in_array($app_userid, $CI->config->item('userids___42905')) && !$focus_e) {
-            return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['userhandle'] . ' is not a valid User user.</div>');
+
+            $error_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['userhandle'] . ' is not a valid User user.</div>';
+            $redirect_url = home_url();
         } elseif (in_array($app_userid, $CI->config->item('userids___44329')) && (!$focus_i || !$target_i)) {
-            return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>');
+            $error_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>';
+            $redirect_url = home_url();
         } elseif (in_array($app_userid, $CI->config->item('userids___42911')) && !$focus_i) {
-            return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post post.</div>');
+            $error_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post post.</div>';
+            $redirect_url = home_url();
+        }
+    }
+
+    if ($error_message) {
+        if ($inframe) {
+            return $error_message;
+        } else {
+            return get_redirected($redirect_url, $error_message);
         }
     }
 
@@ -4353,12 +4371,6 @@ function load_app($app_userid = 14563 /* Error if none provided */, $focus_user 
 
         //Needs superpowers?
         $user_session = user_session();
-
-        if ($user_session && !isset($user_session['userid']) && $app_userid!=7291) {
-            //Old user, must log out:
-            header("Location: /logout", true, 301);
-            return false;
-        }
 
         //Auto Login?
         if (isset($_GET['hash']) && isset($_GET['time']) && $focus_e) {
@@ -4403,9 +4415,15 @@ function load_app($app_userid = 14563 /* Error if none provided */, $focus_user 
         //Missing App, User or Post Access?
         $missing_access = false; //Assume they have access
         $superpowers_required = array_intersect($CI->config->item('userids___10957'), $users___6287[$app_userid]['m__following']);
+
         if ($user_session && in_array($app_userid, $CI->config->item('userids___14639'))) {
-            //Should redirect them:
-            return get_redirected(view_memory(42903, 42902) . $user_session['userhandle']);
+            if ($inframe) {
+                $missing_access = 'You are already logged in';
+            } else {
+                //Should redirect them:
+                return get_redirected(view_memory(42903, 42902) . $user_session['userhandle']);
+            }
+
         } elseif (!$user_session && in_array($app_userid, $CI->config->item('userids___14740'))) {
             //Should redirect them:
             $missing_access = 'Login or register a free account to continue.';
@@ -4421,8 +4439,13 @@ function load_app($app_userid = 14563 /* Error if none provided */, $focus_user 
         }
 
         if ($missing_access) {
-            //Redirect:
-            return get_redirected((!$user_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
+            if ($inframe) {
+                return $missing_access;
+            } else {
+                //Redirect:
+                return get_redirected((!$user_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
+            }
+
         }
     }
 
@@ -4523,7 +4546,7 @@ function load_app($app_userid = 14563 /* Error if none provided */, $focus_user 
 
 
     //Check to ensure they have started:
-    if ($app_userid == 30795 && $target_i && $focus_i && $user_session && $target_i['posthashtag'] == $focus_i['posthashtag']) {
+    if (!$inframe && $app_userid == 30795 && $target_i && $focus_i && $user_session && $target_i['posthashtag'] == $focus_i['posthashtag']) {
 
         //Starting point, make sure all good:
         if (!post_is_startable($target_i)) {
@@ -4613,9 +4636,9 @@ function view_post_nav($discovery_mode, $focus_i)
     }
 
     //Add any referenced apps:
-    foreach($CI->config->item('handlusers___6287') as $apphandle => $appid){
+    foreach ($CI->config->item('handlusers___6287') as $apphandle => $appid) {
         $users___6287 = $CI->config->item('users___6287'); //APP
-        if(substr_count(strtolower($focus_i['postmessage']).' ', '@'.strtolower($apphandle).' ')){
+        if (substr_count(strtolower($focus_i['postmessage']) . ' ', '@' . strtolower($apphandle) . ' ')) {
             $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '"><span class="icon-block">&nbsp;' . $users___6287[$appid]['m__cover'] . '&nbsp;</span><span class="hidden xtypetitle xtypetitle_' . $appid . '">&nbsp;' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
         }
     }
