@@ -4220,7 +4220,7 @@ function view_featured_chains($chainusertype, $location, $m = null, $focus__node
 }
 
 
-function view_post_nav($discovery_mode, $focus_i, $x_completes = false)
+function view_post_nav($discovery_mode, $focus_i)
 {
 
     $CI =& get_instance();
@@ -4228,16 +4228,6 @@ function view_post_nav($discovery_mode, $focus_i, $x_completes = false)
     $body_content = '';
     $user_session = user_session();
     $posttion_pen = user_session(10939);
-
-
-    if ($user_session && !is_array($x_completes)) {
-        $x_completes = $CI->Chains->read(array(
-            'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
-            'chainusercreator' => $user_session['userid'],
-            'chainpostinput' => $focus_i['postid'],
-        ), array('chainpostoutput'));
-    }
-
 
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['postid'] . ' hideIfEmpty">';
@@ -4248,12 +4238,10 @@ function view_post_nav($discovery_mode, $focus_i, $x_completes = false)
             continue;
         }
 
-
         $coins_count[$chainusertype] = posts_query($chainusertype, $focus_i['postid'], 0, false);
         if (!$coins_count[$chainusertype] && $discovery_mode) {
             continue;
         }
-
 
         if (($user_session && in_array($chainusertype, $CI->config->item('userids___42945'))) || $coins_count[$chainusertype] > 0) {
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainusertype . ' hidden" read-counter="' . $coins_count[$chainusertype] . '"><div class="tab_content"></div></div>';
@@ -4264,6 +4252,15 @@ function view_post_nav($discovery_mode, $focus_i, $x_completes = false)
         }
 
     }
+
+    //Add any referenced apps:
+    foreach($CI->config->item('handlusers___6287') as $apphandle => $appid){
+        $users___6287 = $CI->config->item('users___6287'); //APP
+        if(substr_count(strtolower($focus_i['postmessage']).' ', '@'.strtolower($apphandle).' ')){
+            $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '"><span class="icon-block">' . $users___6287[$appid]['m__cover'] . '</span><span class="hidden xtypetitle xtypetitle_' . $appid . '">&nbsp;' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
+        }
+    }
+
     $ui .= '</ul>';
     $ui .= $body_content;
 
@@ -5080,7 +5077,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
             //Textarea
             $users___12273 = $CI->config->item('users___12273'); //POST Cache
-            $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title'] ) . '">' . $previous_response . '</textarea>';
+            $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="' . (strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__title']) . '">' . $previous_response . '</textarea>';
             $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
 
         } else {
@@ -5339,17 +5336,17 @@ function user_validate($userid, $chainid = 0, $delete_missing = false)
     $active_filter = array(
         '(chainuserdomain=' . $userid . ' OR chainusertype=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
     );
-    if(!$delete_missing){
+    if (!$delete_missing) {
         $active_filter['chainid !='] = $chainid;
     }
     $activechains = count($CI->Chains->read($active_filter, array(), 0));
-    
-    $status = ( $foundchain && $foundcache && $activechains ? 1 : 0);
+
+    $status = ($foundchain && $foundcache && $activechains ? 1 : 0);
     $chain_deletes = 0;
-    if($delete_missing && !$status){
-        foreach($CI->Chains->read(array(
+    if ($delete_missing && !$status) {
+        foreach ($CI->Chains->read(array(
             '(chainuserdomain=' . $userid . ' OR chainusertype=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ')' => null,
-        ), array(), 0) as $del){
+        ), array(), 0) as $del) {
             $CI->db->query("DELETE FROM ideachains WHERE chainid = " . $del['chainid'] . ";");
             $chain_deletes++;
         }
@@ -5360,7 +5357,7 @@ function user_validate($userid, $chainid = 0, $delete_missing = false)
         'userid' => $userid,
         'chainid' => $chainid,
         'foundchain' => $foundchain,
-        'cacheuserhandle' => ( $foundcache ? '@'.$es[0]['userhandle'] : false ),
+        'cacheuserhandle' => ($foundcache ? '@' . $es[0]['userhandle'] : false),
         'activechains' => $activechains,
         'chain_deletes' => $chain_deletes,
     );
