@@ -1235,65 +1235,63 @@ class Controller extends CI_Controller
             return false;
         }
 
-        $ui = '';
 
         //Loading App?
         if(in_array($_POST['chainusertype'], $this->config->item('userids___6287'))){
 
             //yes load the app:
-            $ui .= $this->load(intval($_POST['chainusertype']), 0, 0, intval($_POST['postid']));
-
-        } else {
-
-            //Load menu:
-            $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
-            $is = $this->Posts->read(array(
-                'postid' => $_POST['postid'],
-            ));
-            if (!count($is) || !$posts_query) {
-                return false;
-            }
-
-            if ($_POST['chainusertype']==11019) {
-
-                //POST Chain Groups Previous
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-                foreach ($posts_query as $previous_i) {
-                    $ui .= post_view(11019, $previous_i);
-                }
-                $ui .= '</div>';
-
-            } elseif ($_POST['chainusertype']==12840) {
-
-                //POST Chain Groups Next
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-                foreach ($posts_query as $next_i) {
-                    $ui .= post_view($_POST['chainusertype'], $next_i, $is[0]);
-                }
-                $ui .= '</div>';
-
-            } elseif ($_POST['chainusertype']==31777) {
-
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-                foreach ($posts_query as $item) {
-                    $ui .= user_view(31777, $item);
-                }
-                $ui .= '</div>';
-
-            } elseif ($_POST['chainusertype']==13550) {
-
-                //Users
-                $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-                foreach ($posts_query as $user_ref) {
-                    $ui .= user_view($_POST['chainusertype'], $user_ref, null);
-                }
-                $ui .= '</div>';
-
-            }
+            $this->load(intval($_POST['chainusertype']), 0, 0, intval($_POST['postid']));
+            return false;
 
         }
 
 
+        $ui = '';
+        //Load menu:
+        $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
+        $is = $this->Posts->read(array(
+            'postid' => $_POST['postid'],
+        ));
+        if (!count($is) || !$posts_query) {
+            return false;
+        }
+
+        if ($_POST['chainusertype']==11019) {
+
+            //POST Chain Groups Previous
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $previous_i) {
+                $ui .= post_view(11019, $previous_i);
+            }
+            $ui .= '</div>';
+
+        } elseif ($_POST['chainusertype']==12840) {
+
+            //POST Chain Groups Next
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $next_i) {
+                $ui .= post_view($_POST['chainusertype'], $next_i, $is[0]);
+            }
+            $ui .= '</div>';
+
+        } elseif ($_POST['chainusertype']==31777) {
+
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $item) {
+                $ui .= user_view(31777, $item);
+            }
+            $ui .= '</div>';
+
+        } elseif ($_POST['chainusertype']==13550) {
+
+            //Users
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $user_ref) {
+                $ui .= user_view($_POST['chainusertype'], $user_ref, null);
+            }
+            $ui .= '</div>';
+
+        }
 
         echo $ui;
 
