@@ -84,9 +84,77 @@ class Controller extends CI_Controller
 
 
 
-    function passthrough($newuser) {
-        redirect($newuser, 'location', 301);
+
+    function post_list()
+    {
+        //Authenticate Member:
+        if (!isset($_POST['postid']) || intval($_POST['postid']) < 1 || !isset($_POST['chainusertype']) || intval($_POST['chainusertype']) < 1) {
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
+            return false;
+        }
+
+
+        //Loading App?
+        if(in_array($_POST['chainusertype'], $this->config->item('userids___6287'))){
+
+            //yes load the app:
+            return $this->load(intval($_POST['chainusertype']), 0, 0, intval($_POST['postid']));
+
+        }
+
+
+        $ui = '';
+        //Load menu:
+        $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
+        $is = $this->Posts->read(array(
+            'postid' => $_POST['postid'],
+        ));
+        if (!count($is) || !$posts_query) {
+            return false;
+        }
+
+        if ($_POST['chainusertype']==11019) {
+
+            //POST Chain Groups Previous
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $previous_i) {
+                $ui .= post_view(11019, $previous_i);
+            }
+            $ui .= '</div>';
+
+        } elseif ($_POST['chainusertype']==12840) {
+
+            //POST Chain Groups Next
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $next_i) {
+                $ui .= post_view($_POST['chainusertype'], $next_i, $is[0]);
+            }
+            $ui .= '</div>';
+
+        } elseif ($_POST['chainusertype']==31777) {
+
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $item) {
+                $ui .= user_view(31777, $item);
+            }
+            $ui .= '</div>';
+
+        } elseif ($_POST['chainusertype']==13550) {
+
+            //Users
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
+            foreach ($posts_query as $user_ref) {
+                $ui .= user_view($_POST['chainusertype'], $user_ref, null);
+            }
+            $ui .= '</div>';
+
+        }
+
+        echo $ui;
+
     }
+
+
 
     function load($app_userid = 14563 /* Error if none provided */, $focus_user = 0, $focus_post = 0, $target_post = 0)
     {
@@ -1225,76 +1293,6 @@ class Controller extends CI_Controller
             echo $ui;
 
         }
-    }
-
-    function post_list()
-    {
-        //Authenticate Member:
-        if (!isset($_POST['postid']) || intval($_POST['postid']) < 1 || !isset($_POST['chainusertype']) || intval($_POST['chainusertype']) < 1) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
-            return false;
-        }
-
-
-        //Loading App?
-        if(in_array($_POST['chainusertype'], $this->config->item('userids___6287'))){
-
-            //yes load the app:
-            echo $this->load(intval($_POST['chainusertype']), 0, 0, intval($_POST['postid']));
-            return false;
-
-        }
-
-
-        $ui = '';
-        //Load menu:
-        $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
-        $is = $this->Posts->read(array(
-            'postid' => $_POST['postid'],
-        ));
-        if (!count($is) || !$posts_query) {
-            return false;
-        }
-
-        if ($_POST['chainusertype']==11019) {
-
-            //POST Chain Groups Previous
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-            foreach ($posts_query as $previous_i) {
-                $ui .= post_view(11019, $previous_i);
-            }
-            $ui .= '</div>';
-
-        } elseif ($_POST['chainusertype']==12840) {
-
-            //POST Chain Groups Next
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-            foreach ($posts_query as $next_i) {
-                $ui .= post_view($_POST['chainusertype'], $next_i, $is[0]);
-            }
-            $ui .= '</div>';
-
-        } elseif ($_POST['chainusertype']==31777) {
-
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-            foreach ($posts_query as $item) {
-                $ui .= user_view(31777, $item);
-            }
-            $ui .= '</div>';
-
-        } elseif ($_POST['chainusertype']==13550) {
-
-            //Users
-            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-            foreach ($posts_query as $user_ref) {
-                $ui .= user_view($_POST['chainusertype'], $user_ref, null);
-            }
-            $ui .= '</div>';
-
-        }
-
-        echo $ui;
-
     }
 
 
