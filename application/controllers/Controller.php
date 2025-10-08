@@ -1230,7 +1230,7 @@ class Controller extends CI_Controller
     function post_list()
     {
         //Authenticate Member:
-        if (!isset($_POST['postid']) || intval($_POST['postid']) < 1 || !isset($_POST['counter']) || !isset($_POST['chainusertype']) || intval($_POST['chainusertype']) < 1) {
+        if (!isset($_POST['postid']) || intval($_POST['postid']) < 1 || !isset($_POST['chainusertype']) || intval($_POST['chainusertype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
             return false;
         }
