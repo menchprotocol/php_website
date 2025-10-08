@@ -4257,7 +4257,7 @@ function view_post_nav($discovery_mode, $focus_i)
     foreach($CI->config->item('handlusers___6287') as $apphandle => $appid){
         $users___6287 = $CI->config->item('users___6287'); //APP
         if(substr_count(strtolower($focus_i['postmessage']).' ', '@'.strtolower($apphandle).' ')){
-            $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '"><span class="icon-block">&nbsp;' . $users___6287[$appid]['m__cover'] . '&nbsp;</span><span class="hidden xtypetitle xtypetitle_' . $appid . '">&nbsp;' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
+            $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '"><span class="icon-block">&nbsp;&nbsp;' . $users___6287[$appid]['m__cover'] . '</span><span class="hidden xtypetitle xtypetitle_' . $appid . '">&nbsp;' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
         }
     }
 
