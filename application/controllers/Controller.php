@@ -107,7 +107,7 @@ class Controller extends CI_Controller
         //Loading App?
         if(in_array(intval($_POST['chainusertype']), $this->config->item('userids___6287'))){
             //yes load the app:
-            echo '<iframe src="'.$this->config->item('base_url').view_app_chain($_POST['chainusertype']).'/'.$is[0]['posthashtag'].'" style="height:500px;width:100%;" frameborder="0"></iframe>';
+            echo $this->load(intval($_POST['chainusertype']), 0, $is[0]['postid'], 0, true);
             return false;
         }
 
@@ -160,8 +160,7 @@ class Controller extends CI_Controller
     }
 
 
-
-    function load($app_userid = 14563 /* Error if none provided */, $focus_user = 0, $focus_post = 0, $target_post = 0)
+    function load($app_userid = 14563 /* Error if none provided */, $focus_user = 0, $focus_post = 0, $target_post = 0, $standalone = true)
     {
 
         $memory_detected = is_array($this->config->item('userids___6287')) && count($this->config->item('userids___6287'));
@@ -232,7 +231,7 @@ class Controller extends CI_Controller
                 }
             }
 
-            if ($app_userid == 33286 && $focus_i && $focus_i['posthashtag'] !== $_GET['posthashtag']) {
+            if ($standalone && $app_userid == 33286 && $focus_i && $focus_i['posthashtag'] !== $_GET['posthashtag']) {
                 //Adjust URL Case Sensitive:
                 return get_redirected(view_memory(42903, 33286) . $focus_i['posthashtag']);
             }
@@ -256,7 +255,7 @@ class Controller extends CI_Controller
                     }
                 }
             }
-            if ($app_userid == 42902 && $focus_e && $focus_e['userhandle'] !== $_GET['userhandle']) {
+            if ($standalone && $app_userid == 42902 && $focus_e && $focus_e['userhandle'] !== $_GET['userhandle']) {
                 //Adjust URL Case Sensitive:
                 return get_redirected(view_memory(42903, 42902) . $focus_e['userhandle']);
             }
@@ -265,15 +264,15 @@ class Controller extends CI_Controller
 
         if ($memory_detected && !in_array($app_userid, $this->config->item('userids___6287'))) {
             //Invalid App:
-            return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__user'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__user'] . ' Is not an APP, yet 🤔</div>');
+            return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__user'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__user'] . ' Is not an APP, yet 🤔</div>', false, $standalone);
         } elseif ($memory_detected && !in_array($app_userid, $this->config->item('userids___42922'))) {
             //Validate Required App input:
             if (in_array($app_userid, $this->config->item('userids___42905')) && !$focus_e) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['userhandle'] . ' is not a valid User user.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['userhandle'] . ' is not a valid User user.</div>', false, $standalone);
             } elseif (in_array($app_userid, $this->config->item('userids___44329')) && (!$focus_i || !$target_i)) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>', false, $standalone);
             } elseif (in_array($app_userid, $this->config->item('userids___42911')) && !$focus_i) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post post.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post post.</div>', false, $standalone);
             }
         }
 
@@ -344,7 +343,7 @@ class Controller extends CI_Controller
             //Missing App, User or Post Access?
             $missing_access = false; //Assume they have access
             $superpowers_required = array_intersect($this->config->item('userids___10957'), $users___6287[$app_userid]['m__following']);
-            if ($user_session && in_array($app_userid, $this->config->item('userids___14639'))) {
+            if ($standalone && $user_session && in_array($app_userid, $this->config->item('userids___14639'))) {
                 //Should redirect them:
                 return get_redirected(view_memory(42903, 42902) . $user_session['userhandle']);
             } elseif (!$user_session && in_array($app_userid, $this->config->item('userids___14740'))) {
@@ -363,7 +362,7 @@ class Controller extends CI_Controller
 
             if ($missing_access) {
                 //Redirect:
-                return get_redirected((!$user_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>');
+                return get_redirected((!$user_session ? view_app_chain(4269) . '?url=' . urlencode($_SERVER['REQUEST_URI']) : home_url()), '<div class="alert alert-warning" role="alert">' . $missing_access . '</div>', false, $standalone);
             }
         }
 

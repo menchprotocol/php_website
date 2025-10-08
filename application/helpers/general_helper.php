@@ -274,7 +274,7 @@ function post_required($i)
     )));
 }
 
-function get_redirected($url, $message = null, $log_error = false)
+function get_redirected($url, $message = null, $log_error = false, $inframe = true)
 {
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
@@ -294,14 +294,22 @@ function get_redirected($url, $message = null, $log_error = false)
         ));
     }
 
-    if (!$message) {
-        //Do a permanent redirect if message not available:
-        header("Location: " . $url, true, 301);
-        return false;
+    if(!$inframe){
+
+        //Do not redirect:
+        return ( $message ? $message : 'Error Message' );
+
     } else {
-        header("Location: " . $url, true);
-        return false;
+        if (!$message) {
+            //Do a permanent redirect if message not available:
+            header("Location: " . $url, true, 301);
+            return false;
+        } else {
+            header("Location: " . $url, true);
+            return false;
+        }
     }
+
 }
 
 function session_delete()
