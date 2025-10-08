@@ -4638,6 +4638,7 @@ function view_post_nav($discovery_mode, $focus_i)
     //Add any referenced apps:
     foreach ($CI->config->item('handlusers___6287') as $apphandle => $appid) {
         $users___6287 = $CI->config->item('users___6287'); //APP
+        //TODO fix this as it would delete "@sheet123" same as "@sheet" and load the app...
         if (substr_count(strtolower($focus_i['postmessage']), '@' . strtolower($apphandle))) {
             $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '"><span class="icon-block">&nbsp;' . $users___6287[$appid]['m__cover'] . '&nbsp;</span><span class="hidden xtypetitle xtypetitle_' . $appid . '">&nbsp;' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
         }
