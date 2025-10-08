@@ -456,110 +456,110 @@ function toggle_menu(chainusertype_hash, is_first_load) {
 
 
     if (!$('.thepill' + chainusertype + ' .nav-chain').hasClass('active')) {
+        loading_in_progress = false;
+        return false;
+    }
 
-        //Currently closed, must now be opened:
-        var action_id = 26007; //Open
+    //Currently closed, must now be opened:
+    var action_id = 26007; //Open
 
-        //Hide all elements
-        $('.nav-chain').removeClass('active');
-        $('.headlinebody').addClass('hidden');
-        $('.thepill' + chainusertype + ' .nav-chain').addClass('active');
-        $('.headline_body_' + chainusertype).removeClass('hidden');
+    //Hide all elements
+    $('.nav-chain').removeClass('active');
+    $('.headlinebody').addClass('hidden');
+    $('.thepill' + chainusertype + ' .nav-chain').addClass('active');
+    $('.headline_body_' + chainusertype).removeClass('hidden');
 
-        //Set focus tab:
-        console.log('focus_group Updated from ' + focus_group + ' to ' + chainusertype);
-        focus_group = chainusertype;
-        if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainusertype + ' .nav-chain').attr('href'))) {
-            window.location.hash = $('.thepill' + chainusertype + ' .nav-chain').attr('href');
-        }
+    //Set focus tab:
+    console.log('focus_group Updated from ' + focus_group + ' to ' + chainusertype);
+    focus_group = chainusertype;
+    if (!is_first_load && (!window.location.hash || window.location.hash != $('.thepill' + chainusertype + ' .nav-chain').attr('href'))) {
+        window.location.hash = $('.thepill' + chainusertype + ' .nav-chain').attr('href');
+    }
 
-        //Do we need to load data via ajax?
-        if (!loaded_pills.includes(chainusertype_hash)) {
+    //Do we need to load data via ajax?
+    if (loaded_pills.includes(chainusertype_hash)) {
+        loading_in_progress = false;
+        return false;
+    }
 
-            $('.headline_body_' + chainusertype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
-            var focus__node = parseInt($('#focus__node').val());
-            console.log('Tab loading from @' + focus__node + ' for @' + chainusertype);
+    $('.headline_body_' + chainusertype + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
-            if (focus__node == 12273) {
+    var focus__node = parseInt($('#focus__node').val());
+    console.log('Tab loading from @' + focus__node + ' for @' + chainusertype);
 
-                var loading_url = "/controller/post_list";
-                var loading_data = {
-                    focus__node: focus__node,
-                    chainusertype: chainusertype,
-                    counter: $('.headline_body_' + chainusertype).attr('read-counter'),
-                    postid: parseInt($('#focus__id').val()),
-                    js_request_uri: js_request_uri, //Always append to AJAX Calls
-                };
+    if (focus__node == 12273) {
 
-            } else if (focus__node == 12274) {
+        var loading_url = "/controller/post_list";
+        var loading_data = {
+            focus__node: focus__node,
+            chainusertype: chainusertype,
+            counter: $('.headline_body_' + chainusertype).attr('read-counter'),
+            postid: parseInt($('#focus__id').val()),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
+        };
 
-                var loading_url = "/controller/user_list";
-                var loading_data = {
-                    focus__node: focus__node,
-                    chainusertype: chainusertype,
-                    counter: $('.headline_body_' + chainusertype).attr('read-counter'),
-                    userid: parseInt($('#focus__id').val()),
-                    js_request_uri: js_request_uri, //Always append to AJAX Calls
-                };
+    } else if (focus__node == 12274) {
 
-            } else {
-
-                //Whaaaat is this?
-                console.log('ERROR: Unknown Tab!');
-                loading_in_progress = false;
-                return false;
-
-            }
-
-            //Load data:
-            $.post(loading_url, loading_data, function (data) {
-
-                //Add data to the page:
-                $('.headline_body_' + chainusertype + ' .tab_content').html(data);
-
-                loaded_pills.push(chainusertype_hash);
-
-                load_card_clickers();
-                initiate_algolia();
-                load_editor();
-                x_set_start_text();
-                set_autosize($('.x_set_class_text'));
-                load_cards();
-
-                $(function () {
-                    var $win = $(window);
-                    $win.scroll(function () {
-                        //Download loading from bottom:
-                        if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                            chain_page_load();
-                        }
-                    });
-                });
-
-                setTimeout(function () {
-
-                    //TODO Fix Sorting
-                    if (js_userids___11028.includes(chainusertype) || (focus__node == 12273 && ( chainusertype==13550 || chainusertype==31777 ))) {
-                        user_sort_load(chainusertype);
-                    }
-
-                    setup_popover();
-                    pills_loading = null;
-
-                }, 233);
-
-                loading_in_progress = false;
-
-            });
-
-        } else {
-            loading_in_progress = false;
-        }
+        var loading_url = "/controller/user_list";
+        var loading_data = {
+            focus__node: focus__node,
+            chainusertype: chainusertype,
+            counter: $('.headline_body_' + chainusertype).attr('read-counter'),
+            userid: parseInt($('#focus__id').val()),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
+        };
 
     } else {
+
+        //Whaaaat is this?
+        console.log('ERROR: Unknown Tab!');
         loading_in_progress = false;
+        return false;
+
     }
+
+    //Load data:
+    $.post(loading_url, loading_data, function (data) {
+
+        //Add data to the page:
+        $('.headline_body_' + chainusertype + ' .tab_content').html(data);
+
+        loaded_pills.push(chainusertype_hash);
+
+        load_card_clickers();
+        initiate_algolia();
+        load_editor();
+        x_set_start_text();
+        set_autosize($('.x_set_class_text'));
+        load_cards();
+
+        $(function () {
+            var $win = $(window);
+            $win.scroll(function () {
+                //Download loading from bottom:
+                if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
+                    chain_page_load();
+                }
+            });
+        });
+
+        setTimeout(function () {
+
+            //TODO Fix Sorting
+            if (js_userids___11028.includes(chainusertype) || (focus__node == 12273 && ( chainusertype==13550 || chainusertype==31777 ))) {
+                user_sort_load(chainusertype);
+            }
+
+            setup_popover();
+            pills_loading = null;
+
+        }, 233);
+
+        loading_in_progress = false;
+
+    });
+
 }
 
 

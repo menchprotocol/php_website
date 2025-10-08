@@ -4258,6 +4258,10 @@ function view_post_nav($discovery_mode, $focus_i)
         $users___6287 = $CI->config->item('users___6287'); //APP
         //TODO fix this as it would delete "@sheet123" same as "@sheet" and load the app...
         if (substr_count(strtolower($focus_i['postmessage']).' ', '@' . strtolower($apphandle).' ') || substr_count(strtolower($focus_i['postmessage']), '@' . strtolower($apphandle)."\n")) {
+
+            $body_content .= '<div class="headlinebody pillbody headline_body_' . $appid . ' hidden" read-counter="0"><div class="tab_content"></div></div>';
+
+
             $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '">&nbsp;<span class="icon-block">' . $users___6287[$appid]['m__cover'] . '</span>&nbsp;<span class="hidden xtypetitle xtypetitle_' . $appid . '">' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
         }
     }
