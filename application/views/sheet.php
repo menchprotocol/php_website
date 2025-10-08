@@ -29,7 +29,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
     echo '<h1>' . view_post_title($post_settings['i']) . '</h1>';
 
-    echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_post_value($post_settings['i'], (isset($user_session['userid']) ? $user_session['userid'] : 0)) . '</div>';
+    echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_post_value($post_settings['i'], (isset($user_session['userid']) ? $user_session['userid'] : 0), false, true, true) . '</div>';
 
     foreach ($post_settings['query_string_filtered'] as $x) {
 
