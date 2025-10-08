@@ -1232,10 +1232,21 @@ class Controller extends CI_Controller
         //Authenticate Member:
         if (!isset($_POST['postid']) || intval($_POST['postid']) < 1 || !isset($_POST['counter']) || !isset($_POST['chainusertype']) || intval($_POST['chainusertype']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
+            return false;
+        }
+
+        $ui = '';
+
+        //Loading App?
+        if(in_array($_POST['chainusertype'], $this->config->item('userids___6287'))){
+
+            //yes load the app:
+            $ui .= $this->load(intval($_POST['chainusertype']), 0, 0, intval($_POST['postid']));
+
         } else {
 
+            //Load menu:
             $posts_query = posts_query($_POST['chainusertype'], $_POST['postid'], 1);
-            $ui = '';
             $is = $this->Posts->read(array(
                 'postid' => $_POST['postid'],
             ));
@@ -1280,9 +1291,12 @@ class Controller extends CI_Controller
 
             }
 
-            echo $ui;
-
         }
+
+
+
+        echo $ui;
+
     }
 
 
