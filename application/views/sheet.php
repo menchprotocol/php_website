@@ -356,7 +356,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
 
 
-        .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; }
+        /* .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } */
 
         .mini-header,
         #sortable_table td > p {

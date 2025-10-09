@@ -458,6 +458,7 @@ function toggle_menu(chainusertype_hash, is_first_load) {
 
 
     if (!$('.thepill' + chainusertype + ' .nav-chain').hasClass('active')) {
+        console.log('Not active Tab');
         loading_in_progress = false;
         return false;
     }
@@ -480,6 +481,7 @@ function toggle_menu(chainusertype_hash, is_first_load) {
 
     //Do we need to load data via ajax?
     if (loaded_pills.includes(chainusertype_hash)) {
+        console.log('Not active Tab');
         loading_in_progress = false;
         return false;
     }
