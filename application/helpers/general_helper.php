@@ -4228,7 +4228,7 @@ function view_featured_chains($chainusertype, $location, $m = null, $focus__node
 }
 
 
-function view_post_nav($discovery_mode, $focus_i)
+function view_post_nav($discovery_mode, $focus_i, $autoload = true)
 {
 
     $CI =& get_instance();
@@ -4278,21 +4278,24 @@ function view_post_nav($discovery_mode, $focus_i)
     $ui .= $body_content;
 
 
-    $users___focus = $CI->config->item('users___26005');
-    $focus_tab = 0;
-    foreach ($users___focus as $chainusertype => $m) {
-        if (isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0) {
-            $focus_tab = $chainusertype;
-            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
-            break;
-        }
-    }
-    if (!$focus_tab) {
+    if($autoload){
+        $users___focus = $CI->config->item('users___26005');
+        $focus_tab = 0;
         foreach ($users___focus as $chainusertype => $m) {
-            $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
-            break;
+            if (isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0) {
+                $focus_tab = $chainusertype;
+                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
+                break;
+            }
+        }
+        if (!$focus_tab) {
+            foreach ($users___focus as $chainusertype => $m) {
+                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
+                break;
+            }
         }
     }
+
 
     return $ui;
 
@@ -4745,7 +4748,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     } elseif ($userid_dropdown == 30873 && $post_access >= 3) {
 
                         //Clone Post Tree:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_copy(' . $i['postid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="(' . $i['postid'] . ', 1)" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($userid_dropdown == 33292 && $user_session) {
 

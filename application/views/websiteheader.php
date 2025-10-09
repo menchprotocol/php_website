@@ -436,10 +436,11 @@ if ($focus_i){
 
 
                     //Add User
+                    /*
                     if(user_session(10939)){
                         echo '<td class="block-x"><a href="javascript:void(0);" onclick="user_editor()" title="'.$users___11035[42819]['m__title'].'">'.$users___11035[42819]['m__cover'].'</a></td>';
                     }
-
+                    */
                     ?>
                 </tr>
             </table>

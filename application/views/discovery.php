@@ -114,7 +114,7 @@ echo '</div>';
 
 //Main Navigation
 if ($user_session || isset($_GET['open'])) {
-    echo view_post_nav(true, $focus_i);
+    echo view_post_nav(true, $focus_i, false);
 }
 
 //Fetch Post Types:
