@@ -418,8 +418,10 @@ function toggle_menu(chainusertype_hash, is_first_load) {
     console.log('Toggle Pill: ' + chainusertype_hash);
 
     if (pills_loading && !loaded_pills.includes(chainusertype_hash)) {
+        console.log('Cant load new tab while current one loading');
         return false;
     } else if (loading_in_progress) {
+        console.log('Tab is loading');
         return false;
     }
 
