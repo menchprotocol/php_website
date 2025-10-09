@@ -108,7 +108,7 @@ class Controller extends CI_Controller
         if(in_array(intval($_POST['chainusertype']), $this->config->item('userids___6287'))){
             //yes load the app:
             $_GET['posthashtag'] = $is[0]['posthashtag'];
-            echo $this->load(intval($_POST['chainusertype']), 0, $is[0]['postid'], 0, true);
+            echo $this->load(intval($_POST['chainusertype']), 0, $is[0]['postid'], 0, false);
             return false;
         }
 
