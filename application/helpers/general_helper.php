@@ -274,7 +274,7 @@ function post_required($i)
     )));
 }
 
-function get_redirected($url, $message = null, $log_error = false, $inframe = true)
+function get_redirected($url, $message = null, $log_error = false, $standalone = true)
 {
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
@@ -294,7 +294,7 @@ function get_redirected($url, $message = null, $log_error = false, $inframe = tr
         ));
     }
 
-    if(!$inframe){
+    if(!$standalone){
 
         //Do not redirect:
         return ( $message ? $message : 'Error Message' );

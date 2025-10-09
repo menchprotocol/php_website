@@ -459,13 +459,13 @@ class Controller extends CI_Controller
 
 
         //App title?
-        if ($memory_detected && in_array($app_userid, $this->config->item('userids___42928'))) {
+        if ($standalone && $memory_detected && in_array($app_userid, $this->config->item('userids___42928'))) {
             $ui = '<h1><span style="font-size:2em !important;">' . $users___6287[$app_userid]['m__cover'] . '</span> ' . $users___6287[$app_userid]['m__title'] . '</h1>' . $ui;
         }
 
 
         //Check to ensure they have started:
-        if ($app_userid == 30795 && $target_i && $focus_i && $user_session && $target_i['posthashtag'] == $focus_i['posthashtag']) {
+        if ($standalone && $app_userid == 30795 && $target_i && $focus_i && $user_session && $target_i['posthashtag'] == $focus_i['posthashtag']) {
 
             //Starting point, make sure all good:
             if (!post_is_startable($target_i)) {
