@@ -422,6 +422,7 @@ class Controller extends CI_Controller
             'user_session' => $user_session,
             'user_http_request' => $user_http_request,
             'memory_detected' => $memory_detected,
+            'standalone' => ( $standalone ? 1 : 0 ),
 
             'focus_e' => $focus_e,
             'focus_i' => $focus_i,
