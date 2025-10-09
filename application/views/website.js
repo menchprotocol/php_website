@@ -456,13 +456,6 @@ function toggle_menu(chainusertype_hash, is_first_load) {
     $('.nav_sub_' + chainusertype).removeClass('hidden');
     $('.xtypetitle_' + chainusertype).removeClass('hidden');
 
-
-    if (!$('.thepill' + chainusertype + ' .nav-chain').hasClass('active')) {
-        console.log('Not active Tab');
-        loading_in_progress = false;
-        return false;
-    }
-
     //Currently closed, must now be opened:
     var action_id = 26007; //Open
 
