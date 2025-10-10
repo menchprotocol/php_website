@@ -354,7 +354,10 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
         <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
 
-        /* .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } */
+
+        <?php if($standalone){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
+
+
 
         .mini-header,
         #sortable_table td > p {
