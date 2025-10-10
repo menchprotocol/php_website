@@ -740,12 +740,10 @@ if($user_session && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="hidden" class="next_postid" value="0" />
 
                         <!-- Post Hashtag -->
-                        <div class="dynamic_editing_input single_line hash_group" >
+                        <div class="dynamic_editing_input single_line hash_group" title="<?= $users___12273[32337]['m__message'] ?>" data-toggle="tooltip" data-placement="bottom">
                             <h3 class="mini-font"><span class="icon-block"><?= $users___12273[32337]['m__cover']  ?></span></h3>
                             <input type="text" class="form-control unsaved_warning save_posthashtag no-border" placeholder="<?= $users___12273[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>" >
                         </div>
-
-                        <div><span title="<?= $users___12273[32337]['m__message'] ?>" data-toggle="tooltip" data-placement="bottom">hi</span></div>
 
                         <!-- Post Creator -->
                         <div class="creator_box">
