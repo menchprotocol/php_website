@@ -39,9 +39,9 @@ class Posts extends CIdea_cache
 
         //Update other data on chain:
         $post_index = post_index($add_fields['postmessage'], $new_x['chainid'], $chainusercreator, $add_fields['posthashtag']);
-        //Update new ID:
-        $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='"."#" . $add_fields['posthashtag'] . "\n" . $post_index['chainvalue']."' WHERE chainid = " . $new_x['chainid'] . ";");
 
+        //Update new ID:
+        $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='" . "#" . $add_fields['posthashtag'] . "\n" . $post_index['chainvalue'] . "' WHERE chainid = " . $new_x['chainid'] . ";");
 
         //Add to cache:
         $this->db->insert('posts', array(
@@ -153,18 +153,18 @@ class Posts extends CIdea_cache
 
                     } elseif (in_array($key, $core_fields)) {
 
-                        if($must_update_chain){
+                        if ($must_update_chain) {
                             continue; //Only need to run through this once
                         }
 
                         //We only do it once:
                         $must_update_chain = 1;
 
-                        $new_posthashtag = trim( isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $cache['posthashtag'] );
-                        $new_postmessage = trim( isset($update_columns['postmessage']) ? $update_columns['postmessage'] : $cache['postmessage'] );
+                        $new_posthashtag = trim(isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $cache['posthashtag']);
+                        $new_postmessage = trim(isset($update_columns['postmessage']) ? $update_columns['postmessage'] : $cache['postmessage']);
                         $post_index = post_index($new_postmessage, $postid, $chainusercreator, $new_posthashtag);
 
-                        if($new_postmessage!=trim($cache['postmessage'])){
+                        if ($new_postmessage != trim($cache['postmessage'])) {
                             $update_columns['postmessage'] = $post_index['postmessage'];
                             $update_columns['postdiscover'] = $post_index['postdiscover'];
                             $update_columns['postedit'] = $post_index['postedit'];
@@ -198,14 +198,14 @@ class Posts extends CIdea_cache
 
                     } else {
 
-                        if($must_update_cache){
+                        if ($must_update_cache) {
                             continue;
                         }
 
                         $must_update_cache = 1;
 
                         $update_columns_cache = $update_columns;
-                        foreach($core_fields as $core_field => $core_value){
+                        foreach ($core_fields as $core_field => $core_value) {
                             unset($update_columns_cache[$core_value]);
                         }
 

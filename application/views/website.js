@@ -1034,7 +1034,7 @@ $(document).ready(function () {
         if (e.ctrlKey) {
             if (String.fromCharCode(e.which).toLowerCase() === 'i') {
                 //Add Post
-                post_editor();
+                post_edit();
             } else if (String.fromCharCode(e.which).toLowerCase() === 's') {
                 //Add User:
                 user_editor(0, 0);
@@ -1897,7 +1897,17 @@ function display_media(mediaframe_id, uploader_id, postid) {
     sort_media(mediaframe_id);
 }
 
-function post_editor(postid = 0, chainid = 0, next_postid = 0) {
+function generate_string_id(length) {
+    var result           = '';
+    var characters       = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+function post_edit(postid = 0, chainid = 0, next_postid = 0) {
 
     var chainusertype = 0;
     var focus_post_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
@@ -1934,9 +1944,14 @@ function post_editor(postid = 0, chainid = 0, next_postid = 0) {
     //load_post_dynamic(postid, chainid, true);
 
     if(postid>0){
+
         insert_message = $('.ui_postmessage_' + postid).text();
+
     } else {
+
         //New idea:
+        $("#modal31911 .save_posthashtag").val(generate_string_id(10));
+
         if (next_postid && $('.ui_posthashtag_' + next_postid).length) {
             //Append to textarea:
             insert_message = '#'+$('.ui_posthashtag_'+next_postid).val()+' ';
@@ -1981,7 +1996,7 @@ function load_post_dynamic(postid, chainid, initial_loading) {
     $(".dynamic_editing_loading").removeClass('hidden');
     var created_postid = 0;
 
-    $.post("/controller/post_editor", {
+    $.post("/controller/post_edit", {
         postid: postid,
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3278,7 +3293,7 @@ function selector(element_id, user_createid, o__id = 0, chainid = 0, show_full_n
 
             if (data.auto_open_post_modal) {
                 //We need to show post modal:
-                post_editor(o__id, $('.s__12273_' + o__id).attr('chainid'));
+                post_edit(o__id, $('.s__12273_' + o__id).attr('chainid'));
             }
 
         } else {

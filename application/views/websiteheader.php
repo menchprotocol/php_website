@@ -356,7 +356,7 @@ if ($focus_i){
 
                     //New Post?
                     if($user_session){
-                        echo '<td class="block-x enlarge add_post"><a href="javascript:void(0);" onclick="post_editor()" title="'.$users___11035[44403]['m__title'].'">'.$users___11035[44403]['m__cover'].'</a></td>';
+                        echo '<td class="block-x enlarge add_post"><a href="javascript:void(0);" onclick="post_edit()" title="'.$users___11035[44403]['m__title'].'">'.$users___11035[44403]['m__cover'].'</a></td>';
                     }
 
                     //MENU

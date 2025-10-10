@@ -726,7 +726,7 @@ class Controller extends CI_Controller
 
     }
 
-    function post_editor()
+    function post_edit()
     {
 
         $user_session = user_session(null, 0, $this->user_session);
