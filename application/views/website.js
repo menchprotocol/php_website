@@ -144,6 +144,7 @@ function chain_preview(apply_id, s__id) {
     $('#modal' + apply_id + ' .mass_action_toggle').val(first_id);
     $('#modal' + apply_id + ' input[name="s__id"]').val(s__id);
     $('#modal' + apply_id).modal('show');
+    $('[data-toggle="tooltip"]').tooltip();
 
     //Load Ppeview:
     $('#modal' + apply_id + ' .chain_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
@@ -1081,6 +1082,7 @@ $(document).ready(function () {
     $('.trigger_modal').click(function (e) {
         var chainusertype = parseInt($(this).attr('chainusertype'));
         $('#modal' + chainusertype).modal('show');
+        $('[data-toggle="tooltip"]').tooltip();
     });
 
 
@@ -1976,6 +1978,7 @@ function post_edit(postid = 0, chainid = 0, next_postid = 0) {
     }
 
     $('#modal31911').modal('show');
+    $('[data-toggle="tooltip"]').tooltip();
 
     setTimeout(function () {
         //Adjust sizes:
@@ -2511,6 +2514,7 @@ function cloudinary_presource_view(uploader_id, info_id, media_typeid, playback_
 function user_editor(userid = 0, chainid = 0, bar_title = null, chainvalue = null) {
 
     $('#modal31912').modal('show');
+    $('[data-toggle="tooltip"]').tooltip();
 
     //Reset Fields:
     has_unsaved_changes = false;
