@@ -5423,7 +5423,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     $ui .= '<div class="center-block">';
 
     if(isset($e['chainusertype']) && $users___4593[$e['chainusertype']]['m__cover']!='@'){
-        $ui .= '<div class="creator_headline grey"><span title="'.$users___4593[$e['chainusertype']]['m__message'].'">' . $users___4593[$e['chainusertype']]['m__title'] . '</span></div>';
+        $ui .= '<div class="creator_headline grey"><span title="'.$users___4593[$e['chainusertype']]['m__message'].'">' . $users___4593[$e['chainusertype']]['m__title'] . '</span>:</div>';
     }
 
     $ui .= '<div class="creator_headline grey"><span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">@' . $e['userhandle'] . '</span></div>';
