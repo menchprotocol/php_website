@@ -1958,11 +1958,6 @@ body:not(.app__30795) .nav > .nav-item > .nav-chain > .icon-block {
 }
 
 
-.card-12274 .creator_headline {
-    min-height: 24px !important;
-}
-
-
 .dynamic_editing_input textarea.form-control.save_postmessage {
     padding-top: px !important;
     margin-left: 40px !important;
@@ -3393,7 +3388,7 @@ h4.main__title {
 }
 
 .card-12274 .creator_headline {
-    padding: 0 1px 0 0;
+    padding: 0 1px 0 3px;
 }
 
 .user_bio {
