@@ -4976,28 +4976,8 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
                 $valid_instant_pay = true;
 
-                $digest_fees = count($CI->Chains->read(array(
-                    'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $i['postid'], //Paypal data is in the current post
-                    'chainuserinput' => 30589, //Digest Fees
-                )));
-
-                //Break down amount & currency
-                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainusercreator)) + doubleval(website_setting(27017, $chainusercreator))) / 100), 2, ".", "");
-
                 //Append information to cart about Paypal:
                 $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="' . view_app_chain(14373) . '" target="_blank">Terms of Use</a>.</div>';
-
-            } elseif ($chainusercreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $prev_invoice && $unit_price) {
-
-                $digest_fees = count($CI->Chains->read(array(
-                    'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $previous_i['postid'], //Invoice data is on the previous post
-                    'chainuserinput' => 30589, //Digest Fees
-                )));
-
-                //Break down amount & currency
-                //$unit_fee = number_format($unit_price * ($digest_fees ? 0 : (doubleval(website_setting(30590, $chainusercreator)) + doubleval(website_setting(27017, $chainusercreator))) / 100), 2, ".", "");
 
             }
 
@@ -5439,13 +5419,13 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     }
 
 
-    //User User
+    //User Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">' . (isset($e['chainusertype']) ? (substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? $users___4593[$e['chainusertype']]['m__cover'] : $users___4593[$e['chainusertype']]['m__cover'] . ' @') : '@') . '<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">' . $e['userhandle'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey">' . (isset($e['chainusertype']) ? (substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? $users___4593[$e['chainusertype']]['m__cover'] : '<span title="'.$users___4593[$e['chainusertype']]['m__message'].'" class="underdot">' . $users___4593[$e['chainusertype']]['m__title'] . '</span>&nbsp;') : '') . '<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">@' . $e['userhandle'] . '</span></div>';
     $ui .= '<div class="' . ($focus__node ? '' : ' hidden ') . '"><div class="creator_headline hidden grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div></div>';
 
-    //User Location:
+    //User Location?
     $users___42777 = $CI->config->item('users___42777');
     $order_columns = array();
     foreach ($users___42777 as $sort_id => $sort) {
@@ -5477,7 +5457,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     $featured_users = '';
 
 
-    //Featured Users
+    //Featured Users?
     $bio = null;
     $users___14036 = $CI->config->item('users___14036');
     $order_columns = array();
