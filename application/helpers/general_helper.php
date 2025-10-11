@@ -5422,7 +5422,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     //User Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey">' . (isset($e['chainusertype']) ? (substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? $users___4593[$e['chainusertype']]['m__cover'] : '<span title="'.$users___4593[$e['chainusertype']]['m__message'].'" class="underdot">' . $users___4593[$e['chainusertype']]['m__title'] . '</span>&nbsp;') : '') . '<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">@' . $e['userhandle'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey">' . ( isset($e['chainusertype']) && $users___4593[$e['chainusertype']]['m__cover']!='@' ? '<span title="'.$users___4593[$e['chainusertype']]['m__message'].'" class="underdot">' . $users___4593[$e['chainusertype']]['m__title'] . '</span>&nbsp;' : '' ) . '<span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">@' . $e['userhandle'] . '</span></div>';
     $ui .= '<div class="' . ($focus__node ? '' : ' hidden ') . '"><div class="creator_headline hidden grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div></div>';
 
     //User Location?
