@@ -89,11 +89,11 @@ foreach ($this->Posts->read(array(
 
 
 
-$_GET['limit'] = 1;
 
 //Posts on chain:
 foreach($this->Chains->read(array(
     'chainusertype' => 12273,
+    'chainpostinput IN (' . join(',', $focus) . ')' => null, //USER CHAINS
 ), array(), $_GET['limit'], 0, array('chainid' => 'DESC')) as $x){
 
     //Extra hashtag:
