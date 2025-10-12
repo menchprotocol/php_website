@@ -22,6 +22,7 @@ $stats = array(
 //First start with cache and see what might be missing:
 foreach ($this->Posts->read(array(
     'postid >' => 0,
+    'LENGTH(postmessage) < 1' => null,
 ), $_GET['limit']) as $post) {
 
     $stats['posts_oncache']++;
@@ -30,7 +31,23 @@ foreach ($this->Posts->read(array(
         'chainpostinput' => $post['postid'],
     ), array(), 1);
 
-    if (!count($cache_chains)) {
+    if (count($cache_chains)) {
+
+        //Also exists on chain:
+        $update_cache = array();
+        if ($cache_chains[0]['chainusercreator'] != $post['postcreator']) {
+            $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
+        }
+        if (!strlen($post['posttime'])) {
+            $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($cache_chains[0]['chaintime']));
+        }
+
+        //Update if there is anything:
+        if (count($update_cache) && $this->Posts->update($post['postid'], $update_cache)) {
+            $stats['posts_oncache_synced']++;
+        }
+
+    } else {
 
         $stats['posts_oncache_notonchain']++;
 
@@ -59,28 +76,12 @@ foreach ($this->Posts->read(array(
             }
         }
 
-    } else {
-
-        //Also exists on chain:
-        $update_cache = array();
-        if ($cache_chains[0]['chainusercreator'] != $post['postcreator']) {
-            $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
-        }
-        if (!strlen($post['posttime'])) {
-            $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($cache_chains[0]['chaintime']));
-        }
-
-        //Update if there is anything:
-        if (count($update_cache) && $this->Posts->update($post['postid'], $update_cache)) {
-            $stats['posts_oncache_synced']++;
-        }
-
     }
 }
 
 
 
-
+$_GET['limit'] = 1;
 
 //Posts on chain:
 foreach($this->Chains->read(array(
@@ -100,11 +101,18 @@ foreach($this->Chains->read(array(
 
         //See if IDs match:
 
+
     } else {
         //Search the ID:
         $is = $this->Posts->read(array(
             'postid' => $x['chainpostinput'],
         ));
+
+        if(!count($is)){
+            $is = $this->Posts->read(array(
+                'postid' => $x['chainid'],
+            ));
+        }
     }
 
 

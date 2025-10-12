@@ -3895,7 +3895,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
 
             $reference_type = 0;
             $first_word = !$word_count;
-            if ($first_word && strlen($word_text . ' ') < strlen($line)) {
+            if ($first_word && strlen($word_text . ' ') < strlen($line) && strlen(@ltrim($line, $word_text . ' '))) {
                 $second_word_onwards .= ltrim($line, $word_text . ' ');
             }
             $chainvalue = null;
