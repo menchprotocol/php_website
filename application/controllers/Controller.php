@@ -3170,10 +3170,7 @@ class Controller extends CI_Controller
                         }
                     }
 
-                    $trying_to_skip = (
-                        !strlen($next_post_data['post_createtext']) ||
-                        ($input__upload && !strlen($next_post_data['post_createtext'])) //TODO Check Media
-                    );
+                    $trying_to_skip = !strlen($next_post_data['post_createtext']);
                     $post_required = !$skipping_not_allowed && post_required($post_next);
 
                     if ($post_required && $trying_to_skip) {

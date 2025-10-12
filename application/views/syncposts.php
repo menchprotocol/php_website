@@ -14,6 +14,7 @@ $stats = array(
     'posts_voided' => 0,
     'posts_orphan' => 0,
     'posts_empty' => 0,
+    'posts_chainvalue_empty' => 0,
     'posts_delete' => 0,
     'posts_voidcreaetor' => 0,
     'posts_valid_cachevoid' => 0,
@@ -104,6 +105,8 @@ if (1) {
 
         //Extra hashtag:
         $is = array();
+        $sync_missing = false;
+
         $chain_hashtag = (substr($x['chainvalue'], 0, 1) == '#' ? one_two_explode('#', "\n", $x['chainvalue']) : false);
         if (strlen($chain_hashtag)) {
             $is = $this->Posts->read(array(
@@ -114,9 +117,7 @@ if (1) {
         if (count($is)) {
 
             //See if IDs match:
-            if(intval($is[0]['postid'])!=intval($x['chainpostinput'])) {
-                $stats['posts_id_nosync']++;
-            }
+            $sync_missing = intval($is[0]['postid'])!=intval($x['chainpostinput']);
 
         } else {
             //Search the ID:
@@ -139,44 +140,39 @@ if (1) {
         //Orphan?
         $total_links = count($this->Chains->read(array(
             'chainid !=' => $x['chainid'],
-            '(chainpostinput=' . $x['chainpostinput'] . ' OR chainpostoutput=' . $x['chainpostinput'] . ')' => null,
+            '(chainid=' . $x['chainpostinput'] . ' OR chainpostinput=' . $x['chainpostinput'] . ' OR chainpostoutput=' . $x['chainpostinput'] . ')' => null,
         )));
         if (!$total_links) {
             $stats['posts_orphan']++;
         }
 
+        if(!strlen($x['chainvalue'])){
+            $stats['posts_chainvalue_empty']++;
+        }
 
         $posts_empty = count($is) && !strlen($is[0]['postmessage']);
         if ($posts_empty) {
             $stats['posts_empty']++;
         }
 
+        if($sync_missing) {
+            $stats['posts_id_nosync']++;
+        }
+
         if($x['chainvoid']>0){
             $stats['posts_voided']++;
+            //$this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
         }
 
         $stats['posts_onchain']++;
         if (!count($es)) {
             $stats['posts_voidcreaetor']++;
             //Update to Shervin:
-            /*
-            $this->Chains->update($x['chainid'], array(
-                'chainusercreator' => 1,
-            ));
-            */
+            //$this->db->query("UPDATE ideachains SET chainusercreator = 1 WHERE chainid = " . $x['chainid'] . ";");
         }
         if (!count($is)) {
-
             $stats['posts_valid_cachevoid']++;
-
-            if (0) {
-                //Add post to cache:
-                $post_new = $this->Posts->create(array(
-                    'postmessage' => $x['chainvalue'],
-                ), $x['chainusercreator']);
-                $is[0] = $post_new['post_create'];
-            }
-
+            //$this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
         }
 
 
@@ -215,11 +211,12 @@ if (1) {
         ));
         */
 
-        if ($delete || !$total_links || $posts_empty || !count($es) || !count($is)) {
+        if ($delete || !$total_links || $posts_empty || !count($es) || !count($is) || $sync_missing) {
 
-            $stats['message'] .= '#' . $x['chainpostinput'] . ' #' . $post_index['posthashtag'] . ' ' .
+            $stats['message'] .= 'chainid: '.$x['chainid'].' chainpostinput: ' . $x['chainpostinput'] . ' postid:'.( count($is) ? $is[0]['postud'] : '0' ).' #' . $post_index['posthashtag'] . ' ' .
                 ($delete ? '[DELETED POST]' : '') .
                 (!$total_links ? '[ORPHAN]' : '') .
+                (!$sync_missing ? '[NOT SYNC]' : '') .
                 ( $x['chainvoid']>0  ? '[VOIDED]' : '') .
                 ($posts_empty ? '[EMPTY]' : '') .
                 (!count($es) ? '[posts_voidcreaetor]' : '') .
