@@ -26,11 +26,9 @@ $focus = array();
 //First start with cache and see what might be missing:
 foreach ($this->Posts->read(array(
     'postid >' => 0,
-    'LENGTH(postmessage) < 1' => null,
 ), $_GET['limit']) as $post) {
 
     $stats['posts_oncache']++;
-
 
     if(in_array(intval($post['postid']), $focus)) {
         $stats['posts_oncache_duplicate']++;
@@ -44,10 +42,6 @@ foreach ($this->Posts->read(array(
     ), array(), 1);
 
     if (count($cache_chains)) {
-
-        $this->db->query("DELETE FROM posts WHERE postid = " . $post['postid'] . ";");
-        $this->db->query("DELETE FROM ideachains WHERE chainid = " . $post['postid'] . ";");
-        continue;
 
         //Also exists on chain:
         $update_cache = array();
@@ -98,6 +92,7 @@ foreach ($this->Posts->read(array(
 
 
 if(0){
+
     //Posts on chain:
     foreach($this->Chains->read(array(
         'chainusertype' => 12273,
