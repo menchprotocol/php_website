@@ -12,7 +12,6 @@ $stats = array(
     'chain_all' => 0,
     'users_onchain' => 0,
     'users_chain_deleted' => 0,
-    'users_bio' => 0,
 
     //Validate user references on chain
     'count_users' => 0,
@@ -139,24 +138,6 @@ foreach ($this->Chains->read(array(
             array_push($stats['unique_users_missing'], $user_validate);
             $stats['users_chain_deleted'] += $user_validate['chain_deletes'];
         }
-    }
-}
-
-
-//Sync bio once:
-foreach($this->Chains->read(array(
-    'LENGTH(chainvalue)>10' => null,
-    'LENGTH(userbio)<1' => null,
-    'chainusertype' => 32292,
-), array('chainuseroutput'), 0) as $x){
-    if(strlen(trim($x['chainvalue']))>10 && substr_count($x['chainvalue'], ' ')>=2) {
-        $stats['users_bio']++;
-        $stats['message'] .= "@" . $x['userhandle'] . " ".$x['chainvalue']."\n";
-        /*
-        $this->Users->update($x['userid'], array(
-            'userbio' => trim($x['chainvalue']),
-        ), $x['userid']);
-        */
     }
 }
 

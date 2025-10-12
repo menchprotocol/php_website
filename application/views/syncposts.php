@@ -66,7 +66,7 @@ foreach ($this->Posts->read(array(
             $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
         }
         if (!strlen($post['posttime'])) {
-            $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($post['chaintime']));
+            $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($cache_chains[0]['chaintime']));
         }
 
         //Update if there is anything:
