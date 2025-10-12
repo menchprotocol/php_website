@@ -10,6 +10,7 @@ $stats = array(
     'posts_oncache_chainadded' => 0,
     'posts_oncache_synced' => 0,
     'posts_onchain' => 0,
+    'posts_voided' => 0,
     'posts_orphan' => 0,
     'posts_empty' => 0,
     'posts_delete' => 0,
@@ -22,93 +23,94 @@ $stats = array(
 $focus = array();
 
 
-
+if (0) {
 //First start with cache and see what might be missing:
-foreach ($this->Posts->read(array(
-    'postid >' => 0,
-), $_GET['limit']) as $post) {
+    foreach ($this->Posts->read(array(
+        'postid >' => 0,
+    ), $_GET['limit']) as $post) {
 
-    $stats['posts_oncache']++;
+        $stats['posts_oncache']++;
 
-    if(in_array(intval($post['postid']), $focus)) {
-        $stats['posts_oncache_duplicate']++;
-        continue;
-    }
-
-    array_push($focus, intval($post['postid']));
-    $cache_chains = $this->Chains->read(array(
-        'chainusertype' => 12273,
-        'chainpostinput' => $post['postid'],
-    ), array(), 1);
-
-    if (count($cache_chains)) {
-
-        //Also exists on chain:
-        $update_cache = array();
-        if ($cache_chains[0]['chainusercreator'] != $post['postcreator']) {
-            $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
-        }
-        if (!strlen($post['posttime'])) {
-            $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($cache_chains[0]['chaintime']));
+        if (in_array(intval($post['postid']), $focus)) {
+            $stats['posts_oncache_duplicate']++;
+            continue;
         }
 
-        //Update if there is anything:
-        if (count($update_cache) && $this->Posts->update($post['postid'], $update_cache)) {
-            $stats['posts_oncache_synced']++;
-        }
-
-    } else {
-
-        $stats['posts_oncache_notonchain']++;
-
-        $post_index = post_index($post['postmessage'], 0, 0, $post['posthashtag']);
-
-        $new_x = $this->Chains->create(array(
+        array_push($focus, intval($post['postid']));
+        $cache_chains = $this->Chains->read(array(
             'chainusertype' => 12273,
-            'chainusercreator' => 1,
             'chainpostinput' => $post['postid'],
-            'chainvalue' => "#" . $post['posthashtag']
-                . "\n" . $post_index['chainvalue']
-        ));
+        ), array(), 1);
 
-        if ($new_x['chainid'] > 0) {
+        if (count($cache_chains)) {
 
-            $stats['posts_oncache_chainadded']++;
-
-            $stats['message'] .= "#" . $post['posthashtag'] . " Added to Chain\n";
-
-            //Edit ID
-            if (!count($this->Chains->read(array(
-                'chainvoid >=' => 0,
-                'chainid' => $post['postid'],
-            ), array(), 1))) {
-                $this->db->query("UPDATE ideachains SET chainid = " . $post['postid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
+            //Also exists on chain:
+            $update_cache = array();
+            if ($cache_chains[0]['chainusercreator'] != $post['postcreator']) {
+                $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
             }
-        }
+            if (!strlen($post['posttime'])) {
+                $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($cache_chains[0]['chaintime']));
+            }
 
+            //Update if there is anything:
+            if (count($update_cache) && $this->Posts->update($post['postid'], $update_cache)) {
+                $stats['posts_oncache_synced']++;
+            }
+
+        } else {
+
+            $stats['posts_oncache_notonchain']++;
+
+            $post_index = post_index($post['postmessage'], 0, 0, $post['posthashtag']);
+
+            $new_x = $this->Chains->create(array(
+                'chainusertype' => 12273,
+                'chainusercreator' => 1,
+                'chainpostinput' => $post['postid'],
+                'chainvalue' => "#" . $post['posthashtag']
+                    . "\n" . $post_index['chainvalue']
+            ));
+
+            if ($new_x['chainid'] > 0) {
+
+                $stats['posts_oncache_chainadded']++;
+
+                $stats['message'] .= "#" . $post['posthashtag'] . " Added to Chain\n";
+
+                //Edit ID
+                if (!count($this->Chains->read(array(
+                    'chainvoid >=' => 0,
+                    'chainid' => $post['postid'],
+                ), array(), 1))) {
+                    $this->db->query("UPDATE ideachains SET chainid = " . $post['postid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
+                }
+            }
+
+        }
     }
+
 }
 
 
-
-if(0){
+if (1) {
 
     //Posts on chain:
-    foreach($this->Chains->read(array(
+    foreach ($this->Chains->read(array(
+        'chainvoid >=' => 0,
         'chainusertype' => 12273,
-        //'chainpostinput IN (' . join(',', $focus) . ')' => null, //USER CHAINS
-    ), array(), $_GET['limit'], 0, array('chainid' => 'DESC')) as $x){
+    ), array(), $_GET['limit'], 0, array('chainid' => 'DESC')) as $x) {
 
         //Extra hashtag:
         $is = array();
-        $chain_hashtag = ( substr($x['chainvalue'], 0, 1)=='#' ? one_two_explode('#',"\n",$x['chainvalue']) : false );
-        if(strlen($chain_hashtag)){
+        $chain_hashtag = (substr($x['chainvalue'], 0, 1) == '#' ? one_two_explode('#', "\n", $x['chainvalue']) : false);
+        if (strlen($chain_hashtag)) {
             $is = $this->Posts->read(array(
                 'LOWER(posthashtag)' => strtolower($chain_hashtag),
             ));
         }
 
-        if(count($is)){
+        if (count($is)) {
 
             //See if IDs match:
 
@@ -119,13 +121,12 @@ if(0){
                 'postid' => $x['chainpostinput'],
             ));
 
-            if(!count($is)){
+            if (!count($is)) {
                 $is = $this->Posts->read(array(
                     'postid' => $x['chainid'],
                 ));
             }
         }
-
 
 
         $es = $this->Users->read(array(
@@ -135,19 +136,24 @@ if(0){
         //Orphan?
         $total_links = count($this->Chains->read(array(
             'chainid !=' => $x['chainid'],
-            '(chainpostinput='.$x['chainpostinput'].' OR chainpostoutput='.$x['chainpostinput'].')' => null,
+            '(chainpostinput=' . $x['chainpostinput'] . ' OR chainpostoutput=' . $x['chainpostinput'] . ')' => null,
         )));
-        if(!$total_links){
+        if (!$total_links) {
             $stats['posts_orphan']++;
         }
 
+
         $posts_empty = count($is) && !strlen($is[0]['postmessage']);
-        if($posts_empty){
+        if ($posts_empty) {
             $stats['posts_empty']++;
         }
 
+        if($x['chainvoid']>0){
+            $stats['posts_voided']++;
+        }
+
         $stats['posts_onchain']++;
-        if(!count($es)){
+        if (!count($es)) {
             $stats['posts_voidcreaetor']++;
             //Update to Shervin:
             /*
@@ -156,26 +162,30 @@ if(0){
             ));
             */
         }
-        if(!count($is)){
+        if (!count($is)) {
+
             $stats['posts_valid_cachevoid']++;
+
+            if (0) {
+                //Add post to cache:
+                $post_new = $this->Posts->create(array(
+                    'postmessage' => $x['chainvalue'],
+                ), $x['chainusercreator']);
+                $is[0] = $post_new['post_create'];
+            }
+
         }
 
 
-        if(!count($is) && 0){
-            //Add post:
-            $post_new = $this->Posts->create(array(
-                'postmessage' => $x['chainvalue'],
-            ), $x['chainusercreator']);
-            $is[0] = $post_new['post_create'];
-        }
 
 
-        $delete = !$total_links || $posts_empty;
-        if($delete){
+
+        $delete = !$total_links || $posts_empty || $x['chainvoid']>0;
+        if ($delete) {
             $stats['posts_delete']++;
         }
 
-        if(count($is)){
+        if (count($is)) {
             $post_index = $is[0];
         } else {
             $post_index = array(
@@ -202,14 +212,15 @@ if(0){
         ));
         */
 
-        if($delete || !$total_links || $posts_empty || !count($es) || !count($is)){
+        if ($delete || !$total_links || $posts_empty || !count($es) || !count($is)) {
 
-            $stats['message'] .= '#'.$x['chainpostinput'].' #'.$post_index['posthashtag'].' '.
-                ( $delete ? '[DELETED POST]' : '' ).
-                ( !$total_links ? '[ORPHAN]' : '') .
-                ( $posts_empty ? '[EMPTY]' : '' ).
-                ( !count($es) ? '[posts_voidcreaetor]' : '' ).
-                ( !count($is) ? '[posts_valid_cachevoid]' : '' )."\n";
+            $stats['message'] .= '#' . $x['chainpostinput'] . ' #' . $post_index['posthashtag'] . ' ' .
+                ($delete ? '[DELETED POST]' : '') .
+                (!$total_links ? '[ORPHAN]' : '') .
+                ( $x['chainvoid']>0  ? '[VOIDED]' : '') .
+                ($posts_empty ? '[EMPTY]' : '') .
+                (!count($es) ? '[posts_voidcreaetor]' : '') .
+                (!count($is) ? '[posts_valid_cachevoid]' : '') . "\n";
         }
 
 
