@@ -1,7 +1,7 @@
 <?php
 
 $delete_missing = true;
-$_GET['limit'] = 100;
+$_GET['limit'] = 0;
 
 $stats = array(
     'posts_oncache' => 0,
