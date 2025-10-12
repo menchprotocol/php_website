@@ -3862,6 +3862,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
     $post_index = array(
         'chainvalue' => '',
         'postmessage' => '',
+        'postmessage_new' => '',
         'postdiscover' => '',
         'postedit' => '',
         'actionstats' => array(
@@ -3869,6 +3870,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
             'added' => 0,
             'removed' => 0,
             'updated' => 0,
+            'posts_links_fixed' => 0,
         ),
     );
 
@@ -3891,6 +3893,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
         $linepostdiscover = null;
         $linepostedit = null;
 
+
         foreach ($words as $word_count => $word_text) {
 
             $reference_type = 0;
@@ -3902,6 +3905,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
             $postmessage = null;
             $postdiscover = null;
             $postedit = null;
+            $line_new = '';
 
             if (filter_var($word_text, FILTER_VALIDATE_URL)) {
 
@@ -3955,6 +3959,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
 
                     if (in_array($chainusertype, $CI->config->item('userids___4486'))) {
 
+                        //Any replacements?
                         if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
                             $term = $new_term;
                             $word_text = $m['m__cover'] . $term;
@@ -3966,6 +3971,16 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
                         ));
 
                         if (!count($found_posts)) {
+
+                            if(isset($_GET['replace_numbers']) && is_numeric($term)){
+                                foreach($CI->Posts->read(array(
+                                    'postid' => intval($term),
+                                )) as $replace_num){
+                                    $term = $replace_num['posthashtag'];
+                                    $word_text = $m['m__cover'] . $replace_num['posthashtag'];
+                                    $post_index['actionstats']['posts_links_fixed']++;
+                                }
+                            }
 
                             //New post not found, try to create:
                             $parent_term = (strlen($new_term) ? $new_term : $current_term);
@@ -4096,7 +4111,6 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
                                 'chainuserinput' => $user['userid'],
                                 'chainuseroutput' => 0,
                                 'chainpostinput' => $save_postid,
-                                'chainpostoutput' => $save_postid, //TODO could be removed later must check all references
                                 'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
                                 'chainkey' => $chainkey,
                             );
@@ -4122,6 +4136,9 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
                     break;
 
                 }
+
+                $line_new .= $word_text." ";
+
             }
 
             if (!$reference_type) {
@@ -4139,6 +4156,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
             $linepostmessage .= (!$first_word && $postmessage ? ' ' : '') . $postmessage;
             $linepostdiscover .= (!$first_word && $postdiscover ? ' ' : '') . $postdiscover;
             $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
+            $post_index['postmessage_new'] .= trim($line_new)."\n";
 
         }
 
@@ -4210,8 +4228,9 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
         }
     }
 
+    $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
 
-    if (isset($saved_items)) {
+    if (count($saved_items)) {
         $post_index['actionstats']['saved_items_count'] = count($saved_items);
         $post_index['actionstats']['saved_items'] = $saved_items;
     }

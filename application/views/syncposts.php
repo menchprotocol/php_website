@@ -3,12 +3,15 @@
 $delete_missing = true;
 $_GET['limit'] = 0;
 
+
 $stats = array(
     'posts_oncache' => 0,
     'posts_oncache_duplicate' => 0,
     'posts_oncache_notonchain' => 0,
     'posts_oncache_chainadded' => 0,
     'posts_oncache_synced' => 0,
+    'posts_links_fix' => 0,
+    'posts_links_fixed' => 0,
     'posts_onchain' => 0,
     'posts_id_nosync' => 0,
     'posts_voided' => 0,
@@ -25,10 +28,11 @@ $stats = array(
 $focus = array();
 
 
-if (0) {
+if (1) {
 //First start with cache and see what might be missing:
     foreach ($this->Posts->read(array(
         'postid >' => 0,
+        'postid' => 1744358,
     ), $_GET['limit']) as $post) {
 
         $stats['posts_oncache']++;
@@ -37,8 +41,21 @@ if (0) {
             $stats['posts_oncache_duplicate']++;
             continue;
         }
-
         array_push($focus, intval($post['postid']));
+
+        $_GET['replace_numbers'] = 1;
+        $post_index = post_index($post['postmessage'], intval($post['postid']), intval($post['postcreator']), $post['posthashtag']);
+
+        if($post_index['actionstats']['posts_links_fixed'] > 0){
+            $this->Posts->update($post['postid'], array(
+                'postmessage' => $post_index['postmessage_new'],
+                'postdiscover' => $post_index['postdiscover'],
+                'postedit' => $post_index['postedit'],
+            ), 1);
+            $stats['posts_links_fix']++;
+            $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
+        }
+
         $cache_chains = $this->Chains->read(array(
             'chainusertype' => 12273,
             'chainpostinput' => $post['postid'],
@@ -95,7 +112,7 @@ if (0) {
 }
 
 
-if (1) {
+if (0) {
 
     //Posts on chain:
     foreach ($this->Chains->read(array(
