@@ -15,6 +15,7 @@ $stats = array(
     'posts_voidcreaetor' => 0,
     'posts_valid_cachevoid' => 0,
     'cache_valid_postvoid' => 0,
+    'message' => '',
 );
 
 
