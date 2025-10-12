@@ -131,6 +131,7 @@ if (1) {
         if($sync_missing) {
             $this->db->query("UPDATE ideachains SET chainpostoutput = " . intval($is[0]['postid']) . " WHERE chainid = " . $x['chainid'] . ";");
             $stats['posts_id_nosync']++;
+            $x['chainpostinput'] = intval($is[0]['postid']);
         }
 
 
