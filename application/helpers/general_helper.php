@@ -4137,8 +4137,6 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
 
                 }
 
-                $line_new .= $word_text." ";
-
             }
 
             if (!$reference_type) {
@@ -4156,7 +4154,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
             $linepostmessage .= (!$first_word && $postmessage ? ' ' : '') . $postmessage;
             $linepostdiscover .= (!$first_word && $postdiscover ? ' ' : '') . $postdiscover;
             $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
-            $post_index['postmessage_new'] .= trim($line_new)."\n";
+            $line_new .= $word_text." ";
 
         }
 
@@ -4164,6 +4162,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
         $post_index['postmessage'] .= (!$first_line && $linepostmessage ? "\n" : '') . $linepostmessage;
         $post_index['postdiscover'] .= ($linepostdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdiscover . '</div>' : '');
         $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');
+        $post_index['postmessage_new'] .= trim($line_new)."\n";
 
     }
 
