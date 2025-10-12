@@ -3892,7 +3892,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
         $linepostmessage = null;
         $linepostdiscover = null;
         $linepostedit = null;
-
+        $line_new = '';
 
         foreach ($words as $word_count => $word_text) {
 
@@ -3905,7 +3905,6 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
             $postmessage = null;
             $postdiscover = null;
             $postedit = null;
-            $line_new = '';
 
             if (filter_var($word_text, FILTER_VALIDATE_URL)) {
 
