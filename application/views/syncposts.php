@@ -5,6 +5,7 @@ $_GET['limit'] = 0;
 
 $stats = array(
     'posts_oncache' => 0,
+    'posts_oncache_duplicate' => 0,
     'posts_oncache_notonchain' => 0,
     'posts_oncache_chainadded' => 0,
     'posts_oncache_synced' => 0,
@@ -18,14 +19,21 @@ $stats = array(
     'message' => '',
 );
 
+$focus = array();
 
 //First start with cache and see what might be missing:
 foreach ($this->Posts->read(array(
     'postid >' => 0,
     'LENGTH(postmessage) < 1' => null,
 ), $_GET['limit']) as $post) {
-
     $stats['posts_oncache']++;
+
+    if(in_array(intval($post['postid']), $focus)) {
+        $stats['posts_oncache_duplicate']++;
+        continue;
+    }
+
+    array_push($focus, intval($post['postid']));
     $cache_chains = $this->Chains->read(array(
         'chainusertype' => 12273,
         'chainpostinput' => $post['postid'],
