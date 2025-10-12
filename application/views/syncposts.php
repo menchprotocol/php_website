@@ -105,7 +105,6 @@ if (1) {
 
         //Extra hashtag:
         $is = array();
-        $sync_missing = false;
 
         $chain_hashtag = (substr($x['chainvalue'], 0, 1) == '#' ? one_two_explode('#', "\n", $x['chainvalue']) : false);
         if (strlen($chain_hashtag)) {
@@ -114,12 +113,7 @@ if (1) {
             ));
         }
 
-        if (count($is)) {
-
-            //See if IDs match:
-            $sync_missing = intval($is[0]['postid'])!=intval($x['chainpostinput']);
-
-        } else {
+        if (!count($is)) {
             //Search the ID:
             $is = $this->Posts->read(array(
                 'postid' => $x['chainpostinput'],
@@ -131,6 +125,14 @@ if (1) {
                 ));
             }
         }
+
+        //See if IDs match:
+        $sync_missing = count($is) && intval($is[0]['postid'])!=intval($x['chainpostinput']);
+        if($sync_missing) {
+            $this->db->query("UPDATE ideachains SET chainpostoutput = " . intval($is[0]['postid']) . " WHERE chainid = " . $x['chainid'] . ";");
+            $stats['posts_id_nosync']++;
+        }
+
 
 
         $es = $this->Users->read(array(
@@ -155,9 +157,6 @@ if (1) {
             $stats['posts_empty']++;
         }
 
-        if($sync_missing) {
-            $stats['posts_id_nosync']++;
-        }
 
         if($x['chainvoid']>0){
             $stats['posts_voided']++;
