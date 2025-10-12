@@ -10,6 +10,7 @@ $stats = array(
     'posts_oncache_chainadded' => 0,
     'posts_oncache_synced' => 0,
     'posts_onchain' => 0,
+    'posts_id_nosync' => 0,
     'posts_voided' => 0,
     'posts_orphan' => 0,
     'posts_empty' => 0,
@@ -113,7 +114,9 @@ if (1) {
         if (count($is)) {
 
             //See if IDs match:
-
+            if(intval($is[0]['postid'])!=intval($x['chainpostinput'])) {
+                $stats['posts_id_nosync']++;
+            }
 
         } else {
             //Search the ID:
