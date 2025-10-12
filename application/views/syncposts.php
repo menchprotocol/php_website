@@ -190,7 +190,7 @@ foreach($this->Chains->read(array(
             ( !$total_links ? '[ORPHAN]' : '') .
             ( $posts_empty ? '[EMPTY]' : '' ).
             ( !count($es) ? '[posts_voidcreaetor]' : '' ).
-            ( !count($is) ? '[posts_valid_cachevoid]' : '' );
+            ( !count($is) ? '[posts_valid_cachevoid]' : '' )."\n";
     }
 
 
