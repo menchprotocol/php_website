@@ -85,7 +85,7 @@ foreach ($this->Posts->read(array(
 //Posts on chain:
 foreach($this->Chains->read(array(
     'chainusertype' => 12273,
-), array(), ( isset($_GET['limit']) ? $_GET['limit'] : 0 ), ( isset($_GET['offset']) ? $_GET['offset'] : 0 ), array('chainid' => 'DESC')) as $x){
+), array(), $_GET['limit'], 0, array('chainid' => 'DESC')) as $x){
 
     //Extra hashtag:
     $is = array();
