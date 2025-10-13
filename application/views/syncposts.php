@@ -45,6 +45,8 @@ if (1) {
             //Remove:
             echo ' [DUPLICATE]';
             $stats['posts_oncache_hashtags_duplicate']++;
+            $this->db->query("DELETE FROM ideachains WHERE (chainpostinput = " . $post['postid'] . " OR chainpostoutput = " . $post['postid'] . ");");
+            $this->db->query("DELETE FROM posts WHERE postid = " . $post['postid'] . ";");
         } else {
             if(is_numeric($post['posthashtag'])) {
                 $stats['posts_oncache_hashtags_numeric']++;
