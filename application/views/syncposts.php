@@ -69,7 +69,7 @@ if (1) {
     //First start with cache and see what might be missing:
     foreach ($this->Posts->read(array(
         'postid >' => 0,
-        'postid' => 1743988,
+        'postid >' => 1743988,
     ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
 
         $stats['posts_oncache']++;
@@ -80,10 +80,12 @@ if (1) {
         }
         array_push($focus, intval($post['postid']));
 
-        $post_index = post_index($post['postmessage'], intval($post['postid']), intval($post['postcreator']));
+        $post_index = post_index($post['postmessage']);
         array_push($stats['posts_links_stats'], $post_index);
 
         if ($post_index['actionstats']['posts_links_fixed'] > 0 || trim($post['postmessage'])!=trim($post_index['postmessage_new'])) {
+
+            $post_index = post_index($post_index['postmessage_new'], intval($post['postid']), intval($post['postcreator']));
             $this->Posts->update($post['postid'], array(
                 'postmessage' => $post_index['postmessage_new'],
                 'postdiscover' => $post_index['postdiscover'],
@@ -92,7 +94,7 @@ if (1) {
             $stats['posts_links_fix']++;
             $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
             echo '#'.$post['posthashtag'].' NEW: ('.$post_index['actionstats']['posts_links_fixed'].')<br />'.$post['postmessage'].'<hr />'.$post_index['postmessage_new'].'<hr />'.'<hr />';
-            break;
+
         }
 
         $cache_chains = $this->Chains->read(array(
