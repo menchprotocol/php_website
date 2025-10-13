@@ -30,7 +30,7 @@ foreach($this->config->item('users___28917') as $chainusertype => $m) {
             }
         }
 
-        echo $unsnooze_members.'/'.$total_members.' Members Unsnoozed from '.$m['m__name'].'<hr />';
+        echo $unsnooze_members.'/'.$total_members.' Members Unsnoozed from '.$m['m__title'].'<hr />';
 
     }
 }

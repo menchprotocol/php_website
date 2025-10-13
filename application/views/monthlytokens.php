@@ -35,7 +35,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
 
 
     echo '<tr>';
-    echo '<td class="main__title"><div class="col_name">' . $m['m__cover'] . ' ' . $m['m__name'] . '</div></td>';
+    echo '<td class="main__title"><div class="col_name">' . $m['m__cover'] . ' ' . $m['m__title'] . '</div></td>';
     echo '<td>' . number_format($unique[0]['totals'], 0) . '</td>';
     echo '<td>&nbsp;</td>';
     echo '<td>&nbsp;</td>';

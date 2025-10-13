@@ -26,7 +26,7 @@ foreach($this->config->item('users___31770') as $chainusertype => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div class="line"><span style="display:inline-block; width: 34px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.number_format($unique, 0).' '.$m['m__name'].'</div>';
+    $html_message .= '<div class="line"><span style="display:inline-block; width: 34px; text-align: right;">'.$growth.'</span><span style="width:34px !important; display: inline-block; text-align: center;">'.$m['m__cover'].'</span>'.number_format($unique, 0).' '.$m['m__title'].'</div>';
 
 }
 

@@ -51,7 +51,7 @@ if ($chainusercreator && !$at_starting_point) {
                         $breadcrum_content .= '<a href="' . view_memory(42903, 30795) . $target_posthashtag . '/' . $post_subset['posthashtag'] . '" class="dropdown-item ' . (in_array($post_subset['postid'], $main_branch) ? ' active ' : '') . '">' . view_post_title($post_subset, true) . '</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_locked ' . (in_array($post_subset['postid'], $main_branch) ? ' active ' : '') . '" title="' . $users___11035[43010]['m__name'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">' . $users___11035[43010]['m__cover'] . '</span>' . view_post_title($post_subset, true) . '</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked ' . (in_array($post_subset['postid'], $main_branch) ? ' active ' : '') . '" title="' . $users___11035[43010]['m__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">' . $users___11035[43010]['m__cover'] . '</span>' . view_post_title($post_subset, true) . '</div>';
                     }
 
                 }

@@ -21,7 +21,7 @@ foreach ((isset($_GET['userhandle']) && strlen($_GET['userhandle']) ? $this->Use
 
             $community_pills .= view_pill(12274, $x['userid'], $total_count, array(
                 'm__cover' => view_cover($x['usercover'], true),
-                'm__name' => $x['username'],
+                'm__title' => $x['username'],
                 'm__message' => $x['chainvalue'],
                 'm__handle' => $x['userhandle'],
             ), $ui);

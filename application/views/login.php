@@ -276,7 +276,7 @@ if(user_session()) {
             <!-- Step 1: Enter Email -->
             <div id="step2" class="signup-steps hidden">
 
-                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$users___4269[32079]['m__cover'].'</span>'.$users___4269[32079]['m__name'] ?></span>
+                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$users___4269[32079]['m__cover'].'</span>'.$users___4269[32079]['m__title'] ?></span>
 
                 <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $users___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
 
@@ -284,7 +284,7 @@ if(user_session()) {
 
 
                 <span>
-                    <a href="javascript:void(0)" onclick="user_verify()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $users___11035[26104]['m__name'] ?>"><?= $users___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="user_verify()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $users___11035[26104]['m__title'] ?>"><?= $users___11035[26104]['m__cover'] ?></a>
                 </span>
 
 
@@ -297,7 +297,7 @@ if(user_session()) {
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
                     echo '<div class="full-width-btn center top-margin"><a href="'.view_app_chain(14938).view_memory(42903,33286) . $sign_i[0]['posthashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
-                    echo $users___11035[14938]['m__name'].' '.$users___11035[14938]['m__cover'];
+                    echo $users___11035[14938]['m__title'].' '.$users___11035[14938]['m__cover'];
                     echo ( strlen($users___11035[14938]['m__message']) ? ': '.$users___11035[14938]['m__message'] : '' );
                     echo '</a></div>';
                     echo '</div>';
@@ -319,11 +319,11 @@ if(user_session()) {
                 <!-- New Account (If not found) -->
                 <div class="margin-top-down new_account hidden">
 
-                    <div class="main__title"><span class="icon-block"><?= $users___4269[14026]['m__cover'] ?></span><?= $users___4269[14026]['m__name'] ?></div>
+                    <div class="main__title"><span class="icon-block"><?= $users___4269[14026]['m__cover'] ?></span><?= $users___4269[14026]['m__title'] ?></div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
-                        <div class="main__title"><span class="icon-block"><?= $users___4269[3288]['m__cover'] ?></span><?= $users___4269[3288]['m__name'] ?></div>
+                        <div class="main__title"><span class="icon-block"><?= $users___4269[3288]['m__cover'] ?></span><?= $users___4269[3288]['m__title'] ?></div>
                         <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title input_border" /></div>
                     </div>
                     <div class="doclear">&nbsp;</div>
@@ -331,15 +331,15 @@ if(user_session()) {
 
 
                 <!-- Sign in Code -->
-                <div style="padding:8px 0;">Enter the <?= $users___4269[32078]['m__name'] ?> sent to <span class="code_sent_to"></span> (Also check spam folder):</div>
+                <div style="padding:8px 0;">Enter the <?= $users___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span> (Also check spam folder):</div>
                 <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border input_border" /></div>
                 <div id="sign_code_errors" class="margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
 
                 <div id="step3buttons">
-                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $users___11035[12991]['m__name'] ?>"><?= $users___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="user_authenticate()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $users___11035[26104]['m__name'] ?>"><?= $users___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $users___11035[12991]['m__title'] ?>"><?= $users___11035[12991]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="user_authenticate()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $users___11035[26104]['m__title'] ?>"><?= $users___11035[26104]['m__cover'] ?></a>
                 </div>
 
                 <div class="doclear">&nbsp;</div>

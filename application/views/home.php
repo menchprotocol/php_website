@@ -20,7 +20,7 @@ foreach($this->Chains->read(array(
     'chainuserinput' => $website_id,
 ), array('chainpostoutput'), 1, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $primary_i){
 
-    echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__name').' | '.str_replace('\'','\\\'',view_post_title($primary_i, true)).'\'); }); </script> ';
+    echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_post_title($primary_i, true)).'\'); }); </script> ';
 
     echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_post_title($primary_i, true) . '</h1>';
 
@@ -49,11 +49,11 @@ if($domain_phone || $email_domain) {
 
     $contact_us .= '<ul class="social-footer">';
     if($domain_phone){
-        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$users___11035[28615]['m__name'].'">'.$users___11035[28615]['m__cover'].' '.$domain_phone.'</a></li>';
+        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$users___11035[28615]['m__title'].'">'.$users___11035[28615]['m__cover'].' '.$domain_phone.'</a></li>';
     }
 
     if($email_domain){
-        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$users___11035[28614]['m__name'].'" data-toggle="tooltip" data-placement="top">'.$users___11035[28614]['m__cover'].' '.$email_domain.'</a></li>';
+        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$users___11035[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$users___11035[28614]['m__cover'].' '.$email_domain.'</a></li>';
     }
     $contact_us .= '</ul>';
 
@@ -143,7 +143,7 @@ foreach($this->config->item('users___14036') as $userid => $m){
         }
 
         //Append to chain:
-        $social_ui .= '<li><a href="'.$social_url.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__name'].'">'.$m['m__cover'].'</a></li>';
+        $social_ui .= '<li><a href="'.$social_url.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
 
     }
 }

@@ -143,7 +143,7 @@ class Chains extends CIdea_cache
 
             //Email Subject:
             $users___4593 = $this->config->item('users___4593'); //Chain Types
-            $subject = $u_name . ' ' . $users___4593[$add_fields['chainusertype']]['m__name'];
+            $subject = $u_name . ' ' . $users___4593[$add_fields['chainusertype']]['m__title'];
 
             //Compose email body, start with Chain content:
             $html_message = (strlen($add_fields['chainvalue']) > 0 ? $add_fields['chainvalue'] : '') . "\n";
@@ -156,20 +156,20 @@ class Chains extends CIdea_cache
 
                     //POST
                     foreach ($this->Posts->read(array('postid' => $add_fields[$m['m__handle']])) as $this_i) {
-                        $html_message .= $m['m__name'] . ': ' . view_post_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['posthashtag'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . view_post_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['posthashtag'] . "\n\n";
                     }
 
                 } elseif (in_array(6160, $m['m__following'])) {
 
                     //USER
                     foreach ($this->Users->read(array('userid' => $add_fields[$m['m__handle']])) as $this_e) {
-                        $html_message .= $m['m__name'] . ': ' . $this_e['username'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['userhandle'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': ' . $this_e['username'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['userhandle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
 
                     //DISCOVERY
-                    $html_message .= $m['m__name'] . ':' . "\n" . $this->config->item('base_url') . view_app_chain(12722) . '?chainid=' . $add_fields[$m['m__handle']] . "\n\n";
+                    $html_message .= $m['m__title'] . ':' . "\n" . $this->config->item('base_url') . view_app_chain(12722) . '?chainid=' . $add_fields[$m['m__handle']] . "\n\n";
 
                 }
 
@@ -651,7 +651,7 @@ class Chains extends CIdea_cache
         if ($sms_subscriber && $twilio_account_sid && $twilio_auth_token && $twilio_from_number) {
 
             //Yes, generate message
-            $sms_message = get_domain('m__name', $userid, $chainuserdomain) . ' Emailed [' . $subject . '] to ' . join(' & ', $stats['email_addresses']) . ' (Also Check Spam)';
+            $sms_message = get_domain('m__title', $userid, $chainuserdomain) . ' Emailed [' . $subject . '] to ' . join(' & ', $stats['email_addresses']) . ' (Also Check Spam)';
 
             //Breakup into smaller SMS friendly messages
             $sms_message = str_replace("\n", " ", $sms_message);
@@ -1287,7 +1287,7 @@ class Chains extends CIdea_cache
                             'chainuserinput' => $chainusertype,
                             'LENGTH(chainvalue)>0' => null,
                         )) as $x_progress) {
-                            $discoverer_contact .= $m['m__name'] . ':' . "\n" . $x_progress['chainvalue'] . "\n\n";
+                            $discoverer_contact .= $m['m__title'] . ':' . "\n" . $x_progress['chainvalue'] . "\n\n";
                         }
                     }
 
