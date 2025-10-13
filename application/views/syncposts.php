@@ -10,6 +10,8 @@ $stats = array(
     'posts_oncache_notonchain' => 0,
     'posts_oncache_chainadded' => 0,
     'posts_oncache_synced' => 0,
+    'posts_oncache_hashtags' => 0,
+    'posts_oncache_hashtags_duplicate' => 0,
     'posts_links_fix' => 0,
     'posts_links_fixed' => 0,
     'posts_onchain' => 0,
@@ -23,6 +25,8 @@ $stats = array(
     'posts_valid_cachevoid' => 0,
     'cache_valid_postvoid' => 0,
     'posts_links_stats' => array(),
+    'posts_unique_hashtags' => array(),
+    'posts_delete_ids' => array(),
     'message' => '',
 );
 
@@ -30,86 +34,108 @@ $focus = array();
 
 
 if (1) {
-//First start with cache and see what might be missing:
+
+    //
     foreach ($this->Posts->read(array(
         'postid >' => 0,
-        'postid' => 1744358,
-    ), $_GET['limit']) as $post) {
+    ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
 
-        $stats['posts_oncache']++;
-
-        if (in_array(intval($post['postid']), $focus)) {
-            $stats['posts_oncache_duplicate']++;
+        if(in_array($post['posthashtag'], $post['posts_unique_hashtags'])){
+            //Remove:
+            array_push($post['posts_delete_ids'], intval($post['postid']));
+            $stats['posts_oncache_hashtags_duplicate']++;
             continue;
         }
-        array_push($focus, intval($post['postid']));
 
-        $post_index = post_index($post['postmessage'], intval($post['postid']), intval($post['postcreator']), $post['posthashtag']);
-        array_push($stats['posts_links_stats'], $post_index);
+        array_push($post['posts_unique_hashtags'], $post['posthashtag']);
+        $stats['posts_oncache_hashtags']++;
 
-        if($post_index['actionstats']['posts_links_fixed'] > 0){
-            $this->Posts->update($post['postid'], array(
-                'postmessage' => $post_index['postmessage_new'],
-                'postdiscover' => $post_index['postdiscover'],
-                'postedit' => $post_index['postedit'],
-            ), 1);
-            $stats['posts_links_fix']++;
-            $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
-        }
-
-        $cache_chains = $this->Chains->read(array(
-            'chainusertype' => 12273,
-            'chainpostinput' => $post['postid'],
-        ), array(), 1);
-
-        if (count($cache_chains)) {
-
-            //Also exists on chain:
-            $update_cache = array();
-            if ($cache_chains[0]['chainusercreator'] != $post['postcreator']) {
-                $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
-            }
-            if (!strlen($post['posttime'])) {
-                $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($cache_chains[0]['chaintime']));
-            }
-
-            //Update if there is anything:
-            if (count($update_cache) && $this->Posts->update($post['postid'], $update_cache)) {
-                $stats['posts_oncache_synced']++;
-            }
-
-        } else {
-
-            $stats['posts_oncache_notonchain']++;
-
-            $post_index = post_index($post['postmessage'], 0, 0, $post['posthashtag']);
-
-            $new_x = $this->Chains->create(array(
-                'chainusertype' => 12273,
-                'chainusercreator' => 1,
-                'chainpostinput' => $post['postid'],
-                'chainvalue' => "#" . $post['posthashtag']
-                    . "\n" . $post_index['chainvalue']
-            ));
-
-            if ($new_x['chainid'] > 0) {
-
-                $stats['posts_oncache_chainadded']++;
-
-                $stats['message'] .= "#" . $post['posthashtag'] . " Added to Chain\n";
-
-                //Edit ID
-                if (!count($this->Chains->read(array(
-                    'chainvoid >=' => 0,
-                    'chainid' => $post['postid'],
-                ), array(), 1))) {
-                    $this->db->query("UPDATE ideachains SET chainid = " . $post['postid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
-                }
-            }
-
-        }
     }
 
+    view_json($stats);
+
+
+    if(0){
+        //First start with cache and see what might be missing:
+        foreach ($this->Posts->read(array(
+            'postid >' => 0,
+            'postid' => 1744358,
+        ), $_GET['limit']) as $post) {
+
+            $stats['posts_oncache']++;
+
+            if (in_array(intval($post['postid']), $focus)) {
+                $stats['posts_oncache_duplicate']++;
+                continue;
+            }
+            array_push($focus, intval($post['postid']));
+
+            $post_index = post_index($post['postmessage'], intval($post['postid']), intval($post['postcreator']), $post['posthashtag']);
+            array_push($stats['posts_links_stats'], $post_index);
+
+            if($post_index['actionstats']['posts_links_fixed'] > 0){
+                $this->Posts->update($post['postid'], array(
+                    'postmessage' => $post_index['postmessage_new'],
+                    'postdiscover' => $post_index['postdiscover'],
+                    'postedit' => $post_index['postedit'],
+                ), 1);
+                $stats['posts_links_fix']++;
+                $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
+            }
+
+            $cache_chains = $this->Chains->read(array(
+                'chainusertype' => 12273,
+                'chainpostinput' => $post['postid'],
+            ), array(), 1);
+
+            if (count($cache_chains)) {
+
+                //Also exists on chain:
+                $update_cache = array();
+                if ($cache_chains[0]['chainusercreator'] != $post['postcreator']) {
+                    $update_cache['postcreator'] = $cache_chains[0]['chainusercreator'];
+                }
+                if (!strlen($post['posttime'])) {
+                    $update_cache['posttime'] = date("Y-m-d H:i:s", strtotime($cache_chains[0]['chaintime']));
+                }
+
+                //Update if there is anything:
+                if (count($update_cache) && $this->Posts->update($post['postid'], $update_cache)) {
+                    $stats['posts_oncache_synced']++;
+                }
+
+            } else {
+
+                $stats['posts_oncache_notonchain']++;
+
+                $post_index = post_index($post['postmessage'], 0, 0, $post['posthashtag']);
+
+                $new_x = $this->Chains->create(array(
+                    'chainusertype' => 12273,
+                    'chainusercreator' => 1,
+                    'chainpostinput' => $post['postid'],
+                    'chainvalue' => "#" . $post['posthashtag']
+                        . "\n" . $post_index['chainvalue']
+                ));
+
+                if ($new_x['chainid'] > 0) {
+
+                    $stats['posts_oncache_chainadded']++;
+
+                    $stats['message'] .= "#" . $post['posthashtag'] . " Added to Chain\n";
+
+                    //Edit ID
+                    if (!count($this->Chains->read(array(
+                        'chainvoid >=' => 0,
+                        'chainid' => $post['postid'],
+                    ), array(), 1))) {
+                        $this->db->query("UPDATE ideachains SET chainid = " . $post['postid'] . " WHERE chainid = " . $new_x['chainid'] . ";");
+                    }
+                }
+
+            }
+        }
+    }
 }
 
 
