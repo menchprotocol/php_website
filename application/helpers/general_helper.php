@@ -4188,6 +4188,15 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
             'chainpostinput' => intval($save_postid),
         ), array(), 0, 0, array('chainkey' => 'ASC'));
 
+
+        if(isset($_GET['replace_numbers'])){
+            //Nothing else we need to do:
+            foreach ($saved_items as $x) {
+                $CI->Chains->delete($x['chainid']);
+            }
+            $saved_items = array();
+        }
+
         //Nothing else we need to do:
         foreach ($saved_items as $x) {
 
