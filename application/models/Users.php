@@ -277,63 +277,46 @@ class Users extends CIdea_cache
     }
 
 
-    function delete($userid, $chainusercreator = 0, $migrateid = 0)
+    function delete($userid, $chainusercreator = 0, $migrationid = 0)
     {
 
         if (!count($this->Users->read(array('userid' => $userid)))) {
-            return array(
-                'status' => 0,
-                'message' => $userid . ' is not a valid User ID',
-            );
-        } elseif ($migrateid > 0 && !count($this->Users->read(array('userid' => $migrateid)))) {
-            return array(
-                'status' => 0,
-                'message' => $migrateid . ' is not a valid Migration User ID',
-            );
+            return 0;
+        } elseif ($migrationid > 0 && !count($this->Users->read(array('userid' => $migrationid)))) {
+            return 0;
         }
 
         //Find all chains to delete/migrate:
         $x_adjusted = 0;
         foreach ($this->Chains->read(array(
             '(chainid=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainusertype=' . $userid . ')' => null,
-        ), array(), 0) as $migrate) {
+        ), array(), 0) as $delete) {
 
             $new_array = array(
-                'chainusercreator' => ($migrate['chainusercreator'] == $userid ? $migrateid : ($chainusercreator > 0 ? $chainusercreator : $migrate['chainusercreator'])),
-                'chainusertype' => ($migrate['chainusertype'] == $userid ? $migrateid : $migrate['chainusertype']),
-                'chainuserinput' => ($migrate['chainuserinput'] == $userid ? $migrateid : $migrate['chainuserinput']),
-                'chainuseroutput' => ($migrate['chainuseroutput'] == $userid ? $migrateid : $migrate['chainuseroutput']),
-                'chainpostinput' => $migrate['chainpostinput'],
-                'chainpostoutput' => $migrate['chainpostoutput'],
+                'chainusercreator' => ($delete['chainusercreator'] == $userid ? $migrationid : ($chainusercreator > 0 ? $chainusercreator : $delete['chainusercreator'])),
+                'chainusertype' => ($delete['chainusertype'] == $userid ? $migrationid : $delete['chainusertype']),
+                'chainuserinput' => ($delete['chainuserinput'] == $userid ? $migrationid : $delete['chainuserinput']),
+                'chainuseroutput' => ($delete['chainuseroutput'] == $userid ? $migrationid : $delete['chainuseroutput']),
+                'chainpostinput' => $delete['chainpostinput'],
+                'chainpostoutput' => $delete['chainpostoutput'],
             );
 
             //Update if this new one is unique:
-            if ($migrateid && !count($this->Chains->read($new_array))) {
-                $x_adjusted += $this->Chains->update($migrate['chainid'], $new_array);
+            if ($migrationid && !count($this->Chains->read($new_array))) {
+                $this->Chains->update($delete['chainid'], $new_array);
             } else {
                 //Just remove it:
-                $x_adjusted += $this->Chains->delete($migrate['chainid'], $chainusercreator);
+                $this->Chains->delete($delete['chainid'], $chainusercreator);
             }
+            $x_adjusted++;
         }
 
-        if ($x_adjusted) {
-
-            //Remove from Table:
-            $this->db->where('userid', $userid);
-            $this->db->update('users', array(
-                'usertime' => date("Y-m-d H:i:s"),
-                'uservoid' => 1,
-            ));
-
-        } else {
-            //Failed to remove
-            log_error('users->delete() Failed to remove @' . $userid . ' Chain ID', array(
-                'chainusercreator' => $chainusercreator,
-                'chainpostup' => $userid,
-                'chainpostdown' => $migrateid,
-            ));
-        }
-
+        //Remove from Table:
+        $this->db->where('userid', $userid);
+        $this->db->update('users', array(
+            'usertime' => date("Y-m-d H:i:s"),
+            'uservoid' => 1,
+        ));
 
         //Return Chains deleted:
         return $x_adjusted;

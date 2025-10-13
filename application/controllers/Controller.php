@@ -891,7 +891,7 @@ class Controller extends CI_Controller
     {
 
         $user_session = user_session(null, 0, $this->user_session);
-        $migrateid = 0;
+        $migrationid = 0;
 
         if (!$user_session) {
             return view_json(array(
@@ -919,7 +919,7 @@ class Controller extends CI_Controller
                     'message' => $_POST['migrateuser'] . ' is not an active post',
                 ));
             }
-            $migrateid = $valid_user[0]['postid'];
+            $migrationid = $valid_user[0]['postid'];
         }
 
         $delete_redirect = '';
@@ -962,11 +962,11 @@ class Controller extends CI_Controller
         }
 
         //Delete all Chains:
-        $chains_removed = $this->Posts->delete($_POST['postid'], $user_session['userid'], $migrateid);
+        $chains_removed = $this->Posts->delete($_POST['postid'], $user_session['userid'], $migrationid);
 
         return view_json(array(
             'status' => ($chains_removed > 0 ? 1 : 0),
-            'message' => 'Post successfully removed',
+            'message' => ($chains_removed > 0 ? 'Post successfully removed' : 'Error in removing the post'),
             'delete_redirect' => $delete_redirect,
             'delete_element' => $delete_element,
         ));
@@ -977,7 +977,7 @@ class Controller extends CI_Controller
     {
 
         $user_session = user_session(null, 0, $this->user_session);
-        $migrateid = 0;
+        $migrationid = 0;
 
         if (!$user_session) {
             return view_json(array(
@@ -1005,8 +1005,8 @@ class Controller extends CI_Controller
                     'message' => $_POST['migrateuser'] . ' is not an active user',
                 ));
             }
-            $migrateid = $valid_user[0]['userid'];
-            if (!count($this->Users->read(array('userid' => $migrateid)))) {
+            $migrationid = $valid_user[0]['userid'];
+            if (!count($this->Users->read(array('userid' => $migrationid)))) {
                 return array(
                     'status' => 0,
                     'message' => $_POST['migrateuser'] . ' is not a valid User',
@@ -1053,7 +1053,7 @@ class Controller extends CI_Controller
         }
 
         //Delete all Chains:
-        $chains_removed = $this->Users->delete($_POST['userid'], $user_session['userid'], $migrateid);
+        $chains_removed = $this->Users->delete($_POST['userid'], $user_session['userid'], $migrationid);
 
         if(!$chains_removed['status']){
             return view_json(array(

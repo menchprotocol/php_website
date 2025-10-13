@@ -426,12 +426,12 @@ class Chains extends CIdea_cache
     }
 
 
-    function select($focus__id, $o__id, $element_id, $user_createid, $migrateuser, $chainid = 0)
+    function select($focus__id, $o__id, $element_id, $user_createid, $migrationuser, $chainid = 0)
     {
 
         //Authenticate Member:
-        $migrateuser = trim(substr($migrateuser, 0, 1) == '@' ? trim(substr($migrateuser, 1)) : $migrateuser);
-        $migrateuser = trim(substr($migrateuser, 0, 1) == '#' ? trim(substr($migrateuser, 1)) : $migrateuser);
+        $migrationuser = trim(substr($migrationuser, 0, 1) == '@' ? trim(substr($migrationuser, 1)) : $migrationuser);
+        $migrationuser = trim(substr($migrationuser, 0, 1) == '#' ? trim(substr($migrationuser, 1)) : $migrationuser);
         $user_session = user_session();
         if (!$user_session) {
             return array(

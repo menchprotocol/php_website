@@ -276,67 +276,44 @@ class Posts extends CIdea_cache
 
     }
 
-    function delete($postid, $chainusercreator = 0, $migrateid = 0)
+    function delete($postid, $chainusercreator = 0, $migrationid = 0)
     {
 
         if (!count($this->Posts->read(array('postid' => $postid)))) {
-            return array(
-                'status' => 0,
-                'message' => $postid . ' is not a valid ID',
-            );
-        } elseif ($migrateid > 0 && !count($this->Posts->read(array('postid' => $migrateid)))) {
-            return array(
-                'status' => 0,
-                'message' => $migrateid . ' is not a valid ID',
-            );
+            return 0;
+        } elseif ($migrationid > 0 && !count($this->Posts->read(array('postid' => $migrationid)))) {
+            return 0;
         }
 
         $x_adjusted = 0;
         foreach ($this->Chains->read(array(
-            'chainusertype' => 12273,
-            'chainpostinput' => $postid,
-        )) as $delete) {
-            $x_adjusted += $this->Chains->delete($delete['chainid'], $chainusercreator);
-        }
+            '(chainpostoutput = ' . $postid . ' OR chainpostinput = ' . $postid . ')' => null,
+        ), array(), 0) as $delete) {
 
-        if ($x_adjusted) {
+            $new_array = array(
+                'chainpostinput' => ($delete['chainpostinput'] == $postid ? $migrationid : $delete['chainpostinput']),
+                'chainpostoutput' => ($delete['chainpostoutput'] == $postid ? $migrationid : $delete['chainpostoutput']),
+                'chainusercreator' => $delete['chainusercreator'],
+                'chainuseroutput' => $delete['chainuseroutput'],
+                'chainuserinput' => $delete['chainuserinput'],
+                'chainusertype' => $delete['chainusertype'],
+            );
 
-            foreach ($this->Chains->read(array(
-                '(chainpostoutput = ' . $postid . ' OR chainpostinput = ' . $postid . ')' => null,
-            ), array(), 0) as $migrate) {
-
-                $new_array = array(
-                    'chainpostinput' => ($migrate['chainpostinput'] == $postid ? $migrateid : $migrate['chainpostinput']),
-                    'chainpostoutput' => ($migrate['chainpostoutput'] == $postid ? $migrateid : $migrate['chainpostoutput']),
-                    'chainusercreator' => $migrate['chainusercreator'],
-                    'chainuseroutput' => $migrate['chainuseroutput'],
-                    'chainuserinput' => $migrate['chainuserinput'],
-                    'chainusertype' => $migrate['chainusertype'],
-                );
-
-                //Update if this new one is unique:
-                if ($migrateid && !count($this->Chains->read($new_array))) {
-                    $this->Chains->update($migrate['chainid'], $new_array);
-                } else {
-                    $this->Chains->delete($migrate['chainid']);
-                }
+            //Update if this new one is unique:
+            if ($migrationid && !count($this->Chains->read($new_array))) {
+                $this->Chains->update($delete['chainid'], $new_array);
+            } else {
+                $this->Chains->delete($delete['chainid']);
             }
-
-            //Remove from Table:
-            $this->db->where('postid', $postid);
-            $this->db->update('posts', array(
-                'posttime' => date("Y-m-d H:i:s"),
-                'postvoid' => 1,
-            ));
-
-        } else {
-            //Failed to remove
-            log_error('posts->delete() Failed to remove #' . $postid . ' Chain ID', array(
-                'chainusercreator' => $chainusercreator,
-                'chainpostoutput' => $postid,
-                'chainpostinput' => $migrateid,
-            ));
+            $x_adjusted++;
         }
+
+        //Remove from Table:
+        $this->db->where('postid', $postid);
+        $this->db->update('posts', array(
+            'posttime' => date("Y-m-d H:i:s"),
+            'postvoid' => 1,
+        ));
 
         //Return Chains deleted:
         return $x_adjusted;
