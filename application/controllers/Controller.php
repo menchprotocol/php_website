@@ -265,7 +265,7 @@ class Controller extends CI_Controller
 
         if ($memory_detected && !in_array($app_userid, $this->config->item('userids___6287'))) {
             //Invalid App:
-            return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__handle'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__handle'] . ' Is not an APP, yet 🤔</div>', false, $standalone);
+            return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__user'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__user'] . ' Is not an APP, yet 🤔</div>', false, $standalone);
         } elseif ($memory_detected && !in_array($app_userid, $this->config->item('userids___42922'))) {
             //Validate Required App input:
             if (in_array($app_userid, $this->config->item('userids___42905')) && !$focus_e) {
@@ -438,7 +438,7 @@ class Controller extends CI_Controller
 
         if (!$ui) {
             //Prep view:
-            $app_userr = ($memory_detected ? strtolower($users___6287[$app_userid]['m__handle']) : 'memory');
+            $app_userr = ($memory_detected ? strtolower($users___6287[$app_userid]['m__user']) : 'memory');
             $raw_app = $this->load->view($app_userr, $view_input, true);
             $ui .= $raw_app;
         }

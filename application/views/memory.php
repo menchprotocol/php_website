@@ -85,7 +85,7 @@ foreach ($this->Chains->read(array(
         }
 
         $memory_text .= '     ' . $follower['userid'] . ' => array(' . "\n";
-        $memory_text .= '        \'m__handle\' => \'' . $follower['userhandle'] . '\',' . "\n";
+        $memory_text .= '        \'m__user\' => \'' . $follower['userhandle'] . '\',' . "\n";
         $memory_text .= '        \'m__title\' => \'' . (str_replace('\'', '\\\'', str_replace($prefix_common_words, '', $follower['username']))) . '\',' . "\n";
         $memory_text .= '        \'m__cover\' => \'' . str_replace('\'', '\\\'', view_cover($follower['usercover'])) . '\',' . "\n";
         $memory_text .= '        \'m__message\' => \'' . (str_replace('\'', '\\\'', ( strlen($follower['chainvalue']) ? $follower['chainvalue'] : $follower['userbio'] ))) . '\',' . "\n";

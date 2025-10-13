@@ -155,21 +155,21 @@ class Chains extends CIdea_cache
                 if (in_array(6202, $m['m__following'])) {
 
                     //POST
-                    foreach ($this->Posts->read(array('postid' => $add_fields[$m['m__handle']])) as $this_i) {
+                    foreach ($this->Posts->read(array('postid' => $add_fields[$m['m__user']])) as $this_i) {
                         $html_message .= $m['m__title'] . ': ' . view_post_title($this_i, true) . ':' . "\n" . $this->config->item('base_url') . view_memory(42903, 33286) . $this_i['posthashtag'] . "\n\n";
                     }
 
                 } elseif (in_array(6160, $m['m__following'])) {
 
                     //USER
-                    foreach ($this->Users->read(array('userid' => $add_fields[$m['m__handle']])) as $this_e) {
+                    foreach ($this->Users->read(array('userid' => $add_fields[$m['m__user']])) as $this_e) {
                         $html_message .= $m['m__title'] . ': ' . $this_e['username'] . "\n" . $this->config->item('base_url') . view_memory(42903, 42902) . $this_e['userhandle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367, $m['m__following'])) {
 
                     //DISCOVERY
-                    $html_message .= $m['m__title'] . ':' . "\n" . $this->config->item('base_url') . view_app_chain(12722) . '?chainid=' . $add_fields[$m['m__handle']] . "\n\n";
+                    $html_message .= $m['m__title'] . ':' . "\n" . $this->config->item('base_url') . view_app_chain(12722) . '?chainid=' . $add_fields[$m['m__user']] . "\n\n";
 
                 }
 

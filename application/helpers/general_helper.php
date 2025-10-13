@@ -2938,8 +2938,8 @@ function chain_view($x)
 
             //USER
             $column_value .= '<td style="width:25px !important;"><div style="width:25px !important; overflow:hidden;">';
-            if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
-                foreach ($CI->Users->read(array('userid' => $x[$m['m__handle']])) as $focus_e) {
+            if (isset($x[$m['m__user']]) && intval($x[$m['m__user']]) > 0) {
+                foreach ($CI->Users->read(array('userid' => $x[$m['m__user']])) as $focus_e) {
                     $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['userhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['username'] . '" class="icon-block-sm">' . view_cover($focus_e['usercover']) . '</a>';
                 }
             }
@@ -2949,8 +2949,8 @@ function chain_view($x)
 
             //POST
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
-            if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
-                foreach ($CI->Posts->read(array('postid' => $x[$m['m__handle']])) as $focus_i) {
+            if (isset($x[$m['m__user']]) && intval($x[$m['m__user']]) > 0) {
+                foreach ($CI->Posts->read(array('postid' => $x[$m['m__user']])) as $focus_i) {
                     $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['posthashtag'] . '" data-toggle="popover">#' . $focus_i['posthashtag'] . '</a>';
                 }
             }
@@ -2975,14 +2975,14 @@ function chain_view($x)
             }
 
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $userhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__user']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__user']] . '" target="_blank">' . $userhandle_sign . $x[$m['m__user']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($userid == 44395) {
 
             //Void:
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__user']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__user']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__user']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($userid == 4362) {
@@ -2999,7 +2999,7 @@ function chain_view($x)
             //HASH
             $column_value .= '<td style="width:50px !important;">';
             $column_value .= '<div style="width:50px !important; overflow:hidden;">';
-            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x' . substr($x[$m['m__handle']], -4) . '</span>';
+            $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__user']] . '">0x' . substr($x[$m['m__user']], -4) . '</span>';
             $column_value .= '</div>';
             $column_value .= '</td>';
 
@@ -3084,7 +3084,7 @@ function view_time_difference($t, $micro = false)
 
 function view_app_chain($app_id)
 {
-    return view_memory(42903, 6287) . view_memory(6287, $app_id, 'm__handle');
+    return view_memory(42903, 6287) . view_memory(6287, $app_id, 'm__user');
 }
 
 function view_memory($following, $follower, $filed = 'm__message')
@@ -4393,7 +4393,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                 $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="' . $unit_fee . '">';
                 $input_ui .= '<input type="hidden" class="postweight" name="quantity" value="' . $min_allowed . '">'; //Dynamic Variable that JS will update
                 $input_ui .= '<input type="hidden" name="item_name" value="' . remove_none_utf8(view_post_title($i, true)) . '">';
-                $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_posthashtag ? $target_posthashtag . ' #' : '') . $i['posthashtag'] . ' @' . get_domain('m__handle') . ' @' . $user_session['userhandle'] . '">';
+                $input_ui .= '<input type="hidden" name="item_number" value="' . ($target_posthashtag ? $target_posthashtag . ' #' : '') . $i['posthashtag'] . ' @' . get_domain('m__user') . ' @' . $user_session['userhandle'] . '">';
 
                 $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                 $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
@@ -4679,7 +4679,7 @@ function view_list_user($i, $plain_no_html = false)
 function view_pill($focus__node, $chainusertype, $counter, $m, $ui = null, $is_open = true)
 {
 
-    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain" chainusertype="' . $chainusertype . '" href="#' . $m['m__handle'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
+    return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain" chainusertype="' . $chainusertype . '" href="#' . $m['m__user'] . '" data-toggle="tooltip" data-placement="top" title="' . number_format($counter, 0) . ' ' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . str_replace('\'', '', str_replace('"', '', $m['m__message'])) : '') . '"><span class="icon-block-xs">' . $m['m__cover'] . '</span><span class="main__title hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody pillbody hidden headline_body_' . $chainusertype . '" read-counter="' . $counter . '">' . $ui . '</div>';
 
 }
@@ -4870,7 +4870,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
         $info = (strlen($social_chain['chainvalue']) && !$social_url ? $users___14036[$social_chain['chainuserinput']]['m__title'] . ': ' . $social_chain['chainvalue'] : ($social_url ? view_url_clean(one_two_explode('href="', '"', $social_url)) : $users___14036[$social_chain['chainuserinput']]['m__title']));
 
         //Append to chains:
-        $featured_users .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . (filter_var($social_chain['chainvalue'], FILTER_VALIDATE_URL) ? $social_chain['chainvalue'] : view_memory(42903, 42902) . $users___14036[$social_chain['chainuserinput']]['m__handle']) . '" target="_blank" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</span>')) . '</span>';
+        $featured_users .= '<span class="' . ($focus__node ? 'icon-block-sm' : 'icon-block-xs') . '">' . ($social_url && $focus__node ? '<a ' . $social_url . ' data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</a>' : ($focus__node ? '<a href="' . (filter_var($social_chain['chainvalue'], FILTER_VALIDATE_URL) ? $social_chain['chainvalue'] : view_memory(42903, 42902) . $users___14036[$social_chain['chainuserinput']]['m__user']) . '" target="_blank" data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</a>' : '<span data-toggle="tooltip" data-placement="top" title="' . $info . '">' . $users___14036[$social_chain['chainuserinput']]['m__cover'] . '</span>')) . '</span>';
 
     }
 
@@ -5146,7 +5146,7 @@ function view_post_nav($discovery_mode, $focus_i, $autoload = true)
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainusertype . ' hidden" read-counter="' . $coins_count[$chainusertype] . '"><div class="tab_content"></div></div>';
 
 
-            $ui .= '<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain user_nav_' . $m['m__handle'] . '" chainusertype="' . $chainusertype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($coins_count[$chainusertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainusertype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
+            $ui .= '<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain user_nav_' . $m['m__user'] . '" chainusertype="' . $chainusertype . '" href="#' . $m['m__user'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($coins_count[$chainusertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainusertype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
 
         }
 
@@ -5161,7 +5161,7 @@ function view_post_nav($discovery_mode, $focus_i, $autoload = true)
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $appid . ' hidden" read-counter="0"><div class="tab_content"></div></div>';
 
 
-            $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__handle'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__handle'] . '" title="' . $users___6287[$appid]['m__title'] . '">&nbsp;<span class="icon-block">' . $users___6287[$appid]['m__cover'] . '</span>&nbsp;<span class="hidden xtypetitle xtypetitle_' . $appid . '">' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
+            $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '">&nbsp;<span class="icon-block">' . $users___6287[$appid]['m__cover'] . '</span>&nbsp;<span class="hidden xtypetitle xtypetitle_' . $appid . '">' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
         }
     }
 
@@ -5175,13 +5175,13 @@ function view_post_nav($discovery_mode, $focus_i, $autoload = true)
         foreach ($users___focus as $chainusertype => $m) {
             if (isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0) {
                 $focus_tab = $chainusertype;
-                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__handle'] . '\'); } }); </script>';
+                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
                 break;
             }
         }
         if (!$focus_tab) {
             foreach ($users___focus as $chainusertype => $m) {
-                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__handle'] . '\'); } }); </script>';
+                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
                 break;
             }
         }

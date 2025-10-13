@@ -23,7 +23,7 @@ foreach ((isset($_GET['userhandle']) && strlen($_GET['userhandle']) ? $this->Use
                 'm__cover' => view_cover($x['usercover'], true),
                 'm__title' => $x['username'],
                 'm__message' => $x['chainvalue'],
-                'm__handle' => $x['userhandle'],
+                'm__user' => $x['userhandle'],
             ), $ui);
 
         }

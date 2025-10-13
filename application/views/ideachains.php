@@ -412,10 +412,10 @@ $row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px 
 foreach ($this->config->item('users___4341') as $chainusertype => $m) {
     if($chainusertype==4362 || in_array($chainusertype, $this->config->item('userids___6160'))){
         //User Cover:
-        $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
+        $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__user'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
-        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__title'] . '</a></th>';
+        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__user'].'">' . $m['m__title'] . '</a></th>';
     }
     if(in_array($chainusertype, $this->config->item('userids___1579727'))) {
         //Second row:
