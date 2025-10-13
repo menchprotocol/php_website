@@ -4024,7 +4024,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
                                 'chainuserinput' => 0,
                                 'chainuseroutput' => 0,
                                 'chainpostinput' => $save_postid,
-                                'chainpostoutput' => $post['postid'],
+                                'chainpostoutput' => intval($post['postid']),
                                 'chainkey' => $chainkey,
                                 'chainvalue' => null,
                             );
@@ -4113,7 +4113,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
                             $chainkey++;
                             $post_references[($chainkey - 1)] = array(
                                 'chainusertype' => $chainusertype,
-                                'chainuserinput' => $user['userid'],
+                                'chainuserinput' => intval($user['userid']),
                                 'chainuseroutput' => 0,
                                 'chainpostinput' => $save_postid,
                                 'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
