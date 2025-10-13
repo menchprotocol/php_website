@@ -776,7 +776,25 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                     echo '<ul class="dropdown-menu">';
                                     foreach ($this->config->item('users___2125205') as $userid2 => $m2) {
-                                        echo '<li><a class="dropdown-item" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \'#aaa\');"><span class="icon-block-sm">' . $m['m__cover'] . '</span>' . $m['m__name'] . '</a></li>';
+
+                                        //Print Header
+                                        echo '<li><span class="dropdown-item grey" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . '</span></li>';
+
+                                        if ($userid2 == 4486) {
+
+                                            //Ideas
+                                            foreach ($this->config->item('users___4486') as $userid3 => $m3) {
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \''.$m3['m__cover'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                            }
+                                            //echo '<li><hr class="dropdown-divider"></li>';
+
+                                        } elseif ($userid2 == 3410436) {
+
+                                            //Sibling Posts
+                                            //TODO...
+
+                                        }
+
                                     }
                                     echo '</ul>';
                                     echo '</div>';
@@ -788,7 +806,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     echo '<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
                                     echo '<ul class="dropdown-menu" aria-labelledby="suggest_' . $userid . '">';
-                                    foreach ($this->config->item('users___2125205') as $userid2 => $m2) {
+                                    foreach ($this->config->item('users___2125246') as $userid2 => $m2) {
 
                                         //Print Header
                                         echo '<li><span class="dropdown-item grey" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . '</span></li>';
@@ -804,7 +822,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                         } elseif ($userid2 == 4737) {
 
                                             //Discovery Types
-                                            foreach ($this->config->item('users___13550') as $userid3 => $m3) {
+                                            foreach ($this->config->item('users___4737') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \'@'.$m3['m__handle'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
                                             echo '<li><hr class="dropdown-divider"></li>';
@@ -812,7 +830,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                         } elseif ($userid2 == 42179) {
 
                                             //Discovery Settings
-                                            foreach ($this->config->item('users___13550') as $userid3 => $m3) {
+                                            foreach ($this->config->item('users___42179') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \'@'.$m3['m__handle'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
                                             echo '<li><hr class="dropdown-divider"></li>';
@@ -820,7 +838,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                         } elseif ($userid2 == 6287) {
 
                                             //Apps
-                                            foreach ($this->config->item('users___13550') as $userid3 => $m3) {
+                                            foreach ($this->config->item('users___6287') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \'@'.$m3['m__handle'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
 
