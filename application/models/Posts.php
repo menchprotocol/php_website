@@ -295,7 +295,7 @@ class Posts extends CIdea_cache
         foreach ($this->Chains->read(array(
             'chainusertype' => 12273,
             'chainpostinput' => $postid,
-        ), array(), 1) as $delete) {
+        )) as $delete) {
             $x_adjusted += $this->Chains->delete($delete['chainid'], $chainusercreator);
         }
 
@@ -318,6 +318,8 @@ class Posts extends CIdea_cache
                     //Update if this new one is unique:
                     if (!count($this->Chains->read($new_array))) {
                         $this->Chains->update($migrate['chainid'], $new_array);
+                    } else {
+                        $this->Chains->delete($migrate['chainid']);
                     }
                 }
             }
