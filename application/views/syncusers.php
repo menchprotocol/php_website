@@ -8,6 +8,11 @@ $stats = array(
     'users_oncache_notonchain' => 0,
     'users_oncache_chainadded' => 0,
 
+    'users_oncache_hashtags' => 0,
+    'users_oncache_hashtags_duplicate' => 0,
+    'users_oncache_hashtags_numeric' => 0,
+    'users_oncache_hashtags_numeric_validid' => 0,
+
     //On Chain users
     'chain_all' => 0,
     'users_onchain' => 0,
@@ -22,6 +27,37 @@ $stats = array(
     'unique_users_missing' => array(),
 );
 
+
+
+//Sync handles:
+$users_unique_hashtags = array();
+foreach ($this->Users->read(array(
+    'userid >' => 0,
+), $_GET['limit'], 0, array('userid' => 'ASC')) as $user) {
+
+    echo '@'.$user['userhandle'].' '.$user['userid'];
+    if (in_array(strtolower($user['userhandle']), $users_unique_hashtags)) {
+        //Remove:
+        echo ' [DUPLICATE]';
+        $stats['users_oncache_hashtags_duplicate']++;
+        //$this->db->query("DELETE FROM ideachains WHERE (chainuserinput = " . $user['userid'] . " OR chainuseroutput = " . $user['userid'] . ");");
+        //$this->db->query("DELETE FROM users WHERE userid = " . $user['userid'] . ";");
+    } else {
+        if(is_numeric($user['userhandle'])) {
+            $stats['users_oncache_hashtags_numeric']++;
+            if(count($this->Posts->read(array(
+                'userid' => $user['userhandle'],
+            ), 1))){
+                $stats['users_oncache_hashtags_numeric_validid']++;
+            }
+        }
+        array_push($users_unique_hashtags, strtolower($user['userhandle']));
+        $stats['users_oncache_hashtags']++;
+    }
+    echo "\n";
+}
+view_json($stats);
+die();
 
 
 //First start with cache and see what might be missing:
