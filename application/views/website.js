@@ -351,6 +351,10 @@ function toggle_headline(chainusertype) {
 
 }
 
+function insert_text(handler, text) {
+    import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js';
+    insertText($(".save_postmessage"), res.native);
+}
 
 function user_sort_load(chainusertype) {
 
