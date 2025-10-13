@@ -44,7 +44,6 @@ if (1) {
         }
         array_push($focus, intval($post['postid']));
 
-        $_GET['replace_numbers'] = 1;
         $post_index = post_index($post['postmessage'], intval($post['postid']), intval($post['postcreator']), $post['posthashtag']);
         array_push($stats['posts_links_stats'], $post_index);
 

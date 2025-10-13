@@ -3971,7 +3971,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
 
                         if (!count($found_posts)) {
 
-                            if(isset($_GET['replace_numbers']) && is_numeric($term)){
+                            if(is_numeric($term) && $save_postid && $chainusercreator){
                                 foreach($CI->Posts->read(array(
                                     'postid' => intval($term),
                                 )) as $replace_num){
@@ -4188,10 +4188,11 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
             'chainpostinput' => intval($save_postid),
         ), array(), 0, 0, array('chainkey' => 'ASC'));
 
-        if(isset($_GET['replace_numbers'])){
+        if(1){
             //Nothing else we need to do:
             foreach ($saved_items as $x) {
                 $CI->Chains->delete($x['chainid']);
+                $post_index['actionstats']['removed']++;
             }
             $saved_items = array();
         }
