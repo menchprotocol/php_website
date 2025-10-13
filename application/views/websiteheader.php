@@ -157,6 +157,22 @@ if(!$basic_header_footer){
             event.stopPropagation();
         });
 
+        $('.text_adder').on('click', function (event) {
+            //This prevents the emoji modal from closing when an emoji is selected
+            insertText($(".save_postmessage"), $(this).attr('text_value'));
+        });
+
+    </script>
+
+    <script type="module">
+
+        //Emoji selector:
+        import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
+        import { insert_text } from "./website.js";
+        window.greetFromModule = insert_text;
+
+
+
     </script>
 
     <link href="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.css" rel="stylesheet">
@@ -781,7 +797,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Ideas
                                             foreach ($this->config->item('users___4486') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \''.$m3['m__cover'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
                                             //echo '<li><hr class="dropdown-divider"></li>';
 
@@ -812,7 +828,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Mentions
                                             foreach ($this->config->item('users___13550') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \''.$m3['m__cover'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
                                             echo '<li><hr class="dropdown-divider"></li>';
 
