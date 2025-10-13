@@ -40,10 +40,10 @@ if (0) {
         'postid >' => 0,
     ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
 
-        echo '#' . $post['posthashtag'] . ' ' . $post['postid'];
+        $stats['message'] .= '#' . $post['posthashtag'] . ' ' . $post['postid'];
         if (in_array(strtolower($post['posthashtag']), $posts_unique_hashtags)) {
             //Remove:
-            echo ' [DUPLICATE]';
+            $stats['message'] .= ' [DUPLICATE]';
             $stats['posts_oncache_hashtags_duplicate']++;
             $this->db->query("DELETE FROM ideachains WHERE (chainpostinput = " . $post['postid'] . " OR chainpostoutput = " . $post['postid'] . ");");
             $this->db->query("DELETE FROM posts WHERE postid = " . $post['postid'] . ";");
@@ -59,7 +59,7 @@ if (0) {
             array_push($posts_unique_hashtags, strtolower($post['posthashtag']));
             $stats['posts_oncache_hashtags']++;
         }
-        echo "\n";
+        $stats['message'] .= "\n";
     }
 
     view_json($stats);
@@ -93,7 +93,7 @@ if (1) {
             ), 1);
             $stats['posts_links_fix']++;
             $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
-            echo '#'.$post['posthashtag'].' NEW: ('.$post_index['actionstats']['posts_links_fixed'].')<br />'.$post['postmessage'].'<hr />'.$post_index['postmessage_new'].'<hr />'.'<hr />';
+            $stats['message'] .= '#'.$post['posthashtag'].' NEW: ('.$post_index['actionstats']['posts_links_fixed'].')<br />'.$post['postmessage'].'<hr />'.$post_index['postmessage_new'].'<hr />'.'<hr />';
 
         }
 
