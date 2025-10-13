@@ -84,13 +84,11 @@ if (1) {
         array_push($stats['posts_links_stats'], $post_index);
 
         if ($post_index['actionstats']['posts_links_fixed'] > 0 || trim($post['postmessage'])!=trim($post_index['postmessage_new'])) {
-            /*
             $this->Posts->update($post['postid'], array(
                 'postmessage' => $post_index['postmessage_new'],
                 'postdiscover' => $post_index['postdiscover'],
                 'postedit' => $post_index['postedit'],
             ), 1);
-            */
             $stats['posts_links_fix']++;
             $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
             echo '#'.$post['posthashtag'].' NEW: ('.$post_index['actionstats']['posts_links_fixed'].')<br />'.$post['postmessage'].'<hr />'.$post_index['postmessage_new'].'<hr />'.'<hr />';
