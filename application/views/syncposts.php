@@ -37,18 +37,16 @@ if (1) {
     foreach ($this->Posts->read(array(
         'postid >' => 0,
     ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
-
-
         echo '#'.$post['posthashtag'].' '.$post['postid'];
         if (in_array(strtolower($post['posthashtag']), $stats['posts_unique_hashtags'])) {
             //Remove:
+            echo ' [DUPLICATE]';
             $stats['posts_oncache_hashtags_duplicate']++;
         } else {
-            echo ' [DUPLICATE]';
             array_push($stats['posts_unique_hashtags'], strtolower($post['posthashtag']));
             $stats['posts_oncache_hashtags']++;
         }
-        echo '<br />';
+        echo "\n";
     }
 
     view_json($stats);
