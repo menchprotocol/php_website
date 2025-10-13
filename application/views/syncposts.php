@@ -69,8 +69,7 @@ if (1) {
     //First start with cache and see what might be missing:
     foreach ($this->Posts->read(array(
         'postid >' => 0,
-        'postid' => 1744358,
-    ), $_GET['limit']) as $post) {
+    ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
 
         $stats['posts_oncache']++;
 
