@@ -4194,9 +4194,10 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
         ), array(), 0, 0, array('chainkey' => 'ASC'));
 
         if(1){
+            //TODO Remove later
             //Nothing else we need to do:
             foreach ($saved_items as $x) {
-                $CI->Chains->delete($x['chainid']);
+                $CI->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
                 $post_index['actionstats']['removed']++;
             }
             $saved_items = array();
@@ -4207,15 +4208,15 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
 
             $post_index['actionstats']['current']++;
 
+            //What should happen here?
+            $chainkey++;
+
             if (!isset($post_references[($chainkey - 1)])) {
                 //Must be removed:
                 $CI->Chains->delete($x['chainid']);
                 $post_index['actionstats']['removed']++;
                 continue;
             }
-
-            //What should happen here?
-            $chainkey++;
 
             //We have it, see if it matches or needs updating:
             foreach ($post_references[($chainkey - 1)] as $key => $value) {
@@ -4241,6 +4242,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
     }
 
     $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
+    $post_index['post_references_count'] = count($post_references);
     $post_index['post_references'] = $post_references;
 
     if (count($saved_items)) {
