@@ -42,7 +42,7 @@ foreach ($is as $in) {
         $this->db->insert('links', array(
             'source' => $id_prefix[12273] . $next_i['chainpostinput'],
             'target' => $id_prefix[12273] . $next_i['chainpostoutput'],
-            'label' => $users___4593[$next_i['chainusertype']]['m__title'], //TODO maybe give visibility to condition here?
+            'label' => $users___4593[$next_i['chainusertype']]['m__name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['chainusertype'],
         ));
@@ -72,7 +72,7 @@ foreach ($es as $en) {
         $this->db->insert('links', array(
             'source' => $id_prefix[12274] . $user_down['chainuserinput'],
             'target' => $id_prefix[12274] . $user_down['chainuseroutput'],
-            'label' => $users___4593[$user_down['chainusertype']]['m__title'] . ': ' . $user_down['chainvalue'],
+            'label' => $users___4593[$user_down['chainusertype']]['m__name'] . ': ' . $user_down['chainvalue'],
             'weight' => 1,
             'edge_type' => $user_down['chainusertype'],
         ));

@@ -265,7 +265,7 @@ class Controller extends CI_Controller
 
         if ($memory_detected && !in_array($app_userid, $this->config->item('userids___6287'))) {
             //Invalid App:
-            return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__user'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__user'] . ' Is not an APP, yet 🤔</div>', false, $standalone);
+            return get_redirected(view_memory(42903, 42902) . $users___6287[$app_userid]['m__handle'], '<div class="alert alert-danger" role="alert">@' . $users___6287[$app_userid]['m__handle'] . ' Is not an APP, yet 🤔</div>', false, $standalone);
         } elseif ($memory_detected && !in_array($app_userid, $this->config->item('userids___42922'))) {
             //Validate Required App input:
             if (in_array($app_userid, $this->config->item('userids___42905')) && !$focus_e) {
@@ -352,7 +352,7 @@ class Controller extends CI_Controller
                 $missing_access = 'Login or register a free account to continue.';
             } elseif (count($superpowers_required) && !user_session(end($superpowers_required))) {
                 $users___10957 = $this->config->item('users___10957');
-                $missing_access = 'Error: You Cannot Access ' . $users___6287[$app_userid]['m__title'] . ' as it requires the superpower of ' . $users___10957[end($superpowers_required)]['m__title'] . '.';
+                $missing_access = 'Error: You Cannot Access ' . $users___6287[$app_userid]['m__name'] . ' as it requires the superpower of ' . $users___10957[end($superpowers_required)]['m__name'] . '.';
             } elseif ($focus_e && !$user_access) {
                 $missing_access = 'Error: You Cannot Access @' . $focus_e['userhandle'] . ' due to Privacy Settings.';
             } elseif (!$skip_post_privacy_check && $focus_i && !$post_access) {
@@ -410,10 +410,10 @@ class Controller extends CI_Controller
         }
         if (!$title) {
             //Append app name since no title:
-            $title .= $users___6287[$app_userid]['m__title'] . ' | ';
+            $title .= $users___6287[$app_userid]['m__name'] . ' | ';
         }
         //Always Append Website at the end:
-        $title .= ($memory_detected ? get_domain('m__title') : 'Loading Memory');
+        $title .= ($memory_detected ? get_domain('m__name') : 'Loading Memory');
 
 
         $view_input = array(
@@ -438,7 +438,7 @@ class Controller extends CI_Controller
 
         if (!$ui) {
             //Prep view:
-            $app_userr = ($memory_detected ? strtolower($users___6287[$app_userid]['m__user']) : 'memory');
+            $app_userr = ($memory_detected ? strtolower($users___6287[$app_userid]['m__handle']) : 'memory');
             $raw_app = $this->load->view($app_userr, $view_input, true);
             $ui .= $raw_app;
         }
@@ -460,7 +460,7 @@ class Controller extends CI_Controller
 
         //App title?
         if ($standalone && $memory_detected && in_array($app_userid, $this->config->item('userids___42928'))) {
-            $ui = '<h1><span style="font-size:2em !important;">' . $users___6287[$app_userid]['m__cover'] . '</span> ' . $users___6287[$app_userid]['m__title'] . '</h1>' . $ui;
+            $ui = '<h1><span style="font-size:2em !important;">' . $users___6287[$app_userid]['m__cover'] . '</span> ' . $users___6287[$app_userid]['m__name'] . '</h1>' . $ui;
         }
 
 
@@ -687,7 +687,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__name'] ),
                                     'd__profile_header' => '',
                                 ));
                             }
@@ -706,7 +706,7 @@ class Controller extends CI_Controller
                                 'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                 'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
-                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__name'] ),
                                 'd__profile_header' => '',
                             ));
                         }
@@ -847,7 +847,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__name'] ),
                                     'd__profile_header' => '',
                                 ));
                             }
@@ -866,7 +866,7 @@ class Controller extends CI_Controller
                                 'd__html' => view_dynamic_headline($dynamic_userid, $users___42179[$dynamic_userid], $selected_e),
                                 'd__value' => '',
                                 'd__type_name' => html_input_type($data_type),
-                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
+                                'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__name'] ),
                                 'd__profile_header' => '',
                             ));
                         }
@@ -1940,7 +1940,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $m, $selected_e),
                                     'd__value' => $selected_e['chainvalue'],
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__name'] ),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
@@ -1957,7 +1957,7 @@ class Controller extends CI_Controller
                                     'd__html' => view_dynamic_headline($dynamic_userid, $m, $selected_e),
                                     'd__value' => '',
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__title'] ),
+                                    'd__placeholder' => (strlen($this_data_type[$dynamic_userid]['m__message']) ? $this_data_type[$dynamic_userid]['m__message'] : $users___4592[$data_type]['m__name'] ),
                                     'd__profile_header' => $profile_header,
                                 ));
                             }
@@ -1987,7 +1987,7 @@ class Controller extends CI_Controller
                         'd__html' => view_dynamic_headline($selected_e['userid'], $users___42776[$selected_e['userid']], $selected_e),
                         'd__value' => (isset($values[0]['chainvalue']) && strlen($values[0]['chainvalue']) > 0 ? $values[0]['chainvalue'] : ''),
                         'd__type_name' => html_input_type($data_type),
-                        'd__placeholder' => (strlen($users___42776[$selected_e['userid']]['m__message']) ? $users___42776[$selected_e['userid']]['m__message'] : $users___4592[$data_type]['m__title'] ),
+                        'd__placeholder' => (strlen($users___42776[$selected_e['userid']]['m__message']) ? $users___42776[$selected_e['userid']]['m__message'] : $users___4592[$data_type]['m__name'] ),
                         'd__profile_header' => '', //No header for universals
                     ));
                     break;
@@ -2079,14 +2079,14 @@ class Controller extends CI_Controller
             if (in_array($dynamic_userid, $this->config->item('userids___28239')) && !strlen($dynamic_value) && !in_array($dynamic_userid, $this->config->item('userids___33331')) && !in_array($dynamic_userid, $this->config->item('userids___33332'))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Missing Required Field: ' . $users___42179[$dynamic_userid]['m__title'],
+                    'message' => 'Missing Required Field: ' . $users___42179[$dynamic_userid]['m__name'],
                 ));
             }
 
             //Validate input based on its data type, if provided:
             if (strlen($dynamic_value)) {
                 foreach (array_intersect($users___42179[$dynamic_userid]['m__following'], $this->config->item('userids___4592')) as $data_type_this) {
-                    $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $users___42179[$dynamic_userid]['m__title']);
+                    $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $users___42179[$dynamic_userid]['m__name']);
                     if (!$data_type_validate['status']) {
                         //We had an error:
                         return view_json($data_type_validate);
@@ -2666,7 +2666,7 @@ class Controller extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $html_message = $passcode . ' is your ' . $users___11035[32078]['m__title'] . ' for your ' . get_domain('m__title') . ' account.';
+        $html_message = $passcode . ' is your ' . $users___11035[32078]['m__name'] . ' for your ' . get_domain('m__name') . ' account.';
 
         if ($valid_email) {
 
