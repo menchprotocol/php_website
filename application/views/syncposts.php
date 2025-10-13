@@ -42,7 +42,7 @@ if (1) {
 
         if(in_array($post['posthashtag'], $stats['posts_unique_hashtags'])){
             //Remove:
-            array_push($post['posts_delete_ids'], intval($post['postid']));
+            array_push($stats['posts_delete_ids'], intval($post['postid']));
             $stats['posts_oncache_hashtags_duplicate']++;
             continue;
         }
