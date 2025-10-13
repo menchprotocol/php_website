@@ -40,14 +40,14 @@ if (1) {
         'postid >' => 0,
     ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
 
-        if(in_array($post['posthashtag'], $post['posts_unique_hashtags'])){
+        if(in_array($post['posthashtag'], $stats['posts_unique_hashtags'])){
             //Remove:
             array_push($post['posts_delete_ids'], intval($post['postid']));
             $stats['posts_oncache_hashtags_duplicate']++;
             continue;
         }
 
-        array_push($post['posts_unique_hashtags'], $post['posthashtag']);
+        array_push($stats['posts_unique_hashtags'], $post['posthashtag']);
         $stats['posts_oncache_hashtags']++;
 
     }
