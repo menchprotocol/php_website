@@ -4134,7 +4134,6 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
 
                         }
 
-
                     }
 
                     //We found a match:
@@ -4242,6 +4241,7 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
     }
 
     $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
+    $post_index['post_references'] = $post_references;
 
     if (count($saved_items)) {
         $post_index['actionstats']['saved_items_count'] = count($saved_items);
