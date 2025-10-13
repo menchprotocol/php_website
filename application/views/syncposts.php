@@ -26,7 +26,6 @@ $stats = array(
     'cache_valid_postvoid' => 0,
     'posts_links_stats' => array(),
     'posts_unique_hashtags' => array(),
-    'posts_delete_ids' => array(),
     'message' => '',
 );
 
@@ -35,27 +34,27 @@ $focus = array();
 
 if (1) {
 
-    //
     foreach ($this->Posts->read(array(
         'postid >' => 0,
-    ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
+    ), $_GET['limit'], 0, array('posthashtag' => 'ASC', 'postid' => 'ASC')) as $post) {
 
-        if(in_array($post['posthashtag'], $stats['posts_unique_hashtags'])){
+
+        echo '#'.$post['posthashtag'].' '.$post['postid'];
+        if (in_array($post['posthashtag'], $stats['posts_unique_hashtags'])) {
             //Remove:
-            array_push($stats['posts_delete_ids'], intval($post['postid']));
             $stats['posts_oncache_hashtags_duplicate']++;
-            continue;
+        } else {
+            echo ' [DUPLICATE]';
+            array_push($stats['posts_unique_hashtags'], $post['posthashtag']);
+            $stats['posts_oncache_hashtags']++;
         }
-
-        array_push($stats['posts_unique_hashtags'], $post['posthashtag']);
-        $stats['posts_oncache_hashtags']++;
-
+        echo '<br />';
     }
 
     view_json($stats);
 
 
-    if(0){
+    if (0) {
         //First start with cache and see what might be missing:
         foreach ($this->Posts->read(array(
             'postid >' => 0,
@@ -73,7 +72,7 @@ if (1) {
             $post_index = post_index($post['postmessage'], intval($post['postid']), intval($post['postcreator']), $post['posthashtag']);
             array_push($stats['posts_links_stats'], $post_index);
 
-            if($post_index['actionstats']['posts_links_fixed'] > 0){
+            if ($post_index['actionstats']['posts_links_fixed'] > 0) {
                 $this->Posts->update($post['postid'], array(
                     'postmessage' => $post_index['postmessage_new'],
                     'postdiscover' => $post_index['postdiscover'],
@@ -171,13 +170,12 @@ if (0) {
         }
 
         //See if IDs match:
-        $sync_missing = count($is) && intval($is[0]['postid'])!=intval($x['chainpostinput']);
-        if($sync_missing) {
+        $sync_missing = count($is) && intval($is[0]['postid']) != intval($x['chainpostinput']);
+        if ($sync_missing) {
             $this->db->query("UPDATE ideachains SET chainpostoutput = " . intval($is[0]['postid']) . " WHERE chainid = " . $x['chainid'] . ";");
             $stats['posts_id_nosync']++;
             $x['chainpostinput'] = intval($is[0]['postid']);
         }
-
 
 
         $es = $this->Users->read(array(
@@ -193,7 +191,7 @@ if (0) {
             $stats['posts_orphan']++;
         }
 
-        if(!strlen($x['chainvalue'])){
+        if (!strlen($x['chainvalue'])) {
             $stats['posts_chainvalue_empty']++;
         }
 
@@ -203,7 +201,7 @@ if (0) {
         }
 
 
-        if($x['chainvoid']>0){
+        if ($x['chainvoid'] > 0) {
             $stats['posts_voided']++;
             //$this->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
         }
@@ -220,10 +218,7 @@ if (0) {
         }
 
 
-
-
-
-        $delete = !$total_links || $posts_empty || !count($es) || !count($is) || $x['chainvoid']>0;
+        $delete = !$total_links || $posts_empty || !count($es) || !count($is) || $x['chainvoid'] > 0;
         if ($delete) {
             $stats['posts_delete']++;
         }
@@ -257,11 +252,11 @@ if (0) {
 
         if ($delete || $sync_missing) {
 
-            $stats['message'] .= 'chainid: '.$x['chainid'].' chainpostinput: ' . $x['chainpostinput'] . ' postid:'.( count($is) ? $is[0]['postid'] : '0' ).' #' . $post_index['posthashtag'] . ' ' .
+            $stats['message'] .= 'chainid: ' . $x['chainid'] . ' chainpostinput: ' . $x['chainpostinput'] . ' postid:' . (count($is) ? $is[0]['postid'] : '0') . ' #' . $post_index['posthashtag'] . ' ' .
                 ($delete ? '[DELETED POST]' : '') .
                 (!$total_links ? '[ORPHAN]' : '') .
                 (!$sync_missing ? '[NOT SYNC]' : '') .
-                ( $x['chainvoid']>0  ? '[VOIDED]' : '') .
+                ($x['chainvoid'] > 0 ? '[VOIDED]' : '') .
                 ($posts_empty ? '[EMPTY]' : '') .
                 (!count($es) ? '[posts_voidcreaetor]' : '') .
                 (!count($is) ? '[posts_valid_cachevoid]' : '') . "\n";
