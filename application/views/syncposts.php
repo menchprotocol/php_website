@@ -91,6 +91,8 @@ if (1) {
             ), 1);
             $stats['posts_links_fix']++;
             $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
+            echo '#'.$post['posthashtag'].' NEW:<br />'.$post['postmessage'].'<hr />'.$post_index['postmessage_new'].'<hr />'.'<hr />';
+            break;
         }
 
         $cache_chains = $this->Chains->read(array(
