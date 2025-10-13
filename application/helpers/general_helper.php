@@ -3969,42 +3969,48 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
                             'LOWER(posthashtag)' => strtolower($term),
                         ));
 
+
                         if (!count($found_posts)) {
 
-                            if(is_numeric($term) && $save_postid && $chainusercreator){
+                            if(is_numeric($term) && $save_postid && $chainusercreator && count($CI->Posts->read(array(
+                                    'postid' => intval($term),
+                                )))){
+
                                 foreach($CI->Posts->read(array(
                                     'postid' => intval($term),
                                 )) as $replace_num){
                                     $term = $replace_num['posthashtag'];
                                     $word_text = $m['m__cover'] . $replace_num['posthashtag'];
                                     $post_index['actionstats']['posts_links_fixed']++;
+                                    array_push($found_posts, $replace_num);
+                                }
+
+                            } else {
+
+                                //New post not found, try to create:
+                                $parent_term = (strlen($new_term) ? $new_term : $current_term);
+                                if (!$parent_term && $save_postid > 0) {
+                                    //Fetch the term using the ID:
+                                    foreach ($CI->Posts->read(array(
+                                        'postid' => $save_postid,
+                                    )) as $i) {
+                                        $parent_term = $i['posthashtag'];
+                                    }
+                                }
+
+                                //Craete this referenced post since we could not find it:
+                                $post_new = $CI->Posts->create(array(
+                                    'posthashtag' => $term,
+                                    'postmessage' => post_to_title($term, $parent_term),
+                                ), $chainusercreator);
+
+                                if (isset($post_new['post_create']['postid'])) {
+                                    //Re-fetch newly created:
+                                    $found_posts = $CI->Posts->read(array(
+                                        'postid' => $post_new['post_create']['postid'],
+                                    ));
                                 }
                             }
-
-                            //New post not found, try to create:
-                            $parent_term = (strlen($new_term) ? $new_term : $current_term);
-                            if (!$parent_term && $save_postid > 0) {
-                                //Fetch the term using the ID:
-                                foreach ($CI->Posts->read(array(
-                                    'postid' => $save_postid,
-                                )) as $i) {
-                                    $parent_term = $i['posthashtag'];
-                                }
-                            }
-
-                            //Craete this referenced post since we could not find it:
-                            $post_new = $CI->Posts->create(array(
-                                'posthashtag' => $term,
-                                'postmessage' => post_to_title($term, $parent_term),
-                            ), $chainusercreator);
-
-                            if (isset($post_new['post_create']['postid'])) {
-                                //Re-fetch newly created:
-                                $found_posts = $CI->Posts->read(array(
-                                    'postid' => $post_new['post_create']['postid'],
-                                ));
-                            }
-
                         }
 
                         foreach ($found_posts as $post) {
