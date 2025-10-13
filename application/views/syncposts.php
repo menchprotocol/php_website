@@ -12,6 +12,7 @@ $stats = array(
     'posts_oncache_synced' => 0,
     'posts_oncache_hashtags' => 0,
     'posts_oncache_hashtags_numeric' => 0,
+    'posts_oncache_hashtags_numeric_validid' => 0,
     'posts_oncache_hashtags_duplicate' => 0,
     'posts_links_fix' => 0,
     'posts_links_fixed' => 0,
@@ -47,6 +48,11 @@ if (1) {
         } else {
             if(is_numeric($post['posthashtag'])) {
                 $stats['posts_oncache_hashtags_numeric']++;
+                if(count($this->Posts->read(array(
+                    'postid' => $post['posthashtag'],
+                ), 1))){
+                    $stats['posts_oncache_hashtags_numeric_validid']++;
+                }
             }
             array_push($posts_unique_hashtags, strtolower($post['posthashtag']));
             $stats['posts_oncache_hashtags']++;
