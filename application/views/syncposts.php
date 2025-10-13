@@ -36,7 +36,7 @@ if (1) {
 
     foreach ($this->Posts->read(array(
         'postid >' => 0,
-    ), $_GET['limit'], 0, array('posthashtag' => 'ASC', 'postid' => 'ASC')) as $post) {
+    ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
 
 
         echo '#'.$post['posthashtag'].' '.$post['postid'];
