@@ -11,6 +11,7 @@ $stats = array(
     'posts_oncache_chainadded' => 0,
     'posts_oncache_synced' => 0,
     'posts_oncache_hashtags' => 0,
+    'posts_oncache_hashtags_numeric' => 0,
     'posts_oncache_hashtags_duplicate' => 0,
     'posts_links_fix' => 0,
     'posts_links_fixed' => 0,
@@ -25,7 +26,6 @@ $stats = array(
     'posts_valid_cachevoid' => 0,
     'cache_valid_postvoid' => 0,
     'posts_links_stats' => array(),
-    'posts_unique_hashtags' => array(),
     'message' => '',
 );
 
@@ -34,16 +34,21 @@ $focus = array();
 
 if (1) {
 
+    $posts_unique_hashtags = array();
     foreach ($this->Posts->read(array(
         'postid >' => 0,
     ), $_GET['limit'], 0, array('postid' => 'ASC')) as $post) {
+
         echo '#'.$post['posthashtag'].' '.$post['postid'];
-        if (in_array(strtolower($post['posthashtag']), $stats['posts_unique_hashtags'])) {
+        if (in_array(strtolower($post['posthashtag']), $posts_unique_hashtags)) {
             //Remove:
             echo ' [DUPLICATE]';
             $stats['posts_oncache_hashtags_duplicate']++;
         } else {
-            array_push($stats['posts_unique_hashtags'], strtolower($post['posthashtag']));
+            if(is_numeric($post['posthashtag'])) {
+                $stats['posts_oncache_hashtags_numeric']++;
+            }
+            array_push($posts_unique_hashtags, strtolower($post['posthashtag']));
             $stats['posts_oncache_hashtags']++;
         }
         echo "\n";
