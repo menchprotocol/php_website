@@ -22,6 +22,7 @@ $stats = array(
     'posts_voidcreaetor' => 0,
     'posts_valid_cachevoid' => 0,
     'cache_valid_postvoid' => 0,
+    'posts_links_stats' => array(),
     'message' => '',
 );
 
@@ -45,6 +46,7 @@ if (1) {
 
         $_GET['replace_numbers'] = 1;
         $post_index = post_index($post['postmessage'], intval($post['postid']), intval($post['postcreator']), $post['posthashtag']);
+        array_push($stats['posts_links_stats'], $post_index);
 
         if($post_index['actionstats']['posts_links_fixed'] > 0){
             $this->Posts->update($post['postid'], array(
