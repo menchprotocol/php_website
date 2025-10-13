@@ -294,10 +294,10 @@ function get_redirected($url, $message = null, $log_error = false, $standalone =
         ));
     }
 
-    if(!$standalone){
+    if (!$standalone) {
 
         //Do not redirect:
-        return ( $message ? $message : 'Error Message' );
+        return ($message ? $message : 'Error Message');
 
     } else {
         if (!$message) {
@@ -3852,670 +3852,6 @@ function post_to_title($post, $parent_post = null)
 }
 
 
-function post_index($postmessage, $save_postid, $chainusercreator, $current_term = null, $new_term = null)
-{
-
-    //Display Images, Audio, Video & PDF Files:
-    //Analyze the message to find referencing URLs and Members in the message text:
-    $CI =& get_instance();
-    $core_references = array('@', '#');
-    $post_index = array(
-        'chainvalue' => '',
-        'postmessage' => '',
-        'postmessage_new' => '',
-        'postdiscover' => '',
-        'postedit' => '',
-        'actionstats' => array(
-            'current' => 0,
-            'added' => 0,
-            'removed' => 0,
-            'updated' => 0,
-            'posts_links_fixed' => 0,
-        ),
-    );
-
-    //All the possible reference types that can be found:
-    $post_references = array();
-    $chainkey = 0;
-    $postmessage = str_replace('	', ' ', $postmessage);
-
-    //See what we can find:
-    foreach (explode("\n", $postmessage) as $line_count => $line) {
-
-        $first_ref_hidden = false;
-        $first_line = !$line_count;
-        $words = explode(' ', trim($line));
-        $only_word_in_line = count($words) == 1;
-        $second_word_onwards = null;
-
-        $linechainvalue = null;
-        $linepostmessage = null;
-        $linepostdiscover = null;
-        $linepostedit = null;
-        $line_new = '';
-
-        foreach ($words as $word_count => $word_text) {
-
-            $reference_type = 0;
-            $first_word = !$word_count;
-            if ($first_word && strlen($word_text . ' ') < strlen($line) && strlen(@ltrim($line, $word_text . ' '))) {
-                $second_word_onwards .= ltrim($line, $word_text . ' ');
-            }
-            $chainvalue = null;
-            $postmessage = null;
-            $postdiscover = null;
-            $postedit = null;
-
-            if (filter_var($word_text, FILTER_VALIDATE_URL)) {
-
-                //Generic URL, Try to find:
-                $newUserTerm = null;
-                foreach ($CI->Chains->read(array(
-                    'chainvalue' => $word_text,
-                    'chainuserinput' => 1326, //URL
-                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ), array('chainuseroutput'), 0) as $x) {
-                    $newUserTerm = $x['userhandle'];
-                }
-
-                if (!$newUserTerm) {
-                    //Not found, create it:
-                    $added_e = $CI->Users->create(array(
-                        'username' => 'URL ' . random_string(8),
-                    ));
-                    if ($added_e['status']) {
-
-                        //Chain:
-                        $CI->Chains->create(array(
-                            'chainusertype' => 4230, //Follow
-                            'chainuserinput' => 1326, //URL
-                            'chainuseroutput' => $added_e['user_create']['userid'],
-                            'chainvalue' => $word_text,
-                        ));
-
-                        $newUserTerm = $added_e['user_create']['userhandle'];
-
-                    }
-                }
-
-                //Replace Word:
-                $word_text = '@' . $newUserTerm;
-
-            }
-
-
-            //Could be another reference, check:
-            if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
-
-                foreach ($CI->config->item('users___1696899') as $chainusertype => $m) {
-
-                    //Found a reference?
-                    $term = substr($word_text, strlen($m['m__cover']));
-                    if (!(substr($word_text, 0, strlen($m['m__cover'])) == $m['m__cover'] && ctype_alnum($term))) {
-                        //No reference found:
-                        continue;
-                    }
-
-                    if (in_array($chainusertype, $CI->config->item('userids___4486'))) {
-
-                        //Any replacements?
-                        if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
-                            $term = $new_term;
-                            $word_text = $m['m__cover'] . $term;
-                        }
-
-                        //Post reference:
-                        $found_posts = $CI->Posts->read(array(
-                            'LOWER(posthashtag)' => strtolower($term),
-                        ));
-
-
-                        if (!count($found_posts)) {
-
-                            if(is_numeric($term) && $save_postid && $chainusercreator && count($CI->Posts->read(array(
-                                    'postid' => intval($term),
-                                )))){
-
-                                foreach($CI->Posts->read(array(
-                                    'postid' => intval($term),
-                                )) as $replace_num){
-                                    $term = $replace_num['posthashtag'];
-                                    $word_text = $m['m__cover'] . $replace_num['posthashtag'];
-                                    $post_index['actionstats']['posts_links_fixed']++;
-                                    array_push($found_posts, $replace_num);
-                                }
-
-                            } else {
-
-                                //New post not found, try to create:
-                                $parent_term = (strlen($new_term) ? $new_term : $current_term);
-                                if (!$parent_term && $save_postid > 0) {
-                                    //Fetch the term using the ID:
-                                    foreach ($CI->Posts->read(array(
-                                        'postid' => $save_postid,
-                                    )) as $i) {
-                                        $parent_term = $i['posthashtag'];
-                                    }
-                                }
-
-                                //Craete this referenced post since we could not find it:
-                                $post_new = $CI->Posts->create(array(
-                                    'posthashtag' => $term,
-                                    'postmessage' => post_to_title($term, $parent_term),
-                                ), $chainusercreator);
-
-                                if (isset($post_new['post_create']['postid'])) {
-                                    //Re-fetch newly created:
-                                    $found_posts = $CI->Posts->read(array(
-                                        'postid' => $post_new['post_create']['postid'],
-                                    ));
-                                }
-                            }
-                        }
-
-                        foreach ($found_posts as $post) {
-
-                            //Valid Post
-                            $reference_type = $chainusertype;
-
-                            $chainkey++;
-                            $post_references[($chainkey - 1)] = array(
-                                'chainusertype' => $chainusertype,
-                                'chainuserinput' => 0,
-                                'chainuseroutput' => 0,
-                                'chainpostinput' => $save_postid,
-                                'chainpostoutput' => intval($post['postid']),
-                                'chainkey' => $chainkey,
-                                'chainvalue' => null,
-                            );
-
-                            $chainvalue = $m['m__cover'] . $post['postid'];
-                            $postmessage = $word_text;
-                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
-                                $postdiscover = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
-                            } else {
-                                $first_ref_hidden = true;
-                            }
-                            $postedit = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '">' . $word_text . '</a>';
-
-                        }
-
-                    } else {
-
-                        if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
-                            $term = $new_term;
-                            $word_text = $m['m__cover'] . $term;
-                        }
-
-                        if (is_numeric(trim($term))) {
-                            $filter = array(
-                                'userid' => intval(trim($term)),
-                            );
-                        } else {
-                            $filter = array(
-                                'LOWER(userhandle)' => strtolower($term),
-                            );
-                        }
-
-                        //User Reference
-                        foreach ($CI->Users->read($filter) as $user) {
-
-                            if (is_numeric($term)) {
-                                //Replace Word:
-                                $term = $user['userhandle'];
-                                $word_text = $m['m__cover'] . $user['userhandle'];
-                            }
-
-                            $media_append_end = false;
-
-                            if ($chainusertype == 31835) {
-
-                                //This is the main @User reference
-
-                                $media_attachments = array();
-
-                                foreach ($CI->Chains->read(array(
-                                    'chainuserinput IN (' . join(',', $CI->config->item('userids___1735577')) . ')' => null, //USER DISPLAY
-                                    'chainuseroutput' => $user['userid'],
-                                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                                ), array(), 0) as $x) {
-                                    if ($x['chainuserinput'] == 1326) {
-
-                                        //URL
-                                        array_push($media_attachments, '<a href="' . $x['chainvalue'] . '" target="_blank">' . $x['chainvalue'] . '</a>');
-
-                                    } elseif ($x['chainuserinput'] == 4258) {
-
-                                        //Video
-                                        array_push($media_attachments, '<video id="video_user_' . $x['chainvalue'] . '" controls class="cld-video-user cld-fluid cld-video-user-skin-light" poster="' . $user['usercover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
-
-                                    } elseif ($x['chainuserinput'] == 4259) {
-
-                                        //Audio
-                                        array_push($media_attachments, '<audio controls src="' . $x['chainvalue'] . '"></audio>');
-
-                                    } elseif ($x['chainuserinput'] == 4260) {
-
-                                        //Image
-                                        array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
-
-                                    }
-                                }
-
-                                if (count($media_attachments)) {
-                                    //Replace the Entity:
-                                    $media_append_end = '<div class="media_append">' . join(' ', $media_attachments) . '</div>';
-                                }
-                            }
-
-                            //Valid User
-                            $reference_type = $chainusertype;
-                            $chainkey++;
-                            $post_references[($chainkey - 1)] = array(
-                                'chainusertype' => $chainusertype,
-                                'chainuserinput' => intval($user['userid']),
-                                'chainuseroutput' => 0,
-                                'chainpostinput' => $save_postid,
-                                'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
-                                'chainkey' => $chainkey,
-                            );
-
-                            $chainvalue = $m['m__cover'] . $user['userid'];
-                            $postmessage = $word_text;
-                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
-                                $postdiscover = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
-                            } else {
-                                $first_ref_hidden = true;
-                                if ($media_append_end) {
-                                    $postdiscover = $media_append_end;
-                                }
-                            }
-                            $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
-
-                        }
-
-                    }
-
-                    //We found a match:
-                    break;
-
-                }
-
-            }
-
-            if (!$reference_type) {
-                //This word is not referencing anything!
-                $chainvalue = $word_text;
-                $postmessage = $word_text;
-                if (!$first_ref_hidden) {
-                    $postdiscover = $word_text;
-                }
-                $postedit = $word_text;
-            }
-
-            //See what we found to add:
-            $linechainvalue .= (!$first_word && $chainvalue ? ' ' : '') . $chainvalue;
-            $linepostmessage .= (!$first_word && $postmessage ? ' ' : '') . $postmessage;
-            $linepostdiscover .= (!$first_word && $postdiscover ? ' ' : '') . $postdiscover;
-            $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
-            $line_new .= $word_text." ";
-
-        }
-
-        $post_index['chainvalue'] .= (!$first_line && $linechainvalue ? "\n" : '') . $linechainvalue;
-        $post_index['postmessage'] .= (!$first_line && $linepostmessage ? "\n" : '') . $linepostmessage;
-        $post_index['postdiscover'] .= ($linepostdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdiscover . '</div>' : '');
-        $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');
-        $post_index['postmessage_new'] .= trim($line_new)."\n";
-
-    }
-
-    //Give HTML their frame:
-    if (strlen($post_index['postdiscover'])) {
-        $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . '</div>';
-    }
-    if (strlen($post_index['postedit'])) {
-        $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . '</div>';
-    }
-
-    if (!intval($chainusercreator)) {
-        //Nothing else we need to do:
-        return $post_index;
-    }
-
-    //Save Found references to remove the ones who exist in DB:
-    $chainkey = 0;
-
-    if (intval($save_postid)) {
-
-        $saved_items = $CI->Chains->read(array(
-            'chainusertype IN (' . join(',', $CI->config->item('userids___1696899')) . ')' => null, //All possible refereces
-            'chainpostinput' => intval($save_postid),
-        ), array(), 0, 0, array('chainkey' => 'ASC'));
-
-        if(1){
-            //TODO Remove later
-            //Nothing else we need to do:
-            foreach ($saved_items as $x) {
-                $CI->db->query("DELETE FROM ideachains WHERE chainid = " . $x['chainid'] . ";");
-                $post_index['actionstats']['removed']++;
-            }
-            $saved_items = array();
-        }
-
-        //Nothing else we need to do:
-        foreach ($saved_items as $x) {
-
-            $post_index['actionstats']['current']++;
-
-            //What should happen here?
-            $chainkey++;
-
-            if (!isset($post_references[($chainkey - 1)])) {
-                //Must be removed:
-                $CI->Chains->delete($x['chainid']);
-                $post_index['actionstats']['removed']++;
-                continue;
-            }
-
-            //We have it, see if it matches or needs updating:
-            foreach ($post_references[($chainkey - 1)] as $key => $value) {
-                if ($x[$key] . '' != $value . '') {
-                    //Updating needed:
-                    $post_references[($chainkey - 1)]['chainusercreator'] = $chainusercreator;
-                    $CI->Chains->update($x['chainid'], $post_references[($chainkey - 1)]);
-                    $post_index['actionstats']['updated']++;
-                    break;
-                }
-            }
-        }
-    }
-
-
-    //Any more links left that were not in DB?
-    for ($i = $chainkey; $i <= count($post_references); $i++) {
-        if (isset($post_references[$i])) {
-            $post_references[$i]['chainusercreator'] = $chainusercreator;
-            $CI->Chains->create($post_references[$i]);
-            $post_index['actionstats']['added']++;
-        }
-    }
-
-    $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
-    $post_index['post_references_count'] = count($post_references);
-    $post_index['post_references'] = $post_references;
-
-    if (count($saved_items)) {
-        $post_index['actionstats']['saved_items_count'] = count($saved_items);
-        $post_index['actionstats']['saved_items'] = $saved_items;
-    }
-    return $post_index;
-
-}
-
-
-function view_featured_chains($chainusertype, $location, $m = null, $focus__node)
-{
-    $CI =& get_instance();
-    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
-    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['userhandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['userhandle'] . '">' : '') . '<span class="grey ' . ($chainusertype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $users___11035[$chainusertype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainusertype == 41949 ? 'mini-font' : '') . '">' . $location['username'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
-}
-
-
-function view_post_nav($discovery_mode, $focus_i, $autoload = true)
-{
-
-    $CI =& get_instance();
-    $coins_count = array();
-    $body_content = '';
-    $user_session = user_session();
-    $posttion_pen = user_session(10939);
-
-    $ui = '';
-    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['postid'] . ' hideIfEmpty">';
-    foreach ($CI->config->item('users___' . ($discovery_mode ? 42877 : 31890)) as $chainusertype => $m) {
-
-        $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m['m__following']);
-        if (count($superpowers_required) && !user_session(end($superpowers_required))) {
-            continue;
-        }
-
-        $coins_count[$chainusertype] = posts_query($chainusertype, $focus_i['postid'], 0, false);
-        if (!$coins_count[$chainusertype] && $discovery_mode) {
-            continue;
-        }
-
-        if (($user_session && in_array($chainusertype, $CI->config->item('userids___42945'))) || $coins_count[$chainusertype] > 0) {
-            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainusertype . ' hidden" read-counter="' . $coins_count[$chainusertype] . '"><div class="tab_content"></div></div>';
-
-
-            $ui .= '<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain user_nav_' . $m['m__user'] . '" chainusertype="' . $chainusertype . '" href="#' . $m['m__user'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($coins_count[$chainusertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainusertype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
-
-        }
-
-    }
-
-    //Add any referenced apps:
-    foreach ($CI->config->item('handlusers___6287') as $apphandle => $appid) {
-        $users___6287 = $CI->config->item('users___6287'); //APP
-        //TODO fix this as it would delete "@sheet123" same as "@sheet" and load the app...
-        if (substr_count(strtolower($focus_i['postmessage']).' ', '@' . strtolower($apphandle).' ') || substr_count(strtolower($focus_i['postmessage']), '@' . strtolower($apphandle)."\n")) {
-
-            $body_content .= '<div class="headlinebody pillbody headline_body_' . $appid . ' hidden" read-counter="0"><div class="tab_content"></div></div>';
-
-
-            $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '">&nbsp;<span class="icon-block">' . $users___6287[$appid]['m__cover'] . '</span>&nbsp;<span class="hidden xtypetitle xtypetitle_' . $appid . '">' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
-        }
-    }
-
-    $ui .= '</ul>';
-    $ui .= $body_content;
-
-
-    if($autoload){
-        $users___focus = $CI->config->item('users___26005');
-        $focus_tab = 0;
-        foreach ($users___focus as $chainusertype => $m) {
-            if (isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0) {
-                $focus_tab = $chainusertype;
-                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
-                break;
-            }
-        }
-        if (!$focus_tab) {
-            foreach ($users___focus as $chainusertype => $m) {
-                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
-                break;
-            }
-        }
-    }
-
-
-    return $ui;
-
-}
-
-
-function nextchainid()
-{
-    $CI =& get_instance();
-    foreach ($CI->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain) {
-        return $bigchain['chainid'] + 1;
-    }
-    return 0;
-}
-
-// Function to get PayPal access token
-function paypal_token($clientId, $clientSecret)
-{
-    $curl = curl_init();
-
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api-m.paypal.com/v1/oauth2/token",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_USERPWD => "$clientId:$clientSecret",
-        CURLOPT_POSTFIELDS => "grant_type=client_credentials",
-        CURLOPT_HTTPHEADER => [
-            "Accept: application/json",
-            "Accept-Language: en_US"
-        ],
-        CURLOPT_SSL_VERIFYPEER => true,  // Verify SSL in production
-        CURLOPT_SSL_VERIFYHOST => 2      // Verify host in production
-    ]);
-
-    $response = curl_exec($curl);
-    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    $error = curl_error($curl);
-    curl_close($curl);
-
-    if ($httpCode == 200 && !$error) {
-        $data = json_decode($response, true);
-        return $data['access_token'];
-    }
-
-    throw new Exception("Failed to get access token. HTTP Code: $httpCode, Error: $error");
-}
-
-// Function to create PayPal invoice
-function paypal_invoice($accessToken, $invoiceData)
-{
-    $curl = curl_init();
-
-    // Invoice payload
-    $payload = [
-        'detail' => [
-            'currency_code' => $invoiceData['currency_code'],
-            'note' => $invoiceData['note'],
-            'invoice_date' => date('Y-m-d'),
-        ],
-        'invoicer' => [
-            'name' => [
-                'given_name' => $invoiceData['invoicer_given_name']
-            ],
-            'email_address' => $invoiceData['invoicer_email'],
-            'website' => $invoiceData['invoicer_website'],
-            'logo_url' => $invoiceData['invoicer_logo_url'],
-            'address' => [
-                'address_line_1' => $invoiceData['invoicer_address_line_1'] ?? '',
-                'address_line_2' => $invoiceData['invoicer_address_line_2'] ?? '',
-            ],
-        ],
-        'primary_recipients' => [
-            [
-                'billing_info' => [
-                    'email_address' => $invoiceData['recipient_email'],
-                    'name' => [
-                        'given_name' => $invoiceData['recipient_name'] ?? '',
-                        'surname' => $invoiceData['recipient_surname'] ?? ''
-                    ],
-                    'address' => [
-                        'address_line_1' => $invoiceData['recipient_address_line_1'] ?? '',
-                        'address_line_2' => $invoiceData['recipient_address_line_2'] ?? '',
-                    ],
-
-                ]
-            ]
-        ],
-        'items' => $invoiceData['items'],
-
-        'configuration' => [
-            'allow_tip' => false,
-        ],
-
-        'amount' => [
-            'currency_code' => $invoiceData['currency_code'],
-            'value' => $invoiceData['total_amount'],
-            'breakdown' => [
-                'item_total' => [
-                    'currency_code' => $invoiceData['currency_code'],
-                    'value' => $invoiceData['total_amount']
-                ]
-            ]
-        ],
-
-        // This triggers immediate sending instead of draft creation
-        'send_to_recipient' => true,
-        'send_to_invoicer' => false  // Set to true if you want a copy
-    ];
-
-
-    if ($invoiceData['total_amount'] > 0) {
-        $payload['detail']['payment_term'] = [
-            'term_type' => 'DUE_ON_DATE_SPECIFIED',
-            'due_date' => ($invoiceData['due_date'] ? $invoiceData['due_date'] : date('Y-m-d'))
-        ];
-        $payload['configuration']['partial_payment'] = [
-            'allow_partial_payment' => ($invoiceData['min_payment'] > 0),
-            'minimum_amount_due' => [
-                'currency_code' => $invoiceData['currency_code'],
-                'value' => $invoiceData['min_payment']
-            ]
-        ];
-
-    }
-
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => json_encode($payload),
-        CURLOPT_HTTPHEADER => [
-            "Content-Type: application/json",
-            "Authorization: Bearer $accessToken"
-        ],
-        CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_SSL_VERIFYHOST => 2
-    ]);
-
-    $response = curl_exec($curl);
-    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    $error = curl_error($curl);
-    curl_close($curl);
-
-    if ($httpCode == 201 && !$error) {
-        $data = json_decode($response, true);
-        return one_two_explode('/invoices/', '', $data['href']);
-    }
-
-    throw new Exception("Failed to create invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
-}
-
-// Function to send PayPal invoice
-function sendPaypalInvoice($accessToken, $invoiceId)
-{
-    $curl = curl_init();
-
-    $payload = [
-        'send_to_recipient' => true,
-        'send_to_invoicer' => false,
-    ];
-
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices/$invoiceId/send",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => json_encode($payload),
-        CURLOPT_HTTPHEADER => [
-            "Content-Type: application/json",
-            "Authorization: Bearer $accessToken"
-        ],
-        CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_SSL_VERIFYHOST => 2
-    ]);
-
-    $response = curl_exec($curl);
-    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    $error = curl_error($curl);
-    curl_close($curl);
-
-    if ($httpCode == 202 && !$error) {
-        return true;
-    }
-
-    throw new Exception("Failed to send invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
-}
-
 
 function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag = null, $focus_userid = 0, $x_completes = false)
 {
@@ -5456,8 +4792,8 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     //User Handle
     $ui .= '<div class="center-block">';
 
-    if(isset($e['chainusertype']) && $users___4593[$e['chainusertype']]['m__cover']!='@'){
-        $ui .= '<div class="creator_headline grey"><span title="'.$users___4593[$e['chainusertype']]['m__message'].'">' . $users___4593[$e['chainusertype']]['m__title'] . '&nbsp;</span></div>';
+    if (isset($e['chainusertype']) && $users___4593[$e['chainusertype']]['m__cover'] != '@') {
+        $ui .= '<div class="creator_headline grey"><span title="' . $users___4593[$e['chainusertype']]['m__message'] . '">' . $users___4593[$e['chainusertype']]['m__title'] . '&nbsp;</span></div>';
     }
 
     $ui .= '<div class="creator_headline grey"><span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">@' . $e['userhandle'] . '</span></div>';
@@ -5772,4 +5108,654 @@ function search($count, $has_e = 0)
 {
     //A cute little function to either display the plural "s" or not based on $count
     return (intval($count) == 1 ? '' : ($has_e ? 'es' : 's'));
+}
+
+
+function view_featured_chains($chainusertype, $location, $m = null, $focus__node)
+{
+    $CI =& get_instance();
+    $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
+    return '<div class="creator_headline" ' . (is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="' . $m['m__title'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : ' @' . $location['userhandle']) . (strlen($location['chainvalue']) ? ': ' . $location['chainvalue'] : '') . '" ' : '') . '>' . ($focus__node ? '<a href="' . view_memory(42903, 42902) . $location['userhandle'] . '">' : '') . '<span class="grey ' . ($chainusertype == 41949 ? 'icon-block' : 'icon-block-xs') . '">' . $users___11035[$chainusertype]['m__cover'] . '</span><span class="grey mini-frame ' . ($chainusertype == 41949 ? 'mini-font' : '') . '">' . $location['username'] . '</span>' . ($focus__node ? '</a>' : '') . '</div>';
+}
+
+
+function view_post_nav($discovery_mode, $focus_i, $autoload = true)
+{
+
+    $CI =& get_instance();
+    $coins_count = array();
+    $body_content = '';
+    $user_session = user_session();
+    $posttion_pen = user_session(10939);
+
+    $ui = '';
+    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['postid'] . ' hideIfEmpty">';
+    foreach ($CI->config->item('users___' . ($discovery_mode ? 42877 : 31890)) as $chainusertype => $m) {
+
+        $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m['m__following']);
+        if (count($superpowers_required) && !user_session(end($superpowers_required))) {
+            continue;
+        }
+
+        $coins_count[$chainusertype] = posts_query($chainusertype, $focus_i['postid'], 0, false);
+        if (!$coins_count[$chainusertype] && $discovery_mode) {
+            continue;
+        }
+
+        if (($user_session && in_array($chainusertype, $CI->config->item('userids___42945'))) || $coins_count[$chainusertype] > 0) {
+            $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainusertype . ' hidden" read-counter="' . $coins_count[$chainusertype] . '"><div class="tab_content"></div></div>';
+
+
+            $ui .= '<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain user_nav_' . $m['m__user'] . '" chainusertype="' . $chainusertype . '" href="#' . $m['m__user'] . '" title="' . $m['m__title'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($coins_count[$chainusertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainusertype . '">&nbsp;' . $m['m__title'] . '&nbsp;</span></a></li>';
+
+        }
+
+    }
+
+    //Add any referenced apps:
+    foreach ($CI->config->item('handlusers___6287') as $apphandle => $appid) {
+        $users___6287 = $CI->config->item('users___6287'); //APP
+        //TODO fix this as it would delete "@sheet123" same as "@sheet" and load the app...
+        if (substr_count(strtolower($focus_i['postmessage']) . ' ', '@' . strtolower($apphandle) . ' ') || substr_count(strtolower($focus_i['postmessage']), '@' . strtolower($apphandle) . "\n")) {
+
+            $body_content .= '<div class="headlinebody pillbody headline_body_' . $appid . ' hidden" read-counter="0"><div class="tab_content"></div></div>';
+
+
+            $ui .= '<li class="nav-item thepill' . $appid . '"><a class="nav-chain user_nav_' . $users___6287[$appid]['m__user'] . '" chainusertype="' . $appid . '" href="#' . $users___6287[$appid]['m__user'] . '" title="' . $users___6287[$appid]['m__title'] . '">&nbsp;<span class="icon-block">' . $users___6287[$appid]['m__cover'] . '</span>&nbsp;<span class="hidden xtypetitle xtypetitle_' . $appid . '">' . $users___6287[$appid]['m__title'] . '&nbsp;</span></a></li>';
+        }
+    }
+
+    $ui .= '</ul>';
+    $ui .= $body_content;
+
+
+    if ($autoload) {
+        $users___focus = $CI->config->item('users___26005');
+        $focus_tab = 0;
+        foreach ($users___focus as $chainusertype => $m) {
+            if (isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0) {
+                $focus_tab = $chainusertype;
+                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
+                break;
+            }
+        }
+        if (!$focus_tab) {
+            foreach ($users___focus as $chainusertype => $m) {
+                $ui .= '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\'' . $m['m__user'] . '\'); } }); </script>';
+                break;
+            }
+        }
+    }
+
+
+    return $ui;
+
+}
+
+
+function nextchainid()
+{
+    $CI =& get_instance();
+    foreach ($CI->Chains->read(array(), array(), 1, 0, array('chainid' => 'DESC'), 'chainid') as $bigchain) {
+        return $bigchain['chainid'] + 1;
+    }
+    return 0;
+}
+
+// Function to get PayPal access token
+function paypal_token($clientId, $clientSecret)
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api-m.paypal.com/v1/oauth2/token",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_USERPWD => "$clientId:$clientSecret",
+        CURLOPT_POSTFIELDS => "grant_type=client_credentials",
+        CURLOPT_HTTPHEADER => [
+            "Accept: application/json",
+            "Accept-Language: en_US"
+        ],
+        CURLOPT_SSL_VERIFYPEER => true,  // Verify SSL in production
+        CURLOPT_SSL_VERIFYHOST => 2      // Verify host in production
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+
+    if ($httpCode == 200 && !$error) {
+        $data = json_decode($response, true);
+        return $data['access_token'];
+    }
+
+    throw new Exception("Failed to get access token. HTTP Code: $httpCode, Error: $error");
+}
+
+// Function to create PayPal invoice
+function paypal_invoice($accessToken, $invoiceData)
+{
+    $curl = curl_init();
+
+    // Invoice payload
+    $payload = [
+        'detail' => [
+            'currency_code' => $invoiceData['currency_code'],
+            'note' => $invoiceData['note'],
+            'invoice_date' => date('Y-m-d'),
+        ],
+        'invoicer' => [
+            'name' => [
+                'given_name' => $invoiceData['invoicer_given_name']
+            ],
+            'email_address' => $invoiceData['invoicer_email'],
+            'website' => $invoiceData['invoicer_website'],
+            'logo_url' => $invoiceData['invoicer_logo_url'],
+            'address' => [
+                'address_line_1' => $invoiceData['invoicer_address_line_1'] ?? '',
+                'address_line_2' => $invoiceData['invoicer_address_line_2'] ?? '',
+            ],
+        ],
+        'primary_recipients' => [
+            [
+                'billing_info' => [
+                    'email_address' => $invoiceData['recipient_email'],
+                    'name' => [
+                        'given_name' => $invoiceData['recipient_name'] ?? '',
+                        'surname' => $invoiceData['recipient_surname'] ?? ''
+                    ],
+                    'address' => [
+                        'address_line_1' => $invoiceData['recipient_address_line_1'] ?? '',
+                        'address_line_2' => $invoiceData['recipient_address_line_2'] ?? '',
+                    ],
+
+                ]
+            ]
+        ],
+        'items' => $invoiceData['items'],
+
+        'configuration' => [
+            'allow_tip' => false,
+        ],
+
+        'amount' => [
+            'currency_code' => $invoiceData['currency_code'],
+            'value' => $invoiceData['total_amount'],
+            'breakdown' => [
+                'item_total' => [
+                    'currency_code' => $invoiceData['currency_code'],
+                    'value' => $invoiceData['total_amount']
+                ]
+            ]
+        ],
+
+        // This triggers immediate sending instead of draft creation
+        'send_to_recipient' => true,
+        'send_to_invoicer' => false  // Set to true if you want a copy
+    ];
+
+
+    if ($invoiceData['total_amount'] > 0) {
+        $payload['detail']['payment_term'] = [
+            'term_type' => 'DUE_ON_DATE_SPECIFIED',
+            'due_date' => ($invoiceData['due_date'] ? $invoiceData['due_date'] : date('Y-m-d'))
+        ];
+        $payload['configuration']['partial_payment'] = [
+            'allow_partial_payment' => ($invoiceData['min_payment'] > 0),
+            'minimum_amount_due' => [
+                'currency_code' => $invoiceData['currency_code'],
+                'value' => $invoiceData['min_payment']
+            ]
+        ];
+
+    }
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_HTTPHEADER => [
+            "Content-Type: application/json",
+            "Authorization: Bearer $accessToken"
+        ],
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+
+    if ($httpCode == 201 && !$error) {
+        $data = json_decode($response, true);
+        return one_two_explode('/invoices/', '', $data['href']);
+    }
+
+    throw new Exception("Failed to create invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
+}
+
+// Function to send PayPal invoice
+function sendPaypalInvoice($accessToken, $invoiceId)
+{
+    $curl = curl_init();
+
+    $payload = [
+        'send_to_recipient' => true,
+        'send_to_invoicer' => false,
+    ];
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices/$invoiceId/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_HTTPHEADER => [
+            "Content-Type: application/json",
+            "Authorization: Bearer $accessToken"
+        ],
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+
+    if ($httpCode == 202 && !$error) {
+        return true;
+    }
+
+    throw new Exception("Failed to send invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
+}
+
+function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $current_term = null, $new_term = null)
+{
+
+    //Display Images, Audio, Video & PDF Files:
+    //Analyze the message to find referencing URLs and Members in the message text:
+    $CI =& get_instance();
+    $core_references = array('@', '#');
+    $post_index = array(
+        'chainvalue' => '',
+        'postmessage' => '',
+        'postmessage_new' => '',
+        'postdiscover' => '',
+        'postedit' => '',
+        'actionstats' => array(
+            'current' => 0,
+            'added' => 0,
+            'removed' => 0,
+            'updated' => 0,
+            'posts_links_fixed' => 0,
+        ),
+    );
+
+    //All the possible reference types that can be found:
+    $post_references = array();
+    $chainkey = 0;
+    $postmessage = str_replace('	', ' ', $postmessage);
+
+    //See what we can find:
+    foreach (explode("\n", $postmessage) as $line_count => $line) {
+
+        $first_ref_hidden = false;
+        $first_line = !$line_count;
+        $words = explode(' ', trim($line));
+        $only_word_in_line = count($words) == 1;
+        $second_word_onwards = null;
+
+        $linechainvalue = null;
+        $linepostmessage = null;
+        $linepostdiscover = null;
+        $linepostedit = null;
+        $line_new = '';
+
+        foreach ($words as $word_count => $word_text) {
+
+            $reference_type = 0;
+            $first_word = !$word_count;
+            if ($first_word && strlen($word_text . ' ') < strlen($line) && strlen(@ltrim($line, $word_text . ' '))) {
+                $second_word_onwards .= ltrim($line, $word_text . ' ');
+            }
+            $chainvalue = null;
+            $postmessage = null;
+            $postdiscover = null;
+            $postedit = null;
+
+            if (filter_var($word_text, FILTER_VALIDATE_URL)) {
+
+                //Generic URL, Try to find:
+                $newUserTerm = null;
+                foreach ($CI->Chains->read(array(
+                    'chainvalue' => $word_text,
+                    'chainuserinput' => 1326, //URL
+                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ), array('chainuseroutput'), 0) as $x) {
+                    $newUserTerm = $x['userhandle'];
+                }
+
+                if (!$newUserTerm) {
+                    //Not found, create it:
+                    $added_e = $CI->Users->create(array(
+                        'username' => 'URL ' . random_string(8),
+                    ));
+                    if ($added_e['status']) {
+
+                        //Chain:
+                        $CI->Chains->create(array(
+                            'chainusertype' => 4230, //Follow
+                            'chainuserinput' => 1326, //URL
+                            'chainuseroutput' => $added_e['user_create']['userid'],
+                            'chainvalue' => $word_text,
+                        ));
+
+                        $newUserTerm = $added_e['user_create']['userhandle'];
+
+                    }
+                }
+
+                //Replace Word:
+                $word_text = '@' . $newUserTerm;
+
+            }
+
+
+            //Could be another reference, check:
+            if (in_array(substr($word_text, 0, 1), $core_references) || in_array(substr($word_text, 1, 1), $core_references)) {
+
+                foreach ($CI->config->item('users___1696899') as $chainusertype => $m) {
+
+                    //Found a reference?
+                    $term = substr($word_text, strlen($m['m__cover']));
+                    if (!(substr($word_text, 0, strlen($m['m__cover'])) == $m['m__cover'] && ctype_alnum($term))) {
+                        //No reference found:
+                        continue;
+                    }
+
+                    if (in_array($chainusertype, $CI->config->item('userids___4486'))) {
+
+                        //Any replacements?
+                        if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                            $term = $new_term;
+                            $word_text = $m['m__cover'] . $term;
+                        }
+
+                        //Post reference:
+                        $found_posts = $CI->Posts->read(array(
+                            'LOWER(posthashtag)' => strtolower($term),
+                        ));
+
+
+                        if (!count($found_posts)) {
+
+                            if (is_numeric($term) && count($CI->Posts->read(array(
+                                    'postid' => intval($term),
+                                )))) {
+
+                                foreach ($CI->Posts->read(array(
+                                    'postid' => intval($term),
+                                )) as $replace_num) {
+                                    $term = $replace_num['posthashtag'];
+                                    $word_text = $m['m__cover'] . $replace_num['posthashtag'];
+                                    $post_index['actionstats']['posts_links_fixed']++;
+                                    array_push($found_posts, $replace_num);
+                                }
+
+                            } else {
+
+                                //New post not found, try to create:
+                                $parent_term = (strlen($new_term) ? $new_term : $current_term);
+                                if (!$parent_term && $save_postid > 0) {
+                                    //Fetch the term using the ID:
+                                    foreach ($CI->Posts->read(array(
+                                        'postid' => $save_postid,
+                                    )) as $i) {
+                                        $parent_term = $i['posthashtag'];
+                                    }
+                                }
+
+                                //Craete this referenced post since we could not find it:
+                                $post_new = $CI->Posts->create(array(
+                                    'posthashtag' => $term,
+                                    'postmessage' => post_to_title($term, $parent_term),
+                                ), $chainusercreator);
+
+                                if (isset($post_new['post_create']['postid'])) {
+                                    //Re-fetch newly created:
+                                    $found_posts = $CI->Posts->read(array(
+                                        'postid' => $post_new['post_create']['postid'],
+                                    ));
+                                }
+                            }
+                        }
+
+                        foreach ($found_posts as $post) {
+
+                            //Valid Post
+                            $reference_type = $chainusertype;
+
+                            $chainkey++;
+                            $post_references[($chainkey - 1)] = array(
+                                'chainusertype' => $chainusertype,
+                                'chainuserinput' => 0,
+                                'chainuseroutput' => 0,
+                                'chainpostinput' => $save_postid,
+                                'chainpostoutput' => intval($post['postid']),
+                                'chainkey' => $chainkey,
+                                'chainvalue' => null,
+                            );
+
+                            $chainvalue = $m['m__cover'] . $post['postid'];
+                            $postmessage = $word_text;
+                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
+                                $postdiscover = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
+                            } else {
+                                $first_ref_hidden = true;
+                            }
+                            $postedit = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '">' . $word_text . '</a>';
+
+                        }
+
+                    } else {
+
+                        if ($term == $current_term && ctype_alnum($new_term) && ctype_alnum($current_term)) {
+                            $term = $new_term;
+                            $word_text = $m['m__cover'] . $term;
+                        }
+
+                        if (is_numeric(trim($term))) {
+                            $filter = array(
+                                'userid' => intval(trim($term)),
+                            );
+                        } else {
+                            $filter = array(
+                                'LOWER(userhandle)' => strtolower($term),
+                            );
+                        }
+
+                        //User Reference
+                        foreach ($CI->Users->read($filter) as $user) {
+
+                            if (is_numeric($term)) {
+                                //Replace Word:
+                                $term = $user['userhandle'];
+                                $word_text = $m['m__cover'] . $user['userhandle'];
+                            }
+
+                            $media_append_end = false;
+
+                            if ($chainusertype == 31835) {
+
+                                //This is the main @User reference
+
+                                $media_attachments = array();
+
+                                foreach ($CI->Chains->read(array(
+                                    'chainuserinput IN (' . join(',', $CI->config->item('userids___1735577')) . ')' => null, //USER DISPLAY
+                                    'chainuseroutput' => $user['userid'],
+                                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                                ), array(), 0) as $x) {
+                                    if ($x['chainuserinput'] == 1326) {
+
+                                        //URL
+                                        array_push($media_attachments, '<a href="' . $x['chainvalue'] . '" target="_blank">' . $x['chainvalue'] . '</a>');
+
+                                    } elseif ($x['chainuserinput'] == 4258) {
+
+                                        //Video
+                                        array_push($media_attachments, '<video id="video_user_' . $x['chainvalue'] . '" controls class="cld-video-user cld-fluid cld-video-user-skin-light" poster="' . $user['usercover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
+
+                                    } elseif ($x['chainuserinput'] == 4259) {
+
+                                        //Audio
+                                        array_push($media_attachments, '<audio controls src="' . $x['chainvalue'] . '"></audio>');
+
+                                    } elseif ($x['chainuserinput'] == 4260) {
+
+                                        //Image
+                                        array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
+
+                                    }
+                                }
+
+                                if (count($media_attachments)) {
+                                    //Replace the Entity:
+                                    $media_append_end = '<div class="media_append">' . join(' ', $media_attachments) . '</div>';
+                                }
+                            }
+
+                            //Valid User
+                            $reference_type = $chainusertype;
+                            $chainkey++;
+                            $post_references[($chainkey - 1)] = array(
+                                'chainusertype' => $chainusertype,
+                                'chainuserinput' => intval($user['userid']),
+                                'chainuseroutput' => 0,
+                                'chainpostinput' => $save_postid,
+                                'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
+                                'chainkey' => $chainkey,
+                            );
+
+                            $chainvalue = $m['m__cover'] . $user['userid'];
+                            $postmessage = $word_text;
+                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
+                                $postdiscover = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+                            } else {
+                                $first_ref_hidden = true;
+                                if ($media_append_end) {
+                                    $postdiscover = $media_append_end;
+                                }
+                            }
+                            $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+
+                        }
+
+                    }
+
+                    //We found a match:
+                    break;
+
+                }
+
+            }
+
+            if (!$reference_type) {
+                //This word is not referencing anything!
+                $chainvalue = $word_text;
+                $postmessage = $word_text;
+                if (!$first_ref_hidden) {
+                    $postdiscover = $word_text;
+                }
+                $postedit = $word_text;
+            }
+
+            //See what we found to add:
+            $linechainvalue .= (!$first_word && $chainvalue ? ' ' : '') . $chainvalue;
+            $linepostmessage .= (!$first_word && $postmessage ? ' ' : '') . $postmessage;
+            $linepostdiscover .= (!$first_word && $postdiscover ? ' ' : '') . $postdiscover;
+            $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
+            $line_new .= $word_text . " ";
+
+        }
+
+        $post_index['chainvalue'] .= (!$first_line && $linechainvalue ? "\n" : '') . $linechainvalue;
+        $post_index['postmessage'] .= (!$first_line && $linepostmessage ? "\n" : '') . $linepostmessage;
+        $post_index['postdiscover'] .= ($linepostdiscover ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdiscover . '</div>' : '');
+        $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');
+        $post_index['postmessage_new'] .= trim($line_new) . "\n";
+
+    }
+
+    //Give HTML their frame:
+    if (strlen($post_index['postdiscover'])) {
+        $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . '</div>';
+    }
+    if (strlen($post_index['postedit'])) {
+        $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . '</div>';
+    }
+
+    if (!intval($chainusercreator)) {
+        //Nothing else we need to do:
+        return $post_index;
+    }
+
+    //Save Found references to remove the ones who exist in DB:
+    $chainkey = 0;
+
+    if (intval($save_postid)) {
+
+        $saved_items = $CI->Chains->read(array(
+            'chainusertype IN (' . join(',', $CI->config->item('userids___1696899')) . ')' => null, //All possible refereces
+            'chainpostinput' => intval($save_postid),
+        ), array(), 0, 0, array('chainkey' => 'ASC'));
+
+        //Nothing else we need to do:
+        foreach ($saved_items as $x) {
+
+            $post_index['actionstats']['current']++;
+
+            //What should happen here?
+            $chainkey++;
+
+            if (!isset($post_references[($chainkey - 1)])) {
+                //Must be removed:
+                $CI->Chains->delete($x['chainid']);
+                $post_index['actionstats']['removed']++;
+                continue;
+            }
+
+            //We have it, see if it matches or needs updating:
+            foreach ($post_references[($chainkey - 1)] as $key => $value) {
+                if ($x[$key] . '' != $value . '') {
+                    //Updating needed:
+                    $post_references[($chainkey - 1)]['chainusercreator'] = $chainusercreator;
+                    $CI->Chains->update($x['chainid'], $post_references[($chainkey - 1)]);
+                    $post_index['actionstats']['updated']++;
+                    break;
+                }
+            }
+        }
+    }
+
+
+    //Any more links left that were not in DB?
+    for ($i = $chainkey; $i <= count($post_references); $i++) {
+        if (isset($post_references[$i])) {
+            $post_references[$i]['chainusercreator'] = $chainusercreator;
+            $CI->Chains->create($post_references[$i]);
+            $post_index['actionstats']['added']++;
+        }
+    }
+
+    $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
+    $post_index['post_references_count'] = count($post_references);
+    $post_index['post_references'] = $post_references;
+
+    return $post_index;
+
 }
