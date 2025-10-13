@@ -371,7 +371,7 @@ if (isset($_GET['chainusertype']) && substr_count($_GET['chainusertype'], ',') >
         echo '<option value="0">ALL Chain TYPES</option>';
         foreach ($this->config->item('users___4593') /* DISCOVERY Types */ as $userid => $m) {
             //Echo drop down:
-            echo '<option value="' . $userid . '" ' . ((isset($_GET['chainusertype']) && $_GET['chainusertype'] == $userid) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+            echo '<option value="' . $userid . '" ' . ((isset($_GET['chainusertype']) && $_GET['chainusertype'] == $userid) ? 'selected="selected"' : '') . '>' . $m['m__name'] . '</option>';
         }
 
     }
@@ -403,7 +403,7 @@ echo '</div>';
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
 
-echo '<div class="filter_right grey">'.(user_session(12701) ? '<span class="icon-block-xs">' . $users___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $users___11035[12707]['m__title'] . '</a>' : '').'</div>';
+echo '<div class="filter_right grey">'.(user_session(12701) ? '<span class="icon-block-xs">' . $users___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $users___11035[12707]['m__name'] . '</a>' : '').'</div>';
 
 
 //Table Header
@@ -412,10 +412,10 @@ $row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px 
 foreach ($this->config->item('users___4341') as $chainusertype => $m) {
     if($chainusertype==4362 || in_array($chainusertype, $this->config->item('userids___6160'))){
         //User Cover:
-        $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__user'].'" title="' . $m['m__title'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
+        $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__name'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Else:
-        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__user'].'">' . $m['m__title'] . '</a></th>';
+        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__name'] . '</a></th>';
     }
     if(in_array($chainusertype, $this->config->item('userids___1579727'))) {
         //Second row:

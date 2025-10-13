@@ -141,7 +141,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                 ), array('chainpostoutput'), 1) as $target_i) {
 
                     //See History for this user:
-                    $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
+                    $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__name'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
 
                 }
             }
@@ -213,7 +213,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                         ), array('chainpostoutput'), 1) as $target_i) {
 
                             //See History for this user:
-                            $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__title'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
+                            $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__name'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
 
                         }
                     }

@@ -55,7 +55,7 @@ foreach($this->config->item('users___31916') as $chainusertype => $m) {
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$chainusertype.' hidden" read-counter="'.$coins_count[$chainusertype].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-        $mainmenu .= '<li class="nav-item thepill'.$chainusertype.'"><a class="nav-chain user_nav_'.$m['m__user'].'" chainusertype="'.$chainusertype.'" href="#'.$m['m__user'].'" title="'.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype.'">'. view_number($coins_count[$chainusertype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+        $mainmenu .= '<li class="nav-item thepill'.$chainusertype.'"><a class="nav-chain user_nav_'.$m['m__handle'].'" chainusertype="'.$chainusertype.'" href="#'.$m['m__handle'].'" title="'.$m['m__name'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype.'">'. view_number($coins_count[$chainusertype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype.'">&nbsp;'. $m['m__name'] . '&nbsp;</span></a></li>';
 
     }
 
@@ -73,7 +73,7 @@ foreach($this->config->item('users___31916') as $chainusertype => $m) {
             $coins_count[$chainusertype2] = users_query($chainusertype, $focus_e['userid'], 0, false, $chainusertype2);
             if(!$coins_count[$chainusertype2]){ continue; }
 
-            $submenu_content .= '<li class="nav-item thepill'.$chainusertype2.'"><a class="nav-chain user_nav_'.$m2['m__user'].'" chainusertype="'.$chainusertype2.'" href="#'.$m2['m__user'].'" title="'.$m2['m__title'].'">&nbsp;<span class="icon-block">'.$m2['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype2.'">'. view_number($coins_count[$chainusertype2]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype2.'">&nbsp;'. $m2['m__title'] . '&nbsp;</span></a></li>';
+            $submenu_content .= '<li class="nav-item thepill'.$chainusertype2.'"><a class="nav-chain user_nav_'.$m2['m__handle'].'" chainusertype="'.$chainusertype2.'" href="#'.$m2['m__handle'].'" title="'.$m2['m__name'].'">&nbsp;<span class="icon-block">'.$m2['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype2.'">'. view_number($coins_count[$chainusertype2]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype2.'">&nbsp;'. $m2['m__name'] . '&nbsp;</span></a></li>';
         }
 
         if($submenu_content){
@@ -95,14 +95,14 @@ $focus_tab = 0;
 foreach($users___focus as $chainusertype => $m) {
     if(isset($coins_count[$chainusertype]) && $coins_count[$chainusertype] > 0){
         $focus_tab = $chainusertype;
-        echo '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__user'].'\'); } }); </script>';
+        echo '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__handle'].'\'); } }); </script>';
         break;
     }
 }
 if(!$focus_tab){
     foreach($users___focus as $chainusertype => $m) {
         $focus_tab = $chainusertype;
-        echo '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__user'].'\'); } }); </script>';
+        echo '<script> $(document).ready(function () { if(!document.location.hash) { load_post_menu(\''.$m['m__handle'].'\'); } }); </script>';
         break;
     }
 }

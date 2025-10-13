@@ -3117,7 +3117,7 @@ function ui_instant_select(element_id, user_createid, o__id, chainid, show_full_
     //Update x:
     console.log('UI instant .dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn' + user_createid);
     var data_object = eval('js_users___' + element_id);
-    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[user_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[user_createid]['m__title'] : ''));
+    $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .btn').html('<span class="icon-block-sm">' + data_object[user_createid]['m__cover'] + '</span>' + (show_full_name ? data_object[user_createid]['m__name'] : ''));
 
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .drop_item_instant_' + element_id + '_' + o__id + '_' + chainid).removeClass('active');
     $('.dropd_instant_' + element_id + '_' + o__id + '_' + chainid + ' .optiond_' + user_createid + '_' + o__id + '_' + chainid).addClass('active');
