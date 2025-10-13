@@ -40,12 +40,12 @@ if (1) {
 
 
         echo '#'.$post['posthashtag'].' '.$post['postid'];
-        if (in_array($post['posthashtag'], $stats['posts_unique_hashtags'])) {
+        if (in_array(strtolower($post['posthashtag']), $stats['posts_unique_hashtags'])) {
             //Remove:
             $stats['posts_oncache_hashtags_duplicate']++;
         } else {
             echo ' [DUPLICATE]';
-            array_push($stats['posts_unique_hashtags'], $post['posthashtag']);
+            array_push($stats['posts_unique_hashtags'], strtolower($post['posthashtag']));
             $stats['posts_oncache_hashtags']++;
         }
         echo '<br />';
