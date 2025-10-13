@@ -301,26 +301,24 @@ class Posts extends CIdea_cache
 
         if ($x_adjusted) {
 
-            if ($migrateid) {
-                foreach ($this->Chains->read(array(
-                    '(chainpostoutput = ' . $postid . ' OR chainpostinput = ' . $postid . ')' => null,
-                ), array(), 0) as $migrate) {
+            foreach ($this->Chains->read(array(
+                '(chainpostoutput = ' . $postid . ' OR chainpostinput = ' . $postid . ')' => null,
+            ), array(), 0) as $migrate) {
 
-                    $new_array = array(
-                        'chainpostinput' => ($migrate['chainpostinput'] == $postid ? $migrateid : $migrate['chainpostinput']),
-                        'chainpostoutput' => ($migrate['chainpostoutput'] == $postid ? $migrateid : $migrate['chainpostoutput']),
-                        'chainusercreator' => $migrate['chainusercreator'],
-                        'chainuseroutput' => $migrate['chainuseroutput'],
-                        'chainuserinput' => $migrate['chainuserinput'],
-                        'chainusertype' => $migrate['chainusertype'],
-                    );
+                $new_array = array(
+                    'chainpostinput' => ($migrate['chainpostinput'] == $postid ? $migrateid : $migrate['chainpostinput']),
+                    'chainpostoutput' => ($migrate['chainpostoutput'] == $postid ? $migrateid : $migrate['chainpostoutput']),
+                    'chainusercreator' => $migrate['chainusercreator'],
+                    'chainuseroutput' => $migrate['chainuseroutput'],
+                    'chainuserinput' => $migrate['chainuserinput'],
+                    'chainusertype' => $migrate['chainusertype'],
+                );
 
-                    //Update if this new one is unique:
-                    if (!count($this->Chains->read($new_array))) {
-                        $this->Chains->update($migrate['chainid'], $new_array);
-                    } else {
-                        $this->Chains->delete($migrate['chainid']);
-                    }
+                //Update if this new one is unique:
+                if ($migrateid && !count($this->Chains->read($new_array))) {
+                    $this->Chains->update($migrate['chainid'], $new_array);
+                } else {
+                    $this->Chains->delete($migrate['chainid']);
                 }
             }
 

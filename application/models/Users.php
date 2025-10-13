@@ -280,33 +280,40 @@ class Users extends CIdea_cache
     function delete($userid, $chainusercreator = 0, $migrateid = 0)
     {
 
+        if (!count($this->Users->read(array('userid' => $userid)))) {
+            return array(
+                'status' => 0,
+                'message' => $userid . ' is not a valid User ID',
+            );
+        } elseif ($migrateid > 0 && !count($this->Users->read(array('userid' => $migrateid)))) {
+            return array(
+                'status' => 0,
+                'message' => $migrateid . ' is not a valid Migration User ID',
+            );
+        }
+
         //Find all chains to delete/migrate:
         $x_adjusted = 0;
         foreach ($this->Chains->read(array(
             '(chainid=' . $userid . ' OR chainuserinput=' . $userid . ' OR chainuseroutput=' . $userid . ' OR chainusercreator=' . $userid . ' OR chainusertype=' . $userid . ')' => null,
         ), array(), 0) as $migrate) {
 
-            if ($migrateid) {
+            $new_array = array(
+                'chainusercreator' => ($migrate['chainusercreator'] == $userid ? $migrateid : ($chainusercreator > 0 ? $chainusercreator : $migrate['chainusercreator'])),
+                'chainusertype' => ($migrate['chainusertype'] == $userid ? $migrateid : $migrate['chainusertype']),
+                'chainuserinput' => ($migrate['chainuserinput'] == $userid ? $migrateid : $migrate['chainuserinput']),
+                'chainuseroutput' => ($migrate['chainuseroutput'] == $userid ? $migrateid : $migrate['chainuseroutput']),
+                'chainpostinput' => $migrate['chainpostinput'],
+                'chainpostoutput' => $migrate['chainpostoutput'],
+            );
 
-                $new_array = array(
-                    'chainusercreator' => ($migrate['chainusercreator'] == $userid ? $migrateid : ($chainusercreator > 0 ? $chainusercreator : $migrate['chainusercreator'])),
-                    'chainusertype' => ($migrate['chainusertype'] == $userid ? $migrateid : $migrate['chainusertype']),
-                    'chainuserinput' => ($migrate['chainuserinput'] == $userid ? $migrateid : $migrate['chainuserinput']),
-                    'chainuseroutput' => ($migrate['chainuseroutput'] == $userid ? $migrateid : $migrate['chainuseroutput']),
-                    'chainpostinput' => $migrate['chainpostinput'],
-                    'chainpostoutput' => $migrate['chainpostoutput'],
-                );
-
-                //Update if this new one is unique:
-                if (!count($this->Chains->read($new_array))) {
-                    $x_adjusted += $this->Chains->update($migrate['chainid'], $new_array);
-                    continue;
-                }
+            //Update if this new one is unique:
+            if ($migrateid && !count($this->Chains->read($new_array))) {
+                $x_adjusted += $this->Chains->update($migrate['chainid'], $new_array);
+            } else {
+                //Just remove it:
+                $x_adjusted += $this->Chains->delete($migrate['chainid'], $chainusercreator);
             }
-
-            //Just remove it:
-            $x_adjusted += $this->Chains->delete($migrate['chainid'], $chainusercreator);
-
         }
 
         if ($x_adjusted) {
