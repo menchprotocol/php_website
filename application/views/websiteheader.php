@@ -836,7 +836,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Discovery Types
                                             foreach ($this->config->item('users___4737') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \'@'.$m3['m__handle'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].'" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
                                             echo '<li><hr class="dropdown-divider"></li>';
 
@@ -844,7 +844,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Discovery Settings
                                             foreach ($this->config->item('users___42179') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \'@'.$m3['m__handle'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].'" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
                                             echo '<li><hr class="dropdown-divider"></li>';
 
@@ -852,7 +852,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Apps
                                             foreach ($this->config->item('users___6287') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block" href="javascript:coid(0);" onclick="insert_text(\'.save_postmessage\', \'@'.$m3['m__handle'].'\');" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].'" title="' . $m3['m__message'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
                                             }
 
                                         }
