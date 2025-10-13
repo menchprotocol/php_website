@@ -28,36 +28,37 @@ $stats = array(
 );
 
 
+if(0){
+    //Sync handles:
+    $users_unique_hashtags = array();
+    foreach ($this->Users->read(array(
+        'userid >' => 0,
+    ), 0, 0, array('userid' => 'ASC')) as $user) {
 
-//Sync handles:
-$users_unique_hashtags = array();
-foreach ($this->Users->read(array(
-    'userid >' => 0,
-), 0, 0, array('userid' => 'ASC')) as $user) {
-
-    echo '@'.$user['userhandle'].' '.$user['userid'];
-    if (in_array(strtolower($user['userhandle']), $users_unique_hashtags)) {
-        //Remove:
-        echo ' [DUPLICATE]';
-        $stats['users_oncache_hashtags_duplicate']++;
-        //$this->db->query("DELETE FROM ideachains WHERE (chainuserinput = " . $user['userid'] . " OR chainuseroutput = " . $user['userid'] . ");");
-        //$this->db->query("DELETE FROM users WHERE userid = " . $user['userid'] . ";");
-    } else {
-        if(is_numeric($user['userhandle'])) {
-            $stats['users_oncache_hashtags_numeric']++;
-            if(count($this->Posts->read(array(
-                'userid' => $user['userhandle'],
-            ), 1))){
-                $stats['users_oncache_hashtags_numeric_validid']++;
+        echo '@'.$user['userhandle'].' '.$user['userid'];
+        if (in_array(strtolower($user['userhandle']), $users_unique_hashtags)) {
+            //Remove:
+            echo ' [DUPLICATE]';
+            $stats['users_oncache_hashtags_duplicate']++;
+            //$this->db->query("DELETE FROM ideachains WHERE (chainuserinput = " . $user['userid'] . " OR chainuseroutput = " . $user['userid'] . ");");
+            //$this->db->query("DELETE FROM users WHERE userid = " . $user['userid'] . ";");
+        } else {
+            if(is_numeric($user['userhandle'])) {
+                $stats['users_oncache_hashtags_numeric']++;
+                if(count($this->Posts->read(array(
+                    'userid' => $user['userhandle'],
+                ), 1))){
+                    $stats['users_oncache_hashtags_numeric_validid']++;
+                }
             }
+            array_push($users_unique_hashtags, strtolower($user['userhandle']));
+            $stats['users_oncache_hashtags']++;
         }
-        array_push($users_unique_hashtags, strtolower($user['userhandle']));
-        $stats['users_oncache_hashtags']++;
+        echo "\n";
     }
-    echo "\n";
+    view_json($stats);
+    die();
 }
-view_json($stats);
-die();
 
 
 //First start with cache and see what might be missing:
