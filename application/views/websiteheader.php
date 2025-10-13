@@ -157,10 +157,13 @@ if(!$basic_header_footer){
             event.stopPropagation();
         });
 
+    </script>
+
+    <script type="text/javascript">
+        import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
         function insert_text(handler, text) {
             insertText($(".save_postmessage"), res.native);
         }
-
     </script>
     <link href="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.css" rel="stylesheet">
     <script src="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.js"
