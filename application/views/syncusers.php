@@ -33,7 +33,7 @@ $stats = array(
 $users_unique_hashtags = array();
 foreach ($this->Users->read(array(
     'userid >' => 0,
-), $_GET['limit'], 0, array('userid' => 'ASC')) as $user) {
+), 0, 0, array('userid' => 'ASC')) as $user) {
 
     echo '@'.$user['userhandle'].' '.$user['userid'];
     if (in_array(strtolower($user['userhandle']), $users_unique_hashtags)) {
