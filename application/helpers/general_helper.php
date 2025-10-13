@@ -4207,15 +4207,15 @@ function post_index($postmessage, $save_postid, $chainusercreator, $current_term
 
             $post_index['actionstats']['current']++;
 
-            //What should happen here?
-            $chainkey++;
-
             if (!isset($post_references[($chainkey - 1)])) {
                 //Must be removed:
                 $CI->Chains->delete($x['chainid']);
                 $post_index['actionstats']['removed']++;
                 continue;
             }
+
+            //What should happen here?
+            $chainkey++;
 
             //We have it, see if it matches or needs updating:
             foreach ($post_references[($chainkey - 1)] as $key => $value) {
