@@ -2539,7 +2539,7 @@ function user_editor(userid = 0, chainid = 0, bar_title = null, chainvalue = nul
 
     $('#modal31912 .save_userid').val(userid);
     $('#modal31912 .save_chainid').val(chainid);
-    $('#modal31912 .save_userhandle').val($('.ui_userhandle_' + userid + ':first').text());
+    $('#modal31912 .save_userhandle').val($('.ui_userhandle_' + userid + ':first').text().replace('@',''));
     $('#modal31912 .save_username').val(current_title);
     $('#modal31912 .save_userbio').val(current_bio);
     
