@@ -425,11 +425,11 @@ li a {
 .compact_dropdown .grey .dropdown-item {
     color: #999999 !important;
 }
-.compact_dropdown .grey .dropdown-item:hover {
+.compact_dropdown .grey .dropdown-item:hover,
+.compact_dropdown .grey i:hover{
     background: #FFFFFF !important;
     color: #999999 !important;
 }
-
 
 .dropdown-item .img {
     margin-bottom: -15px;

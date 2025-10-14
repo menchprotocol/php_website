@@ -3852,7 +3852,6 @@ function post_to_title($post, $parent_post = null)
 }
 
 
-
 function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag = null, $focus_userid = 0, $x_completes = false)
 {
 
@@ -5371,6 +5370,13 @@ function sendPaypalInvoice($accessToken, $invoiceId)
     }
 
     throw new Exception("Failed to send invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
+}
+
+function data_type_example($dataid)
+{
+    $CI =& get_instance();
+    $users___4592 = $this->config->item('users___4592'); //Data Types
+    return ( isset($users___4592[$dataid]['m__message']) ? ' '+$users___4592[$dataid]['m__message'] : false );
 }
 
 function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $current_term = null, $new_term = null)
