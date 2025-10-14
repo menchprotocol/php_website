@@ -161,7 +161,7 @@ if(!$basic_header_footer){
         $('.text_adder').on('click', function (event) {
             //This prevents the emoji modal from closing when an emoji is selected
             var text_value = $(this).attr('text_value');
-            insertText($(".save_postmessage"), "\n"+text_value);
+            insertText($(".save_postmessage"), "\n "+text_value);
         });
 
     </script>
