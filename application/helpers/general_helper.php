@@ -5376,7 +5376,21 @@ function data_type_example($dataid)
 {
     $CI =& get_instance();
     $users___4592 = $CI->config->item('users___4592'); //Data Types
-    return ( isset($users___4592[$dataid]['m__message']) && strlen($users___4592[$dataid]['m__message']) ? ' '.$users___4592[$dataid]['m__message'] : '' );
+    if (isset($users___4592[$dataid]['m__message']) && strlen($users___4592[$dataid]['m__message'])) {
+        return ' ' . $users___4592[$dataid]['m__message'];
+    }
+
+    //See if we find in children:
+    foreach ($users___4592 as $userid => $m) {
+        if (in_array($dataid, $CI->config->item('userids___'.$userid))) {
+            $users___this = $CI->config->item('users___'.$userid);
+            if (isset($users___this[$dataid]['m__message']) && strlen($users___this[$dataid]['m__message'])) {
+                return ' ' . $users___this[$dataid]['m__message'];
+            }
+        }
+    }
+
+    return '';
 }
 
 function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $current_term = null, $new_term = null)

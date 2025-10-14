@@ -834,14 +834,14 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                         } elseif ($userid2 == 4737) {
 
-                                            //Discovery Types
+                                            //Form Inputs
                                             foreach ($this->config->item('users___4737') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name'].': '.$m3['m__message'] . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 42179) {
 
-                                            //Discovery Settings
+                                            //Form Settings
                                             $count = 0;
                                             foreach ($this->config->item('users___42179') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name'].': '.$m3['m__message'] . '">@' . $m3['m__handle'] . '</a></li>';
