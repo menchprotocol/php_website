@@ -164,7 +164,7 @@ if(!$basic_header_footer){
             insertText($(".save_postmessage"), "\n "+text_value);
             setTimeout(function () {
                 $(".save_postmessage").focus();
-            }, 611);
+            }, 377);
         });
 
     </script>
