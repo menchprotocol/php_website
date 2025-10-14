@@ -1180,6 +1180,9 @@ h4 .halfbg {
 .left-padded-menu li.inline-block{
     padding-right: 5px;
 }
+.left-padded-menu a b{
+    font-size: 1.3em;
+}
 
 .block-menu .dropdown-item {
     padding: 3px 0 0 0;
