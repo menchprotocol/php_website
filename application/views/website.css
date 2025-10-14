@@ -430,7 +430,7 @@ li a {
     padding: 5px;
 }
 .compact_dropdown .dropdown-item {
-    padding: 1px;
+    padding: 0;
 }
 .compact_dropdown .grey .dropdown-item {
     color: #999999 !important;
