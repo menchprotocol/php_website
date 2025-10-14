@@ -333,6 +333,14 @@ h3 {
     background-color: #FFF;
 }
 
+.dropdown-menu li.grey{
+    padding-top: 8px;
+}
+.dropdown-menu li.grey:hover i{
+    color: #999999 !important;
+}
+
+
 
 .inner_message .dynamic_editing_input.no_padded {
     padding: 0;
