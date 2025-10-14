@@ -155,7 +155,7 @@ if(!$basic_header_footer){
         $('.emoji_selector').on('click', function (event) {
             //This prevents the emoji modal from closing when an emoji is selected
             event.stopPropagation();
-            $(".dropdown-toggle").dropdown('toggle');
+            $(".dropdown-toggle.show").dropdown('toggle');
         });
 
         $('.text_adder').on('click', function (event) {
