@@ -816,7 +816,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                 } elseif ($userid == 2125246) {
 
                                     //Suggested Users
-                                    echo '<div class="dynamic_editing_input no_padded">';
+                                    echo '<div class="dynamic_editing_input no_padded compact_dropdown">';
                                     echo '<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
                                     echo '<ul class="dropdown-menu" aria-labelledby="suggest_' . $userid . '">';

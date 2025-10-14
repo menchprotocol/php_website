@@ -422,6 +422,9 @@ li a {
 .compact_dropdown .dropdown-item {
     padding: 1px;
 }
+.compact_dropdown li.grey:hover {
+    background: #FFFFFF !important;
+}
 
 
 .dropdown-item .img {
