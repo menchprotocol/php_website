@@ -1177,6 +1177,9 @@ h4 .halfbg {
 .left-padded-menu{
     padding-left: 34px;
 }
+.left-padded-menu li.inline-block{
+    padding-right: 5px;
+}
 
 .block-menu .dropdown-item {
     padding: 3px 0 0 0;
