@@ -419,6 +419,10 @@ li a {
 .dropdown-item {
     padding: 5px;
 }
+.compact_dropdown .dropdown-item {
+    padding: 1px;
+}
+
 
 .dropdown-item .img {
     margin-bottom: -15px;

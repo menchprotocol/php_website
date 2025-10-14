@@ -785,14 +785,14 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                 if ($userid == 2125205) {
 
                                     //Suggested Posts
-                                    echo '<div class="dynamic_editing_input no_padded">';
+                                    echo '<div class="dynamic_editing_input no_padded compact_dropdown">';
                                     echo '<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '">' . $m['m__cover'] . '</button>';
 
                                     echo '<ul class="dropdown-menu">';
                                     foreach ($this->config->item('users___2125205') as $userid2 => $m2) {
 
                                         //Print Header
-                                        echo '<li><span class="dropdown-item grey" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . '</span></li>';
+                                        echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
 
                                         if ($userid2 == 4486) {
 
@@ -823,7 +823,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     foreach ($this->config->item('users___2125246') as $userid2 => $m2) {
 
                                         //Print Header
-                                        echo '<li><span class="dropdown-item grey" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . '</span></li>';
+                                        echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
 
                                         if ($userid2 == 13550) {
 
