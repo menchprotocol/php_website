@@ -5376,7 +5376,7 @@ function data_type_example($dataid)
 {
     $CI =& get_instance();
     $users___4592 = $this->config->item('users___4592'); //Data Types
-    return ( isset($users___4592[$dataid]['m__message']) && strlen($users___4592[$dataid]['m__message']) ? ' '+eval($users___4592[$dataid]['m__message']) : false );
+    return ( isset($users___4592[$dataid]['m__message']) && strlen($users___4592[$dataid]['m__message']) ? ' '+$users___4592[$dataid]['m__message'] : false );
 }
 
 function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $current_term = null, $new_term = null)

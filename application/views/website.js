@@ -2547,7 +2547,6 @@ function user_editor(userid = 0, chainid = 0, bar_title = null, chainvalue = nul
     $('#modal31912 .random_animal').html('<i class="' + random_animal(true) + '"></i>');
     updatusercover(current_cover, false);
 
-
     if (chainid) {
         $('#modal31912 .save_chainvalue').val($('.ui_chainvalue_' + chainid).text());
         $('#modal31912 .save_frame').removeClass('hidden');
