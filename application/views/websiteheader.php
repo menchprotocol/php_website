@@ -155,6 +155,7 @@ if(!$basic_header_footer){
         $('.emoji_selector').on('click', function (event) {
             //This prevents the emoji modal from closing when an emoji is selected
             event.stopPropagation();
+            $(".dropdown-toggle").dropdown('toggle');
         });
 
         $('.text_adder').on('click', function (event) {
@@ -786,9 +787,9 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                     //Suggested Posts
                                     echo '<div class="dynamic_editing_input no_padded compact_dropdown">';
-                                    echo '<button class="btn btn-secondary dropdown-toggle icon-block" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '">' . $m['m__cover'] . '</button>';
+                                    echo '<button class="btn btn-secondary dropdown-toggle icon-block" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
-                                    echo '<ul class="dropdown-menu">';
+                                    echo '<ul class="dropdown-menu" aria-labelledby="suggest_' . $userid . '">';
                                     foreach ($this->config->item('users___2125205') as $userid2 => $m2) {
 
                                         //Print Header
