@@ -335,6 +335,7 @@ h3 {
 
 .dropdown-menu li.grey{
     padding-top: 8px;
+    padding-bottom: 5px;
 }
 .dropdown-menu li.grey:hover i{
     color: #999999 !important;
