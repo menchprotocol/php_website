@@ -799,7 +799,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                             //Ideas
                                             echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
                                             foreach ($this->config->item('users___4486') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><span class="icon-block-xs">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '">'.$m3['m__cover'].' ' . $m3['m__name'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 3410436) {
@@ -819,7 +819,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     echo '<div class="dynamic_editing_input no_padded compact_dropdown">';
                                     echo '<button class="btn btn-secondary dropdown-toggle icon-block" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
-                                    echo '<ul class="dropdown-menu" aria-labelledby="suggest_' . $userid . '">';
+                                    echo '<ul class="dropdown-menu left-padded-menu" aria-labelledby="suggest_' . $userid . '">';
                                     foreach ($this->config->item('users___2125246') as $userid2 => $m2) {
 
                                         //Print Header
@@ -829,7 +829,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Mentions
                                             foreach ($this->config->item('users___13550') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><span class="icon-block-xs">' . $m3['m__cover'] . '</span>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '">'.$m3['m__cover'].' ' . $m3['m__name'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 4737) {
