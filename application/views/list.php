@@ -151,6 +151,7 @@ foreach($post_settings['post_column'] as $post_var){
         'chainuserinput' => 26189,
     ), array(), 1);
 
+
     $current_x = ( isset($count_totals['i'][$post_var['postid']]) ? $count_totals['i'][$post_var['postid']] : 0 );
     $max_limit = (count($max_available) && is_numeric($max_available[0]['chainvalue']) && intval($max_available[0]['chainvalue'])>0 ? intval($max_available[0]['chainvalue']) : 0 );
 
