@@ -2975,14 +2975,14 @@ function chain_view($x)
             }
 
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $userhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(3445693) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $userhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($userid == 44395) {
 
             //Void:
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(4341) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(3445693) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank"><span class="group_sign">' . $m['m__cover'] . '</span>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($userid == 4362) {
@@ -4129,10 +4129,10 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                         //Clone Single Post:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="post_copy(' . $i['postid'] . ', 0)" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                    } elseif ($userid_dropdown == 4341 && $post_access >= 3 && $chainid) {
+                    } elseif ($userid_dropdown == 3445693 && $post_access >= 3 && $chainid) {
 
                         //Chain Details
-                        $action_buttons .= '<a href="' . view_app_chain(4341) . '?chainid=' . $chainid . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="' . view_app_chain(3445693) . '?chainid=' . $chainid . '" class="dropdown-item main__title" target="_blank">' . $anchor . '</a>';
 
                     } elseif ($userid_dropdown == 42648 && $post_access >= 3) {
 

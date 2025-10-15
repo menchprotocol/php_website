@@ -394,7 +394,7 @@ echo '</tr></table>';
 echo '<input type="submit" class="btn" value="Apply" />';
 
 if ($has_filters) {
-    echo ' &nbsp;<a href="' . view_app_chain(4341) . '" style="font-size: 0.8em;">Remove Filters</a>';
+    echo ' &nbsp;<a href="' . view_app_chain(3445693) . '" style="font-size: 0.8em;">Remove Filters</a>';
 }
 
 echo '</form>';
