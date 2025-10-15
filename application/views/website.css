@@ -2486,7 +2486,7 @@ div.dropdown-item:hover {
 }
 
 .underdot {
-    border-bottom: 1px dotted #000000;
+    border-bottom: 1px dotted #000000 !important;
 }
 
 .subtle-line {
