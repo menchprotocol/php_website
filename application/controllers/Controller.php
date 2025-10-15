@@ -179,7 +179,7 @@ class Controller extends CI_Controller
         $user_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
 
 
-        if(!$user_http_request && in_array($app_userid, $this->config->item('userids___7247'))){
+        if(in_array($app_userid, $this->config->item('userids___7247'))){
             //Disable Cron Jobs?
             //TODO Remove later to enable cron jobs
             return false;
