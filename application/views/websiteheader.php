@@ -802,7 +802,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                             //Ideas
                                             echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
                                             foreach ($this->config->item('users___4486') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><b>'.$m3['m__cover'].'</b>'.$m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><b>'.$m3['m__cover'].'</b>'.$m3['m__name'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 3410436) {
@@ -832,33 +832,28 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Mentions
                                             foreach ($this->config->item('users___13550') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><b>'.$m3['m__cover'].'</b>'.$m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><b>'.$m3['m__cover'].'</b>'.$m3['m__name'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 4737) {
 
                                             //Form Inputs
                                             foreach ($this->config->item('users___4737') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name'].': '.$m3['m__message'] . '">@' . $m3['m__handle'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name']. ( strlen($m3['m__message']) ? ': '.$m3['m__message'] : '' ) . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 42179) {
 
                                             //Form Settings
-                                            $count = 0;
                                             foreach ($this->config->item('users___42179') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name'].': '.$m3['m__message'] . '">@' . $m3['m__handle'] . '</a></li>';
-                                                $count++;
-                                                if($count>=55){
-                                                    break;
-                                                }
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name']. ( strlen($m3['m__message']) ? ': '.$m3['m__message'] : '' ) . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 6287) {
 
                                             //Apps
                                             foreach ($this->config->item('users___6287') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name'].': '.$m3['m__message'] . '">@' . $m3['m__handle'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name']. ( strlen($m3['m__message']) ? ': '.$m3['m__message'] : '' ) . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
                                         }
