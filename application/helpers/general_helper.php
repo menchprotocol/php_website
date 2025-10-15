@@ -4791,7 +4791,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     //User Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey"><span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">'.( isset($e['chainusertype']) ? ( substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? '<span class="underdot" title="'.$users___4593[$e['chainusertype']]['m__name'].'">'.$users___4593[$e['chainusertype']]['m__cover'].'</span>' : '<span title="'.$users___4593[$e['chainusertype']]['m__name'].'">'.$users___4593[$e['chainusertype']]['m__cover'].'</span> @' ) : '@' ) . $e['userhandle'] . '</span></div>';
+    $ui .= '<div class="creator_headline grey"><span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">'.( isset($e['chainusertype']) && $users___4593[$e['chainusertype']]['m__cover']!='@' ? ( substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? '<span class="underdot" title="'.$users___4593[$e['chainusertype']]['m__name'].'">'.$users___4593[$e['chainusertype']]['m__cover'].'</span>' : '<span title="'.$users___4593[$e['chainusertype']]['m__name'].'">'.$users___4593[$e['chainusertype']]['m__cover'].'</span> @' ) : '@' ) . $e['userhandle'] . '</span></div>';
     $ui .= '<div class="' . ($focus__node ? '' : ' hidden ') . '"><div class="creator_headline hidden grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div></div>';
 
     //User Location?
