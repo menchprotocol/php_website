@@ -2717,7 +2717,7 @@ function user_save_edit() {
 
             //Update Title:
             update_text_name(6197, modify_data['save_userid'], modify_data['save_username']);
-            update_text_name(2135504, modify_data['save_userid'], modify_data['save_userbio']);
+            update_text_name(3423966, modify_data['save_userid'], modify_data['save_userbio']);
 
             //Update Raw Cover:
             $('.ui_usercover_' + modify_data['save_userid'] + ':first').attr('raw_cover', modify_data['save_usercover']);

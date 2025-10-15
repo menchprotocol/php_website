@@ -333,7 +333,6 @@ class Controller extends CI_Controller
         $new_cache = false;
         $cache_chaintime = null;
         $chainusercreator = ($user_http_request ? ($user_session ? $user_session['userid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
-        $skip_post_privacy_check = !$memory_detected || in_array($app_userid, $this->config->item('userids___43388'));
         $user_access = user_access(null, $focus_e['userid'], $focus_e);
         $post_access = post_access(null, $focus_i['postid'], $focus_i);
         $target_post_access = post_access(null, $target_i['postid'], $target_i);
@@ -355,9 +354,9 @@ class Controller extends CI_Controller
                 $missing_access = 'Error: You Cannot Access ' . $users___6287[$app_userid]['m__name'] . ' as it requires the superpower of ' . $users___10957[end($superpowers_required)]['m__name'] . '.';
             } elseif ($focus_e && !$user_access) {
                 $missing_access = 'Error: You Cannot Access @' . $focus_e['userhandle'] . ' due to Privacy Settings.';
-            } elseif (!$skip_post_privacy_check && $focus_i && !$post_access) {
+            } elseif ($focus_i && !$post_access) {
                 $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['posthashtag'] . ' due to Privacy Settings.';
-            } elseif (!$skip_post_privacy_check && $target_i && !$target_post_access) {
+            } elseif ($target_i && !$target_post_access) {
                 $missing_access = 'Error: You Cannot Access Target #' . $target_i['posthashtag'] . ' due to Privacy Settings.';
             }
 
