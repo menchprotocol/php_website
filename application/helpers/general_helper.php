@@ -4948,13 +4948,6 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
 
                             $action_buttons .= '<a href="javascript:void(0);" onclick="chain_preview(4997,' . $e['userid'] . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
-                        } elseif ($userid_dropdown == 6287) {
-
-                            //App Store
-                            if (in_array($e['userid'], $CI->config->item('userids___6287'))) {
-                                $action_buttons .= '<a href="' . view_app_chain($e['userid']) . '" class="dropdown-item main__title">' . $anchor . '</a>';
-                            }
-
                         } elseif ($userid_dropdown == 31912 && $user_access >= 3) {
 
                             //Edit User
