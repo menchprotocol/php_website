@@ -585,7 +585,7 @@ class Posts extends CIdea_cache
 
     }
 
-    function copy($postid, $do_recursive, $chainusercreator, $previous_i = null, $clone_title = null)
+    function copy($postid, $do_recursive, $chainusercreator, $previous_i = null, $clone_message = null)
     {
 
         //Create Clone -or- Chain & move-on?
@@ -603,7 +603,7 @@ class Posts extends CIdea_cache
         }
 
         $post_new = $this->Posts->create(array(
-            'postmessage' => ($clone_title ? $clone_title : "Copy Of " . $this_i[0]['postmessage']),
+            'postmessage' => ( strlen($clone_message) ? $clone_message : $this_i[0]['postmessage']),
         ), $chainusercreator);
 
         return array(
