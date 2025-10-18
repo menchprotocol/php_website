@@ -1774,6 +1774,9 @@ $(document).ready(function () {
         {
             source: function (q, cb) {
 
+                //Hide Any open model:
+                $('.modal').modal('hide');
+
                 icons_listed = [];
 
                 //Members can filter search with first word:
