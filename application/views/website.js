@@ -1034,6 +1034,7 @@ function post_suggestions() {
         save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
     }, function (data) {
         $(".frame_3449936").html(' ');
+        generating_suggestions = false;
     });
 
 }
