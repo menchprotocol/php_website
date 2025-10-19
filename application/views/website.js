@@ -1061,6 +1061,45 @@ $(document).ready(function () {
         post_suggestions();
     });
 
+
+    function isAlphanumeric(str) {
+        return /^[a-zA-Z0-9]*$/.test(str);
+    }
+
+    // Handle keypress event
+    $('.save_posthashtag').on('keypress', function(e) {
+        // Get the key pressed
+        let char = String.fromCharCode(e.which);
+
+        // Allow only alphanumeric characters
+        if (!isAlphanumeric(char)) {
+            e.preventDefault();
+        }
+    });
+
+    // Handle paste event
+    $('.save_posthashtag').on('paste', function(e) {
+        // Get pasted data
+        let pastedData = (e.originalEvent || e).clipboardData.getData('text/plain');
+
+        // Check if pasted data is alphanumeric
+        if (!isAlphanumeric(pastedData)) {
+            e.preventDefault();
+            // Optionally, you can alert the user
+            alert('Only alphanumeric characters are allowed!');
+        }
+    });
+
+    // Handle input event to clean any non-alphanumeric characters
+    $('.save_posthashtag').on('input', function() {
+        let value = $(this).val();
+        // Replace any non-alphanumeric characters
+        if (!isAlphanumeric(value)) {
+            $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
+        }
+    });
+
+    /*
     $(".save_posthashtag").keydown(function(e) {
         var code = e.keyCode ? e.keyCode : e.which;
         var ok = code >= 65 && code <= 90 || // A-Z
@@ -1074,7 +1113,7 @@ $(document).ready(function () {
             e.preventDefault();
         }
     });
-
+    */
 
     //Only for post page but still:
     set_autosize($('.usertitle_' + parseInt($('#focus__id').val())));
