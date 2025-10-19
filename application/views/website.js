@@ -1097,6 +1097,7 @@ $(document).ready(function () {
         let cursorPosition = this.selectionStart;
         let currentValue = $(this).val();
         let newValue = currentValue.substring(0, cursorPosition) + cleanedData + currentValue.substring(cursorPosition);
+        $(this).val(' ');
         $(this).val(newValue);
     });
 
