@@ -777,6 +777,16 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
+                        <!-- Post Footnote -->
+                        <div class="dynamic_editing_input">
+                            <h3 class="mini-font" style="margin-bottom: -34px;"><span
+                                        class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
+                            <textarea
+                                    class="form-control note-textarea algolia_finder editing-mode algolia__e algolia__i save_postfootnote"
+                                    placeholder="<?= (strlen($users___11035[3449971]['m__message']) ? $users___11035[3449971]['m__message'] : $users___11035[3449971]['m__name']) ?>"
+                                    style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                        </div>
+
                         <div class="inner_message left_padded">
                             <?php
                             foreach ($this->config->item('users___44168') as $userid => $m) {
@@ -881,16 +891,6 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                             <div class="doclear">&nbsp;</div>
                         </div>
 
-
-                        <!-- Post Footnote -->
-                        <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><span
-                                        class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
-                            <textarea
-                                    class="form-control note-textarea algolia_finder editing-mode algolia__e algolia__i save_postfootnote"
-                                    placeholder="<?= (strlen($users___11035[3449971]['m__message']) ? $users___11035[3449971]['m__message'] : $users___11035[3449971]['m__name']) ?>"
-                                    style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                        </div>
 
                         <div class="post_preview_frame hideIfEmpty" style="margin-left: 40px;">
                             <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
