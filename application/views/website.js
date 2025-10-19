@@ -1058,7 +1058,10 @@ $(document).ready(function () {
         }
     });
     $(".save_posthashtag").keyup(function(e) {
+        post_suggestions();
+    });
 
+    $(".save_posthashtag").keydown(function(e) {
         var code = e.keyCode ? e.keyCode : e.which;
         var ok = code >= 65 && code <= 90 || // A-Z
             code >= 96 && code <= 105 || // a-z
@@ -1070,8 +1073,6 @@ $(document).ready(function () {
         if(!ok || (e.ctrlKey && e.altKey)){
             e.preventDefault();
         }
-
-        post_suggestions();
     });
 
 
