@@ -1062,12 +1062,19 @@ $(document).ready(function () {
     });
 
 
+
+    // Function to check if string is alphanumeric
     function isAlphanumeric(str) {
         return /^[a-zA-Z0-9]*$/.test(str);
     }
 
+    // Function to strip non-alphanumeric characters
+    function stripNonAlphanumeric(str) {
+        return str.replace(/[^a-zA-Z0-9]/g, '');
+    }
+
     // Handle keypress event
-    $('.save_posthashtag').on('keypress', function(e) {
+    $('.my_input').on('keypress', function(e) {
         // Get the key pressed
         let char = String.fromCharCode(e.which);
 
@@ -1078,24 +1085,32 @@ $(document).ready(function () {
     });
 
     // Handle paste event
-    $('.save_posthashtag').on('paste', function(e) {
+    $('.my_input').on('paste', function(e) {
         // Get pasted data
         let pastedData = (e.originalEvent || e).clipboardData.getData('text/plain');
 
-        // Check if pasted data is alphanumeric
-        if (!isAlphanumeric(pastedData)) {
-            e.preventDefault();
-            // Optionally, you can alert the user
-            alert('Only alphanumeric characters are allowed!');
+        // Strip non-alphanumeric characters from pasted data
+        let cleanedData = stripNonAlphanumeric(pastedData);
+
+        // Prevent default paste and insert cleaned data
+        e.preventDefault();
+        let cursorPosition = this.selectionStart;
+        let currentValue = $(this).val();
+        let newValue = currentValue.substring(0, cursorPosition) + cleanedData + currentValue.substring(cursorPosition);
+        $(this).val(newValue);
+
+        // Optionally, notify user if content was modified
+        if (pastedData !== cleanedData) {
+            alert('Non-alphanumeric characters were removed from pasted content.');
         }
     });
 
     // Handle input event to clean any non-alphanumeric characters
-    $('.save_posthashtag').on('input', function() {
+    $('.my_input').on('input', function() {
         let value = $(this).val();
         // Replace any non-alphanumeric characters
         if (!isAlphanumeric(value)) {
-            $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
+            $(this).val(stripNonAlphanumeric(value));
         }
     });
 
