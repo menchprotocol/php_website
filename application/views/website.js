@@ -1028,7 +1028,7 @@ function post_suggestions() {
     $(".frame_3449936").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/controller/post_suggestions", {
-        postid: postid,
+        postid: $('#modal31911 .save_postid').val(),
         save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
         save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
         save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
