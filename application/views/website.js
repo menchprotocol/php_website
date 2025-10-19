@@ -1058,6 +1058,19 @@ $(document).ready(function () {
         }
     });
     $(".save_posthashtag").keyup(function(e) {
+
+        var code = e.keyCode ? e.keyCode : e.which;
+        var ok = code >= 65 && code <= 90 || // A-Z
+            code >= 96 && code <= 105 || // a-z
+            code >= 35 && code <= 40 || // arrows
+            code == 9 || //tab
+            code == 46 || //del
+            code == 8 || // backspaces
+            (!e.shiftKey && code >= 48 && code <= 57); // only 0-9 (ignore SHIFT options)
+        if(!ok || (e.ctrlKey && e.altKey)){
+            e.preventDefault();
+        }
+
         post_suggestions();
     });
 
