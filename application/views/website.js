@@ -2017,6 +2017,7 @@ function post_edit(postid = 0, chainid = 0, next_postid = 0) {
     setTimeout(function () {
         //Adjust sizes:
         set_autosize($('#modal31911 .save_postmessage'));
+        set_autosize($('#modal31911 .save_postfootnote'));
         set_autosize($('#modal31911 .save_chainvalue'));
     }, 233);
 
