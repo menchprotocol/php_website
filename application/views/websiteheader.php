@@ -778,7 +778,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                         </div>
 
                         <!-- Post Footnote -->
-                        <div class="dynamic_editing_input">
+                        <div class="dynamic_editing_input" style="margin: -8px 0 0 0 !important;">
                             <h3 class="mini-font" style="margin-bottom: -34px;"><span
                                         class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
                             <textarea
