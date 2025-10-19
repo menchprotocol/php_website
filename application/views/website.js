@@ -1057,6 +1057,9 @@ $(document).ready(function () {
             post_suggestions();
         }
     });
+    $(".save_posthashtag").keyup(function(e) {
+        post_suggestions();
+    });
 
 
     //Only for post page but still:
