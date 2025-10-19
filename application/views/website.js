@@ -1051,7 +1051,7 @@ $(document).ready(function () {
 
 
     //Activate post suggestions
-    $(".save_postmessage").keyup(function(e) {
+    $(".save_postmessage, .save_postfootnote").keyup(function(e) {
         var code = e.keyCode ? e.keyCode : e.which;
         if (code == 13) {  // Enter keycode
             post_suggestions();
