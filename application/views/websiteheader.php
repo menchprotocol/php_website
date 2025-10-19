@@ -883,7 +883,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
 
                         <!-- Post Footnote -->
-                        <div class="dynamic_editing_input" style="margin: 0 !important;">
+                        <div class="dynamic_editing_input">
                             <h3 class="mini-font"><span
                                         class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
                             <textarea
@@ -895,15 +895,6 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                         <div class="post_preview_frame hideIfEmpty" style="margin-left: 40px;">
                             <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
                             <div class="doclear">&nbsp;</div>
-                        </div>
-
-
-                        <div class="dynamic_editing_input single_line hash_group hidden_superpower__10939">
-                            <h3 class="mini-font"><span
-                                        class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
-                            <input type="text" class="form-control unsaved_warning  no-border"
-                                   placeholder="<?= $users___11035[3449971]['m__name'] ?>"
-                                   title="<?= $users___11035[3449971]['m__message'] ?>">
                         </div>
 
 
