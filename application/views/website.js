@@ -1098,11 +1098,6 @@ $(document).ready(function () {
         let currentValue = $(this).val();
         let newValue = currentValue.substring(0, cursorPosition) + cleanedData + currentValue.substring(cursorPosition);
         $(this).val(newValue);
-
-        // Optionally, notify user if content was modified
-        if (pastedData !== cleanedData) {
-            alert('Non-alphanumeric characters were removed from pasted content.');
-        }
     });
 
     // Handle input event to clean any non-alphanumeric characters
