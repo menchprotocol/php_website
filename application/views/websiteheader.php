@@ -161,7 +161,7 @@ if(!$basic_header_footer){
         $('.text_adder').on('click', function (event) {
             //This prevents the emoji modal from closing when an emoji is selected
             var text_value = $(this).attr('text_value');
-            insertText($(".save_postmessage"), "\n "+text_value);
+            insertText($(".save_postmessage"), "\n " + text_value);
             setTimeout(function () {
                 $(".save_postmessage").focus();
             }, 377);
@@ -173,9 +173,9 @@ if(!$basic_header_footer){
 
         //Emoji selector:
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
-        import { insert_text } from "./website.js";
-        window.greetFromModule = insert_text;
+        import {insert_text} from "./website.js";
 
+        window.greetFromModule = insert_text;
 
 
     </script>
@@ -752,14 +752,13 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                         <input type="hidden" class="next_postid" value="0"/>
 
                         <!-- Post Hashtag -->
-                        <div class="dynamic_editing_input single_line hash_group <?= (!user_session(10939) ? ' hidden ' : '') ?>">
+                        <div class="dynamic_editing_input single_line hash_group hidden_superpower__10939">
                             <h3 class="mini-font"><span
                                         class="icon-block"><?= $users___12273[32337]['m__cover'] ?></span></h3>
                             <input type="text" class="form-control unsaved_warning save_posthashtag no-border"
                                    placeholder="<?= $users___12273[32337]['m__name'] ?>"
                                    maxlength="<?= view_memory(6404, 41985) ?>"
-                                   title="<?= $users___12273[32337]['m__message'] ?>" data-toggle="tooltip"
-                                   data-placement="bottom">
+                                   title="<?= $users___12273[32337]['m__message'] ?>">
                         </div>
 
                         <!-- Post Creator -->
@@ -776,10 +775,6 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessage"
                                     placeholder="<?= (strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__name']) ?>"
                                     style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                            <div class="post_preview_frame hideIfEmpty" style="margin-left: 40px;">
-                                <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
-                                <div class="doclear">&nbsp;</div>
-                            </div>
                         </div>
 
                         <div class="inner_message left_padded">
@@ -789,7 +784,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                 if ($userid == 2125205) {
 
                                     //Suggested Posts
-                                    echo '<div class="dynamic_editing_input no_padded compact_dropdown">';
+                                    echo '<div class="dynamic_editing_input no_padded compact_dropdown hidden_superpower__10939">';
                                     echo '<button class="btn btn-secondary dropdown-toggle icon-block" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
                                     echo '<ul class="dropdown-menu left-padded-menu" aria-labelledby="suggest_' . $userid . '">';
@@ -802,7 +797,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                             //Ideas
                                             echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
                                             foreach ($this->config->item('users___4486') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><b>'.$m3['m__cover'].'</b>'.$m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . $m3['m__name'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 3410436) {
@@ -819,7 +814,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                 } elseif ($userid == 2125246) {
 
                                     //Suggested Users
-                                    echo '<div class="dynamic_editing_input no_padded compact_dropdown">';
+                                    echo '<div class="dynamic_editing_input no_padded compact_dropdown hidden_superpower__10939">';
                                     echo '<button class="btn btn-secondary dropdown-toggle icon-block" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
                                     echo '<ul class="dropdown-menu left-padded-menu" aria-labelledby="suggest_' . $userid . '">';
@@ -832,28 +827,28 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Mentions
                                             foreach ($this->config->item('users___13550') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="'.$m3['m__cover'].'" title="' . $m3['m__message'] . '"><b>'.$m3['m__cover'].'</b>'.$m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . $m3['m__name'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 4737) {
 
                                             //Form Inputs
                                             foreach ($this->config->item('users___4737') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name']. ( strlen($m3['m__message']) ? ': '.$m3['m__message'] : '' ) . '">@' . $m3['m__handle'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="@' . $m3['m__handle'] . data_type_example($userid3) . '" title="' . $m3['m__name'] . (strlen($m3['m__message']) ? ': ' . $m3['m__message'] : '') . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 42179) {
 
                                             //Form Settings
                                             foreach ($this->config->item('users___42179') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name']. ( strlen($m3['m__message']) ? ': '.$m3['m__message'] : '' ) . '">@' . $m3['m__handle'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@' . $m3['m__handle'] . data_type_example($userid3) . '" title="' . $m3['m__name'] . (strlen($m3['m__message']) ? ': ' . $m3['m__message'] : '') . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 6287) {
 
                                             //Apps
                                             foreach ($this->config->item('users___6287') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder '.( strlen($m3['m__message']) ? 'underdot' : '' ).'" href="javascript:void(0);" text_value="@'.$m3['m__handle'].data_type_example($userid3).'" title="' . $m3['m__name']. ( strlen($m3['m__message']) ? ': '.$m3['m__message'] : '' ) . '">@' . $m3['m__handle'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="@' . $m3['m__handle'] . data_type_example($userid3) . '" title="' . $m3['m__name'] . (strlen($m3['m__message']) ? ': ' . $m3['m__message'] : '') . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
                                         }
@@ -876,29 +871,49 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                         </div>
                                     </div>';
 
+                                } elseif ($userid == 3449936) { //Post Editor Processing
+
+                                    echo '<div class="frame_3449936 full_width_box inline-block"></div>';
+
                                 }
                             }
                             ?>
                             <div class="doclear">&nbsp;</div>
                         </div>
 
+
+                        <!-- Post Footnote -->
+                        <div class="dynamic_editing_input" style="margin: 0 !important;">
+                            <h3 class="mini-font"><span
+                                        class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
+                            <textarea
+                                    class="form-control note-textarea algolia_finder editing-mode algolia__e algolia__i save_postfootnote"
+                                    placeholder="<?= (strlen($users___11035[3449971]['m__message']) ? $users___11035[3449971]['m__message'] : $users___11035[3449971]['m__name']) ?>"
+                                    style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                        </div>
+
+                        <div class="post_preview_frame hideIfEmpty" style="margin-left: 40px;">
+                            <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
+                            <div class="doclear">&nbsp;</div>
+                        </div>
+
+
+                        <div class="dynamic_editing_input single_line hash_group hidden_superpower__10939">
+                            <h3 class="mini-font"><span
+                                        class="icon-block"><?= ['m__cover'] ?></span></h3>
+                            <input type="text" class="form-control unsaved_warning  no-border"
+                                   placeholder="<?= $users___11035[3449971]['m__name'] ?>"
+                                   title="<?= $users___11035[3449971]['m__message'] ?>">
+                        </div>
+
+
                         <div class="hidden_superpower__10939 left_padded">
-
-                            <!-- Dynamic Loader -->
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block-sm"><i
-                                            class="fas fa-yin-yang fa-spin"></i></span>Loading
-                            </div>
-
-                            <!-- Dynamic Inputs -->
-                            <div class="dynamic_frame"><?= $dynamic_edit ?></div>
-
                             <!-- Chain Note -->
                             <div class="dynamic_editing_input save_frame hidden">
                                 <h3 class="mini-font"><?= '<span class="icon-block-sm">' . $users___11035[4372]['m__cover'] . '</span>' . $users___11035[4372]['m__name'] . ': '; ?></h3>
                                 <textarea class="form-control border unsaved_warning save_chainvalue"
                                           data-lpignore="true" placeholder="..."></textarea>
                             </div>
-
                         </div>
 
                     </div>

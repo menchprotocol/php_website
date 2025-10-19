@@ -2234,6 +2234,55 @@ class Controller extends CI_Controller
 
     }
 
+
+
+
+    function post_suggestions()
+    {
+        /*
+         *
+         * Generate Post Suggestions based on post message
+         *
+         * */
+
+        $user_session = user_session(null, 0, $this->user_session);
+        if (!$user_session) {
+            return view_json(array(
+                'status' => 0,
+                'message' => blocked_reasoning(),
+            ));
+        } elseif (!isset($_POST['postid']) || !isset($_POST['save_postmessage']) || !isset($_POST['save_posthashtag']) || !isset($_POST['save_postfootnote'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing selected User',
+            ));
+        }
+
+        $warning_message = null;
+        $preview_media = null;
+        $post_suggestion = array(
+            4737 => array(), //Form Inputs
+            42179 => array(), //Form Settings
+            6287 => array(), //Apps
+            3410436 => array(), //Sibling Posts
+        );
+
+        //Generate suggestions?
+        if(user_session(10939)){
+
+        }
+
+
+        //All good:
+        return view_json(array(
+            'status' => 1,
+            'warning_message' => $warning_message,
+            'preview_media' => $preview_media,
+            'post_suggestion' => $post_suggestion,
+        ));
+    }
+
+
     function user_select_apply()
     {
         /*

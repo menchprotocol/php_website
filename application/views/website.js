@@ -1018,6 +1018,26 @@ function insertAtCursor(myField, myValue) {
     }
 }
 
+var generating_suggestions = false;
+function post_suggestions() {
+    if(generating_suggestions){
+        return false;
+    }
+    generating_suggestions = true;
+
+    $(".frame_3449936").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+
+    $.post("/controller/post_suggestions", {
+        postid: postid,
+        save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
+        save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
+        save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
+    }, function (data) {
+
+    });
+
+}
+
 var index_algolia = false;
 $(document).ready(function () {
 
@@ -1027,6 +1047,16 @@ $(document).ready(function () {
     setup_popover();
 
     watch_cover();
+
+
+    //Activate post suggestions
+    $(".save_postmessage").keyup(function(e) {
+        var code = e.keyCode ? e.keyCode : e.which;
+        if (code == 13) {  // Enter keycode
+            post_suggestions();
+        }
+    });
+
 
     //Only for post page but still:
     set_autosize($('.usertitle_' + parseInt($('#focus__id').val())));
@@ -2000,7 +2030,6 @@ function post_edit(postid = 0, chainid = 0, next_postid = 0) {
 function load_post_dynamic(postid, chainid, initial_loading) {
 
     $(".dynamic_item").addClass('hidden'); //Hide all current items
-    $(".dynamic_editing_loading").removeClass('hidden');
     var created_postid = 0;
 
     $.post("/controller/post_edit", {
@@ -2008,8 +2037,6 @@ function load_post_dynamic(postid, chainid, initial_loading) {
         chainid: chainid,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-
-        $(".dynamic_editing_loading").addClass('hidden');
 
         if (data.status) {
 
@@ -2133,9 +2160,10 @@ function post_update() {
         next_postid: $('#modal31911 .next_postid').val(),
         save_discoverymode: $('.s__12273_' + save_postid).attr('discovery_mode'),
         focus_group: focus_group,
-        save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
-        save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
         save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
+        save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
+        save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
+        save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
