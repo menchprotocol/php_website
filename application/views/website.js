@@ -1033,7 +1033,7 @@ function post_suggestions() {
         save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
         save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
     }, function (data) {
-        $(".frame_3449936").html('');
+        $(".frame_3449936").html(' ');
     });
 
 }
