@@ -900,7 +900,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                         <div class="dynamic_editing_input single_line hash_group hidden_superpower__10939">
                             <h3 class="mini-font"><span
-                                        class="icon-block"><?= ['m__cover'] ?></span></h3>
+                                        class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
                             <input type="text" class="form-control unsaved_warning  no-border"
                                    placeholder="<?= $users___11035[3449971]['m__name'] ?>"
                                    title="<?= $users___11035[3449971]['m__message'] ?>">
