@@ -1074,7 +1074,7 @@ $(document).ready(function () {
     }
 
     // Handle keypress event
-    $('.my_input').on('keypress', function(e) {
+    $('.save_posthashtag').on('keypress', function(e) {
         // Get the key pressed
         let char = String.fromCharCode(e.which);
 
@@ -1085,7 +1085,7 @@ $(document).ready(function () {
     });
 
     // Handle paste event
-    $('.my_input').on('paste', function(e) {
+    $('.save_posthashtag').on('paste', function(e) {
         // Get pasted data
         let pastedData = (e.originalEvent || e).clipboardData.getData('text/plain');
 
@@ -1106,7 +1106,7 @@ $(document).ready(function () {
     });
 
     // Handle input event to clean any non-alphanumeric characters
-    $('.my_input').on('input', function() {
+    $('.save_posthashtag').on('input', function() {
         let value = $(this).val();
         // Replace any non-alphanumeric characters
         if (!isAlphanumeric(value)) {
