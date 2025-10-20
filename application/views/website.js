@@ -1036,16 +1036,17 @@ function post_suggestions() {
 
         $(".frame_3449936").html(' ');
         generating_suggestions = false;
-        console.log(data);
-
-        //Hide everything:
-        $('ul.suggest_menu li.item__4737').addClass('hidden');
-        if(data.suggest_4737.length>0){
-            $('ul.suggest_menu li.item__4737.grey').removeClass('hidden');
-            for (var i = 0; i < data.suggest_4737.length; i++) {
-                $('ul.suggest_menu li.item__4737.item__'+data.suggest_4737[i]).removeClass('hidden');
+        var loop_through = [4737,42179,6287,3410436];
+        for (var x = 0; x < loop_through; x++) {
+            $('ul.suggest_menu li.item__'+loop_through[x]).addClass('hidden');
+            if(data.suggest_data[loop_through[x]].length>0){
+                $('ul.suggest_menu li.item__'+loop_through[x]+'.grey').removeClass('hidden');
+                for (var i = 0; i < data.suggest_data[loop_through[x]].length; i++) {
+                    $('ul.suggest_menu li.item__'+loop_through[x]+'.item__'+data.suggest_data[loop_through[x]][i]).removeClass('hidden');
+                }
             }
         }
+
     });
 
 }

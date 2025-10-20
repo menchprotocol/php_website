@@ -2260,29 +2260,26 @@ class Controller extends CI_Controller
 
         $warning_message = null;
         $preview_media = null;
-        $suggest_4737 = array();
-        $suggest_42179 = array();
-        $suggest_6287 = array();
-        $suggest_3410436 = array();
+        $suggest_data = array();
 
 
         //Generate suggestions?
         if(user_session(10939)){
             foreach($this->config->item('users___4737') as $userid => $m){
-                array_push($suggest_4737, $userid);
+                array_push($suggest_data[4737], $userid);
             }
         }
 
+        $suggest_data[42179] = array();
+        $suggest_data[6287] = array();
+        $suggest_data[3410436] = array();
 
         //All good:
         return view_json(array(
             'status' => 1,
             'warning_message' => $warning_message,
             'preview_media' => $preview_media,
-            'suggest_4737' => $suggest_4737,
-            'suggest_42179' => $suggest_42179,
-            'suggest_6287' => $suggest_6287,
-            'suggest_3410436' => $suggest_3410436,
+            'suggest_data' => $suggest_data,
         ));
     }
 
