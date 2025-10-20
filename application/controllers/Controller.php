@@ -2276,7 +2276,11 @@ class Controller extends CI_Controller
             //Form Inputs, show them all if none of them are referenced:
             if(count(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']))){
                 foreach(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']) as $first_form_input){
-                    $suggest_data[42179] = array_intersect($this->config->item('userids___'.$first_form_input), $this->config->item('userids___42179'));
+                    foreach(array_intersect($this->config->item('userids___'.$first_form_input), $this->config->item('userids___42179')) as $settingid){
+                        if(!in_array($settingid, $post_index['referenced_users'])){
+                            array_push($suggest_data[42179], $settingid);
+                        }
+                    }
                     break;
                 }
             } else {
