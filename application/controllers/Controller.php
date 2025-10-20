@@ -2260,14 +2260,18 @@ class Controller extends CI_Controller
 
         $warning_message = null;
         $preview_media = null;
-        $suggest_4737 = $this->config->item('users___4737');
+        $suggest_4737 = array();
         $suggest_42179 = array();
         $suggest_6287 = array();
         $suggest_3410436 = array();
 
+
         //Generate suggestions?
         if(user_session(10939)){
-
+            foreach($this->config->item('users___4737') as $userid => $m){
+                $m['userid'] = $userid;
+                array_push($suggest_4737, $m);
+            }
         }
 
 
