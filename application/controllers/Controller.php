@@ -2258,7 +2258,7 @@ class Controller extends CI_Controller
             ));
         }
 
-        $post_index = post_index(trim($_POST['save_postmessage'])."\n*\n".trim($_POST['save_postfootnote']), 0, 0, $_POST['save_posthashtag']);
+        $post_index = post_index(trim($_POST['save_postmessage']).( strlen($_POST['save_postfootnote']) ? "\n*\n".trim($_POST['save_postfootnote']) : '' ), 0, 0, $_POST['save_posthashtag']);
 
 
         $warning_message = null;
