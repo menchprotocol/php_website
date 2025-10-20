@@ -2264,15 +2264,14 @@ class Controller extends CI_Controller
 
 
         //Generate suggestions?
+        $suggest_data[4737] = array();
         if(user_session(10939)){
             foreach($this->config->item('users___4737') as $userid => $m){
                 array_push($suggest_data[4737], $userid);
             }
         }
-
         $suggest_data[42179] = array();
         $suggest_data[6287] = array();
-        $suggest_data[3410436] = array();
 
         //All good:
         return view_json(array(
