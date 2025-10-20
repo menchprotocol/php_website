@@ -2271,17 +2271,28 @@ class Controller extends CI_Controller
         if(user_session(10939)){
 
             //Form Inputs, show them all if none of them are referenced:
-            if(!array_intersect($this->config->item('userids___4737'), $post_index['referenced_users'])){
+            if(count(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']))){
+                foreach(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']) as $first_form_input){
+                    $suggest_data[42179] = array_intersect($this->config->item('userids___'.$first_form_input), $this->config->item('userids___42179'));
+                    break;
+                }
+            } else {
                 foreach($this->config->item('users___4737') as $userid => $m){
                     array_push($suggest_data[4737], $userid);
                 }
             }
 
+            foreach($this->config->item('users___30841') as $userid => $m){
+                array_push($suggest_data[6287], $userid);
+            }
+            if((count($post_index['new_posts']) + count($post_index['referenced_posts']))>0){
+                foreach($this->config->item('users___3450818') as $userid => $m){
+                    array_push($suggest_data[6287], $userid);
+                }
+            }
+
+
         }
-
-
-        $suggest_data[42179] = array();
-        $suggest_data[6287] = array();
 
         //All good:
         return view_json(array(
