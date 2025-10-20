@@ -2260,13 +2260,16 @@ class Controller extends CI_Controller
 
         $warning_message = null;
         $preview_media = null;
-        $suggest_menu = array();
+        $suggest_4737 = array();
+        $suggest_42179 = array();
+        $suggest_6287 = array();
+        $suggest_3410436 = array();
 
 
         //Generate suggestions?
         if(user_session(10939)){
             foreach($this->config->item('users___4737') as $userid => $m){
-                array_push($suggest_menu, $userid);
+                array_push($suggest_4737, $userid);
             }
         }
 
@@ -2276,7 +2279,10 @@ class Controller extends CI_Controller
             'status' => 1,
             'warning_message' => $warning_message,
             'preview_media' => $preview_media,
-            'suggest_menu' => $suggest_menu,
+            'suggest_4737' => $suggest_4737,
+            'suggest_42179' => $suggest_42179,
+            'suggest_6287' => $suggest_6287,
+            'suggest_3410436' => $suggest_3410436,
         ));
     }
 
