@@ -4543,7 +4543,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     //Display Post media:
     /*
     $ui .= '<div class="post_preview_frame hideIfEmpty">
-                    <div id="media_outer_' . $i['postid'] . '" class="media_frame media_frame_' . $i['postid'] . ' hideIfEmpty"></div>
+                    <div id="media_outer_' . $i['postid'] . '" class="media_frame_' . $i['postid'] . ' hideIfEmpty"></div>
                     <div class="doclear">&nbsp;</div>
                 </div>';
     $ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_' . $i['postid'] . '"><span class="icon-block-sm">' . $users___11035[7637]['m__cover'] . '</span>' . $users___11035[7637]['m__name'] . '</div></div>';

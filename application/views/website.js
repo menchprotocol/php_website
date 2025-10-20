@@ -1048,6 +1048,9 @@ function post_suggestions() {
             }
         }
 
+        //Update Discovery Preview:
+        $('.preview_postdiscover').html(data.post_index.postdiscover);
+
     });
 
 }
@@ -2444,22 +2447,6 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Log error
             console.log('ERROR');
             console.log(result);
-
-
-        } else if (result.event === "queues-start") {
-
-            //Enable Sorting:
-            if (uploader_id == 13572) {
-
-                //Posttor Uploader
-                sort_media('media_editor_frame');
-
-            } else if (uploader_id == 43004) {
-
-                //Discovery Uploader
-                sort_media('media_outer_' + s__id);
-
-            }
 
         } else if (result.event === "upload-added") {
 

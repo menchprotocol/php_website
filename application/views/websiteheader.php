@@ -888,8 +888,8 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                         </div>
 
 
-                        <div class="post_preview_frame hideIfEmpty" style="margin-left: 40px;">
-                            <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
+                        <div style="margin-left: 40px;">
+                            <div class="preview_postdiscover hideIfEmpty"></div>
                             <div class="doclear">&nbsp;</div>
                         </div>
 

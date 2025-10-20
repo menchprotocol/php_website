@@ -2258,6 +2258,9 @@ class Controller extends CI_Controller
             ));
         }
 
+        $post_index = post_index(trim($_POST['save_postmessage'])."\n*\n".trim($_POST['save_postfootnote']), 0, 0, $_POST['save_posthashtag']);
+
+
         $warning_message = null;
         $preview_media = null;
         $suggest_data = array();
@@ -2270,6 +2273,8 @@ class Controller extends CI_Controller
                 array_push($suggest_data[4737], $userid);
             }
         }
+
+
         $suggest_data[42179] = array();
         $suggest_data[6287] = array();
 
@@ -2279,6 +2284,7 @@ class Controller extends CI_Controller
             'warning_message' => $warning_message,
             'preview_media' => $preview_media,
             'suggest_data' => $suggest_data,
+            'post_index' => $post_index,
         ));
     }
 
