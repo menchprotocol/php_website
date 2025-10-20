@@ -780,7 +780,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                         <!-- Post Footnote -->
                         <div class="dynamic_editing_input" style="margin: -8px 0 0 0 !important;">
-                            <h3 class="mini-font" style="margin-bottom: -34px;"><span
+                            <h3 class="mini-font" style="margin-bottom: -35px;"><span
                                         class="icon-block"><?= $users___11035[3449971]['m__cover'] ?></span></h3>
                             <textarea
                                     class="form-control note-textarea algolia_finder editing-mode algolia__e algolia__i save_postfootnote"
