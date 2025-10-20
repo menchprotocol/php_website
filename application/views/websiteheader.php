@@ -832,7 +832,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     foreach ($this->config->item('users___2125246') as $userid2 => $m2) {
 
                                         //Print Header
-                                        echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
+                                        echo '<li class="grey item__'.$userid2.'"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
 
                                         if ($userid2 == 13550) {
 
