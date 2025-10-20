@@ -1037,7 +1037,7 @@ function post_suggestions() {
         generating_suggestions = false;
         console.log(data);
 
-        for (var i = 0; i < data.suggest_4737; i++) {
+        for (var i = 0; i < data.suggest_4737.length; i++) {
             console.log(myStringArray[i]);
             //Do something
         }
