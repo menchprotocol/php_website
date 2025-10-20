@@ -1041,8 +1041,17 @@ function post_suggestions() {
         for (var i = 0; i < data.suggest_4737.length; i++) {
             console.log(data.suggest_4737[i]);
             $('li.item__4737.grey').after('<li class="inline-block item__4737"><a class="dropdown-item inline-block text_adder ' + ( data.suggest_4737[i]['m__message'].length ? 'underdot' : '') + '" href="javascript:void(0);" text_value="@' + data.suggest_4737[i]['m__message'] + data.suggest_4737[i]['data_type_example'] + '" title="' + data.suggest_4737[i]['m__name'] + ( data.suggest_4737[i]['m__message'].length ? ': ' + data.suggest_4737[i]['m__message'] : '') + '">@' + data.suggest_4737[i]['m__handle'] + '</a></li>');
-
         }
+
+        $('.text_adder').on('click', function (event) {
+            //This prevents the emoji modal from closing when an emoji is selected
+            var text_value = $(this).attr('text_value');
+            insertText($(".save_postmessage"), "\n " + text_value);
+            post_suggestions();
+            setTimeout(function () {
+                $(".save_postmessage").focus();
+            }, 377);
+        });
 
     });
 
