@@ -1033,25 +1033,16 @@ function post_suggestions() {
         save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
         save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
     }, function (data) {
+
         $(".frame_3449936").html(' ');
         generating_suggestions = false;
         console.log(data);
 
-        $('ul.suggest__2125246 li.item__4737').not('.grey').remove();
-        for (var i = 0; i < data.suggest_4737.length; i++) {
-            console.log(data.suggest_4737[i]);
-            $('li.item__4737.grey').after('<li class="inline-block item__4737"><a class="dropdown-item inline-block text_adder ' + ( data.suggest_4737[i]['m__message'].length ? 'underdot' : '') + '" href="javascript:void(0);" text_value="@' + data.suggest_4737[i]['m__message'] + data.suggest_4737[i]['data_type_example'] + '" title="' + data.suggest_4737[i]['m__name'] + ( data.suggest_4737[i]['m__message'].length ? ': ' + data.suggest_4737[i]['m__message'] : '') + '">@' + data.suggest_4737[i]['m__handle'] + '</a></li>');
+        //Hide everything:
+        $('ul.suggest_menu li').not('.grey').addClass('hidden');
+        for (var i = 0; i < data.suggest_menu.length; i++) {
+            $('ul.suggest_menu li.item__'+data.suggest_menu[i]).removeClass('hidden');
         }
-
-        $('.text_adder').on('click', function (event) {
-            //This prevents the emoji modal from closing when an emoji is selected
-            var text_value = $(this).attr('text_value');
-            insertText($(".save_postmessage"), "\n " + text_value);
-            post_suggestions();
-            setTimeout(function () {
-                $(".save_postmessage").focus();
-            }, 377);
-        });
 
     });
 
