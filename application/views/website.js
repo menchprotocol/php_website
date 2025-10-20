@@ -1039,10 +1039,10 @@ function post_suggestions() {
         var loop_through = [4737,42179,6287];
         for (var x = 0; x < loop_through; x++) {
             $('ul.suggest_menu li.item__'+loop_through[x]).addClass('hidden');
-            if(data.suggest_data[loop_through[x]].length>0){
+            if(data.suggest_data[loop_through[x]].length){
                 $('ul.suggest_menu li.item__'+loop_through[x]+'.grey').removeClass('hidden');
                 for (var i = 0; i < data.suggest_data[loop_through[x]].length; i++) {
-                    $('ul.suggest_menu li.item__'+loop_through[x]+'.item__'+data.suggest_data[loop_through[x]][i]).removeClass('hidden');
+                    $('ul.suggest_menu li.item__'+data.suggest_data[loop_through[x]][i]).removeClass('hidden');
                 }
             }
         }
