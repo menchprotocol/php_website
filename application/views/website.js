@@ -1039,6 +1039,16 @@ function post_suggestions() {
 
 }
 
+// Function to check if string is alphanumeric
+function isAlphanumeric(str) {
+    return /^[a-zA-Z0-9]*$/.test(str);
+}
+
+// Function to strip non-alphanumeric characters
+function stripNonAlphanumeric(str) {
+    return str.replace(/[^a-zA-Z0-9]/g, '');
+}
+
 var index_algolia = false;
 $(document).ready(function () {
 
@@ -1060,18 +1070,6 @@ $(document).ready(function () {
     $(".save_posthashtag").keyup(function(e) {
         post_suggestions();
     });
-
-
-
-    // Function to check if string is alphanumeric
-    function isAlphanumeric(str) {
-        return /^[a-zA-Z0-9]*$/.test(str);
-    }
-
-    // Function to strip non-alphanumeric characters
-    function stripNonAlphanumeric(str) {
-        return str.replace(/[^a-zA-Z0-9]/g, '');
-    }
 
     // Handle keypress event
     $('.save_posthashtag').on('keypress', function(e) {
@@ -1108,22 +1106,6 @@ $(document).ready(function () {
             $(this).val(stripNonAlphanumeric(value));
         }
     });
-
-    /*
-    $(".save_posthashtag").keydown(function(e) {
-        var code = e.keyCode ? e.keyCode : e.which;
-        var ok = code >= 65 && code <= 90 || // A-Z
-            code >= 96 && code <= 105 || // a-z
-            code >= 35 && code <= 40 || // arrows
-            code == 9 || //tab
-            code == 46 || //del
-            code == 8 || // backspaces
-            (!e.shiftKey && code >= 48 && code <= 57); // only 0-9 (ignore SHIFT options)
-        if(!ok || (e.ctrlKey && e.altKey)){
-            e.preventDefault();
-        }
-    });
-    */
 
     //Only for post page but still:
     set_autosize($('.usertitle_' + parseInt($('#focus__id').val())));

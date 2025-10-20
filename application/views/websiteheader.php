@@ -802,16 +802,16 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     foreach ($this->config->item('users___2125205') as $userid2 => $m2) {
 
                                         //Print Header
+                                        echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
 
                                         if ($userid2 == 4486) {
 
                                             //Ideas
-                                            echo '<li class="grey"><span class="dropdown-item" title="' . $m2['m__message'] . '"><span class="icon-block-sm">' . $m2['m__cover'] . '</span>' . $m2['m__name'] . ':</span></li>';
                                             foreach ($this->config->item('users___4486') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . $m3['m__name'] . '</a></li>';
                                             }
 
-                                        } elseif ($userid2 == 3410436) {
+                                        } elseif (0 && $userid2 == 3410436) {
 
                                             //Sibling Posts
                                             //TODO...
@@ -841,21 +841,21 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . $m3['m__name'] . '</a></li>';
                                             }
 
-                                        } elseif ($userid2 == 4737) {
+                                        } elseif (0 && $userid2 == 4737) {
 
                                             //Form Inputs
                                             foreach ($this->config->item('users___4737') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="@' . $m3['m__handle'] . data_type_example($userid3) . '" title="' . $m3['m__name'] . (strlen($m3['m__message']) ? ': ' . $m3['m__message'] : '') . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
-                                        } elseif ($userid2 == 42179) {
+                                        } elseif (0 && $userid2 == 42179) {
 
                                             //Form Settings
                                             foreach ($this->config->item('users___42179') as $userid3 => $m3) {
                                                 echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder" href="javascript:void(0);" text_value="@' . $m3['m__handle'] . data_type_example($userid3) . '" title="' . $m3['m__name'] . (strlen($m3['m__message']) ? ': ' . $m3['m__message'] : '') . '">@' . $m3['m__handle'] . '</a></li>';
                                             }
 
-                                        } elseif ($userid2 == 6287) {
+                                        } elseif (0 && $userid2 == 6287) {
 
                                             //Apps
                                             foreach ($this->config->item('users___6287') as $userid3 => $m3) {
