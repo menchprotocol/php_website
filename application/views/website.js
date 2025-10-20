@@ -1047,7 +1047,6 @@ function post_suggestions() {
             }
         } else {
             $('ul.suggest_menu li.item__4737.grey').addClass('hidden');
-            $('ul.suggest_menu li.item__4737').not('.grey').addClass('hidden');
         }
     });
 
