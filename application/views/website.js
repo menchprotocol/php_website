@@ -1039,14 +1039,12 @@ function post_suggestions() {
         console.log(data);
 
         //Hide everything:
-        $('ul.suggest_menu li.item__4737').not('.grey').addClass('hidden');
+        $('ul.suggest_menu li.item__4737').addClass('hidden');
         if(data.suggest_4737.length>0){
             $('ul.suggest_menu li.item__4737.grey').removeClass('hidden');
             for (var i = 0; i < data.suggest_4737.length; i++) {
                 $('ul.suggest_menu li.item__4737.item__'+data.suggest_4737[i]).removeClass('hidden');
             }
-        } else {
-            $('ul.suggest_menu li.item__4737.grey').addClass('hidden');
         }
     });
 
