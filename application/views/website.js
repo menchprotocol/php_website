@@ -1036,7 +1036,7 @@ function post_suggestions() {
 
         $(".frame_3449936").html(' ');
         generating_suggestions = false;
-        var loop_through = [4737,42179,6287];
+        var loop_through = ['4737','42179','6287'];
         for (var x = 0; x < loop_through; x++) {
             console.log('Alo '+loop_through + loop_through[x]);
             $('ul.suggest_menu li.item__'+loop_through[x]).addClass('hidden');
