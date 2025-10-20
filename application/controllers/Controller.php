@@ -2268,6 +2268,9 @@ class Controller extends CI_Controller
 
         //Generate suggestions?
         $suggest_data[4737] = array();
+        $suggest_data[6287] = array();
+        $suggest_data[42179] = array();
+
         if(user_session(10939)){
 
             //Form Inputs, show them all if none of them are referenced:
