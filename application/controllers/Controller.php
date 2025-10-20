@@ -2269,9 +2269,14 @@ class Controller extends CI_Controller
         //Generate suggestions?
         $suggest_data[4737] = array();
         if(user_session(10939)){
-            foreach($this->config->item('users___4737') as $userid => $m){
-                array_push($suggest_data[4737], $userid);
+
+            //Form Inputs, show them all if none of them are referenced:
+            if(!array_intersect($this->config->item('userids___4737'), $post_index['referenced_users'])){
+                foreach($this->config->item('users___4737') as $userid => $m){
+                    array_push($suggest_data[4737], $userid);
+                }
             }
+
         }
 
 
