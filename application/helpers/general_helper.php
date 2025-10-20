@@ -5431,9 +5431,11 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             $postmessage = null;
             $postdiscover = null;
             $postedit = null;
+            $is_url = false;
 
             if (filter_var($word_text, FILTER_VALIDATE_URL)) {
 
+                $is_url = true;
                 //Generic URL, Try to find:
                 $newUserTerm = null;
                 foreach ($CI->Chains->read(array(
@@ -5594,7 +5596,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
                         //User Reference
                         if(count($users)){
-                            array_push($post_index['referenced_users'], intval($users[0]['userid']));
+
+                            if(!$is_url){
+                                array_push($post_index['referenced_users'], intval($users[0]['userid']));
+                            }
                             foreach ($users as $user) {
 
                                 if (is_numeric($term)) {
@@ -5671,7 +5676,9 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
                             }
                         } else {
-                            array_push($post_index['new_users'], $term);
+                            if(!$is_url){
+                                array_push($post_index['new_users'], $term);
+                            }
                         }
 
                     }
