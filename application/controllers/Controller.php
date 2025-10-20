@@ -2260,12 +2260,10 @@ class Controller extends CI_Controller
 
         $warning_message = null;
         $preview_media = null;
-        $post_suggestion = array(
-            4737 => array(), //Form Inputs
-            42179 => array(), //Form Settings
-            6287 => array(), //Apps
-            3410436 => array(), //Sibling Posts
-        );
+        $suggest_4737 = $this->config->item('users___4737');
+        $suggest_42179 = array();
+        $suggest_6287 = array();
+        $suggest_3410436 = array();
 
         //Generate suggestions?
         if(user_session(10939)){
@@ -2278,7 +2276,10 @@ class Controller extends CI_Controller
             'status' => 1,
             'warning_message' => $warning_message,
             'preview_media' => $preview_media,
-            'post_suggestion' => $post_suggestion,
+            'suggest_4737' => $suggest_4737,
+            'suggest_42179' => $suggest_42179,
+            'suggest_6287' => $suggest_6287,
+            'suggest_3410436' => $suggest_3410436,
         ));
     }
 

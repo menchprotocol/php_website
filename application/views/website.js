@@ -1035,6 +1035,12 @@ function post_suggestions() {
     }, function (data) {
         $(".frame_3449936").html(' ');
         generating_suggestions = false;
+
+        for (var i = 0; i < data.suggest_4737; i++) {
+            console.log(myStringArray[i]);
+            //Do something
+        }
+
     });
 
 }
