@@ -2269,7 +2269,8 @@ class Controller extends CI_Controller
         //Generate suggestions?
         if(user_session(10939)){
             foreach($this->config->item('users___4737') as $userid => $m){
-                $m['userid'] = $userid;
+                $m['m__userid'] = $userid;
+                $m['data_type_example'] = data_type_example($userid);
                 array_push($suggest_4737, $m);
             }
         }

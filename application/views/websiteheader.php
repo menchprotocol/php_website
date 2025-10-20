@@ -798,7 +798,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     echo '<div class="dynamic_editing_input no_padded compact_dropdown hidden_superpower__10939">';
                                     echo '<button class="btn btn-secondary dropdown-toggle icon-block" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
-                                    echo '<ul class="dropdown-menu left-padded-menu" aria-labelledby="suggest_' . $userid . '">';
+                                    echo '<ul class="dropdown-menu left-padded-menu suggest__' . $userid . '" aria-labelledby="suggest_' . $userid . '">';
                                     foreach ($this->config->item('users___2125205') as $userid2 => $m2) {
 
                                         //Print Header
@@ -828,7 +828,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     echo '<div class="dynamic_editing_input no_padded compact_dropdown hidden_superpower__10939">';
                                     echo '<button class="btn btn-secondary dropdown-toggle icon-block" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="' . $m['m__name'] . '" id="suggest_' . $userid . '">' . $m['m__cover'] . '</button>';
 
-                                    echo '<ul class="dropdown-menu left-padded-menu" aria-labelledby="suggest_' . $userid . '">';
+                                    echo '<ul class="dropdown-menu left-padded-menu suggest__' . $userid . '" aria-labelledby="suggest_' . $userid . '">';
                                     foreach ($this->config->item('users___2125246') as $userid2 => $m2) {
 
                                         //Print Header

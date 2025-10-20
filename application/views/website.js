@@ -1037,9 +1037,17 @@ function post_suggestions() {
         generating_suggestions = false;
         console.log(data);
 
+        $('ul.suggest__4737 li').not('.grey').remove();
         for (var i = 0; i < data.suggest_4737.length; i++) {
+
+
+
+
+
             console.log(data.suggest_4737[i]);
-            //Do something
+
+            $('ul.suggest__4737').append('<li class="inline-block"><a class="dropdown-item inline-block text_adder ' + ( data.suggest_4737[i]['m__message'].length ? 'underdot' : '') + '" href="javascript:void(0);" text_value="@' + data.suggest_4737[i]['m__message'] + data.suggest_4737[i]['data_type_example'] + '" title="' + data.suggest_4737[i]['m__name'] + ( suggest_4737[i]['m__message'].length ? ': ' + suggest_4737[i]['m__message'] : '') + '">@' + suggest_4737[i]['m__handle'] + '</a></li>');
+
         }
 
     });
