@@ -5386,6 +5386,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
         'postmessage_new' => '',
         'postdiscover' => '',
         'postedit' => '',
+        'referenced_posts' => array(),
+        'referenced_users' => array(),
+        'new_posts' => array(),
+        'new_users' => array(),
         'actionstats' => array(
             'current' => 0,
             'added' => 0,
@@ -5394,6 +5398,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             'posts_links_fixed' => 0,
         ),
     );
+
 
     //All the possible reference types that can be found:
     $post_references = array();
@@ -5459,6 +5464,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                     }
                 }
 
+                array_push($post_index['new_users'], $newUserTerm);
+
                 //Replace Word:
                 $word_text = '@' . $newUserTerm;
 
@@ -5492,6 +5499,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
 
                         if (!count($found_posts)) {
+
+                            array_push($post_index['new_posts'], $term);
 
                             if (is_numeric($term) && count($CI->Posts->read(array(
                                     'postid' => intval($term),
@@ -5532,6 +5541,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                                     ));
                                 }
                             }
+                        } else {
+                            array_push($post_index['referenced_posts'], intval($found_posts[0]['postid']));
                         }
 
                         foreach ($found_posts as $post) {
@@ -5578,81 +5589,88 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                             );
                         }
 
+                        $users = $CI->Users->read($filter);
+
                         //User Reference
-                        foreach ($CI->Users->read($filter) as $user) {
+                        if(count($users)){
+                            array_push($post_index['referenced_users'], intval($users[0]['userid']));
+                            foreach ($users as $user) {
 
-                            if (is_numeric($term)) {
-                                //Replace Word:
-                                $term = $user['userhandle'];
-                                $word_text = $m['m__cover'] . $user['userhandle'];
-                            }
+                                if (is_numeric($term)) {
+                                    //Replace Word:
+                                    $term = $user['userhandle'];
+                                    $word_text = $m['m__cover'] . $user['userhandle'];
+                                }
 
-                            $media_append_end = false;
+                                $media_append_end = false;
 
-                            if ($chainusertype == 31835) {
+                                if ($chainusertype == 31835) {
 
-                                //This is the main @User reference
+                                    //This is the main @User reference
 
-                                $media_attachments = array();
+                                    $media_attachments = array();
 
-                                foreach ($CI->Chains->read(array(
-                                    'chainuserinput IN (' . join(',', $CI->config->item('userids___1735577')) . ')' => null, //USER DISPLAY
-                                    'chainuseroutput' => $user['userid'],
-                                    'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                                ), array(), 0) as $x) {
-                                    if ($x['chainuserinput'] == 1326) {
+                                    foreach ($CI->Chains->read(array(
+                                        'chainuserinput IN (' . join(',', $CI->config->item('userids___1735577')) . ')' => null, //USER DISPLAY
+                                        'chainuseroutput' => $user['userid'],
+                                        'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                                    ), array(), 0) as $x) {
+                                        if ($x['chainuserinput'] == 1326) {
 
-                                        //URL
-                                        array_push($media_attachments, '<a href="' . $x['chainvalue'] . '" target="_blank">' . $x['chainvalue'] . '</a>');
+                                            //URL
+                                            array_push($media_attachments, '<a href="' . $x['chainvalue'] . '" target="_blank">' . $x['chainvalue'] . '</a>');
 
-                                    } elseif ($x['chainuserinput'] == 4258) {
+                                        } elseif ($x['chainuserinput'] == 4258) {
 
-                                        //Video
-                                        array_push($media_attachments, '<video id="video_user_' . $x['chainvalue'] . '" controls class="cld-video-user cld-fluid cld-video-user-skin-light" poster="' . $user['usercover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
+                                            //Video
+                                            array_push($media_attachments, '<video id="video_user_' . $x['chainvalue'] . '" controls class="cld-video-user cld-fluid cld-video-user-skin-light" poster="' . $user['usercover'] . '"></video><script> play_video(\'' . $x['chainvalue'] . '\'); </script>');
 
-                                    } elseif ($x['chainuserinput'] == 4259) {
+                                        } elseif ($x['chainuserinput'] == 4259) {
 
-                                        //Audio
-                                        array_push($media_attachments, '<audio controls src="' . $x['chainvalue'] . '"></audio>');
+                                            //Audio
+                                            array_push($media_attachments, '<audio controls src="' . $x['chainvalue'] . '"></audio>');
 
-                                    } elseif ($x['chainuserinput'] == 4260) {
+                                        } elseif ($x['chainuserinput'] == 4260) {
 
-                                        //Image
-                                        array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
+                                            //Image
+                                            array_push($media_attachments, '<img src="' . $x['chainvalue'] . '" />');
 
+                                        }
+                                    }
+
+                                    if (count($media_attachments)) {
+                                        //Replace the Entity:
+                                        $media_append_end = '<div class="media_append">' . join(' ', $media_attachments) . '</div>';
                                     }
                                 }
 
-                                if (count($media_attachments)) {
-                                    //Replace the Entity:
-                                    $media_append_end = '<div class="media_append">' . join(' ', $media_attachments) . '</div>';
+                                //Valid User
+                                $reference_type = $chainusertype;
+                                $chainkey++;
+                                $post_references[($chainkey - 1)] = array(
+                                    'chainusertype' => $chainusertype,
+                                    'chainuserinput' => intval($user['userid']),
+                                    'chainuseroutput' => 0,
+                                    'chainpostinput' => $save_postid,
+                                    'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
+                                    'chainkey' => $chainkey,
+                                );
+
+                                $chainvalue = $m['m__cover'] . $user['userid'];
+                                $postmessage = $word_text;
+                                if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
+                                    $postdiscover = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+                                } else {
+                                    $first_ref_hidden = true;
+                                    if ($media_append_end) {
+                                        $postdiscover = $media_append_end;
+                                    }
                                 }
+                                $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+
                             }
-
-                            //Valid User
-                            $reference_type = $chainusertype;
-                            $chainkey++;
-                            $post_references[($chainkey - 1)] = array(
-                                'chainusertype' => $chainusertype,
-                                'chainuserinput' => intval($user['userid']),
-                                'chainuseroutput' => 0,
-                                'chainpostinput' => $save_postid,
-                                'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
-                                'chainkey' => $chainkey,
-                            );
-
-                            $chainvalue = $m['m__cover'] . $user['userid'];
-                            $postmessage = $word_text;
-                            if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
-                                $postdiscover = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
-                            } else {
-                                $first_ref_hidden = true;
-                                if ($media_append_end) {
-                                    $postdiscover = $media_append_end;
-                                }
-                            }
-                            $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
-
+                        } else {
+                            array_push($post_index['new_users'], $term);
                         }
 
                     }
