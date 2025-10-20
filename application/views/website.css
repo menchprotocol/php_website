@@ -1194,7 +1194,7 @@ h4 .halfbg {
     text-overflow: ellipsis;
 }
 
-.save_postfootnote{
+.modal-content .form-control.save_postfootnote{
     border-top: 1px dashed #999999 !important;
 }
 
