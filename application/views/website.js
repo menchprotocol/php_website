@@ -1038,7 +1038,7 @@ function post_suggestions() {
         console.log(data);
 
         for (var i = 0; i < data.suggest_4737.length; i++) {
-            console.log(myStringArray[i]);
+            console.log(suggest_4737[i]);
             //Do something
         }
 
