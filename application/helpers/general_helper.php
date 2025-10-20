@@ -5442,6 +5442,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                     'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 ), array('chainuseroutput'), 0) as $x) {
                     $newUserTerm = $x['userhandle'];
+                    array_push($post_index['referenced_users'], intval($x['userid']));
                 }
 
                 if (!$newUserTerm) {
@@ -5461,10 +5462,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
                         $newUserTerm = $added_e['user_create']['userhandle'];
 
+                        array_push($post_index['new_users'], $newUserTerm);
+
                     }
                 }
-
-                array_push($post_index['new_users'], $newUserTerm);
 
                 //Replace Word:
                 $word_text = '@' . $newUserTerm;
