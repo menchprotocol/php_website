@@ -5752,7 +5752,9 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                 foreach ($post_references[$chainkey] as $key => $value) {
                     if ($x[$key].'' != $value.'') {
                         //Updating needed:
-                        $post_references[$chainkey]['chainusercreator'] = $chainusercreator;
+                        if($chainusercreator > 0){
+                            $post_references[$chainkey]['chainusercreator'] = $chainusercreator;
+                        }
                         $post_index['actionstats']['update_attempt']++;
                         $post_index['actionstats']['update_success'] += $CI->Chains->update($x['chainid'], $post_references[$chainkey]);
                         $changed = true;
@@ -5787,6 +5789,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
     $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
     $post_index['post_references_count'] = count($post_references);
     $post_index['post_references'] = $post_references;
+    $post_index['saved_items_count'] = count($saved_items);
+    $post_index['saved_items'] = $saved_items;
     $post_index['chainkey'] = $chainkey;
 
     return $post_index;
