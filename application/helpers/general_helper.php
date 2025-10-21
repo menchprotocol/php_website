@@ -5752,7 +5752,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             } else {
                 //We have it, see if it matches or needs updating:
                 foreach ($post_references[$chainkey] as $key => $value) {
-                    if ($x[$key] != $value) {
+                    if ($x[$key].'' != $value.'') {
                         //Updating needed:
                         $post_references[$chainkey]['chainusercreator'] = $chainusercreator;
                         $post_index['actionstats']['update_attempt']++;
@@ -5781,6 +5781,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
     $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
     $post_index['post_references_count'] = count($post_references);
     $post_index['post_references'] = $post_references;
+    $post_index['chainkey'] = $chainkey;
 
     return $post_index;
 
