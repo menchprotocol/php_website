@@ -741,8 +741,6 @@ class Controller extends CI_Controller
             ));
         }
 
-
-        $postid = 0; //New post
         $created_postid = 0;
 
         if (!$_POST['postid']) {

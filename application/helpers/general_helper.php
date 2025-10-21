@@ -5743,40 +5743,39 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
         //Nothing else we need to do:
         foreach ($saved_items as $x) {
 
-            $post_index['actionstats']['current']++;
-
-            //What should happen here?
-            $chainkey++;
-
-            if (!isset($post_references[($chainkey - 1)])) {
+            if (!isset($post_references[$chainkey])) {
                 //Must be removed:
                 $CI->Chains->delete($x['chainid']);
                 $post_index['actionstats']['removed']++;
-                continue;
-            }
-
-            //We have it, see if it matches or needs updating:
-            foreach ($post_references[($chainkey - 1)] as $key => $value) {
-                if ($x[$key] . '' != $value . '') {
-                    //Updating needed:
-                    $post_references[($chainkey - 1)]['chainusercreator'] = $chainusercreator;
-                    $CI->Chains->update($x['chainid'], $post_references[($chainkey - 1)]);
-                    $post_index['actionstats']['updated']++;
-                    break;
+            } else {
+                //We have it, see if it matches or needs updating:
+                foreach ($post_references[$chainkey] as $key => $value) {
+                    if ($x[$key] != $value) {
+                        //Updating needed:
+                        $post_references[$chainkey]['chainusercreator'] = $chainusercreator;
+                        $CI->Chains->update($x['chainid'], $post_references[$chainkey]);
+                        $post_index['actionstats']['updated']++;
+                        break;
+                    }
                 }
             }
+
+            $chainkey++;
+            $post_index['actionstats']['current']++;
+
         }
     }
 
 
     //Any more links left that were not in DB?
-    for ($i = $chainkey; $i <= count($post_references); $i++) {
-        if (isset($post_references[$i])) {
+    if($chainkey<count($post_references)){
+        for ($i = $chainkey; $i < count($post_references); $i++) {
             $post_references[$i]['chainusercreator'] = $chainusercreator;
             $CI->Chains->create($post_references[$i]);
             $post_index['actionstats']['added']++;
         }
     }
+
 
     $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
     $post_index['post_references_count'] = count($post_references);
