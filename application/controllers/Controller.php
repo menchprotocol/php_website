@@ -1131,6 +1131,7 @@ class Controller extends CI_Controller
         }
 
         $statusupdate = -1;
+        $update_array = array();
 
         if($_POST['save_postid'] > 0){
 
@@ -1145,7 +1146,6 @@ class Controller extends CI_Controller
                 ));
             }
 
-            $update_array = array();
 
             if (strtolower($is[0]['posthashtag']) !== strtolower(trim($_POST['save_posthashtag']))) {
 
