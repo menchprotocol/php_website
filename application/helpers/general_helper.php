@@ -5395,6 +5395,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             'added' => 0,
             'removed' => 0,
             'update_attempt' => 0,
+            'no_change' => 0,
             'update_success' => 0,
             'posts_links_fixed' => 0,
         ),
@@ -5745,21 +5746,26 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
         //Nothing else we need to do:
         foreach ($saved_items as $x) {
 
-            if (!isset($post_references[$chainkey]) || !is_array($post_references[$chainkey])) {
-                //Must be removed:
-                $CI->Chains->delete($x['chainid']);
-                $post_index['actionstats']['removed']++;
-            } else {
+            if (isset($post_references[$chainkey]) && is_array($post_references[$chainkey])) {
                 //We have it, see if it matches or needs updating:
+                $changed = false;
                 foreach ($post_references[$chainkey] as $key => $value) {
                     if ($x[$key].'' != $value.'') {
                         //Updating needed:
                         $post_references[$chainkey]['chainusercreator'] = $chainusercreator;
                         $post_index['actionstats']['update_attempt']++;
                         $post_index['actionstats']['update_success'] += $CI->Chains->update($x['chainid'], $post_references[$chainkey]);
+                        $changed = true;
                         break;
                     }
                 }
+                if(!$changed){
+                    $post_index['actionstats']['no_change']++;
+                }
+            } else {
+                //Must be removed:
+                $CI->Chains->delete($x['chainid']);
+                $post_index['actionstats']['removed']++;
             }
 
             $chainkey++;
