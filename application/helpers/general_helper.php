@@ -5553,8 +5553,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                             //Valid Post
                             $reference_type = $chainusertype;
 
-                            $chainkey++;
-                            $post_references[($chainkey - 1)] = array(
+                            $post_references[$chainkey] = array(
                                 'chainusertype' => $chainusertype,
                                 'chainuserinput' => 0,
                                 'chainuseroutput' => 0,
@@ -5563,6 +5562,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                                 'chainkey' => $chainkey,
                                 'chainvalue' => null,
                             );
+                            $chainkey++;
 
                             $chainvalue = $m['m__cover'] . $post['postid'];
                             $postmessage = $word_text;
@@ -5652,8 +5652,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
                                 //Valid User
                                 $reference_type = $chainusertype;
-                                $chainkey++;
-                                $post_references[($chainkey - 1)] = array(
+                                $post_references[$chainkey] = array(
                                     'chainusertype' => $chainusertype,
                                     'chainuserinput' => intval($user['userid']),
                                     'chainuseroutput' => 0,
@@ -5661,6 +5660,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                                     'chainvalue' => ($first_word && strlen($second_word_onwards) ? trim($second_word_onwards) : null),
                                     'chainkey' => $chainkey,
                                 );
+                                $chainkey++;
 
                                 $chainvalue = $m['m__cover'] . $user['userid'];
                                 $postmessage = $word_text;
