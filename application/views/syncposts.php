@@ -116,7 +116,8 @@ if (1) {
             }
 
             //Update if there is anything:
-            if (count($update_cache) && $this->Posts->update($post['postid'], $update_cache)) {
+            if (count($update_cache)) {
+                $this->Posts->update($post['postid'], $update_cache);
                 $stats['posts_oncache_synced']++;
             }
 

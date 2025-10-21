@@ -1170,8 +1170,9 @@ class Controller extends CI_Controller
             }
 
             //Update new post fields:
+            $statusupdate = -1;
             if(count($update_array)){
-                $this->Posts->update($is[0]['postid'], $update_array, $user_session['userid']);
+                $statusupdate = $this->Posts->update($is[0]['postid'], $update_array, $user_session['userid']);
             }
 
 
@@ -1238,6 +1239,8 @@ class Controller extends CI_Controller
                 'save_postmessage' => trim($_POST['save_postmessage']),
                 'redirect_post' => ( $focus__node ? : ( isset($new_i['posthashtag']) ? view_memory(42903, 33286) . $new_i['posthashtag'] : null) ),
                 'message' => 'Success',
+                'statusupdate' => $statusupdate,
+                'update_array' => $update_array,
             ));
 
         }
