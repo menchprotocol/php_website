@@ -5394,7 +5394,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             'current' => 0,
             'added' => 0,
             'removed' => 0,
-            'updated' => 0,
+            'update_attempt' => 0,
+            'update_success' => 0,
             'posts_links_fixed' => 0,
         ),
     );
@@ -5744,7 +5745,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
         //Nothing else we need to do:
         foreach ($saved_items as $x) {
 
-            if (!isset($post_references[$chainkey])) {
+            if (!isset($post_references[$chainkey]) || !is_array($post_references[$chainkey])) {
                 //Must be removed:
                 $CI->Chains->delete($x['chainid']);
                 $post_index['actionstats']['removed']++;
@@ -5754,8 +5755,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                     if ($x[$key] != $value) {
                         //Updating needed:
                         $post_references[$chainkey]['chainusercreator'] = $chainusercreator;
-                        $CI->Chains->update($x['chainid'], $post_references[$chainkey]);
-                        $post_index['actionstats']['updated']++;
+                        $post_index['actionstats']['update_attempt']++;
+                        $post_index['actionstats']['update_success'] += $CI->Chains->update($x['chainid'], $post_references[$chainkey]);
                         break;
                     }
                 }
