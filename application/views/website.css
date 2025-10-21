@@ -1181,7 +1181,7 @@ h4 .halfbg {
     padding-right: 5px;
 }
 .left-padded-menu a b{
-    font-size: 1.3em;
+    font-size: 1.1em;
 }
 
 .block-menu .dropdown-item {
@@ -7942,12 +7942,6 @@ main {
 .btn-large {
     border-radius: 0px !important;
     border: 1px solid;
-}
-
-.dropdown_type_DISABLE_42795 {
-    border: 1px solid #000000;
-    padding: 5px 5px 3px 0;
-    margin: 8px 0 0 5px;
 }
 
 .card_frame {

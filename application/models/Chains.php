@@ -489,41 +489,6 @@ class Chains extends CIdea_cache
                 'chainusercreator' => $user_session['userid'],
             ));
 
-        } elseif (0 && $element_id == 42795 && $o__id > 0 && $user_createid && $user_session) {
-
-            if (!$chainid) {
-                //Double check database as it may be updating newly selected value:
-                foreach ($this->Chains->read(array(
-                    'chainuserinput' => $o__id,
-                    'chainuseroutput' => $user_session['userid'],
-                    'chainusertype IN (' . join(',', $this->config->item('userids___42795')) . ')' => null, //Follow
-                ), array(), 1) as $found_x) {
-                    $chainid = $found_x['chainid'];
-                }
-            }
-
-            //Follow
-            if ($chainid > 0) {
-                //Updating reaction:
-                if (in_array($user_createid, $this->config->item('userids___42850'))) {
-                    //Unsubscribe
-                    $status = $this->Chains->delete($chainid, $user_session['userid']); //Media Removed
-                } else {
-                    $status = $this->Chains->update($chainid, array(
-                        'chainusertype' => $user_createid,
-                        'chainusercreator' => $user_session['userid'],
-                    ));
-                }
-            } else {
-                //Inserting new reaction:
-                $status = count($this->Chains->create(array(
-                    'chainusercreator' => $user_session['userid'],
-                    'chainuserinput' => $o__id,
-                    'chainuseroutput' => $user_session['userid'],
-                    'chainusertype' => $user_createid,
-                )));
-            }
-
         } elseif ($element_id == 42260 && $o__id > 0 && $user_createid && $user_session) {
 
             //Check if current value?
