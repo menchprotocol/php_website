@@ -1241,7 +1241,7 @@ class Controller extends CI_Controller
                 'message' => 'Success',
                 'statusupdate' => $statusupdate,
                 'update_array' => $update_array,
-                'post_index' => post_index($_POST['save_postmessage'], $new_i['postid'], 1, $_POST['save_posthashtag']),
+                //'post_index' => post_index($_POST['save_postmessage'], $new_i['postid'], 1, $_POST['save_posthashtag']),
         ));
 
         }

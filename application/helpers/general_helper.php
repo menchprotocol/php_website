@@ -5562,7 +5562,6 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                                 'chainpostinput' => $save_postid,
                                 'chainpostoutput' => intval($post['postid']),
                                 'chainkey' => $chainkey,
-                                'chainvalue' => null,
                             );
                             $chainkey++;
 
@@ -5788,10 +5787,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
     $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
     $post_index['post_references_count'] = count($post_references);
-    $post_index['post_references'] = $post_references;
     $post_index['saved_items_count'] = count($saved_items);
-    $post_index['saved_items'] = $saved_items;
     $post_index['chainkey'] = $chainkey;
+    $post_index['post_references'] = $post_references;
+    $post_index['saved_items'] = $saved_items;
 
     return $post_index;
 
