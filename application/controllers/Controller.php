@@ -2290,11 +2290,15 @@ class Controller extends CI_Controller
             }
 
             foreach($this->config->item('users___30841') as $userid => $m){
-                array_push($suggest_data[6287], $userid);
+                if(!in_array($userid, $post_index['referenced_users'])){
+                    array_push($suggest_data[6287], $userid);
+                }
             }
             if((count($post_index['new_posts']) + count($post_index['referenced_posts']))>0){
                 foreach($this->config->item('users___3450818') as $userid => $m){
-                    array_push($suggest_data[6287], $userid);
+                    if(!in_array($userid, $post_index['referenced_users'])){
+                        array_push($suggest_data[6287], $userid);
+                    }
                 }
             }
 
