@@ -1130,6 +1130,7 @@ class Controller extends CI_Controller
             ));
         }
 
+        $statusupdate = -1;
 
         if($_POST['save_postid'] > 0){
 
@@ -1170,7 +1171,6 @@ class Controller extends CI_Controller
             }
 
             //Update new post fields:
-            $statusupdate = -1;
             if(count($update_array)){
                 $statusupdate = $this->Posts->update($is[0]['postid'], $update_array, $user_session['userid']);
             }
