@@ -20,6 +20,13 @@ $count_totals = array(
 $post_settings = post_settings($_GET['posthashtag']);
 $max_limit = view_memory(6404,11064);
 
+foreach($post_settings['user_column'] as $key => $value){
+    echo '<br />@'.$value['userhandle'];
+}
+foreach($post_settings['post_column'] as $key => $value){
+    echo '<br />#'.$value['posthashtag'];
+}
+
 
 if ((count($post_settings['user_column']) + count($post_settings['post_column'])) > $max_limit) {
 
