@@ -5731,9 +5731,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
     }
 
     //Save Found references to remove the ones who exist in DB:
-    $chainkey = 0;
 
     if (intval($save_postid)) {
+
+        $chainkey = 0;
 
         $saved_items = $CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___1696899')) . ')' => null, //All possible refereces
@@ -5764,15 +5765,14 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             $post_index['actionstats']['current']++;
 
         }
-    }
 
-
-    //Any more links left that were not in DB?
-    if($chainkey<count($post_references)){
-        for ($i = $chainkey; $i < count($post_references); $i++) {
-            $post_references[$i]['chainusercreator'] = $chainusercreator;
-            $CI->Chains->create($post_references[$i]);
-            $post_index['actionstats']['added']++;
+        //Any more links left that were not in DB?
+        if($chainkey<count($post_references)){
+            for ($i = $chainkey; $i < count($post_references); $i++) {
+                $post_references[$i]['chainusercreator'] = $chainusercreator;
+                $CI->Chains->create($post_references[$i]);
+                $post_index['actionstats']['added']++;
+            }
         }
     }
 
