@@ -80,7 +80,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 }
 
 
-echo '<a href="javascript:void(0);" onclick="$(\'.voidstats\').toggleClass(\'hidden\')" style="color: #FFFFFF;">SHOW VOID</a>';
+echo '<div class="center"><a href="javascript:void(0);" onclick="$(\'.voidstats\').toggleClass(\'hidden\')" style="color: #FFFFFF;">SHOW VOID</a></div>';
 
 ?>
 
