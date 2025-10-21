@@ -61,7 +61,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
     foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
         'chainuserinput IN (' . join(',', $this->config->item('userids___42216')) . ')' => null, //Event Reminder
-    ), array('chainpostoutput'), 0) as $i) {
+    ), array('chainpostinput'), 0) as $i) {
 
         //Make sure not userd this post with a different reminder:
         if (!in_array($i['postid'], $post_scanned)) {
@@ -155,7 +155,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
         'chainkey >' => time(), //Future event
         'chainuserinput' => 26556, //Time Starts
-    ), array('chainpostoutput'), 0) as $i) {
+    ), array('chainpostinput'), 0) as $i) {
 
         //Determine if it's time to send this message:
         $time_starts = 0;

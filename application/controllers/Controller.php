@@ -2193,7 +2193,7 @@ class Controller extends CI_Controller
             foreach ($this->Chains->read(array(
                 'chainuserinput' => $es[0]['userid'],
                 'chainusertype' => 31835, //User Mention
-            ), array('chainpostoutput')) as $ref) {
+            ), array('chainpostinput')) as $ref) {
                 $this->Posts->update($ref['postid'], array(
                     'postmessage' => str_replace('@' . $es[0]['userhandle'], '@' . $new_user_string, $ref['postmessage']),
                 ), $user_session['userid']);
@@ -2369,7 +2369,7 @@ class Controller extends CI_Controller
                 foreach ($this->Chains->read(array(
                     'chainusertype' => 31835, //Mention
                     'chainuserinput' => $_POST['selected_userid'],
-                ), array('chainpostoutput'), 0) as $i) {
+                ), array('chainpostinput'), 0) as $i) {
                     if (count($this->Chains->read(array(
                         'chainusertype' => 31835, //Mention
                         'chainuserinput' => 31065, //Choice Update Email Templates
@@ -3526,7 +3526,7 @@ class Controller extends CI_Controller
                         $sub_counter = $this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
                             'chainuserinput' => $es[0]['userid'],
-                        ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+                        ), array('chainpostinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                     } elseif ($has_post && count($copy['recursive_post_ids'])) {
 

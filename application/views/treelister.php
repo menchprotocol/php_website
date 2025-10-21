@@ -18,7 +18,7 @@ if(!isset($post_settings['list_config'][34513]) || !count($post_settings['list_c
 foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
     'chainuserinput IN (' . join(',', $post_settings['list_config'][34513]) . ')' => null, //Active Writes
-), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i){
+), array('chainpostinput'), 0, 0, array('chainkey' => 'ASC')) as $chain_i){
 
     $post_settings = post_settings($chain_i['posthashtag'], true);
     if(!count($post_settings['query_string_filtered'])){

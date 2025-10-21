@@ -12,7 +12,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
         //POSTS
         $unique = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13480')) . ')' => null, //UNIQUE POSTS
-        ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+        ), array('chainpostinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } elseif ($chainusertype == 12274) {
 
@@ -54,7 +54,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
                 'chainusertype IN (' . join(',', $this->config->item('userids___13480')) . ')' => null, //UNIQUE POSTS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
-            ), array('chainpostoutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+            ), array('chainpostinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
         } elseif ($chainusertype == 12274) {
 

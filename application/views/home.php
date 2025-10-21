@@ -18,7 +18,7 @@ $primary_i = array();
 foreach($this->Chains->read(array(
     'chainusertype' => 34513, //Pinned
     'chainuserinput' => $website_id,
-), array('chainpostoutput'), 1, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $primary_i){
+), array('chainpostinput'), 1, 0, array('chainkey' => 'ASC', 'chainid' => 'DESC')) as $primary_i){
 
     echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__name').' | '.str_replace('\'','\\\'',view_post_title($primary_i, true)).'\'); }); </script> ';
 

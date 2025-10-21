@@ -536,7 +536,6 @@ function post_list_config($postid, $access_limit = true)
 
     //Now search for these settings across posts:
     foreach ($CI->Chains->read(array(
-        'chainpostoutput >' => 0,
         'chainpostinput' => $postid,
         'chainusertype IN (' . join(',', $CI->config->item('userids___40792')) . ')' => null,
     ), array('chainpostoutput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
@@ -681,8 +680,8 @@ function post_settings($posthashtag, $fetch_contact = false)
             foreach ($CI->Chains->read(array(
                 'chainuserinput IN (' . join(',', $pinned_columns) . ')' => null,
                 'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
-                'chainpostoutput !=' => $i['postid'],
-            ), array('chainpostoutput'), 0, 0, array('postmessage' => 'ASC')) as $chain_i) {
+                'chainpostinput !=' => $i['postid'],
+            ), array('chainpostinput'), 0, 0, array('postmessage' => 'ASC')) as $chain_i) {
                 array_push($post_column, $chain_i);
                 array_push($mixed_column, $chain_i);
             }
@@ -3225,7 +3224,7 @@ function users_query($chainusertype, $userid, $current_page = 0, $append_card_ic
 
         //Posts Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainpostoutput');
+        $joins_objects = array('chainpostinput');
         $query_filters = array(
             'chainusercreator' => $userid,
             'chainusertype' => $chainusertype,
@@ -3306,7 +3305,7 @@ function users_query($chainusertype, $userid, $current_page = 0, $append_card_ic
 
     } elseif ($chainusertype == 13550) {
 
-        $joins_objects = array('chainpostoutput');
+        $joins_objects = array('chainpostinput');
         $order_columns = post_sort();
 
         if (in_array($chainusersub, $CI->config->item('userids___13550'))) {

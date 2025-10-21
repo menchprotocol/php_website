@@ -6,7 +6,7 @@ die('dead for now');
 foreach ($this->Chains->read(array(
     'chainusertype' => 10573, //Subscriber Mention
     'chainuserinput' => 26582,
-), array('chainpostoutput')) as $i) {
+), array('chainpostinput')) as $i) {
 
     //Make sure not completed before:
     if(count($this->Chains->read(array(

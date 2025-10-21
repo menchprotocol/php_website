@@ -228,7 +228,7 @@ class Users extends CIdea_cache
                             foreach ($this->Chains->read(array(
                                 'chainusertype IN (' . join(',', $this->config->item('userids___13550')) . ')' => null, //Mentions
                                 'chainuserinput' => $userid,
-                            ), array('chainpostoutput'), 0) as $ref) {
+                            ), array('chainpostinput'), 0) as $ref) {
 
                                 //Update the post index:
                                 post_index($ref['postmessage'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
@@ -833,7 +833,7 @@ class Users extends CIdea_cache
             foreach ($this->Chains->read(array(
                 'chainusertype' => 31835, //Mention
                 'chainuserinput' => 14929, //Website Welcome Email Templates
-            ), array('chainpostoutput'), 0) as $i) {
+            ), array('chainpostinput'), 0) as $i) {
                 if (count($this->Chains->read(array(
                     'chainusertype' => 31835, //Mention
                     'chainuserinput' => $chainuserdomain, //for Current website
