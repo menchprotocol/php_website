@@ -19,7 +19,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
         //USER
         $unique = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //AUTHORED USERS
-        ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+        ), array('chainuserinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
     } elseif ($chainusertype==31777) {
 
@@ -63,7 +63,7 @@ foreach ($this->config->item('users___14874') as $chainusertype => $m) {
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //UNIQUE USERS
                 'chaintime >=' => $time_start,
                 'chaintime <' => $time_end,
-            ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
+            ), array('chainuserinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
         } elseif ($chainusertype == 31777) {
 

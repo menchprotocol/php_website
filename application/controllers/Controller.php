@@ -1329,7 +1329,7 @@ class Controller extends CI_Controller
         $focus_userid = ($_POST['userid'] > 0 ? $_POST['userid'] : ($user_session ? $user_session['userid'] : 0));
         $ui = '';
 
-        if ($_POST['chainusertype']==13550 || $_POST['chainusertype']==12273) {
+        if ($_POST['chainusertype']==13550 || $_POST['chainusertype'] == 12273) {
 
             //Post/User Link Groups
             //Posts:
@@ -1389,7 +1389,7 @@ class Controller extends CI_Controller
                     }
                 }
 
-            } elseif ($_POST['chainusertype']==13550 || $_POST['chainusertype']==31777 || $_POST['chainusertype']==12273) {
+            } elseif ($_POST['chainusertype']==13550 || $_POST['chainusertype']==31777 || $_POST['chainusertype'] == 12273) {
 
                 //POSTS
                 $current_posthashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);

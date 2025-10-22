@@ -42,7 +42,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
     foreach ($this->config->item('users___' . $userid1) as $userid2 => $m2) {
 
         $is_chain = $userid2 != 12273 && $userid2 != 12274;
-        $chain_link = view_app_chain(3445693).'?chainusertype='.join(',',( $is_chain ? $this->config->item('userids___' . $userid2) : array(( $userid2==12273 ? 12273 : 12274 )) )).'&chainvoid=0';
+        $chain_link = view_app_chain(3445693).'?chainusertype='.join(',',( $is_chain ? $this->config->item('userids___' . $userid2) : array(( $userid2 == 12273 ? 12273 : 12274 )) )).'&chainvoid=0';
 
         echo '<div class="card_cover no-padding col-6">';
         echo '<div class="card_frame dropdown_d' . $userid1 . ' dropdown_' . $userid2 . '">';

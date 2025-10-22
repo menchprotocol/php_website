@@ -3218,7 +3218,7 @@ function users_query($chainusertype, $userid, $current_page = 0, $append_card_ic
 
         //User Created
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainuseroutput');
+        $joins_objects = array('chainuserinput');
         $query_filters = array(
             'chainusercreator' => $userid,
             'chainusertype' => $chainusertype,

@@ -13,7 +13,7 @@ $stats = array(
     'user_changed' => 0,
 );
 
-if(!$obj || $obj==12273){
+if(!$obj || $obj == 12273){
 
     //Update the weights for active posts
     foreach($this->Posts->read(array()) as $in) {
@@ -24,7 +24,7 @@ if(!$obj || $obj==12273){
 }
 
 
-if(!$obj || $obj==12274){
+if(!$obj || $obj == 12274){
     //Update the weights for active Users:
     foreach($this->Users->read(array(
         )) as $en) {
