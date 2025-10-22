@@ -3984,14 +3984,13 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     ), array('chainusercreator'), 1, 0, array('chainid' => 'ASC')) as $creator) {
 
         array_push($headline_authors, $creator['userid']);
-        $follow_btn = null;
 
-        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['userhandle'] . '"><span class="icon-block">' . view_cover($creator['usercover']) . '</span><b class="hidden">' . $creator['username'] . '</b><span class="grey mini-font mini-frame">@' . $creator['userhandle'] . '</span></a>' . (!in_array($creator['userid'], $CI->config->item('userids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . $follow_btn . '</div>';
+        $ui .= '<div class="creator_headline"><a href="' . view_memory(42903, 42902) . $creator['userhandle'] . '"><span class="icon-block">' . view_cover($creator['usercover']) . '</span><b class="hidden">' . $creator['username'] . '</b><span class="grey mini-font mini-frame">@' . $creator['userhandle'] . '</span></a>' . (!in_array($creator['userid'], $CI->config->item('userids___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($creator['chaintime'])) . ' PST">' . view_time_difference($creator['chaintime'], true) . '</span>' : '') . '</div>';
 
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainusercreator) ? ' hidden ' : '') . '">' . (isset($i['chainusertype']) ? (substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'] . ' #') : '#') . '<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainusercreator) ? ' hidden ' : '') . '">' . (isset($i['chainusertype']) ? (substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') || substr_count($users___4593[$i['chainusertype']]['m__cover'], 'fa-hashtag') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'] . ' #') : '#') . '<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
