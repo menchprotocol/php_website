@@ -80,7 +80,7 @@ if ($user_session) {
 
     if($target_completed && !count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $focus_i['postid'],
+            'chainpostinput' => $focus_i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43050')) . ')' => null, //Direct Input Ideas
         )))){
         //Hide next navigation and allow them to browse the tree:
@@ -121,7 +121,7 @@ if ($user_session || isset($_GET['open'])) {
 $focus_post_types = array();
 foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-    'chainpostoutput' => $focus_i['postid'],
+    'chainpostinput' => $focus_i['postid'],
     'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
 )) as $mention) {
     array_push($focus_post_types, intval($mention['chainuserinput']));

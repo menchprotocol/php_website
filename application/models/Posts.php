@@ -376,7 +376,7 @@ class Posts extends CIdea_cache
 
                     $post_has_e = $this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
-                        'chainpostoutput' => $next_i['postid'],
+                        'chainpostinput' => $next_i['postid'],
                         'chainuserinput' => $e['userid'],
                     ));
 
@@ -394,7 +394,7 @@ class Posts extends CIdea_cache
                             'chainusercreator' => $chainusercreator,
                             'chainuserinput' => $e['userid'],
                             'chainusertype' => $user_mapper[$action_userid],
-                            'chainpostoutput' => $next_i['postid'],
+                            'chainpostinput' => $next_i['postid'],
                             'chainvalue' => trim($action_command2),
                         ), true);
 
@@ -542,7 +542,7 @@ class Posts extends CIdea_cache
 
         $input__selection = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
         ));
 

@@ -9,7 +9,7 @@ if (isset($_GET['posthashtag'])) {
 
         $preg_query = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput' => 26611,
         ));
 

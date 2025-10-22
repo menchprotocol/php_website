@@ -316,7 +316,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
         $max_available = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $post_var['postid'],
+            'chainpostinput' => $post_var['postid'],
             'chainuserinput' => 26189,
         ), array(), 1);
         $current_x = (isset($count_totals['i'][$post_var['postid']]) ? $count_totals['i'][$post_var['postid']] : 0);
@@ -336,7 +336,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
             } elseif(isset($this_var['postid'])){
                 $max_available = $this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $this_var['postid'],
+                    'chainpostinput' => $this_var['postid'],
                     'chainuserinput' => 26189,
                 ), array(), 1);
                 $current_x = (isset($count_totals['i'][$this_var['postid']]) ? $count_totals['i'][$this_var['postid']] : 0);

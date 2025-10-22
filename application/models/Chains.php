@@ -496,7 +496,7 @@ class Chains extends CIdea_cache
                 //Double check database as it may be updating newly selected value:
                 foreach ($this->Chains->read(array(
                     'chainuserinput' => $user_session['userid'],
-                    'chainpostoutput' => $o__id,
+                    'chainpostinput' => $o__id,
                     'chainusertype IN (' . join(',', $this->config->item('userids___42260')) . ')' => null, //Reactions
                 ), array(), 1) as $found_x) {
                     $chainid = $found_x['chainid'];
@@ -519,7 +519,7 @@ class Chains extends CIdea_cache
                 $status = count($this->Chains->create(array(
                     'chainusercreator' => $user_session['userid'],
                     'chainuserinput' => $user_session['userid'],
-                    'chainpostoutput' => $o__id,
+                    'chainpostinput' => $o__id,
                     'chainusertype' => $user_createid,
                 )));
             }
@@ -545,7 +545,7 @@ class Chains extends CIdea_cache
         if (!count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Writes
             'chainuserinput' => 31779, //Mandatory Emails
-            'chainpostoutput' => $template_postid,
+            'chainpostinput' => $template_postid,
         )))) {
 
             $notification_levels = $this->Chains->read(array(
@@ -705,7 +705,7 @@ class Chains extends CIdea_cache
 
                 foreach ($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___13550')) . ')' => null, //Mentions
-                    'chainpostoutput' => $i['postid'],
+                    'chainpostinput' => $i['postid'],
                 ), array('chainuserinput'), 0) as $down_or) {
 
                     //See if this user has any of this:
@@ -786,7 +786,7 @@ class Chains extends CIdea_cache
             //Validate Selection:
             $input__selection = $this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $post_previous['postid'],
+                'chainpostinput' => $post_previous['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
             ));
 
@@ -837,7 +837,7 @@ class Chains extends CIdea_cache
 
         $input__selection = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
         ));
         $found_trigger = null;
@@ -921,22 +921,22 @@ class Chains extends CIdea_cache
         $user_session = user_session();
         $input__selection = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
         )));
         $input__upload = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
         )));
         $input__text = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
         )));
         $is_required = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput' => 28239, //Required
         )));
 
@@ -950,7 +950,7 @@ class Chains extends CIdea_cache
             //Must add a new post, but first let's validate the input:
             if (count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 31794,
             ))) && strlen($user_submitted_data['post_createtext']) && !is_numeric($user_submitted_data['post_createtext'])) {
                 //Number Input
@@ -960,7 +960,7 @@ class Chains extends CIdea_cache
                 );
             } elseif (count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $i['postid'],
+                    'chainpostinput' => $i['postid'],
                     'chainuserinput' => 42915,
                 ))) && strlen($user_submitted_data['post_createtext']) && !filter_var($user_submitted_data['post_createtext'], FILTER_VALIDATE_URL)) {
                 //Chain Input
@@ -970,7 +970,7 @@ class Chains extends CIdea_cache
                 );
             } elseif (count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 30350,
             ))) && strlen($user_submitted_data['post_createtext']) && !strtotime($user_submitted_data['post_createtext'])) {
                 //Date Input
@@ -1093,7 +1093,7 @@ class Chains extends CIdea_cache
 
                 if (count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $next_i['postid'],
+                    'chainpostinput' => $next_i['postid'],
                     'chainuserinput IN (' . join(',', $this->config->item('userids___43039')) . ')' => null,
                 )))) {
                     continue;
@@ -1132,7 +1132,7 @@ class Chains extends CIdea_cache
                             'chainusertype' => 10573, //WATCHERS
                             'chainusercreator' => $x_data['chainusercreator'],
                             'chainuserinput' => $x_data['chainusercreator'],
-                            'chainpostoutput' => $result['post_createid'],
+                            'chainpostinput' => $result['post_createid'],
                         ));
 
                         //New chain:
@@ -1162,7 +1162,7 @@ class Chains extends CIdea_cache
                 //Also DM all watchers of the post:
                 foreach ($this->Chains->read(array(
                     'chainusertype' => 10573, //WATCHERS
-                    'chainpostoutput' => $i['postid'],
+                    'chainpostinput' => $i['postid'],
                 ), array(), 0) as $watcher) {
                     $this->Chains->message($watcher['chainuserinput'], $post_title, $clone_urls);
                 }
@@ -1172,7 +1172,7 @@ class Chains extends CIdea_cache
             //ADD PROFILE?
             foreach ($this->Chains->read(array(
                 'chainusertype' => 7545, //Following Add
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
             ), array('chainuserinput')) as $this_tag) {
 
                 //Check if special profile add?
@@ -1210,7 +1210,7 @@ class Chains extends CIdea_cache
             //REMOVE PROFILE?
             foreach ($this->Chains->read(array(
                 'chainusertype' => 26599, //Following Remove
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
             )) as $this_tag) {
 
                 //Remove Following IF previously assigned:
@@ -1234,7 +1234,7 @@ class Chains extends CIdea_cache
             //Notify watchers IF any:
             $watchers = $this->Chains->read(array(
                 'chainusertype' => 10573, //WATCHERS
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
             ), array(), 0);
             if (count($watchers)) {
 
@@ -1303,12 +1303,12 @@ class Chains extends CIdea_cache
 
         $input__selection = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
         )));
         $input__text = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43002')) . ')' => null,
         )));
         $i['user_discovered'] = array();
@@ -1372,12 +1372,12 @@ class Chains extends CIdea_cache
 
         $input__selection = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
         )));
         $input__text = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43002')) . ')' => null,
         )));
         $i['current_level'] = $current_level;
@@ -1433,12 +1433,12 @@ class Chains extends CIdea_cache
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
         $input__selection = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
         )));
         $single_choice = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___33331')) . ')' => null,
         )));
 
@@ -1465,7 +1465,7 @@ class Chains extends CIdea_cache
             $i['current_level'] = $current_level;
             $is_required = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 28239, //Required
             )));
 

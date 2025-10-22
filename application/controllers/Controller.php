@@ -616,7 +616,7 @@ class Controller extends CI_Controller
 
         foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $is[0]['postid'],
+            'chainpostinput' => $is[0]['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
         )) as $post_type) {
 
@@ -673,7 +673,7 @@ class Controller extends CI_Controller
                     if ($postid > 0) { //Must have an original ID to possibly have a value
                         foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
-                            'chainpostoutput' => $postid,
+                            'chainpostinput' => $postid,
                             'chainuserinput' => $dynamic_userid,
                         ), array('chainuserinput')) as $selected_e) {
                             if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
@@ -775,7 +775,7 @@ class Controller extends CI_Controller
 
         foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $is[0]['postid'],
+            'chainpostinput' => $is[0]['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
         )) as $post_type) {
             foreach (array_intersect($this->config->item('userids___' . $post_type['chainuserinput']), $this->config->item('userids___42179')) as $dynamic_userid) {
@@ -831,7 +831,7 @@ class Controller extends CI_Controller
                     if ($postid > 0) { //Must have an original ID to possibly have a value.
                         foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
-                            'chainpostoutput' => $postid,
+                            'chainpostinput' => $postid,
                             'chainuserinput' => $dynamic_userid,
                         ), array('chainuserinput')) as $selected_e) {
                             if (strlen($selected_e['chainvalue']) && !in_array($selected_e['chainvalue'], $unique_values)) {
@@ -2373,7 +2373,7 @@ class Controller extends CI_Controller
                     if (count($this->Chains->read(array(
                         'chainusertype' => 31835, //Mention
                         'chainuserinput' => 31065, //Choice Update Email Templates
-                        'chainpostoutput' => $i['postid'], //Is this the template?
+                        'chainpostinput' => $i['postid'], //Is this the template?
                     )))) {
                         //Found the email template to send:
                         $total_sent = $this->Chains->broadcast(array($user_session), $i, website_setting(0), false);
@@ -2417,7 +2417,7 @@ class Controller extends CI_Controller
             } elseif ($_POST['right_postid']) {
                 $delete_query = $this->Chains->read(array(
                     'chainuserinput IN (' . join(',', $possible_answers) . ')' => null,
-                    'chainpostoutput' => $_POST['right_postid'],
+                    'chainpostinput' => $_POST['right_postid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
                 ));
             }
@@ -3056,22 +3056,22 @@ class Controller extends CI_Controller
 
             $input__selection = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $focus_i['postid'],
+                'chainpostinput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
             )));
             $input__upload = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $focus_i['postid'],
+                'chainpostinput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
             )));
             $skipping_not_allowed = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $focus_i['postid'],
+                'chainpostinput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___43009')) . ')' => null,
             )));
             $input__text = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $focus_i['postid'],
+                'chainpostinput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
             )));
             $total_selected = count($_POST['selection_postid']);
@@ -3101,7 +3101,7 @@ class Controller extends CI_Controller
 
                 $is_single_selection = count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $focus_i['postid'],
+                    'chainpostinput' => $focus_i['postid'],
                     'chainuserinput IN (' . join(',', $this->config->item('userids___33331')) . ')' => null,
                 )));
 
@@ -3112,7 +3112,7 @@ class Controller extends CI_Controller
                     if ($post_required) {
                         foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                            'chainpostoutput' => $focus_i['postid'],
+                            'chainpostinput' => $focus_i['postid'],
                             'chainuserinput' => 40834, //Min Selection
                         ), array(), 1) as $limit) {
                             if (intval($limit['chainvalue']) > 0 && $total_selected < intval($limit['chainvalue'])) {
@@ -3127,7 +3127,7 @@ class Controller extends CI_Controller
                     //How about max selection?
                     foreach ($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $focus_i['postid'],
+                        'chainpostinput' => $focus_i['postid'],
                         'chainuserinput' => 40833, //Max Selection
                     ), array(), 1) as $limit) {
                         if (intval($limit['chainvalue']) > 0 && $total_selected > intval($limit['chainvalue'])) {
@@ -3160,7 +3160,7 @@ class Controller extends CI_Controller
                     //Remove discovery if we can:
                     if (!count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $x_selection['postid'],
+                        'chainpostinput' => $x_selection['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___42905')) . ')' => null,
                     )))) {
                         foreach ($this->Chains->read(array(
@@ -3215,7 +3215,7 @@ class Controller extends CI_Controller
                     //Analyze input:
                     $input__required = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $post_next['postid'],
+                        'chainpostinput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___43039')) . ')' => null,
                     )));
                     if ($input__required) {
@@ -3223,17 +3223,17 @@ class Controller extends CI_Controller
                     }
                     $input__text = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $post_next['postid'],
+                        'chainpostinput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
                     )));
                     $input__upload = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $post_next['postid'],
+                        'chainpostinput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
                     )));
                     $skipping_not_allowed = count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $post_next['postid'],
+                        'chainpostinput' => $post_next['postid'],
                         'chainuserinput IN (' . join(',', $this->config->item('userids___43009')) . ')' => null,
                     )));
 
@@ -3241,7 +3241,7 @@ class Controller extends CI_Controller
                     //Cleanup phone number:
                     if($input__text && strlen($next_post_data['post_createtext']) && !is_numeric($next_post_data['post_createtext']) && count($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                            'chainpostoutput' => $post_next['postid'],
+                            'chainpostinput' => $post_next['postid'],
                             'chainuserinput' => 42181, //Phone
                         )))){
                         $next_post_data['post_createtext'] = preg_replace("/[^0-9]+/", "", $next_post_data['post_createtext']);

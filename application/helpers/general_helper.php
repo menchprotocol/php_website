@@ -183,7 +183,7 @@ function post_spots_remaining($postid)
     $spots_remaining = -1; //No limits
     $max_available = $CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $postid,
+        'chainpostinput' => $postid,
         'chainuserinput' => 26189,
     ), array(), 1);
     if (count($max_available) && is_numeric($max_available[0]['chainvalue'])) {
@@ -232,7 +232,7 @@ function post_redirect_url($i)
     $CI =& get_instance();
     if (strlen($i['postmessage']) && count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput' => 43871, //Redirect URL
         )))) {
         preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['postmessage'], $match);
@@ -254,7 +254,7 @@ function post_popup_url($i)
     $CI =& get_instance();
     foreach ($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput' => 44266, //Popup URL
     )) as $popup_url) {
         if (filter_var($popup_url['chainvalue'], FILTER_VALIDATE_URL)) {
@@ -269,7 +269,7 @@ function post_required($i)
     $CI =& get_instance();
     return count($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput' => 28239, //Required
     )));
 }
@@ -415,7 +415,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
             $max_available = $CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 26189,
             ), array(), 1);
 
@@ -526,8 +526,7 @@ function post_list_config($postid, $access_limit = true)
 
     //Now search for these settings across Users:
     foreach ($CI->Chains->read(array(
-        'chainuserinput >' => 0,
-        'chainpostoutput' => $postid,
+        'chainpostinput' => $postid,
         'chainusertype IN (' . join(',', $CI->config->item('userids___43006')) . ')' => null,
     ), array('chainuserinput'), 0, 0, array(), '*', null, $access_limit) as $setting_chain) {
         array_push($post_list_config[intval($setting_chain['chainusertype'])], intval($setting_chain['chainuserinput']));
@@ -662,7 +661,7 @@ function post_settings($posthashtag, $fetch_contact = false)
         //Determine columns if any:
         $pinned_columns = array();
         foreach ($CI->Chains->read(array(
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainusertype' => 34513, //Pinned
         ), array('chainuserinput'), 0) as $setting_chain) {
             array_push($pinned_columns, intval($setting_chain['userid']));
@@ -698,7 +697,7 @@ function post_settings($posthashtag, $fetch_contact = false)
         }
         foreach ($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___2108865')) . ')' => null, //Sheet Players
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
         ), array('chainuserinput'), 0, 0, array('chainkey' => 'ASC')) as $chain_e) {
             //array_push($user_column, $chain_e);
             $mixed_column[intval($chain_e['chainkey'])] = $chain_e;
@@ -790,7 +789,7 @@ function post_is_startable($i)
     $CI =& get_instance();
     return count($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput' => 4235,
     )));
 }
@@ -1069,23 +1068,6 @@ function process_media($postid, $uploaded_media)
                 //By now have the media User, create necessary chains:
                 if ($upload_media['userid'] && $upload_media['media_typeid']) {
 
-                    //Chain to Post:
-                    if (!count($CI->Chains->read(array(
-                        'chainpostoutput' => $postid,
-                        'chainuserinput' => $upload_media['userid'],
-                        'chainusertype' => $upload_media['media_typeid'],
-                    )))) {
-                        $CI->Chains->create(array(
-                            'chainusercreator' => $user_session['userid'],
-                            'chainpostoutput' => $postid,
-                            'chainuserinput' => $upload_media['userid'],
-                            'chainusertype' => $upload_media['media_typeid'],
-                            'chainvalue' => $upload_media['playback_code'],
-                            'chainkey' => $sort_count,
-                        ));
-                    }
-
-
                     //Chain to User as Uploader:
                     if (!count($CI->Chains->read(array(
                         'chainuserinput' => $user_session['userid'],
@@ -1305,6 +1287,8 @@ function view_post_media($i)
 
     $CI =& get_instance();
     $message_append = '';
+
+    //TODO REMOVE
 
     //Query Relevant Users:
     foreach ($CI->Chains->read(array(
@@ -1847,7 +1831,7 @@ function dispatch_email($to_emails, $subject, $email_body, $userid = 0, $x_data 
     if ($userid > 0 && count($es) && (!$template_postid || !count($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Writes
                 'chainuserinput' => 31779, //Mandatory Emails
-                'chainpostoutput' => $template_postid,
+                'chainpostinput' => $template_postid,
             ))))) {
         //User specific notifications:
         $email_message .= '<div class="line"><a href="' . $base_domain . view_app_chain(28904) . '?userlogin=' . $es[0]['userhandle'] . '&time=' . time() . '&hash=' . view_hash(time() . $es[0]['userhandle']) . '" style="font-size:13px;">' . $users___6287[28904]['m__name'] . '</a></div>';
@@ -2246,7 +2230,7 @@ function post_access($posthashtag = null, $postid = 0, $i = false, $replacement_
     } elseif (!$discovery_mode && count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42953')) . ')' => null, //Mentioned Users
             'chainuserinput' => $chainusercreator,
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
         )))) {
 
         //Mentioned can always reply:
@@ -3446,7 +3430,7 @@ function posts_query($chainusertype, $postid, $current_page = 0, $append_card_ic
         $joins_objects = array('chainuserinput');
         $query_filters = array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___' . $chainusertype)) . ')' => null,
-            'chainpostoutput' => $postid,
+            'chainpostinput' => $postid,
         );
         $order_columns = post_sort();
 
@@ -3623,7 +3607,7 @@ function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
         //Post focus:
         foreach ($CI->Chains->read(array(
             'chainuserinput IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-            'chainpostoutput' => $right_postid,
+            'chainpostinput' => $right_postid,
             'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
         )) as $sel) {
             array_push($already_selected, $sel['chainuserinput']);
@@ -3784,7 +3768,7 @@ function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode 
 
     if ($userid > 0) {
         foreach ($CI->Chains->read(array(
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainusertype' => 31835, //References
         ), array('chainuserinput'), 0) as $message_references) {
             if (!substr_count(strtolower($i[$field]), '>@' . strtolower($message_references['userhandle']))) {
@@ -3899,7 +3883,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     $focus_post_or = false;
     if ($discovery_mode && $focus_posthashtag && !$focus__node && isset($previous_i['postid']) && $chainusercreator && !count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $previous_i['postid'],
+            'chainpostinput' => $previous_i['postid'],
             'chainuserinput' => 43758,
         )))) {
         foreach ($CI->Posts->read(array(
@@ -3907,7 +3891,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         )) as $focus_i) {
             if (count($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $focus_i['postid'],
+                'chainpostinput' => $focus_i['postid'],
                 'chainuserinput IN (' . join(',', $CI->config->item('userids___7712')) . ')' => null, //Input Choice
             )))) {
                 $focus_post_or = $focus_i;
@@ -3934,7 +3918,6 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
             'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
             'chainusercreator' => $chainusercreator,
             'chainpostinput' => $i['postid'],
-            'chainpostoutput > 0' => null,
         ), array('chainpostoutput')) as $CI_dis) {
             $target_posthashtag_discover = $CI_dis['posthashtag'];
             $target_posthashtag = $target_posthashtag_discover;
@@ -3944,7 +3927,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     $is_locked = ($discovery_mode && !$was_discovered && !$focus__node);
     $is_required = count($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput' => 28239, //Required
     )));
 
@@ -4184,7 +4167,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     //Post Location if any:
     foreach ($CI->Chains->read(array(
         'chainusertype' => 41949, //Locate
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
     ), array('chainuserinput')) as $location) {
         $ui .= view_featured_chains(41949, $location, null, $focus__node);
     }
@@ -4225,11 +4208,11 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     //Any inputs for this post?
     if (isset($previous_i['postid']) && (count($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $previous_i['postid'],
+                'chainpostinput' => $previous_i['postid'],
                 'chainuserinput' => 43758,
             ))) || ($focus__node && count($CI->Chains->read(array(
                     'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $i['postid'],
+                    'chainpostinput' => $i['postid'],
                     'chainuserinput IN (' . join(',', $CI->config->item('userids___41055')) . ')' => null,
                     'chainuserinput !=' => 43758,
                 )))))) {
@@ -4248,7 +4231,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
         } elseif (isset($previous_i['postid']) && !count($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $previous_i['postid'],
+                'chainpostinput' => $previous_i['postid'],
                 'chainuserinput' => 43758,
             ))) && count($x_completes)) {
 
@@ -4274,26 +4257,26 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
             $currency_types = $CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => (isset($previous_i['postid']) && count($CI->Chains->read(array(
+                'chainpostinput' => (isset($previous_i['postid']) && count($CI->Chains->read(array(
                     'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $previous_i['postid'],
+                    'chainpostinput' => $previous_i['postid'],
                     'chainuserinput' => 43758,
                 ))) ? $previous_i['postid'] : $i['postid']),
                 'chainuserinput IN (' . join(',', $CI->config->item('userids___26661')) . ')' => null, //Currency
             ));
             $total_dues = $CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 26562, //Total Due
             ));
             $cart_max = $CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 29651, //Cart Max Quantity
             ));
             $cart_min = $CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 31008, //Cart Min Quantity
             ));
 
@@ -4305,7 +4288,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                 //Try to find the first user reference and see if this user has a personalized value there to replace a fixed value:
                 foreach ($CI->Chains->read(array(
                     'chainusertype' => 31835, //Mention
-                    'chainpostoutput' => $i['postid'],
+                    'chainpostinput' => $i['postid'],
                     'chainkey' => 1,
                 ), array('chainuserinput'), 1, 0, array('chainkey' => 'ASC'), '*', null, false /* Limited to $user_session['userid'] */) as $user_output) {
                     foreach ($CI->Chains->read(array(
@@ -4336,7 +4319,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
             $prev_invoice = isset($previous_i['postid']) && count($CI->Chains->read(array(
                     'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostoutput' => $previous_i['postid'],
+                    'chainpostinput' => $previous_i['postid'],
                     'chainuserinput' => 43758,
                 )));
 
@@ -4419,7 +4402,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
     } elseif (count($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput IN (' . join(',', $CI->config->item('userids___33532')) . ')' => null,
     )))) {
 
@@ -4435,7 +4418,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
         if (count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $CI->config->item('userids___43002')) . ')' => null,
         )))) {
 
@@ -4448,7 +4431,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
             foreach ($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput IN (' . join(',', $CI->config->item('userids___43003')) . ')' => null,
             )) as $input_field) {
 
@@ -4457,7 +4440,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     //Number
                     if (count($CI->Chains->read(array(
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $i['postid'],
+                        'chainpostinput' => $i['postid'],
                         'chainuserinput' => 42181, //Phone
                     )))) {
                         //It's a phone number:
@@ -4472,7 +4455,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     //Steps
                     foreach ($CI->Chains->read(array(
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $i['postid'],
+                        'chainpostinput' => $i['postid'],
                         'chainuserinput' => 31813, //Steps
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
@@ -4483,7 +4466,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     //Min Value
                     foreach ($CI->Chains->read(array(
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $i['postid'],
+                        'chainpostinput' => $i['postid'],
                         'chainuserinput' => 31800, //Min Value
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
@@ -4494,7 +4477,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     //Max Value
                     foreach ($CI->Chains->read(array(
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $i['postid'],
+                        'chainpostinput' => $i['postid'],
                         'chainuserinput' => 31801, //Max Value
                     )) as $num_steps) {
                         if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
@@ -4506,7 +4489,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
                     $has_time = count($CI->Chains->read(array(
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $i['postid'],
+                        'chainpostinput' => $i['postid'],
                         'chainuserinput' => 32442, //Select Time
                     )));
 
@@ -4529,7 +4512,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         //Uploader
         if (count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $CI->config->item('userids___43004')) . ')' => null,
         )))) {
             foreach ($user_private_replies as $x_response) {
@@ -4588,7 +4571,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
         } elseif ($chainusertype_target_bar == 31022 && $discovery_mode && $focus__node && $user_session && !count($x_completes) && !count($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput IN (' . join(',', $CI->config->item('userids___43009')) . ')' => null,
             ))) && !post_required($i)) {
 
@@ -4655,7 +4638,7 @@ function view_list_user($i, $plain_no_html = false)
     //Query Relevant Users:
     foreach ($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Writer Chains Active
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput IN (' . join(',', $CI->config->item('userids___42421')) . ')' => null, //Featured Inputs
     ), array('chainuserinput'), 0, 0, $order_columns) as $x) {
 

@@ -98,12 +98,12 @@ foreach($this->Posts->read(array(
         $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
         $invoice_due_dates = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput' => 44378, //Invoice Due Date
         ));
         $invoice_min_payments = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput' => 44379, //Invoice Min Payment
         ));
         $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['chainvalue'])>0 ? floatval($invoice_min_payments[0]['chainvalue']) : 0 );

@@ -8,7 +8,7 @@ foreach($this->Posts->read(array(
 
     $preg_query = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput' => 32103,
     ));
 
@@ -17,7 +17,7 @@ foreach($this->Posts->read(array(
     $apply_to = array();
     foreach($this->Chains->read(array(
             'chainusertype' => 7545, //Following Add
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
     ), array('chainuserinput')) as $this_tag){
         array_push($apply_to, intval($this_tag['chainuserinput']));
     }

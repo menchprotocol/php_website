@@ -72,7 +72,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
             $time_starts = 0;
             foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostoutput' => $i['postid'],
+                'chainpostinput' => $i['postid'],
                 'chainuserinput' => 26556, //Time Starts
             )) as $time) {
                 $time_starts = strtotime($time['chainvalue']);
@@ -88,7 +88,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
                     //End time?
                     $time_ends = $this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostoutput' => $i['postid'],
+                        'chainpostinput' => $i['postid'],
                         'chainuserinput' => 26557, //Time Ends
                     ), array(), 1);
 
@@ -161,7 +161,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
         $time_starts = 0;
         foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput' => 26556, //Time Starts
         )) as $time) {
             $time_starts = strtotime($time['chainvalue']);
@@ -177,7 +177,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
         $end_sending = 0;
         foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostoutput' => $i['postid'],
+            'chainpostinput' => $i['postid'],
             'chainuserinput' => 26557, //Time Ends
         )) as $time) {
             $end_sending = strtotime($time['chainvalue']);

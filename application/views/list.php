@@ -147,7 +147,7 @@ foreach($post_settings['post_column'] as $post_var){
 
     $max_available = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $post_var['postid'],
+        'chainpostinput' => $post_var['postid'],
         'chainuserinput' => 26189,
     ), array(), 1);
 

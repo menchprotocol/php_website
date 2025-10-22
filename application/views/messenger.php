@@ -22,7 +22,7 @@ foreach ($this->Chains->read(array(
     $time_starts = 0;
     foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput' => 43743, //Sending Starts
     )) as $time) {
         $time_starts = strtotime($time['chainvalue']);
@@ -38,7 +38,7 @@ foreach ($this->Chains->read(array(
     $end_sending = 0;
     foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
         'chainuserinput' => 43744, //Sending Ends
     )) as $time) {
         $end_sending = strtotime($time['chainvalue']);

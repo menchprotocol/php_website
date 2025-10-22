@@ -837,7 +837,7 @@ class Users extends CIdea_cache
                 if (count($this->Chains->read(array(
                     'chainusertype' => 31835, //Mention
                     'chainuserinput' => $chainuserdomain, //for Current website
-                    'chainpostoutput' => $i['postid'], //Is this the template?
+                    'chainpostinput' => $i['postid'], //Is this the template?
                 )))) {
                     //Found the email template to send:
                     $total_sent = $this->Chains->broadcast(array($added_e['user_create']), $i, $chainuserdomain);
