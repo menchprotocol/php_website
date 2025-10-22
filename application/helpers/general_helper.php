@@ -4079,7 +4079,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     } elseif ($userid_dropdown == 31911 && $post_access >= 3) {
 
                         //Post Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_edit(' . $i['postid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_start_edit(' . $i['postid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($userid_dropdown == 13007 && $post_access >= 3) {
 
@@ -4089,7 +4089,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     } elseif ($userid_dropdown == 31911 && $post_access >= 3 && $discovery_mode) {
 
                         //Post Editor
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_edit(' . $i['postid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="post_start_edit(' . $i['postid'] . ',' . $chainid . ')" class="dropdown-item main__title">' . $anchor . '</a>';
 
                     } elseif ($userid_dropdown == 10673 && $chainid && $post_access >= 3) {
 
@@ -4554,7 +4554,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
             //Post Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="post_edit(0,0,' . $i['postid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__name'] : '') . '</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="post_start_edit(0,0,' . $i['postid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__name'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
         } elseif ($chainusertype_target_bar == 4235 && (!$discovery_mode && $post_startable && $post_access >= 1)) {
