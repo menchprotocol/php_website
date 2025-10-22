@@ -3835,7 +3835,7 @@ function post_to_title($post, $parent_post = null)
 }
 
 
-function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag = null, $focus_userid = 0, $x_completes = false)
+function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag = null, $focus__userid = 0, $x_completes = false)
 {
 
     //Search to see if an  posthas a thumbnail:
@@ -3850,7 +3850,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     $user_session = user_session();
     $superpower_10939 = !$is_cache && user_session(10939);
     $post_startable = post_is_startable($i);
-    $chainusercreator = ($focus_userid > 0 ? $focus_userid : ($user_session ? $user_session['userid'] : 0));
+    $chainusercreator = ($focus__userid > 0 ? $focus__userid : ($user_session ? $user_session['userid'] : 0));
     $chain_creator = isset($i['chainusercreator']) && $i['chainusercreator'] == $chainusercreator;
     $focus__node = in_array($chainusertype, $CI->config->item('userids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
@@ -4554,7 +4554,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
             //Post Reply
             $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="post_edit_start(0,0,' . $i['postid'] . ')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__name'] : '') . '</a>';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="post_edit_start(0,0,\'#' . $i['posthashtag'] . '\')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__name'] : '') . '</a>';
             $bottom_menu_ui .= '</span>';
 
         } elseif ($chainusertype_target_bar == 4235 && (!$discovery_mode && $post_startable && $post_access >= 1)) {

@@ -338,7 +338,7 @@ echo $bgVideo;
 //JS Variables for this app on page
 if ($focus_i) {
     echo '<input type="hidden" id="focus__node" value="12273" />
-<input type="hidden" id="focus_user" value="' . $focus_i['posthashtag'] . '" />
+<input type="hidden" id="focus_handle" value="' . $focus_i['posthashtag'] . '" />
 <input type="hidden" id="focus__id" value="' . $focus_i['postid'] . '" />';
     if ($target_i) {
         echo '<input type="hidden" id="target_posthashtag" value="' . $target_i['posthashtag'] . '" />
@@ -346,7 +346,7 @@ if ($focus_i) {
     }
 } elseif ($focus_e) {
     echo '<input type="hidden" id="focus__node" value="12274" />
-<input type="hidden" id="focus_user" value="' . $focus_e['userhandle'] . '" />
+<input type="hidden" id="focus_handle" value="' . $focus_e['userhandle'] . '" />
 <input type="hidden" id="focus__id" value="' . $focus_e['userid'] . '" />';
 }
 
@@ -750,7 +750,6 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                         <input type="hidden" class="created_postid" value="0"/>
                         <input type="hidden" class="save_postid" value="0"/>
                         <input type="hidden" class="save_chainid" value="0"/>
-                        <input type="hidden" class="next_postid" value="0"/>
 
                         <!-- Post Hashtag -->
                         <div class="dynamic_editing_input single_line hash_group hidden_superpower__10939">

@@ -1955,7 +1955,7 @@ function generate_string_id(length) {
     return result;
 }
 
-function post_edit_start(postid = 0, chainid = 0, next_postid = 0) {
+function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
 
     var chainusertype = 0;
     var focus_post_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
@@ -1971,21 +1971,9 @@ function post_edit_start(postid = 0, chainid = 0, next_postid = 0) {
     $('#modal31911 .save_chainid').val(chainid);
     $("#modal31911 .save_posthashtag").val('');
 
-    //Are we adding an post for a target action tab?
-    console.log('i Modal loaded for ' + focus_group);
-    if (focus_post_id && focus_group > 0 && !next_postid && !postid && !chainid) {
-        //Next post group:
-        next_postid = focus_post_id;
-    }
-
-    if (!postid && !next_postid && focus_post_id) {
-        next_postid = focus_post_id;
-    }
-
 
     //Assign updates:
     var insert_message = '';
-    $('#modal31911 .next_postid').val(next_postid);
 
     if(postid>0){
 
@@ -1996,17 +1984,12 @@ function post_edit_start(postid = 0, chainid = 0, next_postid = 0) {
         //New idea:
         $("#modal31911 .save_posthashtag").val(generate_string_id(10));
 
-        if (next_postid && $('.ui_posthashtag_' + next_postid).length) {
-            //Append to textarea:
-            insert_message = '#'+$('.ui_posthashtag_'+next_postid).val()+' ';
-        } else if (!next_postid) {
-            //See where we are at and append anything needed to the post:
-            var focus__node = parseInt($('#focus__node').val());
-            if (focus__node == 12273) {
-                insert_message = '#'+$('#focus_user').val()+' ';
-            } else if (focus__node == 12274 && parseInt($('#focus__id').val()) != js_pl_id) {
-                insert_message = '@' + $('#focus_user').val() + ' ';
-            }
+        //See where we are at and append anything needed to the post:
+        var focus__node = parseInt($('#focus__node').val());
+        if (focus__node == 12273) {
+            insert_message = '#'+$('#focus_handle').val()+' ';
+        } else if (focus__node == 12274 && parseInt($('#focus__id').val()) != js_pl_id) {
+            insert_message = '@' + $('#focus_handle').val() + ' ';
         }
     }
 
@@ -2060,7 +2043,6 @@ function post_edit_save() {
         focus__id: parseInt($('#focus__id').val()),
         save_postid: save_postid,
         save_chainid: $('#modal31911 .save_chainid').val(),
-        next_postid: $('#modal31911 .next_postid').val(),
         save_discoverymode: $('.s__12273_' + save_postid).attr('discovery_mode'),
         focus_group: focus_group,
         save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
@@ -2649,7 +2631,7 @@ function user_save_edit() {
             //Do we need to refresh the page?
             if (parseInt($('#focus__node').val()) == 12274 && parseInt($('#focus__id').val()) == modify_data['save_userid']) {
                 //Refresh page since User edited their own profile:
-                js_redirect(js_users___42903[42902]['m__message'] + $('#focus_user').val());
+                js_redirect(js_users___42903[42902]['m__message'] + $('#focus_handle').val());
             }
 
         }
@@ -3259,7 +3241,7 @@ function chain_sort_reset() {
 
         var focus__node = parseInt($('#focus__node').val());
         var focus__id = parseInt($('#focus__id').val());
-        var focus_user = $('#focus_user').val();
+        var focus_handle = $('#focus_handle').val();
 
         //Update via call:
         $.post("/controller/chain_sort_reset", {
@@ -3278,10 +3260,10 @@ function chain_sort_reset() {
                 //Refresh page:
                 if (focus__node == 12273) {
                     //Posts
-                    js_redirect(js_users___42903[33286]['m__message'] + focus_user);
+                    js_redirect(js_users___42903[33286]['m__message'] + focus_handle);
                 } else if (focus__node == 12274) {
                     //Users
-                    js_redirect(js_users___42903[42902]['m__message'] + focus_user);
+                    js_redirect(js_users___42903[42902]['m__message'] + focus_handle);
                 }
 
             }

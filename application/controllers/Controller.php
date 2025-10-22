@@ -161,7 +161,7 @@ class Controller extends CI_Controller
     }
 
 
-    function load($app_userid = 14563 /* Error if none provided */, $focus_user = 0, $focus_post = 0, $target_post = 0, $standalone = true)
+    function load($app_userid = 14563 /* Error if none provided */, $focus_handle = null, $focus_post = 0, $target_post = 0, $standalone = true)
     {
 
         $memory_detected = is_array($this->config->item('userids___6287')) && count($this->config->item('userids___6287'));
@@ -179,8 +179,8 @@ class Controller extends CI_Controller
         $user_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
 
 
-        if ($focus_user && strlen($focus_user) && !isset($_GET['userhandle'])) {
-            $_GET['userhandle'] = $focus_user;
+        if ($focus_handle && strlen($focus_handle) && !isset($_GET['userhandle'])) {
+            $_GET['userhandle'] = $focus_handle;
         }
         if ($focus_post && strlen($focus_post) && !isset($_GET['posthashtag'])) {
             $_GET['posthashtag'] = $focus_post;
@@ -951,13 +951,6 @@ class Controller extends CI_Controller
                 'message' => 'Missing Post ID',
             ));
 
-        } elseif (!isset($_POST['next_postid'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Next/Previous ID',
-            ));
-
         } elseif (!isset($_POST['save_chainid']) || !isset($_POST['save_chainvalue'])) {
 
             return view_json(array(
@@ -1168,7 +1161,7 @@ class Controller extends CI_Controller
             return false;
         }
 
-        $focus_userid = ($_POST['userid'] > 0 ? $_POST['userid'] : ($user_session ? $user_session['userid'] : 0));
+        $focus__userid = ($_POST['userid'] > 0 ? $_POST['userid'] : ($user_session ? $user_session['userid'] : 0));
         $ui = '';
 
         if ($_POST['chainusertype']==13550 || $_POST['chainusertype'] == 12273) {
@@ -1177,7 +1170,7 @@ class Controller extends CI_Controller
             //Posts:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
             foreach ($users_query as $i) {
-                $ui .= post_view($_POST['chainusertype'], $i, null, null, $focus_userid);
+                $ui .= post_view($_POST['chainusertype'], $i, null, null, $focus__userid);
             }
             $ui .= '</div>';
 
@@ -1195,7 +1188,7 @@ class Controller extends CI_Controller
             //Discoveries:
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
             foreach ($users_query as $i) {
-                $ui .= post_view($_POST['chainusertype'], $i, null, null, $focus_userid);
+                $ui .= post_view($_POST['chainusertype'], $i, null, null, $focus__userid);
             }
             $ui .= '</div>';
 
