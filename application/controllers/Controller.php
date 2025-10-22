@@ -2275,7 +2275,6 @@ class Controller extends CI_Controller
 
 
             $warning_message = null;
-            $preview_media = null;
             $suggest_data = array();
 
 
@@ -2322,7 +2321,6 @@ class Controller extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'warning_message' => $warning_message,
-                'preview_media' => $preview_media.view_list_user($i),
                 'suggest_data' => $suggest_data,
                 'post_index' => $post_index,
             ));

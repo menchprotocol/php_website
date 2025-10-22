@@ -3795,7 +3795,7 @@ function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode 
     }
 
     return
-        $i[$field] . view_list_user($i, !$focus__node); //. view_post_media($i)
+        $i[$field];
 }
 
 
@@ -4622,7 +4622,7 @@ function view_random_title()
     return random_adjective() . str_replace('Badger Honey', 'Honey Badger', str_replace('Black Widow', '', ucwords(str_replace('-', ' ', one_two_explode('fa-', ' ', $usercover_generator)))));
 }
 
-function view_list_user($i, $plain_no_html = false)
+function view_list_user($postid, $plain_no_html = false)
 {
 
     $CI =& get_instance();
@@ -4638,7 +4638,7 @@ function view_list_user($i, $plain_no_html = false)
     //Query Relevant Users:
     foreach ($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Writer Chains Active
-        'chainpostinput' => $i['postid'],
+        'chainpostinput' => $postid,
         'chainuserinput IN (' . join(',', $CI->config->item('userids___42421')) . ')' => null, //Featured Inputs
     ), array('chainuserinput'), 0, 0, $order_columns) as $x) {
 
@@ -5702,7 +5702,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
     //Give HTML their frame:
     if (strlen($post_index['postdiscover'])) {
-        $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . '</div>';
+        //Also append featured users:
+        $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . view_list_user($save_postid) . '</div>';
     }
     if (strlen($post_index['postedit'])) {
         $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . '</div>';
