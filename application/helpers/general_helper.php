@@ -4625,6 +4625,9 @@ function view_random_title()
 function view_list_user($postid, $plain_no_html = false)
 {
 
+    if($postid<1){
+        return false;
+    }
     $CI =& get_instance();
     $message_append = '';
 
@@ -5701,9 +5704,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
     }
 
     //Give HTML their frame:
-    if (strlen($post_index['postdiscover'])) {
+    $view_list_user = view_list_user($save_postid);
+    if (strlen($post_index['postdiscover']) || $view_list_user) {
         //Also append featured users:
-        $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . view_list_user($save_postid) . '</div>';
+        $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . $view_list_user . '</div>';
     }
     if (strlen($post_index['postedit'])) {
         $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . '</div>';
