@@ -2258,7 +2258,7 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing selected User',
             ));
-        } elseif(!count($this->Posts->read(array(
+        } elseif($_POST['postid']>0 && !count($this->Posts->read(array(
             'postid' => $_POST['postid'],
         )))){
             return view_json(array(
