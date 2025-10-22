@@ -2258,63 +2258,75 @@ class Controller extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing selected User',
             ));
+        } elseif(!count($this->Posts->read(array(
+            'postid' => $_POST['postid'],
+        )))){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Post missing in cache table',
+            ));
         }
 
-        $post_index = post_index(trim($_POST['save_postmessage']).( strlen($_POST['save_postfootnote']) ? "\n*\n".trim($_POST['save_postfootnote']) : '' ), 0, 0, $_POST['save_posthashtag']);
+        foreach($this->Posts->read(array(
+            'postid' => $_POST['postid'],
+        )) as $i){
+
+            $post_index = post_index(trim($_POST['save_postmessage']).( strlen($_POST['save_postfootnote']) ? "\n*\n".trim($_POST['save_postfootnote']) : '' ), 0, 0, $_POST['save_posthashtag']);
 
 
-        $warning_message = null;
-        $preview_media = null;
-        $suggest_data = array();
+            $warning_message = null;
+            $preview_media = null;
+            $suggest_data = array();
 
 
-        //Generate suggestions?
-        $suggest_data[4737] = array();
-        $suggest_data[6287] = array();
-        $suggest_data[42179] = array();
+            //Generate suggestions?
+            $suggest_data[4737] = array();
+            $suggest_data[6287] = array();
+            $suggest_data[42179] = array();
 
-        if(user_session(10939)){
+            if(user_session(10939)){
 
-            //Form Inputs, show them all if none of them are referenced:
-            if(count(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']))){
-                foreach(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']) as $first_form_input){
-                    foreach(array_intersect($this->config->item('userids___'.$first_form_input), $this->config->item('userids___42179')) as $settingid){
-                        if(!in_array($settingid, $post_index['referenced_users'])){
-                            array_push($suggest_data[42179], $settingid);
+                //Form Inputs, show them all if none of them are referenced:
+                if(count(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']))){
+                    foreach(array_intersect($this->config->item('userids___4737'), $post_index['referenced_users']) as $first_form_input){
+                        foreach(array_intersect($this->config->item('userids___'.$first_form_input), $this->config->item('userids___42179')) as $settingid){
+                            if(!in_array($settingid, $post_index['referenced_users'])){
+                                array_push($suggest_data[42179], $settingid);
+                            }
                         }
+                        break;
                     }
-                    break;
+                } else {
+                    foreach($this->config->item('users___4737') as $userid => $m){
+                        array_push($suggest_data[4737], $userid);
+                    }
                 }
-            } else {
-                foreach($this->config->item('users___4737') as $userid => $m){
-                    array_push($suggest_data[4737], $userid);
-                }
-            }
 
-            foreach($this->config->item('users___30841') as $userid => $m){
-                if(!in_array($userid, $post_index['referenced_users'])){
-                    array_push($suggest_data[6287], $userid);
-                }
-            }
-            if((count($post_index['new_posts']) + count($post_index['referenced_posts']))>0){
-                foreach($this->config->item('users___3450818') as $userid => $m){
+                foreach($this->config->item('users___30841') as $userid => $m){
                     if(!in_array($userid, $post_index['referenced_users'])){
                         array_push($suggest_data[6287], $userid);
                     }
                 }
+                if((count($post_index['new_posts']) + count($post_index['referenced_posts']))>0){
+                    foreach($this->config->item('users___3450818') as $userid => $m){
+                        if(!in_array($userid, $post_index['referenced_users'])){
+                            array_push($suggest_data[6287], $userid);
+                        }
+                    }
+                }
+
+
             }
 
-
+            //All good:
+            return view_json(array(
+                'status' => 1,
+                'warning_message' => $warning_message,
+                'preview_media' => $preview_media.view_list_user($i),
+                'suggest_data' => $suggest_data,
+                'post_index' => $post_index,
+            ));
         }
-
-        //All good:
-        return view_json(array(
-            'status' => 1,
-            'warning_message' => $warning_message,
-            'preview_media' => $preview_media,
-            'suggest_data' => $suggest_data,
-            'post_index' => $post_index,
-        ));
     }
 
 
