@@ -3795,7 +3795,7 @@ function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode 
     }
 
     return
-        $i[$field];
+        $i[$field] . view_list_user($i['postid']);
 }
 
 
