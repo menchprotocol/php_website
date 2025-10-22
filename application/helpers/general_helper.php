@@ -5709,8 +5709,8 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
         //Also append featured users:
         $post_index['postdiscover'] = '<div class="i_cache i_postdiscover cache_frame_' . $save_postid . '">' . $post_index['postdiscover'] . $view_list_user . '</div>';
     }
-    if (strlen($post_index['postedit'])) {
-        $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . '</div>';
+    if (strlen($post_index['postedit']) || $view_list_user) {
+        $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . $view_list_user . '</div>';
     }
 
     if (!intval($chainusercreator)) {
