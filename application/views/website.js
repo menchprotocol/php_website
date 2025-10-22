@@ -1130,7 +1130,7 @@ $(document).ready(function () {
         if (e.ctrlKey) {
             if (String.fromCharCode(e.which).toLowerCase() === 'i') {
                 //Add Post
-                post_start_edit();
+                post_edit_start();
             } else if (String.fromCharCode(e.which).toLowerCase() === 's') {
                 //Add User:
                 user_editor(0, 0);
@@ -1955,7 +1955,7 @@ function generate_string_id(length) {
     return result;
 }
 
-function post_start_edit(postid = 0, chainid = 0, next_postid = 0) {
+function post_edit_start(postid = 0, chainid = 0, next_postid = 0) {
 
     var chainusertype = 0;
     var focus_post_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
@@ -2036,59 +2036,9 @@ function post_start_edit(postid = 0, chainid = 0, next_postid = 0) {
 
 }
 
-function load_post_dynamic(postid, chainid, initial_loading) {
-
-    $(".dynamic_item").addClass('hidden'); //Hide all current items
-    var created_postid = 0;
-
-    $.post("/controller/post_save_edit", {
-        postid: postid,
-        chainid: chainid,
-        js_request_uri: js_request_uri, //Always append to AJAX Calls
-    }, function (data) {
-
-        if (data.status) {
-
-            if (!postid && data.created_postid > 0) {
-                console.log('NEW POST #' + data.created_postid + ' has been created');
-                created_postid = data.created_postid;
-                $('#modal31911 .created_postid').val(created_postid);
-                postid = created_postid;
-            }
-
-            if (initial_loading) {
-
-                //Initiate Post  Uploader:
-                load_cloudinary(13572, postid, ['#' + postid], '.uploader_13572', '#modal31911');
-
-                //Track unsaved changes to prevent unwated modal closure:
-                $("#modal31911 .unsaved_warning").change(function () {
-                    has_unsaved_changes = true;
-                });
-
-            }
-
-            var current_header = null;
-
-            setTimeout(function () {
-
-                setup_popover();
-
-            }, 377);
-
-        } else if (data.message) {
-
-            //Should not have an issue loading
-            alert('ERROR:' + data.message);
-
-        }
-    });
-    return created_postid;
-}
-
 
 var i_saving = false; //Prevent double saving
-function post_update() {
+function post_edit_save() {
 
     if (i_saving) {
         console.log('Post updating aborted');
@@ -2096,7 +2046,7 @@ function post_update() {
     }
 
     i_saving = true;
-    $(".post_update").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $(".post_edit_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
     var current_postid = parseInt($('#modal31911 .save_postid').val());
@@ -2120,11 +2070,11 @@ function post_update() {
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
-    $.post("/controller/post_update", modify_data, function (data) {
+    $.post("/controller/post_edit_save", modify_data, function (data) {
 
         //Load Images:
         i_saving = false;
-        $(".post_update").html('SAVE');
+        $(".post_edit_save").html('SAVE');
 
         if (!data.status) {
 
@@ -3255,7 +3205,7 @@ function selector(element_id, user_createid, o__id = 0, chainid = 0, show_full_n
 
             if (data.auto_open_post_modal) {
                 //We need to show post modal:
-                post_start_edit(o__id, $('.s__12273_' + o__id).attr('chainid'));
+                post_edit_start(o__id, $('.s__12273_' + o__id).attr('chainid'));
             }
 
         } else {

@@ -377,7 +377,7 @@ if ($focus_i) {
 
                 //New Post?
                 if ($user_session) {
-                    echo '<td class="block-x enlarge add_post"><a href="javascript:void(0);" onclick="post_start_edit()" title="' . $users___11035[44403]['m__name'] . '">' . $users___11035[44403]['m__cover'] . '</a></td>';
+                    echo '<td class="block-x enlarge add_post"><a href="javascript:void(0);" onclick="post_edit_start()" title="' . $users___11035[44403]['m__name'] . '">' . $users___11035[44403]['m__cover'] . '</a></td>';
                 }
 
                 //MENU
@@ -738,7 +738,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                         <div class="initial_header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <button type="button" class="btn btn-default post_update post_button" onclick="post_update()">
+                        <button type="button" class="btn btn-default post_edit_save post_button" onclick="post_edit_save()">
                             POST
                         </button>
                     </div>

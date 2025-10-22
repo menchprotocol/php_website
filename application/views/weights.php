@@ -7,7 +7,7 @@ $obj = ( isset($_GET['obj']) ? $_GET['obj'] : false );
 $stats = array(
     'start_time' => time(),
     'post_scanned' => 0,
-    'post_updated' => 0,
+    'post_count_updated' => 0,
     'post_total_weights' => 0,
     'user_scanned' => 0,
     'user_changed' => 0,
@@ -18,7 +18,7 @@ if(!$obj || $obj == 12273){
     //Update the weights for active posts
     foreach($this->Posts->read(array()) as $in) {
         $stats['post_scanned']++;
-        $stats['post_updated'] += post_weight_calculator($in);
+        $stats['post_count_updated'] += post_weight_calculator($in);
     }
 
 }

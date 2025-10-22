@@ -478,7 +478,7 @@ class Posts extends CIdea_cache
             'chainvalue' => array(
                 'payload' => $_POST,
                 'post_total' => count($is_next),
-                'post_updated' => $applied_success,
+                'post_count_updated' => $applied_success,
                 'command1' => $action_command1,
                 'command2' => $action_command2,
             ),
