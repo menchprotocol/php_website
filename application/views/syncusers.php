@@ -44,10 +44,11 @@ if($stats['sync_datatypes']){
     foreach($this->config->item('users___4592') as $datatypeid => $m){
         //Fetch all children:
         $data_users = array();
+        $data_users_array = array();
         foreach ($this->Chains->read(array(
             'chainuserinput' => $datatypeid,
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-        ), array('chainuseroutput'), 0, 0, user_sort()) as $user) {
+        ), array('chainuseroutput'), 0) as $user) {
             //Make sure only a single type:
             if(count($this->Chains->read(array(
                     'chainuseroutput' => $user['userid'],
@@ -56,6 +57,7 @@ if($stats['sync_datatypes']){
                 )))==1){
                 //All good as expected:
                 array_push($data_users, intval($user['userid']));
+                $data_users_array[intval($user['userid'])] = $user;
             } else {
                 //Must have more than one, add to error:
                 array_push($stats['datatype_user_error'], '@'.$user['userhandle']);
@@ -67,13 +69,13 @@ if($stats['sync_datatypes']){
             foreach ($this->Chains->read(array(
                 'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-            ), array('chainuseroutput'), 0, 0, user_sort()) as $chain) {
+            ), array('chainuseroutput'), 0) as $chain) {
                 $stats['datatype_link_count']++;
                 $data_type_validate = data_type_validate($datatypeid, $chain['chainvalue']);
                 if (!$data_type_validate['status']) {
                     //We had an error:
                     $stats['datatype_link_mismatch']++;
-                    $stats['message'] .= "@" . $user['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
+                    $stats['message'] .= "@" . $data_users_array[intval($user['userid'])]['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
                 }
             }
         }
