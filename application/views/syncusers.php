@@ -7,7 +7,6 @@ $stats = array(
     'sync_chain' => 0,
     'sync_datatypes' => 1,
 
-    'datatype_user_error' => array(),
     'datatype_link_count' => 0,
     'datatype_link_mismatch' => 0,
 
@@ -49,19 +48,8 @@ if($stats['sync_datatypes']){
             'chainuserinput' => $datatypeid,
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array('chainuseroutput'), 0) as $user) {
-            //Make sure only a single type:
-            if(count($this->Chains->read(array(
-                    'chainuseroutput' => $user['userid'],
-                    'chainuserinput IN (' . join(',', $this->config->item('userids___4592')) . ')' => null, //Data types
-                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                )))==1){
-                //All good as expected:
-                array_push($data_users, intval($user['userid']));
-                $data_users_array[intval($user['userid'])] = $user;
-            } else {
-                //Must have more than one, add to error:
-                array_push($stats['datatype_user_error'], '@'.$user['userhandle']);
-            }
+            array_push($data_users, intval($user['userid']));
+            $data_users_array[intval($user['userid'])] = $user;
         }
 
         if(count($data_users)){
@@ -70,9 +58,23 @@ if($stats['sync_datatypes']){
                 'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC', 'chainvalue' => 'ASC')) as $chain) {
+
                 $stats['datatype_link_count']++;
-                $data_type_validate = data_type_validate($datatypeid, $chain['chainvalue']);
-                if (!$data_type_validate['status']) {
+
+                $anytype_valid = false;
+                foreach($this->Chains->read(array(
+                    'chainuserinput IN (' . join(',', $this->config->item('userids___4592')) . ')' => null, //Data types
+                    'chainuseroutput' => $chain['chainuserinput'],
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                )) as $valid_type){
+                    $data_type_validate = data_type_validate(intval($valid_type['chainuserinput']), $chain['chainvalue']);
+                    if ($data_type_validate['status']) {
+                        $anytype_valid = true;
+                        break;
+                    }
+                }
+
+                if (!$anytype_valid) {
                     //We had an error:
                     $stats['datatype_link_mismatch']++;
                     $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
