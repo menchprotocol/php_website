@@ -1391,6 +1391,7 @@ function data_type_validate($data_type, $data_value, $data_title = null)
 
     $CI =& get_instance();
     $users___4592 = $CI->config->item('users___4592'); //Data types
+    $data_value = trim($data_value);
 
     if(!in_array($data_type, $CI->config->item('userids___4592'))){
         //Unknown data type:
