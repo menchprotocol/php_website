@@ -3335,7 +3335,7 @@ function users_query($chainusertype, $userid, $current_page = 0, $append_card_ic
 
         $order_columns = array();
         $order_columns['chainid'] = 'DESC';
-        $joins_objects = array('chainpostinput');
+        $joins_objects = array('chainpostoutput');
 
         if (in_array($chainusersub, $CI->config->item('userids___31777'))) {
 
@@ -4904,7 +4904,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
                     $focus_dropdown = 12887; //User Dropdown
                 } elseif ($chainusertype_id == 32292) { //User/User Chains
                     $focus_dropdown = 14956; //User/User Dropdown
-                } elseif ($chainusertype_id == 31777 || $chainusertype_id == 31777) { //Discoveries
+                } elseif ($chainusertype_id == 31777) { //Discoveries
                     $focus_dropdown = 32070; //User>Discoveries Dropdown
                 } elseif ($chainusertype_id == 13550) { //Post/User Chains
                     $focus_dropdown = 28792; //User/Post Dropdown
