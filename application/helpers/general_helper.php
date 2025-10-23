@@ -1392,7 +1392,36 @@ function data_type_validate($data_type, $data_value, $data_title = null)
     $CI =& get_instance();
     $users___4592 = $CI->config->item('users___4592'); //Data types
 
-    if ($data_type == 4319 && !is_numeric($data_value)) {
+    if(!in_array($data_type, $this->config->item('userids___4592'))){
+        //Unknown data type:
+        return array(
+            'status' => 0,
+            'message' => $data_type.' is an unknown data type not listed under @4592',
+        );
+    }
+
+    if(!$data_title){
+        $data_title = $users___4592[$data_type]['m__name'];
+    }
+
+    //Validate data type:
+    if ($data_type == 43940 && strlen($data_value)) {
+
+        //Number:
+        return array(
+            'status' => 0,
+            'message' => $data_title . ' must be null/empty but its ['.$data_value.']',
+        );
+
+    } elseif ($data_type == 4256 && !filter_var($data_value, FILTER_VALIDATE_URL)) {
+
+        //URL:
+        return array(
+            'status' => 0,
+            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__name'],
+        );
+
+    } elseif ($data_type == 4319 && !is_numeric($data_value)) {
         //Number:
         return array(
             'status' => 0,
@@ -1404,7 +1433,7 @@ function data_type_validate($data_type, $data_value, $data_title = null)
             'status' => 0,
             'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__name'] . ' with 10-14 numbers including country code.',
         );
-    } elseif ($data_type == 4318 && !strtotime($data_value)) {
+    } elseif (($data_type == 4318 || $data_type == 43939) && !strtotime($data_value)) {
         return array(
             'status' => 0,
             'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__name'],
@@ -1427,17 +1456,6 @@ function data_type_validate($data_type, $data_value, $data_title = null)
             'status' => 0,
             'message' => $data_title . ' must be set to a number between 0.00 & 1.00.',
         );
-    } elseif (in_array($data_type, $CI->config->item('userids___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)) {
-        //URL:
-        return array(
-            'status' => 0,
-            'message' => $data_title . ' must be set to a valid ' . $users___4592[$data_type]['m__name'],
-        );
-    } elseif (in_array($data_type, $CI->config->item('userids___42188'))) {
-        //Single Choice of Multi Choice User types should not be validated here
-        log_error('data_type_validate() was asked to validate choice options for @' . $data_type . ' [' . $data_value . '] [' . $data_title . ']', array(
-            'chainuseroutput' => $data_type,
-        ));
     }
 
     //All good:
