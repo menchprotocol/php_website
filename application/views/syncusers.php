@@ -69,7 +69,7 @@ if($stats['sync_datatypes']){
             foreach ($this->Chains->read(array(
                 'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-            ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC', 'chainuserinput' => 'ASC', 'chainvalue' => 'ASC')) as $chain) {
+            ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC', 'chainvalue' => 'ASC')) as $chain) {
                 $stats['datatype_link_count']++;
                 $data_type_validate = data_type_validate($datatypeid, $chain['chainvalue']);
                 if (!$data_type_validate['status']) {
