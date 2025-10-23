@@ -75,14 +75,7 @@ if($stats['sync_datatypes']){
                     $stats['datatype_link_mismatch']++;
                     $stats['message'] .= "@" . $user['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
                 }
-                if($stats['datatype_link_mismatch']>100 || $stats['datatype_link_count']>500){
-                    break;
-                }
             }
-        }
-
-        if($stats['datatype_link_mismatch']>100 || $stats['datatype_link_count']>500){
-            break;
         }
     }
 
