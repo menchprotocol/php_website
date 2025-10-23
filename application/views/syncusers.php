@@ -75,7 +75,7 @@ if($stats['sync_datatypes']){
                 if (!$data_type_validate['status']) {
                     //We had an error:
                     $stats['datatype_link_mismatch']++;
-                    $stats['message'] .= "@" . $data_users_array[intval($user['userid'])]['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
+                    $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
                 }
             }
         }
