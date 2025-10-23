@@ -1392,7 +1392,7 @@ function data_type_validate($data_type, $data_value, $data_title = null)
     $CI =& get_instance();
     $users___4592 = $CI->config->item('users___4592'); //Data types
 
-    if(!in_array($data_type, $this->config->item('userids___4592'))){
+    if(!in_array($data_type, $CI->config->item('userids___4592'))){
         //Unknown data type:
         return array(
             'status' => 0,
