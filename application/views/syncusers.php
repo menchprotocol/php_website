@@ -75,6 +75,11 @@ if($stats['sync_datatypes']){
                 }
 
                 if (!$anytype_valid) {
+                    //Can we fix it?
+                    if(in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue'])<30){
+                        $new_val = 'https://instagram.com/'.str_replace('@','',$chain['chainvalue']);
+                        $stats['message'] .= "UPDATE TO [".$new_val."] ";
+                    }
                     //We had an error:
                     $stats['datatype_link_mismatch']++;
                     $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
