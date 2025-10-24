@@ -87,11 +87,11 @@ if ($stats['sync_datatypes']) {
                 if (!$data_type_validate['status']) {
 
                     //Can we fix it?
-                    if (in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue']) < 30 and strlen($chain['chainvalue']) > 2) {
+                    if (strtolower($chain['chainvalue'])!='skip' && in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue']) < 30 and strlen($chain['chainvalue']) > 2) {
                         $new_val = 'https://instagram.com/' . str_replace('@', '', trim($chain['chainvalue']));
                         $stats['message'] .= "UPDATE TO [" . $new_val . "] ";
                         $stats['datatype_user_fix']++;
-                    } elseif (in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Whatsapp1')) && strlen(preg_replace('/[^0-9]+/', '', $chain['chainvalue'])) >= 10) {
+                    } elseif (strtolower($chain['chainvalue'])!='skip' && in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Whatsapp1')) && strlen(preg_replace('/[^0-9]+/', '', $chain['chainvalue'])) >= 10) {
                         $new_val = 'https://wa.me/' . preg_replace('/[^0-9]+/', '', $chain['chainvalue']);
                         $stats['message'] .= "UPDATE TO [" . $new_val . "] ";
                         $stats['datatype_user_fix']++;
