@@ -8,6 +8,7 @@ $stats = array(
     'sync_datatypes' => 1,
 
     'datatype_user_count' => 0,
+    'datatype_user_fix' => 0,
     'datatype_user_mismatch' => 0,
     'datatype_post_count' => 0,
     'datatype_post_mismatch' => 0,
@@ -89,13 +90,17 @@ if ($stats['sync_datatypes']) {
                     if (in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue']) < 30 and strlen($chain['chainvalue']) > 2) {
                         $new_val = 'https://instagram.com/' . str_replace('@', '', trim($chain['chainvalue']));
                         $stats['message'] .= "UPDATE TO [" . $new_val . "] ";
+                        $stats['datatype_user_fix']++;
                     } elseif (in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Whatsapp1')) && strlen(preg_replace('/[^0-9]+/', '', $chain['chainvalue'])) >= 10) {
                         $new_val = 'https://wa.me/' . preg_replace('/[^0-9]+/', '', $chain['chainvalue']);
-                        $stats['message'] .= "UPDATE TO [" . $new_val . "] "; //17788826962
+                        $stats['message'] .= "UPDATE TO [" . $new_val . "] ";
+                        $stats['datatype_user_fix']++;
+                    } else {
+                        $stats['datatype_user_mismatch']++;
+                        $stats['message'] .= "DELETE "; //17788826962
                     }
 
                     //We had an error:
-                    $stats['datatype_user_mismatch']++;
                     $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > " . $chain['chainvalue'] . " > @" . $chain['userhandle'] . " INVALID " . $m['m__name'] . "\n";
                 }
             }
