@@ -62,7 +62,7 @@ if ($stats['sync_datatypes']) {
             foreach($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
-            ), array('chainpostinput')) as $chain){
+            ), array('chainpostinput', 'chainuserinput')) as $chain){
 
                 $stats['datatype_post_count']++;
 
@@ -70,7 +70,7 @@ if ($stats['sync_datatypes']) {
                 if (!$data_type_validate['status']) {
                     //We had an error:
                     $stats['datatype_post_mismatch']++;
-                    $stats['message'] .= "@" . $chain['chainuserinput'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
+                    $stats['message'] .= "@" . $chain['userhandle'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
                 }
             }
 
