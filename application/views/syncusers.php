@@ -57,24 +57,6 @@ if ($stats['sync_datatypes']) {
 
         if (count($data_users)) {
 
-            //Find mentioned posts and validate:
-
-            foreach($this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
-            ), array('chainpostinput', 'chainuserinput')) as $chain){
-
-                $stats['datatype_post_count']++;
-
-                $data_type_validate = data_type_validate($datatypeid, $chain['chainvalue']);
-                if (!$data_type_validate['status']) {
-                    //We had an error:
-                    $stats['datatype_post_mismatch']++;
-                    $stats['message'] .= "@" . $chain['userhandle'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
-                }
-            }
-
-
             //Find all child users and validate:
             foreach ($this->Chains->read(array(
                 'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
