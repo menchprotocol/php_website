@@ -1439,7 +1439,7 @@ class Chains extends CIdea_cache
         $single_choice = count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostinput' => $i['postid'],
-            'chainuserinput IN (' . join(',', $this->config->item('userids___33331')) . ')' => null,
+            'chainuserinput' => 6684,
         )));
 
         if(isset($_GET['skip_config'])) {

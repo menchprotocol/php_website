@@ -512,7 +512,9 @@ class Controller extends CI_Controller
                 //Load App:
                 echo $this->load->view('websiteheader', $view_input, true);
                 echo $ui;
-                echo $cache_chaintime;
+                if(!in_array($app_userid, $this->config->item('userids___14562'))){
+                    echo $cache_chaintime;
+                }
                 echo $this->load->view('websitefooter', array(), true);
 
             }
@@ -2943,7 +2945,7 @@ class Controller extends CI_Controller
                 $is_single_selection = count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                     'chainpostinput' => $focus_i['postid'],
-                    'chainuserinput IN (' . join(',', $this->config->item('userids___33331')) . ')' => null,
+                    'chainuserinput' => 6684,
                 )));
 
 
