@@ -83,8 +83,8 @@ if($stats['sync_datatypes']){
 
                 $anytype_valid = false;
                 if(isset($other_datatypes[$chain['chainuserinput']])){
-                    foreach($other_datatypes[$chain['chainuserinput']] as $chain){
-                        $data_type_validate = data_type_validate(intval($chain['chainuserinput']), $chain['chainvalue']);
+                    foreach($other_datatypes[$chain['chainuserinput']] as $chain2){
+                        $data_type_validate = data_type_validate(intval($chain2['chainuserinput']), $chain['chainvalue']);
                         if ($data_type_validate['status']) {
                             $anytype_valid = true;
                             break;
@@ -111,8 +111,8 @@ if($stats['sync_datatypes']){
 
                 $anytype_valid = false;
                 if(isset($other_datatypes[$chain['chainuseroutput']])){
-                    foreach($other_datatypes[$chain['chainuseroutput']] as $chain){
-                        $data_type_validate = data_type_validate(intval($chain['chainuserinput']), $chain['chainvalue']);
+                    foreach($other_datatypes[$chain['chainuseroutput']] as $chain2){
+                        $data_type_validate = data_type_validate(intval($chain2['chainuserinput']), $chain['chainvalue']);
                         if ($data_type_validate['status']) {
                             $anytype_valid = true;
                             break;
