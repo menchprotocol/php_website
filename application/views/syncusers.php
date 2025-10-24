@@ -57,22 +57,6 @@ if($stats['sync_datatypes']){
 
         if(count($data_users)){
 
-
-            //Any other acceptable data type for this?
-            $other_datatypes = array();
-            foreach($this->Chains->read(array(
-                'chainuserinput IN (' . join(',', $this->config->item('userids___4592')) . ')' => null, //Data types
-                'chainuseroutput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
-                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-            )) as $chain){
-                if(!isset($other_datatypes[$chain['chainuseroutput']])){
-                    $other_datatypes[$chain['chainuseroutput']] = array();
-                }
-                array_push($other_datatypes[$chain['chainuseroutput']], $chain);
-            }
-
-
-
             //Find mentioned posts and validate:
             foreach($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
@@ -81,18 +65,8 @@ if($stats['sync_datatypes']){
 
                 $stats['datatype_post_count']++;
 
-                $anytype_valid = false;
-                if(isset($other_datatypes[$chain['chainuserinput']])){
-                    foreach($other_datatypes[$chain['chainuserinput']] as $chain2){
-                        $data_type_validate = data_type_validate(intval($chain2['chainuserinput']), $chain['chainvalue']);
-                        if ($data_type_validate['status']) {
-                            $anytype_valid = true;
-                            break;
-                        }
-                    }
-                }
-                if (!$anytype_valid) {
-
+                $data_type_validate = data_type_validate($datatypeid, $chain['chainvalue']);
+                if (!$data_type_validate['status']) {
                     //We had an error:
                     $stats['datatype_post_mismatch']++;
                     $stats['message'] .= "@" . $chain['chainuserinput'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
@@ -109,17 +83,8 @@ if($stats['sync_datatypes']){
 
                 $stats['datatype_user_count']++;
 
-                $anytype_valid = false;
-                if(isset($other_datatypes[$chain['chainuseroutput']])){
-                    foreach($other_datatypes[$chain['chainuseroutput']] as $chain2){
-                        $data_type_validate = data_type_validate(intval($chain2['chainuserinput']), $chain['chainvalue']);
-                        if ($data_type_validate['status']) {
-                            $anytype_valid = true;
-                            break;
-                        }
-                    }
-                }
-                if (!$anytype_valid) {
+                $data_type_validate = data_type_validate($datatypeid, $chain['chainvalue']);
+                if (!$data_type_validate['status']) {
 
                     //Can we fix it?
                     if(in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue'])<30 and strlen($chain['chainvalue'])>2){
