@@ -1446,6 +1446,7 @@ class Chains extends CIdea_cache
             unset($i['postexternal']);
             unset($i['postweight']);
             unset($i['postedit']);
+            unset($i['postvoid']);
             if(isset($i['chainid'])){
                 unset($i['chainuserdomain']);
                 unset($i['chainusercreator']);
@@ -1459,6 +1460,7 @@ class Chains extends CIdea_cache
                 unset($i['chainvoid']);
                 unset($i['chainprevious']);
                 unset($i['chainhash']);
+                unset($i['chaintime']);
             }
         } else {
 

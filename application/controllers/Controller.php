@@ -1027,8 +1027,8 @@ class Controller extends CI_Controller
                     if($update_columns['postmessage']!=$post_index['postmessage']){
                         $update_columns['postmessage'] = $post_index['postmessage'];
                     }
-                    if($update_columns['postdiscover']!=$post_index['postdiscover']){
-                        $update_columns['postdiscover'] = $post_index['postdiscover'];
+                    if($update_columns['postdisplay']!=$post_index['postdisplay']){
+                        $update_columns['postdisplay'] = $post_index['postdisplay'];
                     }
                     if($update_columns['postedit']!=$post_index['postedit']){
                         $update_columns['postedit'] = $post_index['postedit'];
@@ -1068,8 +1068,8 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 1,
-                'return_postdiscover_chains' => view_post_value($new_i, $user_session['userid'], $focus__node, $discovery_mode, $discovery_mode),
-                'return_postdiscover_full' => post_view($_POST['focus_group'], $new_i),
+                'return_postdisplay_chains' => view_post_value($new_i, $user_session['userid'], $focus__node, $discovery_mode, $discovery_mode),
+                'return_postdisplay_full' => post_view($_POST['focus_group'], $new_i),
                 'save_postid' => $new_i['postid'],
                 'save_postmessage' => trim($_POST['save_postmessage']),
                 'redirect_post' => ( $focus__node ? : ( isset($new_i['posthashtag']) ? view_memory(42903, 33286) . $new_i['posthashtag'] : null) ),
@@ -2105,7 +2105,7 @@ class Controller extends CI_Controller
         $post_index = post_index(trim($_POST['save_postmessage']).( strlen($_POST['save_postfootnote']) ? "\n*\n".trim($_POST['save_postfootnote']) : '' ), 0, 0, $_POST['save_posthashtag']);
 
         //Append Preview:
-        $post_index['postdiscover'] .= view_list_user($_POST['postid']);
+        $post_index['postdisplay'] .= view_list_user($_POST['postid']);
 
         $warning_message = null;
         $suggest_data = array();

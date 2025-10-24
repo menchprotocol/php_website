@@ -888,7 +888,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
 
                         <div style="margin-left: 40px;">
-                            <div class="preview_postdiscover hideIfEmpty"></div>
+                            <div class="preview_postdisplay hideIfEmpty"></div>
                             <div class="doclear">&nbsp;</div>
                         </div>
 
