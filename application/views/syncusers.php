@@ -58,7 +58,7 @@ if ($stats['sync_datatypes']) {
         if (count($data_users)) {
 
             //Find mentioned posts and validate:
-            /*
+
             foreach($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
@@ -73,7 +73,7 @@ if ($stats['sync_datatypes']) {
                     $stats['message'] .= "@" . $chain['chainuserinput'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
                 }
             }
-            */
+
 
             //Find all child users and validate:
             foreach ($this->Chains->read(array(
@@ -89,15 +89,22 @@ if ($stats['sync_datatypes']) {
                     //Can we fix it?
                     if (strtolower($chain['chainvalue'])!='skip' && in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue']) < 30 and strlen($chain['chainvalue']) > 2) {
                         $new_val = 'https://instagram.com/' . str_replace('@', '', trim($chain['chainvalue']));
-                        $stats['message'] .= "UPDATE TO [" . $new_val . "] ";
+                        $stats['message'] .= "UPDATED TO [" . $new_val . "] ";
                         $stats['datatype_user_fix']++;
+                        $this->Chains->update($chain['chainid'], array(
+                            'chainvalue' => $new_val,
+                        ));
                     } elseif (strtolower($chain['chainvalue'])!='skip' && in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Whatsapp1')) && strlen(preg_replace('/[^0-9]+/', '', $chain['chainvalue'])) >= 10) {
                         $new_val = 'https://wa.me/' . preg_replace('/[^0-9]+/', '', $chain['chainvalue']);
-                        $stats['message'] .= "UPDATE TO [" . $new_val . "] ";
+                        $stats['message'] .= "UPDATED TO [" . $new_val . "] ";
                         $stats['datatype_user_fix']++;
+                        $this->Chains->update($chain['chainid'], array(
+                            'chainvalue' => $new_val,
+                        ));
                     } else {
                         $stats['datatype_user_mismatch']++;
-                        $stats['message'] .= "DELETE "; //17788826962
+                        $stats['message'] .= "DELETED ";
+                        $this->Chains->delete($chain['chainid']);
                     }
 
                     //We had an error:
