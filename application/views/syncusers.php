@@ -38,11 +38,10 @@ $stats = array(
 );
 
 
-
-if($stats['sync_datatypes']){
+if ($stats['sync_datatypes']) {
 
     //Go through all data type links and see if they all match:
-    foreach($this->config->item('users___4592') as $datatypeid => $m){
+    foreach ($this->config->item('users___4592') as $datatypeid => $m) {
 
         //Fetch all children:
         $data_users = array();
@@ -55,7 +54,7 @@ if($stats['sync_datatypes']){
             $data_users_array[intval($user['userid'])] = $user;
         }
 
-        if(count($data_users)){
+        if (count($data_users)) {
 
             //Find mentioned posts and validate:
             /*
@@ -87,14 +86,21 @@ if($stats['sync_datatypes']){
                 if (!$data_type_validate['status']) {
 
                     //Can we fix it?
-                    if(in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue'])<30 and strlen($chain['chainvalue'])>2){
-                        $new_val = 'https://instagram.com/'.str_replace('@','',trim($chain['chainvalue']));
-                        $stats['message'] .= "UPDATE TO [".$new_val."] ";
+                    if (in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue']) < 30 and strlen($chain['chainvalue']) > 2) {
+                        $new_val = 'https://instagram.com/' . str_replace('@', '', trim($chain['chainvalue']));
+                        $stats['message'] .= "UPDATE TO [" . $new_val . "] ";
+                    }
+
+                    //Can we fix it?
+                    $numbers = preg_replace('/[^0-9]+/', '', $chain['chainvalue']);
+                    if (in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('WhatsApp1')) && strlen($numbers) >= 10 and strlen($chain['chainvalue']) <= 21) {
+                        $new_val = 'https://wa.me/' . $numbers;
+                        $stats['message'] .= "UPDATE TO [" . $new_val . "] "; //17788826962
                     }
 
                     //We had an error:
                     $stats['datatype_user_mismatch']++;
-                    $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
+                    $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > " . $chain['chainvalue'] . " > @" . $chain['userhandle'] . " INVALID " . $m['m__name'] . "\n";
                 }
             }
         }
@@ -103,14 +109,14 @@ if($stats['sync_datatypes']){
 
 }
 
-if($stats['sync_handles']){
+if ($stats['sync_handles']) {
     //Sync handles:
     $users_unique_hashtags = array();
     foreach ($this->Users->read(array(
         'userid >' => 0,
     ), 0, 0, array('userid' => 'ASC')) as $user) {
 
-        echo '@'.$user['userhandle'].' '.$user['userid'];
+        echo '@' . $user['userhandle'] . ' ' . $user['userid'];
         if (in_array(strtolower($user['userhandle']), $users_unique_hashtags)) {
             //Remove:
             echo ' [DUPLICATE]';
@@ -118,11 +124,11 @@ if($stats['sync_handles']){
             //$this->db->query("DELETE FROM ideachains WHERE (chainuserinput = " . $user['userid'] . " OR chainuseroutput = " . $user['userid'] . ");");
             //$this->db->query("DELETE FROM users WHERE userid = " . $user['userid'] . ";");
         } else {
-            if(is_numeric($user['userhandle'])) {
+            if (is_numeric($user['userhandle'])) {
                 $stats['users_oncache_hashtags_numeric']++;
-                if(count($this->Posts->read(array(
+                if (count($this->Posts->read(array(
                     'userid' => $user['userhandle'],
-                ), 1))){
+                ), 1))) {
                     $stats['users_oncache_hashtags_numeric_validid']++;
                 }
             }
@@ -134,8 +140,7 @@ if($stats['sync_handles']){
 }
 
 
-
-if($stats['sync_cache']){
+if ($stats['sync_cache']) {
 
 //First start with cache and see what might be missing:
     foreach ($this->Users->read(array(
@@ -194,7 +199,7 @@ if($stats['sync_cache']){
 }
 
 
-if($stats['sync_chain']){
+if ($stats['sync_chain']) {
 
     //Scan all users on chain:
     foreach ($this->Chains->read(array(
@@ -257,8 +262,6 @@ if($stats['sync_chain']){
         }
     }
 }
-
-
 
 
 $stats['count_users'] = count($stats['unique_users']);
