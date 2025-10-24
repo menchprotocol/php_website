@@ -3,8 +3,8 @@
 $delete_missing = true;
 $stats = array(
     'sync_handles' => 0,
-    'sync_cache' => 0,
-    'sync_chain' => 0,
+    'sync_cache' => 1,
+    'sync_chain' => 1,
     'sync_datatypes' => 1,
 
     'datatype_user_count' => 0,
