@@ -1301,6 +1301,11 @@ a.headline {
     cursor: grab;
 }
 
+.sortuser_grab{
+    display: inline-block;
+
+}
+
 .focus-cover .space-content,
 .focus-cover .i_cache,
 .large-frame > .i_cache {
