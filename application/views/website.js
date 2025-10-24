@@ -384,7 +384,7 @@ function user_sort_load(chainusertype) {
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-" + chainusertype + " .sort_draggable", // Specifies which items inside the element should be sortable
+            draggable: "#list-in-" + chainusertype + " .sort_draggable .sortuser_grab", // Specifies which items inside the element should be sortable
             source: "#list-in-" + chainusertype + " .sort_draggable .sortuser_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
                 user_sort_save(chainusertype);
