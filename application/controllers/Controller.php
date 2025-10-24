@@ -512,9 +512,7 @@ class Controller extends CI_Controller
                 //Load App:
                 echo $this->load->view('websiteheader', $view_input, true);
                 echo $ui;
-                if(!in_array($app_userid, $this->config->item('userids___14562'))){
-                    echo $cache_chaintime;
-                }
+                echo $cache_chaintime;
                 echo $this->load->view('websitefooter', array(), true);
 
             }
