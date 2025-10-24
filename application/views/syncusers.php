@@ -76,7 +76,7 @@ if($stats['sync_datatypes']){
 
                 if (!$anytype_valid) {
                     //Can we fix it?
-                    if(in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue'])<30){
+                    if(in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue'])<30 and strlen($chain['chainvalue'])>2){
                         $new_val = 'https://instagram.com/'.str_replace('@','',$chain['chainvalue']);
                         $stats['message'] .= "UPDATE TO [".$new_val."] ";
                     }
