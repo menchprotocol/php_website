@@ -7,8 +7,10 @@ $stats = array(
     'sync_chain' => 0,
     'sync_datatypes' => 1,
 
-    'datatype_link_count' => 0,
-    'datatype_link_mismatch' => 0,
+    'datatype_user_count' => 0,
+    'datatype_user_mismatch' => 0,
+    'datatype_post_count' => 0,
+    'datatype_post_mismatch' => 0,
 
     //Cache users
     'users_oncache' => 0,
@@ -41,6 +43,7 @@ if($stats['sync_datatypes']){
 
     //Go through all data type links and see if they all match:
     foreach($this->config->item('users___4592') as $datatypeid => $m){
+
         //Fetch all children:
         $data_users = array();
         $data_users_array = array();
@@ -53,35 +56,79 @@ if($stats['sync_datatypes']){
         }
 
         if(count($data_users)){
-            //Find all children and validate:
+
+
+            //Any other acceptable data type for this?
+            $other_datatypes = array();
+            foreach($this->Chains->read(array(
+                'chainuserinput IN (' . join(',', $this->config->item('userids___4592')) . ')' => null, //Data types
+                'chainuseroutput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
+                'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+            )) as $chain){
+                if(!isset($other_datatypes[$chain['chainuseroutput']])){
+                    $other_datatypes[$chain['chainuseroutput']] = array();
+                }
+                array_push($other_datatypes[$chain['chainuseroutput']], $chain);
+            }
+
+
+
+            //Find mentioned posts and validate:
+            foreach($this->Chains->read(array(
+                'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+                'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
+            ), array('chainpostinput')) as $chain){
+
+                $stats['datatype_post_count']++;
+
+                $anytype_valid = false;
+                if(isset($other_datatypes[$chain['chainuserinput']])){
+                    foreach($other_datatypes[$chain['chainuserinput']] as $chain){
+                        $data_type_validate = data_type_validate(intval($chain['chainuserinput']), $chain['chainvalue']);
+                        if ($data_type_validate['status']) {
+                            $anytype_valid = true;
+                            break;
+                        }
+                    }
+                }
+                if (!$anytype_valid) {
+
+                    //We had an error:
+                    $stats['datatype_post_mismatch']++;
+                    $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
+                }
+            }
+
+
+
+            //Find all child users and validate:
             foreach ($this->Chains->read(array(
                 'chainuserinput IN (' . join(',', $data_users) . ')' => null, //USER CHAINS
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             ), array('chainuseroutput'), 0, 0, array('chainuserinput' => 'ASC', 'chainvalue' => 'ASC')) as $chain) {
 
-                $stats['datatype_link_count']++;
+                $stats['datatype_user_count']++;
 
                 $anytype_valid = false;
-                foreach($this->Chains->read(array(
-                    'chainuserinput IN (' . join(',', $this->config->item('userids___4592')) . ')' => null, //Data types
-                    'chainuseroutput' => $chain['chainuserinput'],
-                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                )) as $valid_type){
-                    $data_type_validate = data_type_validate(intval($valid_type['chainuserinput']), $chain['chainvalue']);
-                    if ($data_type_validate['status']) {
-                        $anytype_valid = true;
-                        break;
+                if(isset($other_datatypes[$chain['chainuseroutput']])){
+                    foreach($other_datatypes[$chain['chainuseroutput']] as $chain){
+                        $data_type_validate = data_type_validate(intval($chain['chainuserinput']), $chain['chainvalue']);
+                        if ($data_type_validate['status']) {
+                            $anytype_valid = true;
+                            break;
+                        }
                     }
                 }
-
                 if (!$anytype_valid) {
+
                     //Can we fix it?
                     if(in_array($data_users_array[intval($chain['chainuserinput'])]['userhandle'], array('Instagram')) && !substr_count(trim($chain['chainvalue']), ' ') && strlen($chain['chainvalue'])<30 and strlen($chain['chainvalue'])>2){
-                        $new_val = 'https://instagram.com/'.str_replace('@','',$chain['chainvalue']);
+                        $new_val = 'https://instagram.com/'.str_replace('@','',trim($chain['chainvalue']));
                         $stats['message'] .= "UPDATE TO [".$new_val."] ";
                     }
+
                     //We had an error:
-                    $stats['datatype_link_mismatch']++;
+                    $stats['datatype_user_mismatch']++;
                     $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > ".$chain['chainvalue']." > @" . $chain['userhandle'] . " INVALID ".$m['m__name']."\n";
                 }
             }
