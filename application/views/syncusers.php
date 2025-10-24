@@ -95,7 +95,7 @@ if($stats['sync_datatypes']){
 
                     //We had an error:
                     $stats['datatype_post_mismatch']++;
-                    $stats['message'] .= "@" . $data_users_array[intval($chain['chainuserinput'])]['userhandle'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
+                    $stats['message'] .= "@" . $chain['chainuserinput'] . " > ".$chain['chainvalue']." > #" . $chain['posthashtag'] . " INVALID ".$m['m__name']."\n";
                 }
             }
 
