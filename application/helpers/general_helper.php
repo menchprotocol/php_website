@@ -3970,8 +3970,8 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         'chainusercreator' => $usercreator,
         'chainuserinput' => $usercreator,
         'chainuseroutput' => ( $focus__userid > 0 ? $focus__userid : 0 ),
-        'chainpostinput' => ( isset($previous_i['postid']) ? $previous_i['postid'] : 0 ),
-        'chainpostoutput' => $i['postid'],
+        'chainpostinput' => $i['postid'],
+        'chainpostoutput' => ( isset($previous_i['postid']) ? $previous_i['postid'] : 0 ),
     ));
 
 
@@ -4771,9 +4771,9 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     //Log preview view:
     $CI->Chains->create(array(
         'chainusertype' => 3459270, //List User
-        'chainusercreator' => $usercreator,
         'chainuserinput' => $e['userid'],
         'chainuseroutput' => $usercreator,
+        'chainusercreator' => $usercreator,
     ));
 
     //User UI
