@@ -184,6 +184,14 @@ foreach ($this->Chains->read(array(
         $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$1/0' . '";' . "\n"; //Should give error
     } elseif (count($this->Chains->read(array(
         'chainusertype' => 4230,
+        'chainuserinput' => 3460085,
+        'chainuseroutput' => $app['userid'], //Required
+    )))) {
+        //User OR Post Input
+        $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/0/$1' . '";' . "\n"; //Should give error
+        $routes_text .= '$route[\'(?i)' . $app['userhandle'] . '/@([a-zA-Z0-9]+)\'] = "controller/load/' . $app['userid'] . '/$1/0' . '";' . "\n"; //Should give error
+    } elseif (count($this->Chains->read(array(
+        'chainusertype' => 4230,
         'chainuserinput' => 42905,
         'chainuseroutput' => $app['userid'], //Required
     )))) {

@@ -1040,8 +1040,8 @@ p.menu_header {
 }
 
 .fa-spin-super-slow {
-    -webkit-animation: fa-spin-slow 144s infinite linear;
-    animation: fa-spin-slow 144s infinite linear;
+    -webkit-animation: fa-spin-slow 610s infinite linear;
+    animation: fa-spin-slow 610s infinite linear;
 }
 
 

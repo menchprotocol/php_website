@@ -1485,6 +1485,7 @@ class Chains extends CIdea_cache
         }
 
         $i['next_posts'] = array();
+        $i['flat_posts'] = array();
         $current_level++;
 
         //Append Total Discoveries if any:
@@ -1515,6 +1516,8 @@ class Chains extends CIdea_cache
                 if (!$input__selection || $is_required) {
                     $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
                 }
+            } else {
+                array_push($i['flat_posts'], $next_i['postid']);
             }
 
         }
