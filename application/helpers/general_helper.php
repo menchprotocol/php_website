@@ -3869,12 +3869,14 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     $user_session = user_session();
     $superpower_10939 = !$is_cache && user_session(10939);
     $post_startable = post_is_startable($i);
-    $chainusercreator = ($focus__userid > 0 ? $focus__userid : ($user_session ? $user_session['userid'] : 0));
-    $chain_creator = isset($i['chainusercreator']) && $i['chainusercreator'] == $chainusercreator;
+    $session_user = ($user_session ? $user_session['userid'] : 0);
+    $chainusercreator = ( $focus__userid > 0 ? $focus__userid : $session_user );
+    $usercreator = ($session_user > 0 ? $session_user : 14068 /* GUEST */);
+    $chain_creator = isset($i['chainusercreator']) && $i['chainusercreator'] == $session_user;
     $focus__node = in_array($chainusertype, $CI->config->item('userids___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
     $discovery_term = (!$is_ajax && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
-    $discovery_mode = $chainusercreator && ($discovery_uri || $discovery_term);
+    $discovery_mode = $session_user && ($discovery_uri || $discovery_term);
     $post_access = post_access($i['posthashtag'], 0, $i, false, array(), $is_cache);
     $focus_post_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_post_seg = ($discovery_term ? $CI->uri->segment(2) : false);
@@ -3887,20 +3889,17 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         $focus_posthashtag = false;
     }
 
-    //Log Preview:
-    $chainusercreator_id = ($chainusercreator > 0 ? $chainusercreator : 14068 /* GUEST */);
-
-    if ($chainusercreator && !is_array($x_completes)) {
+    if ($session_user && !is_array($x_completes)) {
         //Fetch discovery
         $x_completes = $CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
-            'chainusercreator' => $chainusercreator,
+            'chainusercreator' => $session_user,
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'));
     }
 
     $focus_post_or = false;
-    if ($discovery_mode && $focus_posthashtag && !$focus__node && isset($previous_i['postid']) && $chainusercreator && !count($CI->Chains->read(array(
+    if ($discovery_mode && $focus_posthashtag && !$focus__node && isset($previous_i['postid']) && $session_user && !count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostinput' => $previous_i['postid'],
             'chainuserinput' => 43758,
@@ -3919,10 +3918,10 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     }
 
     $was_discovered = 0;
-    if (!$is_cache && $chainusercreator) {
+    if (!$is_cache && $session_user) {
         $discoveries = $CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
-            'chainusercreator' => $chainusercreator,
+            'chainusercreator' => $session_user,
             'chainpostinput' => $i['postid'],
         ));
         $was_discovered = count($discoveries);
@@ -3935,7 +3934,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     if ($was_discovered && !$target_posthashtag) {
         foreach ($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___31777')) . ')' => null, //DISCOVERIES
-            'chainusercreator' => $chainusercreator,
+            'chainusercreator' => $session_user,
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput')) as $CI_dis) {
             $target_posthashtag_discover = $CI_dis['posthashtag'];
@@ -3965,11 +3964,22 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     }
 
 
+    //Log List view:
+    $CI->Chains->create(array(
+        'chainusertype' => 3112531, //List
+        'chainusercreator' => $usercreator,
+        'chainuserinput' => $usercreator,
+        'chainuseroutput' => ( $focus__userid > 0 ? $focus__userid : 0 ),
+        'chainpostinput' => ( isset($previous_i['postid']) ? $previous_i['postid'] : 0 ),
+        'chainpostoutput' => $i['postid'],
+    ));
+
+
     //Top action menu:
     $ui = '<div postid="' . $i['postid'] . '" posthashtag="' . $i['posthashtag'] . '" discovery_mode="' . intval($discovery_mode) . '" chainid="' . $chainid . '" href="' . $href . '" class="card_cover card_post_cover ' . ($focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ($discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ')) . ' no-padding card-12273 s__12273_' . $i['postid'] . ' ' . (strlen($href) ? ' card_click ' : '') . (!$focus_post_or && $is_locked ? ' is_locked' : '') . ($chainid ? ' cover_x_' . $chainid . ' ' : '') . '">';
 
-    if ($discovery_mode && $chainusercreator && $focus__node) {
+    if ($discovery_mode && $session_user && $focus__node) {
         $ui .= '<style> .add_post{ display:none; } </style>';
     }
 
@@ -3981,7 +3991,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     if ($focus_post_or) {
         $ui .= '<div class="this_selector this_selector_' . $i['postid'] . '" selection_postid="' . $i['postid'] . '"><span class="icon-block-sm">' . (count($CI->Chains->read(array(
                 'chainusertype' => 7712, //Input Choice
-                'chainusercreator' => $chainusercreator,
+                'chainusercreator' => $session_user,
                 'chainpostinput' => $focus_post_or['postid'],
                 'chainpostoutput' => $i['postid'],
             ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>') . '</span></div>';
@@ -4009,7 +4019,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$chainusercreator) ? ' hidden ' : '') . '">' . (isset($i['chainusertype']) ? (substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') || substr_count($users___4593[$i['chainusertype']]['m__cover'], 'fa-hashtag') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'] . ' #') : '#') . '<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$session_user) ? ' hidden ' : '') . '">' . (isset($i['chainusertype']) ? (substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') || substr_count($users___4593[$i['chainusertype']]['m__cover'], 'fa-hashtag') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'] . ' #') : '#') . '<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
@@ -4041,7 +4051,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
             //Chains
             $bottom_bar_ui .= $chainusertype_ui;
 
-        } elseif ($chainusertype_target_bar == 4362 && !$is_cache && !$discovery_mode && $user_session && isset($i['chaintime']) && strtotime($i['chaintime']) > 0 && $chainusertype_ui && ($post_access >= 3 || ($user_session && $chainusercreator == $i['chainusercreator']))) {
+        } elseif ($chainusertype_target_bar == 4362 && !$is_cache && !$discovery_mode && $user_session && isset($i['chaintime']) && strtotime($i['chaintime']) > 0 && $chainusertype_ui && ($post_access >= 3 || ($user_session && $session_user == $i['chainusercreator']))) {
 
             //Chain Time / Creator
             $creator_details = '';
@@ -4341,7 +4351,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                     'chainuserinput' => 43758,
                 )));
 
-            if ($chainusercreator && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && !$prev_invoice && $unit_price && count($currency_types) == 1) {
+            if ($session_user && filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && !$prev_invoice && $unit_price && count($currency_types) == 1) {
 
                 $valid_instant_pay = true;
 
@@ -4428,11 +4438,11 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         $user_private_replies = $CI->Chains->read(array(
             'chainusertype' => 4228,
             'chainpostoutput' => $i['postid'],
-            'chainusercreator' => $chainusercreator,
+            'chainusercreator' => $session_user,
         ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC'));
 
         $input_attributes = '';
-        $previous_response = ($chainusercreator && isset($user_private_replies[0]['postmessage']) ? $user_private_replies[0]['postmessage'] : '');
+        $previous_response = ($session_user && isset($user_private_replies[0]['postmessage']) ? $user_private_replies[0]['postmessage'] : '');
 
         if (count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
@@ -4748,6 +4758,7 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     $user_access = ($is_cache ? 1 : user_access($e['userhandle'], 0, $e));
     $superpower_10939 = (!$is_cache && user_session(10939));
     $user_session = (!$is_cache ? user_session() : false);
+    $usercreator = ( isset($user_session['userid']) ? $user_session['userid'] : 14068 /* GUEST */);
     $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
     $focus__node = in_array($chainusertype, $CI->config->item('userids___12149')); //NODE COIN
     $is_app = $chainusertype == 6287;
@@ -4758,7 +4769,12 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
 
 
     //Log preview view:
-    $chainusercreator_id = ($user_session && isset($user_session['userid']) ? $user_session['userid'] : 14068 /* GUEST */);
+    $CI->Chains->create(array(
+        'chainusertype' => 3459270, //List User
+        'chainusercreator' => $usercreator,
+        'chainuserinput' => $usercreator,
+        'chainuseroutput' => $e['userid'],
+    ));
 
     //User UI
     $ui = '<div userid="' . $e['userid'] . '" userlogin="' . $e['userhandle'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover carduser_cover no-padding card-12274 s__12274_' . $e['userid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';
