@@ -1684,7 +1684,7 @@ class Controller extends CI_Controller
                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
             ), array('chainuserinput'), 0, 0, $order_42145) as $user_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($user_template['usercover']) . '</span>' . $user_template['username'] . '<a href="' . view_memory(42903, 42902) . $user_group['userhandle'] . '" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $user_group['username'] . '. Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($user_group['usercover']) . '</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">' . view_cover($user_template['usercover']) . '</span>' . $user_template['username'] . '<a href="' . view_memory(42903, 42902) . $user_group['userhandle'] . '" data-toggle="tooltip" data-placement="top" title="Because you follow ' . $user_group['username'] . '. Click to Open in a New Window"><span class="icon-block-sm">' . view_cover($user_group['usercover']) . '</span></a></div>';
 
 
                 //Load template:
