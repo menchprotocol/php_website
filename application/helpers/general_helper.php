@@ -3969,9 +3969,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         'chainusertype' => 3112531, //List
         'chainusercreator' => $usercreator,
         'chainuserinput' => $usercreator,
-        'chainuseroutput' => ( $focus__userid > 0 ? $focus__userid : 0 ),
         'chainpostinput' => $i['postid'],
-        'chainpostoutput' => ( isset($previous_i['postid']) ? $previous_i['postid'] : 0 ),
     ));
 
 
