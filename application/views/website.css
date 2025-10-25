@@ -7922,6 +7922,11 @@ main {
     overflow-y: auto;
 }
 
+.chainvalue_headline>span {
+    background-color: #fdd957;
+    padding: 0 1px;
+}
+
 .round-btn {
     display: inline-block;
     width: 65px;
