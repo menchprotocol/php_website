@@ -4812,9 +4812,8 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     $ui .= '<div class="center-block">';
 
     $ui .= '<div class="creator_headline grey"><span class="ignore-click ui_userhandle_' . $e['userid'] . '" title="ID ' . $e['userid'] . '">'.( isset($e['chainusertype']) && $users___4593[$e['chainusertype']]['m__cover']!='@' ? ( substr_count($users___4593[$e['chainusertype']]['m__cover'], '@') ? '<b class="underdot" title="'.$users___4593[$e['chainusertype']]['m__name'].'">'.$users___4593[$e['chainusertype']]['m__cover'].'</b>' : '<span title="'.$users___4593[$e['chainusertype']]['m__name'].'">'.$users___4593[$e['chainusertype']]['m__cover'].'</span> @' ) : '@' ) . $e['userhandle'] . '</span>'.( $chainid ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="' . date("Y-m-d H:i:s", strtotime($e['chaintime'])) . ' PST">' . view_time_difference($e['chaintime'], true) . '</span>' : '' ).( !$focus__node && strlen($e['userbio']) ? '<span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="' . $e['userbio'] . '"><i class="fas fa-info-square"></i></span>' : '' ).'</div>';
-    if($focus__node){
-        $ui .= '<div class="creator_headline hidden grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div>';
-    }
+
+    $ui .= '<div class="creator_headline '.( !$focus__node ? 'hidden' : '' ).' grey hideIfEmpty userbio_' . $e['userid'] . '" style="display:block !important;">' . $e['userbio'] . '</div>';
 
     //User Location?
     $users___42777 = $CI->config->item('users___42777');
