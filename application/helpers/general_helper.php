@@ -4815,11 +4815,11 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $e['chainvalue'] . '"><i class="far fa-info-circle"></i></span>';
     } else if ($chainid && $user_access >= 3 && !$is_cache && $superpower_10939) {
         //Main description:
-        $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '"><span>' . htmlentities($e['chainvalue']) . '</span></div>';
+        $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click ui_chainvalue_' . $chainid . '"><span class="hideIfEmpty">' . htmlentities($e['chainvalue']) . '</span></div>';
     }
 
     if ($extra_value) {
-        $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click"><span>' . $extra_value . '</span></div>';
+        $ui .= '<div class="chainvalue_headline grey hideIfEmpty ignore-click"><span class="hideIfEmpty">' . $extra_value . '</span></div>';
     }
 
     $ui .= '</div>';
