@@ -4772,8 +4772,8 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
     $CI->Chains->create(array(
         'chainusertype' => 3459270, //List User
         'chainusercreator' => $usercreator,
-        'chainuserinput' => $usercreator,
-        'chainuseroutput' => $e['userid'],
+        'chainuserinput' => $e['userid'],
+        'chainuseroutput' => $usercreator,
     ));
 
     //User UI
