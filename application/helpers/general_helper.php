@@ -4767,12 +4767,15 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
 
 
     //Log preview view:
-    $CI->Chains->create(array(
-        'chainusertype' => 3459270, //List User
-        'chainuserinput' => $e['userid'],
-        'chainuseroutput' => $usercreator,
-        'chainusercreator' => $usercreator,
-    ));
+    if($e['userid']!=$usercreator){
+        $CI->Chains->create(array(
+            'chainusertype' => 3459270, //List User
+            'chainusercreator' => $usercreator,
+            'chainuserinput' => $e['userid'],
+            'chainuseroutput' => $usercreator,
+        ));
+    }
+
 
     //User UI
     $ui = '<div userid="' . $e['userid'] . '" userlogin="' . $e['userhandle'] . '" ' . (isset($e['chainid']) ? ' chainid="' . $e['chainid'] . '" ' : '') . ' href="' . $href . '" class="card_cover carduser_cover no-padding card-12274 s__12274_' . $e['userid'] . ' ' . $extra_class . ($is_app ? ' card-6287 ' : '') . ($has_sortable ? ' sort_draggable ' : '') . ($focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover col-sm-4 col-6 ' . (strlen($href) ? ' card_click ' : '')) . (isset($e['chainid']) ? ' cover_x_' . $e['chainid'] . ' ' : '') . '">';

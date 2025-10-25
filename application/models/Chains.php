@@ -58,7 +58,6 @@ class Chains extends CIdea_cache
         if($update_observed && in_array($add_fields['chainusertype'], $this->config->item('userids___1308453'))){
 
             $read_fields = $add_fields;
-            unset($read_fields['chainusertype']);
 
             if(isset($read_fields['chainid'])){
                 unset($read_fields['chainid']);
@@ -86,6 +85,7 @@ class Chains extends CIdea_cache
             }
 
             //Update scope of observation:
+            unset($read_fields['chainusertype']);
             if(in_array($add_fields['chainusertype'], $this->config->item('userids___3461656'))){
                 //Post Observable
                 $read_fields['chainusertype IN (' . join(',', $this->config->item('userids___3461656')) . ')'] = null;
