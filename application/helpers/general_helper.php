@@ -3141,7 +3141,7 @@ function view_card($href, $is_current, $chainusertype, $o__type, $o__title, $cha
     $CI =& get_instance();
     $users___4593 = $CI->config->item('users___4593');
     return '<a href="' . ($is_current ? 'javascript:alert(\'You are here already!\');' : $href) . '" class="dropdown-item ' . ($is_current ? ' active ' : '') . '">' .
-        (in_array($chainusertype, $CI->config->item('userids___32172')) ? '<span class="icon-block-xs">' . $users___4593[$chainusertype]['m__cover'] . '</span>' : '') .
+        '<span class="icon-block-xs">' . $users___4593[$chainusertype]['m__cover'] . '</span>' .
         (strlen($o__type) ? '<span class="icon-block-xs">' . $o__type . '</span>' : '&nbsp;') . //Type or Cover
         $o__title .
         (strlen($chainvalue) && user_session(12701) ? '<div class="message2">' . strip_tags($chainvalue) . '</div>' : '') .

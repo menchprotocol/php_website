@@ -5,6 +5,7 @@ $chainusercreator = ($user_session ? $user_session['userid'] : 14068);
 $target_posthashtag = (count($target_i) && $chainusercreator ? $target_i['posthashtag'] : null);
 $at_starting_point = $target_posthashtag==$focus_i['posthashtag'];
 
+//Log Post view:
 $this->Chains->create(array(
     'chainusertype' => 1309378, //Post View
     'chainusercreator' => $chainusercreator,
