@@ -3964,13 +3964,17 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     }
 
 
-    //Log List view:
-    $CI->Chains->create(array(
-        'chainusertype' => 3112531, //List
-        'chainusercreator' => $usercreator,
-        'chainuserinput' => $usercreator,
-        'chainpostinput' => $i['postid'],
-    ));
+    if(!$is_cache){
+        //Log List view:
+        $CI->Chains->create(array(
+            'chainusertype' => ( $focus__node ? 1309378 /* Post User */ : 3112531 /* List Post */ ),
+            'chainusercreator' => $usercreator,
+            'chainuserinput' => $usercreator,
+            'chainpostinput' => $i['postid'],
+        ));
+    }
+
+
 
 
     //Top action menu:
@@ -4767,9 +4771,9 @@ function user_view($chainusertype, $e, $extra_class = null, $extra_value = null)
 
 
     //Log preview view:
-    if($e['userid']!=$usercreator){
+    if($e['userid']!=$usercreator && !$is_cache){
         $CI->Chains->create(array(
-            'chainusertype' => 3459270, //List User
+            'chainusertype' => ( $focus__node ? 44176 /* View User */ : 3459270 /* List User */ ),
             'chainusercreator' => $usercreator,
             'chainuserinput' => $e['userid'],
             'chainuseroutput' => $usercreator,

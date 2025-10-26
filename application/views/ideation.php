@@ -1,15 +1,5 @@
 <?php
 
-$chainusercreator = ( $user_session ? $user_session['userid'] : 14068 /* GUEST */ );
-
-//Log Post view:
-$this->Chains->create(array(
-    'chainusertype' => 1309378, //Post View
-    'chainusercreator' => $chainusercreator,
-    'chainuserinput' => $chainusercreator,
-    'chainpostinput' => $focus_i['postid'],
-));
-
 //See if we need to redirect to starting point?
 if($user_session && !user_session(10939) && count($this->Chains->read(array(
         'chainusercreator' => $user_session['userid'],

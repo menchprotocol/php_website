@@ -1,16 +1,5 @@
 <?php
 
-$chainusercreator = ( isset($user_session['userid']) ? $user_session['userid'] : 14068 /* GUEST */ );
-//Log view:
-if($focus_e['userid']!=$chainusercreator){
-    $this->Chains->create(array(
-        'chainusertype' => 44176, //User View
-        'chainusercreator' => $chainusercreator,
-        'chainuserinput' => $focus_e['userid'],
-        'chainuseroutput' => $chainusercreator,
-    ));
-}
-
 
 //Focus User:
 echo '<div class="view_12274 row justify-content">';
@@ -50,7 +39,6 @@ foreach($this->config->item('users___31916') as $chainusertype => $m) {
 
     }
 
-    $chainusercreator = ( $user_session && isset($user_session['userid']) ? $user_session['userid'] : 14068 /* GUEST */ );
     if(($user_session && in_array($chainusertype, $this->config->item('userids___42945'))) || $coins_count[$chainusertype]>0){
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$chainusertype.' hidden" read-counter="'.$coins_count[$chainusertype].'">'.$input_content.'<div class="tab_content"></div></div>';
