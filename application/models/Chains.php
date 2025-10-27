@@ -1440,6 +1440,7 @@ class Chains extends CIdea_cache
     {
 
         if(!$current_level){
+            $i['level'] = $current_level;
             $flat_posts = array($i);
             $top_ids = array(intval($i['postid']));
         } else {
@@ -1453,6 +1454,7 @@ class Chains extends CIdea_cache
 
         $duplicate_found = false;
         foreach ($all_next as $next_post) {
+            $next_post['level'] = $current_level;
             array_push($flat_posts, $next_post);
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
