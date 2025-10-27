@@ -9,135 +9,233 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
 ?>
 
 
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            background: #000;
-            overflow: hidden;
-        }
-        .slider-container {
-            height: 100%;
-            width: 100%;
-            position: relative;
-        }
-        .slide {
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-        }
-        .slide img, .slide video {
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;
-        }
-        .hidden { display: none; }
-        .album {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            height: 100%;
-            align-items: center;
-        }
-        .album img {
-            max-height: 90%;
-            border-radius: 10px;
-        }
-    </style>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        touch-action: manipulation;
+    }
+
+    .tiktok-container {
+        height: 100vh;
+        width: 100%;
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .post {
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        scroll-snap-align: start;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .post-content {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+    .video-post, .photo-post {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .album-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .album-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: none;
+    }
+
+    .album-img.active {
+        display: block;
+    }
+
+    .album-nav {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+
+    .album-nav button {
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: white;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .caption {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+</style>
 </head>
 <body>
-<div class="slider-container">
-    <!-- Example slides -->
-    <div class="slide" data-index="0">
-        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted></video>
+<div class="tiktok-container">
+    <!-- Post 1: Tall Video -->
+    <div class="post">
+        <video class="post-content video-post" controls>
+            <source src="https://www.pexels.com/download/video/6789777/" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="caption">Tall video: Nature waterfall</div>
     </div>
-    <div class="slide hidden" data-index="1">
-        <video src="https://www.w3schools.com/html/movie.mp4" autoplay loop muted></video>
+    <!-- Post 2: Wide Video -->
+    <div class="post">
+        <video class="post-content video-post" controls>
+            <source src="https://www.pexels.com/download/video/3195397/" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="caption">Wide video: City skyline</div>
     </div>
-    <div class="slide hidden" data-index="2">
-        <img src="https://picsum.photos/600/1000" alt="tall photo" />
+    <!-- Post 3: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Mountain view</div>
     </div>
-    <div class="slide hidden" data-index="3">
-        <img src="https://picsum.photos/1000/600" alt="wide photo" />
+    <!-- Post 4: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Beach sunset</div>
     </div>
-    <div class="slide hidden" data-index="4">
-        <div class="album">
-            <img src="https://picsum.photos/600/900?random=1" />
-            <img src="https://picsum.photos/600/900?random=2" />
-            <img src="https://picsum.photos/600/900?random=3" />
+    <!-- Post 5: Album Tall Photos -->
+    <div class="post">
+        <div class="album-container">
+            <img class="album-img active" src="https://images.pexels.com/photos/1363876/pexels-photo-1363876.jpeg"
+                 alt="Tall album 1">
+            <img class="album-img" src="https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg"
+                 alt="Tall album 2">
+            <img class="album-img" src="https://images.pexels.com/photos/1054289/pexels-photo-1054289.jpeg"
+                 alt="Tall album 3">
+            <div class="album-nav">
+                <button class="prev">←</button>
+                <button class="next">→</button>
+            </div>
+            <div class="caption">Tall photo album: Landscapes</div>
         </div>
     </div>
-    <div class="slide hidden" data-index="5">
-        <div class="album">
-            <img src="https://picsum.photos/1000/600?random=4" />
-            <img src="https://picsum.photos/1000/600?random=5" />
-            <img src="https://picsum.photos/1000/600?random=6" />
+    <!-- Post 6: Album Wide Photos -->
+    <div class="post">
+        <div class="album-container">
+            <img class="album-img active" src="https://images.pexels.com/photos/161246/pexels-photo-161246.jpeg"
+                 alt="Wide album 1">
+            <img class="album-img" src="https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg"
+                 alt="Wide album 2">
+            <img class="album-img" src="https://images.pexels.com/photos/1058759/pexels-photo-1058759.jpeg"
+                 alt="Wide album 3">
+            <div class="album-nav">
+                <button class="prev">←</button>
+                <button class="next">→</button>
+            </div>
+            <div class="caption">Wide photo album: Cityscapes</div>
         </div>
     </div>
-    <div class="slide hidden" data-index="6">
-        <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" autoplay loop muted></video>
+    <!-- Post 7: Tall Video -->
+    <div class="post">
+        <video class="post-content video-post" controls>
+            <source src="https://www.pexels.com/download/video/6789784/" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="caption">Tall video: Forest stream</div>
     </div>
-    <div class="slide hidden" data-index="7">
-        <img src="https://picsum.photos/700/1200" alt="tall photo 2" />
+    <!-- Post 8: Wide Video -->
+    <div class="post">
+        <video class="post-content video-post" controls>
+            <source src="https://www.pexels.com/download/video/3195592/" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="caption">Wide video: Ocean waves</div>
     </div>
-    <div class="slide hidden" data-index="8">
-        <img src="https://picsum.photos/1200/700" alt="wide photo 2" />
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
     </div>
-    <div class="slide hidden" data-index="9">
-        <div class="album">
-            <img src="https://picsum.photos/600/900?random=7" />
-            <img src="https://picsum.photos/600/900?random=8" />
-            <img src="https://picsum.photos/600/900?random=9" />
-        </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
     </div>
 </div>
 
+<!-- Custom JS -->
 <script>
-    let currentIndex = 0;
-    const totalSlides = $(".slide").length;
+    $(document).ready(function () {
+        // Pause all videos when scrolling to a new post
+        $('.tiktok-container').on('scroll', function () {
+            $('video').each(function () {
+                $(this)[0].pause();
+            });
+        });
 
-    function showSlide(index) {
-        $(".slide").addClass("hidden");
-        const currentSlide = $(".slide[data-index="+index+"]");
-        currentSlide.removeClass("hidden");
+        // Album navigation
+        $('.album-container').each(function () {
+            const $container = $(this);
+            const $images = $container.find('.album-img');
+            let currentIndex = 0;
 
-        // Pause all videos except current
-        $("video").each(function(){ this.pause(); });
-        currentSlide.find("video").each(function(){ this.play(); });
-    }
+            function showImage(index) {
+                $images.removeClass('active').eq(index).addClass('active');
+            }
 
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % totalSlides;
-        showSlide(currentIndex);
-    }
+            $container.find('.next').on('click', function () {
+                currentIndex = (currentIndex + 1) % $images.length;
+                showImage(currentIndex);
+            });
 
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-        showSlide(currentIndex);
-    }
+            $container.find('.prev').on('click', function () {
+                currentIndex = (currentIndex - 1 + $images.length) % $images.length;
+                showImage(currentIndex);
+            });
+        });
 
-    $(document).on("keydown", function(e) {
-        if (e.key === "ArrowDown" || e.key === "ArrowRight") nextSlide();
-        if (e.key === "ArrowUp" || e.key === "ArrowLeft") prevSlide();
+        // Play video when it comes into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = $(entry.target).find('video')[0];
+                if (video) {
+                    if (entry.isIntersecting) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+            });
+        }, {threshold: 0.5});
+
+        $('.post').each(function () {
+            observer.observe(this);
+        });
     });
-
-    let startY = 0;
-    $(document).on("touchstart", function(e){
-        startY = e.originalEvent.touches[0].clientY;
-    });
-    $(document).on("touchend", function(e){
-        let endY = e.originalEvent.changedTouches[0].clientY;
-        if (startY - endY > 50) nextSlide();
-        if (endY - startY > 50) prevSlide();
-    });
-
-    showSlide(currentIndex);
 </script>
-
-
