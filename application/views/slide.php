@@ -1,7 +1,7 @@
 <?php
 
 
-$post_tree = json_decode(file_get_contents('https://mench.com/json/'.$focus_post['posthashtag']));
+$post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/json/'.$focus_post['posthashtag'])));
 
 ?>
 
