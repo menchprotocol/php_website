@@ -498,9 +498,9 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         echo '</div>';
     }
 
-    foreach ($i['next_posts'] as $next_i) {
+    foreach ($i['next_posts'] as $next_post) {
         echo '<div class="sub_frame ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
-        view_tree($next_i, (isset($_GET['view_all']) ? true : false));
+        view_tree($next_post, (isset($_GET['view_all']) ? true : false));
         echo '</div>';
     }
 

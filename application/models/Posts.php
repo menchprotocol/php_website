@@ -363,7 +363,7 @@ class Posts extends CIdea_cache
 
 
         //Process request:
-        foreach ($is_next as $next_i) {
+        foreach ($is_next as $next_post) {
 
             //Logic here must match items in e_mass_actions config variable
 
@@ -376,7 +376,7 @@ class Posts extends CIdea_cache
 
                     $post_has_e = $this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
-                        'chainpostinput' => $next_i['postid'],
+                        'chainpostinput' => $next_post['postid'],
                         'chainuserinput' => $e['userid'],
                     ));
 
@@ -394,7 +394,7 @@ class Posts extends CIdea_cache
                             'chainusercreator' => $chainusercreator,
                             'chainuserinput' => $e['userid'],
                             'chainusertype' => $user_mapper[$action_userid],
-                            'chainpostinput' => $next_i['postid'],
+                            'chainpostinput' => $next_post['postid'],
                             'chainvalue' => trim($action_command2),
                         ), true);
 
@@ -430,7 +430,7 @@ class Posts extends CIdea_cache
                         $is_previous = $this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                             'chainpostinput' => $i['postid'],
-                            'chainpostoutput' => $next_i['postid'],
+                            'chainpostoutput' => $next_post['postid'],
                         ), array(), 0);
 
 
@@ -438,13 +438,13 @@ class Posts extends CIdea_cache
                         if (in_array($action_userid, array(12611, 28801)) && !count($is_previous)) {
 
                             //Chain
-                            $status = $this->Posts->chain($i, 4228, $next_i, $chainusercreator);
+                            $status = $this->Posts->chain($i, 4228, $next_post, $chainusercreator);
 
                             if ($status['status']) {
 
                                 if ($action_userid == 28801) {
                                     //Also remove old chain:
-                                    $this->Chains->delete($next_i['chainid'], $chainusercreator);
+                                    $this->Chains->delete($next_post['chainid'], $chainusercreator);
                                 }
 
                                 //Increment User since not there:
@@ -493,11 +493,11 @@ class Posts extends CIdea_cache
     }
 
 
-    function chain($i, $chainusertype, $next_i, $chainusercreator)
+    function chain($i, $chainusertype, $next_post, $chainusercreator)
     {
 
         //Chains posts with the causality chain ensuring not a duplicate:
-        if (0 && $chainusertype == 4228 && count($this->Chains->previouspost(0, $next_i['posthashtag'], $i['postid']))) {
+        if (0 && $chainusertype == 4228 && count($this->Chains->previouspost(0, $next_post['posthashtag'], $i['postid']))) {
             return array(
                 'status' => 0,
                 'message' => 'Post already added in the inverse direction, so it cannot be added here',
@@ -505,7 +505,7 @@ class Posts extends CIdea_cache
         } elseif (count($this->Chains->read(array(
             'chainpostinput' => $i['postid'],
             'chainusertype' => $chainusertype,
-            'chainpostoutput' => $next_i['postid'],
+            'chainpostoutput' => $next_post['postid'],
         )))) {
             //Make sure not a duplicate chain:
             return array(
@@ -519,7 +519,7 @@ class Posts extends CIdea_cache
             'chainusercreator' => $chainusercreator,
             'chainpostinput' => $i['postid'],
             'chainusertype' => $chainusertype,
-            'chainpostoutput' => $next_i['postid'],
+            'chainpostoutput' => $next_post['postid'],
         ), true);
 
         //Return result:
@@ -557,17 +557,17 @@ class Posts extends CIdea_cache
         foreach ($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
             'chainpostinput' => $i['postid'],
-        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
+        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
 
-            if (!in_array(intval($next_i['postid']), $recursive_post_ids)) {
+            if (!in_array(intval($next_post['postid']), $recursive_post_ids)) {
                 if (!($scope == 'OR' && !$input__selection)) {
                     //We add it at all times unless scope is OR and node is not OR
-                    array_push($recursive_post_ids, intval($next_i['postid']));
+                    array_push($recursive_post_ids, intval($next_post['postid']));
                 }
             }
 
             //Add to current array if we found anything:
-            $copy = $this->Posts->ids($next_i, $scope, $loop_breaker_ids);
+            $copy = $this->Posts->ids($next_post, $scope, $loop_breaker_ids);
             if (isset($copy['recursive_post_ids'])) {
                 foreach ($copy['recursive_post_ids'] as $recursive_post_id) {
                     if (!in_array($recursive_post_id, $recursive_post_ids)) {

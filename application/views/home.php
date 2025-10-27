@@ -29,8 +29,8 @@ foreach($this->Chains->read(array(
     foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
         'chainpostinput' => $primary_i['postid'],
-    ), array('chainpostoutput'), 0, 0) as $next_i) {
-        $secondary_i .= post_view(14565,  $next_i);
+    ), array('chainpostoutput'), 0, 0) as $next_post) {
+        $secondary_i .= post_view(14565,  $next_post);
     }
 
 }

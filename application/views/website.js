@@ -1074,6 +1074,7 @@ $(document).ready(function () {
 
     watch_cover();
 
+    $('[data-toggle="tooltip"]').tooltip();
 
     //Activate post suggestions
     $(".save_postmessage, .save_postfootnote").keyup(function(e) {

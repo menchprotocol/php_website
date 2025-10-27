@@ -132,8 +132,8 @@ class Controller extends CI_Controller
 
             //POST Chain Groups Next
             $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $_POST['chainusertype'] . '">';
-            foreach ($posts_query as $next_i) {
-                $ui .= post_view($_POST['chainusertype'], $next_i, $is[0]);
+            foreach ($posts_query as $next_post) {
+                $ui .= post_view($_POST['chainusertype'], $next_post, $is[0]);
             }
             $ui .= '</div>';
 
@@ -1114,9 +1114,9 @@ class Controller extends CI_Controller
                 $users___4593 = $this->config->item('users___4593'); //Chain Types
                 $current_posthashtag = (substr($_POST['first_segment'], 0, 1) == '~' ? substr($_POST['first_segment'], 1) : false);
 
-                foreach (posts_query($_POST['chainusertype'], $_POST['postid'], 1, false) as $next_i) {
-                    if (isset($next_i['postid'])) {
-                        $ui .= view_card($discover_chainusertype . view_memory(42903, 33286) . $next_i['posthashtag'], $next_i['posthashtag'] == $current_posthashtag, $next_i['chainusertype'], '', view_post_title($next_i, true), $next_i['chainvalue']);
+                foreach (posts_query($_POST['chainusertype'], $_POST['postid'], 1, false) as $next_post) {
+                    if (isset($next_post['postid'])) {
+                        $ui .= view_card($discover_chainusertype . view_memory(42903, 33286) . $next_post['posthashtag'], $next_post['posthashtag'] == $current_posthashtag, $next_post['chainusertype'], '', view_post_title($next_post, true), $next_post['chainvalue']);
                         $listed_items++;
                     }
                 }
@@ -1231,9 +1231,9 @@ class Controller extends CI_Controller
                 $users___4593 = $this->config->item('users___4593'); //Chain Types
                 $discover_chainusertype = discover_chainusertype();
 
-                foreach (users_query($_POST['chainusertype'], $_POST['userid'], 1, false) as $next_i) {
-                    if (isset($next_i['postid'])) {
-                        $ui .= view_card($discover_chainusertype . view_memory(42903, 33286) . $next_i['posthashtag'], $next_i['posthashtag'] == $current_posthashtag, $next_i['chainusertype'], '', view_post_title($next_i, true), (!$is_cache ? $next_i['chainvalue'] : null));
+                foreach (users_query($_POST['chainusertype'], $_POST['userid'], 1, false) as $next_post) {
+                    if (isset($next_post['postid'])) {
+                        $ui .= view_card($discover_chainusertype . view_memory(42903, 33286) . $next_post['posthashtag'], $next_post['posthashtag'] == $current_posthashtag, $next_post['chainusertype'], '', view_post_title($next_post, true), (!$is_cache ? $next_post['chainvalue'] : null));
                         $listed_items++;
                     }
                 }

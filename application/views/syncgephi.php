@@ -37,14 +37,14 @@ foreach ($is as $in) {
     foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
         'chainpostinput' => $in['postid'],
-    ), array('chainpostoutput'), 0, 0) as $next_i) {
+    ), array('chainpostoutput'), 0, 0) as $next_post) {
 
         $this->db->insert('links', array(
-            'source' => $id_prefix[12273] . $next_i['chainpostinput'],
-            'target' => $id_prefix[12273] . $next_i['chainpostoutput'],
-            'label' => $users___4593[$next_i['chainusertype']]['m__name'], //TODO maybe give visibility to condition here?
+            'source' => $id_prefix[12273] . $next_post['chainpostinput'],
+            'target' => $id_prefix[12273] . $next_post['chainpostoutput'],
+            'label' => $users___4593[$next_post['chainusertype']]['m__name'], //TODO maybe give visibility to condition here?
             'weight' => 1,
-            'edge_type' => $next_i['chainusertype'],
+            'edge_type' => $next_post['chainusertype'],
         ));
 
     }

@@ -859,11 +859,11 @@ class Chains extends CIdea_cache
         foreach ($this->Chains->read(array(
             'chainpostinput' => $i['postid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
-        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
+        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
 
             //Validate Find After:
             if ($find_after_postid && !$found_trigger) {
-                if ($next_i['postid'] == $find_after_postid) {
+                if ($next_post['postid'] == $find_after_postid) {
                     $found_trigger = true;
                 }
                 continue;
@@ -873,7 +873,7 @@ class Chains extends CIdea_cache
             if ($input__selection && !count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___7704')) . ')' => null, //Discovery Expansion
                     'chainpostinput' => $i['postid'],
-                    'chainpostoutput' => $next_i['postid'],
+                    'chainpostoutput' => $next_post['postid'],
                     'chainusercreator' => $userid,
                 )))) {
                 continue;
@@ -883,13 +883,13 @@ class Chains extends CIdea_cache
             if ($target_completed || !count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
                     'chainusercreator' => $userid,
-                    'chainpostinput' => $next_i['postid'],
+                    'chainpostinput' => $next_post['postid'],
                 )))) {
-                return $next_i['posthashtag'];
+                return $next_post['posthashtag'];
             }
 
             //Keep looking deeper:
-            $next__url = $this->Chains->next_posts($userid, $target_posthashtag, $next_i, $find_after_postid, false, $target_completed, $loop_breaker_ids);
+            $next__url = $this->Chains->next_posts($userid, $target_posthashtag, $next_post, $find_after_postid, false, $target_completed, $loop_breaker_ids);
             if ($next__url) {
                 return $next__url;
             }
@@ -1101,11 +1101,11 @@ class Chains extends CIdea_cache
                 'chainusertype IN (' . join(',', $this->config->item('userids___7704')) . ')' => null, //Discovery Expansion
                 'chainusercreator' => $x_data['chainusercreator'],
                 'chainpostinput' => $i['postid'],
-            ), array('chainpostoutput'), 0) as $next_i) {
+            ), array('chainpostoutput'), 0) as $next_post) {
 
                 if (count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostinput' => $next_i['postid'],
+                    'chainpostinput' => $next_post['postid'],
                     'chainuserinput IN (' . join(',', $this->config->item('userids___43039')) . ')' => null,
                 )))) {
                     continue;
@@ -1113,12 +1113,12 @@ class Chains extends CIdea_cache
 
                 $has_children = count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
-                    'chainpostinput' => $next_i['postid'],
+                    'chainpostinput' => $next_post['postid'],
                 ), array('chainpostoutput'), 0, 0));
 
                 if (!$has_children) {
                     //Mark as complete:
-                    $this->Chains->post_discovered(4559, $x_data['chainusercreator'], $target_postid, $next_i, $x_data);
+                    $this->Chains->post_discovered(4559, $x_data['chainusercreator'], $target_postid, $next_post, $x_data);
                 }
             }
         }
@@ -1369,8 +1369,8 @@ class Chains extends CIdea_cache
             foreach ($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $i['postid'],
-            ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_i) {
-                array_push($i['next_posts'], $this->Chains->history($next_i, $userid, $current_level));
+            ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
+                array_push($i['next_posts'], $this->Chains->history($next_post, $userid, $current_level));
             }
         }
 
@@ -1426,8 +1426,8 @@ class Chains extends CIdea_cache
             ), array('chainpostoutput')) : $this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $i['postid'],
-            ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'))) as $next_i) {
-                array_push($i['next_posts'], $this->Chains->history_discovered($next_i, $userid, $current_level));
+            ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'))) as $next_post) {
+                array_push($i['next_posts'], $this->Chains->history_discovered($next_post, $userid, $current_level));
             }
         }
 
@@ -1435,6 +1435,44 @@ class Chains extends CIdea_cache
         return $i;
 
     }
+
+    function post_tree_flat($i, $top_ids = array(), $current_level = 0)
+    {
+
+        if(!$current_level){
+            $flat_posts = array($i);
+            $top_ids = array(intval($i['postid']));
+        } else {
+            $flat_posts = array();
+        }
+        
+        $all_next = $this->Chains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+            'chainpostinput' => $i['postid'],
+        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+
+        $duplicate_found = false;
+        foreach ($all_next as $next_post) {
+            array_push($flat_posts, $next_post);
+            if(!in_array(intval($next_post['postid']), $top_ids)){
+                array_push($top_ids, intval($next_post['postid']));
+                foreach($this->Chains->post_tree_flat($next_post, $top_ids, ($current_level+1)) as $tree_post){
+                    if(!in_array(intval($tree_post['postid']), $top_ids)){
+                        array_push($flat_posts, $tree_post);
+                    }
+                }
+            } else {
+                array_push($flat_posts, array('DUPLICATE_FOUND' => 1));
+                $duplicate_found = true;
+                break;
+            }
+            if($duplicate_found){
+                break;
+            }
+        }
+        return $flat_posts;
+    }
+
 
     function flat_tree($i, $current_level = 0, $previous_input__selection = false)
     {
@@ -1510,9 +1548,9 @@ class Chains extends CIdea_cache
         }
 
 
-        foreach ($total_next as $next_i) {
+        foreach ($total_next as $next_post) {
 
-            $result_i = $this->Chains->flat_tree($next_i, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
+            $result_i = $this->Chains->flat_tree($next_post, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
 
             array_push($i['next_posts'], $result_i);
 
@@ -1529,7 +1567,7 @@ class Chains extends CIdea_cache
                     $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
                 }
             } else {
-                array_push($i['flat_posts'], $next_i['postid']);
+                array_push($i['flat_posts'], $next_post['postid']);
             }
 
         }
