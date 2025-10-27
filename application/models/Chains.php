@@ -1489,13 +1489,12 @@ class Chains extends CIdea_cache
 
         $duplicate_found = false;
         foreach ($all_next as $next_post) {
+            $next_post['current_level'] = ($current_level+1);
+            $next_post['next_posts'] = array();
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
                 foreach($this->Chains->post_flat_tree($next_post, $top_ids, ($current_level+1)) as $tree_post){
                     if(!in_array(intval($tree_post['postid']), $top_ids)){
-                        if(!isset($next_post['next_posts'])){
-                            $next_post['next_posts'] = array();
-                        }
                         array_push($next_post['next_posts'], $tree_post);
                     }
                 }
