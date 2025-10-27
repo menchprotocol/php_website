@@ -1572,6 +1572,10 @@ class Chains extends CIdea_cache
             }
         }
 
+        if(!$tree_level && isset($i['chainid'])){
+            unset($i['chainid']);
+        }
+
         return $i;
     }
 
