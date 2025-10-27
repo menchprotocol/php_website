@@ -50,7 +50,7 @@ class Posts extends CIdea_cache
             'posttime' => $new_x['chaintime'],
             'posthashtag' => $add_fields['posthashtag'],
             'postmessage' => $post_index['postmessage'],
-            'postdisplay' => $post_index['postdisplay'],
+            'postdescription' => $post_index['postdescription'],
             'postedit' => $post_index['postedit'],
         ));
 
@@ -166,7 +166,7 @@ class Posts extends CIdea_cache
 
                         if ($new_postmessage != trim($cache['postmessage'])) {
                             $update_columns['postmessage'] = $post_index['postmessage'];
-                            $update_columns['postdisplay'] = $post_index['postdisplay'];
+                            $update_columns['postdescription'] = $post_index['postdescription'];
                             $update_columns['postedit'] = $post_index['postedit'];
                         }
 
@@ -238,7 +238,7 @@ class Posts extends CIdea_cache
                 //Update Post Text:
                 $post_index = post_index($update_columns['postmessage'], $postid, $chainusercreator, (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : null));
                 $update_columns['postmessage'] = $post_index['postmessage']; //May be updated
-                $update_columns['postdisplay'] = $post_index['postdisplay'];
+                $update_columns['postdescription'] = $post_index['postdescription'];
                 $update_columns['postedit'] = $post_index['postedit'];
             }
 

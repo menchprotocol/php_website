@@ -3783,7 +3783,7 @@ function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode 
     $CI =& get_instance();
 
     //This is still flawed, we need to fix this to exlude cache apps and more:
-    $field = ($show_postedit ? 'postedit' : 'postdisplay');
+    $field = ($show_postedit ? 'postedit' : 'postdescription');
 
     if ($userid > 0) {
         foreach ($CI->Chains->read(array(
@@ -4214,7 +4214,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
 
     //Post Message (Remaining)
-    $ui .= '<div class="ui_postdisplay_' . $i['postid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_post_value($i, $chainusercreator, $focus__node, $discovery_mode, $show_postedit) . '</div>';
+    $ui .= '<div class="ui_postdescription_' . $i['postid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_post_value($i, $chainusercreator, $focus__node, $discovery_mode, $show_postedit) . '</div>';
 
 
     $post_popup_url = post_popup_url($i);
@@ -5409,7 +5409,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
         'chainvalue' => '',
         'postmessage' => '',
         'postmessage_new' => '',
-        'postdisplay' => '',
+        'postdescription' => '',
         'postedit' => '',
         'referenced_posts' => array(),
         'referenced_users' => array(),
@@ -5443,7 +5443,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
         $linechainvalue = null;
         $linepostmessage = null;
-        $linepostdisplay = null;
+        $linepostdescription = null;
         $linepostedit = null;
         $line_new = '';
 
@@ -5456,7 +5456,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             }
             $chainvalue = null;
             $postmessage = null;
-            $postdisplay = null;
+            $postdescription = null;
             $postedit = null;
             $is_url = false;
 
@@ -5593,7 +5593,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                             $chainvalue = $m['m__cover'] . $post['postid'];
                             $postmessage = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
-                                $postdisplay = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
+                                $postdescription = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
                             } else {
                                 $first_ref_hidden = true;
                             }
@@ -5691,11 +5691,11 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                                 $chainvalue = $m['m__cover'] . $user['userid'];
                                 $postmessage = $word_text;
                                 if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
-                                    $postdisplay = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+                                    $postdescription = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
                                 } else {
                                     $first_ref_hidden = true;
                                     if ($media_append_end) {
-                                        $postdisplay = $media_append_end;
+                                        $postdescription = $media_append_end;
                                     }
                                 }
                                 $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
@@ -5721,7 +5721,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                 $chainvalue = $word_text;
                 $postmessage = $word_text;
                 if (!$first_ref_hidden) {
-                    $postdisplay = $word_text;
+                    $postdescription = $word_text;
                 }
                 $postedit = $word_text;
             }
@@ -5729,7 +5729,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             //See what we found to add:
             $linechainvalue .= (!$first_word && $chainvalue ? ' ' : '') . $chainvalue;
             $linepostmessage .= (!$first_word && $postmessage ? ' ' : '') . $postmessage;
-            $linepostdisplay .= (!$first_word && $postdisplay ? ' ' : '') . $postdisplay;
+            $linepostdescription .= (!$first_word && $postdescription ? ' ' : '') . $postdescription;
             $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
             $line_new .= $word_text . " ";
 
@@ -5737,7 +5737,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
         $post_index['chainvalue'] .= (!$first_line && $linechainvalue ? "\n" : '') . $linechainvalue;
         $post_index['postmessage'] .= (!$first_line && $linepostmessage ? "\n" : '') . $linepostmessage;
-        $post_index['postdisplay'] .= ($linepostdisplay ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdisplay . '</div>' : '');
+        $post_index['postdescription'] .= ($linepostdescription ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdescription . '</div>' : '');
         $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');
         $post_index['postmessage_new'] .= trim($line_new) . "\n";
 
@@ -5745,9 +5745,9 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
 
     //Give HTML their frame:
     $view_list_user = view_list_user($save_postid);
-    if (strlen($post_index['postdisplay']) || $view_list_user) {
+    if (strlen($post_index['postdescription']) || $view_list_user) {
         //Also append featured users:
-        $post_index['postdisplay'] = '<div class="i_cache i_postdisplay cache_frame_' . $save_postid . '">' . $post_index['postdisplay'] . $view_list_user . '</div>';
+        $post_index['postdescription'] = '<div class="i_cache i_postdescription cache_frame_' . $save_postid . '">' . $post_index['postdescription'] . $view_list_user . '</div>';
     }
     if (strlen($post_index['postedit']) || $view_list_user) {
         $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . $view_list_user . '</div>';

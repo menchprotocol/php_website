@@ -88,7 +88,7 @@ if (1) {
             $post_index = post_index($post_index['postmessage_new'], intval($post['postid']), intval($post['postcreator']));
             $this->Posts->update($post['postid'], array(
                 'postmessage' => $post_index['postmessage_new'],
-                'postdisplay' => $post_index['postdisplay'],
+                'postdescription' => $post_index['postdescription'],
                 'postedit' => $post_index['postedit'],
             ), 1);
             $stats['posts_links_fix']++;
@@ -246,7 +246,7 @@ if (0) {
             $post_index = array(
                 'chainvalue' => $x['chainvalue'],
                 'postmessage' => '',
-                'postdisplay' => '',
+                'postdescription' => '',
                 'postedit' => '',
                 'posthashtag' => '',
             );
@@ -256,7 +256,7 @@ if (0) {
         $post_index = post_index($postmessage, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
         $this->Posts->update($x['chainid'], array(
             'postmessage' => $post_index['postmessage'],
-            'postdisplay' => $post_index['postdisplay'],
+            'postdescription' => $post_index['postdescription'],
             'postedit' => $post_index['postedit'],
         ));
 

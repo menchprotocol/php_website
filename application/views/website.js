@@ -1048,7 +1048,7 @@ function post_suggestions() {
         }
 
         //Update Discovery Preview:
-        $('.preview_postdisplay').html(data.post_index.postdisplay);
+        $('.preview_postdescription').html(data.post_index.postdescription);
 
     });
 
@@ -1939,7 +1939,7 @@ function update_cover_mini(cover_code, target_css) {
 
 
 function display_media(mediaframe_id, uploader_id, postid) {
-    $(".ui_postdisplay_" + postid + " .media_display").each(function () {
+    $(".ui_postdescription_" + postid + " .media_display").each(function () {
         $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" userid="0"  usercover=""></div>');
         cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('usercover'), $(this).attr('username'), $(this).attr('userid'));
     });
@@ -2105,14 +2105,14 @@ function post_edit_save() {
             console.log('START INSERTING');
             if (!current_postid && created_postid > 0 && focus_group > 0) {
 
-                $("#list-in-" + focus_group).append(data.return_postdisplay_full);
+                $("#list-in-" + focus_group).append(data.return_postdescription_full);
 
                 chain_counter(focus_group, 1);
 
             } else {
 
                 //Update Cache otherwise:
-                $('.ui_postdisplay_' + modify_data['save_postid']).html(data.return_postdisplay_chains);
+                $('.ui_postdescription_' + modify_data['save_postid']).html(data.return_postdescription_chains);
 
             }
 
