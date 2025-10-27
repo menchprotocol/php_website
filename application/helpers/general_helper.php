@@ -382,13 +382,13 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         $opener = '<span ';
         $closer = '</span>';
 
-        if (isset($i['stats']) && $userid == 12273 && $i['stats']['all_steps'] > 0) {
+        if (isset($i['stats']) && $userid == 12273 && $i['stats']['all_posts'] > 0) {
 
             if ($CI->uri->segment(1) == 'doc') {
                 $opener = '<a href="/' . $i['posthashtag'] . '" ';
                 $closer = '</a>';
             }
-            echo $opener . 'data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_steps'] . '</span>' . $closer;
+            echo $opener . 'data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_posts'] . '</span>' . $closer;
 
         } elseif (isset($i['stats']) && $userid == 1592672 && ($i['treelevel'] > 0 || $i['stats']['max_level'] > 0)) {
 
@@ -402,9 +402,9 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
             echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $userid == 1592686 && ($i['stats']['min_steps'] > 0 || $i['stats']['max_steps'] > 0)) {
+        } elseif (isset($i['stats']) && $userid == 1592686 && ($i['stats']['min_posts'] > 0 || $i['stats']['max_posts'] > 0)) {
 
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'] . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_posts'] != $i['stats']['max_posts'] ? $i['stats']['min_posts'] . '-' : '') . $i['stats']['max_posts'] . '</span>' . $closer;
 
         } elseif ($userid == 31777 && isset($i['post_views']) && intval($i['post_views']) > 0) {
 
@@ -4520,9 +4520,9 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostinput' => $i['postid'],
                         'chainuserinput' => 31813, //Steps
-                    )) as $num_steps) {
-                        if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
-                            $input_attributes .= ' step="' . $num_steps['chainvalue'] . '" ';
+                    )) as $num_posts) {
+                        if (strlen($num_posts['chainvalue']) && is_numeric($num_posts['chainvalue'])) {
+                            $input_attributes .= ' step="' . $num_posts['chainvalue'] . '" ';
                         }
                     }
 
@@ -4531,9 +4531,9 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostinput' => $i['postid'],
                         'chainuserinput' => 31800, //Min Value
-                    )) as $num_steps) {
-                        if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
-                            $input_attributes .= ' min="' . $num_steps['chainvalue'] . '" ';
+                    )) as $num_posts) {
+                        if (strlen($num_posts['chainvalue']) && is_numeric($num_posts['chainvalue'])) {
+                            $input_attributes .= ' min="' . $num_posts['chainvalue'] . '" ';
                         }
                     }
 
@@ -4542,9 +4542,9 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
                         'chainpostinput' => $i['postid'],
                         'chainuserinput' => 31801, //Max Value
-                    )) as $num_steps) {
-                        if (strlen($num_steps['chainvalue']) && is_numeric($num_steps['chainvalue'])) {
-                            $input_attributes .= ' max="' . $num_steps['chainvalue'] . '" ';
+                    )) as $num_posts) {
+                        if (strlen($num_posts['chainvalue']) && is_numeric($num_posts['chainvalue'])) {
+                            $input_attributes .= ' max="' . $num_posts['chainvalue'] . '" ';
                         }
                     }
 

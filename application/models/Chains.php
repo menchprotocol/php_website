@@ -1478,6 +1478,14 @@ class Chains extends CIdea_cache
 
         if(!$tree_level){
             $top_ids = array(intval($i['postid']));
+
+            //Append Creator info:
+            foreach($this->Chains->read(array(
+                'chainusertype' => 12273,
+                'chainpostinput' => $i['postid'],
+            ), array('chainusercreator'), 1, 0, array('chainid' => 'ASC'), '*', null, false) as $creator){
+                $i = array_merge($i, $creator);
+            }
         }
 
         $total_next = $this->Chains->read(array(
@@ -1501,13 +1509,13 @@ class Chains extends CIdea_cache
             'chainpostinput' => $i['postid'],
             'chainuserinput' => 28239, //Required
         )));
-        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later
-        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
+        $min_posts = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later
+        $max_posts = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
         $i['poststats'] = array(
             'max_level' => $tree_level,
-            'all_steps' => 1,
-            'min_steps' => $min_steps,
-            'max_steps' => $max_steps,
+            'all_posts' => 1,
+            'min_posts' => $min_posts,
+            'max_posts' => $max_posts,
             'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
             'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
         );
@@ -1546,8 +1554,8 @@ class Chains extends CIdea_cache
                 }
                 array_push($i['treeposts'], $next_post);
 
-                $i['poststats']['all_steps'] += $tree_results['poststats']['all_steps'];
-                $i['poststats']['max_steps'] += $tree_results['poststats']['max_steps'];
+                $i['poststats']['all_posts'] += $tree_results['poststats']['all_posts'];
+                $i['poststats']['max_posts'] += $tree_results['poststats']['max_posts'];
                 $i['poststats']['min_choices'] += $tree_results['poststats']['min_choices'];
                 $i['poststats']['max_choices'] += $tree_results['poststats']['max_choices'];
 
@@ -1555,7 +1563,7 @@ class Chains extends CIdea_cache
                     $i['poststats']['max_level'] = $tree_results['poststats']['max_level'];
                 }
                 if (!$input__selection || $is_required) {
-                    $i['poststats']['min_steps'] += $tree_results['poststats']['min_steps'];
+                    $i['poststats']['min_posts'] += $tree_results['poststats']['min_posts'];
                 }
 
             }
