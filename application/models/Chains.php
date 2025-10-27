@@ -1464,7 +1464,7 @@ class Chains extends CIdea_cache
                     }
                 }
             } else {
-                array_push($flat_posts, array('postid' => 0));
+                array_push($flat_posts, array('postid' => 0, 'IS_DUPLICATE' => 1));
                 $duplicate_found = true;
                 break;
             }
