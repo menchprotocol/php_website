@@ -1485,7 +1485,6 @@ class Chains extends CIdea_cache
                 'chainpostinput' => $i['postid'],
             ), array('chainusercreator'), 1, 0, array('chainid' => 'ASC'), '*', null, false) as $creator){
                 $i = array_merge($i, $creator);
-                unset($i['chainid']);
             }
         }
 
