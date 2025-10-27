@@ -507,40 +507,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</div>';
 }
 
-function post_json_clean($i){
-    $i['postid'] = intval($i['postid']);
-    unset($i['postexternal']);
-    unset($i['postweight']);
-    unset($i['postmessageedit']);
-    unset($i['postcreator']);
-    unset($i['postvoid']);
-    if(isset($i['chainid'])){
-        $i['chainid'] = intval($i['chainid']);
-        unset($i['chainuserdomain']);
-        unset($i['chainusercreator']);
-        unset($i['chainusertype']);
-        unset($i['chainuserinput']);
-        unset($i['chainuseroutput']);
-        unset($i['chainpostinput']);
-        unset($i['chainpostoutput']);
-        unset($i['chainkey']);
-        unset($i['chainvalue']);
-        unset($i['chainvoid']);
-        unset($i['chainprevious']);
-        unset($i['chainhash']);
-        unset($i['chaintime']);
-    }
-    if(isset($i['userid'])){
-        $i['userid'] = intval($i['userid']);
-        unset($i['userexternal']);
-        unset($i['usercreator']);
-        unset($i['userweight']);
-        unset($i['uservoid']);
-        unset($i['userbio']);
-        unset($i['usertime']);
-    }
-    return $i;
-}
+
 function post_list_config($postid, $access_limit = true)
 {
 

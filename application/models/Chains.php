@@ -1452,7 +1452,6 @@ class Chains extends CIdea_cache
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
-        $duplicate_found = false;
         foreach ($all_next as $next_post) {
             $next_post['level'] = ($tree_level+1);
             array_push($flat_posts, $next_post);
@@ -1463,9 +1462,6 @@ class Chains extends CIdea_cache
                         array_push($flat_posts, $tree_post);
                     }
                 }
-            }
-            if($duplicate_found){
-                break;
             }
         }
         return $flat_posts;
@@ -1533,42 +1529,65 @@ class Chains extends CIdea_cache
         //Focus on TREE:
         $i['treelevel'] = $tree_level;
         $i['treeposts'] = array();
-        $i = post_json_clean($i);
+        $i['postid'] = intval($i['postid']);
+        unset($i['postexternal']);
+        unset($i['postweight']);
+        unset($i['postmessageedit']);
+        unset($i['postcreator']);
+        unset($i['postvoid']);
+        if(isset($i['chainid'])){
+            $i['chainid'] = intval($i['chainid']);
+            unset($i['chainuserdomain']);
+            unset($i['chainusercreator']);
+            unset($i['chainusertype']);
+            unset($i['chainuserinput']);
+            unset($i['chainuseroutput']);
+            unset($i['chainpostinput']);
+            unset($i['chainpostoutput']);
+            unset($i['chainkey']);
+            unset($i['chainvalue']);
+            unset($i['chainvoid']);
+            unset($i['chainprevious']);
+            unset($i['chainhash']);
+            unset($i['chaintime']);
+        }
+        if(isset($i['userid'])){
+            $i['userid'] = intval($i['userid']);
+            unset($i['userexternal']);
+            unset($i['usercreator']);
+            unset($i['userweight']);
+            unset($i['uservoid']);
+            unset($i['userbio']);
+            unset($i['usertime']);
+        }
 
-        $duplicate_found = false;
+
         foreach ($total_next as $next_post) {
-
-            $next_post['treelevel'] = ($tree_level+1);
-            $next_post['treeposts'] = array();
-            $next_post = post_json_clean($next_post);
-
             if(!in_array(intval($next_post['postid']), $top_ids)){
+
                 array_push($top_ids, intval($next_post['postid']));
-                $tree_results = $this->Chains->post_json($next_post, $top_ids, ($tree_level+1), $input__selection);
-                if(isset($tree_results['treeposts']) && is_array($tree_results['treeposts'])){
-                    foreach($tree_results['treeposts'] as $tree_post){
-                        if(!in_array(intval($tree_post['postid']), $top_ids)){
-                            array_push($next_post['treeposts'], $tree_post);
-                        }
-                    }
-                }
+
+                //Append tree data to our next post:
+                $next_post = $this->Chains->post_json($next_post, $top_ids, ($tree_level+1), $input__selection);
+
                 array_push($i['treeposts'], $next_post);
 
-                $i['poststats']['all_posts'] += $tree_results['poststats']['all_posts'];
-                $i['poststats']['max_posts'] += $tree_results['poststats']['max_posts'];
-                $i['poststats']['min_choices'] += $tree_results['poststats']['min_choices'];
-                $i['poststats']['max_choices'] += $tree_results['poststats']['max_choices'];
+                $i['poststats']['all_posts'] += $next_post['poststats']['all_posts'];
+                $i['poststats']['max_posts'] += $next_post['poststats']['max_posts'];
+                $i['poststats']['min_choices'] += $next_post['poststats']['min_choices'];
+                $i['poststats']['max_choices'] += $next_post['poststats']['max_choices'];
 
-                if ($tree_results['poststats']['max_level'] > $i['poststats']['max_level']) {
-                    $i['poststats']['max_level'] = $tree_results['poststats']['max_level'];
+                if ($next_post['poststats']['max_level'] > $i['poststats']['max_level']) {
+                    $i['poststats']['max_level'] = $next_post['poststats']['max_level'];
                 }
                 if (!$input__selection || $is_required) {
-                    $i['poststats']['min_posts'] += $tree_results['poststats']['min_posts'];
+                    $i['poststats']['min_posts'] += $next_post['poststats']['min_posts'];
                 }
 
-            }
-            if($duplicate_found){
-                break;
+            } else {
+
+                //Repeat Post in the tree, ignore for now to prevent infinite loop...
+
             }
         }
 
