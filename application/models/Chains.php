@@ -1480,6 +1480,11 @@ class Chains extends CIdea_cache
             $top_ids = array(intval($i['postid']));
         }
 
+        $total_next = $this->Chains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+            'chainpostinput' => $i['postid'],
+        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+
         //STATS:
         $input__selection = false;
         $single_choice = false;
@@ -1517,10 +1522,6 @@ class Chains extends CIdea_cache
         //Focus on TREE:
         $i['treelevel'] = $tree_level;
         $i['treeposts'] = array();
-        $total_next = $this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
-            'chainpostinput' => $i['postid'],
-        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
         //Remove unwated fields for JSON:
         unset($i['postexternal']);
