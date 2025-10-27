@@ -1436,7 +1436,7 @@ class Chains extends CIdea_cache
 
     }
 
-    function post_tree_flat($i, $top_ids = array(), $current_level = 0)
+    function post_flat_tree($i, $top_ids = array(), $current_level = 0)
     {
 
         if(!$current_level){
@@ -1446,7 +1446,7 @@ class Chains extends CIdea_cache
         } else {
             $flat_posts = array();
         }
-        
+
         $all_next = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
             'chainpostinput' => $i['postid'],
@@ -1458,7 +1458,7 @@ class Chains extends CIdea_cache
             array_push($flat_posts, $next_post);
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
-                foreach($this->Chains->post_tree_flat($next_post, $top_ids, ($current_level+1)) as $tree_post){
+                foreach($this->Chains->post_flat_tree($next_post, $top_ids, ($current_level+1)) as $tree_post){
                     if(!in_array(intval($tree_post['postid']), $top_ids)){
                         array_push($flat_posts, $tree_post);
                     }
@@ -1472,25 +1472,72 @@ class Chains extends CIdea_cache
     }
 
 
-    function flat_tree($i, $current_level = 0, $previous_input__selection = false)
+
+    function post_json($i, $top_ids = array(), $current_level = 0)
     {
+
+        if(!$current_level){
+            $top_ids = array(intval($i['postid']));
+        }
+
+        $i['current_level'] = $current_level;
+        $i['next_posts'] = array();
+        $all_next = $this->Chains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
+            'chainpostinput' => $i['postid'],
+        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+
+        $duplicate_found = false;
+        foreach ($all_next as $next_post) {
+            if(!in_array(intval($next_post['postid']), $top_ids)){
+                array_push($top_ids, intval($next_post['postid']));
+                foreach($this->Chains->post_flat_tree($next_post, $top_ids, ($current_level+1)) as $tree_post){
+                    if(!in_array(intval($tree_post['postid']), $top_ids)){
+                        if(!isset($next_post['next_posts'])){
+                            $next_post['next_posts'] = array();
+                        }
+                        array_push($next_post['next_posts'], $tree_post);
+                    }
+                }
+                array_push($i['next_posts'], $next_post);
+            }
+            if($duplicate_found){
+                break;
+            }
+        }
+
+        return $i;
+    }
+
+
+    function flat_old_tree($i, $top_ids = array(), $current_level = 0, $previous_input__selection = false)
+    {
+
+        if(!$current_level){
+            $top_ids = array(intval($i['postid']));
+        }
 
         $total_next = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
-        $input__selection = count($this->Chains->read(array(
+
+        //Determine post type:
+        $input__selection = false;
+        $single_choice = false;
+        foreach($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
-        )));
-        $single_choice = count($this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostinput' => $i['postid'],
-            'chainuserinput' => 6684,
-        )));
+        )) as $sel){
+            $input__selection = true;
+            $single_choice = ( $sel['chainuserinput']==6684 );
+        }
+
+        $i['current_level'] = $current_level;
 
         if(isset($_GET['skip_config'])) {
+            
             unset($i['postexternal']);
             unset($i['postweight']);
             unset($i['postedit']);
@@ -1510,9 +1557,9 @@ class Chains extends CIdea_cache
                 unset($i['chainhash']);
                 unset($i['chaintime']);
             }
+            
         } else {
 
-            $i['current_level'] = $current_level;
             $is_required = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                 'chainpostinput' => $i['postid'],
@@ -1530,10 +1577,10 @@ class Chains extends CIdea_cache
                 'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
                 'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
             );
+            
         }
 
         $i['next_posts'] = array();
-        $i['flat_posts'] = array();
         $current_level++;
 
         //Append Total Discoveries if any:
@@ -1547,27 +1594,36 @@ class Chains extends CIdea_cache
 
 
         foreach ($total_next as $next_post) {
-
-            $result_i = $this->Chains->flat_tree($next_post, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
-
-            array_push($i['next_posts'], $result_i);
-
-            if(!isset($_GET['skip_config'])) {
-                $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
-                $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
-                $i['stats']['min_choices'] += $result_i['stats']['min_choices'];
-                $i['stats']['max_choices'] += $result_i['stats']['max_choices'];
-
-                if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
-                    $i['stats']['max_level'] = $result_i['stats']['max_level'];
+            
+            if(!in_array(intval($next_post['postid']), $top_ids)){
+                
+                array_push($top_ids, intval($next_post['postid']));
+                
+                foreach($this->Chains->post_flat_tree($next_post, $top_ids, ($current_level+1)) as $tree_post){
+                    if(!in_array(intval($tree_post['postid']), $top_ids)){
+                    }
                 }
-                if (!$input__selection || $is_required) {
-                    $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
+
+                $result_i = $this->Chains->flat_old_tree($next_post, $top_ids, $current_level, ($previous_input__selection ? $previous_input__selection : $input__selection));
+
+                array_push($i['next_posts'], $result_i);
+
+                if(!isset($_GET['skip_config'])) {
+                    $i['stats']['all_steps'] += $result_i['stats']['all_steps'];
+                    $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
+                    $i['stats']['min_choices'] += $result_i['stats']['min_choices'];
+                    $i['stats']['max_choices'] += $result_i['stats']['max_choices'];
+
+                    if ($result_i['stats']['max_level'] > $i['stats']['max_level']) {
+                        $i['stats']['max_level'] = $result_i['stats']['max_level'];
+                    }
+                    if (!$input__selection || $is_required) {
+                        $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
+                    }
+                } else {
+                    array_push($i['flat_posts'], $next_post['postid']);
                 }
-            } else {
-                array_push($i['flat_posts'], $next_post['postid']);
             }
-
         }
 
         return $i;
