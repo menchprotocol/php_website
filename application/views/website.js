@@ -2224,21 +2224,21 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         styles: {
             palette: {
                 window: "#FFFFFF",
-                windowBorder: "#999999",
+                windowBorder: "#888888",
                 tabIcon: "#000000",
                 menuIcons: "#000000",
                 textDark: "#000000",
                 textLight: "#FFFFFF",
                 chain: "#000000",
                 action: "#000000",
-                inactiveTabIcon: "#999999",
+                inactiveTabIcon: "#888888",
                 error: "#FC1B44",
                 inProgress: "#000000",
                 complete: "#000000",
                 userBg: "#FFFFFF"
             },
             frame: {
-                background: "#999999"
+                background: "#888888"
             }
         }
     };
