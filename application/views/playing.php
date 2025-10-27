@@ -43,7 +43,7 @@ foreach($this->config->item('users___31916') as $chainusertype => $m) {
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$chainusertype.' hidden" read-counter="'.$coins_count[$chainusertype].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-        $mainmenu .= '<li class="nav-item thepill'.$chainusertype.'"><a class="nav-chain user_nav_'.$m['m__handle'].'" chainusertype="'.$chainusertype.'" href="#'.$m['m__handle'].'" title="'.$m['m__name'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype.'">'. view_number($coins_count[$chainusertype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype.'">&nbsp;'. $m['m__name'] . '&nbsp;</span></a></li>';
+        $mainmenu .= '<li class="nav-item thepill'.$chainusertype.'"><a class="nav-chain user_nav_'.$m['m__handle'].'" chainusertype="'.$chainusertype.'" href="#'.$m['m__handle'].'" title="'.$coins_count[$chainusertype].' '.$m['m__name'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype.'">'. view_number($coins_count[$chainusertype]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype.'">&nbsp;'. $m['m__name'] . '&nbsp;</span></a></li>';
 
     }
 
@@ -61,7 +61,7 @@ foreach($this->config->item('users___31916') as $chainusertype => $m) {
             $coins_count[$chainusertype2] = users_query($chainusertype, $focus_e['userid'], 0, false, $chainusertype2);
             if(!$coins_count[$chainusertype2]){ continue; }
 
-            $submenu_content .= '<li class="nav-item thepill'.$chainusertype2.'"><a class="nav-chain user_nav_'.$m2['m__handle'].'" chainusertype="'.$chainusertype2.'" href="#'.$m2['m__handle'].'" title="'.$m2['m__name'].'">&nbsp;<span class="icon-block">'.$m2['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype2.'">'. view_number($coins_count[$chainusertype2]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype2.'">&nbsp;'. $m2['m__name'] . '&nbsp;</span></a></li>';
+            $submenu_content .= '<li class="nav-item thepill'.$chainusertype2.'"><a class="nav-chain user_nav_'.$m2['m__handle'].'" chainusertype="'.$chainusertype2.'" href="#'.$m2['m__handle'].'" title="'.$coins_count[$chainusertype].' '.$m2['m__name'].'">&nbsp;<span class="icon-block">'.$m2['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$chainusertype2.'">'. view_number($coins_count[$chainusertype2]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$chainusertype2.'">&nbsp;'. $m2['m__name'] . '&nbsp;</span></a></li>';
         }
 
         if($submenu_content){

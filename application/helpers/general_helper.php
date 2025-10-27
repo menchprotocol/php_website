@@ -5152,7 +5152,7 @@ function view_post_nav($discovery_mode, $focus_post, $autoload = true)
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $chainusertype . ' hidden" read-counter="' . $coins_count[$chainusertype] . '"><div class="tab_content"></div></div>';
 
 
-            $ui .= '<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain user_nav_' . $m['m__handle'] . '" chainusertype="' . $chainusertype . '" href="#' . $m['m__handle'] . '" title="' . $m['m__name'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($coins_count[$chainusertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainusertype . '">&nbsp;' . $m['m__name'] . '&nbsp;</span></a></li>';
+            $ui .= '<li class="nav-item thepill' . $chainusertype . '"><a class="nav-chain user_nav_' . $m['m__handle'] . '" chainusertype="' . $chainusertype . '" href="#' . $m['m__handle'] . '" title="' . $coins_count[$chainusertype].' '.$m['m__name'] . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="hideIfEmpty xtypecounter' . $chainusertype . '">' . view_number($coins_count[$chainusertype]) . '</span><span class="hidden xtypetitle xtypetitle_' . $chainusertype . '">&nbsp;' . $m['m__name'] . '&nbsp;</span></a></li>';
 
         }
 
