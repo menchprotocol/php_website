@@ -3649,8 +3649,13 @@ h4.main__title {
     padding: 0;
 }
 
+.fixedchain{ width:144px !important; }
+.fixedchain>div{ width:140px !important; overflow:hidden; }
 
 @media (max-width: 610px) {
+
+    .fixedchain{ width:75px !important; }
+    .fixedchain>div{ width:72px !important; overflow:hidden; }
 
     h1 {
         font-size: 2.4em;
