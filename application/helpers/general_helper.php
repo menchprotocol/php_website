@@ -2953,7 +2953,7 @@ function chain_view($x)
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Users->read(array('userid' => $x[$m['m__handle']])) as $focus_e) {
-                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['userhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['username'] . '" class="icon-block-sm">@' . $focus_e['userhandle'] . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['userhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['username'] . '">@' . $focus_e['userhandle'] . '</a>';
                 }
             }
             $column_value .= '</div></td>';
