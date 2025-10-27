@@ -406,7 +406,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
             echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_steps'] != $i['stats']['max_steps'] ? $i['stats']['min_steps'] . '-' : '') . $i['stats']['max_steps'] . '</span>' . $closer;
 
-        } elseif ($userid == 31777 && isset($i['post_count_discovery']) && intval($i['post_count_discovery']) > 0) {
+        } elseif ($userid == 31777 && isset($i['post_views']) && intval($i['post_views']) > 0) {
 
             if (post_is_startable($i)) {
                 $opener = '<a href="/' . $i['posthashtag'] . '/start" ';
@@ -419,7 +419,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                 'chainuserinput' => 26189,
             ), array(), 1);
 
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['post_count_discovery'] . (count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="' . $users___11035[26189]['m__name'] . '" style="border-bottom: 1px dotted #000000;">/' . intval($max_available[0]['chainvalue']) . '</span>' : '') . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['post_views'] . (count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="' . $users___11035[26189]['m__name'] . '" style="border-bottom: 1px dotted #000000;">/' . intval($max_available[0]['chainvalue']) . '</span>' : '') . '</span>' . $closer;
 
         } else {
             //block
@@ -429,7 +429,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo(isset($i['post_count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_post_value($i) . '</div>' : '');
+    echo(isset($i['post_views']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_post_value($i) . '</div>' : '');
     echo '</div>';
 
 
