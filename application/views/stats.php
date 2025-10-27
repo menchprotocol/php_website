@@ -47,11 +47,11 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         if($userid2==12273){
             //Post Types
             $focus_list = 4737;
-            $focus_id = '12273_4737';
+            $focus_id = 12273;
         } elseif($userid2==12274){
             //User Groups
             $focus_list = 3465306;
-            $focus_id = '12274_3465306';
+            $focus_id = 12274;
         } else {
             //Links
             $focus_list = $userid2;
