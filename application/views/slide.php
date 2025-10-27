@@ -14,7 +14,7 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
         height: 100%;
         margin: 0;
         overflow: hidden;
-        background: #000;
+        background: #999999;
         touch-action: manipulation;
     }
 
@@ -161,14 +161,7 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
             <div class="caption">Wide photo album: Cityscapes</div>
         </div>
     </div>
-    <!-- Post 7: Tall Video -->
-    <div class="post">
-        <video class="post-content video-post" controls>
-            <source src="https://www.pexels.com/download/video/6789784/" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="caption">Tall video: Forest stream</div>
-    </div>
+
     <!-- Post 8: Wide Video -->
     <div class="post">
         <video class="post-content video-post" controls>
@@ -194,6 +187,7 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
 <!-- Custom JS -->
 <script>
     $(document).ready(function () {
+
         // Pause all videos when scrolling to a new post
         $('.tiktok-container').on('scroll', function () {
             $('video').each(function () {
