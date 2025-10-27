@@ -21,7 +21,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     $website_es = $this->Users->read(array(
         'LOWER(userhandle)' => strtolower($item_numbers['user_wesbite']),
     ));
-    $next_posts = $this->Posts->read(array(
+    $tree_posts = $this->Posts->read(array(
         'LOWER(posthashtag)' => strtolower($item_numbers['post_destination']),
     ));
     $target_posts = ($item_numbers['post_target'] ? $this->Posts->read(array(
@@ -29,13 +29,13 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     )) : false);
 
 
-    if(count($user_sessions) && count($next_posts) && $_POST['payment_status']!='Pending') {
+    if(count($user_sessions) && count($tree_posts) && $_POST['payment_status']!='Pending') {
 
         //Is the payment amount greater than zero?
         if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
             //Log Payment:
-            $completion_status = $this->Chains->post_discovered(26595, $user_sessions[0]['userid'], ( isset($target_posts[0]['postid']) ? $target_posts[0]['postid'] : 0 ), $next_posts[0], array(), array(
+            $completion_status = $this->Chains->post_discovered(26595, $user_sessions[0]['userid'], ( isset($target_posts[0]['postid']) ? $target_posts[0]['postid'] : 0 ), $tree_posts[0], array(), array(
                 'chainkey' => intval($_POST['quantity']),
                 'chainvalue' => $_POST,
             ));
@@ -46,7 +46,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             foreach($this->Chains->read(array(
                 'chainusertype' => 26595,
                 'chainusercreator' => $user_sessions[0]['userid'],
-                'chainpostinput' => $next_posts[0]['postid'],
+                'chainpostinput' => $tree_posts[0]['postid'],
             )) as $paid){
                 //Delete payment since its been refunded:
                 $this->Chains->delete($paid['chainid'], $user_sessions[0]['userid']);

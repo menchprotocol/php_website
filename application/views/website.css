@@ -2002,7 +2002,7 @@ body:not(.app__30795) .nav > .nav-item > .nav-chain > .icon-block {
 }
 
 
-.dynamic_editing_input textarea.form-control.save_postmessage {
+.dynamic_editing_input textarea.form-control.save_postmessageraw {
     padding-top: px !important;
     margin-left: 40px !important;
 }

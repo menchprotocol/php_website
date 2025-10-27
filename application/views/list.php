@@ -23,7 +23,7 @@ $count_totals = array(
 $post_settings = post_settings($_GET['posthashtag']);
 
 echo '<h1>' . view_post_title($post_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_postmessage($post_settings['i'], ( isset($user_session['userid']) ? $user_session['userid'] : 0 )) . '</div>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_postmessageraw($post_settings['i'], ( isset($user_session['userid']) ? $user_session['userid'] : 0 )) . '</div>';
 
 echo 'Filter:';
 

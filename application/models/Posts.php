@@ -11,7 +11,7 @@ class Posts extends CIdea_cache
     function create($add_fields, $chainusercreator = 0)
     {
 
-        if (!isset($add_fields['postmessage'])) {
+        if (!isset($add_fields['postmessageraw'])) {
             return false;
         }
 
@@ -21,10 +21,10 @@ class Posts extends CIdea_cache
 
         //Set defaults if missing:
         if (!isset($add_fields['posthashtag'])) {
-            $add_fields['posthashtag'] = generate_user(12273, one_two_explode('', "\n", $add_fields['postmessage']));
+            $add_fields['posthashtag'] = generate_user(12273, one_two_explode('', "\n", $add_fields['postmessageraw']));
         }
 
-        $post_index = post_index($add_fields['postmessage'], 0, 0, $add_fields['posthashtag']);
+        $post_index = post_index($add_fields['postmessageraw'], 0, 0, $add_fields['posthashtag']);
 
         //Add to Chain:
         $new_array = array(
@@ -38,7 +38,7 @@ class Posts extends CIdea_cache
         }
 
         //Update other data on chain:
-        $post_index = post_index($add_fields['postmessage'], $new_x['chainid'], $chainusercreator, $add_fields['posthashtag']);
+        $post_index = post_index($add_fields['postmessageraw'], $new_x['chainid'], $chainusercreator, $add_fields['posthashtag']);
 
         //Update new ID:
         $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='" . "#" . $add_fields['posthashtag'] . "\n" . $post_index['chainvalue'] . "' WHERE chainid = " . $new_x['chainid'] . ";");
@@ -49,9 +49,9 @@ class Posts extends CIdea_cache
             'postcreator' => $new_x['chainusercreator'],
             'posttime' => $new_x['chaintime'],
             'posthashtag' => $add_fields['posthashtag'],
-            'postmessage' => $post_index['postmessage'],
-            'postdescription' => $post_index['postdescription'],
-            'postedit' => $post_index['postedit'],
+            'postmessageraw' => $post_index['postmessageraw'],
+            'postmessageview' => $post_index['postmessageview'],
+            'postmessageedit' => $post_index['postmessageedit'],
         ));
 
         //Update Search Index:
@@ -125,7 +125,7 @@ class Posts extends CIdea_cache
     function update($postid, $update_columns, $chainusercreator = 0)
     {
 
-        $core_fields = array('postmessage', 'posthashtag');
+        $core_fields = array('postmessageraw', 'posthashtag');
 
         //Find existing chain to update:
         foreach ($this->Chains->read(array(
@@ -161,13 +161,13 @@ class Posts extends CIdea_cache
                         $must_update_chain = 1;
 
                         $new_posthashtag = trim(isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $cache['posthashtag']);
-                        $new_postmessage = trim(isset($update_columns['postmessage']) ? $update_columns['postmessage'] : $cache['postmessage']);
-                        $post_index = post_index($new_postmessage, $postid, $chainusercreator, $new_posthashtag);
+                        $new_postmessageraw = trim(isset($update_columns['postmessageraw']) ? $update_columns['postmessageraw'] : $cache['postmessageraw']);
+                        $post_index = post_index($new_postmessageraw, $postid, $chainusercreator, $new_posthashtag);
 
-                        if ($new_postmessage != trim($cache['postmessage'])) {
-                            $update_columns['postmessage'] = $post_index['postmessage'];
-                            $update_columns['postdescription'] = $post_index['postdescription'];
-                            $update_columns['postedit'] = $post_index['postedit'];
+                        if ($new_postmessageraw != trim($cache['postmessageraw'])) {
+                            $update_columns['postmessageraw'] = $post_index['postmessageraw'];
+                            $update_columns['postmessageview'] = $post_index['postmessageview'];
+                            $update_columns['postmessageedit'] = $post_index['postmessageedit'];
                         }
 
                         $update_columns['posttime'] = date("Y-m-d H:i:s");
@@ -190,7 +190,7 @@ class Posts extends CIdea_cache
                             'chainpostoutput' => $postid,
                         ), array('chainpostinput'), 0) as $ref) {
                             //Update the post index:
-                            $post_index = post_index($ref['postmessage'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
+                            $post_index = post_index($ref['postmessageraw'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
                         }
 
                         //Sync algolia:
@@ -234,12 +234,12 @@ class Posts extends CIdea_cache
         $affected_rows = 0;
         foreach ($posts_found as $post_current) {
 
-            if (isset($update_columns['postmessage']) || isset($update_columns['posthashtag'])) {
+            if (isset($update_columns['postmessageraw']) || isset($update_columns['posthashtag'])) {
                 //Update Post Text:
-                $post_index = post_index($update_columns['postmessage'], $postid, $chainusercreator, (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : null));
-                $update_columns['postmessage'] = $post_index['postmessage']; //May be updated
-                $update_columns['postdescription'] = $post_index['postdescription'];
-                $update_columns['postedit'] = $post_index['postedit'];
+                $post_index = post_index($update_columns['postmessageraw'], $postid, $chainusercreator, (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : null));
+                $update_columns['postmessageraw'] = $post_index['postmessageraw']; //May be updated
+                $update_columns['postmessageview'] = $post_index['postmessageview'];
+                $update_columns['postmessageedit'] = $post_index['postmessageedit'];
             }
 
             if (!count($update_columns)) {
@@ -252,7 +252,7 @@ class Posts extends CIdea_cache
             $affected_rows = $this->db->affected_rows();
 
             //Chain data changed?
-            if ((isset($update_columns['postmessage']) && $post_index['postmessage'] != $post_current['postmessage']) || (isset($update_columns['posthashtag']) && $update_columns['posthashtag'] != $post_current['posthashtag'])) {
+            if ((isset($update_columns['postmessageraw']) && $post_index['postmessageraw'] != $post_current['postmessageraw']) || (isset($update_columns['posthashtag']) && $update_columns['posthashtag'] != $post_current['posthashtag'])) {
                 //Fetch latest chain:
                 foreach ($this->Chains->read(array(
                     'chainusertype' => 12273,
@@ -261,12 +261,12 @@ class Posts extends CIdea_cache
                     $this->Chains->update($chain_i['chainid'], array(
                         'chainpostinput' => $postid,
                         'chainusercreator' => $chainusercreator,
-                        'chainvalue' => '#' . (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $post_current['posthashtag']) . "\n" . $post_index['postmessage'],
+                        'chainvalue' => '#' . (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $post_current['posthashtag']) . "\n" . $post_index['postmessageraw'],
                     ));
                 }
             }
 
-            if (isset($update_columns['postmessage']) && $post_index['postmessage'] != $post_current['postmessage']) {
+            if (isset($update_columns['postmessageraw']) && $post_index['postmessageraw'] != $post_current['postmessageraw']) {
                 //Sync algolia:
                 update_search(12273, $postid);
             }
@@ -603,7 +603,7 @@ class Posts extends CIdea_cache
         }
 
         $post_new = $this->Posts->create(array(
-            'postmessage' => ( strlen($clone_message) ? $clone_message : $this_i[0]['postmessage']),
+            'postmessageraw' => ( strlen($clone_message) ? $clone_message : $this_i[0]['postmessageraw']),
         ), $chainusercreator);
 
         return array(

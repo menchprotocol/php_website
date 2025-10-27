@@ -28,7 +28,7 @@ foreach ($is as $in) {
     //Add Post node:
     $this->db->insert('nodes', array(
         'id' => $id_prefix[12273] . $in['postid'],
-        'label' => $in['postmessage'],
+        'label' => $in['postmessageraw'],
         'size' => 1,
         'node_type' => 1, //Post
     ));

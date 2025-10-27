@@ -139,7 +139,7 @@ if(!$basic_header_footer){
         const picker_i = new EmojiMart.Picker({
             theme: 'light', onEmojiSelect: (res, _) => {
                 //Insert into post text box:
-                insertText($(".save_postmessage"), res.native);
+                insertText($(".save_postmessageraw"), res.native);
                 //We keep it open!
             }
         });
@@ -161,10 +161,10 @@ if(!$basic_header_footer){
         $('.text_adder').on('click', function (event) {
             //This prevents the emoji modal from closing when an emoji is selected
             var text_value = $(this).attr('text_value');
-            insertText($(".save_postmessage"), "\n " + text_value);
+            insertText($(".save_postmessageraw"), "\n " + text_value);
             post_suggestions();
             setTimeout(function () {
-                $(".save_postmessage").focus();
+                $(".save_postmessageraw").focus();
             }, 377);
         });
 
@@ -772,7 +772,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                         <!-- Post Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
                             <textarea
-                                    class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessage"
+                                    class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessageraw"
                                     placeholder="<?= (strlen($users___12273[4736]['m__message']) ? $users___12273[4736]['m__message'] : $users___12273[4736]['m__name']) ?>"
                                     style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
@@ -888,7 +888,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
 
                         <div style="margin-left: 40px;">
-                            <div class="preview_postdescription hideIfEmpty"></div>
+                            <div class="preview_postmessageview hideIfEmpty"></div>
                             <div class="doclear">&nbsp;</div>
                         </div>
 

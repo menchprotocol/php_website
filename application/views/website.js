@@ -1030,7 +1030,7 @@ function post_suggestions() {
     $.post("/controller/post_suggestions", {
         postid: $('#modal31911 .save_postid').val(),
         save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
-        save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
+        save_postmessageraw: $('#modal31911 .save_postmessageraw').val().trim(),
         save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
     }, function (data) {
 
@@ -1048,7 +1048,7 @@ function post_suggestions() {
         }
 
         //Update Discovery Preview:
-        $('.preview_postdescription').html(data.post_index.postdescription);
+        $('.preview_postmessageview').html(data.post_index.postmessageview);
 
     });
 
@@ -1077,7 +1077,7 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     //Activate post suggestions
-    $(".save_postmessage, .save_postfootnote").keyup(function(e) {
+    $(".save_postmessageraw, .save_postfootnote").keyup(function(e) {
         var code = e.keyCode ? e.keyCode : e.which;
         if (code == 13) {  // Enter keycode
             post_suggestions();
@@ -1939,7 +1939,7 @@ function update_cover_mini(cover_code, target_css) {
 
 
 function display_media(mediaframe_id, uploader_id, postid) {
-    $(".ui_postdescription_" + postid + " .media_display").each(function () {
+    $(".ui_postmessageview_" + postid + " .media_display").each(function () {
         $('#' + mediaframe_id).append('<div id="' + $(this).attr('id') + '" class="media_item" media_typeid="" playback_code="" userid="0"  usercover=""></div>');
         cloudinary_presource_view(uploader_id, $(this).attr('id'), $(this).attr('media_typeid'), $(this).attr('playback_code'), $(this).attr('usercover'), $(this).attr('username'), $(this).attr('userid'));
     });
@@ -1978,7 +1978,7 @@ function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
 
     if(postid>0){
 
-        insert_message = $('.ui_postmessage_' + postid).text();
+        insert_message = $('.ui_postmessageraw_' + postid).text();
 
     } else {
 
@@ -1996,7 +1996,7 @@ function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
 
 
     if (insert_message.length) {
-        $("#modal31911 .save_postmessage").val(insert_message);
+        $("#modal31911 .save_postmessageraw").val(insert_message);
     }
 
     if($('.ui_posthashtag_'+postid).text().length){
@@ -2008,14 +2008,14 @@ function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
 
     setTimeout(function () {
         //Adjust sizes:
-        set_autosize($('#modal31911 .save_postmessage'));
+        set_autosize($('#modal31911 .save_postmessageraw'));
         set_autosize($('#modal31911 .save_postfootnote'));
         set_autosize($('#modal31911 .save_chainvalue'));
     }, 233);
 
     setTimeout(function () {
         //Focus on writing a message:
-        $('#modal31911 .save_postmessage').focus();
+        $('#modal31911 .save_postmessageraw').focus();
     }, 611);
 
 }
@@ -2047,7 +2047,7 @@ function post_edit_save() {
         save_discoverymode: $('.s__12273_' + save_postid).attr('discovery_mode'),
         focus_group: focus_group,
         save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
-        save_postmessage: $('#modal31911 .save_postmessage').val().trim(),
+        save_postmessageraw: $('#modal31911 .save_postmessageraw').val().trim(),
         save_postfootnote: $('#modal31911 .save_postfootnote').val().trim(),
         save_chainvalue: $('#modal31911 .save_chainvalue').val().trim(),
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2099,20 +2099,20 @@ function post_edit_save() {
             $('#modal31911').modal('hide');
 
             //Update Post Message:
-            $('.ui_postmessage_' + modify_data['save_postid']).text(modify_data['save_postmessage']);
+            $('.ui_postmessageraw_' + modify_data['save_postid']).text(modify_data['save_postmessageraw']);
 
             //Insert post into the page if new:
             console.log('START INSERTING');
             if (!current_postid && created_postid > 0 && focus_group > 0) {
 
-                $("#list-in-" + focus_group).append(data.return_postdescription_full);
+                $("#list-in-" + focus_group).append(data.return_postmessageview_full);
 
                 chain_counter(focus_group, 1);
 
             } else {
 
                 //Update Cache otherwise:
-                $('.ui_postdescription_' + modify_data['save_postid']).html(data.return_postdescription_chains);
+                $('.ui_postmessageview_' + modify_data['save_postid']).html(data.return_postmessageview_chains);
 
             }
 

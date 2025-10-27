@@ -80,20 +80,20 @@ if (1) {
         }
         array_push($focus, intval($post['postid']));
 
-        $post_index = post_index($post['postmessage']);
+        $post_index = post_index($post['postmessageraw']);
         array_push($stats['posts_links_stats'], $post_index);
 
         if ($post_index['actionstats']['posts_links_fixed'] > 0) {
 
-            $post_index = post_index($post_index['postmessage_new'], intval($post['postid']), intval($post['postcreator']));
+            $post_index = post_index($post_index['postmessageraw_new'], intval($post['postid']), intval($post['postcreator']));
             $this->Posts->update($post['postid'], array(
-                'postmessage' => $post_index['postmessage_new'],
-                'postdescription' => $post_index['postdescription'],
-                'postedit' => $post_index['postedit'],
+                'postmessageraw' => $post_index['postmessageraw_new'],
+                'postmessageview' => $post_index['postmessageview'],
+                'postmessageedit' => $post_index['postmessageedit'],
             ), 1);
             $stats['posts_links_fix']++;
             $stats['posts_links_fixed'] += $post_index['actionstats']['posts_links_fixed'];
-            $stats['message'] .= '#'.$post['posthashtag'].' NEW: ('.$post_index['actionstats']['posts_links_fixed'].')<br />'.$post['postmessage'].'<hr />'.$post_index['postmessage_new'].'<hr />'.'<hr />';
+            $stats['message'] .= '#'.$post['posthashtag'].' NEW: ('.$post_index['actionstats']['posts_links_fixed'].')<br />'.$post['postmessageraw'].'<hr />'.$post_index['postmessageraw_new'].'<hr />'.'<hr />';
 
         }
 
@@ -125,7 +125,7 @@ if (1) {
 
             $stats['posts_oncache_notonchain']++;
 
-            $post_index = post_index($post['postmessage'], 0, 0, $post['posthashtag']);
+            $post_index = post_index($post['postmessageraw'], 0, 0, $post['posthashtag']);
 
             $new_x = $this->Chains->create(array(
                 'chainusertype' => 12273,
@@ -212,7 +212,7 @@ if (0) {
             $stats['posts_chainvalue_empty']++;
         }
 
-        $posts_empty = count($is) && !strlen($is[0]['postmessage']);
+        $posts_empty = count($is) && !strlen($is[0]['postmessageraw']);
         if ($posts_empty) {
             $stats['posts_empty']++;
         }
@@ -245,19 +245,19 @@ if (0) {
         } else {
             $post_index = array(
                 'chainvalue' => $x['chainvalue'],
-                'postmessage' => '',
-                'postdescription' => '',
-                'postedit' => '',
+                'postmessageraw' => '',
+                'postmessageview' => '',
+                'postmessageedit' => '',
                 'posthashtag' => '',
             );
         }
 
         /*
-        $post_index = post_index($postmessage, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
+        $post_index = post_index($postmessageraw, $x['postid'], $x['chainusercreator'], $x['posthashtag']);
         $this->Posts->update($x['chainid'], array(
-            'postmessage' => $post_index['postmessage'],
-            'postdescription' => $post_index['postdescription'],
-            'postedit' => $post_index['postedit'],
+            'postmessageraw' => $post_index['postmessageraw'],
+            'postmessageview' => $post_index['postmessageview'],
+            'postmessageedit' => $post_index['postmessageedit'],
         ));
 
         $this->db->where('chainid', $x['chainid']);

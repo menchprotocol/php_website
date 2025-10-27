@@ -706,7 +706,7 @@ class Chains extends CIdea_cache
             }
 
 
-            $content_message = view_postmessage($i, $x['userid'], true); //Hide the show more content if any
+            $content_message = view_postmessageraw($i, $x['userid'], true); //Hide the show more content if any
             if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
                 //Let's remove the first line since it's used in the title:
                 $content_message = delete_all_between('<div class="line first_line">', '</div>', str_replace('  ',' ',$content_message));
@@ -831,7 +831,7 @@ class Chains extends CIdea_cache
     
 
 
-    function next_posts($userid, $target_posthashtag, $i=false, $find_after_postid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
+    function tree_posts($userid, $target_posthashtag, $i=false, $find_after_postid = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
         if(!$i){
@@ -889,7 +889,7 @@ class Chains extends CIdea_cache
             }
 
             //Keep looking deeper:
-            $next__url = $this->Chains->next_posts($userid, $target_posthashtag, $next_post, $find_after_postid, false, $target_completed, $loop_breaker_ids);
+            $next__url = $this->Chains->tree_posts($userid, $target_posthashtag, $next_post, $find_after_postid, false, $target_completed, $loop_breaker_ids);
             if ($next__url) {
                 return $next__url;
             }
@@ -905,7 +905,7 @@ class Chains extends CIdea_cache
                 if($p_i['postid']==$i['postid']) {
                     continue;
                 }
-                $next__url = $this->Chains->next_posts($userid, $target_posthashtag, $p_i, $current_previous, false, $target_completed);
+                $next__url = $this->Chains->tree_posts($userid, $target_posthashtag, $p_i, $current_previous, false, $target_completed);
                 if ($next__url) {
                     return $next__url;
                 }
@@ -1006,10 +1006,10 @@ class Chains extends CIdea_cache
                 if (count($user_private_replies)) {
 
                     //Update existing response if different:
-                    if ($user_submitted_data['post_createtext'] != $user_private_replies[0]['postmessage']) {
+                    if ($user_submitted_data['post_createtext'] != $user_private_replies[0]['postmessageraw']) {
 
                         $this->Posts->update($user_private_replies[0]['postid'], array(
-                            'postmessage' => $user_submitted_data['post_createtext'],
+                            'postmessageraw' => $user_submitted_data['post_createtext'],
                         ), $chainusercreator);
 
                     }
@@ -1020,7 +1020,7 @@ class Chains extends CIdea_cache
 
                     //Create a new post:
                     $post_new = $this->Posts->create(array(
-                        'postmessage' => $user_submitted_data['post_createtext'],
+                        'postmessageraw' => $user_submitted_data['post_createtext'],
                     ), $chainusercreator);
 
                     $this_postid = $post_new['post_create']['postid'];
@@ -1135,7 +1135,7 @@ class Chains extends CIdea_cache
                 if ($clone_i['chainusertype'] == 32247) {
 
                     //Discovery Clone
-                    $new_title = $es_creator[0]['username'] . ' ' . $clone_i['postmessage'];
+                    $new_title = $es_creator[0]['username'] . ' ' . $clone_i['postmessageraw'];
                     $result = $this->Posts->copy($clone_i['postid'], 0, $x_data['chainusercreator'], null, $new_title);
                     if ($result['status']) {
 
@@ -1296,11 +1296,11 @@ class Chains extends CIdea_cache
     }
 
 
-    function history($i, $userid, $current_level = 0)
+    function history($i, $userid, $tree_level = 0)
     {
 
         unset($i['postexternal']);
-        unset($i['postedit']);
+        unset($i['postmessageedit']);
         unset($i['chainusertype']);
         unset($i['chainuserinput']);
         unset($i['chainuseroutput']);
@@ -1325,9 +1325,9 @@ class Chains extends CIdea_cache
         )));
         $i['user_discovered'] = array();
         $i['user_written_response'] = array();
-        $i['current_level'] = $current_level;
-        $i['next_posts'] = array();
-        $current_level++;
+        $i['tree_level'] = $tree_level;
+        $i['tree_posts'] = array();
+        $tree_level++;
 
         //TODO Append media
 
@@ -1370,7 +1370,7 @@ class Chains extends CIdea_cache
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
-                array_push($i['next_posts'], $this->Chains->history($next_post, $userid, $current_level));
+                array_push($i['tree_posts'], $this->Chains->history($next_post, $userid, $tree_level));
             }
         }
 
@@ -1379,7 +1379,7 @@ class Chains extends CIdea_cache
 
     }
 
-    function history_discovered($i, $userid, $current_level = 0)
+    function history_discovered($i, $userid, $tree_level = 0)
     {
 
         $input__selection = count($this->Chains->read(array(
@@ -1392,11 +1392,11 @@ class Chains extends CIdea_cache
             'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43002')) . ')' => null,
         )));
-        $i['current_level'] = $current_level;
-        $i['next_posts'] = array();
+        $i['tree_level'] = $tree_level;
+        $i['tree_posts'] = array();
         $i['user_discovered'] = array();
         $i['user_written_response'] = array();
-        $current_level++;
+        $tree_level++;
 
         //Append Discovery if any:
         foreach ($this->Chains->read(array(
@@ -1427,7 +1427,7 @@ class Chains extends CIdea_cache
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'))) as $next_post) {
-                array_push($i['next_posts'], $this->Chains->history_discovered($next_post, $userid, $current_level));
+                array_push($i['tree_posts'], $this->Chains->history_discovered($next_post, $userid, $tree_level));
             }
         }
 
@@ -1436,11 +1436,11 @@ class Chains extends CIdea_cache
 
     }
 
-    function post_flat_tree($i, $top_ids = array(), $current_level = 0)
+    function post_flat_tree($i, $top_ids = array(), $tree_level = 0)
     {
 
-        if(!$current_level){
-            $i['level'] = $current_level;
+        if(!$tree_level){
+            $i['level'] = $tree_level;
             $flat_posts = array($i);
             $top_ids = array(intval($i['postid']));
         } else {
@@ -1454,11 +1454,11 @@ class Chains extends CIdea_cache
 
         $duplicate_found = false;
         foreach ($all_next as $next_post) {
-            $next_post['level'] = ($current_level+1);
+            $next_post['level'] = ($tree_level+1);
             array_push($flat_posts, $next_post);
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
-                foreach($this->Chains->post_flat_tree($next_post, $top_ids, ($current_level+1)) as $tree_post){
+                foreach($this->Chains->post_flat_tree($next_post, $top_ids, ($tree_level+1)) as $tree_post){
                     if(!in_array(intval($tree_post['postid']), $top_ids)){
                         array_push($flat_posts, $tree_post);
                     }
@@ -1473,15 +1473,15 @@ class Chains extends CIdea_cache
 
 
 
-    function post_json($i, $top_ids = array(), $current_level = 0, $previous_input__selection = false)
+    function post_json($i, $top_ids = array(), $tree_level = 0, $previous_input__selection = false)
     {
 
-        if(!$current_level){
+        if(!$tree_level){
             $top_ids = array(intval($i['postid']));
         }
 
-        $i['current_level'] = $current_level;
-        $i['next_posts'] = array();
+        $i['tree_level'] = $tree_level;
+        $i['tree_posts'] = array();
         $total_next = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
             'chainpostinput' => $i['postid'],
@@ -1490,7 +1490,7 @@ class Chains extends CIdea_cache
         //Remove unwated fields for JSON:
         unset($i['postexternal']);
         unset($i['postweight']);
-        unset($i['postedit']);
+        unset($i['postmessageedit']);
         unset($i['postvoid']);
         if(isset($i['chainid'])){
             unset($i['chainuserdomain']);
@@ -1530,7 +1530,7 @@ class Chains extends CIdea_cache
         $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later
         $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
         $i['stats'] = array(
-            'max_level' => $current_level,
+            'max_level' => $tree_level,
             'all_steps' => 1,
             'min_steps' => $min_steps,
             'max_steps' => $max_steps,
@@ -1543,25 +1543,25 @@ class Chains extends CIdea_cache
                 'chainpostinput' => $i['postid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
             ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
-            $i['post_views'] = $sub_counter[0]['totals'];
+            $i['post_views'] = intval($sub_counter[0]['totals']);
         }
 
         $duplicate_found = false;
         foreach ($total_next as $next_post) {
-            $next_post['current_level'] = ($current_level+1);
-            $next_post['next_posts'] = array();
+            $next_post['tree_level'] = ($tree_level+1);
+            $next_post['tree_posts'] = array();
 
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
-                $tree_results = $this->Chains->post_json($next_post, $top_ids, ($current_level+1), $input__selection);
-                if(isset($tree_results['next_posts']) && is_array($tree_results['next_posts'])){
-                    foreach($tree_results['next_posts'] as $tree_post){
+                $tree_results = $this->Chains->post_json($next_post, $top_ids, ($tree_level+1), $input__selection);
+                if(isset($tree_results['tree_posts']) && is_array($tree_results['tree_posts'])){
+                    foreach($tree_results['tree_posts'] as $tree_post){
                         if(!in_array(intval($tree_post['postid']), $top_ids)){
-                            array_push($next_post['next_posts'], $tree_post);
+                            array_push($next_post['tree_posts'], $tree_post);
                         }
                     }
                 }
-                array_push($i['next_posts'], $next_post);
+                array_push($i['tree_posts'], $next_post);
 
                 $i['stats']['all_steps'] += $tree_results['stats']['all_steps'];
                 $i['stats']['max_steps'] += $tree_results['stats']['max_steps'];
@@ -1586,7 +1586,7 @@ class Chains extends CIdea_cache
 
 
 
-    function progress($userid, $i, $current_level = 0, $loop_breaker_ids = array())
+    function progress($userid, $i, $tree_level = 0, $loop_breaker_ids = array())
     {
 
         if (count($loop_breaker_ids) > 0 && in_array($i['postid'], $loop_breaker_ids)) {
@@ -1598,7 +1598,7 @@ class Chains extends CIdea_cache
             return false;
         }
 
-        $current_level++;
+        $tree_level++;
         array_push($loop_breaker_ids, intval($i['postid']));
 
         //Count completed:
@@ -1631,7 +1631,7 @@ class Chains extends CIdea_cache
             ), array('chainpostoutput')) as $expansion_in) {
 
                 //Fetch recursive:
-                $progress = $this->Chains->progress($userid, $expansion_in, $current_level, $loop_breaker_ids);
+                $progress = $this->Chains->progress($userid, $expansion_in, $tree_level, $loop_breaker_ids);
 
                 if (!$progress && !count($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
@@ -1668,7 +1668,7 @@ class Chains extends CIdea_cache
             }
         }
 
-        if ($current_level == 1) {
+        if ($tree_level == 1) {
 
             /*
              *

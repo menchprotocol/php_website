@@ -231,7 +231,7 @@ class Users extends CIdea_cache
                             ), array('chainpostinput'), 0) as $ref) {
 
                                 //Update the post index:
-                                post_index($ref['postmessage'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
+                                post_index($ref['postmessageraw'], $ref['postid'], $chainusercreator, $ref['posthashtag'], $value);
 
                             }
                         }

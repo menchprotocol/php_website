@@ -119,7 +119,7 @@ foreach($this->Posts->read(array(
                 'invoicer_website' => 'https://'.get_domain('m__message', $user_session['userid']),
                 'invoicer_email' => website_setting(30882),
 
-                'note' => $i['postmessage'],
+                'note' => $i['postmessageraw'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $min_pay>0 && $_POST['total_price'] >= $min_pay ? $min_pay."" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && strtotime($invoice_due_dates[0]['chainvalue'])>time() ? strtotime($invoice_due_dates[0]['chainvalue']) : time() )),
@@ -209,7 +209,7 @@ foreach($this->Posts->read(array(
         //Find Next:
         $post_redirect_url = post_redirect_url($i);
         if(!$post_redirect_url){
-            $post_next = $this->Chains->next_posts($user_session['userid'], $_POST['target_posthashtag']);
+            $post_next = $this->Chains->tree_posts($user_session['userid'], $_POST['target_posthashtag']);
         }
 
 

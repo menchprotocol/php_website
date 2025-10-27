@@ -230,12 +230,12 @@ function object_to_array($obj)
 function post_redirect_url($i)
 {
     $CI =& get_instance();
-    if (strlen($i['postmessage']) && count($CI->Chains->read(array(
+    if (strlen($i['postmessageraw']) && count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
             'chainpostinput' => $i['postid'],
             'chainuserinput' => 43871, //Redirect URL
         )))) {
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['postmessage'], $match);
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['postmessageraw'], $match);
         foreach ($match[0] as $url) {
             if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
@@ -357,7 +357,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 {
 
     $CI =& get_instance();
-    $has_children = count($i['next_posts']);
+    $has_children = count($i['tree_posts']);
     $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
 
     echo '<div class="slim_title">';
@@ -372,7 +372,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
     echo(isset($i['user_discovered']['chainkey']) && intval($i['user_discovered']['chainkey']) > 1 ? $i['user_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['postmessage']) && strlen($i['user_written_response']['postmessage']) ? ' ' . $i['user_written_response']['postmessage'] : '');
+    echo(isset($i['user_written_response']['postmessageraw']) && strlen($i['user_written_response']['postmessageraw']) ? ' ' . $i['user_written_response']['postmessageraw'] : '');
 
 
     echo '<span class="float_right inner_items ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
@@ -390,13 +390,13 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
             }
             echo $opener . 'data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_steps'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $userid == 1592672 && ($i['current_level'] > 0 || $i['stats']['max_level'] > 0)) {
+        } elseif (isset($i['stats']) && $userid == 1592672 && ($i['tree_level'] > 0 || $i['stats']['max_level'] > 0)) {
 
             if ($CI->uri->segment(1) == 'doc') {
                 $opener = '<a href="/doc/' . $i['posthashtag'] . '" ';
                 $closer = '</a>';
             }
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['current_level'] . '/' . $i['stats']['max_level'] . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['tree_level'] . '/' . $i['stats']['max_level'] . '</span>' . $closer;
 
         } elseif (isset($i['stats']) && $userid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
 
@@ -429,7 +429,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo(isset($i['post_views']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_postmessage($i) . '</div>' : '');
+    echo(isset($i['post_views']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_postmessageraw($i) . '</div>' : '');
     echo '</div>';
 
 
@@ -498,7 +498,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         echo '</div>';
     }
 
-    foreach ($i['next_posts'] as $next_post) {
+    foreach ($i['tree_posts'] as $next_post) {
         echo '<div class="sub_frame ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
         view_tree($next_post, (isset($_GET['view_all']) ? true : false));
         echo '</div>';
@@ -680,7 +680,7 @@ function post_settings($posthashtag, $fetch_contact = false)
                 'chainuserinput IN (' . join(',', $pinned_columns) . ')' => null,
                 'chainusertype IN (' . join(',', $CI->config->item('userids___33602')) . ')' => null, //Post/User Chains Active
                 'chainpostinput !=' => $i['postid'],
-            ), array('chainpostinput'), 0, 0, array('postmessage' => 'ASC')) as $chain_i) {
+            ), array('chainpostinput'), 0, 0, array('postmessageraw' => 'ASC')) as $chain_i) {
                 array_push($post_column, $chain_i);
                 array_push($mixed_column, $chain_i);
             }
@@ -2614,7 +2614,7 @@ function update_search($focus__node = null, $s__id = 0)
                 $export_row['s__user'] = $s['posthashtag'];
                 $export_row['s__url'] = view_memory(42903, 33286) . $s['posthashtag']; //Default to post, forward to discovery is lacking superpowers
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['postmessage'];
+                $export_row['s__title'] = $s['postmessageraw'];
                 $export_row['s__weight'] = intval($s['postweight']);
 
                 if (post_is_startable($s)) {
@@ -3738,12 +3738,12 @@ function view_hash($string)
 function view_post_title($i, $string_only = false)
 {
 
-    if (!isset($i['postmessage'])) {
+    if (!isset($i['postmessageraw'])) {
         return null;
     }
 
     //Break down by lines:
-    foreach (explode("\n", $i['postmessage']) as $line) {
+    foreach (explode("\n", $i['postmessageraw']) as $line) {
         if (strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)) {
             return ($string_only ? $line : '<span class="main__title">' . $line . '</span>');
         }
@@ -3772,7 +3772,7 @@ function view_valid_user_post($string, $check_db = false)
 }
 
 
-function view_postmessage($i, $userid = 0, $focus__node = false, $discovery_mode = true, $show_postedit = false)
+function view_postmessageraw($i, $userid = 0, $focus__node = false, $discovery_mode = true, $show_postmessageedit = false)
 {
 
     if (!isset($i['postid'])) {
@@ -3783,7 +3783,7 @@ function view_postmessage($i, $userid = 0, $focus__node = false, $discovery_mode
     $CI =& get_instance();
 
     //This is still flawed, we need to fix this to exlude cache apps and more:
-    $field = ($show_postedit ? 'postedit' : 'postdescription');
+    $field = ($show_postmessageedit ? 'postmessageedit' : 'postmessageview');
 
     if ($userid > 0) {
         foreach ($CI->Chains->read(array(
@@ -3881,7 +3881,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     $focus_post_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_post_seg = ($discovery_term ? $CI->uri->segment(2) : false);
     $focus_posthashtag = ($focus_post_uri ? $focus_post_uri : ($focus_post_seg ? $focus_post_seg : false));
-    $show_postedit = ($superpower_10939 && !$is_cache && ((!$is_ajax && !strlen($CI->uri->segment(2))) || ($is_ajax && substr_count($_POST['js_request_uri'], '/') == 1)));
+    $show_postmessageedit = ($superpower_10939 && !$is_cache && ((!$is_ajax && !strlen($CI->uri->segment(2))) || ($is_ajax && substr_count($_POST['js_request_uri'], '/') == 1)));
     if ($discovery_mode && !$target_posthashtag && ($discovery_uri || $discovery_term)) {
         $target_posthashtag = ($discovery_uri ? $discovery_uri : $discovery_term);
     }
@@ -4214,7 +4214,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
 
     //Post Message (Remaining)
-    $ui .= '<div class="ui_postdescription_' . $i['postid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_postmessage($i, $chainusercreator, $focus__node, $discovery_mode, $show_postedit) . '</div>';
+    $ui .= '<div class="ui_postmessageview_' . $i['postid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_postmessageraw($i, $chainusercreator, $focus__node, $discovery_mode, $show_postmessageedit) . '</div>';
 
 
     $post_popup_url = post_popup_url($i);
@@ -4224,8 +4224,8 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
 
     //Raw Data:
-    $ui .= '<div class="ui_postmessage_' . $i['postid'] . '
-     hidden">' . $i['postmessage'] . '</div>';
+    $ui .= '<div class="ui_postmessageraw_' . $i['postid'] . '
+     hidden">' . $i['postmessageraw'] . '</div>';
 
 
     $ui .= '</div>';
@@ -4444,7 +4444,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC'));
 
         $input_attributes = '';
-        $previous_response = ($session_user && isset($user_private_replies[0]['postmessage']) ? $user_private_replies[0]['postmessage'] : '');
+        $previous_response = ($session_user && isset($user_private_replies[0]['postmessageraw']) ? $user_private_replies[0]['postmessageraw'] : '');
 
         if (count($CI->Chains->read(array(
             'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
@@ -5169,7 +5169,7 @@ function view_post_nav($discovery_mode, $focus_post, $autoload = true)
     foreach ($CI->config->item('handlusers___6287') as $apphandle => $appid) {
         $users___6287 = $CI->config->item('users___6287'); //APP
         //TODO fix this as it would delete "@sheet123" same as "@sheet" and load the app...
-        if (substr_count(strtolower($focus_post['postmessage']) . ' ', '@' . strtolower($apphandle) . ' ') || substr_count(strtolower($focus_post['postmessage']), '@' . strtolower($apphandle) . "\n")) {
+        if (substr_count(strtolower($focus_post['postmessageraw']) . ' ', '@' . strtolower($apphandle) . ' ') || substr_count(strtolower($focus_post['postmessageraw']), '@' . strtolower($apphandle) . "\n")) {
 
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $appid . ' hidden" read-counter="0"><div class="tab_content"></div></div>';
 
@@ -5398,7 +5398,7 @@ function data_type_example($dataid)
     return '';
 }
 
-function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $current_term = null, $new_term = null)
+function post_index($postmessageraw, $save_postid = 0, $chainusercreator = 0, $current_term = null, $new_term = null)
 {
 
     //Display Images, Audio, Video & PDF Files:
@@ -5407,10 +5407,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
     $core_references = array('@', '#');
     $post_index = array(
         'chainvalue' => '',
-        'postmessage' => '',
-        'postmessage_new' => '',
-        'postdescription' => '',
-        'postedit' => '',
+        'postmessageraw' => '',
+        'postmessageraw_new' => '',
+        'postmessageview' => '',
+        'postmessageedit' => '',
         'referenced_posts' => array(),
         'referenced_users' => array(),
         'new_posts' => array(),
@@ -5430,10 +5430,10 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
     //All the possible reference types that can be found:
     $post_references = array();
     $chainkey = 0;
-    $postmessage = str_replace('	', ' ', $postmessage);
+    $postmessageraw = str_replace('	', ' ', $postmessageraw);
 
     //See what we can find:
-    foreach (explode("\n", $postmessage) as $line_count => $line) {
+    foreach (explode("\n", $postmessageraw) as $line_count => $line) {
 
         $first_ref_hidden = false;
         $first_line = !$line_count;
@@ -5442,9 +5442,9 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
         $second_word_onwards = null;
 
         $linechainvalue = null;
-        $linepostmessage = null;
-        $linepostdescription = null;
-        $linepostedit = null;
+        $linepostmessageraw = null;
+        $linepostmessageview = null;
+        $linepostmessageedit = null;
         $line_new = '';
 
         foreach ($words as $word_count => $word_text) {
@@ -5455,9 +5455,9 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                 $second_word_onwards .= @ltrim($line, $word_text . ' ');
             }
             $chainvalue = null;
-            $postmessage = null;
-            $postdescription = null;
-            $postedit = null;
+            $postmessageraw = null;
+            $postmessageview = null;
+            $postmessageedit = null;
             $is_url = false;
 
             if (filter_var($word_text, FILTER_VALIDATE_URL)) {
@@ -5561,7 +5561,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                                 //Craete this referenced post since we could not find it:
                                 $post_new = $CI->Posts->create(array(
                                     'posthashtag' => $term,
-                                    'postmessage' => post_to_title($term, $parent_term),
+                                    'postmessageraw' => post_to_title($term, $parent_term),
                                 ), $chainusercreator);
 
                                 if (isset($post_new['post_create']['postid'])) {
@@ -5591,13 +5591,13 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                             $chainkey++;
 
                             $chainvalue = $m['m__cover'] . $post['postid'];
-                            $postmessage = $word_text;
+                            $postmessageraw = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
-                                $postdescription = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
+                                $postmessageview = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
                             } else {
                                 $first_ref_hidden = true;
                             }
-                            $postedit = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '">' . $word_text . '</a>';
+                            $postmessageedit = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '">' . $word_text . '</a>';
 
                         }
 
@@ -5689,16 +5689,16 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
                                 $chainkey++;
 
                                 $chainvalue = $m['m__cover'] . $user['userid'];
-                                $postmessage = $word_text;
+                                $postmessageraw = $word_text;
                                 if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
-                                    $postdescription = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+                                    $postmessageview = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
                                 } else {
                                     $first_ref_hidden = true;
                                     if ($media_append_end) {
-                                        $postdescription = $media_append_end;
+                                        $postmessageview = $media_append_end;
                                     }
                                 }
-                                $postedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+                                $postmessageedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
 
                             }
                         } else {
@@ -5719,38 +5719,38 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
             if (!$reference_type) {
                 //This word is not referencing anything!
                 $chainvalue = $word_text;
-                $postmessage = $word_text;
+                $postmessageraw = $word_text;
                 if (!$first_ref_hidden) {
-                    $postdescription = $word_text;
+                    $postmessageview = $word_text;
                 }
-                $postedit = $word_text;
+                $postmessageedit = $word_text;
             }
 
             //See what we found to add:
             $linechainvalue .= (!$first_word && $chainvalue ? ' ' : '') . $chainvalue;
-            $linepostmessage .= (!$first_word && $postmessage ? ' ' : '') . $postmessage;
-            $linepostdescription .= (!$first_word && $postdescription ? ' ' : '') . $postdescription;
-            $linepostedit .= (!$first_word && $postedit ? ' ' : '') . $postedit;
+            $linepostmessageraw .= (!$first_word && $postmessageraw ? ' ' : '') . $postmessageraw;
+            $linepostmessageview .= (!$first_word && $postmessageview ? ' ' : '') . $postmessageview;
+            $linepostmessageedit .= (!$first_word && $postmessageedit ? ' ' : '') . $postmessageedit;
             $line_new .= $word_text . " ";
 
         }
 
         $post_index['chainvalue'] .= (!$first_line && $linechainvalue ? "\n" : '') . $linechainvalue;
-        $post_index['postmessage'] .= (!$first_line && $linepostmessage ? "\n" : '') . $linepostmessage;
-        $post_index['postdescription'] .= ($linepostdescription ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostdescription . '</div>' : '');
-        $post_index['postedit'] .= ($linepostedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostedit . '</div>' : '');
-        $post_index['postmessage_new'] .= trim($line_new) . "\n";
+        $post_index['postmessageraw'] .= (!$first_line && $linepostmessageraw ? "\n" : '') . $linepostmessageraw;
+        $post_index['postmessageview'] .= ($linepostmessageview ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostmessageview . '</div>' : '');
+        $post_index['postmessageedit'] .= ($linepostmessageedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostmessageedit . '</div>' : '');
+        $post_index['postmessageraw_new'] .= trim($line_new) . "\n";
 
     }
 
     //Give HTML their frame:
     $view_list_user = view_list_user($save_postid);
-    if (strlen($post_index['postdescription']) || $view_list_user) {
+    if (strlen($post_index['postmessageview']) || $view_list_user) {
         //Also append featured users:
-        $post_index['postdescription'] = '<div class="i_cache i_postdescription cache_frame_' . $save_postid . '">' . $post_index['postdescription'] . $view_list_user . '</div>';
+        $post_index['postmessageview'] = '<div class="i_cache i_postmessageview cache_frame_' . $save_postid . '">' . $post_index['postmessageview'] . $view_list_user . '</div>';
     }
-    if (strlen($post_index['postedit']) || $view_list_user) {
-        $post_index['postedit'] = '<div class="i_cache i_postedit cache_frame_' . $save_postid . '">' . $post_index['postedit'] . $view_list_user . '</div>';
+    if (strlen($post_index['postmessageedit']) || $view_list_user) {
+        $post_index['postmessageedit'] = '<div class="i_cache i_postmessageedit cache_frame_' . $save_postid . '">' . $post_index['postmessageedit'] . $view_list_user . '</div>';
     }
 
     if (!intval($chainusercreator)) {
@@ -5812,7 +5812,7 @@ function post_index($postmessage, $save_postid = 0, $chainusercreator = 0, $curr
     }
 
 
-    $post_index['postmessage_new'] = trim($post_index['postmessage_new']);
+    $post_index['postmessageraw_new'] = trim($post_index['postmessageraw_new']);
     $post_index['post_references_count'] = count($post_references);
     $post_index['saved_items_count'] = count($saved_items);
     $post_index['chainkey'] = $chainkey;

@@ -38,7 +38,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
     if($standalone){
         echo '<h1>' . view_post_title($post_settings['i']) . '</h1>';
 
-        echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_postmessage($post_settings['i'], (isset($user_session['userid']) ? $user_session['userid'] : 0), false, true, true) . '</div>';
+        echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_postmessageraw($post_settings['i'], (isset($user_session['userid']) ? $user_session['userid'] : 0), false, true, true) . '</div>';
     }
 
 
@@ -71,7 +71,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                     'chainpostoutput' => $post_var['postid'],
                     'chainusercreator' => $x['userid'],
                 ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-                    $set_chainvalue = $response['postmessage'];
+                    $set_chainvalue = $response['postmessageraw'];
                 }
 
                 if ($set_chainvalue) {
@@ -263,7 +263,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                             'chainpostoutput' => $this_var['postid'],
                             'chainusercreator' => $x['userid'],
                         ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
-                            $set_chainvalue = $response['postmessage'];
+                            $set_chainvalue = $response['postmessageraw'];
                         }
 
                         if ($set_chainvalue) {
