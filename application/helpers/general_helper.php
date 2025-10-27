@@ -357,7 +357,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 {
 
     $CI =& get_instance();
-    $has_children = count($i['tree_posts']);
+    $has_children = count($i['treeposts']);
     $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
 
     echo '<div class="slim_title">';
@@ -390,13 +390,13 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
             }
             echo $opener . 'data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_steps'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $userid == 1592672 && ($i['tree_level'] > 0 || $i['stats']['max_level'] > 0)) {
+        } elseif (isset($i['stats']) && $userid == 1592672 && ($i['treelevel'] > 0 || $i['stats']['max_level'] > 0)) {
 
             if ($CI->uri->segment(1) == 'doc') {
                 $opener = '<a href="/doc/' . $i['posthashtag'] . '" ';
                 $closer = '</a>';
             }
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['tree_level'] . '/' . $i['stats']['max_level'] . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['treelevel'] . '/' . $i['stats']['max_level'] . '</span>' . $closer;
 
         } elseif (isset($i['stats']) && $userid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
 
@@ -498,7 +498,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         echo '</div>';
     }
 
-    foreach ($i['tree_posts'] as $next_post) {
+    foreach ($i['treeposts'] as $next_post) {
         echo '<div class="sub_frame ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
         view_tree($next_post, (isset($_GET['view_all']) ? true : false));
         echo '</div>';

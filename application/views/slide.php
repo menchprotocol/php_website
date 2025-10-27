@@ -3,7 +3,7 @@
 
 $post_tree = json_decode(file_get_contents('https://mench.com/json/'.$focus_post['posthashtag']));
 
-print_r($post_tree);
+print_r($post_tree['poststats']);
 
 ?>
 

@@ -1325,8 +1325,8 @@ class Chains extends CIdea_cache
         )));
         $i['user_discovered'] = array();
         $i['user_written_response'] = array();
-        $i['tree_level'] = $tree_level;
-        $i['tree_posts'] = array();
+        $i['treelevel'] = $tree_level;
+        $i['treeposts'] = array();
         $tree_level++;
 
         //TODO Append media
@@ -1370,7 +1370,7 @@ class Chains extends CIdea_cache
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
-                array_push($i['tree_posts'], $this->Chains->history($next_post, $userid, $tree_level));
+                array_push($i['treeposts'], $this->Chains->history($next_post, $userid, $tree_level));
             }
         }
 
@@ -1392,8 +1392,8 @@ class Chains extends CIdea_cache
             'chainpostinput' => $i['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43002')) . ')' => null,
         )));
-        $i['tree_level'] = $tree_level;
-        $i['tree_posts'] = array();
+        $i['treelevel'] = $tree_level;
+        $i['treeposts'] = array();
         $i['user_discovered'] = array();
         $i['user_written_response'] = array();
         $tree_level++;
@@ -1427,7 +1427,7 @@ class Chains extends CIdea_cache
                 'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'))) as $next_post) {
-                array_push($i['tree_posts'], $this->Chains->history_discovered($next_post, $userid, $tree_level));
+                array_push($i['treeposts'], $this->Chains->history_discovered($next_post, $userid, $tree_level));
             }
         }
 
@@ -1480,8 +1480,43 @@ class Chains extends CIdea_cache
             $top_ids = array(intval($i['postid']));
         }
 
-        $i['tree_level'] = $tree_level;
-        $i['tree_posts'] = array();
+        //STATS:
+        $input__selection = false;
+        $single_choice = false;
+        foreach($this->Chains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostinput' => $i['postid'],
+            'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
+        )) as $sel){
+            $input__selection = true;
+            $single_choice = ( $sel['chainuserinput']==6684 );
+        }
+        $is_required = count($this->Chains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+            'chainpostinput' => $i['postid'],
+            'chainuserinput' => 28239, //Required
+        )));
+        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later
+        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
+        $i['poststats'] = array(
+            'max_level' => $tree_level,
+            'all_steps' => 1,
+            'min_steps' => $min_steps,
+            'max_steps' => $max_steps,
+            'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
+            'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
+        );
+
+        $sub_counter = $this->Chains->read(array(
+            'chainpostinput' => $i['postid'],
+            'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
+        ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+        $i['poststats']['count_views'] = intval($sub_counter[0]['totals']);
+
+
+        //Focus on TREE:
+        $i['treelevel'] = $tree_level;
+        $i['treeposts'] = array();
         $total_next = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
             'chainpostinput' => $i['postid'],
@@ -1508,71 +1543,35 @@ class Chains extends CIdea_cache
             unset($i['chaintime']);
         }
 
-        
 
-        //Determine post type:
-        $input__selection = false;
-        $single_choice = false;
-        foreach($this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostinput' => $i['postid'],
-            'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
-        )) as $sel){
-            $input__selection = true;
-            $single_choice = ( $sel['chainuserinput']==6684 );
-        }
-        $is_required = count($this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostinput' => $i['postid'],
-            'chainuserinput' => 28239, //Required
-        )));
-        
-        $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later
-        $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
-        $i['stats'] = array(
-            'max_level' => $tree_level,
-            'all_steps' => 1,
-            'min_steps' => $min_steps,
-            'max_steps' => $max_steps,
-            'min_choices' => (!$previous_input__selection && $input__selection && count($total_next) ? 1 : 0),
-            'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
-        );
-
-        if(1){
-            $sub_counter = $this->Chains->read(array(
-                'chainpostinput' => $i['postid'],
-                'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
-            ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
-            $i['post_views'] = intval($sub_counter[0]['totals']);
-        }
 
         $duplicate_found = false;
         foreach ($total_next as $next_post) {
-            $next_post['tree_level'] = ($tree_level+1);
-            $next_post['tree_posts'] = array();
+            $next_post['treelevel'] = ($tree_level+1);
+            $next_post['treeposts'] = array();
 
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
                 $tree_results = $this->Chains->post_json($next_post, $top_ids, ($tree_level+1), $input__selection);
-                if(isset($tree_results['tree_posts']) && is_array($tree_results['tree_posts'])){
-                    foreach($tree_results['tree_posts'] as $tree_post){
+                if(isset($tree_results['treeposts']) && is_array($tree_results['treeposts'])){
+                    foreach($tree_results['treeposts'] as $tree_post){
                         if(!in_array(intval($tree_post['postid']), $top_ids)){
-                            array_push($next_post['tree_posts'], $tree_post);
+                            array_push($next_post['treeposts'], $tree_post);
                         }
                     }
                 }
-                array_push($i['tree_posts'], $next_post);
+                array_push($i['treeposts'], $next_post);
 
-                $i['stats']['all_steps'] += $tree_results['stats']['all_steps'];
-                $i['stats']['max_steps'] += $tree_results['stats']['max_steps'];
-                $i['stats']['min_choices'] += $tree_results['stats']['min_choices'];
-                $i['stats']['max_choices'] += $tree_results['stats']['max_choices'];
+                $i['poststats']['all_steps'] += $tree_results['poststats']['all_steps'];
+                $i['poststats']['max_steps'] += $tree_results['poststats']['max_steps'];
+                $i['poststats']['min_choices'] += $tree_results['poststats']['min_choices'];
+                $i['poststats']['max_choices'] += $tree_results['poststats']['max_choices'];
 
-                if ($tree_results['stats']['max_level'] > $i['stats']['max_level']) {
-                    $i['stats']['max_level'] = $tree_results['stats']['max_level'];
+                if ($tree_results['poststats']['max_level'] > $i['poststats']['max_level']) {
+                    $i['poststats']['max_level'] = $tree_results['poststats']['max_level'];
                 }
                 if (!$input__selection || $is_required) {
-                    $i['stats']['min_steps'] += $tree_results['stats']['min_steps'];
+                    $i['poststats']['min_steps'] += $tree_results['poststats']['min_steps'];
                 }
 
             }

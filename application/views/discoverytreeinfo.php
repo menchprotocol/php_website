@@ -21,7 +21,7 @@ foreach($this->Users->read(array(
 )) as $e){
     //List the post:
     print_r(array(
-        'tree_posts' => $this->Chains->tree_posts($e['userid'], $post_settings['i']['posthashtag'], $post_settings['i'], 0, false),
+        'treeposts' => $this->Chains->tree_posts($e['userid'], $post_settings['i']['posthashtag'], $post_settings['i'], 0, false),
         'progress' => $this->Chains->progress($e['userid'], $post_settings['i']),
     ));
 }
