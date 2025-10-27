@@ -507,7 +507,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</div>';
 }
 
-function clean_json($i){
+function post_json_clean($i){
     $i['postid'] = intval($i['postid']);
     unset($i['postexternal']);
     unset($i['postweight']);
@@ -529,6 +529,15 @@ function clean_json($i){
         unset($i['chainprevious']);
         unset($i['chainhash']);
         unset($i['chaintime']);
+    }
+    if(isset($i['userid'])){
+        $i['userid'] = intval($i['userid']);
+        unset($i['userexternal']);
+        unset($i['usercreator']);
+        unset($i['userweight']);
+        unset($i['uservoid']);
+        unset($i['userbio']);
+        unset($i['usertime']);
     }
     return $i;
 }

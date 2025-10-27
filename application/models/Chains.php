@@ -1525,14 +1525,14 @@ class Chains extends CIdea_cache
         //Focus on TREE:
         $i['treelevel'] = $tree_level;
         $i['treeposts'] = array();
-        $i = clean_json($i);
+        $i = post_json_clean($i);
 
         $duplicate_found = false;
         foreach ($total_next as $next_post) {
 
             $next_post['treelevel'] = ($tree_level+1);
             $next_post['treeposts'] = array();
-            $next_post = clean_json($next_post);
+            $next_post = post_json_clean($next_post);
 
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
