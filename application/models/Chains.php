@@ -1529,7 +1529,6 @@ class Chains extends CIdea_cache
         
         $min_steps = ($input__selection ? ($is_required ? 1 : 0) : count($total_next)); //Can be improved later
         $max_steps = ($input__selection ? ($single_choice ? 1 : count($total_next)) : count($total_next));
-        $i['post_list_config'] = post_list_config($i['postid'], false);
         $i['stats'] = array(
             'max_level' => $current_level,
             'all_steps' => 1,
