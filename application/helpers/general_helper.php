@@ -2950,7 +2950,7 @@ function chain_view($x)
         } elseif (in_array($userid, array(4366, 4429))) {
 
             //Expanded User
-            $column_value .= '<td style="width:100px !important;"><div style="width:97px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:89px !important;"><div style="width:87px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Users->read(array('userid' => $x[$m['m__handle']])) as $focus_e) {
                     $column_value .= '<a href="' . view_memory(42903, 42902) . $focus_e['userhandle'] . '" target="_blank" data-toggle="tooltip" title="' . $focus_e['username'] . '">@' . $focus_e['userhandle'] . '</a>';
@@ -2961,7 +2961,7 @@ function chain_view($x)
         } elseif (in_array($userid, array(4368, 4369))) {
 
             //POST
-            $column_value .= '<td style="width:100px !important;"><div style="width:97px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:89px !important;"><div style="width:87px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Posts->read(array('postid' => $x[$m['m__handle']])) as $focus_post) {
                     $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_post['posthashtag'] . '">#' . $focus_post['posthashtag'] . '</a>';
