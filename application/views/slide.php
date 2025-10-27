@@ -8,169 +8,136 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
 
 ?>
 
-<style>
-    /* CSS HERE */
-</style>
 
-<script>
-    /* JS HERE */
-</script>
-
-
-<!-- Custom CSS -->
-<style>
-
-    .gallery-container {
-        height: 100vh;
-        overflow-y: auto;
-        scroll-snap-type: y mandatory;
-        scrollbar-width: none; /* Firefox */
-    }
-
-    .gallery-container::-webkit-scrollbar {
-        display: none; /* Chrome, Safari */
-    }
-
-    .gallery-item {
-        height: 100vh;
-        width: 100%;
-        position: relative;
-        scroll-snap-align: start;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #000;
-    }
-
-    .gallery-img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        transition: transform 0.3s ease;
-    }
-
-    .caption {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 10px 15px;
-        border-radius: 5px;
-        max-width: 80%;
-    }
-
-    .nav-buttons {
-        position: fixed;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .nav-buttons button {
-        background: rgba(0, 0, 0, 0.5);
-        border: none;
-        color: white;
-        padding: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    .nav-buttons button:hover {
-        background: rgba(0, 0, 0, 0.8);
-    }
-
-    @media (max-width: 576px) {
-        .caption {
-            font-size: 0.9rem;
-            padding: 8px 12px;
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: #000;
+            overflow: hidden;
         }
-
-        .nav-buttons {
-            right: 10px;
+        .slider-container {
+            height: 100%;
+            width: 100%;
+            position: relative;
         }
-    }
-</style>
-
-
-<div class="gallery-container">
-    <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="gallery-img" alt="Beach">
-        <div class="caption">Tropical beach paradise 🏖️</div>
+        .slide {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        .slide img, .slide video {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        .hidden { display: none; }
+        .album {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            height: 100%;
+            align-items: center;
+        }
+        .album img {
+            max-height: 90%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="slider-container">
+    <!-- Example slides -->
+    <div class="slide" data-index="0">
+        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted></video>
     </div>
-    <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba" class="gallery-img" alt="Mountains">
-        <div class="caption">Majestic mountain peaks 🏔️</div>
+    <div class="slide hidden" data-index="1">
+        <video src="https://www.w3schools.com/html/movie.mp4" autoplay loop muted></video>
     </div>
-    <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="gallery-img" alt="Beach">
-        <div class="caption">City skyline at dusk 🌃</div>
+    <div class="slide hidden" data-index="2">
+        <img src="https://picsum.photos/600/1000" alt="tall photo" />
     </div>
-    <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba" class="gallery-img" alt="Mountains">
-        <div class="caption">Golden sunset glow 🌅</div>
+    <div class="slide hidden" data-index="3">
+        <img src="https://picsum.photos/1000/600" alt="wide photo" />
+    </div>
+    <div class="slide hidden" data-index="4">
+        <div class="album">
+            <img src="https://picsum.photos/600/900?random=1" />
+            <img src="https://picsum.photos/600/900?random=2" />
+            <img src="https://picsum.photos/600/900?random=3" />
+        </div>
+    </div>
+    <div class="slide hidden" data-index="5">
+        <div class="album">
+            <img src="https://picsum.photos/1000/600?random=4" />
+            <img src="https://picsum.photos/1000/600?random=5" />
+            <img src="https://picsum.photos/1000/600?random=6" />
+        </div>
+    </div>
+    <div class="slide hidden" data-index="6">
+        <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" autoplay loop muted></video>
+    </div>
+    <div class="slide hidden" data-index="7">
+        <img src="https://picsum.photos/700/1200" alt="tall photo 2" />
+    </div>
+    <div class="slide hidden" data-index="8">
+        <img src="https://picsum.photos/1200/700" alt="wide photo 2" />
+    </div>
+    <div class="slide hidden" data-index="9">
+        <div class="album">
+            <img src="https://picsum.photos/600/900?random=7" />
+            <img src="https://picsum.photos/600/900?random=8" />
+            <img src="https://picsum.photos/600/900?random=9" />
+        </div>
     </div>
 </div>
-<div class="nav-buttons">
-    <button id="prevBtn" title="Previous">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
-        </svg>
-    </button>
-    <button id="nextBtn" title="Next">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-        </svg>
-    </button>
-</div>
 
-
-<!-- Custom JS -->
 <script>
-    $(document).ready(function () {
-        const $container = $('.gallery-container');
-        const $items = $('.gallery-item');
-        let currentIndex = 0;
+    let currentIndex = 0;
+    const totalSlides = $(".slide").length;
 
-        function scrollToItem(index) {
-            if (index >= 0 && index < $items.length) {
-                $items[index].scrollIntoView({behavior: 'smooth'});
-                currentIndex = index;
-            }
-        }
+    function showSlide(index) {
+        $(".slide").addClass("hidden");
+        const currentSlide = $(".slide[data-index="+index+"]");
+        currentSlide.removeClass("hidden");
 
-        $('#nextBtn').click(function () {
-            if (currentIndex < $items.length - 1) {
-                scrollToItem(currentIndex + 1);
-            }
-        });
+        // Pause all videos except current
+        $("video").each(function(){ this.pause(); });
+        currentSlide.find("video").each(function(){ this.play(); });
+    }
 
-        $('#prevBtn').click(function () {
-            if (currentIndex > 0) {
-                scrollToItem(currentIndex - 1);
-            }
-        });
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        showSlide(currentIndex);
+    }
 
-        // Optional: Add touch swipe support for mobile
-        let touchStartY = 0;
-        $container.on('touchstart', function (e) {
-            touchStartY = e.originalEvent.touches[0].clientY;
-        });
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        showSlide(currentIndex);
+    }
 
-        $container.on('touchend', function (e) {
-            const touchEndY = e.originalEvent.changedTouches[0].clientY;
-            const deltaY = touchStartY - touchEndY;
-            if (deltaY > 50) {
-                scrollToItem(currentIndex + 1);
-            } else if (deltaY < -50) {
-                scrollToItem(currentIndex - 1);
-            }
-        });
+    $(document).on("keydown", function(e) {
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") nextSlide();
+        if (e.key === "ArrowUp" || e.key === "ArrowLeft") prevSlide();
     });
+
+    let startY = 0;
+    $(document).on("touchstart", function(e){
+        startY = e.originalEvent.touches[0].clientY;
+    });
+    $(document).on("touchend", function(e){
+        let endY = e.originalEvent.changedTouches[0].clientY;
+        if (startY - endY > 50) nextSlide();
+        if (endY - startY > 50) prevSlide();
+    });
+
+    showSlide(currentIndex);
 </script>
+
+
