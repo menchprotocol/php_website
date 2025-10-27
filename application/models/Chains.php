@@ -1483,7 +1483,7 @@ class Chains extends CIdea_cache
         $total_next = $this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence
             'chainpostinput' => $i['postid'],
-        ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
+        ), array('chainpostoutput','chainusercreator'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
         //STATS:
         $input__selection = false;

@@ -508,11 +508,14 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 }
 
 function clean_json($i){
+    $i['postid'] = intval($i['postid']);
     unset($i['postexternal']);
     unset($i['postweight']);
     unset($i['postmessageedit']);
+    unset($i['postcreator']);
     unset($i['postvoid']);
     if(isset($i['chainid'])){
+        $i['chainid'] = intval($i['chainid']);
         unset($i['chainuserdomain']);
         unset($i['chainusercreator']);
         unset($i['chainusertype']);
