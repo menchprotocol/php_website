@@ -214,10 +214,12 @@ class Controller extends CI_Controller
 
             } else {
 
-                foreach ($this->Posts->read(array(
-                    'LOWER(posthashtag)' => strtolower($_GET['posthashtag']),
-                )) as $post_found) {
-                    $focus_post = $post_found;
+                if(strlen(trim($_GET['posthashtag']))){
+                    foreach ($this->Posts->read(array(
+                        'LOWER(posthashtag)' => strtolower(trim($_GET['posthashtag'])),
+                    )) as $post_found) {
+                        $focus_post = $post_found;
+                    }
                 }
 
             }
@@ -274,7 +276,7 @@ class Controller extends CI_Controller
             } elseif (in_array($app_userid, $this->config->item('userids___44329')) && (!$focus_post || !$target_post)) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>', false, $standalone);
             } elseif (in_array($app_userid, $this->config->item('userids___42911')) && !$focus_post) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post post.</div>', false, $standalone);
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post.</div>', false, $standalone);
             }
         }
 
