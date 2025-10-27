@@ -4021,7 +4021,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     }
 
 
-    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$session_user) ? ' hidden ' : '') . '">' . (isset($i['chainusertype']) ? (substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') || substr_count($users___4593[$i['chainusertype']]['m__cover'], 'fa-hashtag') ? $users___4593[$i['chainusertype']]['m__cover'] : $users___4593[$i['chainusertype']]['m__cover'] . ' #') : '#') . '<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
+    $ui .= ($href ? '<a href="' . $href . '"' : '<div') . ' title="' . $i['postid'] . '" class="sub__user space-content grey ' . (!$superpower_10939 && ($discovery_mode || !$focus__node || !$session_user) ? ' hidden ' : '') . '">' . ( isset($i['chainusertype']) && substr_count($users___4593[$i['chainusertype']]['m__cover'], '#') || substr_count($users___4593[$i['chainusertype']]['m__cover'], 'fa-hashtag') ? $users___4593[$i['chainusertype']]['m__cover'] : '#') . '<span class="ui_posthashtag_' . $i['postid'] . '">' . $i['posthashtag'] . '</span>' . ($href ? '</a>' : '</div>');
 
     //Right menu push here:
     //Bottom Bar
