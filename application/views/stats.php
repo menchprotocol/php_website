@@ -47,26 +47,29 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         if($userid2==12273){
             //Post Types
             $focus_list = 4737;
+            $focus_id = '12273_4737';
         } elseif($userid2==12274){
             //User Groups
             $focus_list = 3465306;
+            $focus_id = '12274_3465306';
         } else {
             //Links
             $focus_list = $userid2;
+            $focus_id = $userid2;
         }
 
         echo '<div class="card_cover no-padding col-6">';
-        echo '<div class="card_frame dropdown_d' . $userid1 . ' dropdown_' . $focus_list . '">';
+        echo '<div class="card_frame dropdown_d' . $userid1 . ' dropdown_' . $focus_id . '">';
 
         echo '<div>';
 
-        echo '<div class="medium_cover card_header" userid="' . $focus_list . '">' . $m2['m__cover'] . '</div>';
+        echo '<div class="medium_cover card_header" userid="' . $focus_id . '">' . $m2['m__cover'] . '</div>';
 
-        echo '<div class="main__title large_title"><a href="'.$chain_link.'" class="card_count_' . $focus_list . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title "><a href="'.view_memory(42903,42902).$m2['m__handle'].'" class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '">' . $m2['m__name'] . '</a><span class="info-box card_header" userid="' . $focus_list . '"><i class="far fa-plus-circle grey card_subcat_' . $focus_list . '"></i><i class="far fa-minus-circle grey hidden card_subcat_' . $focus_list . '"></i></span></div>';
+        echo '<div class="main__title large_title"><a href="'.$chain_link.'" class="card_count_' . $focus_id . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
+        echo '<div class="main__title large_title "><a href="'.view_memory(42903,42902).$m2['m__handle'].'" class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '">' . $m2['m__name'] . '</a><span class="info-box card_header" userid="' . $focus_id . '"><i class="far fa-plus-circle grey card_subcat_' . $focus_id . '"></i><i class="far fa-minus-circle grey hidden card_subcat_' . $focus_id . '"></i></span></div>';
         echo '</div>';
 
-        echo '<table class="table card_subcat card_subcat_' . $focus_list . ' hidden" style="width:100%; margin-top:13px;">';
+        echo '<table class="table card_subcat card_subcat_' . $focus_id . ' hidden" style="width:100%; margin-top:13px;">';
         foreach ($this->config->item('users___' . $focus_list) as $userid3 => $m3) {
             echo '<tr class="main__title mobile-shrink">';
             echo '<td style="text-align: left;"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span><span class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $m3['m__message'] . '">' . $m3['m__name'] . '</span></a><span class="last-right-col"><a href="'.view_app_chain(3445693).'?chainusertype='.  $userid3 . '&chainvoid=0" class="card_count_' . $userid3 . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
