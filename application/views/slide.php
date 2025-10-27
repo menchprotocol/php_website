@@ -99,6 +99,15 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
 </head>
 <body>
 <div class="tiktok-container">
+    <!-- Post 2: Wide Video -->
+    <div class="post">
+        <video class="post-content video-post" controls>
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="caption">Wide video: City skyline</div>
+    </div>
+
     <!-- Post 1: Tall Video -->
     <div class="post">
         <video class="post-content video-post" controls>
@@ -107,14 +116,7 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
         </video>
         <div class="caption">Tall video: Nature waterfall</div>
     </div>
-    <!-- Post 2: Wide Video -->
-    <div class="post">
-        <video class="post-content video-post" controls>
-            <source src="https://res.cloudinary.com/menchcloud/video/upload/v1755849318/kiqkicfo2w2vl5bj1dwi.mov" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="caption">Wide video: City skyline</div>
-    </div>
+
     <!-- Post 3: Single Tall Photo -->
     <div class="post">
         <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1756000834/20230817_151205_fsrhnq.jpg"
