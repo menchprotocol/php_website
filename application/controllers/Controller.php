@@ -3387,6 +3387,38 @@ class Controller extends CI_Controller
                     $level2_total += $sub_counter[0]['totals'];
                     $return_array[$chainusertype2] = intval($sub_counter[0]['totals']);
 
+                    //Append idea stats:
+                    foreach ($this->config->item('users___4737') as $chainusertype3 => $m3) {
+
+                        if ($has_user) {
+
+                            $sub_counter = $this->Chains->read(array(
+                                'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
+                                'chainuserinput' => $chainusertype3,
+                                'chainusercreator' => $es[0]['userid'],
+                            ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+
+                        } elseif ($has_post && count($copy['recursive_post_ids'])) {
+
+                            $sub_counter = $this->Chains->read(array(
+                                'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
+                                'chainuserinput' => $chainusertype3,
+                                'chainpostinput IN (' . join(',', $copy['recursive_post_ids']) . ')' => null,
+                            ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+
+                        } else {
+
+                            $sub_counter = $this->Chains->read(array(
+                                'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
+                                'chainuserinput' => $chainusertype3,
+                            ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+
+                        }
+
+                        $return_array[$chainusertype3.'_nochain'] = intval($sub_counter[0]['totals']);
+
+                    }
+
                 } elseif ($chainusertype2 == 12274) {
 
                     if ($has_user) {
