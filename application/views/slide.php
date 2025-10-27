@@ -16,4 +16,4 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
 
 <!-- HTML HERE -->
 <div>Hello Slide</div>
-<div><?= print_r($post_tree['poststats']); ?></div>
+<div><?= nl2br(str_replace('    ','    ',print_r($post_tree['poststats']))); ?></div>
