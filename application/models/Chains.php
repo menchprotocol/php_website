@@ -1514,7 +1514,7 @@ class Chains extends CIdea_cache
             $next_post['next_posts'] = array();
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));
-                foreach($this->Chains->post_flat_tree($next_post, $top_ids, ($current_level+1)) as $tree_post){
+                foreach($this->Chains->post_json($next_post, $top_ids, ($current_level+1)) as $tree_post){
                     if(!in_array(intval($tree_post['postid']), $top_ids)){
                         array_push($next_post['next_posts'], $tree_post);
                     }
