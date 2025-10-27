@@ -174,8 +174,6 @@ class Controller extends CI_Controller
         $users___6287 = $this->config->item('users___6287'); //APP
         $flash_message = false;
         $focus_e = null; //Users
-        $focus_post = null; //Posts
-        $target_post = null; //Discovery
         $user_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
 
 
