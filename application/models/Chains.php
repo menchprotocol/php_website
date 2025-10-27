@@ -1512,6 +1512,7 @@ class Chains extends CIdea_cache
             'max_choices' => ($input__selection && count($total_next) ? 1 : 0),
         );
 
+        //Append additional stats:
         $sub_counter = $this->Chains->read(array(
             'chainpostinput' => $i['postid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
@@ -1519,37 +1520,19 @@ class Chains extends CIdea_cache
         $i['poststats']['count_views'] = intval($sub_counter[0]['totals']);
 
 
+
+
         //Focus on TREE:
         $i['treelevel'] = $tree_level;
         $i['treeposts'] = array();
-
-        //Remove unwated fields for JSON:
-        unset($i['postexternal']);
-        unset($i['postweight']);
-        unset($i['postmessageedit']);
-        unset($i['postvoid']);
-        if(isset($i['chainid'])){
-            unset($i['chainuserdomain']);
-            unset($i['chainusercreator']);
-            unset($i['chainusertype']);
-            unset($i['chainuserinput']);
-            unset($i['chainuseroutput']);
-            unset($i['chainpostinput']);
-            unset($i['chainpostoutput']);
-            unset($i['chainkey']);
-            unset($i['chainvalue']);
-            unset($i['chainvoid']);
-            unset($i['chainprevious']);
-            unset($i['chainhash']);
-            unset($i['chaintime']);
-        }
-
-
+        $i = clean_json($i);
 
         $duplicate_found = false;
         foreach ($total_next as $next_post) {
+
             $next_post['treelevel'] = ($tree_level+1);
             $next_post['treeposts'] = array();
+            $next_post = clean_json($next_post);
 
             if(!in_array(intval($next_post['postid']), $top_ids)){
                 array_push($top_ids, intval($next_post['postid']));

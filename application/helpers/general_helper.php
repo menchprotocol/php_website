@@ -507,7 +507,28 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</div>';
 }
 
-
+function clean_json($i){
+    unset($i['postexternal']);
+    unset($i['postweight']);
+    unset($i['postmessageedit']);
+    unset($i['postvoid']);
+    if(isset($i['chainid'])){
+        unset($i['chainuserdomain']);
+        unset($i['chainusercreator']);
+        unset($i['chainusertype']);
+        unset($i['chainuserinput']);
+        unset($i['chainuseroutput']);
+        unset($i['chainpostinput']);
+        unset($i['chainpostoutput']);
+        unset($i['chainkey']);
+        unset($i['chainvalue']);
+        unset($i['chainvoid']);
+        unset($i['chainprevious']);
+        unset($i['chainhash']);
+        unset($i['chaintime']);
+    }
+    return $i;
+}
 function post_list_config($postid, $access_limit = true)
 {
 
