@@ -3323,8 +3323,8 @@ function post_discovered(do_skip) {
     //Payment Error?
     if (focus_post_types.includes(26560) && !$(".tickets_issued")[0]) {
         //Ticket not yet issued!
-        alert('Pay Now via Paypal before going next.');
-        next_processing = false;
+        alert('Pay Now via Paypal before going 2.');
+        next_processing = false;asdasdasdasdasd
         return false;
     } else if ( focus_post_types.includes(43758) ) {
 

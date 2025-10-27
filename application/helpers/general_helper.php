@@ -4409,7 +4409,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
                 $input_ui .= '<input type="hidden" name="amount" value="' . $unit_price . '">';
                 $input_ui .= '<input type="hidden" name="currency_code" value="' . $unit_currency . '">';
                 $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
-                $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $users___14870[2738]['m__message'] . view_app_chain(26595) . '">';
+                $input_ui .= '<input type="hidden" name="notify_url" value="https://' . $users___14870[2738]['m__message'] . view_app_chain(44183) . '">';
                 $input_ui .= '<input type="hidden" name="cancel_return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_posthashtag . '/' . $i['posthashtag'] . '?cancel_pay=1">';
                 $input_ui .= '<input type="hidden" name="return" value="https://' . get_domain('m__message') . view_memory(42903, 30795) . $target_posthashtag . '/' . $i['posthashtag'] . '?process_pay=1">';
                 $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
@@ -4433,15 +4433,15 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
     } elseif (count($CI->Chains->read(array(
         'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
         'chainpostinput' => $i['postid'],
-        'chainuserinput IN (' . join(',', $CI->config->item('userids___33532')) . ')' => null,
+        'chainuserinput IN (' . join(',', $CI->config->item('userids___7712')) . ')' => null, //Reply
     )))) {
 
         //Find the created post if any:
         $user_private_replies = $CI->Chains->read(array(
-            'chainusertype' => 4228,
+            'chainusertype' => 1734047,
             'chainpostoutput' => $i['postid'],
             'chainusercreator' => $session_user,
-        ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC'));
+        ), array('chainpostinput'), 0, 0, array('chainid' => 'DESC'));
 
         $input_attributes = '';
         $previous_response = ($session_user && isset($user_private_replies[0]['postmessageraw']) ? $user_private_replies[0]['postmessageraw'] : '');
@@ -4580,14 +4580,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         }
 
         //Determine hover state:
-        if ($chainusertype_target_bar == 33532 && !$is_cache && $user_session && $post_access >= 2 && !$is_locked) {
-
-            //Post Reply
-            $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="post_edit_start(0,0,\'#' . $i['posthashtag'] . '\')"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . ($focus__node && 0 ? $m_target_bar['m__name'] : '') . '</a>';
-            $bottom_menu_ui .= '</span>';
-
-        } elseif ($chainusertype_target_bar == 4235 && (!$discovery_mode && $post_startable && $post_access >= 1)) {
+        if ($chainusertype_target_bar == 4235 && (!$discovery_mode && $post_startable && $post_access >= 1)) {
 
             //Start
             $bottom_menu_ui .= '<span><a href="' . view_memory(42903, 30795) . $i['posthashtag'] . '/' . view_memory(6404, 4235) . '" class="btn btn-sm btn-black"><span class="icon-block-sm">' . $m_target_bar['m__cover'] . '</span>' . $m_target_bar['m__name'] . '</a></span>';

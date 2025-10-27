@@ -35,7 +35,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
         if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
             //Log Payment:
-            $completion_status = $this->Chains->post_discovered(26595, $user_sessions[0]['userid'], ( isset($target_posts[0]['postid']) ? $target_posts[0]['postid'] : 0 ), $tree_posts[0], array(), array(
+            $completion_status = $this->Chains->post_discovered(7712, $user_sessions[0]['userid'], ( isset($target_posts[0]['postid']) ? $target_posts[0]['postid'] : 0 ), $tree_posts[0], array(), array(
                 'chainkey' => intval($_POST['quantity']),
                 'chainvalue' => $_POST,
             ));
@@ -44,7 +44,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
 
             //Find Payment:
             foreach($this->Chains->read(array(
-                'chainusertype' => 26595,
+                'chainusertype' => 7712,
                 'chainusercreator' => $user_sessions[0]['userid'],
                 'chainpostinput' => $tree_posts[0]['postid'],
             )) as $paid){
