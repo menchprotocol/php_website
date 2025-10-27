@@ -1920,16 +1920,7 @@ body:not(.app__30795) .nav > .nav-item > .nav-chain > .icon-block {
     background-color: #FFFFFF;
 }
 
-.popover-body .icon-block-xs {
-    width: 16px !important;
-    height: 16px !important;
-    font-size: 0.8em !important;
-}
 
-.popover-body .dropdown .icon-block-xs {
-    width: 21px !important;
-    height: 21px !important;
-}
 
 .block-menu .dropdown-item .icon-block {
     height: 30px;
@@ -1940,13 +1931,6 @@ body:not(.app__30795) .nav > .nav-item > .nav-chain > .icon-block {
 }
 
 
-.custom-popover {
-    --bs-popover-max-width: 233px;
-    --bs-popover-header-bg: #FFFFFF;
-    --bs-popover-header-color: #FFFFFF;
-    --bs-popover-body-padding-x: 0;
-    --bs-popover-body-padding-y: 0;
-}
 
 .dropdown_type_26105 {
     padding: 5px 0 !important;
@@ -1971,23 +1955,6 @@ body:not(.app__30795) .nav > .nav-item > .nav-chain > .icon-block {
     overflow: hidden;
 }
 
-.popover {
-    border-radius: 0 !important;
-}
-
-.popover-body {
-    padding: 0 !important;
-    width: 233px;
-}
-
-.popover-body .space-content {
-    padding: 0 !important;
-}
-
-.popover-body > div.edge-cover {
-    padding: 13px 5px 21px !important;
-    width: 100% !important;
-}
 
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;
@@ -7033,11 +7000,6 @@ a,
     top: 44% !important;
 }
 
-.popover .cover-chain.coinType12274 .cover-btn,
-.popover .cover-chain.coinType6287 .cover-btn {
-    top: 17% !important;
-}
-
 
 .i_cache {
     text-align: left;
@@ -8000,17 +7962,12 @@ main {
     font-size: 3.4em;
 }
 
-.ref_user,
 .user-featured u,
 .user-featured a,
 .i_cache u,
 .i_cache a {
     color: #007AFD !important;
     text-decoration: none !important;
-}
-
-.ref_user {
-    cursor: zoom-in;
 }
 
 h1 i,

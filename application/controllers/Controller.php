@@ -527,40 +527,6 @@ class Controller extends CI_Controller
      * */
 
 
-    function chain_popover()
-    {
-
-        if (isset($_POST['user_string']) && strlen($_POST['user_string']) > 1 && in_array(substr($_POST['user_string'], 0, 1), array('#', '@'))) {
-            if (substr($_POST['user_string'], 0, 1) == '#') {
-                foreach ($this->Posts->read(array(
-                    'LOWER(posthashtag)' => strtolower(substr($_POST['user_string'], 1)),
-                )) as $i) {
-                    echo post_view(31777, $i);
-                    return true;
-                }
-            } elseif (substr($_POST['user_string'], 0, 1) == '@') {
-                foreach ($this->Users->read(array(
-                    'LOWER(userhandle)' => strtolower(substr($_POST['user_string'], 1)),
-                )) as $e) {
-                    echo user_view(42287, $e);
-                    return true;
-                }
-            }
-
-            //Did not find, had error:
-            echo '<div class="alert alert-danger" role="alert">Could not find ' . $_POST['user_string'] . '</div>';
-            return false;
-        }
-
-        //Did not find, had error:
-        echo '<div class="alert alert-danger" role="alert">Missing user_string variable</div>';
-        return false;
-
-    }
-
-
-
-
 
 
     function add_media()

@@ -2964,7 +2964,7 @@ function chain_view($x)
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
                 foreach ($CI->Posts->read(array('postid' => $x[$m['m__handle']])) as $focus_post) {
-                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_post['posthashtag'] . '" data-toggle="popover">#' . $focus_post['posthashtag'] . '</a>';
+                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_post['posthashtag'] . '">#' . $focus_post['posthashtag'] . '</a>';
                 }
             }
             $column_value .= '</div></td>';
@@ -5597,7 +5597,7 @@ function post_index($postmessageraw, $save_postid = 0, $chainusercreator = 0, $c
                             $chainvalue = $m['m__cover'] . $post['postid'];
                             $postmessageraw = $word_text;
                             if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references))) {
-                                $postmessageview = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '" data-toggle="popover" class="ref_post">' . $word_text . '</a>';
+                                $postmessageview = '<a href="' . view_memory(42903, 33286) . $post['posthashtag'] . '">' . $word_text . '</a>';
                             } else {
                                 $first_ref_hidden = true;
                             }
@@ -5695,14 +5695,14 @@ function post_index($postmessageraw, $save_postid = 0, $chainusercreator = 0, $c
                                 $chainvalue = $m['m__cover'] . $user['userid'];
                                 $postmessageraw = $word_text;
                                 if (!(in_array(substr(trim($line), 0, 1), $core_references) || in_array(substr(trim($line), 1, 1), $core_references)) && !(isset($media_attachments) && count($media_attachments) == 1 && $x['chainuserinput'] == 1326)) {
-                                    $postmessageview = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+                                    $postmessageview = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '">' . $word_text . '</a>' . $media_append_end;
                                 } else {
                                     $first_ref_hidden = true;
                                     if ($media_append_end) {
                                         $postmessageview = $media_append_end;
                                     }
                                 }
-                                $postmessageedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '" data-toggle="popover" class="ref_user">' . $word_text . '</a>' . $media_append_end;
+                                $postmessageedit = '<a href="' . view_memory(42903, 42902) . $user['userhandle'] . '">' . $word_text . '</a>' . $media_append_end;
 
                             }
                         } else {

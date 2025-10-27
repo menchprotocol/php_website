@@ -550,7 +550,6 @@ function toggle_menu(chainusertype_hash, is_first_load) {
                 user_sort_load(chainusertype);
             }
 
-            setup_popover();
             pills_loading = null;
 
         }, 233);
@@ -814,7 +813,7 @@ function js_redirect(url, timer = 0) {
 function load_card_clickers() {
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .chainvalue, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_user, .this_selector';
+    var ignore_clicks = 'a, .btn, textarea, .chainvalue, .cover_wrapper12273, .ignore-click, .focus-cover, .this_selector';
     $(".card_click").click(function (e) {
         if ($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length) {
             js_redirect($(this).attr('href'));
@@ -955,49 +954,6 @@ function random_animal(basic_style = false) {
 
 var interval = null;
 
-function setup_popover() {
-
-    return false; //TODO remove later when fixed?
-
-    if (interval) {
-        clearInterval(interval);
-    }
-
-    $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover({
-        html: true,
-        //title: '<a class="close" href="javascript:void(0);" style="display: block;">Close</a>',
-        content: function (inner_content) {
-            $.post("/controller/chain_popover", {
-                user_string: inner_content.innerText,
-                js_request_uri: js_request_uri, //Always append to AJAX Calls
-            }, function (data) {
-                $('.popover-body').html(data);
-                load_cards();
-                load_card_clickers();
-            });
-            return '<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>';
-        }
-    });
-
-    $(document).click(function (e) {
-        if (($('.popover').has(e.target).length == 0) || $(e.target).is('.close')) {
-            $('[data-toggle="popover"]').popover('hide');
-        }
-    });
-    /*
-    $('body').on('click', function (e) {
-        if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('[data-toggle="popover"]').length === 0
-            && $(e.target).parents('.popover.in').length === 0) {
-            (($('[data-toggle="popover"]').popover('hide').data('bs.popover') || {}).inState || {}).click = false;
-        }
-    });
-    */
-    $('[data-toggle="popover"]').on('click', function (e) {
-        e.preventDefault();
-        $('[data-toggle="popover"]').not(this).popover('hide');
-    });
-}
 
 function insertAtCursor(myField, myValue) {
     //IE support
@@ -1069,8 +1025,6 @@ $(document).ready(function () {
 
     //Look for power editor updates:
     x_set_start_text();
-
-    setup_popover();
 
     watch_cover();
 
@@ -1795,9 +1749,6 @@ $(document).ready(function () {
     }
 
 
-    setup_popover();
-
-
     //Prevent search submit:
     $('#searchFrontForm').on('submit', function (e) {
         e.preventDefault();
@@ -2119,11 +2070,6 @@ function post_edit_save() {
             if (modify_data['save_chainid'] && modify_data['save_chainvalue'] != 'IGNORE_INPUT') {
                 $('.ui_chainvalue_' + modify_data['save_chainid']).text(modify_data['save_chainvalue']);
             }
-
-            //Tooltips:
-            setTimeout(function () {
-                setup_popover();
-            }, 987);
 
         }
     });
@@ -2526,10 +2472,6 @@ function user_editor(userid = 0, chainid = 0, bar_title = null, chainvalue = nul
                 $("#modal31912 .modal-footer").html('');
             }
 
-            setTimeout(function () {
-                setup_popover();
-            }, 987);
-
         } else {
 
             //Should not have an issue loading
@@ -2620,11 +2562,6 @@ function user_save_edit() {
                 $('.ui_chainvalue_' + modify_data['save_chainid']).text(modify_data['save_chainvalue']);
             }
 
-            //Tooltips:
-            setup_popover();
-            setTimeout(function () {
-                setup_popover();
-            }, 987);
 
             has_unsaved_changes = false;
             $('#modal31912').modal('hide');
@@ -2681,7 +2618,6 @@ function chain_page_load() {
             x_set_start_text();
             load_card_clickers();
             load_cards();
-            setup_popover();
         }
         busy_loading = false;
     });
@@ -2768,7 +2704,6 @@ function user_create(chainusertype, user_current_id) {
             x_set_start_text();
 
             setTimeout(function () {
-                setup_popover();
                 user_sort_load(chainusertype);
             }, 987);
 
@@ -2968,7 +2903,6 @@ function user_select_apply(focus__id, selected_userid, enable_mulitiselect, down
     }, function (data) {
 
         $(notify_el).html(initial_icon);
-        setup_popover();
 
         if (!data.status) {
             alert(data.message);

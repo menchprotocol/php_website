@@ -219,7 +219,6 @@ $users___11035 = $this->config->item('users___11035'); //Encyclopedia
                     $('.overall_stats').html(data.overall_stats);
                 }
                 has_more_chains = data.has_more_chains;
-                setup_popover();
                 load_at_bottom(); //Load more?
             }
         });
