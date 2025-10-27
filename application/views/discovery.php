@@ -2,18 +2,18 @@
 
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $chainusercreator = ($user_session ? $user_session['userid'] : 14068);
-$target_posthashtag = (count($target_i) && $chainusercreator ? $target_i['posthashtag'] : null);
-$at_starting_point = $target_posthashtag==$focus_i['posthashtag'];
+$target_posthashtag = (count($target_post) && $chainusercreator ? $target_post['posthashtag'] : null);
+$at_starting_point = $target_posthashtag==$focus_post['posthashtag'];
 
 //Breadcrump for logged in users NOT at the starting point
 $breadcrum_content = null;
 if ($chainusercreator && !$at_starting_point) {
 
-    $previous = $this->Chains->previouspost($chainusercreator, $target_posthashtag, $focus_i['postid']);
+    $previous = $this->Chains->previouspost($chainusercreator, $target_posthashtag, $focus_post['postid']);
     if (count($previous)) {
 
         $nav_list = array();
-        $main_branch = array(intval($focus_i['postid']));
+        $main_branch = array(intval($focus_post['postid']));
         foreach ($previous as $followings_i) {
             //First add-up the main branch:
             array_push($main_branch, intval($followings_i['postid']));
@@ -75,12 +75,12 @@ if ($breadcrum_content) {
 
 //Progress?
 if ($user_session) {
-    $progress = $this->Chains->progress($chainusercreator, $target_i);
+    $progress = $this->Chains->progress($chainusercreator, $target_post);
     $target_completed = $progress['fixed_completed_percentage'] >= 100;
 
     if($target_completed && !count($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-            'chainpostinput' => $focus_i['postid'],
+            'chainpostinput' => $focus_post['postid'],
             'chainuserinput IN (' . join(',', $this->config->item('userids___43050')) . ')' => null, //Direct Input Ideas
         )))){
         //Hide next navigation and allow them to browse the tree:
@@ -101,27 +101,27 @@ if ($user_session) {
     $x_completes = $this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
         'chainusercreator' => $chainusercreator,
-        'chainpostinput' => $focus_i['postid'],
+        'chainpostinput' => $focus_post['postid'],
     ), array('chainpostoutput'));
 }
 
 
 //Focus Discovery:
 echo '<div class="row justify-content">';
-echo post_view(43007, $focus_i, null, null, 0, $x_completes);
+echo post_view(43007, $focus_post, null, null, 0, $x_completes);
 echo '</div>';
 
 
 //Main Navigation
 if ($user_session || isset($_GET['open'])) {
-    echo view_post_nav(true, $focus_i, false);
+    echo view_post_nav(true, $focus_post, false);
 }
 
 //Fetch Post Types:
 $focus_post_types = array();
 foreach($this->Chains->read(array(
     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-    'chainpostinput' => $focus_i['postid'],
+    'chainpostinput' => $focus_post['postid'],
     'chainuserinput IN (' . join(',', $this->config->item('userids___4737')) . ')' => null, //Post Types
 )) as $mention) {
     array_push($focus_post_types, intval($mention['chainuserinput']));

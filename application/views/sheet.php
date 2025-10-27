@@ -144,12 +144,12 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
             if ($e['userid'] == 44328) {
                 //Fetch primary filter:
                 foreach ($this->Chains->read(array(
-                    'chainpostinput' => $focus_i['postid'],
+                    'chainpostinput' => $focus_post['postid'],
                     'chainusertype IN (' . join(',', $this->config->item('userids___44344')) . ')' => null, //Post Filter Additions
-                ), array('chainpostoutput'), 1) as $target_i) {
+                ), array('chainpostoutput'), 1) as $target_post) {
 
                     //See History for this user:
-                    $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__name'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
+                    $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_post['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__name'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
 
                 }
             }
@@ -216,12 +216,12 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                     if ($this_var['userid'] == 44328) {
                         //Fetch primary filter:
                         foreach ($this->Chains->read(array(
-                            'chainpostinput' => $focus_i['postid'],
+                            'chainpostinput' => $focus_post['postid'],
                             'chainusertype IN (' . join(',', $this->config->item('userids___44344')) . ')' => null, //Post Filter Additions
-                        ), array('chainpostoutput'), 1) as $target_i) {
+                        ), array('chainpostoutput'), 1) as $target_post) {
 
                             //See History for this user:
-                            $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_i['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__name'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
+                            $message_clean = '<a href="' . view_app_chain(44328) . '/' . $target_post['posthashtag'] . '@' . $x['userhandle'] . '" target="_blank" title="' . $users___11035[44328]['m__name'] . '"><span class="icon-block-sm">' . $users___11035[44328]['m__cover'] . '</span></a>';
 
                         }
                     }

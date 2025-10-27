@@ -174,8 +174,8 @@ class Controller extends CI_Controller
         $users___6287 = $this->config->item('users___6287'); //APP
         $flash_message = false;
         $focus_e = null; //Users
-        $focus_i = null; //Posts
-        $target_i = null; //Discovery
+        $focus_post = null; //Posts
+        $target_post = null; //Discovery
         $user_http_request = (isset($_SERVER['SERVER_NAME']) ? 1 : 0);
 
 
@@ -198,7 +198,7 @@ class Controller extends CI_Controller
             foreach ($this->Posts->read(array(
                 'LOWER(posthashtag)' => strtolower($target_post),
             )) as $post_found) {
-                $target_i = $post_found;
+                $target_post = $post_found;
             }
         }
 
@@ -206,36 +206,36 @@ class Controller extends CI_Controller
         if (strlen($_GET['posthashtag'])) {
 
             //Validate Focus Post:
-            if ($target_i && $_GET['posthashtag'] == view_memory(6404, 4235)) {
+            if ($target_post && $_GET['posthashtag'] == view_memory(6404, 4235)) {
 
                 //This is the starting point:
                 $_GET['posthashtag'] = $target_post;
-                $focus_i = $target_i;
+                $focus_post = $target_post;
 
             } else {
 
                 foreach ($this->Posts->read(array(
                     'LOWER(posthashtag)' => strtolower($_GET['posthashtag']),
                 )) as $post_found) {
-                    $focus_i = $post_found;
+                    $focus_post = $post_found;
                 }
 
             }
 
-            if (!$focus_i) {
+            if (!$focus_post) {
                 //See if we can find via ID?
                 if (is_numeric($_GET['posthashtag'])) {
                     foreach ($this->Posts->read(array(
                         'postid' => $_GET['posthashtag'],
                     )) as $post_found) {
-                        $focus_i = $post_found;
+                        $focus_post = $post_found;
                     }
                 }
             }
 
-            if ($standalone && $app_userid == 33286 && $focus_i && $focus_i['posthashtag'] !== $_GET['posthashtag']) {
+            if ($standalone && $app_userid == 33286 && $focus_post && $focus_post['posthashtag'] !== $_GET['posthashtag']) {
                 //Adjust URL Case Sensitive:
-                return get_redirected(view_memory(42903, 33286) . $focus_i['posthashtag']);
+                return get_redirected(view_memory(42903, 33286) . $focus_post['posthashtag']);
             }
         }
 
@@ -271,17 +271,17 @@ class Controller extends CI_Controller
             //Validate Required App input:
             if (in_array($app_userid, $this->config->item('userids___42905')) && !$focus_e) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['userhandle'] . ' is not a valid User user.</div>', false, $standalone);
-            } elseif (in_array($app_userid, $this->config->item('userids___44329')) && (!$focus_i || !$target_i)) {
+            } elseif (in_array($app_userid, $this->config->item('userids___44329')) && (!$focus_post || !$target_post)) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>', false, $standalone);
-            } elseif (in_array($app_userid, $this->config->item('userids___42911')) && !$focus_i) {
+            } elseif (in_array($app_userid, $this->config->item('userids___42911')) && !$focus_post) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post post.</div>', false, $standalone);
             }
         }
 
 
         $chainuseroutput = ($focus_e ? $focus_e['userid'] : 0);
-        $chainpostoutput = ($focus_i ? $focus_i['postid'] : 0);
-        $chainpostinput = ($target_i ? $target_i['postid'] : 0);
+        $chainpostoutput = ($focus_post ? $focus_post['postid'] : 0);
+        $chainpostinput = ($target_post ? $target_post['postid'] : 0);
 
         //Run App
         $user_session = false;
@@ -307,11 +307,11 @@ class Controller extends CI_Controller
                 //Validate Hash:
                 if ($_GET['hash'] == view_hash($_GET['time'] . $focus_e['userhandle'])) {
 
-                    if ($focus_i) {
-                        if (post_is_startable($focus_i)) {
+                    if ($focus_post) {
+                        if (post_is_startable($focus_post)) {
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-play"></i></span>You have started discovering this post. Scroll to the bottom & go next to continue.</div>';
                         } else {
-                            $this->Chains->post_discovered(4559, $focus_e['userid'], ($target_i ? $target_i['postid'] : 0), $focus_i);
+                            $this->Chains->post_discovered(4559, $focus_e['userid'], ($target_post ? $target_post['postid'] : 0), $focus_post);
 
                             //Inform user of changes:
                             $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Posts has been discovered</div>';
@@ -334,8 +334,8 @@ class Controller extends CI_Controller
         $cache_chaintime = null;
         $chainusercreator = ($user_http_request ? ($user_session ? $user_session['userid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
         $user_access = user_access(null, $focus_e['userid'], $focus_e);
-        $post_access = post_access(null, $focus_i['postid'], $focus_i);
-        $target_post_access = post_access(null, $target_i['postid'], $target_i);
+        $post_access = post_access(null, $focus_post['postid'], $focus_post);
+        $target_post_access = post_access(null, $target_post['postid'], $target_post);
 
         //MEMBER REDIRECT?
         if ($user_http_request && $memory_detected) {
@@ -354,10 +354,10 @@ class Controller extends CI_Controller
                 $missing_access = 'Error: You Cannot Access ' . $users___6287[$app_userid]['m__name'] . ' as it requires the superpower of ' . $users___10957[end($superpowers_required)]['m__name'] . '.';
             } elseif ($focus_e && !$user_access) {
                 $missing_access = 'Error: You Cannot Access @' . $focus_e['userhandle'] . ' due to Privacy Settings.';
-            } elseif ($focus_i && !$post_access) {
-                $missing_access = 'Error: You Cannot Access Focus #' . $focus_i['posthashtag'] . ' due to Privacy Settings.';
-            } elseif ($target_i && !$target_post_access) {
-                $missing_access = 'Error: You Cannot Access Target #' . $target_i['posthashtag'] . ' due to Privacy Settings.';
+            } elseif ($focus_post && !$post_access) {
+                $missing_access = 'Error: You Cannot Access Focus #' . $focus_post['posthashtag'] . ' due to Privacy Settings.';
+            } elseif ($target_post && !$target_post_access) {
+                $missing_access = 'Error: You Cannot Access Target #' . $target_post['posthashtag'] . ' due to Privacy Settings.';
             }
 
             if ($missing_access) {
@@ -398,11 +398,11 @@ class Controller extends CI_Controller
 
 
         $title = null;
-        if ($focus_i) {
-            $title .= view_post_title($focus_i, true) . ' | ';
+        if ($focus_post) {
+            $title .= view_post_title($focus_post, true) . ' | ';
         }
-        if ($target_i) {
-            $title .= view_post_title($target_i, true) . ' | ';
+        if ($target_post) {
+            $title .= view_post_title($target_post, true) . ' | ';
         }
         if ($focus_e) {
             $title .= $focus_e['username'] . ' @' . $focus_e['userhandle'] . ' | ';
@@ -424,8 +424,8 @@ class Controller extends CI_Controller
             'standalone' => ( $standalone ? 1 : 0 ),
 
             'focus_e' => $focus_e,
-            'focus_i' => $focus_i,
-            'target_i' => $target_i,
+            'focus_post' => $focus_post,
+            'target_post' => $target_post,
 
             '$user_access' => $user_access,
             '$post_access' => $post_access,
@@ -464,29 +464,29 @@ class Controller extends CI_Controller
 
 
         //Check to ensure they have started:
-        if ($standalone && $app_userid == 30795 && $target_i && $focus_i && $user_session && $target_i['posthashtag'] == $focus_i['posthashtag']) {
+        if ($standalone && $app_userid == 30795 && $target_post && $focus_post && $user_session && $target_post['posthashtag'] == $focus_post['posthashtag']) {
 
             //Starting point, make sure all good:
-            if (!post_is_startable($target_i)) {
+            if (!post_is_startable($target_post)) {
 
                 //Not a valid starting point:
-                return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_i['posthashtag'] . ' is not an active starting point.</div>');
+                return get_redirected(home_url(), '<div class="alert alert-warning" role="alert">#' . $target_post['posthashtag'] . ' is not an active starting point.</div>');
 
             } elseif (!count($this->Chains->read(array(
-                'LOWER(posthashtag)' => strtolower($target_i['posthashtag']),
+                'LOWER(posthashtag)' => strtolower($target_post['posthashtag']),
                 'chainusercreator' => $user_session['userid'],
                 'chainusertype IN (' . join(',', $this->config->item('userids___31777')) . ')' => null, //DISCOVERIES
             ), array('chainpostinput')))) {
 
                 //Not yet started, add to their starting point:
-                $completion_status = $this->Chains->post_discovered(4235, $user_session['userid'], 0, $target_i);
+                $completion_status = $this->Chains->post_discovered(4235, $user_session['userid'], 0, $target_post);
 
                 //Now return next post:
-                $next__url = $this->Chains->next_posts($user_session['userid'], $target_i['posthashtag'], $target_i);
+                $next__url = $this->Chains->next_posts($user_session['userid'], $target_post['posthashtag'], $target_post);
 
                 if ($next__url) {
                     //Go Next:
-                    return get_redirected(view_memory(42903, 30795) . $target_i['posthashtag'] . '/' . $next__url);
+                    return get_redirected(view_memory(42903, 30795) . $target_post['posthashtag'] . '/' . $next__url);
                 }
 
             }
@@ -2893,26 +2893,26 @@ class Controller extends CI_Controller
         $primary_postid = null;
         foreach ($this->Posts->read(array(
             'postid' => $_POST['user_submitted_data']['postid'],
-        )) as $focus_i) {
+        )) as $focus_post) {
 
             $input__selection = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostinput' => $focus_i['postid'],
+                'chainpostinput' => $focus_post['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___7712')) . ')' => null,
             )));
             $input__upload = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostinput' => $focus_i['postid'],
+                'chainpostinput' => $focus_post['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___43004')) . ')' => null,
             )));
             $skipping_not_allowed = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostinput' => $focus_i['postid'],
+                'chainpostinput' => $focus_post['postid'],
                 'chainuserinput IN (' . join(',', $this->config->item('userids___43009')) . ')' => null,
             )));
             $input__text = count($this->Chains->read(array(
                 'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostinput' => $focus_i['postid'],
+                'chainpostinput' => $focus_post['postid'],
                 'chainuserinput IN (' . join(',', array_merge($this->config->item('userids___43002'), $this->config->item('userids___43003'))) . ')' => null,
             )));
             $total_selected = count($_POST['selection_postid']);
@@ -2923,10 +2923,10 @@ class Controller extends CI_Controller
                     || ($input__upload && !strlen($_POST['user_submitted_data']['post_createtext'])) //TODO Check Media
                     || (!$input__selection && !$input__upload && !strlen($_POST['user_submitted_data']['post_createtext']))
                 );
-            $post_required = post_required($focus_i);
+            $post_required = post_required($focus_post);
 
             if (!$primary_postid) {
-                $primary_postid = ($total_selected ? end($_POST['selection_postid']) : $focus_i['postid']);
+                $primary_postid = ($total_selected ? end($_POST['selection_postid']) : $focus_post['postid']);
             }
 
             //If skipping, make sure they can:
@@ -2942,7 +2942,7 @@ class Controller extends CI_Controller
 
                 $is_single_selection = count($this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                    'chainpostinput' => $focus_i['postid'],
+                    'chainpostinput' => $focus_post['postid'],
                     'chainuserinput' => 6684,
                 )));
 
@@ -2953,7 +2953,7 @@ class Controller extends CI_Controller
                     if ($post_required) {
                         foreach ($this->Chains->read(array(
                             'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                            'chainpostinput' => $focus_i['postid'],
+                            'chainpostinput' => $focus_post['postid'],
                             'chainuserinput' => 40834, //Min Selection
                         ), array(), 1) as $limit) {
                             if (intval($limit['chainvalue']) > 0 && $total_selected < intval($limit['chainvalue'])) {
@@ -2968,7 +2968,7 @@ class Controller extends CI_Controller
                     //How about max selection?
                     foreach ($this->Chains->read(array(
                         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
-                        'chainpostinput' => $focus_i['postid'],
+                        'chainpostinput' => $focus_post['postid'],
                         'chainuserinput' => 40833, //Max Selection
                     ), array(), 1) as $limit) {
                         if (intval($limit['chainvalue']) > 0 && $total_selected > intval($limit['chainvalue'])) {
@@ -2987,7 +2987,7 @@ class Controller extends CI_Controller
                 foreach ($this->Chains->read(array(
                     'chainusertype' => 7712, //Input Choice
                     'chainusercreator' => $user_session['userid'],
-                    'chainpostinput' => $focus_i['postid'],
+                    'chainpostinput' => $focus_post['postid'],
                 ), array('chainpostoutput')) as $x_selection) {
 
                     if (in_array($x_selection['postid'], $_POST['selection_postid'])) {
@@ -3021,7 +3021,7 @@ class Controller extends CI_Controller
                             'chainusertype' => 7712, //Input Choice
                             'chainusercreator' => $user_session['userid'],
                             'chainuserinput' => $user_session['userid'],
-                            'chainpostinput' => $focus_i['postid'],
+                            'chainpostinput' => $focus_post['postid'],
                             'chainpostoutput' => $answer_postid,
                         ));
                     }
@@ -3031,7 +3031,7 @@ class Controller extends CI_Controller
 
             //Save Skip if no answer was selected:
             if($trying_to_skip){
-                $completion_status = $this->Chains->post_discovered(31022, $user_session['userid'], $_POST['target_postid'], $focus_i, $_POST['user_submitted_data'], array(
+                $completion_status = $this->Chains->post_discovered(31022, $user_session['userid'], $_POST['target_postid'], $focus_post, $_POST['user_submitted_data'], array(
                     'chainkey' => $_POST['user_submitted_data']['postweight'],
                 ));
                 if (!$completion_status['status']) {

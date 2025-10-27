@@ -17,7 +17,7 @@ $joined_by = array();
 $input_e = (isset($_GET['userhandle']) && strlen($_GET['userhandle']) > 0);
 $focus_e = false;
 $input_i = (isset($_GET['posthashtag']) && strlen($_GET['posthashtag']) > 0);
-$focus_i = false;
+$focus_post = false;
 
 if ($input_e) {
     foreach ($this->Users->read(array(
@@ -36,10 +36,10 @@ if ($input_i) {
     foreach ($this->Posts->read(array(
         'LOWER(posthashtag)' => strtolower($_GET['posthashtag']),
     )) as $post_found) {
-        $focus_i = $post_found;
+        $focus_post = $post_found;
         $_GET['posthashtag'] = $post_found['posthashtag'];
     }
-    if (!$focus_i) {
+    if (!$focus_post) {
         //Invalid input!
         $input_i = false;
     }
@@ -111,7 +111,7 @@ if ($input_e) {
 
 if ($input_i) {
     //We need to look for both following/follower
-    $query_filters['( chainpostoutput = ' . $focus_i['postid'] . ' OR chainpostinput = ' . $focus_i['postid'] . ')'] = null;
+    $query_filters['( chainpostoutput = ' . $focus_post['postid'] . ' OR chainpostinput = ' . $focus_post['postid'] . ')'] = null;
 
 }
 

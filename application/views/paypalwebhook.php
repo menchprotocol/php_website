@@ -24,7 +24,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     $next_posts = $this->Posts->read(array(
         'LOWER(posthashtag)' => strtolower($item_numbers['post_destination']),
     ));
-    $target_is = ($item_numbers['post_target'] ? $this->Posts->read(array(
+    $target_posts = ($item_numbers['post_target'] ? $this->Posts->read(array(
         'LOWER(posthashtag)' => strtolower($item_numbers['post_target']),
     )) : false);
 
@@ -35,7 +35,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
         if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
             //Log Payment:
-            $completion_status = $this->Chains->post_discovered(26595, $user_sessions[0]['userid'], ( isset($target_is[0]['postid']) ? $target_is[0]['postid'] : 0 ), $next_posts[0], array(), array(
+            $completion_status = $this->Chains->post_discovered(26595, $user_sessions[0]['userid'], ( isset($target_posts[0]['postid']) ? $target_posts[0]['postid'] : 0 ), $next_posts[0], array(), array(
                 'chainkey' => intval($_POST['quantity']),
                 'chainvalue' => $_POST,
             ));

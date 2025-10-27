@@ -7,5 +7,5 @@ echo '</div>';
 
 //Post Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Chains->history_discovered($focus_i, $focus_e['userid']));
+view_tree($this->Chains->history_discovered($focus_post, $focus_e['userid']));
 echo '</div>';

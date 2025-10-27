@@ -336,13 +336,13 @@ echo '<body class="' . $body_class . '" id="main_body">';
 echo $bgVideo;
 
 //JS Variables for this app on page
-if ($focus_i) {
+if ($focus_post) {
     echo '<input type="hidden" id="focus__node" value="12273" />
-<input type="hidden" id="focus_handle" value="' . $focus_i['posthashtag'] . '" />
-<input type="hidden" id="focus__id" value="' . $focus_i['postid'] . '" />';
-    if ($target_i) {
-        echo '<input type="hidden" id="target_posthashtag" value="' . $target_i['posthashtag'] . '" />
-        <input type="hidden" id="target_postid" value="' . $target_i['postid'] . '" />';
+<input type="hidden" id="focus_handle" value="' . $focus_post['posthashtag'] . '" />
+<input type="hidden" id="focus__id" value="' . $focus_post['postid'] . '" />';
+    if ($target_post) {
+        echo '<input type="hidden" id="target_posthashtag" value="' . $target_post['posthashtag'] . '" />
+        <input type="hidden" id="target_postid" value="' . $target_post['postid'] . '" />';
     }
 } elseif ($focus_e) {
     echo '<input type="hidden" id="focus__node" value="12274" />

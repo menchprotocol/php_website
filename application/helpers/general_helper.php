@@ -2952,8 +2952,8 @@ function chain_view($x)
             //POST
             $column_value .= '<td style="width:89px !important;"><div style="width:85px !important; overflow:hidden;">';
             if (isset($x[$m['m__handle']]) && intval($x[$m['m__handle']]) > 0) {
-                foreach ($CI->Posts->read(array('postid' => $x[$m['m__handle']])) as $focus_i) {
-                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_i['posthashtag'] . '" data-toggle="popover">#' . $focus_i['posthashtag'] . '</a>';
+                foreach ($CI->Posts->read(array('postid' => $x[$m['m__handle']])) as $focus_post) {
+                    $column_value .= '<a href="' . view_memory(42903, 33286) . $focus_post['posthashtag'] . '" data-toggle="popover">#' . $focus_post['posthashtag'] . '</a>';
                 }
             }
             $column_value .= '</div></td>';
@@ -3906,13 +3906,13 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
         )))) {
         foreach ($CI->Posts->read(array(
             'LOWER(posthashtag)' => strtolower($focus_posthashtag),
-        )) as $focus_i) {
+        )) as $focus_post) {
             if (count($CI->Chains->read(array(
                 'chainusertype IN (' . join(',', $CI->config->item('userids___42991')) . ')' => null, //Active Writes
-                'chainpostinput' => $focus_i['postid'],
+                'chainpostinput' => $focus_post['postid'],
                 'chainuserinput IN (' . join(',', $CI->config->item('userids___7712')) . ')' => null, //Input Choice
             )))) {
-                $focus_post_or = $focus_i;
+                $focus_post_or = $focus_post;
             }
         }
     }
@@ -5132,7 +5132,7 @@ function view_featured_chains($chainusertype, $location, $m = null, $focus__node
 }
 
 
-function view_post_nav($discovery_mode, $focus_i, $autoload = true)
+function view_post_nav($discovery_mode, $focus_post, $autoload = true)
 {
 
     $CI =& get_instance();
@@ -5142,7 +5142,7 @@ function view_post_nav($discovery_mode, $focus_i, $autoload = true)
     $posttion_pen = user_session(10939);
 
     $ui = '';
-    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_i['postid'] . ' hideIfEmpty">';
+    $ui .= '<ul class="nav nav-tabs nav12273 nav__' . $focus_post['postid'] . ' hideIfEmpty">';
     foreach ($CI->config->item('users___' . ($discovery_mode ? 42877 : 31890)) as $chainusertype => $m) {
 
         $superpowers_required = array_intersect($CI->config->item('userids___10957'), $m['m__following']);
@@ -5150,7 +5150,7 @@ function view_post_nav($discovery_mode, $focus_i, $autoload = true)
             continue;
         }
 
-        $coins_count[$chainusertype] = posts_query($chainusertype, $focus_i['postid'], 0, false);
+        $coins_count[$chainusertype] = posts_query($chainusertype, $focus_post['postid'], 0, false);
         if (!$coins_count[$chainusertype] && $discovery_mode) {
             continue;
         }
@@ -5169,7 +5169,7 @@ function view_post_nav($discovery_mode, $focus_i, $autoload = true)
     foreach ($CI->config->item('handlusers___6287') as $apphandle => $appid) {
         $users___6287 = $CI->config->item('users___6287'); //APP
         //TODO fix this as it would delete "@sheet123" same as "@sheet" and load the app...
-        if (substr_count(strtolower($focus_i['postmessage']) . ' ', '@' . strtolower($apphandle) . ' ') || substr_count(strtolower($focus_i['postmessage']), '@' . strtolower($apphandle) . "\n")) {
+        if (substr_count(strtolower($focus_post['postmessage']) . ' ', '@' . strtolower($apphandle) . ' ') || substr_count(strtolower($focus_post['postmessage']), '@' . strtolower($apphandle) . "\n")) {
 
             $body_content .= '<div class="headlinebody pillbody headline_body_' . $appid . ' hidden" read-counter="0"><div class="tab_content"></div></div>';
 
