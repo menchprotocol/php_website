@@ -21,15 +21,8 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
 <div><?= nl2br(print_r($user_session, true)); ?></div>
 
 
-<!-- Bootstrap 5 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom CSS -->
 <style>
-    body, html {
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
-    }
 
     .gallery-container {
         height: 100vh;
@@ -118,11 +111,11 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
         <div class="caption">Majestic mountain peaks 🏔️</div>
     </div>
     <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1538513605182-6e8e5cb592d0" class="gallery-img" alt="City">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="gallery-img" alt="Beach">
         <div class="caption">City skyline at dusk 🌃</div>
     </div>
     <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e206" class="gallery-img" alt="Sunset">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba" class="gallery-img" alt="Mountains">
         <div class="caption">Golden sunset glow 🌅</div>
     </div>
 </div>
@@ -141,11 +134,7 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
     </button>
 </div>
 
-<!-- Bootstrap 5 JS and Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <!-- Custom JS -->
 <script>
     $(document).ready(function () {
