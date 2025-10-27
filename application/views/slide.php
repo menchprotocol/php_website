@@ -110,31 +110,31 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
     <!-- Post 2: Wide Video -->
     <div class="post">
         <video class="post-content video-post" controls>
-            <source src="https://www.pexels.com/download/video/3195397/" type="video/mp4">
+            <source src="https://res.cloudinary.com/menchcloud/video/upload/v1755849318/kiqkicfo2w2vl5bj1dwi.mov" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="caption">Wide video: City skyline</div>
     </div>
     <!-- Post 3: Single Tall Photo -->
     <div class="post">
-        <img class="post-content photo-post" src="https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg"
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1756000834/20230817_151205_fsrhnq.jpg"
              alt="Tall photo">
         <div class="caption">Single tall photo: Mountain view</div>
     </div>
     <!-- Post 4: Single Wide Photo -->
     <div class="post">
-        <img class="post-content photo-post" src="https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg"
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
              alt="Wide photo">
         <div class="caption">Single wide photo: Beach sunset</div>
     </div>
     <!-- Post 5: Album Tall Photos -->
     <div class="post">
         <div class="album-container">
-            <img class="album-img active" src="https://images.pexels.com/photos/1363876/pexels-photo-1363876.jpeg"
+            <img class="album-img active" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
                  alt="Tall album 1">
-            <img class="album-img" src="https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg"
+            <img class="album-img" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
                  alt="Tall album 2">
-            <img class="album-img" src="https://images.pexels.com/photos/1054289/pexels-photo-1054289.jpeg"
+            <img class="album-img" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
                  alt="Tall album 3">
             <div class="album-nav">
                 <button class="prev">←</button>
@@ -146,11 +146,11 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
     <!-- Post 6: Album Wide Photos -->
     <div class="post">
         <div class="album-container">
-            <img class="album-img active" src="https://images.pexels.com/photos/161246/pexels-photo-161246.jpeg"
+            <img class="album-img active" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
                  alt="Wide album 1">
-            <img class="album-img" src="https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg"
+            <img class="album-img" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
                  alt="Wide album 2">
-            <img class="album-img" src="https://images.pexels.com/photos/1058759/pexels-photo-1058759.jpeg"
+            <img class="album-img" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
                  alt="Wide album 3">
             <div class="album-nav">
                 <button class="prev">←</button>
