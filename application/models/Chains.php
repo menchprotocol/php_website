@@ -1487,6 +1487,27 @@ class Chains extends CIdea_cache
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
+        //Remove unwated fields for JSON:
+        unset($i['postexternal']);
+        unset($i['postweight']);
+        unset($i['postedit']);
+        unset($i['postvoid']);
+        if(isset($i['chainid'])){
+            unset($i['chainuserdomain']);
+            unset($i['chainusercreator']);
+            unset($i['chainusertype']);
+            unset($i['chainuserinput']);
+            unset($i['chainuseroutput']);
+            unset($i['chainpostinput']);
+            unset($i['chainpostoutput']);
+            unset($i['chainkey']);
+            unset($i['chainvalue']);
+            unset($i['chainvoid']);
+            unset($i['chainprevious']);
+            unset($i['chainhash']);
+            unset($i['chaintime']);
+        }
+
         $duplicate_found = false;
         foreach ($all_next as $next_post) {
             $next_post['current_level'] = ($current_level+1);
@@ -1537,25 +1558,7 @@ class Chains extends CIdea_cache
 
         if(isset($_GET['skip_config'])) {
             
-            unset($i['postexternal']);
-            unset($i['postweight']);
-            unset($i['postedit']);
-            unset($i['postvoid']);
-            if(isset($i['chainid'])){
-                unset($i['chainuserdomain']);
-                unset($i['chainusercreator']);
-                unset($i['chainusertype']);
-                unset($i['chainuserinput']);
-                unset($i['chainuseroutput']);
-                unset($i['chainpostinput']);
-                unset($i['chainpostoutput']);
-                unset($i['chainkey']);
-                unset($i['chainvalue']);
-                unset($i['chainvoid']);
-                unset($i['chainprevious']);
-                unset($i['chainhash']);
-                unset($i['chaintime']);
-            }
+
             
         } else {
 
