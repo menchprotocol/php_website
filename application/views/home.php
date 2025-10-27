@@ -24,7 +24,7 @@ foreach($this->Chains->read(array(
 
     echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_post_title($primary_i, true) . '</h1>';
 
-    $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_post_value($primary_i) . '</div>';
+    $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_postmessage($primary_i) . '</div>';
 
     foreach ($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42345')) . ')' => null, //Active Sequence

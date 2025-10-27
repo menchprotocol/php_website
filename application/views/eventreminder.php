@@ -207,7 +207,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
                 continue;
             }
 
-            $content_message = view_post_value($i, $x['userid']);
+            $content_message = view_postmessage($i, $x['userid']);
             if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
                 //Let's remove the first line since it's used in the title:
                 $content_message = delete_all_between('<div class="line first_line">', '</div>', str_replace('  ',' ',$content_message));

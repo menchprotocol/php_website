@@ -429,7 +429,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo(isset($i['post_views']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_post_value($i) . '</div>' : '');
+    echo(isset($i['post_views']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_postmessage($i) . '</div>' : '');
     echo '</div>';
 
 
@@ -3772,7 +3772,7 @@ function view_valid_user_post($string, $check_db = false)
 }
 
 
-function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode = true, $show_postedit = false)
+function view_postmessage($i, $userid = 0, $focus__node = false, $discovery_mode = true, $show_postedit = false)
 {
 
     if (!isset($i['postid'])) {
@@ -3814,7 +3814,7 @@ function view_post_value($i, $userid = 0, $focus__node = false, $discovery_mode 
     }
 
     return
-        $i[$field] . view_list_user($i['postid']);
+        $i[$field] /* . view_list_user($i['postid']) */;
 }
 
 
@@ -4214,7 +4214,7 @@ function post_view($chainusertype, $i, $previous_i = null, $target_posthashtag =
 
 
     //Post Message (Remaining)
-    $ui .= '<div class="ui_postdescription_' . $i['postid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_post_value($i, $chainusercreator, $focus__node, $discovery_mode, $show_postedit) . '</div>';
+    $ui .= '<div class="ui_postdescription_' . $i['postid'] . (!$focus__node ? ' space-content ' : '') . '">' . view_postmessage($i, $chainusercreator, $focus__node, $discovery_mode, $show_postedit) . '</div>';
 
 
     $post_popup_url = post_popup_url($i);

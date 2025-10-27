@@ -1068,7 +1068,7 @@ class Controller extends CI_Controller
 
             return view_json(array(
                 'status' => 1,
-                'return_postdescription_chains' => view_post_value($new_i, $user_session['userid'], $focus__node, $discovery_mode, $discovery_mode),
+                'return_postdescription_chains' => view_postmessage($new_i, $user_session['userid'], $focus__node, $discovery_mode, $discovery_mode),
                 'return_postdescription_full' => post_view($_POST['focus_group'], $new_i),
                 'save_postid' => $new_i['postid'],
                 'save_postmessage' => trim($_POST['save_postmessage']),
