@@ -410,11 +410,11 @@ echo '<div class="filter_right grey">'.(user_session(12701) ? '<span class="icon
 $row1 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 1px solid #000000; border-bottom: 0px solid #FFFFFF !important;">';
 $row2 = '<tr style="font-weight:bold; vertical-align: baseline; border-top: 0px solid #FFFFFF !important; border-bottom: 1px solid #000000;">';
 foreach ($this->config->item('users___4341') as $chainusertype => $m) {
-    if($chainusertype==4362 || in_array($chainusertype, $this->config->item('userids___6160'))){
-        //User Cover:
+    if(in_array($chainusertype, $this->config->item('userids___3466775'))){
+        //Mini data:
         $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__name'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
-        //Else:
+        //Full Data:
         $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__name'] . '</a></th>';
     }
     if(in_array($chainusertype, $this->config->item('userids___1579727'))) {
