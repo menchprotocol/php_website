@@ -3411,7 +3411,7 @@ class Controller extends CI_Controller
                             $sub_counter = $this->Chains->read(array(
                                 'chainusertype IN (' . join(',', $this->config->item('userids___42252')) . ')' => null, //Plain Chain
                                 'chainuserinput' => $chainusertype3,
-                            ), array(), 0, 0, array(), 'COUNT(chainid) as totals');
+                            ), array('chainpostinput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         }
 
