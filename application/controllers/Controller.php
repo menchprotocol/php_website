@@ -333,9 +333,15 @@ class Controller extends CI_Controller
         $new_cache = false;
         $cache_chaintime = null;
         $chainusercreator = ($user_http_request ? ($user_session ? $user_session['userid'] : 14068 /* GUEST */) : 7274 /* CRON JOB */);
-        $user_access = user_access(null, $focus_e['userid'], $focus_e);
-        $post_access = post_access(null, $focus_post['postid'], $focus_post);
-        $target_post_access = post_access(null, $target_post['postid'], $target_post);
+        if($focus_e){
+            $user_access = user_access(null, $focus_e['userid'], $focus_e);
+        }
+        if($focus_post){
+            $post_access = post_access(null, $focus_post['postid'], $focus_post);
+        }
+        if($target_post){
+            $target_post_access = post_access(null, $target_post['postid'], $target_post);
+        }
 
         //MEMBER REDIRECT?
         if ($user_http_request && $memory_detected) {
