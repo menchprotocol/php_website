@@ -2972,14 +2972,14 @@ function chain_view($x)
         } elseif ($userid == 4367) {
 
             //Chain ID
-            $column_value .= '<td style="width:64px !important;"><div style="width:64px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:69px !important;"><div style="width:69px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(3445693) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank" '.( intval($x['chainvoid'])>0 ? ' style="text-decoration: line-through;"' : '' ).'>' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($userid == 44395) {
 
             //Void:
-            $column_value .= '<td style="width:64px !important;"><div style="width:64px !important; overflow:hidden;">';
+            $column_value .= '<td style="width:69px !important;"><div style="width:69px !important; overflow:hidden;">';
             $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(3445693) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
