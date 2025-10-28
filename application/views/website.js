@@ -975,7 +975,7 @@ function insertAtCursor(myField, myValue) {
 }
 
 var generating_suggestions = false;
-function post_suggestions() {
+function post_recommendations() {
     if(generating_suggestions){
         return false;
     }
@@ -983,7 +983,7 @@ function post_suggestions() {
 
     $(".frame_3449936").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/controller/post_suggestions", {
+    $.post("/controller/post_recommendations", {
         postid: $('#modal31911 .save_postid').val(),
         save_posthashtag: $('#modal31911 .save_posthashtag').val().trim(),
         save_postmessageraw: $('#modal31911 .save_postmessageraw').val().trim(),
@@ -1034,11 +1034,11 @@ $(document).ready(function () {
     $(".save_postmessageraw, .save_postfootnote").keyup(function(e) {
         var code = e.keyCode ? e.keyCode : e.which;
         if (code == 13) {  // Enter keycode
-            post_suggestions();
+            post_recommendations();
         }
     });
     $(".save_posthashtag").keyup(function(e) {
-        post_suggestions();
+        post_recommendations();
     });
 
     // Handle keypress event
@@ -1922,7 +1922,7 @@ function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
     $('#modal31911 .save_postid').val(postid);
     $('#modal31911 .save_chainid').val(chainid);
     $("#modal31911 .save_posthashtag").val('');
-
+    post_recommendations();
 
     //Assign updates:
     var insert_message = '';
