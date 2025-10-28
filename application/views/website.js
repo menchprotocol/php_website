@@ -2211,7 +2211,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             console.log(result);
 
             //Append loaders:
-            if (uploader_id == 42359) {
+            if (uploader_id == 3467376) {
 
                 //User Cover Uploader:
                 updatusercover('fas fa-yin-yang fa-spin');
@@ -2238,7 +2238,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
 
             //Add uploaded media:
-            if (uploader_id == 42359) {
+            if (uploader_id == 3467376) {
 
                 //User Cover Uploader:
                 updatusercover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
@@ -2406,7 +2406,7 @@ function user_editor(userid = 0, chainid = 0, bar_title = null, chainvalue = nul
         if (data.status) {
 
             //Initiate User Cover Uploader:
-            load_cloudinary(42359, userid, ['@' + userid], '.uploader_42359', '#modal31912');
+            load_cloudinary(3467376, userid, ['@' + userid], '.uploader_3467376', '#modal31912');
 
             //Dynamic Input Fields:
             var index_post_content = 0;

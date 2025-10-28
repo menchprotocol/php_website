@@ -970,8 +970,8 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     <tr>
                                         <td>
                                             <!-- Upload Cover -->
-                                            <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);"
-                                               title="<?= $users___11035[42359]['m__name'] ?>"><?= $users___11035[42359]['m__cover'] ?></a>
+                                            <a class="uploader_3467376" class="icon-block-sm" href="javascript:void(0);"
+                                               title="<?= $users___11035[3467376]['m__name'] ?>"><?= $users___11035[3467376]['m__cover'] ?></a>
                                         </td>
                                         <td class="hidden_superpower__13758">
                                             <!-- EMOJI -->
@@ -1015,7 +1015,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                 <!-- Cover Preview -->
                                 <div class="section_demo ">
                                     <div class="card_cover preview_cover">
-                                        <div class="cover-wrapper uploader_42359">
+                                        <div class="cover-wrapper uploader_3467376">
                                             <div class="black-background-obs cover-chain" style="">
                                                 <div class="cover-btn"></div>
                                             </div>
@@ -1023,8 +1023,8 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
                                     </div>
                                 </div>
 
-                                <div style="text-align: center;"><a class="uploader_42359" class="btn btn-lrg"
-                                                                    href="javascript:void(0);"><?= '<span class="icon-block">' . $users___11035[42359]['m__cover'] . '</span>' . $users___11035[42359]['m__name'] ?></a>
+                                <div style="text-align: center;"><a class="uploader_3467376" class="btn btn-lrg"
+                                                                    href="javascript:void(0);"><?= '<span class="icon-block">' . $users___11035[3467376]['m__cover'] . '</span>' . $users___11035[3467376]['m__name'] ?></a>
                                 </div>
 
                             </div>
