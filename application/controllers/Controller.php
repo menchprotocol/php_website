@@ -161,7 +161,7 @@ class Controller extends CI_Controller
     }
 
 
-    function load($app_userid = 14563 /* Error if none provided */, $focus_handle = null, $focus_post = 0, $target_post = 0, $standalone = true)
+    function load($app_userid = 14563 /* Error if none provided */, $focus_handle = null, $focus_hashtag = 0, $target_hashtag = 0, $standalone = true)
     {
 
         $memory_detected = is_array($this->config->item('userids___6287')) && count($this->config->item('userids___6287'));
@@ -180,8 +180,8 @@ class Controller extends CI_Controller
         if ($focus_handle && strlen($focus_handle) && !isset($_GET['userhandle'])) {
             $_GET['userhandle'] = $focus_handle;
         }
-        if ($focus_post && strlen($focus_post) && !isset($_GET['posthashtag'])) {
-            $_GET['posthashtag'] = $focus_post;
+        if ($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['posthashtag'])) {
+            $_GET['posthashtag'] = $focus_hashtag;
         }
         if (!isset($_GET['userhandle'])) {
             $_GET['userhandle'] = 0;
@@ -190,11 +190,12 @@ class Controller extends CI_Controller
             $_GET['posthashtag'] = 0;
         }
 
-
-        if ($target_post && strlen($target_post)) {
+        $focus_post = false;
+        $target_post = false;
+        if ($target_hashtag && strlen($target_hashtag)) {
             //Verify:
             foreach ($this->Posts->read(array(
-                'LOWER(posthashtag)' => strtolower($target_post),
+                'LOWER(posthashtag)' => strtolower($target_hashtag),
             )) as $post_found) {
                 $target_post = $post_found;
             }
@@ -204,10 +205,10 @@ class Controller extends CI_Controller
         if (strlen($_GET['posthashtag'])) {
 
             //Validate Focus Post:
-            if ($target_post && $_GET['posthashtag'] == view_memory(6404, 4235)) {
+            if ($target_hashtag && $_GET['posthashtag'] == view_memory(6404, 4235)) {
 
                 //This is the starting point:
-                $_GET['posthashtag'] = $target_post;
+                $_GET['posthashtag'] = $target_hashtag;
                 $focus_post = $target_post;
 
             } else {
