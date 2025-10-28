@@ -79,7 +79,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
             } elseif($userid2==12274){
                 //User
                 $chainhref = '?chainusertype='.  join(',',$this->config->item('userids___13548')) . '&chainuserinput='.join(',',$this->config->item('userids___'.$userid3)) .'&chainvoid=0';
-                $chainname = '@'.$m3['m__handle'];
+                $chainname = $m3['m__name'];
             } else {
                 //Link
                 $chainhref = '?chainusertype='.  $userid3 . '&chainvoid=0';
