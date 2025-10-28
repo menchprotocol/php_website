@@ -402,7 +402,7 @@ echo '</div>';
 //AJAX Would load content here:
 echo '<div class="overall_stats"></div>';
 
-echo '<div class="filter_right grey">'.(user_session(12701) ? '<span class="icon-block-xs">' . $users___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $users___11035[12707]['m__name'] . '</a>' : '').'</div>';
+echo '<div class="filter_right grey">'.(user_session(12701) ? '<span class="icon-block-xs">' . $users___11035[12707]['m__cover'] . '</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">' . $users___11035[12707]['m__name'] . '</a>' : '').' <a href="javascript:void(0);" onclick="$(\'.hidden_hash\').toggleClass(\'hidden\')" style="color: #FFFFFF;"><i class="far fa-eye"></i></a>'.'</div>';
 
 
 //Table Header
