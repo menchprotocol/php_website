@@ -363,7 +363,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
 
 
-        <?php if($standalone){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
+        <?php if($standalone || 1){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
 
 
 
