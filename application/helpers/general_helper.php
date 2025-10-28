@@ -2972,23 +2972,8 @@ function chain_view($x)
         } elseif ($userid == 4367) {
 
             //Chain ID
-
-            //Determine chain group:
-            $userhandle_sign = '';
-            if (in_array($x['chainusertype'], array(12273, 12274))) {
-                $users___4593 = $CI->config->item('users___4593'); //Chain Type
-                $userhandle_sign = '<span class="group_sign" title="' . $users___4593[$x['chainusertype']]['m__name'] . '">' . $users___4593[$x['chainusertype']]['m__cover'] . '</span>';
-            } else {
-                foreach ($CI->config->item('users___31770') as $groupid => $groupm) {
-                    if (in_array($x['chainusertype'], $CI->config->item('userids___' . $groupid))) {
-                        $userhandle_sign = '<span class="group_sign" title="' . $groupm['m__name'] . '">' . $groupm['m__cover'] . '</span>';
-                        break;
-                    }
-                }
-            }
-
             $column_value .= '<td style="width:72px !important;"><div style="width:72px !important; overflow:hidden;">';
-            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(3445693) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $userhandle_sign . $x[$m['m__handle']] . '</a>' : '&nbsp;');
+            $column_value .= ($x[$m['m__handle']] > 0 ? '<a href="' . view_app_chain(3445693) . '?chainid=' . $x[$m['m__handle']] . '" target="_blank">' . $x[$m['m__handle']] . '</a>' : '&nbsp;');
             $column_value .= '</div></td>';
 
         } elseif ($userid == 44395) {
@@ -3010,7 +2995,7 @@ function chain_view($x)
         } elseif (in_array($userid, array(1579301, 1579321))) {
 
             //HASH
-            $column_value .= '<td style="width:50px !important;">';
+            $column_value .= '<td style="width:50px !important;" class="hidden_hash hidden">';
             $column_value .= '<div style="width:50px !important; overflow:hidden;">';
             $column_value .= '<span data-toggle="tooltip" data-placement="top" title="0x' . $x[$m['m__handle']] . '">0x' . substr($x[$m['m__handle']], -4) . '</span>';
             $column_value .= '</div>';

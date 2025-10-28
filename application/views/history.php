@@ -414,7 +414,7 @@ foreach ($this->config->item('users___4341') as $chainusertype => $m) {
         $column_value = '<th class="main__title" style="width:25px !important;"><a style="width:25px !important; overflow:hidden; display: block;" href="/@'.$m['m__handle'].'" title="' . $m['m__name'] . '" data-toggle="tooltip" data-placement="top" class="icon-block-sm">' . $m['m__cover'] . '</a></th>';
     } else {
         //Full Data:
-        $column_value = '<th class="main__title" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__name'] . '</a></th>';
+        $column_value = '<th class="main__title '.( in_array($userid, array(1579301, 1579321)) ? 'hidden_hash hidden' : '' ).'" style=";"><a href="/@'.$m['m__handle'].'">' . $m['m__name'] . '</a></th>';
     }
     if(in_array($chainusertype, $this->config->item('userids___1579727'))) {
         //Second row:
