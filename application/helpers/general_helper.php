@@ -3012,7 +3012,7 @@ function chain_view($x)
 
             //Text
             $column_value .= '<td>';
-            $column_value .= (strip_tags($x['chainvalue']) == $x['chainvalue'] || strlen(strip_tags($x['chainvalue'])) < view_memory(6404, 6197) ? $x['chainvalue'] : '<span class="hidden html_message_' . $x['chainid'] . '">' . $x['chainvalue'] . '</span><a class="html_message_' . $x['chainid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['chainid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>');
+            $column_value .= (strip_tags($x['chainvalue']) == $x['chainvalue'] || strlen(strip_tags($x['chainvalue'])) < view_memory(6404, 6197) ? nl2br($x['chainvalue']) : '<span class="hidden html_message_' . $x['chainid'] . '">' . $x['chainvalue'] . '</span><a class="html_message_' . $x['chainid'] . '" href="javascript:void(0);" onclick="$(\'.html_message_' . $x['chainid'] . '\').toggleClass(\'hidden\');">View HTML Message</a>');
             $column_value .= '</td>';
 
         }
