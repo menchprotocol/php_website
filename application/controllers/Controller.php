@@ -273,7 +273,7 @@ class Controller extends CI_Controller
             if (in_array($app_userid, $this->config->item('userids___42905')) && !$focus_e) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @' . $_GET['userhandle'] . ' is not a valid User user.</div>', false, $standalone);
             } elseif (in_array($app_userid, $this->config->item('userids___44329')) && (!$focus_post || !$target_post)) {
-                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts.</div>', false, $standalone);
+                return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #' . $_GET['posthashtag'] . ' & #' . $target_post . ' must be valid posts for app @'.$app_userid.'.</div>', false, $standalone);
             } elseif (in_array($app_userid, $this->config->item('userids___42911')) && !$focus_post) {
                 return get_redirected(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #' . $_GET['posthashtag'] . ' is not a valid post.</div>', false, $standalone);
             }
