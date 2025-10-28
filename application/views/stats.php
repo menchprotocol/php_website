@@ -27,7 +27,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
     if($userid1==1309754){
         //Voided
-        echo '<div class="mid-text-line compact-midline voidstats hidden"><span><a href="'.view_app_chain(3445693).'?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__handle'].'">' . $m1['m__cover'] . ' ' . $m1['m__name'] . '</a></span></div>';
+        echo '<div class="mid-text-line compact-midline voidstats hidden grey"><span><a href="'.view_app_chain(3445693).'?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@'.$m1['m__handle'].'">' . $m1['m__cover'] . ' ' . $m1['m__name'] . '</a></span></div>';
         continue;
     } elseif($userid1==28956){
         //Nodes
