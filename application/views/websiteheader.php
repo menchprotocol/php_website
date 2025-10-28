@@ -807,7 +807,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Ideas
                                             foreach ($this->config->item('users___4486') as $userid3 => $m3) {
-                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . str_replace(' ','', $m3['m__name']) . '</a></li>';
                                             }
 
                                         }
@@ -832,7 +832,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
 
                                             //Mentions
                                             foreach ($this->config->item('users___13550') as $userid3 => $m3) {
-                                                echo '<li class="inline-block item__'.$userid2.' item__'.$userid3.'"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . $m3['m__name'] . '</a></li>';
+                                                echo '<li class="inline-block item__'.$userid2.' item__'.$userid3.'"><a class="dropdown-item inline-block text_adder ' . (strlen($m3['m__message']) ? 'underdot' : '') . '" href="javascript:void(0);" text_value="' . $m3['m__cover'] . '" title="' . $m3['m__message'] . '"><b>' . $m3['m__cover'] . '</b>' . str_replace(' ','', $m3['m__name']) . '</a></li>';
                                             }
 
                                         } elseif ($userid2 == 4737) {
