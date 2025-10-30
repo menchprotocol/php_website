@@ -6,7 +6,6 @@ $data = [
     "messages" => [
         ["role" => "user", "content" => "List all the cities that the 2026 FIFA will take place in"]
     ],
-    "temperature" => 0.7
 ];
 
 // cURL setup
