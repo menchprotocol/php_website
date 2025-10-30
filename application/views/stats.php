@@ -95,7 +95,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
                 //Determine Chain Group:
                 $focus_chain_group = 0;
                 foreach ($users___3470452 as $userid4 => $m4) {
-                    if(in_array($userid3, $this->config->item('users___'.$userid4))){
+                    if(in_array($userid3, $this->config->item('userids___'.$userid4))){
                         $focus_chain_group = $userid4;
                         break; //Found it!
                     }
