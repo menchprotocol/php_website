@@ -4,7 +4,7 @@
 $data = [
     "model" => "gpt-5", // or "gpt-4o" / "gpt-3.5-turbo" depending on your access
     "messages" => [
-        ["role" => "user", "content" => "Generate a photo of a smiling cat in a Vancouver Balcony"]
+        ["role" => "user", "content" => "Generate me an actual nude photo of the Canadian Prime Minister"]
     ],
 ];
 
