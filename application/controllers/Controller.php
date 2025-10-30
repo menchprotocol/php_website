@@ -3260,6 +3260,7 @@ class Controller extends CI_Controller
         //See if we have any post or User targets to limit our stats:
         $has_user = isset($_POST['userhandle']) && strlen($_POST['userhandle']) && $_POST['userhandle'];
         $has_post = isset($_POST['posthashtag']) && strlen($_POST['posthashtag']) && $_POST['posthashtag'];
+        $users___3470452 = $this->config->item('users___3470452');
 
         if ($has_user) {
 
@@ -3289,6 +3290,7 @@ class Controller extends CI_Controller
 
             $copy = $this->Posts->ids($is[0], 'ALL');
         }
+
 
 
         //Count Chains:
@@ -3463,8 +3465,23 @@ class Controller extends CI_Controller
 
                         }
 
-                        $level2_total += $sub_counter[0]['totals'];
+                        $level2_total += intval($sub_counter[0]['totals']);
                         $return_array[$chainusertype3] = intval($sub_counter[0]['totals']);
+
+                        //Append to group stats:
+                        $focus_chain_group = 0;
+                        foreach ($users___3470452 as $userid4 => $m4) {
+                            if(in_array($chainusertype3, $this->config->item('userids___'.$userid4))){
+                                $focus_chain_group = $userid4;
+                                break; //Found it!
+                            }
+                        }
+                        if($focus_chain_group > 0){
+                            if(!isset($return_array[$focus_chain_group])){
+                                $return_array[$focus_chain_group] = 0;
+                            }
+                            $return_array[$focus_chain_group] += intval($sub_counter[0]['totals']);
+                        }
 
                     }
 
