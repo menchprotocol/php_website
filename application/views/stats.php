@@ -5,7 +5,8 @@ $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $users___3470452 = $this->config->item('users___3470452');
 
-echo '<h2><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> <a href="/@' . $users___11035[4341]['m__handle'] . '">' . $users___11035[4341]['m__cover'] . ' ' . $users___11035[4341]['m__name'] . '</a>:</h2>';
+echo '<h2><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a> <a href="/@' . $users___11035[4341]['m__handle'] . '">' . $users___11035[4341]['m__cover'] . ' <span class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $users___11035[4341]['m__message'] . '">' . $users___11035[4341]['m__name'] . '</span></a>:</h2>';
+
 
 if ($userhandle) {
     foreach ($this->Users->read(array(
@@ -28,14 +29,14 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
     if ($userid1 == 1309754) {
         //Voided
-        echo '<div class="mid-text-line compact-midline voidstats grey"><span><a href="' . view_app_chain(3445693) . '?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' ' . $m1['m__name'] . '</a></span></div>';
+        echo '<div class="mid-text-line compact-midline voidstats grey"><span><a href="' . view_app_chain(3445693) . '?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' <span class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__name'] . '</span></a></span></div>';
         continue;
     } elseif ($userid1 == 28956) {
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span class="grey"><a href="' . view_app_chain(3445693) . '?chainusertype=12273,12274&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' ' . $m1['m__name'] . '</a>:</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span class="grey"><a href="' . view_app_chain(3445693) . '?chainusertype=12273,12274&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' <span class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__name'] . '</span></a>:</span></div>';
     } elseif ($userid1 == 31770) {
         //Links
-        echo '<div class="mid-text-line compact-midline"><span class="grey"><a target="_blank" href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___2123863')) . '&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' ' . $m1['m__name'] . '</a>:</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span class="grey"><a target="_blank" href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___2123863')) . '&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' <span class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__name'] . '</span></a>:</span></div>';
     }
 
     echo '<div class="row justify-content list-covers">';
