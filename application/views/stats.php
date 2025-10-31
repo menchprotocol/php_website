@@ -73,6 +73,12 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
 
         echo '<table class="table card_subcat card_subcat_' . $focus_id . ' hidden" style="width:100%; margin-top:13px;">';
+        if(!$is_chain){
+            //Print Menu:
+            echo '<tr class="mobile-shrink voidstats">';
+            echo '<td class="grey headline_menu"><a href="' . view_memory(42903, 42902) . $users___11035[$focus_list]['m__handle'] . '" class="dotted_under grey" data-toggle="tooltip" data-placement="top" title="' . $users___11035[$focus_list]['m__message'] . '"><span class="icon-block grey">' . $users___11035[$focus_list]['m__cover'] . '</span>' . $users___11035[$focus_list]['m__name'] . '</a>:</td>';
+            echo '</tr>';
+        }
         $last_group_displayed = 0;
         foreach ($this->config->item('users___' . $focus_list) as $userid3 => $m3) {
 
@@ -110,7 +116,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
                     //Print Menu:
                     echo '<tr class="mobile-shrink voidstats">';
-                    echo '<td style="text-align: center; padding: 21px 0 2px;" class="grey"><a href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___'.$last_group_displayed)) . '&chainvoid=0'  . '" class="card_count_' . $focus_chain_group . ' grey"><i class="fas fa-yin-yang fa-spin"></i></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '"><span class="icon-block grey">' . $users___3470452[$last_group_displayed]['m__cover'] . '</span></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '" class="dotted_under grey" data-toggle="tooltip" data-placement="top" title="' . $users___3470452[$last_group_displayed]['m__message'] . '">' . $users___3470452[$last_group_displayed]['m__name'] . '</a>:</td>';
+                    echo '<td class="grey headline_menu"><a href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___'.$last_group_displayed)) . '&chainvoid=0'  . '" class="card_count_' . $focus_chain_group . ' grey"><i class="fas fa-yin-yang fa-spin"></i></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '"><span class="icon-block grey">' . $users___3470452[$last_group_displayed]['m__cover'] . '</span></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '" class="dotted_under grey" data-toggle="tooltip" data-placement="top" title="' . $users___3470452[$last_group_displayed]['m__message'] . '">' . $users___3470452[$last_group_displayed]['m__name'] . '</a>:</td>';
                     echo '</tr>';
 
                 }
