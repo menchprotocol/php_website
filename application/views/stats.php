@@ -174,3 +174,6 @@ echo '<div class="center hidden" style="padding-top: 13px;"><a href="javascript:
     });
 
 </script>
+<style>
+    .dotted_under { text-decoration: none !important;}
+</style>
