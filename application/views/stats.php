@@ -28,7 +28,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
     if ($userid1 == 1309754) {
         //Voided
-        echo '<div class="mid-text-line compact-midline voidstats hidden grey"><span><a href="' . view_app_chain(3445693) . '?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' ' . $m1['m__name'] . '</a></span></div>';
+        echo '<div class="mid-text-line compact-midline voidstats grey"><span><a href="' . view_app_chain(3445693) . '?chainvoid=1" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__cover'] . ' ' . $m1['m__name'] . '</a></span></div>';
         continue;
     } elseif ($userid1 == 28956) {
         //Nodes
@@ -108,7 +108,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
                     $last_group_displayed = $focus_chain_group;
 
                     //Print Menu:
-                    echo '<tr class="mobile-shrink voidstats hidden">';
+                    echo '<tr class="mobile-shrink voidstats">';
                     echo '<td style="text-align: center; padding: 21px 0 3px;" class="grey"><a href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___'.$last_group_displayed)) . '&chainvoid=0'  . '" class="card_count_' . $focus_chain_group . ' grey"><i class="fas fa-yin-yang fa-spin"></i></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '"><span class="icon-block grey">' . $users___3470452[$last_group_displayed]['m__cover'] . '</span></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '" class="dotted_under grey" data-toggle="tooltip" data-placement="top" title="' . $users___3470452[$last_group_displayed]['m__message'] . '">' . $users___3470452[$last_group_displayed]['m__name'] . '</a>:</td>';
                     echo '</tr>';
 
