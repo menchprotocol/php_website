@@ -108,13 +108,12 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
                     $last_group_displayed = $focus_chain_group;
 
                     //Print Menu:
-                    echo '<tr class="mobile-shrink">';
-                    echo '<td style="text-align: center; padding: 8px 0;"><a href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___'.$last_group_displayed)) . '&chainvoid=0'  . '" class="card_count_' . $focus_chain_group . ' grey"><i class="fas fa-yin-yang fa-spin"></i></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '"><span class="icon-block-sm grey">' . $users___3470452[$last_group_displayed]['m__cover'] . '</span></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '" class="dotted_under grey" data-toggle="tooltip" data-placement="top" title="' . $users___3470452[$last_group_displayed]['m__message'] . '">' . $users___3470452[$last_group_displayed]['m__name'] . '</a>:</td>';
+                    echo '<tr class="mobile-shrink voidstats hidden">';
+                    echo '<td style="text-align: center; padding: 8px 0; font-size:0.8em;" class="grey"><a href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___'.$last_group_displayed)) . '&chainvoid=0'  . '" class="card_count_' . $focus_chain_group . ' grey"><i class="fas fa-yin-yang fa-spin"></i></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '"><span class="icon-block grey">' . $users___3470452[$last_group_displayed]['m__cover'] . '</span></a><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '" class="dotted_under grey" data-toggle="tooltip" data-placement="top" title="' . $users___3470452[$last_group_displayed]['m__message'] . '">' . $users___3470452[$last_group_displayed]['m__name'] . '</a>:</td>';
                     echo '</tr>';
 
                 }
             }
-
 
             echo '<tr class="main__title mobile-shrink ' . (!$is_chain ? 'grey' : '') . '">';
             echo '<td style="text-align: left;"><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span class="icon-block-sm">' . $m3['m__cover'] . '</span><span class="dotted_under" data-toggle="tooltip" data-placement="top" title="' . $m3['m__message'] . '">' . $chainname . '</span></a><span class="last-right-col"><a href="' . view_app_chain(3445693) . $chainhref . '" class="card_count_' . $userid3 . (!$is_chain ? '_nochain' : '') . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
