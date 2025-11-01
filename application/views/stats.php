@@ -5,7 +5,7 @@ $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $users___3470452 = $this->config->item('users___3470452');
 
-echo '<h2><span data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__cover'] . '<a href="/@' . $m1['m__handle'] . '">' . $m1['m__name'] . '</a></span></span><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="top" title="' . $users___11035[4341]['m__message'] . '"> ' . $users___11035[4341]['m__cover'] . ' <a href="/@' . $users___11035[4341]['m__handle'] . '">' . $users___11035[4341]['m__name'] . '</a></span>:</h2>';
+echo '<h2><span class="card_header" data-toggle="tooltip" data-placement="top" title="Hi"><i class="fas fa-yin-yang fa-spin"></i></span><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="top" title="' . $users___11035[4341]['m__message'] . '"> ' . $users___11035[4341]['m__cover'] . ' <a href="/@' . $users___11035[4341]['m__handle'] . '">' . $users___11035[4341]['m__name'] . '</a></span>:</h2>';
 
 
 if ($userhandle) {
@@ -169,7 +169,12 @@ echo '<div class="center hidden" style="padding-top: 13px;"><a href="javascript:
 
         //Watch for click to expand:
         $(".card_header").click(function (e) {
-            $('.card_subcat_' + $(this).attr('userid')).toggleClass('hidden');
+            if($(this).attr('userid').length){
+                $('.card_subcat_' + $(this).attr('userid')).toggleClass('hidden');
+            } else {
+                //Open All:
+                $('.card_subcat').toggleClass('hidden');
+            }
         });
 
         //Update stats live:
