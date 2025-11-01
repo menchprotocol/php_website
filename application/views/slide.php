@@ -182,6 +182,189 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
              alt="Wide photo">
         <div class="caption">Single wide photo: Desert dunes</div>
     </div>
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1756000834/20230817_151205_fsrhnq.jpg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Mountain view</div>
+    </div>
+    <!-- Post 4: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Beach sunset</div>
+    </div>
+
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1756000834/20230817_151205_fsrhnq.jpg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Mountain view</div>
+    </div>
+    <!-- Post 4: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Beach sunset</div>
+    </div>
+
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1756000834/20230817_151205_fsrhnq.jpg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Mountain view</div>
+    </div>
+    <!-- Post 4: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Beach sunset</div>
+    </div>
+
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1756000834/20230817_151205_fsrhnq.jpg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Mountain view</div>
+    </div>
+    <!-- Post 4: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Beach sunset</div>
+    </div>
+
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1756000834/20230817_151205_fsrhnq.jpg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Mountain view</div>
+    </div>
+    <!-- Post 4: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,g_auto,h_250,w_970/b_rgb:000000,e_gradient_fade,y_-0.50/c_scale,co_rgb:ffffff,fl_relative,l_text:montserrat_25_style_light_align_center:Shop%20Now,w_0.5,y_0.18/v1755829760/gx8bun1gwibjmfh3kvqz.jpg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Beach sunset</div>
+    </div>
+
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
+    <!-- Post 9: Single Tall Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg"
+             alt="Tall photo">
+        <div class="caption">Single tall photo: Forest path</div>
+    </div>
+    <!-- Post 10: Single Wide Photo -->
+    <div class="post">
+        <img class="post-content photo-post" src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg"
+             alt="Wide photo">
+        <div class="caption">Single wide photo: Desert dunes</div>
+    </div>
 </div>
 
 <!-- Custom JS -->
