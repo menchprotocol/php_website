@@ -2453,7 +2453,6 @@ function boost_power()
 function search_enabled()
 {
     $CI =& get_instance();
-    return 0; //TODO remove later
     return ($CI->config->item('universal_search_enabled') && intval(view_memory(6404, 12678)));
 }
 

@@ -8,6 +8,22 @@ $data = [
     ],
 ];
 
+
+//Cron job?
+if(!$user_http_request || 1){
+
+    foreach($this->Chains->read(array(
+        'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
+        'chainuserinput' => 42858, //ChatGPT
+    ), array('chainpostinput')) as $referenced){
+
+        //See if ChatGPT has not yet responded:
+
+
+    }
+}
+
+
 // cURL setup
 $ch = curl_init("https://api.openai.com/v1/chat/completions");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

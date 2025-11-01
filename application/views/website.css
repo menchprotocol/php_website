@@ -3296,7 +3296,7 @@ h4.main__title {
 
 .last-right-col {
     float: right;
-    width: 89px;
+    width: 110px;
     text-align: left;
 }
 
@@ -3645,7 +3645,7 @@ h4.main__title {
 
 .fixedchain{ width:200px !important; }
 .fixedchain>div{ width:196px !important; overflow:hidden; }
-.headline_menu{ text-align: center; padding: 21px 0 3px; }
+.headline_menu{ text-align: center; padding: 21px 0 2px; }
 
 @media (max-width: 610px) {
 
@@ -3722,7 +3722,7 @@ h4.main__title {
     }
 
     .last-right-col {
-        width: 48px;
+        width: 69px;
     }
 
     .sub_note {

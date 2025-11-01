@@ -17,7 +17,7 @@ foreach ($this->Chains->read(array(
         //Any responses by this user?
         $set_chainvalue = $dicovered['chainvalue'];
         foreach ($this->Chains->read(array(
-            'chainusertype' => 4228, //Sequence
+                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
             'chainpostoutput' => $addition_sync['chainpostoutput'],
             'chainusercreator' => $dicovered['chainusercreator'],
         ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
