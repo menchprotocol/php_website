@@ -27,7 +27,7 @@ foreach($this->Chains->read(array(
     $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_postmessageraw($primary_i) . '</div>';
 
     foreach ($this->Chains->read(array(
-        'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+        'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
         'chainpostinput' => $primary_i['postid'],
     ), array('chainpostoutput'), 0, 0) as $next_post) {
         $secondary_i .= post_view(14565,  $next_post);

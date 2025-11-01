@@ -12,12 +12,43 @@ $data = [
 //Cron job?
 if(!$user_http_request || 1){
 
+    $referenced = 0;
+    $responded = 0;
     foreach($this->Chains->read(array(
         'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
         'chainuserinput' => 42858, //ChatGPT
     ), array('chainpostinput')) as $referenced){
 
+        $referenced++;
+
         //See if ChatGPT has not yet responded:
+        if(!count($this->Chains->read(array(
+            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainpostoutput' => $referenced['chainpostinput'],
+            'chainusercreator' => 42858,
+        ), array('chainpostinput'), 1))){
+
+            $responded++;
+
+            $post_new = $this->Posts->create(array(
+                'postmessageraw' => 'Generating Response...',
+            ), 42858);
+
+            if(isset($post_new['post_create']['postid'])){
+
+                //Insert initial response:
+                $this->Chains->create(array(
+                    'chainusertype' => 4228,
+                    'chainusercreator' => $chainusercreator,
+                    'chainpostoutput' => $i['postid'],
+                    'chainpostinput' => $post_new['post_create']['postid'],
+                ));
+
+            }
+
+
+
+        }
 
 
     }

@@ -735,7 +735,7 @@ class Controller extends CI_Controller
 
             //Find Published Followings:
             foreach ($this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
                 'chainpostoutput' => $_POST['postid'],
             ), array('chainpostinput'), 1) as $previous_i) {
                 $delete_redirect = view_memory(42903, 33286) . $previous_i['posthashtag'];
@@ -744,7 +744,7 @@ class Controller extends CI_Controller
             //If not found, find active followings:
             if (!$delete_redirect) {
                 foreach ($this->Chains->read(array(
-                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
                     'chainpostoutput' => $_POST['postid'],
                 ), array('chainpostinput'), 1) as $previous_i) {
                     $delete_redirect = view_memory(42903, 33286) . $previous_i['posthashtag'];
@@ -2691,7 +2691,7 @@ class Controller extends CI_Controller
 
                 //post list:
                 $is_next = $this->Chains->read(array(
-                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
                     'chainpostinput' => $_POST['s__id'],
                 ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'));
                 $counter = count($is_next);
@@ -2797,7 +2797,7 @@ class Controller extends CI_Controller
             //Posts order based on alphabetical order
             $order = 0;
             foreach ($this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
                 'chainpostinput' => $_POST['focus__id'],
             ), array('chainpostoutput'), 0, 0, array('postmessageraw' => 'ASC')) as $x) {
                 $order++;

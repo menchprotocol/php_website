@@ -18,7 +18,7 @@ $count_totals = array(
 
 //Generate list & settings:
 $post_settings = post_settings($_GET['posthashtag']);
-$max_limit = view_memory(6404,11064);
+$max_limit = view_memory(6404, 11064);
 
 /*
 foreach($post_settings['user_column'] as $key => $value){
@@ -35,7 +35,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
 } else {
 
-    if($standalone){
+    if ($standalone) {
         echo '<h1>' . view_post_title($post_settings['i']) . '</h1>';
 
         echo '<div class="hide-subline maxwidth hideIfEmpty remove_first_line">' . view_postmessageraw($post_settings['i'], (isset($user_session['userid']) ? $user_session['userid'] : 0), false, true, true) . '</div>';
@@ -67,10 +67,10 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
                 $set_chainvalue = '';
                 foreach ($this->Chains->read(array(
-                            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
                     'chainpostoutput' => $post_var['postid'],
                     'chainusercreator' => $x['userid'],
-                ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
+                ), array('chainpostinput'), 1, 0, array('chainid' => 'DESC')) as $response) {
                     $set_chainvalue = $response['postmessageraw'];
                 }
 
@@ -120,7 +120,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
             ));
 
             $message_clean = '';
-            $view_cover =  view_cover($e['usercover'], '✔️', ' ');
+            $view_cover = view_cover($e['usercover'], '✔️', ' ');
 
             if (count($fetch_data)) {
                 if (strlen($fetch_data[0]['chainvalue'])) {
@@ -136,7 +136,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                         $message_clean = '<span title="' . $fetch_data[0]['chainvalue'] . '">' . $view_cover . '</span>';
                     }
                 } else {
-                    $message_clean = '<span class="icon-block-xs">' .$view_cover. '</span>';
+                    $message_clean = '<span class="icon-block-xs">' . $view_cover . '</span>';
                 }
             }
 
@@ -171,9 +171,8 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
         }
 
 
-
         //Also show mixed column:
-        if(!count($post_settings['post_column']) && !count($post_settings['user_column'])) {
+        if (!count($post_settings['post_column']) && !count($post_settings['user_column'])) {
 
             foreach ($post_settings['mixed_column'] as $this_var) {
 
@@ -192,7 +191,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                     ));
 
                     $message_clean = '';
-                    $view_cover =  view_cover($this_var['usercover'], '✔️', ' ');
+                    $view_cover = view_cover($this_var['usercover'], '✔️', ' ');
 
                     if (count($fetch_data)) {
                         if (strlen($fetch_data[0]['chainvalue'])) {
@@ -208,7 +207,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
                                 $message_clean = '<span title="' . $fetch_data[0]['chainvalue'] . '">' . $view_cover . '</span>';
                             }
                         } else {
-                            $message_clean = '<span class="icon-block-xs">' .$view_cover. '</span>';
+                            $message_clean = '<span class="icon-block-xs">' . $view_cover . '</span>';
                         }
                     }
 
@@ -259,10 +258,10 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
                         $set_chainvalue = '';
                         foreach ($this->Chains->read(array(
-                                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+                            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
                             'chainpostoutput' => $this_var['postid'],
                             'chainusercreator' => $x['userid'],
-                        ), array('chainpostinput'), 0, 1, array('chainid' => 'DESC')) as $response) {
+                        ), array('chainpostinput'), 1, 0, array('chainid' => 'DESC')) as $response) {
                             $set_chainvalue = $response['postmessageraw'];
                         }
 
@@ -310,7 +309,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
     foreach ($post_settings['user_column'] as $e) {
         array_push($table_sortable, '#thuser_' . $e['userid']);
-        echo '<th id="thuser_' . $e['userid'] . '" title="'.(isset($count_totals['e'][$e['userid']]) ? number_format($count_totals['e'][$e['userid']], 2) : '').'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['userhandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['userid']]) ? view_number($count_totals['e'][$e['userid']]) : '0') . '</a><span class="vertical_col">' . view_cover($e['usercover'], '✔️', ' ') . $e['username'] . '</span></th>';
+        echo '<th id="thuser_' . $e['userid'] . '" title="' . (isset($count_totals['e'][$e['userid']]) ? number_format($count_totals['e'][$e['userid']], 2) : '') . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $e['userhandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$e['userid']]) ? view_number($count_totals['e'][$e['userid']]) : '0') . '</a><span class="vertical_col">' . view_cover($e['usercover'], '✔️', ' ') . $e['username'] . '</span></th>';
     }
 
     foreach ($post_settings['post_column'] as $post_var) {
@@ -329,12 +328,12 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
     }
 
-    if(!count($post_settings['post_column']) && !count($post_settings['user_column'])){
+    if (!count($post_settings['post_column']) && !count($post_settings['user_column'])) {
         foreach ($post_settings['mixed_column'] as $this_var) {
-            if(isset($this_var['userid'])){
+            if (isset($this_var['userid'])) {
                 array_push($table_sortable, '#thuser_' . $this_var['userid']);
-                echo '<th id="thuser_' . $this_var['userid'] . '" title="'.(isset($count_totals['e'][$this_var['userid']]) ? number_format($count_totals['e'][$this_var['userid']], 2) : '').'"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $this_var['userhandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$this_var['userid']]) ? view_number($count_totals['e'][$this_var['userid']]) : '0') . '</a><span class="vertical_col">' . view_cover($this_var['usercover'], '✔️', ' ') . $this_var['username'] . '</span></th>';
-            } elseif(isset($this_var['postid'])){
+                echo '<th id="thuser_' . $this_var['userid'] . '" title="' . (isset($count_totals['e'][$this_var['userid']]) ? number_format($count_totals['e'][$this_var['userid']], 2) : '') . '"><a class="icon-block-xs" href="' . view_memory(42903, 42902) . $this_var['userhandle'] . '" target="_blank" title="Open in New Window">' . (isset($count_totals['e'][$this_var['userid']]) ? view_number($count_totals['e'][$this_var['userid']]) : '0') . '</a><span class="vertical_col">' . view_cover($this_var['usercover'], '✔️', ' ') . $this_var['username'] . '</span></th>';
+            } elseif (isset($this_var['postid'])) {
                 $max_available = $this->Chains->read(array(
                     'chainusertype IN (' . join(',', $this->config->item('userids___42991')) . ')' => null, //Active Writes
                     'chainpostinput' => $this_var['postid'],
@@ -362,9 +361,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
         <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
 
-
         <?php if($standalone || 1){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
-
 
 
         .mini-header,
@@ -433,6 +430,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
         .showonhover {
             display: none;
         }
+
         .editable:hover .showonhover {
             display: block;
             background-color: #f5d981;

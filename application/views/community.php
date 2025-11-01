@@ -12,7 +12,7 @@ $groups_all = array();
 foreach ($this->Chains->read(array(
     'chainuserinput' => $focus_e['userid'],
     'chainusertype' => 4230, //USER FOLLOW
-), array('chainuseroutput'), 0, 1, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
+), array('chainuseroutput'), 1, 0, array('chainvalue' => 'ASC', 'chainid' => 'DESC')) as $group) {
     array_push($groups_ids, intval($group['userid']));
     $groups_all[intval($group['userid'])] = $group;
 }

@@ -26,7 +26,7 @@ if ($chainusercreator && !$at_starting_point) {
 
             //Does this have a follower list?
             $query_subset = $this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Active Sequence
+                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
                 'chainpostinput' => $followings_i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, true);
 
