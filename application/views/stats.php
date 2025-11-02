@@ -122,7 +122,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
             }
 
             echo '<tr class="main__title mobile-shrink ' . (!$is_chain ? 'grey' : '') . '">';
-            echo '<td style="text-align: left;"><span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="' . $m3['m__message'] . '">' . $m3['m__cover'] . '</span><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span>' . $chainname . '</span></a><span class="last-right-col"><a href="' . view_app_chain(3445693) . $chainhref . '" class="card_count_' . $userid3 . (!$is_chain ? '_nochain' : '') . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
+            echo '<td style="text-align: left;"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $m3['m__message'] . '">' . $m3['m__cover'] . '</span><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span>' . $chainname . '</span></a><span class="last-right-col"><a href="' . view_app_chain(3445693) . $chainhref . '" class="card_count_' . $userid3 . (!$is_chain ? '_nochain' : '') . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
             echo '</tr>';
 
         }
