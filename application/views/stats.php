@@ -5,7 +5,7 @@ $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $users___3470452 = $this->config->item('users___3470452');
 
-echo '<h2><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="bottom" title="' . $users___11035[33292]['m__message'] . '"> ' . $users___11035[33292]['m__cover'] . ' <a href="/@' . $users___11035[33292]['m__handle'] . '">' . $users___11035[33292]['m__name'] . '</a>:&nbsp;<i class="fas fa-info-circle"></i></span></h2>';
+echo '<h2><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="bottom" title="' . $users___11035[33292]['m__message'] . '"> ' . $users___11035[33292]['m__cover'] . ' <a href="/@' . $users___11035[33292]['m__handle'] . '">' . $users___11035[33292]['m__name'] . '</a>:&nbsp;<i class="fas fa-info-circle card_header"></i></span></h2>';
 
 if ($userhandle) {
     foreach ($this->Users->read(array(
