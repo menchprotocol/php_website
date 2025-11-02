@@ -67,7 +67,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         echo '<div class="' . (!$is_chain ? 'large_cover' : 'medium_cover') . '" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '">' . $m2['m__cover'] . '</div>';
 
         echo '<div class="main__title large_title ' . ($is_chain ? 'grey' : '') . '"><a href="' . $chain_link . '" class="card_count_' . $focus_id . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title ' . ($is_chain ? 'grey' : '') . '"><a href="' . view_memory(42903, 42902) . $m2['m__handle'] . '" >' . $m2['m__name'] . '</a><span class="info-box card_header" userid="' . $focus_id . '"><i class="far fa-plus-circle grey card_subcat card_subcat_' . $focus_id . '"></i><i class="far fa-minus-circle grey hidden card_subcat card_subcat_' . $focus_id . '"></i></span></div>';
+        echo '<div class="main__title large_title large_headline ' . ($is_chain ? 'grey' : '') . '"><a href="' . view_memory(42903, 42902) . $m2['m__handle'] . '" >' . $m2['m__name'] . '</a><span class="info-box card_header" userid="' . $focus_id . '"><i class="far fa-plus-circle grey card_subcat card_subcat_' . $focus_id . '"></i><i class="far fa-minus-circle grey hidden card_subcat card_subcat_' . $focus_id . '"></i></span></div>';
         echo '</div>';
 
 
