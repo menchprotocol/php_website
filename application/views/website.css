@@ -3653,6 +3653,9 @@ h4.main__title {
 
     .fixedchain{ width:85px !important; }
     .fixedchain>div{ width:82px !important; overflow:hidden; }
+    .compact-midline {
+        font-size: 1.3em !important;
+    }
 
     h1 {
         font-size: 2.4em;
