@@ -14,7 +14,7 @@ $post_tree = object_to_array(json_decode(file_get_contents('https://mench.com/js
         height: 100%;
         margin: 0;
         overflow: hidden;
-        background: #888888;
+        background: #777777;
         touch-action: manipulation;
     }
 

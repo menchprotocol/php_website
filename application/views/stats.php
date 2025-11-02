@@ -185,5 +185,5 @@ echo '<div class="center hidden" style="padding-top: 13px;"><a href="javascript:
 
 </script>
 <style>
-    .main__title { font-size:1.2em; }
+    .main__title { font-size:1.1em; }
 </style>
