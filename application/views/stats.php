@@ -186,5 +186,6 @@ echo '<div class="center hidden" style="padding-top: 13px;"><a href="javascript:
 </script>
 <style>
     .main__title { font-size:1.1em; }
-    .icon-block { height: 28px !important; }
+    i { font-size:0.9em; }
+    .icon-block { height: 21px !important; }
 </style>
