@@ -5,7 +5,7 @@ $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $users___3470452 = $this->config->item('users___3470452');
 
-echo '<h2><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="bottom" title="' . $users___11035[33292]['m__message'] . '"> ' . $users___11035[33292]['m__cover'] . ' <a href="/@' . $users___11035[33292]['m__handle'] . '">' . $users___11035[33292]['m__name'] . '</a>:&nbsp;<i class="fas fa-info-circle card_header" userid=""></i></span></h2>';
+echo '<h2><a href="' . view_app_chain(3445693) . '"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="bottom" title="' . $users___11035[33292]['m__message'] . '"> ' . $users___11035[33292]['m__cover'] . ' <a href="/@' . $users___11035[33292]['m__handle'] . '">' . $users___11035[33292]['m__name'] . '</a>:&nbsp;<i class="fas fa-info-circle card_header" userid=""></i></span></h2>';
 
 if ($userhandle) {
     foreach ($this->Users->read(array(
@@ -67,7 +67,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         echo '<div class="card_header ' . (!$is_chain ? 'large_cover' : 'medium_cover') . '" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '" userid="' . $focus_id . '">' . $m2['m__cover'] . '</div>';
 
         echo '<div class="main__title large_title ' . ($is_chain ? 'grey' : '') . '"><a href="' . $chain_link . '" class="card_count_' . $focus_id . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title large_headline ' . ($is_chain ? 'grey' : '') . '"><a href="' . view_memory(42903, 42902) . $m2['m__handle'] . '" >' . $m2['m__name'] . '</a></div>';
+        echo '<div class="main__title large_title ' . ($is_chain ? 'grey' : '') . '"><a href="' . view_memory(42903, 42902) . $m2['m__handle'] . '" >' . $m2['m__name'] . '</a></div>';
         echo '</div>';
 
 
