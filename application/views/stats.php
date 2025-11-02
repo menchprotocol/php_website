@@ -5,8 +5,7 @@ $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 $users___3470452 = $this->config->item('users___3470452');
 
-echo '<h2><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="top" title="' . $users___11035[4341]['m__message'] . '"> ' . $users___11035[4341]['m__cover'] . ' <a href="/@' . $users___11035[4341]['m__handle'] . '">' . $users___11035[4341]['m__name'] . '</a></span>:&nbsp;<span class="card_header grey" userid="" data-toggle="tooltip" data-placement="top" title="Hi"><i class="fas fa-info-circle"></i></span></h2>';
-
+echo '<h2><a href="' . view_app_chain(3445693) . '?chainvoid=0"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="top" title="' . $users___11035[33292]['m__message'] . '"> ' . $users___11035[33292]['m__cover'] . '</span> <a href="/@' . $users___11035[33292]['m__handle'] . '">' . $users___11035[33292]['m__name'] . '</a>:&nbsp;<span class="card_header grey" userid="" data-toggle="tooltip" data-placement="top" title="Hi"><i class="fas fa-info-circle"></i></span></h2>';
 
 if ($userhandle) {
     foreach ($this->Users->read(array(
@@ -68,7 +67,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         echo '<div class="' . (!$is_chain ? 'large_cover' : 'medium_cover') . '" data-toggle="tooltip" data-placement="top" title="' . $m2['m__message'] . '">' . $m2['m__cover'] . '</div>';
 
         echo '<div class="main__title large_title ' . ($is_chain ? 'grey' : '') . '"><a href="' . $chain_link . '" class="card_count_' . $focus_id . '"><i class="fas fa-yin-yang fa-spin"></i></a></div>';
-        echo '<div class="main__title large_title ' . ($is_chain ? 'grey' : '') . '"><a href="' . view_memory(42903, 42902) . $m2['m__handle'] . '" >' . $m2['m__name'] . '</a><span class="info-box card_header" userid="' . $focus_id . '"><i class="far fa-plus-circle grey card_subcat_' . $focus_id . '"></i><i class="far fa-minus-circle grey hidden card_subcat_' . $focus_id . '"></i></span></div>';
+        echo '<div class="main__title large_title ' . ($is_chain ? 'grey' : '') . '"><a href="' . view_memory(42903, 42902) . $m2['m__handle'] . '" >' . $m2['m__name'] . '</a><span class="info-box card_header" userid="' . $focus_id . '"><i class="far fa-plus-circle grey card_subcat card_subcat_' . $focus_id . '"></i><i class="far fa-minus-circle grey hidden card_subcat card_subcat_' . $focus_id . '"></i></span></div>';
         echo '</div>';
 
 
