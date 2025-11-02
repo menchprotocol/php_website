@@ -3316,7 +3316,7 @@ class Controller extends CI_Controller
                 }
                 $sub_counter = $this->Chains->read($void_filter, array(), 0, 0, array(), 'COUNT(chainid) as totals');
                 $return_array[$chainusertype1] = intval($sub_counter[0]['totals']);
-                $level1_total += intval($sub_counter[0]['totals']);
+                $return_array[4341] += intval($sub_counter[0]['totals']);
                 continue;
             }
 
