@@ -189,6 +189,6 @@ echo '<div class="center hidden" style="padding-top: 13px;"><a href="javascript:
     .icon-block i, i { font-size:1em !important; }
 
     @media (max-width: 610px) {
-        .main__title { font-size:1em; }
+        .main__title { font-size:0.9em; }
     }
 </style>
