@@ -1485,8 +1485,11 @@ a.headline {
 }
 
 .card_subcat td {
-    padding-top: 5px;
-    padding-bottom: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+.card_subcat .icon-block, .card_subcat .icon-block-xs, .card_subcat .icon-block-sm {
+    height: auto !important;
 }
 
 .card_cover.focus-cover {
