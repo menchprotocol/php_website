@@ -86,16 +86,19 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
                 $chainhref = '?chainusertype=' . join(',', $this->config->item('userids___42252')) . '&chainuserinput=' . $userid3 . '&chainvoid=0';
                 $chainname = $m3['m__handle'];
                 $chaincover = '<i class="far fa-at"></i>';
+                $chainhandlehref = view_memory(42903, 42902) . $m3['m__handle'].'#Mentions';
             } elseif ($userid2 == 12274) {
                 //User
                 $chainhref = '?chainusertype=' . join(',', $this->config->item('userids___13548')) . '&chainuserinput=' . join(',', $this->config->item('userids___' . $userid3)) . '&chainvoid=0';
                 $chainname = $m3['m__name'];
                 $chaincover = $m3['m__cover'];
+                $chainhandlehref = view_memory(42903, 42902) . $m3['m__handle'].'#Mention';
             } else {
                 //Link
                 $chainhref = '?chainusertype=' . $userid3 . '&chainvoid=0';
                 $chainname = $m3['m__name'];
                 $chaincover = $m3['m__cover'];
+                $chainhandlehref = view_memory(42903, 42902) . $m3['m__handle'];
             }
 
 
@@ -125,7 +128,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
             }
 
             echo '<tr class="main__title mobile-shrink ' . (!$is_chain ? 'grey' : '') . '">';
-            echo '<td style="text-align: left;"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $m3['m__message'] . '">' . $chaincover . '</span><a href="' . view_memory(42903, 42902) . $m3['m__handle'] . '"><span>' . $chainname . '</span></a><span class="last-right-col"><a href="' . view_app_chain(3445693) . $chainhref . '" class="card_count_' . $userid3 . (!$is_chain ? '_nochain' : '') . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
+            echo '<td style="text-align: left;"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="' . $m3['m__message'] . '">' . $chaincover . '</span><a href="' .$chainhandlehref . '"><span>' . $chainname . '</span></a><span class="last-right-col"><a href="' . view_app_chain(3445693) . $chainhref . '" class="card_count_' . $userid3 . (!$is_chain ? '_nochain' : '') . '"><i class="fas fa-yin-yang fa-spin"></i></a></span></td>';
             echo '</tr>';
 
         }
