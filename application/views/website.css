@@ -1485,8 +1485,7 @@ a.headline {
 }
 
 .card_subcat td {
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding: 0;
 }
 .card_subcat .icon-block, .card_subcat .icon-block-xs, .card_subcat .icon-block-sm {
     height: auto !important;
