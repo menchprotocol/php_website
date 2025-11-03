@@ -3415,16 +3415,17 @@ class Controller extends CI_Controller
                     //Append user stats:
                     foreach ($this->config->item('users___3465306') as $chainusertype3 => $m3) {
 
+                        $target_list = ( in_array($chainusertype3, $this->config->item('userids___3469913')) ? $this->config->item('userids___'.$chainusertype3) : array($chainusertype3) );
+
                         if ($has_user) {
 
                             $sub_counter = $this->Chains->read(array(
                                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                                'chainuserinput IN (' . join(',', $this->config->item('userids___'.$chainusertype3)) . ')' => null,
+                                'chainuserinput IN (' .  join(',', $target_list) . ')' => null,
                                 'chainusercreator' => $es[0]['userid'],
                             ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         } elseif ($has_post && count($copy['recursive_post_ids'])) {
-
 
                             $sub_counter[0]['totals'] = 0;
 
@@ -3432,7 +3433,7 @@ class Controller extends CI_Controller
 
                             $sub_counter = $this->Chains->read(array(
                                 'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                                'chainuserinput IN (' . join(',', $this->config->item('userids___'.$chainusertype3)) . ')' => null,
+                                'chainuserinput IN (' . join(',', $target_list) . ')' => null,
                             ), array('chainuseroutput'), 0, 0, array(), 'COUNT(chainid) as totals');
 
                         }

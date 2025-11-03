@@ -3647,7 +3647,7 @@ h4.main__title {
 
 .fixedchain{ width:200px !important; }
 .fixedchain>div{ width:196px !important; overflow:hidden; }
-.headline_menu{ text-align: center; padding: 21px 0 2px !important; }
+.headline_menu{ text-align: center; padding: 21px 0 0 !important; }
 
 @media (max-width: 610px) {
 
