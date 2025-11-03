@@ -84,7 +84,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
             if ($userid2 == 12273) {
                 //Post
                 $chainhref = '?chainusertype=' . join(',', $this->config->item('userids___42252')) . '&chainuserinput=' . $userid3 . '&chainvoid=0';
-                $chainname = '@' . $m3['m__handle'];
+                $chainname = $m3['m__handle'];
                 $chaincover = '<i class="far fa-at"></i>';
             } elseif ($userid2 == 12274) {
                 //User
