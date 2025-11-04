@@ -3560,7 +3560,6 @@ function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
     $users___42179 = $CI->config->item('users___42179'); //Dynamic Input Fields
     $users___11035 = $CI->config->item('users___11035'); //Encyclopedia
     $users___4527 = $CI->config->item('users___4527'); //Memory
-    $is_compact = in_array($focus__id, $CI->config->item('userids___42191'));
     $single_select = in_array($focus__id, $CI->config->item('userids___33331'));
     $multi_select = in_array($focus__id, $CI->config->item('userids___33332'));
     $access_locked = in_array($focus__id, $CI->config->item('userids___32145'));
@@ -3587,10 +3586,8 @@ function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
 
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
-    if (!$is_compact) {
-        $ui .= '<h3 class="mini-font grey">' . view_dynamic_headline($focus__id, $focus_select[$focus__id]) . '</h3>';
-    }
-    $ui .= '<div class="list-group list-radio-select grey-line radio-' . $focus__id . ($is_compact ? ' is_compact ' : '') . '">';
+    $ui .= '<h3 class="mini-font grey">' . view_dynamic_headline($focus__id, $focus_select[$focus__id]) . '</h3>';
+    $ui .= '<div class="list-group list-radio-select grey-line radio-' . $focus__id  . '">';
 
     if ($down_userid > 0) {
 
@@ -3648,7 +3645,7 @@ function view_instant_select($focus__id, $down_userid = 0, $right_postid = 0)
         }
 
         $selected = in_array($list_item['userid'], $already_selected);
-        if (!$overflow_reached && $unselected_count >= $overflow_unselected_limit && !$selected && !$is_compact) {
+        if (!$overflow_reached && $unselected_count >= $overflow_unselected_limit && !$selected) {
             $overflow_reached = true;
         }
 
