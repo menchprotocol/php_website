@@ -32,10 +32,10 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
         continue;
     } elseif ($userid1 == 28956) {
         //Nodes
-        echo '<div class="mid-text-line compact-midline"><span class="grey"><a href="' . view_app_chain(3445693) . '?chainusertype=12273,12274&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a><span  data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__cover'] . '</span> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__name'] . '</a>:</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span class="grey"><a href="' . view_app_chain(3445693) . '?chainusertype=12273,12274&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a><span  data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__cover'] . '</span><a href="/@' . $m1['m__handle'] . '">' . $m1['m__name'] . '</a>:</span></div>';
     } elseif ($userid1 == 31770) {
         //Links
-        echo '<div class="mid-text-line compact-midline"><span class="grey"><a target="_blank" href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___2123863')) . '&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a><span  data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__cover'] . '</span> <a href="/@' . $m1['m__handle'] . '">' . $m1['m__name'] . '</a>:</span></div>';
+        echo '<div class="mid-text-line compact-midline"><span class="grey"><a target="_blank" href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___2123863')) . '&chainvoid=0" class="card_count_' . $userid1 . '"><i class="fas fa-yin-yang fa-spin"></i></a><span  data-toggle="tooltip" data-placement="top" title="' . $m1['m__message'] . '">' . $m1['m__cover'] . '</span><a href="/@' . $m1['m__handle'] . '">' . $m1['m__name'] . '</a>:</span></div>';
     }
 
     echo '<div class="row justify-content list-covers">';
