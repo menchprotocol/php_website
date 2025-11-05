@@ -3302,7 +3302,7 @@ class Controller extends CI_Controller
 
             $level1_total = 0;
 
-            if($chainusertype1==1309754){
+            if($chainusertype1==44395){
 
                 //Voided
                 if ($has_user) {
