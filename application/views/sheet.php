@@ -67,7 +67,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
                 $set_chainvalue = '';
                 foreach ($this->Chains->read(array(
-                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                    'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                     'chainpostoutput' => $post_var['postid'],
                     'chainusercreator' => $x['userid'],
                 ), array('chainpostinput'), 1, 0, array('chainid' => 'DESC')) as $response) {
@@ -258,7 +258,7 @@ if ((count($post_settings['user_column']) + count($post_settings['post_column'])
 
                         $set_chainvalue = '';
                         foreach ($this->Chains->read(array(
-                            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                             'chainpostoutput' => $this_var['postid'],
                             'chainusercreator' => $x['userid'],
                         ), array('chainpostinput'), 1, 0, array('chainid' => 'DESC')) as $response) {

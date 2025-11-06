@@ -23,7 +23,7 @@ if(!$user_http_request || 1){
 
         //See if ChatGPT has not yet responded:
         if(!count($this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
             'chainpostoutput' => $referenced['chainpostinput'],
             'chainusercreator' => 42858,
         ), array('chainpostinput'), 1))){

@@ -357,7 +357,7 @@ class Posts extends CIdea_cache
         $applied_success = 0; //To be populated
 
         $is_next = $this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
             'chainpostinput' => $postid,
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'));
 
@@ -428,7 +428,7 @@ class Posts extends CIdea_cache
                     } else {
 
                         $is_previous = $this->Chains->read(array(
-                            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                             'chainpostinput' => $i['postid'],
                             'chainpostoutput' => $next_post['postid'],
                         ), array(), 0);
@@ -555,7 +555,7 @@ class Posts extends CIdea_cache
         array_push($loop_breaker_ids, intval($i['postid']));
 
         foreach ($this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
 

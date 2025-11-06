@@ -728,7 +728,7 @@ class Chains extends CIdea_cache
             //Append children as options:
             $html_message = '';
             foreach ($this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $down_or) {
                 $append_link = 'https://' . get_domain('m__message', $x['userid'], $chainuserdomain) . view_memory(42903, 33286) . $down_or['posthashtag'] . (post_is_startable($down_or) ? '/' . view_memory(6404, 4235) : '') . $user_hash;
@@ -779,7 +779,7 @@ class Chains extends CIdea_cache
 
         //Fetch followings:
         foreach ($this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
             'chainpostoutput' => $focus_postid,
         ), array('chainpostinput')) as $post_previous) {
 
@@ -844,7 +844,7 @@ class Chains extends CIdea_cache
 
         foreach ($this->Chains->read(array(
             'chainpostinput' => $i['postid'],
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
 
             //Validate Find After:
@@ -980,7 +980,7 @@ class Chains extends CIdea_cache
 
             //Find most recent answers by this user:
             $user_private_replies = $this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                 'chainpostoutput' => $i['postid'],
                 'chainusercreator' => $chainusercreator,
             ), array('chainpostinput'), 1, 0, array('chainid' => 'DESC'));
@@ -1098,7 +1098,7 @@ class Chains extends CIdea_cache
                 }
 
                 $has_children = count($this->Chains->read(array(
-                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                    'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                     'chainpostinput' => $next_post['postid'],
                 ), array('chainpostoutput'), 0, 0));
 
@@ -1341,7 +1341,7 @@ class Chains extends CIdea_cache
             if ($input__text) {
                 //Since it has been post discovered and its a text input, lots fetch the written response:
                 foreach ($this->Chains->read(array(
-                    'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                    'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                     'chainpostoutput' => $i['postid'],
                     'chainusercreator' => $userid,
                 ), array('chainpostinput'), 1, 0, array('chainid' => 'DESC')) as $response) {
@@ -1353,7 +1353,7 @@ class Chains extends CIdea_cache
 
         if ($i['user_discovered']) {
             foreach ($this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC')) as $next_post) {
                 array_push($i['treeposts'], $this->Chains->history($next_post, $userid, $tree_level));
@@ -1395,7 +1395,7 @@ class Chains extends CIdea_cache
 
         if ($input__text) {
             foreach ($this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                 'chainpostoutput' => $i['postid'],
                 'chainusercreator' => $userid,
             ), array('chainpostinput'), 1, 0, array('chainid' => 'DESC')) as $response) {
@@ -1410,7 +1410,7 @@ class Chains extends CIdea_cache
                 'chainusercreator' => $userid,
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput')) : $this->Chains->read(array(
-                'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+                'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
                 'chainpostinput' => $i['postid'],
             ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'))) as $next_post) {
                 array_push($i['treeposts'], $this->Chains->history_discovered($next_post, $userid, $tree_level));
@@ -1434,7 +1434,7 @@ class Chains extends CIdea_cache
         }
 
         $all_next = $this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 
@@ -1470,7 +1470,7 @@ class Chains extends CIdea_cache
         }
 
         $total_next = $this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput', 'chainusercreator'), 0, 0, array('chainkey' => 'ASC'), '*', null, false);
 

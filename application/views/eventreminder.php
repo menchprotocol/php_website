@@ -186,7 +186,7 @@ if (isset($_GET['chainid']) && isset($_GET['userlogin']) && isset($_GET['hash'])
 
 
         $children = $this->Chains->read(array(
-            'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+            'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
             'chainpostinput' => $i['postid'],
         ), array('chainpostoutput'), 0, 0, array('chainkey' => 'ASC'));
 

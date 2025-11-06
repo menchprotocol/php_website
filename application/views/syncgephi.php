@@ -35,7 +35,7 @@ foreach ($is as $in) {
 
     //Fetch Next Posts:
     foreach ($this->Chains->read(array(
-        'chainusertype IN (' . join(',', $this->config->item('userids___3470452')) . ')' => null, //Post Sequences
+        'chainusertype IN (' . join(',', $this->config->item('userids___3480779')) . ')' => null, //Post Sequences
         'chainpostinput' => $in['postid'],
     ), array('chainpostoutput'), 0, 0) as $next_post) {
 

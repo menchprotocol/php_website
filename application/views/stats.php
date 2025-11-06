@@ -3,7 +3,7 @@
 $userhandle = (isset($_GET['userhandle']) ? $_GET['userhandle'] : null);
 $posthashtag = (!$userhandle && isset($_GET['posthashtag']) ? $_GET['posthashtag'] : null);
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
-$users___3470452 = $this->config->item('users___3470452');
+$users___3480779 = $this->config->item('users___3480779');
 
 echo '<h2><a href="' . view_app_chain(3445693) . '"><span class="card_count_4341" style="min-width:111px; display: inline-block; text-align: center;"><i class="fas fa-yin-yang fa-spin"></i></span></a><span data-toggle="tooltip" data-placement="bottom" title="' . $users___11035[33292]['m__message'] . '"> ' . $users___11035[33292]['m__cover'] . ' <a href="/@' . $users___11035[33292]['m__handle'] . '">' . $users___11035[33292]['m__name'] . '</a>:&nbsp;<i class="fas fa-info-circle card_header" userid=""></i></span></h2>';
 
@@ -108,7 +108,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
                 //Determine Chain Group:
                 $focus_chain_group = 0;
-                foreach ($users___3470452 as $userid4 => $m4) {
+                foreach ($users___3480779 as $userid4 => $m4) {
                     if(in_array($userid3, $this->config->item('userids___'.$userid4))){
                         $focus_chain_group = $userid4;
                         break; //Found it!
@@ -123,7 +123,7 @@ foreach ($this->config->item('users___33292') as $userid1 => $m1) {
 
                     //Print Menu:
                     echo '<tr class="mobile-shrink voidstats">';
-                    echo '<td class="grey headline_menu"><a href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___'.$last_group_displayed)) . '&chainvoid=0'  . '" class="card_count_' . $focus_chain_group . ' grey"><i class="fas fa-yin-yang fa-spin"></i></a><span class="icon-block grey" data-toggle="tooltip" data-placement="top" title="' . $users___3470452[$last_group_displayed]['m__message'] . '">' . $users___3470452[$last_group_displayed]['m__cover'] . '</span><a href="' . view_memory(42903, 42902) . $users___3470452[$last_group_displayed]['m__handle'] . '" class="grey">' . $users___3470452[$last_group_displayed]['m__name'] . '</a>:</td>';
+                    echo '<td class="grey headline_menu"><a href="' . view_app_chain(3445693) . '?chainusertype=' . join(',', $this->config->item('userids___'.$last_group_displayed)) . '&chainvoid=0'  . '" class="card_count_' . $focus_chain_group . ' grey"><i class="fas fa-yin-yang fa-spin"></i></a><span class="icon-block grey" data-toggle="tooltip" data-placement="top" title="' . $users___3480779[$last_group_displayed]['m__message'] . '">' . $users___3480779[$last_group_displayed]['m__cover'] . '</span><a href="' . view_memory(42903, 42902) . $users___3480779[$last_group_displayed]['m__handle'] . '" class="grey">' . $users___3480779[$last_group_displayed]['m__name'] . '</a>:</td>';
                     echo '</tr>';
 
                 }
