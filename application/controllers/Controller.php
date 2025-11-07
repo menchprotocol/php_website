@@ -3261,7 +3261,7 @@ class Controller extends CI_Controller
         //See if we have any post or User targets to limit our stats:
         $has_user = isset($_POST['userhandle']) && strlen($_POST['userhandle']) && $_POST['userhandle'];
         $has_post = isset($_POST['posthashtag']) && strlen($_POST['posthashtag']) && $_POST['posthashtag'];
-        $users___3480779 = $this->config->item('users___3480779');
+        $users___3470452 = $this->config->item('users___3470452');
 
         if ($has_user) {
 
@@ -3473,7 +3473,7 @@ class Controller extends CI_Controller
 
                         //Append to group stats:
                         $focus_chain_group = 0;
-                        foreach ($users___3480779 as $userid4 => $m4) {
+                        foreach ($users___3470452 as $userid4 => $m4) {
                             if(in_array($chainusertype3, $this->config->item('userids___'.$userid4))){
                                 $focus_chain_group = $userid4;
                                 break; //Found it!
