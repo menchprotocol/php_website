@@ -328,8 +328,18 @@ function cookie_delete()
 function verify_cookie()
 {
 
+    if (!isset($_COOKIE['auth_cookie']) || !strlen($_COOKIE['auth_cookie'])) {
+        return false;
+    }
+
     //Authenticate Cookie:
     $cookie_parts = explode('ABCEFG', $_COOKIE['auth_cookie']);
+
+    if (count($cookie_parts) < 3 || !strlen($cookie_parts[0]) || !strlen($cookie_parts[1])) {
+        cookie_delete();
+        return false;
+    }
+
     $CI =& get_instance();
 
     $es = $CI->Users->read(array(
@@ -342,13 +352,11 @@ function verify_cookie()
         $CI->Users->activate($es[0], false, true);
         return $es[0];
 
-    } else {
-
-        //Cookie was invalid
-        cookie_delete();
-        return false;
-
     }
+
+    //Cookie was invalid
+    cookie_delete();
+    return false;
 
 }
 
