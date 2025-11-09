@@ -194,7 +194,7 @@ class Posts extends CIdea_cache
                         }
 
                         //Sync algolia:
-                        update_search(12274, intval($postid));
+                        update_search(12273, intval($postid));
 
                     } else {
 
