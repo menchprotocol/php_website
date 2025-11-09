@@ -261,7 +261,7 @@ class Posts extends CIdea_cache
                     $this->Chains->update($chain_i['chainid'], array(
                         'chainpostinput' => $postid,
                         'chainusercreator' => $chainusercreator,
-                        'chainvalue' => '#' . (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $post_current['posthashtag']) . "\n" . $post_index['postmessageraw'],
+                        'chainvalue' => '#' . (isset($update_columns['posthashtag']) ? $update_columns['posthashtag'] : $post_current['posthashtag']) . "\n" . $post_index['chainvalue'],
                     ));
                 }
             }
