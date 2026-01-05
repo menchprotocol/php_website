@@ -34,7 +34,7 @@ foreach ((isset($_GET['userhandle']) && strlen($_GET['userhandle']) ? $this->Use
 
 if (strlen($community_pills)) {
 
-    //Community:
+    //Community of users:
     echo '<h2 class="center">' . $user_item['username'] . '</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
