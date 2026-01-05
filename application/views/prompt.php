@@ -230,7 +230,7 @@ $ai_models = array(
                 <!-- Action Buttons -->
                 <div class="inner_message left_padded" style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
                     <?php
-                    // File Upload
+                    // File Upload - Cloudinary
                     echo '<div class="dynamic_editing_input no_padded">';
                     echo '<a class="uploader_13572 icon-block poe-action-btn" href="javascript:void(0)" title="Attach File" style="padding: 8px; border-radius: 50%; transition: background 0.2s; color: #6b7280; text-decoration: none; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;"><i class="fas fa-paperclip"></i></a>';
                     echo '</div>';
@@ -513,25 +513,37 @@ $(document).ready(function() {
         updateSelectedModels();
     });
 
-    // Image upload handler
-    $(document).on('change', 'input[type="file"]', function(e) {
-        if ($(this).attr('accept') && $(this).attr('accept').includes('image')) {
-            const files = Array.from(e.target.files);
-            files.forEach(file => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        uploadedImages.push({
-                            file: file,
-                            dataUrl: e.target.result
-                        });
-                        updateImagePreview();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-    });
+    // Initialize Cloudinary uploader for prompt interface
+    if (typeof load_cloudinary !== 'undefined' && typeof cloudinary !== 'undefined') {
+        // Store original cloudinary_presource_view if it exists
+        const originalCloudinaryHandler = window.cloudinary_presource_view;
+        
+        // Override cloudinary_presource_view to capture uploads for prompt interface
+        window.cloudinary_presource_view = function(uploader_id, info_id, media_typeid, playback_code, usercover, username, userid) {
+            // Only handle images for prompt interface (uploader_id 13572)
+            // Check if we're on the prompt page by looking for poe-container
+            if (uploader_id == 13572 && media_typeid == 4260 && $('.poe-container').length > 0) {
+                // Add to uploadedImages array
+                uploadedImages.push({
+                    cloudinary_id: info_id,
+                    url: playback_code,
+                    thumbnail: usercover,
+                    name: username
+                });
+                updateImagePreview();
+                // Don't call original handler for prompt page to avoid creating media items in post editor
+                return;
+            }
+            // Call original handler for other cases (post editor, etc.)
+            if (typeof originalCloudinaryHandler === 'function') {
+                originalCloudinaryHandler(uploader_id, info_id, media_typeid, playback_code, usercover, username, userid);
+            }
+        };
+        
+        // Initialize Cloudinary uploader (uploader_id 13572 is for post uploads)
+        // Pass null for loading_modal since we're not using a modal
+        load_cloudinary(13572, 0, ['@poe_prompt'], '.uploader_13572', null, null);
+    }
 
     function updateImagePreview() {
         const preview = $('#poe-image-preview');
@@ -540,7 +552,9 @@ $(document).ready(function() {
             preview.show();
             uploadedImages.forEach((img, index) => {
                 const item = $('<div class="poe-image-preview-item"></div>');
-                item.append(`<img src="${img.dataUrl}" alt="Preview ${index + 1}">`);
+                // Handle both Cloudinary URLs and data URLs
+                const imgSrc = img.url || img.dataUrl || img.thumbnail;
+                item.append(`<img src="${imgSrc}" alt="${img.name || 'Preview ' + (index + 1)}">`);
                 item.append(`<button type="button" class="remove-image" data-index="${index}"><i class="fas fa-times"></i></button>`);
                 preview.append(item);
             });
@@ -592,10 +606,12 @@ $(document).ready(function() {
         // Add image attachments if any
         if (uploadedImages.length > 0) {
             uploadedImages.forEach(img => {
+                // Handle both Cloudinary URLs and data URLs
+                const imgSrc = img.url || img.dataUrl || img.thumbnail;
                 const imgMsg = $(`
                     <div class="poe-message poe-message-user">
                         <div class="poe-message-bubble">
-                            <img src="${img.dataUrl}" style="max-width: 300px; border-radius: 8px; margin-top: 8px;">
+                            <img src="${imgSrc}" style="max-width: 300px; border-radius: 8px; margin-top: 8px;">
                         </div>
                     </div>
                 `);
@@ -657,14 +673,15 @@ $(document).ready(function() {
         }, 300);
     });
 
-    // Enter key to submit (Shift+Enter for new line)
+    // Enter key creates new line, Ctrl+Enter or Cmd+Enter submits
     $('#poe-prompt-text').on('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
             if (!$('#poe-submit-prompt').prop('disabled')) {
                 $('#poe-submit-prompt').click();
             }
         }
+        // Allow Enter to create new line by default (no preventDefault)
     });
 
     // Initialize
