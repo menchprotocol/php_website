@@ -12,7 +12,7 @@ if(in_array($website_id, $this->config->item('userids___30984'))){
 }
 
 // Set page title
-echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__name').' | AI Prompt Interface\'); }); </script> ';
+echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__name').' | AI Chat\'); $(\'body\').addClass(\'poe-page\'); }); </script> ';
 
 $users___12273 = $this->config->item('users___12273'); //POST Cache
 $users___11035 = $this->config->item('users___11035'); //Encyclopedia
@@ -20,76 +20,90 @@ $users___11035 = $this->config->item('users___11035'); //Encyclopedia
 // Top 8 AI Models with Recent Versions
 $ai_models = array(
     'openai' => array(
-        'name' => 'OpenAI',
+        'name' => 'GPT-4o',
+        'short_name' => 'GPT-4o',
         'icon' => '<i class="fas fa-robot"></i>',
         'color' => '#10a37f',
+        'bg_color' => '#d1fae5',
         'versions' => array(
-            'gpt-4o' => 'GPT-4o (Latest)',
+            'gpt-4o' => 'GPT-4o',
             'gpt-4-turbo' => 'GPT-4 Turbo',
             'gpt-4' => 'GPT-4',
             'gpt-3.5-turbo' => 'GPT-3.5 Turbo',
         )
     ),
     'anthropic' => array(
-        'name' => 'Anthropic Claude',
+        'name' => 'Claude',
+        'short_name' => 'Claude',
         'icon' => '<i class="fas fa-brain"></i>',
         'color' => '#d97757',
+        'bg_color' => '#fce7e0',
         'versions' => array(
-            'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet (Latest)',
+            'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet',
             'claude-3-opus-20240229' => 'Claude 3 Opus',
             'claude-3-sonnet-20240229' => 'Claude 3 Sonnet',
             'claude-3-haiku-20240307' => 'Claude 3 Haiku',
         )
     ),
     'google' => array(
-        'name' => 'Google Gemini',
+        'name' => 'Gemini',
+        'short_name' => 'Gemini',
         'icon' => '<i class="fas fa-gem"></i>',
         'color' => '#4285f4',
+        'bg_color' => '#e3f2fd',
         'versions' => array(
-            'gemini-1.5-pro' => 'Gemini 1.5 Pro (Latest)',
+            'gemini-1.5-pro' => 'Gemini 1.5 Pro',
             'gemini-1.5-flash' => 'Gemini 1.5 Flash',
             'gemini-pro' => 'Gemini Pro',
             'gemini-1.0-pro' => 'Gemini 1.0 Pro',
         )
     ),
     'meta' => array(
-        'name' => 'Meta Llama',
+        'name' => 'Llama',
+        'short_name' => 'Llama',
         'icon' => '<i class="fas fa-code"></i>',
         'color' => '#0867fb',
+        'bg_color' => '#dbeafe',
         'versions' => array(
-            'llama-3-70b' => 'Llama 3 70B (Latest)',
+            'llama-3-70b' => 'Llama 3 70B',
             'llama-3-8b' => 'Llama 3 8B',
             'llama-2-70b' => 'Llama 2 70B',
             'llama-2-13b' => 'Llama 2 13B',
         )
     ),
     'xai' => array(
-        'name' => 'xAI Grok',
+        'name' => 'Grok',
+        'short_name' => 'Grok',
         'icon' => '<i class="fas fa-bolt"></i>',
         'color' => '#000000',
+        'bg_color' => '#f3f4f6',
         'versions' => array(
-            'grok-2' => 'Grok-2 (Latest)',
+            'grok-2' => 'Grok-2',
             'grok-beta' => 'Grok Beta',
             'grok-vision-beta' => 'Grok Vision Beta',
         )
     ),
     'mistral' => array(
-        'name' => 'Mistral AI',
+        'name' => 'Mistral',
+        'short_name' => 'Mistral',
         'icon' => '<i class="fas fa-wind"></i>',
         'color' => '#ff6b35',
+        'bg_color' => '#ffe5dc',
         'versions' => array(
-            'mistral-large' => 'Mistral Large (Latest)',
+            'mistral-large' => 'Mistral Large',
             'mistral-medium' => 'Mistral Medium',
             'mistral-small' => 'Mistral Small',
             'mixtral-8x7b' => 'Mixtral 8x7B',
         )
     ),
     'cohere' => array(
-        'name' => 'Cohere',
+        'name' => 'Command R+',
+        'short_name' => 'Cohere',
         'icon' => '<i class="fas fa-network-wired"></i>',
         'color' => '#ff6b6b',
+        'bg_color' => '#ffe0e0',
         'versions' => array(
-            'command-r-plus' => 'Command R+ (Latest)',
+            'command-r-plus' => 'Command R+',
             'command-r' => 'Command R',
             'command' => 'Command',
             'command-light' => 'Command Light',
@@ -97,10 +111,12 @@ $ai_models = array(
     ),
     'perplexity' => array(
         'name' => 'Perplexity',
+        'short_name' => 'Perplexity',
         'icon' => '<i class="fas fa-search"></i>',
         'color' => '#6366f1',
+        'bg_color' => '#e0e7ff',
         'versions' => array(
-            'pplx-70b-online' => '70B Online (Latest)',
+            'pplx-70b-online' => '70B Online',
             'pplx-7b-online' => '7B Online',
             'sonar' => 'Sonar',
         )
@@ -109,142 +125,148 @@ $ai_models = array(
 
 ?>
 
-<div class="ai-prompt-wrapper" style="min-height: calc(100vh - 200px); display: flex; flex-direction: column;">
+<div class="poe-container" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; background: #ffffff; overflow: hidden; z-index: 1;">
     
-    <!-- AI Model Selection - Compact Pills Style -->
-    <div class="ai-models-bar" style="padding: 20px 0; border-bottom: 1px solid #e0e0e0; background: #fafafa;">
-        <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
-            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-                <span style="font-weight: 600; margin-right: 12px; color: #666;">Select Models:</span>
-                <?php foreach($ai_models as $ai_key => $ai_model): ?>
-                <div class="ai-model-pill" data-ai-key="<?= $ai_key ?>" style="display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 20px; background: white; border: 2px solid #e0e0e0; cursor: pointer; transition: all 0.2s; user-select: none;">
-                    <input type="checkbox" class="ai-model-checkbox" value="<?= $ai_key ?>" id="ai_<?= $ai_key ?>" 
-                           data-ai-key="<?= $ai_key ?>" style="margin: 0 6px 0 0; cursor: pointer;">
-                    <span style="color: <?= $ai_model['color'] ?>; margin-right: 6px;"><?= $ai_model['icon'] ?></span>
-                    <span style="font-size: 0.9em; font-weight: 500;"><?= $ai_model['name'] ?></span>
-                    <div class="ai-version-dropdown" id="version_<?= $ai_key ?>" style="display: none; margin-left: 8px;">
-                        <select class="form-select form-select-sm ai-version-select" 
-                                data-ai-key="<?= $ai_key ?>" multiple 
-                                style="font-size: 0.75em; padding: 2px 8px; border-radius: 12px; min-width: 150px;">
-                            <?php foreach($ai_model['versions'] as $version_key => $version_name): ?>
-                            <option value="<?= $version_key ?>"><?= $version_name ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-                <button type="button" class="btn btn-sm" id="select-all-ais" style="margin-left: auto; padding: 6px 12px; border-radius: 20px;">
-                    <i class="fas fa-check-double"></i> All
-                </button>
-            </div>
+    <!-- Left Sidebar - Model Selection (Poe.com style) -->
+    <div class="poe-sidebar" style="width: 280px; background: #f9fafb; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; overflow-y: auto;">
+        
+        <!-- Sidebar Header -->
+        <div style="padding: 20px; border-bottom: 1px solid #e5e7eb;">
+            <h2 style="margin: 0; font-size: 1.25em; font-weight: 600; color: #111827;">AI Models</h2>
+            <p style="margin: 8px 0 0 0; font-size: 0.875em; color: #6b7280;">Select models to chat with</p>
         </div>
-    </div>
 
-    <!-- Response Area - Scrollable -->
-    <div class="ai-responses-container" id="response-container" style="flex: 1; overflow-y: auto; padding: 40px 20px; max-width: 1400px; margin: 0 auto; width: 100%;">
-        <div style="text-align: center; color: #999; padding: 60px 20px;">
-            <i class="fas fa-sparkles" style="font-size: 3em; margin-bottom: 20px; opacity: 0.3;"></i>
-            <p style="font-size: 1.1em;">Start a conversation with AI</p>
-            <p style="font-size: 0.9em; margin-top: 8px;">Select models above and type your prompt below</p>
-        </div>
-    </div>
-
-    <!-- Fixed Input Area - Gemini/Grok Style -->
-    <div class="ai-input-container" style="position: sticky; bottom: 0; background: white; border-top: 1px solid #e0e0e0; padding: 16px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);">
-        <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
-            
-            <!-- Main Prompt Input - Using modal31911 structure -->
-            <div class="ai-prompt-box" style="position: relative; background: #f8f9fa; border-radius: 24px; border: 1px solid #e0e0e0; transition: all 0.2s; padding: 12px 16px;">
-                
-                <!-- Post Message - Main Input -->
-                <div class="dynamic_editing_input" style="margin: 0 !important;">
-                    <textarea
-                        class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessageraw ai-prompt-textarea"
-                        id="ai-prompt-text"
-                        placeholder="Ask anything or attach files..."
-                        style="margin:0; width:100%; background-color: transparent !important; border: none !important; resize: none; min-height: 24px; max-height: 200px; font-size: 15px; line-height: 1.5; padding: 0; box-shadow: none !important;"
-                        rows="1"></textarea>
-                </div>
-
-                <!-- Image Preview -->
-                <div id="image-preview-inline" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 8px;"></div>
-
-                <!-- Action Buttons Row -->
-                <div class="inner_message left_padded" style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e8e8e8;">
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <?php
-                        // File Upload
-                        echo '<div class="dynamic_editing_input no_padded">';
-                        echo '<a class="uploader_13572 icon-block ai-action-btn" href="javascript:void(0)" title="Upload File" style="padding: 8px; border-radius: 50%; transition: background 0.2s;"><i class="fas fa-paperclip"></i></a>';
-                        echo '</div>';
-
-                        // Emoji
-                        echo '<div class="dynamic_editing_input no_padded" style="margin: 0 !important;">';
-                        echo '<div class="dropdown emoji_selector">';
-                        echo '<button type="button" class="btn no-left-padding no-right-padding icon-block ai-action-btn" id="emoji_ai" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Add Emoji" style="padding: 8px; border-radius: 50%; transition: background 0.2s; border: none; background: transparent;"><i class="far fa-face-smile"></i></button>';
-                        echo '<div class="dropdown-menu emoji_i" aria-labelledby="emoji_ai"></div>';
-                        echo '</div>';
-                        echo '</div>';
-
-                        // AI Model Selector Dropdown
-                        echo '<div class="dynamic_editing_input no_padded compact_dropdown">';
-                        echo '<button class="btn btn-secondary dropdown-toggle icon-block ai-action-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Select AI Models" id="ai_model_selector" style="padding: 8px 12px; border-radius: 20px; font-size: 0.85em; border: 1px solid #e0e0e0; background: white;">';
-                        echo '<i class="fas fa-sliders-h"></i> <span id="selected-models-count">0</span> selected';
-                        echo '</button>';
-                        echo '<ul class="dropdown-menu left-padded-menu" aria-labelledby="ai_model_selector" style="max-height: 400px; overflow-y: auto;">';
-                        foreach($ai_models as $ai_key => $ai_model) {
-                            echo '<li class="grey"><span class="dropdown-item" style="font-weight: 600; color: ' . $ai_model['color'] . ';"><span class="icon-block-sm">' . $ai_model['icon'] . '</span>' . $ai_model['name'] . ':</span></li>';
-                            foreach($ai_model['versions'] as $version_key => $version_name) {
-                                echo '<li class="inline-block"><label class="dropdown-item inline-block" style="cursor: pointer; margin: 0; padding: 6px 20px;">';
-                                echo '<input type="checkbox" class="ai-version-checkbox-inline" data-ai-key="' . $ai_key . '" value="' . $version_key . '" style="margin-right: 8px;">';
-                                echo $version_name;
-                                echo '</label></li>';
-                            }
-                        }
-                        echo '</ul>';
-                        echo '</div>';
-
-                        // Advanced Options
-                        echo '<div class="dynamic_editing_input no_padded">';
-                        echo '<button class="btn btn-secondary icon-block ai-action-btn" type="button" data-bs-toggle="collapse" data-bs-target="#advancedOptions" aria-expanded="false" title="Advanced Options" style="padding: 8px; border-radius: 50%; border: none; background: transparent;"><i class="fas fa-cog"></i></button>';
-                        echo '</div>';
-                        ?>
+        <!-- Model List -->
+        <div style="flex: 1; padding: 12px; overflow-y: auto;">
+            <?php foreach($ai_models as $ai_key => $ai_model): ?>
+            <div class="poe-model-item" data-ai-key="<?= $ai_key ?>" 
+                 style="padding: 12px; margin-bottom: 8px; border-radius: 12px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent;"
+                 onclick="selectModel('<?= $ai_key ?>')">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="poe-model-avatar" 
+                         style="width: 40px; height: 40px; border-radius: 10px; background: <?= $ai_model['bg_color'] ?>; display: flex; align-items: center; justify-content: center; color: <?= $ai_model['color'] ?>; font-size: 1.2em; flex-shrink: 0;">
+                        <?= $ai_model['icon'] ?>
                     </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <button type="button" class="btn btn-primary ai-send-btn" id="submit-prompt" 
-                                style="border-radius: 20px; padding: 10px 24px; font-weight: 500; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                            <i class="fas fa-paper-plane"></i> Send
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Advanced Options Collapse -->
-                <div class="collapse" id="advancedOptions" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e8e8e8;">
-                    <div class="row" style="margin: 0;">
-                        <div class="col-md-4 mb-2">
-                            <label style="font-size: 0.85em; color: #666; margin-bottom: 4px;">Temperature: <span id="temp-value">0.7</span></label>
-                            <input type="range" class="form-range" id="temperature" min="0" max="2" step="0.1" value="0.7" style="height: 4px;">
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-weight: 600; font-size: 0.9375em; color: #111827; margin-bottom: 2px;">
+                            <?= $ai_model['name'] ?>
                         </div>
-                        <div class="col-md-4 mb-2">
-                            <label style="font-size: 0.85em; color: #666; margin-bottom: 4px;">Max Tokens</label>
-                            <input type="number" class="form-control form-control-sm" id="max-tokens" value="2000" min="1" max="8000">
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <label style="font-size: 0.85em; color: #666; margin-bottom: 4px;">Response Format</label>
-                            <select class="form-select form-select-sm" id="response-format">
-                                <option value="text">Plain Text</option>
-                                <option value="markdown">Markdown</option>
-                                <option value="json">JSON</option>
-                                <option value="html">HTML</option>
+                        <div class="poe-model-version" style="font-size: 0.8125em; color: #6b7280;">
+                            <select class="poe-version-select" data-ai-key="<?= $ai_key ?>" 
+                                    style="border: none; background: transparent; color: #6b7280; font-size: inherit; cursor: pointer; width: 100%;"
+                                    onchange="event.stopPropagation();">
+                                <?php 
+                                $first_version = true;
+                                foreach($ai_model['versions'] as $version_key => $version_name): 
+                                ?>
+                                <option value="<?= $version_key ?>" <?= $first_version ? 'selected' : '' ?>><?= $version_name ?></option>
+                                <?php 
+                                $first_version = false;
+                                endforeach; 
+                                ?>
                             </select>
                         </div>
                     </div>
-                    <div class="mt-2">
-                        <label style="font-size: 0.85em; color: #666; margin-bottom: 4px;">System Prompt (Optional)</label>
-                        <textarea class="form-control form-control-sm" id="system-prompt" rows="2" 
-                                  placeholder="Define the AI's role or behavior..." style="font-size: 0.9em;"></textarea>
+                    <div class="poe-model-checkbox-wrapper">
+                        <input type="checkbox" class="poe-model-checkbox" 
+                               data-ai-key="<?= $ai_key ?>" 
+                               id="model_<?= $ai_key ?>"
+                               style="width: 18px; height: 18px; cursor: pointer; accent-color: <?= $ai_model['color'] ?>;"
+                               onchange="event.stopPropagation(); updateSelectedModels();">
                     </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div style="padding: 16px; border-top: 1px solid #e5e7eb; background: white;">
+            <button type="button" class="poe-btn-secondary" id="select-all-models" 
+                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; background: white; font-weight: 500; cursor: pointer; transition: all 0.2s;">
+                Select All
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Chat Area -->
+    <div class="poe-main" style="flex: 1; display: flex; flex-direction: column; background: #ffffff; overflow: hidden;">
+        
+        <!-- Chat Messages Area -->
+        <div class="poe-messages" id="poe-messages-container" 
+             style="flex: 1; overflow-y: auto; padding: 24px 24px 24px 24px; background: #ffffff; scroll-behavior: smooth;">
+            
+            <!-- Empty State -->
+            <div class="poe-empty-state" id="poe-empty-state" 
+                 style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 400px; text-align: center; padding: 40px;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                    <i class="fas fa-comments" style="font-size: 2em; color: #9ca3af;"></i>
+                </div>
+                <h3 style="font-size: 1.5em; font-weight: 600; color: #111827; margin: 0 0 8px 0;">Start a conversation</h3>
+                <p style="font-size: 0.9375em; color: #6b7280; margin: 0;">Select models from the sidebar and ask anything</p>
+            </div>
+        </div>
+
+        <!-- Input Area - Fixed at Bottom -->
+        <div class="poe-input-area" 
+             style="border-top: 1px solid #e5e7eb; background: #ffffff; padding: 16px 24px; flex-shrink: 0;">
+            
+            <!-- Image Preview -->
+            <div id="poe-image-preview" style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;"></div>
+
+            <!-- Input Box -->
+            <div class="poe-input-box" 
+                 style="position: relative; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 24px; padding: 12px 16px; display: flex; align-items: flex-end; gap: 8px; transition: all 0.2s; max-width: 100%;">
+                
+                <!-- Text Input - Using modal31911 structure -->
+                <div class="dynamic_editing_input" style="flex: 1; margin: 0 !important;">
+                    <textarea
+                        class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_postmessageraw poe-textarea"
+                        id="poe-prompt-text"
+                        placeholder="Message..."
+                        style="margin:0; width:100%; background-color: transparent !important; border: none !important; resize: none; min-height: 24px; max-height: 200px; font-size: 15px; line-height: 1.5; padding: 0; box-shadow: none !important; font-family: inherit;"
+                        rows="1"></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="inner_message left_padded" style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
+                    <?php
+                    // File Upload
+                    echo '<div class="dynamic_editing_input no_padded">';
+                    echo '<a class="uploader_13572 icon-block poe-action-btn" href="javascript:void(0)" title="Attach File" style="padding: 8px; border-radius: 50%; transition: background 0.2s; color: #6b7280; text-decoration: none; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;"><i class="fas fa-paperclip"></i></a>';
+                    echo '</div>';
+
+                    // Emoji
+                    echo '<div class="dynamic_editing_input no_padded" style="margin: 0 !important;">';
+                    echo '<div class="dropdown emoji_selector">';
+                    echo '<button type="button" class="btn no-left-padding no-right-padding icon-block poe-action-btn" id="emoji_poe" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Add Emoji" style="padding: 8px; border-radius: 50%; transition: background 0.2s; border: none; background: transparent; color: #6b7280; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;"><i class="far fa-face-smile"></i></button>';
+                    echo '<div class="dropdown-menu emoji_i" aria-labelledby="emoji_poe"></div>';
+                    echo '</div>';
+                    echo '</div>';
+                    ?>
+                </div>
+
+                <!-- Send Button -->
+                <button type="button" class="poe-send-btn" id="poe-submit-prompt" 
+                        style="width: 36px; height: 36px; border-radius: 50%; background: #111827; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0;"
+                        disabled>
+                    <i class="fas fa-arrow-up" style="font-size: 0.875em;"></i>
+                </button>
+            </div>
+
+            <!-- Advanced Options (Collapsed by default) -->
+            <div class="poe-advanced-options" style="margin-top: 12px; display: none;" id="poe-advanced-options">
+                <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 150px;">
+                        <label style="font-size: 0.8125em; color: #6b7280; margin-bottom: 4px; display: block;">Temperature: <span id="poe-temp-value">0.7</span></label>
+                        <input type="range" class="form-range" id="poe-temperature" min="0" max="2" step="0.1" value="0.7" style="width: 100%;">
+                    </div>
+                    <div style="flex: 1; min-width: 150px;">
+                        <label style="font-size: 0.8125em; color: #6b7280; margin-bottom: 4px; display: block;">Max Tokens</label>
+                        <input type="number" class="form-control form-control-sm" id="poe-max-tokens" value="2000" min="1" max="8000" style="width: 100%;">
+                    </div>
+                    <button type="button" class="poe-btn-link" onclick="$('#poe-advanced-options').slideUp();" style="color: #6b7280; font-size: 0.8125em; border: none; background: none; cursor: pointer; padding: 8px;">
+                        Hide Options
+                    </button>
                 </div>
             </div>
         </div>
@@ -252,101 +274,46 @@ $ai_models = array(
 </div>
 
 <style>
-.ai-prompt-wrapper {
-    background: #ffffff;
+.poe-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-.ai-model-pill {
-    transition: all 0.2s ease;
+body.poe-page {
+    overflow: hidden;
 }
 
-.ai-model-pill:hover {
-    border-color: #007bff !important;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.poe-model-item:hover {
+    background: #f3f4f6 !important;
 }
 
-.ai-model-checkbox:checked ~ span,
-.ai-model-checkbox:checked + span {
-    opacity: 1;
+.poe-model-item.selected {
+    background: #eff6ff !important;
+    border-color: #3b82f6 !important;
 }
 
-.ai-model-pill:has(.ai-model-checkbox:checked) {
-    border-color: #007bff !important;
-    background: #e7f3ff !important;
+.poe-input-box:focus-within {
+    border-color: #111827 !important;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.05) !important;
 }
 
-.ai-action-btn {
-    color: #666;
-    transition: all 0.2s;
+.poe-action-btn:hover {
+    background: #e5e7eb !important;
 }
 
-.ai-action-btn:hover {
-    background: #f0f0f0 !important;
-    color: #333;
+.poe-send-btn:hover:not(:disabled) {
+    background: #374151 !important;
+    transform: scale(1.05);
 }
 
-.ai-prompt-box:focus-within {
-    border-color: #007bff !important;
-    box-shadow: 0 0 0 3px rgba(0,123,255,0.1) !important;
+.poe-send-btn:disabled {
+    background: #d1d5db !important;
+    cursor: not-allowed;
 }
 
-.ai-prompt-textarea:focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-.ai-send-btn {
-    transition: all 0.2s;
-}
-
-.ai-send-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
-}
-
-.ai-send-btn:active {
-    transform: translateY(0);
-}
-
-.image-preview-inline-item {
-    position: relative;
-    display: inline-block;
-    margin-right: 8px;
-    margin-bottom: 8px;
-}
-
-.image-preview-inline-item img {
-    max-width: 100px;
-    max-height: 100px;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-}
-
-.image-preview-inline-item .remove-image {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.ai-response-item {
+.poe-message {
     margin-bottom: 24px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    border-left: 4px solid #007bff;
     animation: fadeIn 0.3s ease;
 }
 
@@ -361,105 +328,192 @@ $ai_models = array(
     }
 }
 
-.ai-response-header {
+.poe-message-user {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #e0e0e0;
+    justify-content: flex-end;
 }
 
-.ai-response-title {
-    font-weight: 600;
-    color: #007bff;
+.poe-message-ai {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.poe-message-bubble {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    word-wrap: break-word;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.poe-message-user .poe-message-bubble {
+    background: #111827;
+    color: #ffffff;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+}
+
+.poe-message-ai .poe-message-bubble {
+    background: #f3f4f6;
+    color: #111827;
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+}
+
+.poe-message-header {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.875em;
+    font-weight: 600;
 }
 
-.ai-response-time {
-    font-size: 0.85em;
-    color: #999;
-}
-
-.ai-response-content {
+.poe-message-content {
     white-space: pre-wrap;
     word-wrap: break-word;
-    line-height: 1.6;
-    color: #333;
 }
 
-.loading-spinner {
-    text-align: center;
-    padding: 20px;
-    color: #999;
+.poe-image-preview-item {
+    position: relative;
+    display: inline-block;
+}
+
+.poe-image-preview-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.poe-image-preview-item .remove-image {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ef4444;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.poe-loading {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.poe-loading-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #9ca3af;
+    animation: poe-bounce 1.4s infinite ease-in-out both;
+}
+
+.poe-loading-dot:nth-child(1) { animation-delay: -0.32s; }
+.poe-loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes poe-bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
 }
 
 @media (max-width: 768px) {
-    .ai-models-bar {
-        padding: 12px 0 !important;
+    .poe-sidebar {
+        position: absolute;
+        left: -280px;
+        z-index: 1000;
+        transition: left 0.3s;
     }
     
-    .ai-model-pill {
-        font-size: 0.85em;
-        padding: 4px 8px !important;
+    .poe-sidebar.open {
+        left: 0;
     }
     
-    .ai-prompt-box {
-        border-radius: 16px !important;
-        padding: 10px 12px !important;
-    }
-    
-    .ai-input-container {
-        padding: 12px 0 !important;
+    .poe-message-bubble {
+        max-width: 85%;
     }
 }
 </style>
 
 <script>
+const aiModels = <?= json_encode($ai_models) ?>;
+let uploadedImages = [];
+let selectedModels = {};
+
 $(document).ready(function() {
     
-    let uploadedImages = [];
-    
     // Auto-resize textarea
-    $('#ai-prompt-text').on('input', function() {
+    $('#poe-prompt-text').on('input', function() {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
+        updateSendButton();
     });
 
-    // Show/hide version selector when AI is selected
-    $('.ai-model-checkbox').on('change', function() {
-        const aiKey = $(this).data('ai-key');
-        const versionSelector = $('#version_' + aiKey);
-        if ($(this).is(':checked')) {
-            versionSelector.slideDown(200);
-        } else {
-            versionSelector.slideUp(200);
-        }
-        updateSelectedCount();
-    });
-
-    // Update selected models count
-    function updateSelectedCount() {
-        const count = $('.ai-model-checkbox:checked').length;
-        $('#selected-models-count').text(count);
-        if (count > 0) {
-            $('#ai_model_selector').addClass('btn-primary').removeClass('btn-secondary');
-        } else {
-            $('#ai_model_selector').addClass('btn-secondary').removeClass('btn-primary');
-        }
+    // Update send button state
+    function updateSendButton() {
+        const hasText = $('#poe-prompt-text').val().trim().length > 0;
+        const hasModels = Object.keys(selectedModels).length > 0;
+        $('#poe-submit-prompt').prop('disabled', !(hasText && hasModels));
     }
 
-    // Select All AIs
-    $('#select-all-ais').on('click', function() {
-        $('.ai-model-checkbox').prop('checked', true).trigger('change');
+    // Select model
+    window.selectModel = function(aiKey) {
+        const checkbox = $(`#model_${aiKey}`);
+        checkbox.prop('checked', !checkbox.prop('checked'));
+        updateSelectedModels();
+    };
+
+    // Update selected models
+    window.updateSelectedModels = function() {
+        selectedModels = {};
+        $('.poe-model-checkbox:checked').each(function() {
+            const aiKey = $(this).data('ai-key');
+            const version = $(`.poe-version-select[data-ai-key="${aiKey}"]`).val();
+            selectedModels[aiKey] = {
+                provider: aiKey,
+                version: version,
+                model: aiModels[aiKey]
+            };
+        });
+        
+        // Update UI
+        $('.poe-model-item').removeClass('selected');
+        $('.poe-model-checkbox:checked').each(function() {
+            $(this).closest('.poe-model-item').addClass('selected');
+        });
+        
+        updateSendButton();
+    };
+
+    // Select all models
+    $('#select-all-models').on('click', function() {
+        const allChecked = $('.poe-model-checkbox:checked').length === $('.poe-model-checkbox').length;
+        $('.poe-model-checkbox').prop('checked', !allChecked);
+        updateSelectedModels();
+        $(this).text(allChecked ? 'Select All' : 'Deselect All');
     });
 
-    // Image upload handler (using existing uploader_13572 functionality)
-    // The uploader_13572 should be handled by existing website.js code
-    
-    // Image preview for inline display
+    // Version change
+    $('.poe-version-select').on('change', function() {
+        updateSelectedModels();
+    });
+
+    // Image upload handler
     $(document).on('change', 'input[type="file"]', function(e) {
         if ($(this).attr('accept') && $(this).attr('accept').includes('image')) {
             const files = Array.from(e.target.files);
@@ -480,12 +534,12 @@ $(document).ready(function() {
     });
 
     function updateImagePreview() {
-        const preview = $('#image-preview-inline');
+        const preview = $('#poe-image-preview');
         preview.empty();
         if (uploadedImages.length > 0) {
             preview.show();
             uploadedImages.forEach((img, index) => {
-                const item = $('<div class="image-preview-inline-item"></div>');
+                const item = $('<div class="poe-image-preview-item"></div>');
                 item.append(`<img src="${img.dataUrl}" alt="Preview ${index + 1}">`);
                 item.append(`<button type="button" class="remove-image" data-index="${index}"><i class="fas fa-times"></i></button>`);
                 preview.append(item);
@@ -502,138 +556,119 @@ $(document).ready(function() {
     });
 
     // Temperature slider
-    $('#temperature').on('input', function() {
-        $('#temp-value').text($(this).val());
+    $('#poe-temperature').on('input', function() {
+        $('#poe-temp-value').text($(this).val());
     });
 
     // Submit prompt
-    $('#submit-prompt').on('click', function() {
-        const selectedAIs = [];
-        $('.ai-model-checkbox:checked').each(function() {
-            const aiKey = $(this).data('ai-key');
-            const versions = [];
-            
-            // Check inline checkboxes first
-            $(`.ai-version-checkbox-inline[data-ai-key="${aiKey}"]:checked`).each(function() {
-                versions.push($(this).val());
-            });
-            
-            // If no inline versions selected, check dropdown
-            if (versions.length === 0) {
-                $(`#version_${aiKey} .ai-version-select option:selected`).each(function() {
-                    versions.push($(this).val());
-                });
-            }
-            
-            // If still no versions, use all versions
-            if (versions.length === 0) {
-                $(`#version_${aiKey} .ai-version-select option`).each(function() {
-                    versions.push($(this).val());
-                });
-            }
-            
-            selectedAIs.push({
-                provider: aiKey,
-                versions: versions
-            });
-        });
+    $('#poe-submit-prompt').on('click', function() {
+        if ($(this).prop('disabled')) return;
 
-        if (selectedAIs.length === 0) {
+        const promptText = $('#poe-prompt-text').val().trim();
+        if (!promptText && uploadedImages.length === 0) {
+            return;
+        }
+
+        if (Object.keys(selectedModels).length === 0) {
             alert('Please select at least one AI model.');
             return;
         }
 
-        const promptText = $('#ai-prompt-text').val().trim();
-        if (!promptText && uploadedImages.length === 0) {
-            alert('Please enter a prompt or upload an image.');
-            return;
-        }
-
-        // Clear empty state
-        $('.ai-responses-container').html('');
+        // Hide empty state
+        $('#poe-empty-state').hide();
 
         // Add user message
         if (promptText) {
             const userMsg = $(`
-                <div class="ai-response-item" style="background: #e3f2fd; border-left-color: #2196f3;">
-                    <div class="ai-response-content">${promptText.replace(/\n/g, '<br>')}</div>
+                <div class="poe-message poe-message-user">
+                    <div class="poe-message-bubble">
+                        <div class="poe-message-content">${promptText.replace(/\n/g, '<br>')}</div>
+                    </div>
                 </div>
             `);
-            $('.ai-responses-container').append(userMsg);
+            $('#poe-messages-container').append(userMsg);
         }
 
-        // Process each selected AI
-        selectedAIs.forEach(function(aiConfig) {
-            aiConfig.versions.forEach(function(version) {
-                const responseId = `response_${aiConfig.provider}_${version}_${Date.now()}`;
-                const aiModel = <?= json_encode($ai_models) ?>[aiConfig.provider];
-                
-                const responseDiv = $(`
-                    <div class="ai-response-item" id="${responseId}">
-                        <div class="ai-response-header">
-                            <div class="ai-response-title">
-                                <span style="color: ${aiModel.color};">${aiModel.icon}</span>
-                                ${aiModel.name} - ${version}
-                            </div>
-                            <div class="ai-response-time">
-                                <i class="fas fa-clock"></i> Processing...
-                            </div>
-                        </div>
-                        <div class="ai-response-content">
-                            <div class="loading-spinner">
-                                <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <p class="mt-2" style="font-size: 0.9em;">Sending request...</p>
-                            </div>
+        // Add image attachments if any
+        if (uploadedImages.length > 0) {
+            uploadedImages.forEach(img => {
+                const imgMsg = $(`
+                    <div class="poe-message poe-message-user">
+                        <div class="poe-message-bubble">
+                            <img src="${img.dataUrl}" style="max-width: 300px; border-radius: 8px; margin-top: 8px;">
                         </div>
                     </div>
                 `);
-                $('.ai-responses-container').append(responseDiv);
-
-                // Simulate API call (replace with actual API integration)
-                setTimeout(function() {
-                    const content = `This is a simulated response from ${aiModel.name} (${version}).\n\n` +
-                                  `Your prompt: "${promptText.substring(0, 100)}${promptText.length > 100 ? '...' : ''}"\n\n` +
-                                  `In a real implementation, this would make an API call to ${aiModel.name} with the selected model version. ` +
-                                  `The response would include the actual AI-generated content based on your prompt.`;
-                    
-                    $(`#${responseId} .ai-response-content`).html(`<pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${content}</pre>`);
-                    $(`#${responseId} .ai-response-time`).html(`<i class="fas fa-check-circle text-success"></i> ${new Date().toLocaleTimeString()}`);
-                }, 1000 + Math.random() * 2000);
+                $('#poe-messages-container').append(imgMsg);
             });
+        }
+
+        // Process each selected AI
+        Object.values(selectedModels).forEach(function(modelConfig) {
+            const responseId = `response_${modelConfig.provider}_${modelConfig.version}_${Date.now()}`;
+            const aiModel = modelConfig.model;
+            
+            const responseDiv = $(`
+                <div class="poe-message poe-message-ai" id="${responseId}">
+                    <div style="display: flex; gap: 12px; width: 100%;">
+                        <div class="poe-model-avatar" style="width: 32px; height: 32px; border-radius: 8px; background: ${aiModel.bg_color}; display: flex; align-items: center; justify-content: center; color: ${aiModel.color}; font-size: 1em; flex-shrink: 0;">
+                            ${aiModel.icon}
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div class="poe-message-header" style="color: ${aiModel.color};">
+                                ${aiModel.name} • ${modelConfig.version}
+                            </div>
+                            <div class="poe-message-bubble">
+                                <div class="poe-message-content">
+                                    <div class="poe-loading">
+                                        <div class="poe-loading-dot"></div>
+                                        <div class="poe-loading-dot"></div>
+                                        <div class="poe-loading-dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+            $('#poe-messages-container').append(responseDiv);
+
+            // Simulate API call
+            setTimeout(function() {
+                const content = `This is a simulated response from ${aiModel.name} (${modelConfig.version}).\n\n` +
+                              `Your prompt: "${promptText.substring(0, 100)}${promptText.length > 100 ? '...' : ''}"\n\n` +
+                              `In a real implementation, this would make an API call to ${aiModel.name} with the selected model version. ` +
+                              `The response would include the actual AI-generated content based on your prompt.`;
+                
+                $(`#${responseId} .poe-message-content`).html(`<div style="white-space: pre-wrap; font-family: inherit; margin: 0;">${content}</div>`);
+            }, 1000 + Math.random() * 2000);
         });
 
         // Clear input
-        $('#ai-prompt-text').val('').css('height', 'auto');
+        $('#poe-prompt-text').val('').css('height', 'auto');
         uploadedImages = [];
         updateImagePreview();
+        updateSendButton();
 
         // Scroll to bottom
-        $('.ai-responses-container').animate({
-            scrollTop: $('.ai-responses-container')[0].scrollHeight
+        const container = $('#poe-messages-container');
+        container.animate({
+            scrollTop: container[0].scrollHeight
         }, 300);
     });
 
     // Enter key to submit (Shift+Enter for new line)
-    $('#ai-prompt-text').on('keydown', function(e) {
+    $('#poe-prompt-text').on('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            $('#submit-prompt').click();
+            if (!$('#poe-submit-prompt').prop('disabled')) {
+                $('#poe-submit-prompt').click();
+            }
         }
     });
 
-    // Sync inline checkboxes with main checkboxes
-    $('.ai-version-checkbox-inline').on('change', function() {
-        const aiKey = $(this).data('ai-key');
-        const version = $(this).val();
-        const isChecked = $(this).is(':checked');
-        
-        // Update dropdown if exists
-        $(`#version_${aiKey} .ai-version-select option[value="${version}"]`).prop('selected', isChecked);
-    });
-
-    updateSelectedCount();
+    // Initialize
+    updateSelectedModels();
 });
 </script>
 
