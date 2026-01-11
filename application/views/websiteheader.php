@@ -381,7 +381,7 @@ if(!$basic_header_footer){
         align-items: center;
         padding: 12px 15px;
         text-decoration: none;
-        color: #000;
+        color: #ffffff;
         border-radius: 25px;
         transition: all 0.2s ease;
         width: 100%;
@@ -390,8 +390,8 @@ if(!$basic_header_footer){
     }
     
     .sidebar-menu-item:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
     
     .sidebar-menu-icon {
@@ -448,18 +448,56 @@ if(!$basic_header_footer){
         }
     }
     
-    /* Small screens - menu always visible */
+    /* Small screens - fixed bottom menu */
     @media (max-width: 767px) {
         .left-sidebar-menu {
-            width: 70px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: auto;
+            height: auto;
+            width: 100%;
             display: flex !important;
             visibility: visible !important;
             transform: none !important;
+            flex-direction: row;
+            padding: 10px 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: none;
         }
         
-        /* Adjust body padding to account for sidebar while keeping containers centered */
+        .sidebar-logo {
+            display: none;
+        }
+        
+        .sidebar-menu-items {
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-around;
+            gap: 0;
+        }
+        
+        .sidebar-menu-item {
+            flex-direction: column;
+            padding: 8px 5px;
+            flex: 1;
+            justify-content: center;
+            min-width: 0;
+        }
+        
+        .sidebar-menu-text {
+            display: none;
+        }
+        
+        .sidebar-menu-icon {
+            font-size: 1.3em;
+        }
+        
+        /* Adjust body padding to account for bottom menu */
         body {
-            padding-left: 70px;
+            padding-left: 0;
+            padding-bottom: 70px;
         }
     }
     ';
@@ -484,7 +522,8 @@ if (!$basic_header_footer) {
     echo '</div>';
     echo '<div class="sidebar-menu-items">';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🏠</span><span class="sidebar-menu-text">For You</span></a>';
-    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🔍</span><span class="sidebar-menu-text">Explore</span></a>';
+    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🔍</span><span class="sidebar-menu-text">Search</span></a>';
+    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🌐</span><span class="sidebar-menu-text">Explore</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">👥</span><span class="sidebar-menu-text">Following</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">👤</span><span class="sidebar-menu-text">Profile</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">➕</span><span class="sidebar-menu-text">New Prompt</span></a>';
