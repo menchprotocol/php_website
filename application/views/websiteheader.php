@@ -406,10 +406,10 @@ if(!$basic_header_footer){
     
     .sidebar-logo-link img,
     .sidebar-logo-link .e_cover {
-        max-width: 32px;
-        max-height: 32px;
-        width: 32px;
-        height: 32px;
+        max-width: 30px;
+        max-height: 30px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         object-fit: cover;
     }
