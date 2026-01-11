@@ -324,7 +324,15 @@ if(!$basic_header_footer){
 
     //Left Sidebar Menu Styles
     //Center the fixed-top header container (accounts for sidebar padding)
+    //Apply to both with and without top-header-position class to maintain centering on scroll
     echo '
+    .fixed-top.container {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 100%;
+        max-width: 610px;
+    }
+    
     .fixed-top.top-header-position.container {
         left: 50% !important;
         transform: translateX(-50%) !important;
@@ -333,6 +341,7 @@ if(!$basic_header_footer){
     }
     
     @media (min-width: 1024px) {
+        .fixed-top.container,
         .fixed-top.top-header-position.container {
             left: calc(250px + (100vw - 250px) / 2) !important;
             transform: translateX(-50%) !important;
@@ -340,6 +349,7 @@ if(!$basic_header_footer){
     }
     
     @media (min-width: 768px) and (max-width: 1023px) {
+        .fixed-top.container,
         .fixed-top.top-header-position.container {
             left: calc(70px + (100vw - 70px) / 2) !important;
             transform: translateX(-50%) !important;
@@ -347,6 +357,7 @@ if(!$basic_header_footer){
     }
     
     @media (max-width: 767px) {
+        .fixed-top.container,
         .fixed-top.top-header-position.container {
             left: 50% !important;
             transform: translateX(-50%) !important;
