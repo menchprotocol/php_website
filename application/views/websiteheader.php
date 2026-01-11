@@ -322,6 +322,153 @@ if(!$basic_header_footer){
         }
     }
 
+    //Left Sidebar Menu Styles
+    echo '
+    .left-sidebar-menu {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 70px;
+        background-color: #ffffff;
+        border-right: 1px solid #e0e0e0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 10px;
+        transition: width 0.3s ease;
+        overflow-x: hidden;
+    }
+    
+    .sidebar-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 10px;
+        margin-bottom: 30px;
+        min-height: 50px;
+    }
+    
+    .sidebar-logo-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+    }
+    
+    .sidebar-logo-text {
+        display: none;
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #000;
+        text-decoration: none;
+        margin-left: 12px;
+        white-space: nowrap;
+    }
+    
+    .sidebar-menu-items {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .sidebar-menu-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        text-decoration: none;
+        color: #000;
+        border-radius: 25px;
+        transition: background-color 0.2s ease;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .sidebar-menu-item:hover {
+        background-color: #f0f0f0;
+    }
+    
+    .sidebar-menu-icon {
+        font-size: 1.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+    }
+    
+    .sidebar-menu-text {
+        display: none;
+        margin-left: 20px;
+        font-size: 1.1em;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    
+    /* Larger screens - show full menu */
+    @media (min-width: 1024px) {
+        .left-sidebar-menu {
+            width: 250px;
+            align-items: flex-start;
+        }
+        
+        .sidebar-logo {
+            justify-content: flex-start;
+            padding-left: 20px;
+        }
+        
+        .sidebar-logo-text {
+            display: block;
+        }
+        
+        .sidebar-menu-item {
+            justify-content: flex-start;
+        }
+        
+        .sidebar-menu-text {
+            display: block;
+        }
+        
+        /* Adjust main content to account for sidebar */
+        .container_content,
+        #container_main {
+            margin-left: 250px;
+        }
+        
+        .fixed-top.top-header-position {
+            left: 250px;
+            width: calc(100% - 250px);
+        }
+    }
+    
+    /* Medium screens - collapsed menu */
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .left-sidebar-menu {
+            width: 70px;
+        }
+        
+        .container_content,
+        #container_main {
+            margin-left: 70px;
+        }
+        
+        .fixed-top.top-header-position {
+            left: 70px;
+            width: calc(100% - 70px);
+        }
+    }
+    
+    /* Small screens - hide sidebar on very small screens, show as overlay */
+    @media (max-width: 767px) {
+        .left-sidebar-menu {
+            transform: translateX(-100%);
+            width: 250px;
+        }
+        
+        .left-sidebar-menu.mobile-open {
+            transform: translateX(0);
+        }
+    }
+    ';
 
     echo ' </style>';
     ?>
@@ -334,6 +481,23 @@ if(!$basic_header_footer){
 
 echo '<body class="' . $body_class . '" id="main_body">';
 echo $bgVideo;
+
+//Left Sidebar Menu
+if (!$basic_header_footer) {
+    echo '<nav class="left-sidebar-menu" id="leftSidebarMenu">';
+    echo '<div class="sidebar-logo">';
+    echo (strlen($domain_cover) ? '<a href="' . view_memory(42903, 14565) . '" class="sidebar-logo-link">' . view_cover($domain_logo) . '</a>' : '');
+    echo '<a href="' . view_memory(42903, 14565) . '" class="sidebar-logo-text">' . get_domain('m__name') . '</a>';
+    echo '</div>';
+    echo '<div class="sidebar-menu-items">';
+    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🏠</span><span class="sidebar-menu-text">For You</span></a>';
+    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🔍</span><span class="sidebar-menu-text">Explore</span></a>';
+    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">👥</span><span class="sidebar-menu-text">Following</span></a>';
+    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">👤</span><span class="sidebar-menu-text">Profile</span></a>';
+    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">➕</span><span class="sidebar-menu-text">New Prompt</span></a>';
+    echo '</div>';
+    echo '</nav>';
+}
 
 //JS Variables for this app on page
 if ($focus_post) {
