@@ -602,6 +602,7 @@ if (!$basic_header_footer) {
     echo '<div class="sidebar-menu-items">';
     echo '<a href="/" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-home"></i></span><span class="sidebar-menu-text">Home</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
+    echo '<a href="/messages" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i></span><span class="sidebar-menu-text">Messages</span></a>';
     echo '<a href="/apps" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="far fa-slash-forward fa-sharp"></i></span><span class="sidebar-menu-text">Apps</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
     echo '</div>';
