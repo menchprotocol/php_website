@@ -347,6 +347,13 @@ if(!$basic_header_footer){
         padding: 15px 10px;
         margin-bottom: 30px;
         min-height: 50px;
+        position: relative;
+    }
+    
+    .sidebar-logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .sidebar-logo-link {
@@ -356,14 +363,33 @@ if(!$basic_header_footer){
         text-decoration: none;
     }
     
-    .sidebar-logo-text {
+    .sidebar-logo-link img,
+    .sidebar-logo-link .e_cover {
+        max-width: 32px;
+        max-height: 32px;
+        width: auto;
+        height: auto;
+    }
+    
+    .sidebar-menu-header {
         display: none;
-        font-weight: bold;
-        font-size: 1.2em;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        padding-left: 20px;
+    }
+    
+    .sidebar-menu-icon-header {
+        font-size: 1.3em;
         color: #000;
-        text-decoration: none;
-        margin-left: 12px;
-        white-space: nowrap;
+        margin-right: 12px;
+    }
+    
+    .sidebar-menu-header-text {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #000;
+        text-transform: lowercase;
     }
     
     .sidebar-menu-items {
@@ -413,11 +439,15 @@ if(!$basic_header_footer){
         
         .sidebar-logo {
             justify-content: flex-start;
-            padding-left: 20px;
+            padding-left: 0;
         }
         
-        .sidebar-logo-text {
-            display: block;
+        .sidebar-logo-container {
+            display: none;
+        }
+        
+        .sidebar-menu-header {
+            display: flex;
         }
         
         .sidebar-menu-item {
@@ -444,6 +474,14 @@ if(!$basic_header_footer){
     @media (min-width: 768px) and (max-width: 1023px) {
         .left-sidebar-menu {
             width: 70px;
+        }
+        
+        .sidebar-logo-container {
+            display: flex;
+        }
+        
+        .sidebar-menu-header {
+            display: none;
         }
         
         .container_content,
@@ -486,8 +524,13 @@ echo $bgVideo;
 if (!$basic_header_footer) {
     echo '<nav class="left-sidebar-menu" id="leftSidebarMenu">';
     echo '<div class="sidebar-logo">';
+    echo '<div class="sidebar-logo-container">';
     echo (strlen($domain_cover) ? '<a href="' . view_memory(42903, 14565) . '" class="sidebar-logo-link">' . view_cover($domain_logo) . '</a>' : '');
-    echo '<a href="' . view_memory(42903, 14565) . '" class="sidebar-logo-text">' . get_domain('m__name') . '</a>';
+    echo '</div>';
+    echo '<div class="sidebar-menu-header">';
+    echo '<i class="fas fa-bars sidebar-menu-icon-header"></i>';
+    echo '<span class="sidebar-menu-header-text">menu</span>';
+    echo '</div>';
     echo '</div>';
     echo '<div class="sidebar-menu-items">';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🏠</span><span class="sidebar-menu-text">For You</span></a>';
