@@ -343,8 +343,8 @@ if(!$basic_header_footer){
     @media (min-width: 1024px) {
         .fixed-top.container,
         .fixed-top.top-header-position.container {
-            left: 50vw !important;
-            transform: translateX(-50%) !important;
+            left: calc(50vw - 180px) !important;
+            transform: translateX(0) !important;
         }
     }
     
