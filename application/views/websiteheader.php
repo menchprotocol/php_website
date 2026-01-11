@@ -506,14 +506,14 @@ if(!$basic_header_footer){
     }
     
     .sidebar-menu-item-primary {
-        background-color: #1d9bf0 !important;
+        background-color: #000000 !important;
         color: #ffffff !important;
         font-weight: 600;
     }
     
     .sidebar-menu-item-primary:hover {
-        background-color: #1a8cd8 !important;
-        box-shadow: 0 4px 12px rgba(29, 155, 240, 0.3);
+        background-color: #1a1a1a !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
     
     .sidebar-menu-item-primary .sidebar-menu-icon i,
