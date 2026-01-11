@@ -1915,6 +1915,7 @@ function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
         setTimeout(function () {
             toggle_finder();
         }, 55);
+        alert('serach wsas on');
     }
 
     var chainusertype = 0;
