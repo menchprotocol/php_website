@@ -491,7 +491,7 @@ if(!$basic_header_footer){
     .sidebar-menu-badge {
         position: absolute;
         top: -6px;
-        right: -6px;
+        right: -10px;
         background-color: #ed4956;
         color: #ffffff;
         border-radius: 10px;
@@ -619,7 +619,7 @@ if(!$basic_header_footer){
         
         .sidebar-menu-badge {
             top: -4px;
-            right: -4px;
+            right: -8px;
         }
         
         /* Adjust body padding to account for bottom menu */
