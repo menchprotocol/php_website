@@ -575,7 +575,7 @@ if (!$basic_header_footer) {
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-globe"></i></span><span class="sidebar-menu-text">Explore</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-users"></i></span><span class="sidebar-menu-text">Following</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-user"></i></span><span class="sidebar-menu-text">Profile</span></a>';
-    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">New Prompt</span></a>';
+    echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">New Prompt</span></a>';
     echo '</div>';
     echo '</nav>';
 }
@@ -616,10 +616,6 @@ if ($focus_post) {
                 echo '</td>';
 
 
-                //New Post?
-                if ($user_session) {
-                    echo '<td class="block-x enlarge add_post"><a href="javascript:void(0);" onclick="post_edit_start()" title="' . $users___11035[44403]['m__name'] . '">' . $users___11035[44403]['m__cover'] . '</a></td>';
-                }
 
                 //MENU
                 $menu_type = ($user_session ? 12500 : 14372);
