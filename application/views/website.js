@@ -1,7 +1,7 @@
 //Define some global variables:
 var has_unsaved_changes = false; //Tracks user/post modal edits
 var focus_group = 0;
-
+var search_on = false;
 
 if (!js_pl_id || !js_userids___43512.includes(js_pl_id)) {
     //Microsoft Clarity=
@@ -752,7 +752,7 @@ function post_cover(chainusertype, postid, counter, first_segment, current_e) {
 
 
 //Main navigation
-var search_on = false;
+
 
 function toggle_finder() {
 
@@ -1908,6 +1908,14 @@ function generate_string_id(length) {
 }
 
 function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
+
+    if(search_on){
+        //turn off first:
+        toggle_finder();
+        setTimeout(function () {
+            toggle_finder();
+        }, 55);
+    }
 
     var chainusertype = 0;
     var focus_post_id = (parseInt($('#focus__node').val()) == 12273 ? parseInt($('#focus__id').val()) : 0);
