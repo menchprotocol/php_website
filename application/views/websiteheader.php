@@ -330,7 +330,7 @@ if(!$basic_header_footer){
         top: 0;
         height: 100vh;
         width: 70px;
-        background-color: transparent;
+        background-color: rgba(0, 0, 0, 0.69) !important;
         border-right: none;
         z-index: 1000;
         display: flex;
@@ -347,13 +347,10 @@ if(!$basic_header_footer){
         padding: 15px 10px;
         margin-bottom: 30px;
         min-height: 50px;
-        position: relative;
-    }
-    
-    .sidebar-logo-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        position: sticky;
+        top: 0;
+        background-color: transparent;
+        z-index: 10;
     }
     
     .sidebar-logo-link {
@@ -369,27 +366,6 @@ if(!$basic_header_footer){
         max-height: 32px;
         width: auto;
         height: auto;
-    }
-    
-    .sidebar-menu-header {
-        display: none;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-        padding-left: 20px;
-    }
-    
-    .sidebar-menu-icon-header {
-        font-size: 1.3em;
-        color: #000;
-        margin-right: 12px;
-    }
-    
-    .sidebar-menu-header-text {
-        font-weight: bold;
-        font-size: 1.1em;
-        color: #000;
-        text-transform: lowercase;
     }
     
     .sidebar-menu-items {
@@ -441,15 +417,7 @@ if(!$basic_header_footer){
         
         .sidebar-logo {
             justify-content: flex-start;
-            padding-left: 0;
-        }
-        
-        .sidebar-logo-container {
-            display: none;
-        }
-        
-        .sidebar-menu-header {
-            display: flex;
+            padding-left: 20px;
         }
         
         .sidebar-menu-item {
@@ -464,11 +432,6 @@ if(!$basic_header_footer){
         body {
             padding-left: 250px;
         }
-        
-        .fixed-top.top-header-position {
-            left: 250px;
-            width: calc(100% - 250px);
-        }
     }
     
     /* Medium screens - collapsed menu */
@@ -477,39 +440,21 @@ if(!$basic_header_footer){
             width: 70px;
         }
         
-        .sidebar-logo-container {
-            display: flex;
+        /* Adjust body padding to account for sidebar while keeping containers centered */
+        body {
+            padding-left: 70px;
         }
-        
-        .sidebar-menu-header {
-            display: none;
+    }
+    
+    /* Small screens - menu always visible */
+    @media (max-width: 767px) {
+        .left-sidebar-menu {
+            width: 70px;
         }
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
         body {
             padding-left: 70px;
-        }
-        
-        .fixed-top.top-header-position {
-            left: 70px;
-            width: calc(100% - 70px);
-        }
-    }
-    
-    /* Small screens - hide sidebar on very small screens, show as overlay */
-    @media (max-width: 767px) {
-        .left-sidebar-menu {
-            transform: translateX(-100%);
-            width: 250px;
-        }
-        
-        .left-sidebar-menu.mobile-open {
-            transform: translateX(0);
-        }
-        
-        /* Reset padding on small screens since sidebar is hidden */
-        body {
-            padding-left: 0;
         }
     }
     ';
@@ -530,13 +475,7 @@ echo $bgVideo;
 if (!$basic_header_footer) {
     echo '<nav class="left-sidebar-menu" id="leftSidebarMenu">';
     echo '<div class="sidebar-logo">';
-    echo '<div class="sidebar-logo-container">';
     echo (strlen($domain_cover) ? '<a href="' . view_memory(42903, 14565) . '" class="sidebar-logo-link">' . view_cover($domain_logo) . '</a>' : '');
-    echo '</div>';
-    echo '<div class="sidebar-menu-header">';
-    echo '<i class="fas fa-bars sidebar-menu-icon-header"></i>';
-    echo '<span class="sidebar-menu-header-text">menu</span>';
-    echo '</div>';
     echo '</div>';
     echo '<div class="sidebar-menu-items">';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon">🏠</span><span class="sidebar-menu-text">For You</span></a>';
