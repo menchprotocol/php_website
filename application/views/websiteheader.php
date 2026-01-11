@@ -652,7 +652,7 @@ if (!$basic_header_footer) {
     echo '<a href="/" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-home"></i></span><span class="sidebar-menu-text">Home</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-menu-item-primary" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
-    echo '<a href="/messages" class="sidebar-menu-item sidebar-menu-item-with-badge"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i><span class="sidebar-menu-badge">2</span></span><span class="sidebar-menu-text">Messages</span></a>';
+    echo '<a href="/messages" class="sidebar-menu-item sidebar-menu-item-with-badge"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i><span class="sidebar-menu-badge">345</span></span><span class="sidebar-menu-text">Messages</span></a>';
     echo '<a href="/apps" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="far fa-slash-forward fa-sharp"></i></span><span class="sidebar-menu-text">Apps</span></a>';
     echo '</div>';
     echo '</nav>';
@@ -714,6 +714,11 @@ if ($focus_post) {
                         continue;
                     }
 
+                    // Skip apps from top right menu
+                    if (in_array($chainusertype, $this->config->item('userids___6287'))) {
+                        continue;
+                    }
+
                     $extra_class = null;
                     $text_class = null;
 
@@ -746,11 +751,6 @@ if ($focus_post) {
                             continue;
                         }
                         $href = 'href="mailto:' . $value . '"';
-
-                    } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
-
-                        //APP
-                        $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '') : '') . '"';
 
                     } else {
 
