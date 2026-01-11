@@ -473,6 +473,7 @@ if(!$basic_header_footer){
         justify-content: center;
         min-width: 24px;
         color: #ffffff;
+        position: relative;
     }
     
     .sidebar-menu-icon i {
@@ -606,6 +607,19 @@ if(!$basic_header_footer){
         
         .sidebar-menu-icon {
             font-size: 1.3em;
+        }
+        
+        .sidebar-menu-item {
+            position: relative;
+        }
+        
+        .sidebar-menu-icon {
+            position: relative;
+        }
+        
+        .sidebar-menu-badge {
+            top: 2px;
+            right: 2px;
         }
         
         /* Adjust body padding to account for bottom menu */
