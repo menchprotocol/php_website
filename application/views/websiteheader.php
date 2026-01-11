@@ -584,9 +584,7 @@ if (!$basic_header_footer) {
     echo '<div class="sidebar-menu-items">';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-home"></i></span><span class="sidebar-menu-text">For You</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
-    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-globe"></i></span><span class="sidebar-menu-text">Explore</span></a>';
-    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-users"></i></span><span class="sidebar-menu-text">Following</span></a>';
-    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-user"></i></span><span class="sidebar-menu-text">Profile</span></a>';
+    echo '<a href="' . view_memory(42903, 6287) . '" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-th-large"></i></span><span class="sidebar-menu-text">Apps</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">New Prompt</span></a>';
     echo '</div>';
     echo '</nav>';
