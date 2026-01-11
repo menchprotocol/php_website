@@ -503,6 +503,10 @@ if(!$basic_header_footer){
             width: 70px;
         }
         
+        .sidebar-logo {
+            display: none;
+        }
+        
         /* Adjust body padding to account for sidebar while keeping containers centered */
         body {
             padding-left: 70px;
