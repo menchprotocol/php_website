@@ -408,8 +408,10 @@ if(!$basic_header_footer){
     .sidebar-logo-link .e_cover {
         max-width: 32px;
         max-height: 32px;
-        width: auto;
-        height: auto;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
     }
     
     .sidebar-menu-items {
@@ -569,7 +571,7 @@ if (!$basic_header_footer) {
     echo '</div>';
     echo '<div class="sidebar-menu-items">';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-home"></i></span><span class="sidebar-menu-text">For You</span></a>';
-    echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
+    echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-globe"></i></span><span class="sidebar-menu-text">Explore</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-users"></i></span><span class="sidebar-menu-text">Following</span></a>';
     echo '<a href="#" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-user"></i></span><span class="sidebar-menu-text">Profile</span></a>';
@@ -613,10 +615,6 @@ if ($focus_post) {
                 echo '</div>';
                 echo '</td>';
 
-                if (search_enabled() && $user_session) {
-                    echo '<td class="block-x icon_finder enlarge ' . (intval(website_setting(32450)) ? ' hidden ' : '') . '"><a href="javascript:void(0);" onclick="toggle_finder()">' . $users___11035[7256]['m__cover'] . '</a></td>';
-                    echo '<td class="block-x icon_finder enlarge hidden"><a href="javascript:void(0);" onclick="toggle_finder()">' . $users___11035[13401]['m__cover'] . '</a></td>';
-                }
 
                 //New Post?
                 if ($user_session) {
