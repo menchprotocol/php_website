@@ -432,6 +432,15 @@ if(!$basic_header_footer){
         padding: 6px 12px !important;
     }
     
+    /* Hide footnote section in post modal */
+    #modal31911 .save_postfootnote {
+        display: none !important;
+    }
+    
+    #modal31911 .dynamic_editing_input:has(.save_postfootnote) {
+        display: none !important;
+    }
+    
     .sidebar-menu-items {
         display: flex;
         flex-direction: column;
