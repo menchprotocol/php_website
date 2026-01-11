@@ -749,19 +749,7 @@ if ($focus_post) {
 
                     } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
 
-                        //APP - Skip most apps but allow logout
-                        // Get all apps except logout (if logout is in userids___6287)
-                        $apps_to_skip = $this->config->item('userids___6287');
-                        // Remove logout from skip list if it exists (logout might not be in userids___6287)
-                        $apps_to_skip = array_filter($apps_to_skip, function($id) {
-                            // Keep logout if it exists - we'll handle it separately if needed
-                            return true; // For now, skip all apps
-                        });
-                        
-                        // Skip apps (but not logout - logout should be handled elsewhere if it's not in userids___6287)
-                        if (in_array($chainusertype, $apps_to_skip)) {
-                            continue;
-                        }
+                        //APP - Handle apps (logout will be included if it's in userids___6287)
                         $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '') : '') . '"';
 
                     } else {
