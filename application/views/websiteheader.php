@@ -323,6 +323,37 @@ if(!$basic_header_footer){
     }
 
     //Left Sidebar Menu Styles
+    //Center the fixed-top header container (accounts for sidebar padding)
+    echo '
+    .fixed-top.top-header-position.container {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 100%;
+        max-width: 610px;
+    }
+    
+    @media (min-width: 1024px) {
+        .fixed-top.top-header-position.container {
+            left: calc(250px + (100vw - 250px - 610px) / 2) !important;
+            transform: none !important;
+        }
+    }
+    
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .fixed-top.top-header-position.container {
+            left: calc(70px + (100vw - 70px - 610px) / 2) !important;
+            transform: none !important;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .fixed-top.top-header-position.container {
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+        }
+    }
+    ';
+    
     echo '
     .left-sidebar-menu {
         position: fixed;
