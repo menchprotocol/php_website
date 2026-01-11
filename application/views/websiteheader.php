@@ -458,6 +458,7 @@ if(!$basic_header_footer){
         width: 100%;
         justify-content: center;
         background-color: transparent;
+        position: relative;
     }
     
     .sidebar-menu-item:hover {
@@ -484,6 +485,40 @@ if(!$basic_header_footer){
         font-size: 1.1em;
         font-weight: 500;
         white-space: nowrap;
+    }
+    
+    .sidebar-menu-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: #ed4956;
+        color: #ffffff;
+        border-radius: 10px;
+        min-width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 0 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .sidebar-menu-item-primary {
+        background-color: #1d9bf0 !important;
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+    
+    .sidebar-menu-item-primary:hover {
+        background-color: #1a8cd8 !important;
+        box-shadow: 0 4px 12px rgba(29, 155, 240, 0.3);
+    }
+    
+    .sidebar-menu-item-primary .sidebar-menu-icon i,
+    .sidebar-menu-item-primary .sidebar-menu-text {
+        color: #ffffff !important;
     }
     
     /* Larger screens - show full menu */
@@ -602,9 +637,9 @@ if (!$basic_header_footer) {
     echo '<div class="sidebar-menu-items">';
     echo '<a href="/" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-home"></i></span><span class="sidebar-menu-text">Home</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
-    echo '<a href="/messages" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i></span><span class="sidebar-menu-text">Messages</span></a>';
+    echo '<a href="/messages" class="sidebar-menu-item sidebar-menu-item-with-badge"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i></span><span class="sidebar-menu-text">Messages</span><span class="sidebar-menu-badge">2</span></a>';
     echo '<a href="/apps" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="far fa-slash-forward fa-sharp"></i></span><span class="sidebar-menu-text">Apps</span></a>';
-    echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
+    echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-menu-item-primary" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
     echo '</div>';
     echo '</nav>';
 }
