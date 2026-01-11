@@ -330,8 +330,8 @@ if(!$basic_header_footer){
         top: 0;
         height: 100vh;
         width: 70px;
-        background-color: #ffffff;
-        border-right: 1px solid #e0e0e0;
+        background-color: transparent;
+        border-right: none;
         z-index: 1000;
         display: flex;
         flex-direction: column;
@@ -405,13 +405,15 @@ if(!$basic_header_footer){
         text-decoration: none;
         color: #000;
         border-radius: 25px;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
         width: 100%;
         justify-content: center;
+        background-color: transparent;
     }
     
     .sidebar-menu-item:hover {
-        background-color: #f0f0f0;
+        background-color: rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
     
     .sidebar-menu-icon {
