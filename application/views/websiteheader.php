@@ -382,7 +382,6 @@ if(!$basic_header_footer){
         transition: width 0.3s ease;
         overflow-x: hidden;
         transform: none !important;
-        justify-content: space-between;
     }
     
     .sidebar-logo {
@@ -419,57 +418,6 @@ if(!$basic_header_footer){
         display: flex;
         flex-direction: column;
         gap: 8px;
-        flex: 1;
-    }
-    
-    .sidebar-menu-bottom {
-        margin-top: auto;
-        padding-top: 20px;
-    }
-    
-    .sidebar-user-menu {
-        width: 100%;
-    }
-    
-    .sidebar-user-button {
-        width: 100%;
-        padding: 0;
-        background: transparent;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .sidebar-user-button:focus,
-    .sidebar-user-button:active {
-        box-shadow: none;
-        outline: none;
-    }
-    
-    .sidebar-user-avatar {
-        border-radius: 50%;
-        overflow: hidden;
-    }
-    
-    .sidebar-user-avatar img,
-    .sidebar-user-avatar .e_cover {
-        border-radius: 50%;
-    }
-    
-    .sidebar-user-menu .dropdown-menu {
-        background-color: rgba(0, 0, 0, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: 10px;
-    }
-    
-    .sidebar-user-menu .dropdown-item {
-        color: #ffffff;
-    }
-    
-    .sidebar-user-menu .dropdown-item:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #ffffff;
     }
     
     .sidebar-menu-item {
@@ -529,11 +477,6 @@ if(!$basic_header_footer){
         
         .sidebar-menu-text {
             display: block;
-        }
-        
-        .sidebar-user-button {
-            justify-content: flex-start;
-            padding-left: 20px;
         }
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
@@ -598,10 +541,6 @@ if(!$basic_header_footer){
         
         .sidebar-menu-icon {
             font-size: 1.3em;
-        }
-        
-        .sidebar-menu-bottom {
-            display: none;
         }
         
         /* Adjust body padding to account for bottom menu */
@@ -676,9 +615,80 @@ if ($focus_post) {
                 echo '</div>';
                 echo '</td>';
 
+                //MENU
+                $menu_type = ($user_session ? 12500 : 14372);
+                echo '<td class="block-menu">';
 
+                echo '<div class="dropdown inline-block">';
+                echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
+                echo '<span class="e_cover e_cover_mini menu-cover">' . ($user_session && isset($user_session['usercover']) && strlen($user_session['usercover']) ? view_cover($user_session['usercover'], 1) : $users___11035[$menu_type]['m__cover']) . '</span>';
+                echo '</button>';
+                echo '<div class="dropdown-menu">';
+                foreach ($this->config->item('users___' . $menu_type) as $chainusertype => $m) {
 
+                    $superpowers_required = array_intersect($this->config->item('userids___10957'), $m['m__following']);
+                    if (count($superpowers_required) && !user_session(end($superpowers_required))) {
+                        continue;
+                    }
 
+                    $hosted_domains = array_intersect($this->config->item('userids___14870'), $m['m__following']);
+                    if (count($hosted_domains) && !in_array($website_id, $hosted_domains)) {
+                        continue;
+                    }
+
+                    $extra_class = null;
+                    $text_class = null;
+
+                    if ($chainusertype == 26105 && $user_session) {
+
+                        //Profile View
+                        $m['m__cover'] = view_cover($user_session['usercover'], 1);
+                        $m['m__name'] = '<div class="type_head main__title">' . $user_session['username'] . '</div><div class="grey type_user">@' . $user_session['userhandle'] . '</div>';
+                        $href = 'href="' . view_memory(42903, 42902) . $user_session['userhandle'] . '" ';
+
+                    } elseif ($chainusertype == 42246 && $user_session) {
+
+                        //Profile Edit
+                        $href = 'href="javascript:void(0);" onclick="user_editor(' . $user_session['userid'] . ',0)" ';
+
+                    } elseif ($chainusertype == 28615) {
+
+                        //Phone US
+                        $value = website_setting($chainusertype);
+                        if (!strlen($value)) {
+                            continue;
+                        }
+                        $href = 'href="tel:' . preg_replace("/[^0-9]/", "", $value) . '"';
+
+                    } elseif ($chainusertype == 28614) {
+
+                        //Email US
+                        $value = website_setting($chainusertype);
+                        if (!strlen($value)) {
+                            continue;
+                        }
+                        $href = 'href="mailto:' . $value . '"';
+
+                    } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
+
+                        //APP
+                        $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '') : '') . '"';
+
+                    } else {
+
+                        //Unknown
+                        continue;
+
+                    }
+
+                    //Navigation
+                    echo '<a ' . $href . ' chainusertype="' . $chainusertype . '" class="dropdown-item dropdown_type_' . $chainusertype . ' main__title ' . $extra_class . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="' . $text_class . '">' . $m['m__name'] . '</span></a>';
+
+                }
+
+                echo '</div>';
+                echo '</div>';
+                echo '</td>';
 
                 //Add User
                 /*
