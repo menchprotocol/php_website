@@ -753,6 +753,12 @@ function post_cover(chainusertype, postid, counter, first_segment, current_e) {
 
 //Main navigation
 
+function search_hide(){
+    search_on = false; //Reverse
+    $('.max_width').removeClass('search_bar');
+    $('.logo_frame, .container_content').removeClass('hidden');
+    $('.nav_finder, #container_finder').addClass('hidden');
+}
 
 function toggle_finder() {
 
@@ -762,10 +768,7 @@ function toggle_finder() {
     if (search_on) {
 
         //Turn OFF
-        search_on = false; //Reverse
-        $('.max_width').removeClass('search_bar');
-        $('.logo_frame, .container_content').removeClass('hidden');
-        $('.nav_finder, #container_finder').addClass('hidden');
+        search_hide();
 
     } else {
 
@@ -1911,11 +1914,7 @@ function post_edit_start(postid = 0, chainid = 0, footnote_overrride = null) {
 
     if(search_on){
         //turn off first:
-        toggle_finder();
-        setTimeout(function () {
-            toggle_finder();
-        }, 55);
-        alert('serach wsas on');
+        search_hide()
     }
 
     var chainusertype = 0;
