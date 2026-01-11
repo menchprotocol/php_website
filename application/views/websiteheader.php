@@ -414,6 +414,19 @@ if(!$basic_header_footer){
         object-fit: cover;
     }
     
+    /* Make top menu user image same size as sidebar logo */
+    .menu-cover.e_cover_mini img,
+    .menu-cover.e_cover_mini .e_cover img,
+    .menu-cover.e_cover_mini div.img {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .menu-cover.e_cover_mini {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
     .sidebar-menu-items {
         display: flex;
         flex-direction: column;
