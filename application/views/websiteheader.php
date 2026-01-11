@@ -333,11 +333,13 @@ if(!$basic_header_footer){
         background-color: rgba(0, 0, 0, 0.69) !important;
         border-right: none;
         z-index: 1000;
-        display: flex;
+        display: flex !important;
+        visibility: visible !important;
         flex-direction: column;
         padding: 20px 10px;
         transition: width 0.3s ease;
         overflow-x: hidden;
+        transform: none !important;
     }
     
     .sidebar-logo {
@@ -450,6 +452,9 @@ if(!$basic_header_footer){
     @media (max-width: 767px) {
         .left-sidebar-menu {
             width: 70px;
+            display: flex !important;
+            visibility: visible !important;
+            transform: none !important;
         }
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
