@@ -480,8 +480,7 @@ if(!$basic_header_footer){
         }
         
         .sidebar-logo {
-            justify-content: flex-start;
-            padding-left: 20px;
+            display: none;
         }
         
         .sidebar-menu-item {
