@@ -427,9 +427,9 @@ if(!$basic_header_footer){
         height: 32px !important;
     }
     
-    /* Increase spacing for top-right menu dropdown items */
+    /* Compact spacing for top-right menu dropdown items */
     .block-menu .dropdown-menu .dropdown-item {
-        padding: 10px 15px !important;
+        padding: 6px 12px !important;
     }
     
     .sidebar-menu-items {
