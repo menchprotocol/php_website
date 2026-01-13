@@ -512,7 +512,7 @@ if(!$basic_header_footer){
     }
     
     .sidebar-search-input-wrapper {
-        display: none;
+        display: none !important;
         width: 100%;
         padding: 0 10px;
         margin-bottom: 8px;
@@ -522,10 +522,12 @@ if(!$basic_header_footer){
         position: relative;
         z-index: 10;
         pointer-events: auto;
+        visibility: hidden;
     }
     
     .sidebar-search-input-wrapper.show {
         display: flex !important;
+        visibility: visible !important;
     }
     
     .sidebar-search-input-wrapper.hidden {
@@ -946,15 +948,19 @@ if(!$basic_header_footer){
             var backButton = document.querySelector('.sidebar-search-input-wrapper .search-back-btn');
             
             if (searchInput && searchButton) {
-                var isCurrentlyHidden = searchInput.style.display === 'none' || searchInput.style.display === '';
+                // Check if search input is currently hidden - simpler check using class
+                var isCurrentlyHidden = !searchInput.classList.contains('show');
                 
                 if (isCurrentlyHidden) {
                     // Show search input, hide button
                     searchInput.style.display = 'flex';
+                    searchInput.style.visibility = 'visible';
                     searchInput.classList.add('show');
+                    searchInput.classList.remove('hidden');
                     searchButton.classList.add('hidden');
                     if (backButton) {
                         backButton.style.display = 'flex';
+                        backButton.style.visibility = 'visible';
                     }
                     // Hide search results dropdown and container
                     var containerFinder = document.getElementById('container_finder');
@@ -1012,10 +1018,13 @@ if(!$basic_header_footer){
                 } else {
                     // Hide search input, show button
                     searchInput.style.display = 'none';
+                    searchInput.style.visibility = 'hidden';
                     searchInput.classList.remove('show');
+                    searchInput.classList.add('hidden');
                     searchButton.classList.remove('hidden');
                     if (backButton) {
                         backButton.style.display = 'none';
+                        backButton.style.visibility = 'hidden';
                     }
                 }
             }
