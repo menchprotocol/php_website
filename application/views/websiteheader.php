@@ -939,20 +939,20 @@ if(!$basic_header_footer){
     (function() {
         var originalToggleFinder = window.toggle_finder;
         window.toggle_finder = function() {
-            if (originalToggleFinder) {
-                originalToggleFinder();
-            }
-            
             var searchInput = document.getElementById('sidebarSearchInput');
             var searchButton = document.querySelector('.search-toggle-item');
             var backButton = document.querySelector('.sidebar-search-input-wrapper .search-back-btn');
             
-            if (searchInput && searchButton) {
-                // Check if search input is currently hidden - simpler check using class
+            // Check if we're dealing with sidebar search
+            var isSidebarSearch = searchInput && searchButton;
+            
+            if (isSidebarSearch) {
+                // Handle sidebar search toggle
                 var isCurrentlyHidden = !searchInput.classList.contains('show');
                 
                 if (isCurrentlyHidden) {
                     // Show search input, hide button
+                    // Don't call original toggle_finder for sidebar search
                     searchInput.style.display = 'flex';
                     searchInput.style.visibility = 'visible';
                     searchInput.classList.add('show');
@@ -1027,6 +1027,13 @@ if(!$basic_header_footer){
                         backButton.style.visibility = 'hidden';
                     }
                 }
+                // Return early to prevent original toggle_finder from running
+                return;
+            }
+            
+            // If not sidebar search, call original function
+            if (originalToggleFinder) {
+                originalToggleFinder();
             }
         };
     })();
