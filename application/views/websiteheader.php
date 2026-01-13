@@ -519,10 +519,17 @@ if(!$basic_header_footer){
         flex-direction: row;
         align-items: center;
         gap: 8px;
+        position: relative;
+        z-index: 10;
+        pointer-events: auto;
     }
     
     .sidebar-search-input-wrapper.show {
         display: flex !important;
+    }
+    
+    .sidebar-search-input-wrapper.hidden {
+        display: none !important;
     }
     
     .sidebar-search-input-wrapper .search-back-btn {
@@ -536,6 +543,8 @@ if(!$basic_header_footer){
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        pointer-events: auto;
+        z-index: 11;
     }
     
     .sidebar-search-input-wrapper .search-back-btn:hover {
@@ -549,6 +558,9 @@ if(!$basic_header_footer){
     .sidebar-search-input-wrapper form {
         flex: 1;
         display: flex;
+        pointer-events: auto;
+        position: relative;
+        z-index: 10;
     }
     
     .sidebar-search-input-wrapper .search-input {
@@ -560,6 +572,10 @@ if(!$basic_header_footer){
         color: #ffffff;
         font-size: 1em;
         width: 100%;
+        pointer-events: auto;
+        cursor: text;
+        z-index: 11;
+        position: relative;
     }
     
     .sidebar-search-input-wrapper .search-input::placeholder {
@@ -988,8 +1004,8 @@ if (!$basic_header_footer) {
     $menu_type = ($user_session ? 12500 : 14372);
     echo '<div class="sidebar-user-menu">';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-user-toggle" onclick="toggleSidebarUserMenu()">';
-    echo '<span class="sidebar-menu-icon">' . ($user_session && isset($user_session['usercover']) && strlen($user_session['usercover']) ? view_cover($user_session['usercover'], 1) : $users___11035[$menu_type]['m__cover']) . '</span>';
-    echo '<span class="sidebar-menu-text">Account</span>';
+    echo '<span class="sidebar-menu-icon"><i class="fas fa-ellipsis"></i></span>';
+    echo '<span class="sidebar-menu-text">More</span>';
     echo '</a>';
     echo '<div class="sidebar-user-menu-items" id="sidebarUserMenuItems" style="display: none;">';
                 foreach ($this->config->item('users___' . $menu_type) as $chainusertype => $m) {
