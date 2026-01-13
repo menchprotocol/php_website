@@ -592,6 +592,21 @@ if(!$basic_header_footer){
         display: none !important;
     }
     
+    /* Hide autocomplete dropdown and search results container for sidebar search */
+    .sidebar-search-input-wrapper .algolia-autocomplete .aa-dropdown-menu,
+    .sidebar-search-input-wrapper ~ #container_finder,
+    .sidebar-search-input-wrapper + * #container_finder {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* Also hide nav_finder when sidebar search is active */
+    body:has(.sidebar-search-input-wrapper.show) .nav_finder,
+    body:has(.sidebar-search-input-wrapper.show) #container_finder {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
     .sidebar-user-menu {
         margin-top: auto;
         padding-top: 20px;
@@ -919,6 +934,17 @@ if(!$basic_header_footer){
                     if (backButton) {
                         backButton.style.display = 'flex';
                     }
+                    // Hide search results dropdown and container
+                    var containerFinder = document.getElementById('container_finder');
+                    var navFinder = document.querySelector('.nav_finder');
+                    if (containerFinder) {
+                        containerFinder.style.display = 'none';
+                        containerFinder.classList.add('hidden');
+                    }
+                    if (navFinder) {
+                        navFinder.style.display = 'none';
+                        navFinder.classList.add('hidden');
+                    }
                     // Ensure input is clickable
                     var inputField = document.getElementById('website_finder');
                     if (inputField) {
@@ -926,12 +952,39 @@ if(!$basic_header_footer){
                         inputField.style.cursor = 'text';
                         inputField.disabled = false;
                         inputField.readOnly = false;
+                        // Hide autocomplete dropdown
+                        setTimeout(function() {
+                            var autocompleteWrapper = inputField.closest('.algolia-autocomplete');
+                            if (autocompleteWrapper) {
+                                var dropdown = autocompleteWrapper.querySelector('.aa-dropdown-menu');
+                                if (dropdown) {
+                                    dropdown.style.display = 'none';
+                                    dropdown.style.visibility = 'hidden';
+                                }
+                            }
+                        }, 100);
                     }
                     // Focus the input after a short delay
                     setTimeout(function() {
                         if (inputField) {
                             inputField.focus();
                             inputField.select();
+                            // Hide dropdown again after focus (in case autocomplete tries to show it)
+                            setTimeout(function() {
+                                var autocompleteWrapper = inputField.closest('.algolia-autocomplete');
+                                if (autocompleteWrapper) {
+                                    var dropdown = autocompleteWrapper.querySelector('.aa-dropdown-menu');
+                                    if (dropdown) {
+                                        dropdown.style.display = 'none';
+                                        dropdown.style.visibility = 'hidden';
+                                    }
+                                }
+                                // Also hide container_finder
+                                if (containerFinder) {
+                                    containerFinder.style.display = 'none';
+                                    containerFinder.classList.add('hidden');
+                                }
+                            }, 100);
                         }
                     }, 200);
                 } else {
@@ -945,6 +998,80 @@ if(!$basic_header_footer){
                 }
             }
         };
+    })();
+    
+    // Hide autocomplete dropdown when typing in sidebar search
+    (function() {
+        function hideSearchDropdown() {
+            var searchInputWrapper = document.querySelector('.sidebar-search-input-wrapper.show');
+            if (searchInputWrapper) {
+                var containerFinder = document.getElementById('container_finder');
+                var navFinder = document.querySelector('.nav_finder');
+                var inputField = document.getElementById('website_finder');
+                
+                if (containerFinder) {
+                    containerFinder.style.display = 'none';
+                    containerFinder.classList.add('hidden');
+                }
+                if (navFinder) {
+                    navFinder.style.display = 'none';
+                    navFinder.classList.add('hidden');
+                }
+                if (inputField) {
+                    var autocompleteWrapper = inputField.closest('.algolia-autocomplete');
+                    if (autocompleteWrapper) {
+                        var dropdown = autocompleteWrapper.querySelector('.aa-dropdown-menu');
+                        if (dropdown) {
+                            dropdown.style.display = 'none';
+                            dropdown.style.visibility = 'hidden';
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Monitor for dropdown appearance
+        var observer = new MutationObserver(function(mutations) {
+            hideSearchDropdown();
+        });
+        
+        // Start observing when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ['style', 'class']
+                });
+                
+                // Also listen to input events
+                setTimeout(function() {
+                    var inputField = document.getElementById('website_finder');
+                    if (inputField) {
+                        inputField.addEventListener('input', hideSearchDropdown);
+                        inputField.addEventListener('keyup', hideSearchDropdown);
+                        inputField.addEventListener('focus', hideSearchDropdown);
+                    }
+                }, 500);
+            });
+        } else {
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+            
+            setTimeout(function() {
+                var inputField = document.getElementById('website_finder');
+                if (inputField) {
+                    inputField.addEventListener('input', hideSearchDropdown);
+                    inputField.addEventListener('keyup', hideSearchDropdown);
+                    inputField.addEventListener('focus', hideSearchDropdown);
+                }
+            }, 500);
+        }
     })();
     
     function toggleSidebarUserMenu() {
@@ -1000,7 +1127,7 @@ if (!$basic_header_footer) {
         echo '<div class="sidebar-search-input-wrapper" id="sidebarSearchInput" style="display: none;">';
         echo '<button type="button" class="search-back-btn" onclick="toggle_finder()" title="Close Search"><i class="fas fa-arrow-left"></i></button>';
         echo '<form id="searchFrontForm" style="flex: 1; display: flex;">';
-        echo '<input class="form-control algolia_finder search-input" type="search" id="website_finder" data-lpignore="true" placeholder="' . $users___11035[7256]['m__name'] . '" style="pointer-events: auto; cursor: text;">';
+        echo '<input class="form-control algolia_finder search-input sidebar-search-input" type="search" id="website_finder" data-lpignore="true" placeholder="' . $users___11035[7256]['m__name'] . '" style="pointer-events: auto; cursor: text;">';
         echo '</form>';
         echo '</div>';
     }
