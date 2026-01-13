@@ -347,7 +347,7 @@ if(!$basic_header_footer){
     .sidebar-logo {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
         padding: 15px 10px;
         margin-bottom: 30px;
         min-height: 50px;
@@ -549,17 +549,17 @@ if(!$basic_header_footer){
     /* Larger screens - show full menu */
     @media (min-width: 1024px) {
         .left-sidebar-menu {
-            width: 250px;
-            align-items: flex-start;
+            width: 280px;
+            align-items: center;
         }
         
         .sidebar-logo {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
         }
         
         .sidebar-menu-item {
-            justify-content: flex-start;
+            justify-content: center;
         }
         
         .sidebar-menu-text {
@@ -567,7 +567,7 @@ if(!$basic_header_footer){
         }
         
         .sidebar-user-toggle {
-            justify-content: flex-start;
+            justify-content: center;
         }
         
         .sidebar-user-menu-items {
@@ -580,7 +580,7 @@ if(!$basic_header_footer){
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
         body {
-            padding-left: 250px;
+            padding-left: 280px;
         }
     }
     
@@ -850,63 +850,63 @@ if (!$basic_header_footer) {
     echo '<span class="sidebar-menu-text">Account</span>';
     echo '</a>';
     echo '<div class="sidebar-user-menu-items" id="sidebarUserMenuItems" style="display: none;">';
-    foreach ($this->config->item('users___' . $menu_type) as $chainusertype => $m) {
+                foreach ($this->config->item('users___' . $menu_type) as $chainusertype => $m) {
 
-        $superpowers_required = array_intersect($this->config->item('userids___10957'), $m['m__following']);
-        if (count($superpowers_required) && !user_session(end($superpowers_required))) {
-            continue;
-        }
+                    $superpowers_required = array_intersect($this->config->item('userids___10957'), $m['m__following']);
+                    if (count($superpowers_required) && !user_session(end($superpowers_required))) {
+                        continue;
+                    }
 
-        $hosted_domains = array_intersect($this->config->item('userids___14870'), $m['m__following']);
-        if (count($hosted_domains) && !in_array($website_id, $hosted_domains)) {
-            continue;
-        }
+                    $hosted_domains = array_intersect($this->config->item('userids___14870'), $m['m__following']);
+                    if (count($hosted_domains) && !in_array($website_id, $hosted_domains)) {
+                        continue;
+                    }
 
-        $extra_class = null;
-        $text_class = null;
+                    $extra_class = null;
+                    $text_class = null;
 
-        if ($chainusertype == 26105 && $user_session) {
+                    if ($chainusertype == 26105 && $user_session) {
 
-            //Profile View
-            $m['m__cover'] = view_cover($user_session['usercover'], 1);
+                        //Profile View
+                        $m['m__cover'] = view_cover($user_session['usercover'], 1);
             $m['m__name'] = $user_session['username'];
             $text_class = 'type_head main__title';
-            $href = 'href="' . view_memory(42903, 42902) . $user_session['userhandle'] . '" ';
+                        $href = 'href="' . view_memory(42903, 42902) . $user_session['userhandle'] . '" ';
 
-        } elseif ($chainusertype == 42246 && $user_session) {
+                    } elseif ($chainusertype == 42246 && $user_session) {
 
-            //Profile Edit
-            $href = 'href="javascript:void(0);" onclick="user_editor(' . $user_session['userid'] . ',0)" ';
+                        //Profile Edit
+                        $href = 'href="javascript:void(0);" onclick="user_editor(' . $user_session['userid'] . ',0)" ';
 
-        } elseif ($chainusertype == 28615) {
+                    } elseif ($chainusertype == 28615) {
 
-            //Phone US
-            $value = website_setting($chainusertype);
-            if (!strlen($value)) {
-                continue;
-            }
-            $href = 'href="tel:' . preg_replace("/[^0-9]/", "", $value) . '"';
+                        //Phone US
+                        $value = website_setting($chainusertype);
+                        if (!strlen($value)) {
+                            continue;
+                        }
+                        $href = 'href="tel:' . preg_replace("/[^0-9]/", "", $value) . '"';
 
-        } elseif ($chainusertype == 28614) {
+                    } elseif ($chainusertype == 28614) {
 
-            //Email US
-            $value = website_setting($chainusertype);
-            if (!strlen($value)) {
-                continue;
-            }
-            $href = 'href="mailto:' . $value . '"';
+                        //Email US
+                        $value = website_setting($chainusertype);
+                        if (!strlen($value)) {
+                            continue;
+                        }
+                        $href = 'href="mailto:' . $value . '"';
 
-        } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
+                    } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
 
             //APP - Handle apps (logout will be included if it's in userids___6287)
             $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '') : '') . '"';
 
-        } else {
+                    } else {
 
-            //Unknown
-            continue;
+                        //Unknown
+                        continue;
 
-        }
+                    }
 
         //Navigation - styled like sidebar menu items
         echo '<a ' . $href . ' chainusertype="' . $chainusertype . '" class="sidebar-menu-item sidebar-user-menu-item ' . $extra_class . '">';
@@ -919,8 +919,8 @@ if (!$basic_header_footer) {
         echo '</a>';
 
     }
-    echo '</div>';
-    echo '</div>';
+                echo '</div>';
+                echo '</div>';
     echo '</nav>';
 }
 
