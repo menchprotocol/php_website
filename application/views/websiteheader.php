@@ -322,9 +322,7 @@ if(!$basic_header_footer){
         }
     }
 
-    //Removed sidebar menu - restored to original fixed top menu
-    echo '
-    .left-sidebar-menu {
+    ';
         position: fixed;
         left: 0;
         top: 0;
