@@ -516,72 +516,34 @@ if(!$basic_header_footer){
         margin-top: auto;
         padding-top: 20px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-        position: relative;
-    }
-    
-    .sidebar-user-menu .dropdown {
-        width: 100%;
-        position: relative;
-    }
-    
-    .sidebar-user-toggle {
-        width: 100%;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 12px !important;
-        background-color: transparent;
-        border: none;
-        border-radius: 25px;
-        transition: all 0.2s ease;
-        color: #ffffff;
+        flex-direction: column;
     }
     
-    .sidebar-user-toggle:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+    .sidebar-user-menu-items {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 8px;
+        padding-left: 0;
     }
     
-    .sidebar-user-toggle:focus {
-        outline: none;
-        box-shadow: none;
+    .sidebar-user-menu-item {
+        padding-left: 20px !important;
     }
     
-    .sidebar-user-menu .dropdown-menu {
-        position: absolute !important;
-        bottom: 100% !important;
-        top: auto !important;
-        left: 0 !important;
-        right: auto !important;
-        margin-top: 0 !important;
-        margin-bottom: 8px !important;
-        background-color: rgba(0, 0, 0, 0.95) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 8px !important;
-        min-width: 200px !important;
-        max-width: 250px !important;
-        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4) !important;
-        z-index: 1050 !important;
-        transform-origin: bottom center;
+    .sidebar-user-toggle .sidebar-menu-icon img,
+    .sidebar-user-toggle .sidebar-menu-icon .e_cover img,
+    .sidebar-user-toggle .sidebar-menu-icon div.img {
+        width: 24px !important;
+        height: 24px !important;
     }
     
-    .sidebar-user-menu .dropdown-menu.show {
-        display: block !important;
-    }
-    
-    .sidebar-user-menu .dropdown-toggle::after {
-        display: inline-block;
-        margin-left: 8px;
-        vertical-align: 0.255em;
-        content: "";
-        border-top: 0.3em solid;
-        border-right: 0.3em solid transparent;
-        border-bottom: 0;
-        border-left: 0.3em solid transparent;
-        color: rgba(255, 255, 255, 0.5);
-    }
-    
-    .sidebar-user-menu .dropdown-toggle[aria-expanded="true"]::after {
-        transform: rotate(180deg);
+    .sidebar-user-toggle .sidebar-menu-icon .e_cover,
+    .sidebar-user-toggle .sidebar-menu-icon {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
     }
     
     /* Larger screens - show full menu */
@@ -608,10 +570,12 @@ if(!$basic_header_footer){
             justify-content: flex-start;
         }
         
-        .sidebar-user-menu .dropdown-menu {
-            left: 0 !important;
-            right: auto !important;
-            margin-left: 0 !important;
+        .sidebar-user-menu-items {
+            padding-left: 0 !important;
+        }
+        
+        .sidebar-user-menu-item {
+            padding-left: 20px !important;
         }
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
@@ -709,6 +673,19 @@ if(!$basic_header_footer){
 
     echo ' </style>';
     ?>
+    
+    <script>
+    function toggleSidebarUserMenu() {
+        var menuItems = document.getElementById('sidebarUserMenuItems');
+        if (menuItems) {
+            if (menuItems.style.display === 'none' || menuItems.style.display === '') {
+                menuItems.style.display = 'flex';
+            } else {
+                menuItems.style.display = 'none';
+            }
+        }
+    }
+    </script>
 
     <link href="https://fonts.googleapis.com/css?family=<?= join('|', $google_fonts) ?>&display=swap" rel="stylesheet">
 
@@ -732,78 +709,84 @@ if (!$basic_header_footer) {
     echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-menu-item-primary" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
     echo '</div>';
     
-    //User dropdown menu at bottom
+    //User menu at bottom - expandable
     $menu_type = ($user_session ? 12500 : 14372);
     echo '<div class="sidebar-user-menu">';
-                echo '<div class="dropdown inline-block">';
-    echo '<button type="button" class="btn no-side-padding dropdown-toggle sidebar-user-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                echo '<span class="e_cover e_cover_mini menu-cover">' . ($user_session && isset($user_session['usercover']) && strlen($user_session['usercover']) ? view_cover($user_session['usercover'], 1) : $users___11035[$menu_type]['m__cover']) . '</span>';
-                echo '</button>';
-                echo '<div class="dropdown-menu">';
-                foreach ($this->config->item('users___' . $menu_type) as $chainusertype => $m) {
+    echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-user-toggle" onclick="toggleSidebarUserMenu()">';
+    echo '<span class="sidebar-menu-icon">' . ($user_session && isset($user_session['usercover']) && strlen($user_session['usercover']) ? view_cover($user_session['usercover'], 1) : $users___11035[$menu_type]['m__cover']) . '</span>';
+    echo '<span class="sidebar-menu-text">Account</span>';
+    echo '</a>';
+    echo '<div class="sidebar-user-menu-items" id="sidebarUserMenuItems" style="display: none;">';
+    foreach ($this->config->item('users___' . $menu_type) as $chainusertype => $m) {
 
-                    $superpowers_required = array_intersect($this->config->item('userids___10957'), $m['m__following']);
-                    if (count($superpowers_required) && !user_session(end($superpowers_required))) {
-                        continue;
-                    }
+        $superpowers_required = array_intersect($this->config->item('userids___10957'), $m['m__following']);
+        if (count($superpowers_required) && !user_session(end($superpowers_required))) {
+            continue;
+        }
 
-                    $hosted_domains = array_intersect($this->config->item('userids___14870'), $m['m__following']);
-                    if (count($hosted_domains) && !in_array($website_id, $hosted_domains)) {
-                        continue;
-                    }
+        $hosted_domains = array_intersect($this->config->item('userids___14870'), $m['m__following']);
+        if (count($hosted_domains) && !in_array($website_id, $hosted_domains)) {
+            continue;
+        }
 
-                    $extra_class = null;
-                    $text_class = null;
+        $extra_class = null;
+        $text_class = null;
 
-                    if ($chainusertype == 26105 && $user_session) {
+        if ($chainusertype == 26105 && $user_session) {
 
-                        //Profile View
-                        $m['m__cover'] = view_cover($user_session['usercover'], 1);
-                        $m['m__name'] = '<div class="type_head main__title">' . $user_session['username'] . '</div><div class="grey type_user">@' . $user_session['userhandle'] . '</div>';
-                        $href = 'href="' . view_memory(42903, 42902) . $user_session['userhandle'] . '" ';
+            //Profile View
+            $m['m__cover'] = view_cover($user_session['usercover'], 1);
+            $m['m__name'] = $user_session['username'];
+            $text_class = 'type_head main__title';
+            $href = 'href="' . view_memory(42903, 42902) . $user_session['userhandle'] . '" ';
 
-                    } elseif ($chainusertype == 42246 && $user_session) {
+        } elseif ($chainusertype == 42246 && $user_session) {
 
-                        //Profile Edit
-                        $href = 'href="javascript:void(0);" onclick="user_editor(' . $user_session['userid'] . ',0)" ';
+            //Profile Edit
+            $href = 'href="javascript:void(0);" onclick="user_editor(' . $user_session['userid'] . ',0)" ';
 
-                    } elseif ($chainusertype == 28615) {
+        } elseif ($chainusertype == 28615) {
 
-                        //Phone US
-                        $value = website_setting($chainusertype);
-                        if (!strlen($value)) {
-                            continue;
-                        }
-                        $href = 'href="tel:' . preg_replace("/[^0-9]/", "", $value) . '"';
+            //Phone US
+            $value = website_setting($chainusertype);
+            if (!strlen($value)) {
+                continue;
+            }
+            $href = 'href="tel:' . preg_replace("/[^0-9]/", "", $value) . '"';
 
-                    } elseif ($chainusertype == 28614) {
+        } elseif ($chainusertype == 28614) {
 
-                        //Email US
-                        $value = website_setting($chainusertype);
-                        if (!strlen($value)) {
-                            continue;
-                        }
-                        $href = 'href="mailto:' . $value . '"';
+            //Email US
+            $value = website_setting($chainusertype);
+            if (!strlen($value)) {
+                continue;
+            }
+            $href = 'href="mailto:' . $value . '"';
 
-                    } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
+        } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
 
             //APP - Handle apps (logout will be included if it's in userids___6287)
             $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '') : '') . '"';
 
-                    } else {
+        } else {
 
-                        //Unknown
-                        continue;
+            //Unknown
+            continue;
 
-                    }
+        }
 
-                    //Navigation
-                    echo '<a ' . $href . ' chainusertype="' . $chainusertype . '" class="dropdown-item dropdown_type_' . $chainusertype . ' main__title ' . $extra_class . '"><span class="icon-block">' . $m['m__cover'] . '</span><span class="' . $text_class . '">' . $m['m__name'] . '</span></a>';
+        //Navigation - styled like sidebar menu items
+        echo '<a ' . $href . ' chainusertype="' . $chainusertype . '" class="sidebar-menu-item sidebar-user-menu-item ' . $extra_class . '">';
+        echo '<span class="sidebar-menu-icon">' . $m['m__cover'] . '</span>';
+        if ($chainusertype == 26105 && $user_session) {
+            echo '<span class="sidebar-menu-text"><span class="type_head main__title">' . $user_session['username'] . '</span><span class="grey type_user">@' . $user_session['userhandle'] . '</span></span>';
+        } else {
+            echo '<span class="sidebar-menu-text ' . ($text_class ? $text_class : '') . '">' . strip_tags($m['m__name']) . '</span>';
+        }
+        echo '</a>';
 
-                }
-
-                echo '</div>';
-                echo '</div>';
+    }
+    echo '</div>';
     echo '</div>';
     echo '</nav>';
 }
