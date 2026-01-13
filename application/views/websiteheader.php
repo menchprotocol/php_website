@@ -726,14 +726,24 @@ if(!$basic_header_footer){
             padding: 0;
             min-height: auto;
             position: relative;
-            flex-shrink: 0;
-            width: auto;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            border-radius: 25px;
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar-logo:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
         .sidebar-logo-frame {
             height: auto;
             display: flex;
             align-items: center;
+            justify-content: center;
+            padding: 8px 5px;
         }
         
         .sidebar-logo-frame .logo_cover {
@@ -766,6 +776,10 @@ if(!$basic_header_footer){
             max-width: none;
         }
         
+        .sidebar-menu-item.sidebar-menu-item-primary {
+            flex: 1.3;
+        }
+        
         .sidebar-menu-text {
             display: none;
         }
@@ -791,14 +805,22 @@ if(!$basic_header_footer){
             margin-top: 0;
             padding-top: 0;
             border-top: none;
-            flex-shrink: 0;
-            width: auto;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
         }
         
         .sidebar-user-toggle {
-            padding: 8px !important;
-            min-width: 44px;
+            padding: 8px 5px !important;
+            flex: 1;
             justify-content: center;
+            border-radius: 25px;
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar-user-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
         .sidebar-user-toggle .sidebar-menu-icon {
