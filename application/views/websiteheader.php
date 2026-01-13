@@ -549,7 +549,7 @@ if(!$basic_header_footer){
     /* Larger screens - show full menu */
     @media (min-width: 1024px) {
         .left-sidebar-menu {
-            width: 200px;
+            width: 250px;
             align-items: flex-start;
         }
         
@@ -580,7 +580,7 @@ if(!$basic_header_footer){
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
         body {
-            padding-left: 200px;
+            padding-left: 250px;
         }
     }
     
