@@ -732,7 +732,24 @@ if(!$basic_header_footer){
         }
         
         .sidebar-user-menu-items {
-            display: none !important;
+            position: fixed !important;
+            bottom: 70px !important;
+            left: 0 !important;
+            right: 0 !important;
+            background-color: rgba(0, 0, 0, 0.95) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 15px !important;
+            max-height: calc(100vh - 70px) !important;
+            overflow-y: auto !important;
+            z-index: 1050 !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            margin-top: 0 !important;
+            padding-left: 15px !important;
+        }
+        
+        .sidebar-user-menu-items .sidebar-user-menu-item {
+            padding-left: 0 !important;
         }
         
         /* Adjust body padding to account for bottom menu */
@@ -750,10 +767,26 @@ if(!$basic_header_footer){
     function toggleSidebarUserMenu() {
         var menuItems = document.getElementById('sidebarUserMenuItems');
         if (menuItems) {
+            var isMobile = window.innerWidth <= 767;
             if (menuItems.style.display === 'none' || menuItems.style.display === '') {
                 menuItems.style.display = 'flex';
+                if (isMobile) {
+                    // Add overlay for mobile
+                    var overlay = document.createElement('div');
+                    overlay.id = 'sidebarUserMenuOverlay';
+                    overlay.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 70px; background-color: rgba(0, 0, 0, 0.5); z-index: 1049;';
+                    overlay.onclick = function() {
+                        toggleSidebarUserMenu();
+                    };
+                    document.body.appendChild(overlay);
+                }
             } else {
                 menuItems.style.display = 'none';
+                // Remove overlay if exists
+                var overlay = document.getElementById('sidebarUserMenuOverlay');
+                if (overlay) {
+                    overlay.remove();
+                }
             }
         }
     }
@@ -777,7 +810,6 @@ if (!$basic_header_footer) {
     echo '<div class="sidebar-menu-items">';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
     echo '<a href="/messages" class="sidebar-menu-item sidebar-menu-item-with-badge"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i><span class="sidebar-menu-badge">345</span></span><span class="sidebar-menu-text">Messages</span></a>';
-    echo '<a href="/apps" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="far fa-slash-forward fa-sharp"></i></span><span class="sidebar-menu-text">Apps</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-menu-item-primary" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
     echo '</div>';
     
