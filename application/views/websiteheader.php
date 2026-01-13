@@ -343,7 +343,7 @@ if(!$basic_header_footer){
     @media (min-width: 1024px) {
         .fixed-top.container,
         .fixed-top.top-header-position.container {
-            left: 250px !important;
+            left: 200px !important;
             width: 610px !important;
             max-width: 610px !important;
             transform: translateX(0) !important;
@@ -353,7 +353,7 @@ if(!$basic_header_footer){
     @media (min-width: 768px) and (max-width: 1023px) {
         .fixed-top.container,
         .fixed-top.top-header-position.container {
-            left: calc(70px + (100vw - 70px) / 2) !important;
+            left: calc(64px + (100vw - 64px) / 2) !important;
             transform: translateX(-50%) !important;
         }
     }
@@ -373,14 +373,14 @@ if(!$basic_header_footer){
         left: 0;
         top: 0;
         height: 100vh;
-        width: 70px;
+        width: 64px;
         background-color: rgba(0, 0, 0, 0.69) !important;
         border-right: none;
         z-index: 1000;
         display: flex !important;
         visibility: visible !important;
         flex-direction: column;
-        padding: 20px 10px;
+        padding: 15px 8px;
         transition: width 0.3s ease;
         overflow-x: hidden;
         transform: none !important;
@@ -452,7 +452,7 @@ if(!$basic_header_footer){
     .sidebar-menu-item {
         display: flex;
         align-items: center;
-        padding: 12px 15px;
+        padding: 10px 12px;
         text-decoration: none;
         color: #ffffff;
         border-radius: 25px;
@@ -528,7 +528,7 @@ if(!$basic_header_footer){
     /* Larger screens - show full menu */
     @media (min-width: 1024px) {
         .left-sidebar-menu {
-            width: 250px;
+            width: 200px;
             align-items: flex-start;
         }
         
@@ -546,14 +546,14 @@ if(!$basic_header_footer){
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
         body {
-            padding-left: 250px;
+            padding-left: 200px;
         }
     }
     
     /* Medium screens - collapsed menu */
     @media (min-width: 768px) and (max-width: 1023px) {
         .left-sidebar-menu {
-            width: 70px;
+            width: 64px;
         }
         
         .sidebar-logo {
@@ -562,7 +562,7 @@ if(!$basic_header_footer){
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
         body {
-            padding-left: 70px;
+            padding-left: 64px;
         }
     }
     
