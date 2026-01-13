@@ -909,28 +909,38 @@ if(!$basic_header_footer){
             var backButton = document.querySelector('.sidebar-search-input-wrapper .search-back-btn');
             
             if (searchInput && searchButton) {
-                if (searchInput.classList.contains('hidden')) {
+                var isCurrentlyHidden = searchInput.style.display === 'none' || searchInput.style.display === '';
+                
+                if (isCurrentlyHidden) {
                     // Show search input, hide button
-                    searchInput.classList.remove('hidden');
+                    searchInput.style.display = 'flex';
                     searchInput.classList.add('show');
                     searchButton.classList.add('hidden');
                     if (backButton) {
-                        backButton.classList.remove('hidden');
+                        backButton.style.display = 'flex';
                     }
-                    // Focus the input
+                    // Ensure input is clickable
+                    var inputField = document.getElementById('website_finder');
+                    if (inputField) {
+                        inputField.style.pointerEvents = 'auto';
+                        inputField.style.cursor = 'text';
+                        inputField.disabled = false;
+                        inputField.readOnly = false;
+                    }
+                    // Focus the input after a short delay
                     setTimeout(function() {
-                        var input = document.getElementById('website_finder');
-                        if (input) {
-                            input.focus();
+                        if (inputField) {
+                            inputField.focus();
+                            inputField.select();
                         }
-                    }, 100);
+                    }, 200);
                 } else {
                     // Hide search input, show button
-                    searchInput.classList.add('hidden');
+                    searchInput.style.display = 'none';
                     searchInput.classList.remove('show');
                     searchButton.classList.remove('hidden');
                     if (backButton) {
-                        backButton.classList.add('hidden');
+                        backButton.style.display = 'none';
                     }
                 }
             }
@@ -987,10 +997,10 @@ if (!$basic_header_footer) {
     echo '<div class="sidebar-menu-items">';
     // Search input wrapper (hidden by default, shown when search is active)
     if (isset($users___11035[7256])) {
-        echo '<div class="sidebar-search-input-wrapper left_nav nav_finder hidden" id="sidebarSearchInput">';
-        echo '<button type="button" class="search-back-btn icon_finder hidden" onclick="toggle_finder()" title="Close Search"><i class="fas fa-arrow-left"></i></button>';
+        echo '<div class="sidebar-search-input-wrapper" id="sidebarSearchInput" style="display: none;">';
+        echo '<button type="button" class="search-back-btn" onclick="toggle_finder()" title="Close Search"><i class="fas fa-arrow-left"></i></button>';
         echo '<form id="searchFrontForm" style="flex: 1; display: flex;">';
-        echo '<input class="form-control algolia_finder search-input" type="search" id="website_finder" data-lpignore="true" placeholder="' . $users___11035[7256]['m__name'] . '">';
+        echo '<input class="form-control algolia_finder search-input" type="search" id="website_finder" data-lpignore="true" placeholder="' . $users___11035[7256]['m__name'] . '" style="pointer-events: auto; cursor: text;">';
         echo '</form>';
         echo '</div>';
     }
