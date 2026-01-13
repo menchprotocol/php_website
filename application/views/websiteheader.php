@@ -747,6 +747,7 @@ if(!$basic_header_footer){
             margin-top: 0 !important;
             padding-left: 15px !important;
             pointer-events: auto !important;
+            isolation: isolate !important;
         }
         
         .sidebar-user-menu-items .sidebar-user-menu-item {
@@ -762,6 +763,16 @@ if(!$basic_header_footer){
             pointer-events: auto !important;
             cursor: pointer !important;
             gap: 12px !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        .sidebar-user-menu-items .sidebar-user-menu-item * {
+            pointer-events: none !important;
+        }
+        
+        .sidebar-user-menu-items .sidebar-user-menu-item a,
+        .sidebar-user-menu-items .sidebar-user-menu-item {
+            pointer-events: auto !important;
         }
         
         .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-text {
@@ -812,14 +823,18 @@ if(!$basic_header_footer){
             if (menuItems.style.display === 'none' || menuItems.style.display === '') {
                 menuItems.style.display = 'flex';
                 if (isMobile) {
-                    // Add overlay for mobile
-                    var overlay = document.createElement('div');
-                    overlay.id = 'sidebarUserMenuOverlay';
-                    overlay.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 70px; background-color: rgba(0, 0, 0, 0.5); z-index: 1049;';
-                    overlay.onclick = function() {
-                        toggleSidebarUserMenu();
-                    };
-                    document.body.appendChild(overlay);
+                    // Add overlay for mobile - only covers area above menu
+                    setTimeout(function() {
+                        var overlay = document.createElement('div');
+                        overlay.id = 'sidebarUserMenuOverlay';
+                        var menuRect = menuItems.getBoundingClientRect();
+                        var menuTop = menuRect.top;
+                        overlay.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: ' + (window.innerHeight - menuTop) + 'px; background-color: rgba(0, 0, 0, 0.5); z-index: 99998; pointer-events: auto;';
+                        overlay.onclick = function() {
+                            toggleSidebarUserMenu();
+                        };
+                        document.body.appendChild(overlay);
+                    }, 10);
                 }
             } else {
                 menuItems.style.display = 'none';
