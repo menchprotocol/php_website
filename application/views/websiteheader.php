@@ -322,7 +322,7 @@ if(!$basic_header_footer){
         }
     }
 
-    //Left Sidebar Menu Styles
+    //Removed sidebar menu - restored to original fixed top menu
     echo '
     .left-sidebar-menu {
         position: fixed;
