@@ -323,6 +323,111 @@ if(!$basic_header_footer){
     }
 
     //Left Sidebar Menu Styles
+    //Top Fixed Menu Styles (Search only)
+    echo '
+    .fixed-top-search-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(21, 21, 21, 1);
+        z-index: 1000;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .fixed-top-search-menu .search-back-btn {
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .fixed-top-search-menu .search-back-btn:hover {
+        opacity: 0.7;
+    }
+    
+    .fixed-top-search-menu .search-input-wrapper {
+        flex: 1;
+        max-width: 500px;
+        position: relative;
+    }
+    
+    .fixed-top-search-menu .search-back-btn.hidden {
+        display: none !important;
+    }
+    
+    .fixed-top-search-menu .search-input-wrapper.hidden {
+        display: none !important;
+    }
+    
+    .fixed-top-search-menu .search-input-wrapper {
+        flex: 1;
+        max-width: 500px;
+        position: relative;
+    }
+    
+    .fixed-top-search-menu .search-input-wrapper .icon_finder {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ffffff;
+        z-index: 1;
+        cursor: pointer;
+    }
+    
+    .fixed-top-search-menu .search-input-wrapper input {
+        width: 100%;
+        padding: 8px 15px 8px 40px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        color: #ffffff;
+        font-size: 1em;
+    }
+    
+    .fixed-top-search-menu .search-input-wrapper input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .fixed-top-search-menu .search-input-wrapper input:focus {
+        outline: none;
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    @media (min-width: 1024px) {
+        .fixed-top-search-menu {
+            left: 280px;
+            right: auto;
+        }
+    }
+    
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .fixed-top-search-menu {
+            left: 64px;
+            right: auto;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .fixed-top-search-menu {
+            left: 0;
+            right: 0;
+            top: auto;
+            bottom: 70px;
+        }
+    }
+    ';
     
     echo '
     .left-sidebar-menu {
@@ -970,6 +1075,18 @@ if ($focus_post) {
 ?>
 <?php
 
+//Top Fixed Search Menu
+if (!$basic_header_footer && isset($users___11035[7256])) {
+    echo '<div class="fixed-top-search-menu no-print">';
+    echo '<button type="button" class="search-back-btn icon_finder hidden" onclick="toggle_finder()" title="Close Search"><i class="fas fa-arrow-left"></i></button>';
+    echo '<div class="search-input-wrapper left_nav nav_finder hidden">';
+    echo '<form id="searchFrontForm">';
+    echo '<span class="icon-block-sm icon_finder" onclick="toggle_finder()" style="cursor: pointer; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 1;">' . $users___11035[7256]['m__cover'] . '</span>';
+    echo '<input class="form-control algolia_finder" type="search" id="website_finder" data-lpignore="true" placeholder="' . $users___11035[7256]['m__name'] . '">';
+    echo '</form>';
+    echo '</div>';
+    echo '</div>';
+}
 
 echo '<div id="container_finder" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
 echo '<div id="container_main" class="container container_content">';
