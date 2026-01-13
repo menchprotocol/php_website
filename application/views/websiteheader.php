@@ -323,49 +323,6 @@ if(!$basic_header_footer){
     }
 
     //Left Sidebar Menu Styles
-    //Center the fixed-top header container (accounts for sidebar padding)
-    //Apply to both with and without top-header-position class to maintain centering on scroll
-    echo '
-    .fixed-top.container {
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: 100%;
-        max-width: 610px;
-    }
-    
-    .fixed-top.top-header-position.container {
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: 100%;
-        max-width: 610px;
-    }
-    
-    @media (min-width: 1024px) {
-        .fixed-top.container,
-        .fixed-top.top-header-position.container {
-            left: 200px !important;
-            width: 610px !important;
-            max-width: 610px !important;
-            transform: translateX(0) !important;
-        }
-    }
-    
-    @media (min-width: 768px) and (max-width: 1023px) {
-        .fixed-top.container,
-        .fixed-top.top-header-position.container {
-            left: calc(64px + (100vw - 64px) / 2) !important;
-            transform: translateX(-50%) !important;
-        }
-    }
-    
-    @media (max-width: 767px) {
-        .fixed-top.container,
-        .fixed-top.top-header-position.container {
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-        }
-    }
-    ';
     
     echo '
     .left-sidebar-menu {
@@ -384,12 +341,13 @@ if(!$basic_header_footer){
         transition: width 0.3s ease;
         overflow-x: hidden;
         transform: none !important;
+        justify-content: space-between;
     }
     
     .sidebar-logo {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         padding: 15px 10px;
         margin-bottom: 30px;
         min-height: 50px;
@@ -399,21 +357,50 @@ if(!$basic_header_footer){
         z-index: 10;
     }
     
-    .sidebar-logo-link {
+    .sidebar-logo-frame {
         display: flex;
         align-items: center;
-        justify-content: center;
-        text-decoration: none;
+        width: 100%;
+        position: relative;
+        height: 34px;
     }
     
-    .sidebar-logo-link img,
-    .sidebar-logo-link .e_cover {
-        max-width: 30px;
-        max-height: 30px;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        object-fit: cover;
+    .sidebar-logo-frame .logo_cover {
+        position: relative;
+        top: auto;
+        left: auto;
+        display: flex;
+        align-items: center;
+        width: auto !important;
+        height: auto !important;
+        margin-right: 8px;
+    }
+    
+    .sidebar-logo-frame .logo_cover img {
+        width: 34px !important;
+        height: 34px !important;
+        margin: 0 !important;
+    }
+    
+    .sidebar-logo-title {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        display: block !important;
+        line-height: 151% !important;
+        font-size: 1.21em !important;
+        font-weight: bold !important;
+        height: 34px !important;
+        overflow: hidden !important;
+        color: #ffffff !important;
+        text-decoration: none;
+        white-space: nowrap;
+        flex: 1;
+    }
+    
+    .sidebar-logo-title:hover {
+        color: #ffffff !important;
+        text-decoration: none;
     }
     
     /* Make top menu user image same size as sidebar logo */
@@ -525,6 +512,39 @@ if(!$basic_header_footer){
         color: #ffffff !important;
     }
     
+    .sidebar-user-menu {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-user-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px !important;
+        background-color: transparent;
+        border: none;
+        border-radius: 25px;
+        transition: all 0.2s ease;
+    }
+    
+    .sidebar-user-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-user-menu .dropdown-menu {
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        margin-bottom: 10px;
+        background-color: rgba(0, 0, 0, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        min-width: 200px;
+    }
+    
     /* Larger screens - show full menu */
     @media (min-width: 1024px) {
         .left-sidebar-menu {
@@ -533,7 +553,8 @@ if(!$basic_header_footer){
         }
         
         .sidebar-logo {
-            display: none;
+            display: flex;
+            justify-content: flex-start;
         }
         
         .sidebar-menu-item {
@@ -542,6 +563,15 @@ if(!$basic_header_footer){
         
         .sidebar-menu-text {
             display: block;
+        }
+        
+        .sidebar-user-toggle {
+            justify-content: flex-start;
+        }
+        
+        .sidebar-user-menu .dropdown-menu {
+            left: auto;
+            right: 0;
         }
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
@@ -556,8 +586,12 @@ if(!$basic_header_footer){
             width: 64px;
         }
         
+        .sidebar-logo-title {
+            display: none !important;
+        }
+        
         .sidebar-logo {
-            display: none;
+            justify-content: center;
         }
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
@@ -649,7 +683,7 @@ echo $bgVideo;
 if (!$basic_header_footer) {
     echo '<nav class="left-sidebar-menu" id="leftSidebarMenu">';
     echo '<div class="sidebar-logo">';
-    echo (strlen($domain_cover) ? '<a href="' . view_memory(42903, 14565) . '" class="sidebar-logo-link">' . view_cover($domain_logo) . '</a>' : '');
+    echo '<div class="sidebar-logo-frame">' . (strlen($domain_cover) ? '<a href="' . view_memory(42903, 14565) . '" class="icon-block logo_cover">' . view_cover($domain_logo) . '</a>' : '') . '<a href="' . view_memory(42903, 14565) . '" class="main__title logo_title sidebar-logo-title">' . get_domain('m__name') . '</a></div>';
     echo '</div>';
     echo '<div class="sidebar-menu-items">';
     echo '<a href="/" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-home"></i></span><span class="sidebar-menu-text">Home</span></a>';
@@ -658,50 +692,12 @@ if (!$basic_header_footer) {
     echo '<a href="/apps" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="far fa-slash-forward fa-sharp"></i></span><span class="sidebar-menu-text">Apps</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-menu-item-primary" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
     echo '</div>';
-    echo '</nav>';
-}
-
-//JS Variables for this app on page
-if ($focus_post) {
-    echo '<input type="hidden" id="focus__node" value="12273" />
-<input type="hidden" id="focus_handle" value="' . $focus_post['posthashtag'] . '" />
-<input type="hidden" id="focus__id" value="' . $focus_post['postid'] . '" />';
-    if ($target_post) {
-        echo '<input type="hidden" id="target_posthashtag" value="' . $target_post['posthashtag'] . '" />
-        <input type="hidden" id="target_postid" value="' . $target_post['postid'] . '" />';
-    }
-} elseif ($focus_e) {
-    echo '<input type="hidden" id="focus__node" value="12274" />
-<input type="hidden" id="focus_handle" value="' . $focus_e['userhandle'] . '" />
-<input type="hidden" id="focus__id" value="' . $focus_e['userid'] . '" />';
-}
-
-//Do not show for /sign view
-?>
-<div class="container fixed-top top-header-position slim_flat no-print">
-    <div class="row justify-content">
-        <table class="platform-navigation">
-            <tr>
-                <?php
-
-                echo '<td>';
-
-                echo '<div class="logo_frame">' . (strlen($domain_cover) ? '<a href="' . view_memory(42903, 14565) . '" class="icon-block logo_cover">' . view_cover($domain_logo) . '</a>' : '') . '<a href="' . view_memory(42903, 14565) . '" class="main__title logo_title">' . get_domain('m__name') . '</a>' . '</div>';
-
-
-                //SEARCH
-                echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block-sm">' . $users___11035[7256]['m__cover'] . '</span><input class="form-control algolia_finder" type="search" id="website_finder" data-lpignore="true" placeholder="' . $users___11035[7256]['m__name'] . '"></form></div>';
-
-
-                echo '</div>';
-                echo '</td>';
-
-                //MENU
-                $menu_type = ($user_session ? 12500 : 14372);
-                echo '<td class="block-menu">';
-
+    
+    //User dropdown menu at bottom
+    $menu_type = ($user_session ? 12500 : 14372);
+    echo '<div class="sidebar-user-menu">';
                 echo '<div class="dropdown inline-block">';
-                echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
+    echo '<button type="button" class="btn no-side-padding dropdown-toggle sidebar-user-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
                 echo '<span class="e_cover e_cover_mini menu-cover">' . ($user_session && isset($user_session['usercover']) && strlen($user_session['usercover']) ? view_cover($user_session['usercover'], 1) : $users___11035[$menu_type]['m__cover']) . '</span>';
                 echo '</button>';
                 echo '<div class="dropdown-menu">';
@@ -752,8 +748,8 @@ if ($focus_post) {
 
                     } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
 
-                        //APP - Handle apps (logout will be included if it's in userids___6287)
-                        $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '') : '') . '"';
+            //APP - Handle apps (logout will be included if it's in userids___6287)
+            $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '') : '') . '"';
 
                     } else {
 
@@ -769,20 +765,27 @@ if ($focus_post) {
 
                 echo '</div>';
                 echo '</div>';
-                echo '</td>';
+    echo '</div>';
+    echo '</nav>';
+}
 
-                //Add User
-                /*
-                if(user_session(10939)){
-                    echo '<td class="block-x"><a href="javascript:void(0);" onclick="user_editor()" title="'.$users___11035[42819]['m__name'].'">'.$users___11035[42819]['m__cover'].'</a></td>';
-                }
-                */
-                ?>
-            </tr>
-        </table>
-    </div>
-</div>
+//JS Variables for this app on page
+if ($focus_post) {
+    echo '<input type="hidden" id="focus__node" value="12273" />
+<input type="hidden" id="focus_handle" value="' . $focus_post['posthashtag'] . '" />
+<input type="hidden" id="focus__id" value="' . $focus_post['postid'] . '" />';
+    if ($target_post) {
+        echo '<input type="hidden" id="target_posthashtag" value="' . $target_post['posthashtag'] . '" />
+        <input type="hidden" id="target_postid" value="' . $target_post['postid'] . '" />';
+    }
+} elseif ($focus_e) {
+    echo '<input type="hidden" id="focus__node" value="12274" />
+<input type="hidden" id="focus_handle" value="' . $focus_e['userhandle'] . '" />
+<input type="hidden" id="focus__id" value="' . $focus_e['userid'] . '" />';
+}
 
+//Do not show for /sign view
+?>
 <?php
 
 
