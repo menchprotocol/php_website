@@ -621,17 +621,45 @@ if(!$basic_header_footer){
             padding: 10px 5px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             border-right: none;
+            align-items: center;
+            justify-content: space-between;
         }
         
         .sidebar-logo {
-            display: none;
+            display: flex !important;
+            margin-bottom: 0;
+            padding: 0;
+            min-height: auto;
+            position: relative;
+            flex-shrink: 0;
+            width: auto;
+        }
+        
+        .sidebar-logo-frame {
+            height: auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-logo-frame .logo_cover {
+            margin-right: 0;
+        }
+        
+        .sidebar-logo-frame .logo_cover img {
+            width: 32px !important;
+            height: 32px !important;
+        }
+        
+        .sidebar-logo-title {
+            display: none !important;
         }
         
         .sidebar-menu-items {
             flex-direction: row;
-            width: 100%;
+            flex: 1;
             justify-content: space-around;
             gap: 0;
+            margin: 0 5px;
         }
         
         .sidebar-menu-item {
@@ -640,6 +668,7 @@ if(!$basic_header_footer){
             flex: 1;
             justify-content: center;
             min-width: 0;
+            max-width: none;
         }
         
         .sidebar-menu-text {
@@ -661,6 +690,49 @@ if(!$basic_header_footer){
         .sidebar-menu-badge {
             top: -4px;
             right: -8px;
+        }
+        
+        .sidebar-user-menu {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+            flex-shrink: 0;
+            width: auto;
+        }
+        
+        .sidebar-user-toggle {
+            padding: 8px !important;
+            min-width: 44px;
+            justify-content: center;
+        }
+        
+        .sidebar-user-toggle .sidebar-menu-icon {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar-user-toggle .sidebar-menu-icon img,
+        .sidebar-user-toggle .sidebar-menu-icon .e_cover img,
+        .sidebar-user-toggle .sidebar-menu-icon div.img {
+            width: 32px !important;
+            height: 32px !important;
+        }
+        
+        .sidebar-user-toggle .sidebar-menu-icon .e_cover {
+            width: 32px !important;
+            height: 32px !important;
+        }
+        
+        .sidebar-user-toggle .sidebar-menu-text {
+            display: none;
+        }
+        
+        .sidebar-user-menu-items {
+            display: none !important;
         }
         
         /* Adjust body padding to account for bottom menu */
