@@ -741,15 +741,44 @@ if(!$basic_header_footer){
             padding: 15px !important;
             max-height: calc(100vh - 70px) !important;
             overflow-y: auto !important;
-            z-index: 1050 !important;
+            z-index: 9999 !important;
             flex-direction: column !important;
             gap: 8px !important;
             margin-top: 0 !important;
             padding-left: 15px !important;
+            pointer-events: auto !important;
         }
         
         .sidebar-user-menu-items .sidebar-user-menu-item {
             padding-left: 0 !important;
+            padding: 10px 12px !important;
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            position: relative !important;
+            z-index: 10000 !important;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+        
+        .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-text {
+            display: block !important;
+            margin-left: 20px !important;
+            font-size: 1.1em !important;
+            font-weight: 500 !important;
+            white-space: nowrap !important;
+            color: #ffffff !important;
+        }
+        
+        .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-icon {
+            font-size: 1.5em !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-width: 24px !important;
+            color: #ffffff !important;
+            position: relative !important;
         }
         
         /* Adjust body padding to account for bottom menu */
