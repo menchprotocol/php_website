@@ -322,10 +322,7 @@ if(!$basic_header_footer){
         }
     }
 
-    ';
-    
-    // Removed all sidebar menu CSS - restored to original fixed top menu
-    echo ' </style>';
+    echo '</style>';
     ?>
     
     <script>
