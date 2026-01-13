@@ -1006,8 +1006,8 @@ if (!$basic_header_footer) {
     }
     // Search button (shown by default, hidden when search is active)
     echo '<a href="javascript:void(0);" class="sidebar-menu-item search-toggle-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
-    echo '<a href="/messages" class="sidebar-menu-item sidebar-menu-item-with-badge"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i><span class="sidebar-menu-badge">345</span></span><span class="sidebar-menu-text">Messages</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item sidebar-menu-item-primary" onclick="post_edit_start()"><span class="sidebar-menu-icon"><i class="fas fa-plus"></i></span><span class="sidebar-menu-text">Prompt</span></a>';
+    echo '<a href="/apps" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="far fa-slash-forward fa-sharp"></i></span><span class="sidebar-menu-text">Apps</span></a>';
     echo '</div>';
     
     //User menu at bottom - expandable
@@ -1067,7 +1067,15 @@ if (!$basic_header_footer) {
                     } elseif (in_array($chainusertype, $this->config->item('userids___6287'))) {
 
             //APP - Handle apps (logout will be included if it's in userids___6287)
-            $href = 'href="' . view_app_chain($chainusertype) . ($chainusertype == 4269 ? (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '') : '') . '"';
+            // Skip Apps menu item as it's now in the main sidebar menu
+            // Only show logout and other non-app items
+            if ($chainusertype == 4269) {
+                // Logout - keep it in dropdown
+                $href = 'href="' . view_app_chain($chainusertype) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '') . '"';
+            } else {
+                // Skip other apps - they're now in the main Apps menu
+                continue;
+            }
 
                     } else {
 
