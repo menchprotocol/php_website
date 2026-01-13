@@ -779,7 +779,7 @@ if(!$basic_header_footer){
         }
         
         .sidebar-menu-item.sidebar-menu-item-primary {
-            flex: 1.3;
+            flex: 1;
         }
         
         .sidebar-menu-text {
