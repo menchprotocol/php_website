@@ -516,6 +516,12 @@ if(!$basic_header_footer){
         margin-top: auto;
         padding-top: 20px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+    }
+    
+    .sidebar-user-menu .dropdown {
+        width: 100%;
+        position: relative;
     }
     
     .sidebar-user-toggle {
@@ -523,26 +529,59 @@ if(!$basic_header_footer){
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 8px !important;
+        padding: 10px 12px !important;
         background-color: transparent;
         border: none;
         border-radius: 25px;
         transition: all 0.2s ease;
+        color: #ffffff;
     }
     
     .sidebar-user-toggle:hover {
         background-color: rgba(255, 255, 255, 0.1);
     }
     
+    .sidebar-user-toggle:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    
     .sidebar-user-menu .dropdown-menu {
-        position: absolute;
-        bottom: 100%;
-        left: 0;
-        margin-bottom: 10px;
-        background-color: rgba(0, 0, 0, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        min-width: 200px;
+        position: absolute !important;
+        bottom: 100% !important;
+        top: auto !important;
+        left: 0 !important;
+        right: auto !important;
+        margin-top: 0 !important;
+        margin-bottom: 8px !important;
+        background-color: rgba(0, 0, 0, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 8px !important;
+        min-width: 200px !important;
+        max-width: 250px !important;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4) !important;
+        z-index: 1050 !important;
+        transform-origin: bottom center;
+    }
+    
+    .sidebar-user-menu .dropdown-menu.show {
+        display: block !important;
+    }
+    
+    .sidebar-user-menu .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 8px;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .sidebar-user-menu .dropdown-toggle[aria-expanded="true"]::after {
+        transform: rotate(180deg);
     }
     
     /* Larger screens - show full menu */
@@ -570,8 +609,9 @@ if(!$basic_header_footer){
         }
         
         .sidebar-user-menu .dropdown-menu {
-            left: auto;
-            right: 0;
+            left: 0 !important;
+            right: auto !important;
+            margin-left: 0 !important;
         }
         
         /* Adjust body padding to account for sidebar while keeping containers centered */
@@ -686,7 +726,6 @@ if (!$basic_header_footer) {
     echo '<div class="sidebar-logo-frame">' . (strlen($domain_cover) ? '<a href="' . view_memory(42903, 14565) . '" class="icon-block logo_cover">' . view_cover($domain_logo) . '</a>' : '') . '<a href="' . view_memory(42903, 14565) . '" class="main__title logo_title sidebar-logo-title">' . get_domain('m__name') . '</a></div>';
     echo '</div>';
     echo '<div class="sidebar-menu-items">';
-    echo '<a href="/" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="fas fa-home"></i></span><span class="sidebar-menu-text">Home</span></a>';
     echo '<a href="javascript:void(0);" class="sidebar-menu-item" onclick="toggle_finder()"><span class="sidebar-menu-icon"><i class="fas fa-search"></i></span><span class="sidebar-menu-text">Search</span></a>';
     echo '<a href="/messages" class="sidebar-menu-item sidebar-menu-item-with-badge"><span class="sidebar-menu-icon"><i class="fas fa-paper-plane fa-sharp"></i><span class="sidebar-menu-badge">345</span></span><span class="sidebar-menu-text">Messages</span></a>';
     echo '<a href="/apps" class="sidebar-menu-item"><span class="sidebar-menu-icon"><i class="far fa-slash-forward fa-sharp"></i></span><span class="sidebar-menu-text">Apps</span></a>';
