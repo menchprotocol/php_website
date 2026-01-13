@@ -741,7 +741,7 @@ if(!$basic_header_footer){
             padding: 15px !important;
             max-height: calc(100vh - 70px) !important;
             overflow-y: auto !important;
-            z-index: 9999 !important;
+            z-index: 99999 !important;
             flex-direction: column !important;
             gap: 8px !important;
             margin-top: 0 !important;
@@ -751,24 +751,27 @@ if(!$basic_header_footer){
         
         .sidebar-user-menu-items .sidebar-user-menu-item {
             padding-left: 0 !important;
-            padding: 10px 12px !important;
+            padding: 12px 15px !important;
             width: 100% !important;
             display: flex !important;
+            flex-direction: row !important;
             align-items: center !important;
             justify-content: flex-start !important;
             position: relative !important;
-            z-index: 10000 !important;
+            z-index: 100000 !important;
             pointer-events: auto !important;
             cursor: pointer !important;
+            gap: 12px !important;
         }
         
         .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-text {
             display: block !important;
-            margin-left: 20px !important;
+            margin-left: 0 !important;
             font-size: 1.1em !important;
             font-weight: 500 !important;
             white-space: nowrap !important;
             color: #ffffff !important;
+            flex: 1;
         }
         
         .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-icon {
@@ -777,8 +780,17 @@ if(!$basic_header_footer){
             align-items: center !important;
             justify-content: center !important;
             min-width: 24px !important;
+            width: 24px !important;
             color: #ffffff !important;
             position: relative !important;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-icon img,
+        .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-icon .e_cover img,
+        .sidebar-user-menu-items .sidebar-user-menu-item .sidebar-menu-icon div.img {
+            width: 24px !important;
+            height: 24px !important;
         }
         
         /* Adjust body padding to account for bottom menu */
