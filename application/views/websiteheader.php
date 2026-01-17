@@ -520,7 +520,7 @@ if ($user_session && (!isset($basic_header_footer) || !$basic_header_footer)) {
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
                     <form method="POST" action="<?= view_app_chain(27196) ?>?focus__id=12274">
-                        <div class="modal-header">
+                        <div class="modal-header">git push current code to a new branch that does not exist in one line
                             <div class="initial_header">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
