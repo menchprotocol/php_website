@@ -406,7 +406,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
             echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_posts'] != $i['stats']['max_posts'] ? $i['stats']['min_posts'] . '-' : '') . $i['stats']['max_posts'] . '</span>' . $closer;
 
-        } elseif ($userid == 31777) {
+        } elseif ($userid == 31777 && isset($i['poststats']['count_views']) && intval($i['poststats']['count_views']) > 0) {
 
             if (post_is_startable($i)) {
                 $opener = '<a href="/' . $i['posthashtag'] . '/start" ';
@@ -419,7 +419,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
                 'chainuserinput' => 26189,
             ), array(), 1);
 
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . (count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="' . $users___11035[26189]['m__name'] . '" style="border-bottom: 1px dotted #000000;">/' . intval($max_available[0]['chainvalue']) . '</span>' : '') . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['poststats']['count_views'] . (count($max_available) && is_numeric($max_available[0]['chainvalue']) ? '<span title="' . $users___11035[26189]['m__name'] . '" style="border-bottom: 1px dotted #000000;">/' . intval($max_available[0]['chainvalue']) . '</span>' : '') . '</span>' . $closer;
 
         } else {
             //block
@@ -429,7 +429,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
     echo '</span>';
     echo '<div class="doclear">&nbsp;</div>';
 
-    echo '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_postmessageraw($i) . '</div>';
+    echo (isset($i['poststats']['count_views']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message ' . ($open_by_default || !$has_children ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">' . view_postmessageraw($i) . '</div>' : '');
     echo '</div>';
 
 
