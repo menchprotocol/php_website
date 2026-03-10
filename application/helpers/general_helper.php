@@ -372,7 +372,7 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
 
     echo(isset($i['user_discovered']['chainkey']) && intval($i['user_discovered']['chainkey']) > 1 ? $i['user_discovered']['chainkey'] . 'x ' : '');
 
-    echo(isset($i['user_written_response']['postmessageraw']) && strlen($i['user_written_response']['postmessageraw']) ? ' ' . $i['user_written_response']['postmessageraw'] : '');
+    echo (isset($i['user_written_response']['postmessageraw']) && strlen($i['user_written_response']['postmessageraw']) ? ' ' . $i['user_written_response']['postmessageraw'] : '');
 
 
     echo '<span class="float_right inner_items ' . ($open_by_default ? '' : 'hidden') . ' frame_id_' . $i['postid'] . '">';
@@ -3775,7 +3775,7 @@ function view_postmessageraw($i, $userid = 0, $focus__node = false, $discovery_m
     $CI =& get_instance();
 
     //This is still flawed, we need to fix this to exlude cache apps and more:
-    $field = ($show_postmessageedit ? 'postmessageedit' : 'postmessageview');
+    $field = ($show_postmessageedit && isset($i['postmessageedit']) && strlen($i['postmessageedit']) ? 'postmessageedit' : 'postmessageview');
 
     if ($userid > 0) {
         foreach ($CI->Chains->read(array(
