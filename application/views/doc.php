@@ -8,4 +8,5 @@ echo '<div class="row justify-content">';
 print_r($this->Chains->post_json($focus_post));
 
 //view_tree($this->Chains->post_json($focus_post), true, $user_session);
+
 echo '</div>';
