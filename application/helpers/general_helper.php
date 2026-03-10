@@ -382,29 +382,29 @@ function view_tree($i, $open_by_default = true, $focus_e = false)
         $opener = '<span ';
         $closer = '</span>';
 
-        if (isset($i['stats']) && $userid == 12273 && $i['stats']['all_posts'] > 0) {
+        if (isset($i['poststats']) && $userid == 12273 && $i['poststats']['all_posts'] > 0) {
 
             if ($CI->uri->segment(1) == 'doc') {
                 $opener = '<a href="/' . $i['posthashtag'] . '" ';
                 $closer = '</a>';
             }
-            echo $opener . 'data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['stats']['all_posts'] . '</span>' . $closer;
+            echo $opener . 'data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['poststats']['all_posts'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $userid == 1592672 && ($i['treelevel'] > 0 || $i['stats']['max_level'] > 0)) {
+        } elseif (isset($i['poststats']) && $userid == 1592672 && ($i['treelevel'] > 0 || $i['poststats']['max_level'] > 0)) {
 
             if ($CI->uri->segment(1) == 'doc') {
                 $opener = '<a href="/doc/' . $i['posthashtag'] . '" ';
                 $closer = '</a>';
             }
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['treelevel'] . '/' . $i['stats']['max_level'] . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . $i['treelevel'] . '/' . $i['poststats']['max_level'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $userid == 1592682 && ($i['stats']['min_choices'] > 0 || $i['stats']['max_choices'] > 0)) {
+        } elseif (isset($i['poststats']) && $userid == 1592682 && ($i['poststats']['min_choices'] > 0 || $i['poststats']['max_choices'] > 0)) {
 
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_choices'] > 0 && $i['stats']['min_choices'] != $i['stats']['max_choices'] ? $i['stats']['min_choices'] . '-' : '') . $i['stats']['max_choices'] . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['poststats']['min_choices'] > 0 && $i['poststats']['min_choices'] != $i['poststats']['max_choices'] ? $i['poststats']['min_choices'] . '-' : '') . $i['poststats']['max_choices'] . '</span>' . $closer;
 
-        } elseif (isset($i['stats']) && $userid == 1592686 && ($i['stats']['min_posts'] > 0 || $i['stats']['max_posts'] > 0)) {
+        } elseif (isset($i['poststats']) && $userid == 1592686 && ($i['poststats']['min_posts'] > 0 || $i['poststats']['max_posts'] > 0)) {
 
-            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['stats']['min_posts'] != $i['stats']['max_posts'] ? $i['stats']['min_posts'] . '-' : '') . $i['stats']['max_posts'] . '</span>' . $closer;
+            echo $opener . ' data-toggle="tooltip" data-placement="top" title="' . $m['m__name'] . (strlen($m['m__message']) ? ': ' . $m['m__message'] : '') . '"><span class="icon-block-sm">' . $m['m__cover'] . '</span><span>' . ($i['poststats']['min_posts'] != $i['poststats']['max_posts'] ? $i['poststats']['min_posts'] . '-' : '') . $i['poststats']['max_posts'] . '</span>' . $closer;
 
         } elseif ($userid == 31777 && isset($i['poststats']['count_views']) && intval($i['poststats']['count_views']) > 0) {
 
