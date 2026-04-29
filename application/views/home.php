@@ -184,4 +184,9 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
             $('.app__14565 .fixed-top').addClass('top-header-position');
         }
     });
+
+    //Discotique 2026 Hack
+    $( document ).ready(function() {
+        $('.s__12273_3679344').attr('href','https://form.jotform.com/260830879417062');
+    });
 </script>
