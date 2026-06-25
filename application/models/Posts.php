@@ -41,7 +41,7 @@ class Posts extends CIdea_cache
         $post_index = post_index($add_fields['postmessageraw'], $new_x['chainid'], $chainusercreator, $add_fields['posthashtag']);
 
         //Update new ID:
-        $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='" . "#" . $add_fields['posthashtag'] . "\n" . $post_index['chainvalue'] . "' WHERE chainid = " . $new_x['chainid'] . ";");
+        $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='" . "#" . $add_fields['posthashtag'] . "\n" . stripslashes($post_index['chainvalue']) . "' WHERE chainid = " . $new_x['chainid'] . ";");
 
         //Add to cache:
         $this->db->insert('posts', array(
@@ -603,7 +603,7 @@ class Posts extends CIdea_cache
         }
 
         $post_new = $this->Posts->create(array(
-            'postmessageraw' => stripslashes(( strlen($clone_message) ? $clone_message : $this_i[0]['postmessageraw'])),
+            'postmessageraw' => ( strlen($clone_message) ? $clone_message : $this_i[0]['postmessageraw']),
         ), $chainusercreator);
 
         return array(
