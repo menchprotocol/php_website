@@ -1,11 +1,13 @@
 <?php
 
+$count = 0;
 foreach ($this->Chains->read(array(
     'chainusertype' => 10573, //Subscriber Mention
     'chainuserinput' => 26582,
 ), array('chainpostinput')) as $i) {
 
-    echo $i['postmessageraw']."<br />";
+    $count++;
+    echo '#'.$count.') '.$i['postmessageraw']."<br />";
 
     //Make sure not completed before:
     if(count($this->Chains->read(array(
