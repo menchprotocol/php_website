@@ -40,7 +40,7 @@ class Posts extends CIdea_cache
         //Update other data on chain:
         $post_index = post_index($add_fields['postmessageraw'], $new_x['chainid'], $chainusercreator, $add_fields['posthashtag']);
         //Update new ID:
-        $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='" . "#" . $add_fields['posthashtag'] . "\n" . stripslashes($post_index['chainvalue']) . "' WHERE chainid = " . $new_x['chainid'] . ";");
+        $this->db->query("UPDATE ideachains SET chainpostinput = " . $new_x['chainid'] . ", chainvalue='" . "#" . $add_fields['posthashtag'] . "\n" . str_replace('\'','`',$post_index['chainvalue']) . "' WHERE chainid = " . $new_x['chainid'] . ";");
 
         //Add to cache:
         $this->db->insert('posts', array(
