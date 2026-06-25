@@ -5720,10 +5720,10 @@ function post_index($postmessageraw, $save_postid = 0, $chainusercreator = 0, $c
 
         }
 
-        $post_index['chainvalue'] .= ( 1 || (!$first_line && $linechainvalue) ? "\n" : '') . $linechainvalue;
-        $post_index['postmessageraw'] .= ( 1 || (!$first_line && $linepostmessageraw) ? "\n" : '') . $linepostmessageraw;
-        $post_index['postmessageview'] .= (1 || $linepostmessageview ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostmessageview . '</div>' : '');
-        $post_index['postmessageedit'] .= (1 || $linepostmessageedit ? '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostmessageedit . '</div>' : '');
+        $post_index['chainvalue'] .= "\n" . $linechainvalue;
+        $post_index['postmessageraw'] .= "\n" . $linepostmessageraw;
+        $post_index['postmessageview'] .= '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostmessageview . '</div>';
+        $post_index['postmessageedit'] .= '<div class="line ' . ($first_line ? 'first_line' : '') . '">' . $linepostmessageedit . '</div>';
         $post_index['postmessageraw_new'] .= trim($line_new) . "\n";
 
     }
