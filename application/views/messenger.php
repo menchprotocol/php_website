@@ -60,7 +60,10 @@ foreach ($this->Chains->read(array(
         //Ready to be done:
         $this->Chains->post_discovered(($total_sent > 0 ? 1309378 /* Post Trigerred */ : 31022 /* Post Skipped */), 26582, 0, $i);
 
+    } else {
+        echo 'Nothing to send';
     }
+
 
 }
 
