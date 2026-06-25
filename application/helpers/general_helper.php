@@ -713,24 +713,28 @@ function post_settings($posthashtag, $fetch_contact = false)
                     break; //We only need a single name
                 }
 
-                $query_string_filtered[$count]['extension_email'] = array();
                 foreach($CI->Chains->read(array(
                     'chainuserinput' => 3288, //Email
                     'chainuseroutput' => $x['userid'],
                     'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 )) as $email){
+                    if(!isset($query_string_filtered[$count]['extension_email'])){
+                        $query_string_filtered[$count]['extension_email'] = array();
+                    }
                     if(filter_var($email['chainvalue'], FILTER_VALIDATE_EMAIL)){
                         array_push($query_string_filtered[$count]['extension_email'], $email['chainvalue']);
                     }
                 }
 
-                $query_string_filtered[$count]['extension_phone'] = array();
                 foreach($CI->Chains->read(array(
                     'chainuserinput' => 4783, //Phone
                     'chainuseroutput' => $x['userid'],
                     'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 )) as $phone){
                     if(strlen($phone['chainvalue']) >= 10){
+                        if(!isset($query_string_filtered[$count]['extension_phone'])){
+                            $query_string_filtered[$count]['extension_phone'] = array();
+                        }
                         array_push($query_string_filtered[$count]['extension_phone'], $email['chainvalue']);
                     }
                 }
