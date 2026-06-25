@@ -583,12 +583,6 @@ function post_settings($posthashtag, $fetch_contact = false)
     $mixed_column = array();
     $user_column = array();
     $post_column = array();
-    $contact_details = array(
-        'full_list' => '',
-        'email_list' => '',
-        'email_count' => 0,
-        'phone_count' => 0,
-    );
 
     foreach ($CI->Posts->read(array(
         'LOWER(posthashtag)' => strtolower($posthashtag),
@@ -708,36 +702,39 @@ function post_settings($posthashtag, $fetch_contact = false)
             foreach ($query_string_filtered as $count => $x) {
 
                 //Fetch email & phone:
-                $fetch_names = $CI->Chains->read(array(
+                $query_string_filtered[$count]['extension_name'] = $x['username'];
+                foreach($CI->Chains->read(array(
                     'chainuserinput' => 42584, //First Name
                     'chainuseroutput' => $x['userid'],
+                    'LENGTH(chainvalue) > 0' => null,
                     'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ));
-                $fetch_emails = $CI->Chains->read(array(
+                )) as $name){
+                    $query_string_filtered[$count]['extension_name'] = $name['chainvalue'];
+                    break; //We only need a single name
+                }
+
+                $query_string_filtered[$count]['extension_email'] = array();
+                foreach($CI->Chains->read(array(
                     'chainuserinput' => 3288, //Email
                     'chainuseroutput' => $x['userid'],
                     'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ));
-                $fetch_phones = $CI->Chains->read(array(
+                )) as $email){
+                    if(filter_var($email['chainvalue'], FILTER_VALIDATE_EMAIL)){
+                        array_push($query_string_filtered[$count]['extension_email'], $email['chainvalue']);
+                    }
+                }
+
+                $query_string_filtered[$count]['extension_phone'] = array();
+                foreach($CI->Chains->read(array(
                     'chainuserinput' => 4783, //Phone
                     'chainuseroutput' => $x['userid'],
                     'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ));
-
-                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['chainvalue']) ? $fetch_names[0]['chainvalue'] : $x['username']);
-                $query_string_filtered[$count]['extension_email'] = (count($fetch_emails) && filter_var($fetch_emails[0]['chainvalue'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['chainvalue'] : false);
-                $query_string_filtered[$count]['extension_phone'] = (count($fetch_phones) && strlen($fetch_phones[0]['chainvalue']) >= 10 ? $fetch_phones[0]['chainvalue'] : false);
-
-                $contact_details['full_list'] .= $query_string_filtered[$count]['extension_name'] . "\t" . $query_string_filtered[$count]['extension_email'] . "\t" . $query_string_filtered[$count]['extension_phone'] . "\n";
-
-
-                if ($query_string_filtered[$count]['extension_email']) {
-                    $contact_details['email_count']++;
-                    $contact_details['email_list'] .= (strlen($contact_details['email_list']) ? ", " : '') . $query_string_filtered[$count]['extension_email'];
+                )) as $phone){
+                    if(strlen($phone['chainvalue']) >= 10){
+                        array_push($query_string_filtered[$count]['extension_phone'], $email['chainvalue']);
+                    }
                 }
-                if ($query_string_filtered[$count]['extension_phone']) {
-                    $contact_details['phone_count']++;
-                }
+
             }
         }
 
@@ -748,7 +745,6 @@ function post_settings($posthashtag, $fetch_contact = false)
             'post_column' => $post_column,
             'mixed_column' => $mixed_column,
             'query_string_filtered' => $query_string_filtered,
-            'contact_details' => $contact_details, //Optional addon
         );
     }
 }
