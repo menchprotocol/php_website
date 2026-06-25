@@ -562,23 +562,6 @@ class Chains extends CIdea_cache
             $sms_subscriber = in_array($notification_levels[0]['chainuserinput'], $this->config->item('userids___28915'));
         }
 
-        //Make sure not recently contacted:
-        /*
-         * Did not work with subscription notifications which could happen back to back
-         *
-        $minutes_limit = 60;
-        foreach($this->Chains->read(array(
-            'chainusertype' => 29399,
-            'chainusercreator' => $userid,
-            'chaintime >=' => date("Y-m-d H:i:s", strtotime('-'.$minutes_limit.' minutes')),
-        )) as $recent_email){
-            return array(
-                'status' => 0,
-                'message' => 'User has been recently contacted',
-            );
-        }
-        */
-
         $stats = array(
             'email_addresses' => array(),
             'sms_numbers' => array(),
@@ -665,11 +648,7 @@ class Chains extends CIdea_cache
         foreach ($list_of_userid as $count => $x) {
 
             if (in_array($x['userhandle'], $wacth_repeat_users)) {
-                //This should not happen! Report bug:
-                log_error('Chains->broadcast() Detected duplicate User User Bug: ' . $x['userhandle'], array(
-                    'chainuseroutput' => $x['userid'],
-                ));
-                break; //Stop sending more messages!
+                continue;
             }
 
             //Map this user:

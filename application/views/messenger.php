@@ -9,7 +9,7 @@ foreach ($this->Posts->read(array(
     //Now let's see who will receive this:
     $post_settings = post_settings($i['posthashtag'], true);
 
-    $total_sent = $this->Chains->broadcast($post_settings['query_string_filtered'], $i, 0, true, false);
+    $total_sent = $this->Chains->broadcast($post_settings['query_string_filtered'], $i);
 
     echo view_post_title($i) . ' Sent ' . $total_sent . ' Messages to ' . count($post_settings['query_string_filtered']) . ' Members<hr />';
 
