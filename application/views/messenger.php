@@ -1,8 +1,8 @@
 <?php
 
-foreach ($this->Chains->read(array(
+foreach ($this->Posts->read(array(
     'LOWER(posthashtag)' => strtolower(trim($_GET['posthashtag'])),
-), array('chainpostinput')) as $i) {
+)) as $i) {
 
     echo $i['postmessageraw']."<hr />";
 
