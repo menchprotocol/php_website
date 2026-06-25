@@ -6,16 +6,6 @@ foreach ($this->Posts->read(array(
 
     echo $i['postmessageraw']."<hr />";
 
-    //Make sure not messaged before:
-    if(count($this->Chains->read(array(
-        'chainusercreator' => 26582,
-        'chainusertype IN (' . join(',', array(1309378 /* Post Trigerred */ , 31022 /* Post Skipped */)) . ')' => null, //Active Writes
-        'chainpostinput' => $i['postid'],
-    )))){
-       //Already completed:
-       continue;
-    }
-
     //Now let's see who will receive this:
     $post_settings = post_settings($i['posthashtag']);
 
