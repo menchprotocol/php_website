@@ -1,12 +1,11 @@
 <?php
 
-die('dead for now 2');
-
-
 foreach ($this->Chains->read(array(
     'chainusertype' => 10573, //Subscriber Mention
     'chainuserinput' => 26582,
 ), array('chainpostinput')) as $i) {
+
+    echo $i['postmessageraw']."<br />";
 
     //Make sure not completed before:
     if(count($this->Chains->read(array(
@@ -48,6 +47,10 @@ foreach ($this->Chains->read(array(
     //Now let's see who will receive this:
     $demo_only = false;
     $post_settings = post_settings($i['posthashtag']);
+
+    echo print_r($post_settings, true)."<hr />";
+    continue;
+
     $total_sent = $this->Chains->broadcast($post_settings['query_string_filtered'], $i, $i['chainuserdomain'], true, $demo_only);
 
     echo view_post_title($i) . ' Sent ' . $total_sent . ' Messages to ' . count($post_settings['query_string_filtered']) . ' Members<hr />';
