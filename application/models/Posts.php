@@ -603,7 +603,7 @@ class Posts extends CIdea_cache
         }
 
         $post_new = $this->Posts->create(array(
-            'postmessageraw' => ( strlen($clone_message) ? $clone_message : $this_i[0]['postmessageraw']),
+            'postmessageraw' => strip_slashes(( strlen($clone_message) ? $clone_message : $this_i[0]['postmessageraw'])),
         ), $chainusercreator);
 
         return array(
