@@ -718,10 +718,10 @@ function post_settings($posthashtag, $fetch_contact = false)
                     'chainuseroutput' => $x['userid'],
                     'chainusertype IN (' . join(',', $CI->config->item('userids___13548')) . ')' => null, //USER CHAINS
                 )) as $email){
-                    if(!isset($query_string_filtered[$count]['extension_email'])){
-                        $query_string_filtered[$count]['extension_email'] = array();
-                    }
                     if(filter_var($email['chainvalue'], FILTER_VALIDATE_EMAIL)){
+                        if(!isset($query_string_filtered[$count]['extension_email'])){
+                            $query_string_filtered[$count]['extension_email'] = array();
+                        }
                         array_push($query_string_filtered[$count]['extension_email'], $email['chainvalue']);
                     }
                 }
@@ -735,7 +735,7 @@ function post_settings($posthashtag, $fetch_contact = false)
                         if(!isset($query_string_filtered[$count]['extension_phone'])){
                             $query_string_filtered[$count]['extension_phone'] = array();
                         }
-                        array_push($query_string_filtered[$count]['extension_phone'], $email['chainvalue']);
+                        array_push($query_string_filtered[$count]['extension_phone'], $phone['chainvalue']);
                     }
                 }
 
