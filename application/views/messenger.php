@@ -6,7 +6,7 @@ foreach ($this->Chains->read(array(
 
     echo $i['postmessageraw']."<hr />";
 
-    //Make sure not completed before:
+    //Make sure not messaged before:
     if(count($this->Chains->read(array(
         'chainusercreator' => 26582,
         'chainusertype IN (' . join(',', array(1309378 /* Post Trigerred */ , 31022 /* Post Skipped */)) . ')' => null, //Active Writes
@@ -16,6 +16,7 @@ foreach ($this->Chains->read(array(
        continue;
     }
 
+    /*
     //Determine if it's time to send this message:
     $time_starts = 0;
     foreach ($this->Chains->read(array(
@@ -42,14 +43,11 @@ foreach ($this->Chains->read(array(
         $end_sending = strtotime($time['chainvalue']);
         break;
     }
+    */
 
     //Now let's see who will receive this:
     $demo_only = false;
     $post_settings = post_settings($i['posthashtag']);
-
-    echo print_r($post_settings, true)."<hr />";
-    continue;
-
     $total_sent = $this->Chains->broadcast($post_settings['query_string_filtered'], $i, $i['chainuserdomain'], true, $demo_only);
 
     echo view_post_title($i) . ' Sent ' . $total_sent . ' Messages to ' . count($post_settings['query_string_filtered']) . ' Members<hr />';
