@@ -339,7 +339,6 @@ class Chains extends CIdea_cache
             $update_columns['chaintime'] = date("Y-m-d H:i:s"); //Always update time
             $new_x = $this->Chains->create($update_columns, true, false);
 
-
             if ($new_x['chainid'] > 0) {
                 //Void Old Chain:
                 $this->db->query("UPDATE ideachains SET chainvoid = " . $new_x['chainid'] . " WHERE chainid = " . $chainid . ";");
