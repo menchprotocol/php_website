@@ -16,6 +16,7 @@ foreach ($this->Chains->read(array(
        continue;
     }
 
+    $end_sending = true;
     /*
     //Determine if it's time to send this message:
     $time_starts = 0;
@@ -43,6 +44,7 @@ foreach ($this->Chains->read(array(
         $end_sending = strtotime($time['chainvalue']);
         break;
     }
+    $end_sending = (!$end_sending || $end_sending < time());
     */
 
     //Now let's see who will receive this:
@@ -53,7 +55,7 @@ foreach ($this->Chains->read(array(
     echo view_post_title($i) . ' Sent ' . $total_sent . ' Messages to ' . count($post_settings['query_string_filtered']) . ' Members<hr />';
 
     //Mark this as complete?
-    if (!$demo_only && (!$end_sending || $end_sending < time())) {
+    if (!$demo_only && $end_sending) {
 
         //Ready to be done:
         $this->Chains->post_discovered(($total_sent > 0 ? 1309378 /* Post Trigerred */ : 31022 /* Post Skipped */), 26582, 0, $i);
