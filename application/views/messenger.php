@@ -1,13 +1,10 @@
 <?php
 
-$count = 0;
 foreach ($this->Chains->read(array(
-    'chainusertype' => 10573, //Subscriber Mention
-    'chainuserinput' => 26582,
+    'LOWER(posthashtag)' => strtolower(trim($_GET['posthashtag'])),
 ), array('chainpostinput')) as $i) {
 
-    $count++;
-    echo '#'.$count.') '.$i['postmessageraw']."<hr />";
+    echo $i['postmessageraw']."<hr />";
 
     //Make sure not completed before:
     if(count($this->Chains->read(array(
@@ -50,7 +47,7 @@ foreach ($this->Chains->read(array(
     $demo_only = false;
     $post_settings = post_settings($i['posthashtag']);
 
-    //echo print_r($post_settings, true)."<hr />";
+    echo print_r($post_settings, true)."<hr />";
     continue;
 
     $total_sent = $this->Chains->broadcast($post_settings['query_string_filtered'], $i, $i['chainuserdomain'], true, $demo_only);
