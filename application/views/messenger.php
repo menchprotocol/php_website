@@ -1,6 +1,6 @@
 <?php
 
-die('dead for now');
+die('dead for now 2');
 
 
 foreach ($this->Chains->read(array(
