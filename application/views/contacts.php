@@ -2,13 +2,17 @@
 
 //Generate list & settings:
 $csv_output = '';
-$fetch_fields = array(42584,30198,4783,3288,$focus_e['userid']);
-$fetch_single_result = array(42584,30198,4783,$focus_e['userid']); //We only need a single result
+$fetch_now = array(intval($focus_e['userid']));
+if(isset($_GET['add']) && is_numeric($_GET['add'])){
+    array_push($fetch_now, intval($_GET['add']));
+}
+$fetch_fields = array(42584,30198,4783,3288);
+$fetch_single_result = array(42584,30198,4783); //We only need a single result
+array_merge($fetch_fields, $fetch_now);
+array_merge($fetch_single_result, $fetch_now);
 $fetch_skip_if_missing = array(3288); //No point if no email!
 $fetch_replace_username = array(42584); //Replace with username if no first name, must be part of $fetch_single_result as well to work
 $unique_emails = array();
-
-echo $_GET['add'];
 
 //First Name, Last Name, Email & Phone Number
 foreach($fetch_fields as $fetch_field) {
@@ -24,12 +28,11 @@ $csv_output .= "\n";
 
 //Now fetch all the child fields:
 foreach($this->Chains->read(array(
-    'chainuserinput' => $focus_e['userid'],
+    'chainuserinput IN (' . join(',', $fetch_now) . ')' => null, //USER CHAINS
     'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
 ), array('chainuseroutput'), 0) as $x) {
 
     //Fetch each field for this user:
-
     unset($new_lines);
     $new_lines[0] = ''; //Start with a single line for this user
     $must_skip = false;
