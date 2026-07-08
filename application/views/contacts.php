@@ -30,9 +30,9 @@ foreach($this->Chains->read(array(
 
         $results = $this->Chains->read(array(
             'chainuserinput' => $x['userid'],
-            'chainuseroutput IN (' . join(',', $fetch_fields) . ')' => null,
+            'chainuseroutput' => $fetch_field,
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-        ), array('chainuseroutput'), 0);
+        ), array(), 0);
 
         if(in_array($fetch_field, $fetch_skip_if_missing) && !count($results)){
             break;
