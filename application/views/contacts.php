@@ -8,8 +8,8 @@ if(isset($_GET['add']) && is_numeric($_GET['add'])){
 }
 $fetch_fields = array(42584,30198,4783,3288);
 $fetch_single_result = array(42584,30198,4783); //We only need a single result
-array_merge($fetch_fields, $fetch_now);
-array_merge($fetch_single_result, $fetch_now);
+$fetch_fields = array_merge($fetch_fields, $fetch_now);
+$fetch_single_result = array_merge($fetch_single_result, $fetch_now);
 $fetch_skip_if_missing = array(3288); //No point if no email!
 $fetch_replace_username = array(42584); //Replace with username if no first name, must be part of $fetch_single_result as well to work
 $unique_emails = array();
