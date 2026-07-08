@@ -8,11 +8,14 @@ $fetch_skip_if_missing = array(3288); //No point if no email!
 $fetch_replace_username = array(42584); //Replace with username if no first name, must be part of $fetch_single_result as well to work
 
 //First Name, Last Name, Email & Phone Number
-foreach ($this->Users->read(array(
-    'userid IN (' . join(',', $fetch_fields) . ')' => null,
-)) as $e) {
-    $csv_output .= $e['username']."\t";
+foreach($fetch_fields as $fetch_field) {
+    foreach ($this->Users->read(array(
+        'userid' => $fetch_field,
+    )) as $e) {
+        $csv_output .= $e['username']."\t";
+    }
 }
+
 $csv_output .= "\n";
 
 
@@ -47,28 +50,24 @@ foreach($this->Chains->read(array(
             } else {
                 $new_lines[0] .= "&nbsp;\t";
             }
-            continue;
         } else {
 
             //We support multi results:
             $count = 0;
-            if(count($results)>=2){
-
-                //First replicate all rows:
-                foreach($results as $result){
-                    if(!isset($new_lines[$count])){
-                        $new_lines[$count] = $new_lines[($count-1)];
-                    }
+            //First replicate all rows:
+            foreach($results as $result){
+                if(!isset($new_lines[$count])){
+                    $new_lines[$count] = $new_lines[($count-1)];
                     $count++;
                 }
-
-                //Now assign values:
-                foreach($results as $result){
-                    $new_lines[$count] .= $result['chainvalue']."\t";
-                }
             }
-        }
 
+            //Now assign values:
+            foreach($results as $result){
+                $new_lines[$count] .= $result['chainvalue']."\t";
+            }
+
+        }
     }
     
     foreach($new_lines as $new_line){
