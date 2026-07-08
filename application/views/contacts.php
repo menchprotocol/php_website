@@ -6,6 +6,7 @@ $fetch_fields = array(42584,30198,4783,3288,$focus_e['userid']);
 $fetch_single_result = array(42584,30198,4783,$focus_e['userid']); //We only need a single result
 $fetch_skip_if_missing = array(3288); //No point if no email!
 $fetch_replace_username = array(42584); //Replace with username if no first name, must be part of $fetch_single_result as well to work
+$unique_emails = array();
 
 //First Name, Last Name, Email & Phone Number
 foreach($fetch_fields as $fetch_field) {
@@ -42,8 +43,10 @@ foreach($this->Chains->read(array(
             $must_skip = true;
             break;
         }
+        
 
         if(in_array($fetch_field, $fetch_single_result)){
+            
             if(count($results)){
                 $new_lines[0] .= trim(str_replace("\n",' ',$results[0]['chainvalue']))."\t";
             } elseif(in_array($fetch_field, $fetch_replace_username)) {
@@ -54,6 +57,22 @@ foreach($this->Chains->read(array(
             }
 
         } else {
+
+            //make sure its all unique
+            if(in_array($fetch_field, $fetch_skip_if_missing)){
+                $is_invalid = false;
+                foreach($results as $result){
+                    if(in_array(strtolower($result['chainvalue']), $unique_emails) || !filter_var(strtolower($result['chainvalue']), FILTER_VALIDATE_EMAIL)){
+                        $is_invalid = true;
+                        break;
+                    } else {
+                        array_push($unique_emails, strtolower($result['chainvalue']));
+                    }
+                }
+            }
+            if($is_invalid){
+                break;
+            }
 
             //We support multi results:
             $count = 0;
@@ -85,5 +104,5 @@ foreach($this->Chains->read(array(
 
 
 //Generate the contact list of the input post:
-echo '<h1>' . $focus_e['username'] . '</h1>';
+echo '<h1>Contact List</h1>';
 echo '<textarea class="mono-space subscriber_data" style="background-color: #FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:233px; width: 100%; border-radius: 0px;">'.$csv_output.'</textarea>';
