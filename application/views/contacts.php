@@ -46,7 +46,11 @@ foreach($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0);
 
-        if(in_array($fetch_field, $fetch_skip_if_missing) && (!count($results) || substr_count($results[0]['chainvalue'], '+'))){
+        if(in_array($fetch_field, $fetch_skip_if_missing) && (!count($results) || substr_count($results[0]['chainvalue'], '+') || count($this->Chains->read(array(
+                    'chainuserinput IN (' . join(',', $this->config->item('userids___31057')) . ')' => null, //Permanently Unsubscribed
+                    'chainuseroutput' => $x['userid'], //This follower User
+                    'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ))))){
             $must_skip = true;
             break;
         }
@@ -92,12 +96,6 @@ foreach($this->Chains->read(array(
                 $count++;
             }
 
-            /*$this->Chains->read(array(
-            'chainuserinput IN (' . join(',', $this->config->item('userids___31057')) . ')' => null, //Permanently Unsubscribed
-            'chainuseroutput' => $e['userid'], //This follower User
-            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
-                ), array(), 0)*/
-
             //Now assign values:
             $count = 0;
             foreach($results as $result){
@@ -122,5 +120,5 @@ foreach($this->Chains->read(array(
 
 
 //Generate the contact list of the input post:
-echo '<h1>Contact List ['.substr_count( $csv_output, "\n" ).']</h1>';
+echo '<h1>Contact List ['.(substr_count( $csv_output, "\n" )-1).']</h1>';
 echo '<textarea class="mono-space subscriber_data" style="background-color: #FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:233px; width: 100%; border-radius: 0px;">'.$csv_output.'</textarea>';
