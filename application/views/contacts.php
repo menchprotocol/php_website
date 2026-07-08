@@ -50,6 +50,7 @@ foreach($this->Chains->read(array(
             } else {
                 $new_lines[0] .= "&nbsp;\t";
             }
+
         } else {
 
             //We support multi results:
@@ -58,8 +59,8 @@ foreach($this->Chains->read(array(
             foreach($results as $result){
                 if(!isset($new_lines[$count])){
                     $new_lines[$count] = $new_lines[($count-1)];
-                    $count++;
                 }
+                $count++;
             }
 
             //Now assign values:
