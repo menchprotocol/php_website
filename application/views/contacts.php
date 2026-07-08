@@ -38,7 +38,7 @@ foreach($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0);
 
-        if(in_array($fetch_field, $fetch_skip_if_missing) && count($results)){
+        if(in_array($fetch_field, $fetch_skip_if_missing) && !count($results)){
             $must_skip = true;
             break;
         }
