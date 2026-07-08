@@ -2,7 +2,7 @@
 
 //Generate list & settings:
 $csv_output = '';
-$fetch_fields = array(42584,30198,3288,4783,$focus_e['userid']);
+$fetch_fields = array(42584,30198,4783,3288,$focus_e['userid']);
 $fetch_single_result = array(42584,30198,4783,$focus_e['userid']); //We only need a single result
 $fetch_skip_if_missing = array(3288); //No point if no email!
 $fetch_replace_username = array(42584); //Replace with username if no first name, must be part of $fetch_single_result as well to work
