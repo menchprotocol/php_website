@@ -25,8 +25,6 @@ foreach($fetch_fields as $fetch_field) {
 
 $csv_output .= "\n";
 
-print_r($fetch_now);
-
 
 //Now fetch all the child fields:
 foreach($this->Chains->read(array(
@@ -59,6 +57,10 @@ foreach($this->Chains->read(array(
         if(in_array($fetch_field, $fetch_single_result)){
             
             if(count($results)){
+                if($fetch_field==4783){
+                    //Keep only numbers:
+                    $results[0]['chainvalue'] = preg_replace("/[^0-9]/", "", $results[0]['chainvalue'] );
+                }
                 $new_lines[0] .= trim(str_replace("\n",' ',$results[0]['chainvalue']))."\t";
             } elseif(in_array($fetch_field, $fetch_replace_username)) {
                 //Replace this with username:
