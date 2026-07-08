@@ -29,6 +29,7 @@ foreach($this->Chains->read(array(
 
     unset($new_lines);
     $new_lines[0] = ''; //Start with a single line for this user
+    $must_skip = false;
     foreach($fetch_fields as $fetch_field){
 
         $results = $this->Chains->read(array(
@@ -37,7 +38,8 @@ foreach($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0);
 
-        if(in_array($fetch_field, $fetch_skip_if_missing) && !count($results)){
+        if(in_array($fetch_field, $fetch_skip_if_missing) && count($results)){
+            $must_skip = true;
             break;
         }
 
@@ -72,9 +74,11 @@ foreach($this->Chains->read(array(
 
         }
     }
-    
-    foreach($new_lines as $new_line){
-        $csv_output .= $new_line."\n";
+
+    if(!$must_skip){
+        foreach($new_lines as $new_line){
+            $csv_output .= $new_line."\n";
+        }
     }
 
 }
