@@ -92,9 +92,19 @@ foreach($this->Chains->read(array(
                 $count++;
             }
 
+            /*$this->Chains->read(array(
+            'chainuserinput IN (' . join(',', $this->config->item('userids___31057')) . ')' => null, //Permanently Unsubscribed
+            'chainuseroutput' => $e['userid'], //This follower User
+            'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
+                ), array(), 0)*/
+
             //Now assign values:
             $count = 0;
             foreach($results as $result){
+                if($fetch_field==4783){
+                    //Keep only numbers:
+                    $result['chainvalue'] = preg_replace("/[^0-9]/", "", $result['chainvalue'] );
+                }
                 $new_lines[$count] .= trim(str_replace("\n",' ',$result['chainvalue']))."\t";
                 $count++;
             }
@@ -112,5 +122,5 @@ foreach($this->Chains->read(array(
 
 
 //Generate the contact list of the input post:
-echo '<h1>Contact List</h1>';
+echo '<h1>Contact List ['.substr_count( $csv_output, "\n" ).']</h1>';
 echo '<textarea class="mono-space subscriber_data" style="background-color: #FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:233px; width: 100%; border-radius: 0px;">'.$csv_output.'</textarea>';
