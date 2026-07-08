@@ -71,6 +71,7 @@ foreach($this->Chains->read(array(
                 }
             }
             if($is_invalid){
+                $must_skip = true;
                 break;
             }
 
