@@ -32,8 +32,8 @@ foreach($this->Chains->read(array(
     foreach($fetch_fields as $fetch_field){
 
         $results = $this->Chains->read(array(
-            'chainuserinput' => $x['chainuserinput'],
-            'chainuseroutput' => $fetch_field,
+            'chainuserinput' => $fetch_field,
+            'chainuseroutput' => $x['userid'],
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0);
 
