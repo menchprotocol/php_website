@@ -64,8 +64,10 @@ foreach($this->Chains->read(array(
             }
 
             //Now assign values:
+            $count = 0;
             foreach($results as $result){
                 $new_lines[$count] .= $result['chainvalue']."\t";
+                $count++;
             }
 
         }
