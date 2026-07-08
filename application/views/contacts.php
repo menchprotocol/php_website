@@ -45,10 +45,10 @@ foreach($this->Chains->read(array(
 
         if(in_array($fetch_field, $fetch_single_result)){
             if(count($results)){
-                $new_lines[0] .= $results[0]['chainvalue']."\t";
+                $new_lines[0] .= trim($results[0]['chainvalue'])."\t";
             } elseif(in_array($fetch_field, $fetch_replace_username)) {
                 //Replace this with username:
-                $new_lines[0] .= $x['username']."\t";
+                $new_lines[0] .= trim($x['username'])."\t";
             } else {
                 $new_lines[0] .= "&nbsp;\t";
             }
@@ -68,7 +68,7 @@ foreach($this->Chains->read(array(
             //Now assign values:
             $count = 0;
             foreach($results as $result){
-                $new_lines[$count] .= $result['chainvalue']."\t";
+                $new_lines[$count] .= trim($result['chainvalue'])."\t";
                 $count++;
             }
 
