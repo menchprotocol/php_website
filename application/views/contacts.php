@@ -8,6 +8,8 @@ $fetch_skip_if_missing = array(3288); //No point if no email!
 $fetch_replace_username = array(42584); //Replace with username if no first name, must be part of $fetch_single_result as well to work
 $unique_emails = array();
 
+echo $_GET['add'];
+
 //First Name, Last Name, Email & Phone Number
 foreach($fetch_fields as $fetch_field) {
     foreach ($this->Users->read(array(
