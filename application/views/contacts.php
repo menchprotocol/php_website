@@ -38,14 +38,14 @@ foreach($this->Chains->read(array(
             'chainusertype IN (' . join(',', $this->config->item('userids___13548')) . ')' => null, //USER CHAINS
         ), array(), 0);
 
-        if(in_array($fetch_field, $fetch_skip_if_missing) && !count($results)){
+        if(in_array($fetch_field, $fetch_skip_if_missing) && (!count($results) || substr_count($results[0]['chainvalue'], '+'))){
             $must_skip = true;
             break;
         }
 
         if(in_array($fetch_field, $fetch_single_result)){
             if(count($results)){
-                $new_lines[0] .= trim($results[0]['chainvalue'])."\t";
+                $new_lines[0] .= trim(str_replace("\n",' ',$results[0]['chainvalue']))."\t";
             } elseif(in_array($fetch_field, $fetch_replace_username)) {
                 //Replace this with username:
                 $new_lines[0] .= trim($x['username'])."\t";
@@ -68,7 +68,7 @@ foreach($this->Chains->read(array(
             //Now assign values:
             $count = 0;
             foreach($results as $result){
-                $new_lines[$count] .= trim($result['chainvalue'])."\t";
+                $new_lines[$count] .= trim(str_replace("\n",' ',$result['chainvalue']))."\t";
                 $count++;
             }
 
