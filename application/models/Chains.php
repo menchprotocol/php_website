@@ -564,7 +564,6 @@ class Chains extends CIdea_cache
         $stats = array(
             'email_addresses' => array(),
             'sms_numbers' => array(),
-            'phone_count' => 0,
         );
 
 
@@ -614,7 +613,6 @@ class Chains extends CIdea_cache
 
                 foreach (explode('|||', wordwrap($sms_message, view_memory(6404, 27891), "|||")) as $single_message) {
                     if (!in_array($clean_number, $stats['sms_numbers'])) {
-                        $stats['phone_count']++;
                         array_push($stats['sms_numbers'], $clean_number);
                         $sms_sent = dispatch_sms($clean_number, $single_message, $userid, $x_data, $template_postid, $chainuserdomain, $log_tr, $demo_only);
                         if (!$sms_sent) {
@@ -627,9 +625,7 @@ class Chains extends CIdea_cache
         }
 
         return array(
-            'status' => ($stats['phone_count'] > 0 || count($stats['email_addresses']) > 0 ? 1 : 0),
-            'email_count' => count($stats['email_addresses']),
-            'phone_count' => $stats['phone_count'],
+            'status' => count($stats['email_addresses']),
             'message' => 'Message sent',
         );
 
