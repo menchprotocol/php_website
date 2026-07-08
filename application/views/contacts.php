@@ -3,7 +3,7 @@
 //Generate list & settings:
 $csv_output = '';
 $fetch_now = array(intval($focus_e['userid']));
-if(isset($_GET['add']) && is_numeric($_GET['add'])){
+if(isset($_GET['add']) && intval($_GET['add'])){
     array_push($fetch_now, intval($_GET['add']));
 }
 $fetch_fields = array(42584,30198,4783,3288);
