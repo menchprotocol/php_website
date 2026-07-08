@@ -25,6 +25,8 @@ foreach($fetch_fields as $fetch_field) {
 
 $csv_output .= "\n";
 
+print_r($fetch_now);
+
 
 //Now fetch all the child fields:
 foreach($this->Chains->read(array(
